@@ -725,12 +725,17 @@ var audioPool = new Map();
     return '<div class="tt-gh-modal" role="dialog" aria-modal="true"><button type="button" class="tt-gh-modal-backdrop" data-works-action="modal-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' detail"></button><section class="tt-gh-modal-panel"><button type="button" class="tt-gh-modal-close" data-works-action="modal-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-main"><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div><div class="tt-gh-modal-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.detailLabel) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || 'TALETONE MUSIC archive.') + '</p>' + detailTable(work, unit, kind, format) + (controls ? '<div class="tt-gh-side">' + controls + '</div>' : '') + '</div></div><aside class="tt-gh-modal-credits"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.creditsLabel) + '</span><pre>' + preserve(creditsText(work, unit)) + '</pre></aside></section></div>';
   }
 
+  function syncModalBodyClass() {
+    document.body.classList.toggle('tt-works-modal-open', !!(state.modalOpen || state.videoOpen));
+  }
+
   function render() {
     root = ensureRoot();
     if (!root || !works.length) return;
     rendering = true;
     ensureSelectedVisible();
     root.innerHTML = '<div class="tt-gh-shell">' + head() + clients() + tabs() + (state.mode === 'gallery' ? gallery() : showcase()) + (state.mode === 'showcase' ? infoPanel() : '') + galleryModal() + videoLightbox() + '</div>';
+    syncModalBodyClass();
     bindModalCloseHandlers();
     mounted = true;
     rendering = false;
@@ -1075,7 +1080,8 @@ var audioPool = new Map();
   function pauseWhenWorksHidden() {
     if (!state.playing) return;
     var section = document.getElementById('c-works');
-    if (document.hidden || !section || !isSectionVisible(section)) pauseAll();
+    var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
+    if (document.hidden || (activeChapter && activeChapter !== 'works') || !section || !isSectionVisible(section)) pauseAll();
   }
 
   function requestPauseWhenWorksHidden() {
@@ -1215,8 +1221,14 @@ var audioPool = new Map();
   window.TALETONE_WORKS_API = {
     setData: setEditorData,
     setMeta: setMeta,
-    select: selectEditorWork
+    select: selectEditorWork,
+    pauseAll: pauseAll
   };
+
+  window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
+    var detail = event && event.detail ? event.detail : {};
+    if (detail.chapter && detail.chapter !== 'works') pauseAll();
+  });
 
   window.addEventListener('message', function (event) {
     var message = event.data || {};
