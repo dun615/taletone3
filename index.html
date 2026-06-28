@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&amp;family=Noto+Sans+JP:wght@400;500;600;700;800&amp;family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/works.css?v=20260629-hotfix6">
+<link rel="stylesheet" href="assets/css/works.css?v=20260629-hotfix8">
 <script src="assets/js/image-slot.js"></script>
 <style>
 *{box-sizing:border-box}
@@ -171,7 +171,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
   .tt-bloom-stage{transform:scale(.62)}
   .tt-bridge-orb{width:78px;height:78px;margin:-39px}
   .tt-page-stage{transform:scale(.76)}
-  .tt-bridge-pin-stage [data-bridge]{max-width:calc(100vw - 36px)!important;font-size:clamp(28px,8.6vw,44px)!important;line-height:1.18!important;text-align:center!important;white-space:pre!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;color:#fffdf8!important;filter:none!important;text-shadow:0 2px 4px rgba(3,12,24,.46),0 0 18px rgba(3,12,24,.34)!important}
+  .tt-bridge-pin-stage [data-bridge]{max-width:none!important;font-size:clamp(18px,8.2vw,40px);line-height:1.18!important;text-align:center!important;white-space:pre!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;color:#fffdf8!important;filter:none!important;text-shadow:0 2px 4px rgba(3,12,24,.46),0 0 18px rgba(3,12,24,.34)!important}
   .tt-bridge-pin-stage [data-bridge] span{max-width:none!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;filter:none!important}
   .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){font-size:11px!important;line-height:1.25!important;text-align:center!important;color:#0E6E7D!important;text-shadow:0 1px 10px rgba(255,255,255,.58)!important}
   #progress{z-index:95!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:none!important}
@@ -197,17 +197,19 @@ image-slot#tone-art::part(ring){display:none !important}
     gap:8px !important;
     padding:8px !important;
     border-radius:22px !important;
-    background:rgba(238,246,244,.72) !important;
-    -webkit-backdrop-filter:blur(10px) !important;
-    backdrop-filter:blur(10px) !important;
-    box-shadow:0 12px 32px rgba(3,18,30,.16) !important;
+    background:rgba(7,25,36,.76) !important;
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    box-shadow:0 14px 34px rgba(2,14,24,.24) !important;
     align-items:stretch !important;
   }
   #chapnav.tt-nav-peek .nav-label,
   #chapnav:focus-within .nav-label{
     display:block !important;
     max-width:84px !important;
-    overflow:hidden !important;
+    overflow:visible !important;
+    color:rgba(244,250,255,.96) !important;
+    text-shadow:0 1px 8px rgba(0,0,0,.36) !important;
     text-overflow:ellipsis !important;
     color:inherit !important;
     background:transparent !important;
@@ -3344,6 +3346,44 @@ this.updateTranslation(scEl, tA);
     }
     return (this.sections && this.sections[bridgeIndex + 2]) || (this.sections && this.sections[bridgeIndex + 1]) || null;
   }
+  fitBridgeCopy(bg){
+    if(!bg) return;
+    var isMobile = window.innerWidth <= 760;
+    if(window.innerWidth > 760){
+      bg.style.whiteSpace='pre';
+      bg.style.wordBreak='keep-all';
+      bg.style.overflowWrap='normal';
+      bg.style.textWrap='nowrap';
+    }
+    if(!isMobile){
+      bg.style.maxWidth='min(920px,92vw)';
+      bg.style.setProperty('font-size','clamp(28px,4.4vw,68px)');
+      bg.style.setProperty('line-height','1.16');
+      bg._fitVw = window.innerWidth;
+      return;
+    }
+    var available = Math.max(260, window.innerWidth - 38);
+    var base = Math.min(40, Math.max(22, window.innerWidth * 0.082));
+    bg.style.setProperty('max-width','none','important');
+    bg.style.setProperty('font-size',base.toFixed(1)+'px','important');
+    bg.style.setProperty('line-height','1.18','important');
+    bg.style.setProperty('white-space','pre','important');
+    bg.style.setProperty('word-break','keep-all','important');
+    bg.style.setProperty('overflow-wrap','normal','important');
+    bg.style.setProperty('text-wrap','nowrap','important');
+    var measured = bg.scrollWidth || bg.getBoundingClientRect().width || 0;
+    if(measured > available){
+      var fitted = Math.max(18, base * (available / measured));
+      bg.style.setProperty('font-size',fitted.toFixed(1)+'px','important');
+      measured = bg.scrollWidth || bg.getBoundingClientRect().width || 0;
+      if(measured > available){
+        bg.style.setProperty('max-width',available+'px','important');
+        bg.style.setProperty('white-space','pre-wrap','important');
+        bg.style.setProperty('text-wrap','balance','important');
+      }
+    }
+    bg._fitVw = window.innerWidth;
+  }
   updateBridges(vhR){
     if(!this.bridges) return;
     var tA=(performance.now()-this.t0)/1000;
@@ -3385,7 +3425,9 @@ this.updateTranslation(scEl, tA);
         bg._kicker=bg.previousElementSibling;
         if(bg._kicker){ bg._kicker.style.transition='none'; bg._kicker.style.opacity='0'; bg._kicker.style.willChange='opacity,transform,letter-spacing'; }
         bg._lines=bg._bridgeStage?bg._bridgeStage.querySelectorAll('[data-bridge-line]'):(bg.parentElement?bg.parentElement.querySelectorAll('[data-bridge-line]'):[]);
+        this.fitBridgeCopy(bg);
       }
+      if(bg._fitVw !== window.innerWidth) this.fitBridgeCopy(bg);
       var outer=bg._bridgeOuter || (bg.parentElement && bg.parentElement.classList && bg.parentElement.classList.contains('tt-bridge-pin-stage') ? bg.parentElement.parentElement : bg.parentElement);
       if(!outer) continue;
       // ===== Bridges play like a short video on a single scroll, then hand off to the next chapter =====

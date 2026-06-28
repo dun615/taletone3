@@ -2282,7 +2282,7 @@
     max-width: 100vw !important;
     padding-bottom: calc(150px + env(safe-area-inset-bottom)) !important;
     overflow: clip !important;
-    background: linear-gradient(180deg, rgba(48,126,151,.92) 0%, rgba(30,88,119,.96) 46%, rgba(18,62,96,.98) 100%) !important;
+    background: transparent !important;
   }
 
   #c-works.tt-gh-works .tt-gh-shell {
@@ -2409,9 +2409,7 @@
 }
 
 @media (min-width: 761px) {
-  #chapnav,
-  #chapnav.tt-nav-peek,
-  #chapnav:focus-within {
+  #chapnav {
     padding: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
@@ -2421,35 +2419,68 @@
   }
 }
 
+@media (min-width: 761px) and (max-width: 900px) {
+  #chapnav.tt-nav-peek,
+  #chapnav:focus-within {
+    background: rgba(7, 25, 36, .76) !important;
+    border-radius: 24px !important;
+    padding: 12px 12px 12px 16px !important;
+    box-shadow: 0 14px 34px rgba(2, 14, 24, .24) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #chapnav.tt-nav-peek .nav-label,
+  #chapnav:focus-within .nav-label {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    color: rgba(244, 250, 255, .96) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, .36) !important;
+  }
+}
+
 @media (max-width: 760px) {
   html,
-  body,
+  body {
+    background: #0b2b3d !important;
+    overscroll-behavior-y: none;
+  }
+
   #content,
   x-dc {
-    background:
-      linear-gradient(180deg,
-        #dff5f3 0%,
-        #93ccd5 31%,
-        #2f7f9d 63%,
-        #154866 100%) !important;
+    background: transparent !important;
+    min-height: 100dvh;
+    overscroll-behavior-y: contain;
   }
 
   #chapnav {
+    contain: layout paint;
     transition:
-      width .28s cubic-bezier(.2,.8,.2,1),
-      right .28s cubic-bezier(.2,.8,.2,1),
-      padding .28s cubic-bezier(.2,.8,.2,1),
-      border-radius .28s cubic-bezier(.2,.8,.2,1),
-      background-color .28s ease,
-      box-shadow .28s ease,
-      -webkit-backdrop-filter .28s ease,
-      backdrop-filter .28s ease !important;
+      width .18s cubic-bezier(.2,.8,.2,1),
+      right .18s cubic-bezier(.2,.8,.2,1),
+      padding .18s cubic-bezier(.2,.8,.2,1),
+      border-radius .18s cubic-bezier(.2,.8,.2,1),
+      background-color .18s ease,
+      box-shadow .18s ease !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #chapnav.tt-nav-peek,
+  #chapnav:focus-within {
+    background: rgba(7, 25, 36, .76) !important;
+    border-radius: 24px !important;
+    padding: 12px 12px 12px 16px !important;
+    box-shadow: 0 14px 34px rgba(2, 14, 24, .24) !important;
   }
 
   #chapnav .nav-label {
     opacity: 0 !important;
     transform: translateX(8px) !important;
-    transition: opacity .22s ease, transform .28s cubic-bezier(.2,.8,.2,1) !important;
+    color: rgba(244, 250, 255, .96) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, .36) !important;
+    transition: opacity .16s ease, transform .18s cubic-bezier(.2,.8,.2,1) !important;
   }
 
   #chapnav.tt-nav-peek .nav-label,
@@ -2477,7 +2508,8 @@
   }
 
   .tt-bridge-pin-stage [data-bridge] {
-    max-width: calc(100vw - 36px) !important;
+    max-width: none !important;
+    font-size: clamp(18px, 8.2vw, 40px);
     white-space: pre !important;
     text-wrap: nowrap !important;
     word-break: keep-all !important;
