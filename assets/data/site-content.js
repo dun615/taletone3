@@ -1,0 +1,1281 @@
+window.TALETONE_CONTENT = {
+  "version": "1.0",
+  "lastUpdated": "2026-06-27T20:21:01.444Z",
+  "colorSchemes": {
+    "abyss": {
+      "stops": [
+        [
+          0,
+          "#eef6f4",
+          "#dceef0"
+        ],
+        [
+          0.22,
+          "#cfe7ea",
+          "#a9d6dc"
+        ],
+        [
+          0.42,
+          "#8fc3cf",
+          "#5b9fb4"
+        ],
+        [
+          0.6,
+          "#3f7d9a",
+          "#2a5f80"
+        ],
+        [
+          0.76,
+          "#1c4a68",
+          "#143a5a"
+        ],
+        [
+          0.88,
+          "#0c2a44",
+          "#08203a"
+        ],
+        [
+          1,
+          "#04101f",
+          "#020812"
+        ]
+      ],
+      "accent": "#0E6E7D",
+      "accent2": "#3d8a98",
+      "soft": "#364454",
+      "ink": "#141C30",
+      "paper": "#fffdf8",
+      "star": [
+        255,
+        224,
+        168
+      ],
+      "name": "Abyss (Deep Sea)"
+    },
+    "twilight": {
+      "stops": [
+        [
+          0,
+          "#f6eef6",
+          "#efe0ee"
+        ],
+        [
+          0.22,
+          "#e6cfe6",
+          "#d6a9d2"
+        ],
+        [
+          0.42,
+          "#b88fcf",
+          "#8a5bb4"
+        ],
+        [
+          0.6,
+          "#6f4f9a",
+          "#4a2f80"
+        ],
+        [
+          0.76,
+          "#3a2868",
+          "#2a1c5a"
+        ],
+        [
+          0.88,
+          "#1c123a",
+          "#140c2e"
+        ],
+        [
+          1,
+          "#0c0820",
+          "#060312"
+        ]
+      ],
+      "accent": "#b06ad0",
+      "accent2": "#7f6ad6",
+      "star": [
+        255,
+        206,
+        230
+      ],
+      "name": "Twilight (Purple)"
+    },
+    "lumen": {
+      "stops": [
+        [
+          0,
+          "#eef6f1",
+          "#dcefe6"
+        ],
+        [
+          0.22,
+          "#cfeae0",
+          "#a9dcc8"
+        ],
+        [
+          0.42,
+          "#7fc7b0",
+          "#4ba98e"
+        ],
+        [
+          0.6,
+          "#2f8a7a",
+          "#1f6a60"
+        ],
+        [
+          0.76,
+          "#124a48",
+          "#0c3a3c"
+        ],
+        [
+          0.88,
+          "#082a2c",
+          "#062024"
+        ],
+        [
+          1,
+          "#02100f",
+          "#010806"
+        ]
+      ],
+      "accent": "#36c2a0",
+      "accent2": "#5fd0c0",
+      "star": [
+        180,
+        255,
+        224
+      ],
+      "name": "Lumen (Forest Green)"
+    }
+  },
+  "defaultMood": "abyss",
+  "members": [
+    {
+      "name": "N4ML",
+      "brand": "N4ML",
+      "role": "Founder, Executive Producer",
+      "accent": "#0E6E7D",
+      "tint": "#ece2cf",
+      "photo": "assets/bundle/b9ba20e6-791e-4bce-b799-e73f84affd23.jpg",
+      "tagline": "Stories into sound.",
+      "taglineKo": "이야기를 소리로 만드는 사람.",
+      "education": "서울예술대학교 실용음악과 전자음악전공 졸업\n세종예술고등학교 실용음악과 작곡전공 졸업",
+      "creditsText": "| 2026\n\n* 아루네(arune) 1st Original <Love Novel> 총괄 프로듀싱, 작곡, 편곡, 베이스\n* 수니문 스페셜 무대 <BIGBANG - BLUE> 편곡\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> 편곡, 스트링, 피아노, MIDI 프로그래밍\n* V-llage 쿠로가미 사샤 1st Single <Fallen Leaves> 총괄 프로듀싱, 작곡, 편곡\n* 구구단 해빈 <방정리 / Cleaning My Heart> 편곡, 피아노\n* 수니문 스페셜 무대 <FIFTY FIFTY - Gravity> 편곡\n* TV 애니메이션 <강치 아일랜드> OP 편곡, 보컬 튠\n* 해봄 3rd Single <Love Dopamine> 작곡, 편곡, 보컬 디렉팅 및 에디팅\n* 도롱챠 1st Single <The Run Catch> 공동 작곡, 공동 편곡, 보컬 코칭 및 에디팅\n* 젠레스 존 제로 1주년 공식 OST 앨범 <여름을 그리다> 프로듀싱, 작곡, 편곡\n* OSDS(오손도손) 1st Single <Bluetooth> 트랙메이킹, 작곡, 편곡\n* 마이니치마츠리 3rd Single <새해결심 작심삼일> 총괄 프로듀싱, 작곡, 편곡, 작사, 레코딩\n* V-llage 플로리스 로에 1st Single <Floris Waltz> 총괄 프로듀싱, 작곡, 편곡\n* Dear my heroes 1st Album <Early Spring> 수록곡 편곡 참여\n* V-LUP 벨디르 1st Single <Pompous> 프로듀싱, 작곡, 편곡, 보컬 에디팅\n\n| 2024\n\n* RoA <WRAP UP> 작곡, 편곡\n* GXG 게임음악 경연대회 <Run into Galaxy> 금상 수상 — 작곡, 편곡, 총괄 프로듀싱\n* V-llage 1st Album <SilverLine> 앨범 기획, 투자, 총괄 프로듀싱, 작곡, 편곡, 작사\n* V-llage 미연시 <어서오세요 브이리지에!> 주제곡 <My Village> 작곡, 편곡\n* V-llage 티그리스 카닌 1st Single <카니즘☆홀릭> 작곡, 편곡\n* 마피아동산 크루 공연 <Backstage> 작곡, 편곡, 총괄 프로듀싱\n* soraniwa 프로젝트 <수채화 / Watercolour> 작곡, 편곡\n\n| 2023\n\n* 포코톤 X 식스타게이트 스타트레일 POCOTONE Pack 프로젝트 매니지먼트\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> 코드 작곡, 피아노\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <코스믹 텔레파시> 작곡, 편곡\n* 붕괴 스타레일 <STAR to STAR / 멀티버스 순간> 공모전 우수상 및 인기상 입상 — 작곡, 편곡, 총괄 프로듀싱\n* 월간 POCOTONE <너에게 / TO YOU> 편곡\n* 프로젝트 커넥트 SEASON 1 <샛길 (ED)> 작곡, 편곡\n\n| 2022\n\n* POCOTONE <With Me> 총괄 프로듀싱, 트랙메이킹, 보컬 에디팅, 보컬 튠\n* 프로젝트 커넥트 SEASON 1 총괄 프로듀싱 및 작품 참여\n* 프로젝트 커넥트 SEASON 1 <CONNECT, to World!>, <별 사이 우리>, <Party Night>, <맑음 FANFARE!> 등 작곡, 편곡, 프로듀싱 참여\n* EPIC7 <Always With You> 작곡, 편곡, 프로듀싱\n* Last Origin Miss Orca <New Page>, <주인님 Overdose>, <북극성> 작곡, 편곡\n* Last Origin Miss Orca <들려주고픈 이야기> 프로듀싱\n* Last Origin Café Amor x Horizon <Gray Clouds>, <GO UP!>, <어서오세요, 라스트 파라다이스!> 작곡, 편곡\n* Last Origin Café Amor x Horizon <사랑은 파르페처럼> 편곡\n* V-LUP <MyWaY!!!> 프로듀싱\n* V-LUP <Paradise> 작곡, 편곡\n* V-LUP 이주인 <Shining Day!> 트랙메이킹, 작곡, 편곡\n* 꼬마버스 타요 <중장비 레이스> 편곡\n\n| 2021\n\n* 웹툰 <이웃집 남동생이 초등학생인데 너무 잘해!> ED <운명> 트랙메이킹, 편곡\n* 게임 <판타지 타운> 광고 음악 작곡, 편곡\n* 게임 <라스트오리진> <FLIGHT AGAIN> 작곡, 편곡\n* 침대점령 <밤하늘> 작곡, 편곡, 작사\n* 서울예술대학교 실용음악과 홍보영상 <WE ARE SIA!> 작곡, 편곡, 보컬 튠\n* 뽀로로 <뽀로로와 패티의 알록달록 공놀이>, <솔직하게 말해요> 편곡\n* 휴복 Cover <Remember> 편곡\n\n| 2020\n\n* 아토프렌즈 <새해소망기원 댄스>, <2020 크리스마스> 편곡\n* 2020 아인세 창작음악제 <웰리랑 학교가는 날>, <좋은 댓글 나의 얼굴>, <따뜻한 인터넷 세상> 편곡\n* 깨비키즈 <공룡멸종송> 편곡\n* 휴복 Cover <点描の唄>, <Merry Go Round (Solo Ver.)> 편곡\n\n| 2019\n\n* 휴복 Cover <아이네 클라이네> 편곡\n* 개인 작품 <Sailing StarS!> 프로듀싱\n* 개인 작품 <Growing!> 프로듀싱\n\n| 2018\n\n* 세종예술고등학교 교가 총괄 프로듀싱 — 작곡, 편곡, 작사\n* 개인 작품 <TOMORROW!> 프로듀싱\n* 개인 작품 <스케치북> 프로듀싱",
+      "traits": [
+        "#ALL-Rounded",
+        "#Creative Direction",
+        "#Music Production",
+        "#Piano"
+      ],
+      "mbti": "ENTJ",
+      "iglink": "https://www.instagram.com/n4ml02/",
+      "translations": {
+        "kr": {
+          "name": "N4ML",
+          "brand": "N4ML",
+          "role": "Founder, Executive Producer",
+          "tagline": "이야기를 소리로 엮는 사람.",
+          "taglineKo": "",
+          "education": "서울예술대학교 실용음악과 전자음악전공 졸업\n세종예술고등학교 실용음악과 작곡전공 졸업",
+          "creditsText": "| 2026\n\n* 아루네(arune) 1st Original <Love Novel> 총괄 프로듀싱, 작곡, 편곡, 베이스\n* 수니문 스페셜 무대 <BIGBANG - BLUE> 편곡\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> 편곡, 스트링, 피아노, MIDI 프로그래밍\n* V-llage 쿠로가미 사샤 1st Single <Fallen Leaves> 총괄 프로듀싱, 작곡, 편곡\n* 구구단 해빈 <방정리 / Cleaning My Heart> 편곡, 피아노\n* 수니문 스페셜 무대 <FIFTY FIFTY - Gravity> 편곡\n* TV 애니메이션 <강치 아일랜드> OP 편곡, 보컬 튠\n* 해봄 3rd Single <Love Dopamine> 작곡, 편곡, 보컬 디렉팅 및 에디팅\n* 도롱챠 1st Single <The Run Catch> 공동 작곡, 공동 편곡, 보컬 코칭 및 에디팅\n* 젠레스 존 제로 1주년 공식 OST 앨범 <여름을 그리다> 프로듀싱, 작곡, 편곡\n* OSDS(오손도손) 1st Single <Bluetooth> 트랙메이킹, 작곡, 편곡\n* 마이니치마츠리 3rd Single <새해결심 작심삼일> 총괄 프로듀싱, 작곡, 편곡, 작사, 레코딩\n* V-llage 플로리스 로에 1st Single <Floris Waltz> 총괄 프로듀싱, 작곡, 편곡\n* Dear my heroes 1st Album <Early Spring> 수록곡 편곡 참여\n* V-LUP 벨디르 1st Single <Pompous> 프로듀싱, 작곡, 편곡, 보컬 에디팅\n\n| 2024\n\n* RoA <WRAP UP> 작곡, 편곡\n* GXG 게임음악 경연대회 <Run into Galaxy> 금상 수상 — 작곡, 편곡, 총괄 프로듀싱\n* V-llage 1st Album <SilverLine> 앨범 기획, 투자, 총괄 프로듀싱, 작곡, 편곡, 작사\n* V-llage 미연시 <어서오세요 브이리지에!> 주제곡 <My Village> 작곡, 편곡\n* V-llage 티그리스 카닌 1st Single <카니즘☆홀릭> 작곡, 편곡\n* 마피아동산 크루 공연 <Backstage> 작곡, 편곡, 총괄 프로듀싱\n* soraniwa 프로젝트 <수채화 / Watercolour> 작곡, 편곡\n\n| 2023\n\n* 포코톤 X 식스타게이트 스타트레일 POCOTONE Pack 프로젝트 매니지먼트\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> 코드 작곡, 피아노\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <코스믹 텔레파시> 작곡, 편곡\n* 붕괴 스타레일 <STAR to STAR / 멀티버스 순간> 공모전 우수상 및 인기상 입상 — 작곡, 편곡, 총괄 프로듀싱\n* 월간 POCOTONE <너에게 / TO YOU> 편곡\n* 프로젝트 커넥트 SEASON 1 <샛길 (ED)> 작곡, 편곡\n\n| 2022\n\n* POCOTONE <With Me> 총괄 프로듀싱, 트랙메이킹, 보컬 에디팅, 보컬 튠\n* 프로젝트 커넥트 SEASON 1 총괄 프로듀싱 및 작품 참여\n* 프로젝트 커넥트 SEASON 1 <CONNECT, to World!>, <별 사이 우리>, <Party Night>, <맑음 FANFARE!> 등 작곡, 편곡, 프로듀싱 참여\n* EPIC7 <Always With You> 작곡, 편곡, 프로듀싱\n* Last Origin Miss Orca <New Page>, <주인님 Overdose>, <북극성> 작곡, 편곡\n* Last Origin Miss Orca <들려주고픈 이야기> 프로듀싱\n* Last Origin Café Amor x Horizon <Gray Clouds>, <GO UP!>, <어서오세요, 라스트 파라다이스!> 작곡, 편곡\n* Last Origin Café Amor x Horizon <사랑은 파르페처럼> 편곡\n* V-LUP <MyWaY!!!> 프로듀싱\n* V-LUP <Paradise> 작곡, 편곡\n* V-LUP 이주인 <Shining Day!> 트랙메이킹, 작곡, 편곡\n* 꼬마버스 타요 <중장비 레이스> 편곡\n\n| 2021\n\n* 웹툰 <이웃집 남동생이 초등학생인데 너무 잘해!> ED <운명> 트랙메이킹, 편곡\n* 게임 <판타지 타운> 광고 음악 작곡, 편곡\n* 게임 <라스트오리진> <FLIGHT AGAIN> 작곡, 편곡\n* 침대점령 <밤하늘> 작곡, 편곡, 작사\n* 서울예술대학교 실용음악과 홍보영상 <WE ARE SIA!> 작곡, 편곡, 보컬 튠\n* 뽀로로 <뽀로로와 패티의 알록달록 공놀이>, <솔직하게 말해요> 편곡\n* 휴복 Cover <Remember> 편곡\n\n| 2020\n\n* 아토프렌즈 <새해소망기원 댄스>, <2020 크리스마스> 편곡\n* 2020 아인세 창작음악제 <웰리랑 학교가는 날>, <좋은 댓글 나의 얼굴>, <따뜻한 인터넷 세상> 편곡\n* 깨비키즈 <공룡멸종송> 편곡\n* 휴복 Cover <点描の唄>, <Merry Go Round (Solo Ver.)> 편곡\n\n| 2019\n\n* 휴복 Cover <아이네 클라이네> 편곡\n* 개인 작품 <Sailing StarS!> 프로듀싱\n* 개인 작품 <Growing!> 프로듀싱\n\n| 2018\n\n* 세종예술고등학교 교가 총괄 프로듀싱 — 작곡, 편곡, 작사\n* 개인 작품 <TOMORROW!> 프로듀싱\n* 개인 작품 <스케치북> 프로듀싱",
+          "mbti": "ENTJ",
+          "traits": [
+            "#ALL-Rounded",
+            "#Creative Direction",
+            "#Music Production",
+            "#Piano"
+          ]
+        },
+        "en": {
+          "name": "N4ML",
+          "brand": "N4ML",
+          "role": "Founder, Executive Producer",
+          "tagline": "A person who weaves stories into sound.",
+          "taglineKo": "",
+          "education": "Seoul Institute of the Arts\nElectronic Music\n\nSejong Arts High School\nComposition",
+          "creditsText": "# Career (English)\n\n| 2026\n\n* arune 1st Original <Love Novel> — Executive Producer, Composer, Arranger, Bass\n* Soonimoon Special Stage <BIGBANG - BLUE> — Arranger\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> — Arranger, Strings, Piano, MIDI Programming\n* V-llage Kurogami Sasha 1st Single <Fallen Leaves> — Executive Producer, Composer, Arranger\n* Haebin (gugudan) <Cleaning My Heart> — Arranger, Piano\n* Soonimoon Special Stage <FIFTY FIFTY - Gravity> — Arranger\n* TV Anime <Gangchi Island> Opening Theme — Arranger, Vocal Tuning\n* Haebom 3rd Single <Love Dopamine> — Composer, Arranger, Vocal Director, Vocal Editor\n* DOLONGCHA 1st Single <The Run Catch> — Co-Composer, Co-Arranger, Vocal Coach, Vocal Editor\n* Official 1st Anniversary OST Album for Zenless Zone Zero <Drawing Summer> — Producer, Composer, Arranger\n* OSDS (Osondoson) 1st Single <Bluetooth> — Track Maker, Composer, Arranger\n* Mainichi Matsuri 3rd Single <New Year's Resolution> — Executive Producer, Composer, Arranger, Lyricist, Recording Engineer\n* V-llage Floweress Loe 1st Single <Floris Waltz> — Executive Producer, Composer, Arranger\n* Dear my heroes 1st Album <Early Spring> — Arranger\n* V-LUP Veldir 1st Single <Pompous> — Producer, Composer, Arranger, Vocal Editor\n\n| 2024\n\n* RoA <WRAP UP> — Composer, Arranger\n* GXG Game Music Competition <Run into Galaxy> Gold Prize — Composer, Arranger, Executive Producer\n* V-llage 1st Album <SilverLine> — Album Planning, Investment, Executive Producer, Composer, Arranger, Lyricist\n* V-llage Visual Novel <Welcome to V-llage!> Theme Song <My Village> — Composer, Arranger\n* V-llage Tigris Kanin 1st Single <Kanism☆Holic> — Composer, Arranger\n* Mafia Dongsan Crew Performance <Backstage> — Composer, Arranger, Executive Producer\n* Soraniwa Project <Watercolour> — Composer, Arranger\n\n| 2023\n\n* POCOTONE × Sixtar Gate: STARTRAIL POCOTONE Pack — Project Manager\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> — Chord Composer, Piano\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Cosmic Telepathy> — Composer, Arranger\n* Honkai: Star Rail <STAR to STAR / Multiverse Moment> Contest — Excellence Award & Popularity Award / Composer, Arranger, Executive Producer\n* Monthly POCOTONE <TO YOU> — Arranger\n* Project Connect SEASON 1 <Side Road (ED)> — Composer, Arranger\n\n| 2022\n\n* POCOTONE <With Me> — Executive Producer, Track Maker, Vocal Editor, Vocal Tuning\n* Project Connect SEASON 1 — Executive Producer, Project Contributor\n* Project Connect SEASON 1 <CONNECT, to World!>, <Between the Stars>, <Party Night>, <Clear FANFARE!>, etc. — Composer, Arranger, Producer\n* EPIC7 <Always With You> — Composer, Arranger, Producer\n* Last Origin Miss Orca <New Page>, <My Master Overdose>, <Polaris> — Composer, Arranger\n* Last Origin Miss Orca <A Story I Want to Tell> — Producer\n* Last Origin Café Amor × Horizon <Gray Clouds>, <GO UP!>, <Welcome to Last Paradise!> — Composer, Arranger\n* Last Origin Café Amor × Horizon <Love Is Like Parfait> — Arranger\n* V-LUP <MyWaY!!!> — Producer\n* V-LUP <Paradise> — Composer, Arranger\n* V-LUP Lee Juin <Shining Day!> — Track Maker, Composer, Arranger\n* Tayo the Little Bus <Heavy Equipment Race> — Arranger\n\n| 2021\n\n* Webtoon <My Neighbor's Younger Brother Is an Elementary School Student, but He's Too Good!> Ending Theme <Destiny> — Track Maker, Arranger\n* Game <Fantasy Town> Advertisement Music — Composer, Arranger\n* Game <Last Origin> <FLIGHT AGAIN> — Composer, Arranger\n* Bed Taker <Night Sky> — Composer, Arranger, Lyricist\n* Seoul Institute of the Arts Promotional Film <WE ARE SIA!> — Composer, Arranger, Vocal Tuning\n* Pororo <Pororo and Petty's Colorful Ball Game>, <Tell Me Honestly> — Arranger\n* HUBOG Cover <Remember> — Arranger\n\n| 2020\n\n* Atofriends <New Year's Wish Dance>, <2020 Christmas> — Arranger\n* 2020 AINSE Creative Music Festival <Welly Goes to School>, <Good Comments, My Face>, <A Warm Internet World> — Arranger\n* KEBIKIDS <Dinosaur Extinction Song> — Arranger\n* HUBOG Cover <Tenbyou no Uta>, <Merry Go Round (Solo Ver.)> — Arranger\n\n| 2019\n\n* HUBOG Cover <Eine Kleine> — Arranger\n* Original Work <Sailing StarS!> — Producer\n* Original Work <Growing!> — Producer\n\n| 2018\n\n* Sejong Arts High School School Anthem — Executive Producer, Composer, Arranger, Lyricist\n* Original Work <TOMORROW!> — Producer\n* Original Work <Sketchbook> — Producer",
+          "mbti": "ENTJ",
+          "traits": [
+            "#ALL-Rounded",
+            "#Creative Direction",
+            "#Music Production",
+            "#Piano"
+          ]
+        },
+        "jp": {
+          "name": "N4ML",
+          "brand": "N4ML",
+          "role": "Founder, Executive Producer",
+          "tagline": "物語を音へと紡ぐ人。",
+          "taglineKo": "",
+          "education": "ソウル芸術大学\n電子音楽専攻\n\n世宗芸術高等学校\n作曲専攻",
+          "creditsText": "Career\n\n| 2026\n\n* arune 1st Original <Love Novel> — 総合プロデュース、作曲、編曲、ベース\n* Soonimoon スペシャルステージ <BIGBANG - BLUE> — 編曲\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> — 編曲、ストリングス、ピアノ、MIDIプログラミング\n* V-llage Kurogami Sasha 1st Single <Fallen Leaves> — 総合プロデュース、作曲、編曲\n* Haebin (gugudan) <Cleaning My Heart> — 編曲、ピアノ\n* Soonimoon スペシャルステージ <FIFTY FIFTY - Gravity> — 編曲\n* TVアニメ <Gangchi Island> オープニングテーマ — 編曲、ボーカルチューニング\n* Haebom 3rd Single <Love Dopamine> — 作曲、編曲、ボーカルディレクション、ボーカルエディット\n* DOLONGCHA 1st Single <The Run Catch> — 共作曲、共編曲、ボーカルコーチング、ボーカルエディット\n* Zenless Zone Zero 1周年公式OSTアルバム <Drawing Summer> — プロデュース、作曲、編曲\n* OSDS (Osondoson) 1st Single <Bluetooth> — トラックメイキング、作曲、編曲\n* Mainichi Matsuri 3rd Single <New Year's Resolution> — 総合プロデュース、作曲、編曲、作詞、レコーディング\n* V-llage Floweress Loe 1st Single <Floris Waltz> — 総合プロデュース、作曲、編曲\n* Dear my heroes 1st Album <Early Spring> — 収録曲の編曲に参加\n* V-LUP Veldir 1st Single <Pompous> — プロデュース、作曲、編曲、ボーカルエディット\n\n| 2024\n\n* RoA <WRAP UP> — 作曲、編曲\n* GXG Game Music Competition <Run into Galaxy> — 金賞受賞、作曲、編曲、総合プロデュース\n* V-llage 1st Album <SilverLine> — アルバム企画、投資、総合プロデュース、作曲、編曲、作詞\n* V-llage ビジュアルノベル <Welcome to V-llage!> 主題歌 <My Village> — 作曲、編曲\n* V-llage Tigris Kanin 1st Single <Kanism☆Holic> — 作曲、編曲\n* Mafia Dongsan クルー公演 <Backstage> — 作曲、編曲、総合プロデュース\n* Soraniwa Project <Watercolour> — 作曲、編曲\n\n| 2023\n\n* POCOTONE × Sixtar Gate: STARTRAIL POCOTONE Pack — プロジェクトマネジメント\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> — コード作曲、ピアノ\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Cosmic Telepathy> — 作曲、編曲\n* Honkai: Star Rail <STAR to STAR / Multiverse Moment> コンテスト — 優秀賞・人気賞受賞、作曲、編曲、総合プロデュース\n* Monthly POCOTONE <TO YOU> — 編曲\n* Project Connect SEASON 1 <Side Road (ED)> — 作曲、編曲\n\n| 2022\n\n* POCOTONE <With Me> — 総合プロデュース、トラックメイキング、ボーカルエディット、ボーカルチューニング\n* Project Connect SEASON 1 — 総合プロデュースおよび作品参加\n* Project Connect SEASON 1 <CONNECT, to World!>, <Between the Stars>, <Party Night>, <Clear FANFARE!> ほか — 作曲、編曲、プロデュースに参加\n* EPIC7 <Always With You> — 作曲、編曲、プロデュース\n* Last Origin Miss Orca <New Page>, <My Master Overdose>, <Polaris> — 作曲、編曲\n* Last Origin Miss Orca <A Story I Want to Tell> — プロデュース\n* Last Origin Café Amor × Horizon <Gray Clouds>, <GO UP!>, <Welcome to Last Paradise!> — 作曲、編曲\n* Last Origin Café Amor × Horizon <Love Is Like Parfait> — 編曲\n* V-LUP <MyWaY!!!> — プロデュース\n* V-LUP <Paradise> — 作曲、編曲\n* V-LUP Lee Juin <Shining Day!> — トラックメイキング、作曲、編曲\n* Tayo the Little Bus <Heavy Equipment Race> — 編曲\n\n| 2021\n\n* Webtoon <My Neighbor's Younger Brother Is an Elementary School Student, but He's Too Good!> エンディングテーマ <Destiny> — トラックメイキング、編曲\n* Game <Fantasy Town> 広告音楽 — 作曲、編曲\n* Game <Last Origin> <FLIGHT AGAIN> — 作曲、編曲\n* Bed Taker <Night Sky> — 作曲、編曲、作詞\n* Seoul Institute of the Arts 実用音楽科プロモーション映像 <WE ARE SIA!> — 作曲、編曲、ボーカルチューニング\n* Pororo <Pororo and Petty's Colorful Ball Game>, <Tell Me Honestly> — 編曲\n* HUBOG Cover <Remember> — 編曲\n\n| 2020\n\n* Atofriends <New Year's Wish Dance>, <2020 Christmas> — 編曲\n* 2020 AINSE Creative Music Festival <Welly Goes to School>, <Good Comments, My Face>, <A Warm Internet World> — 編曲\n* KEBIKIDS <Dinosaur Extinction Song> — 編曲\n* HUBOG Cover <Tenbyou no Uta>, <Merry Go Round (Solo Ver.)> — 編曲\n\n| 2019\n\n* HUBOG Cover <Eine Kleine> — 編曲\n* Original Work <Sailing StarS!> — プロデュース\n* Original Work <Growing!> — プロデュース\n\n| 2018\n\n* Sejong Arts High School 校歌 — 総合プロデュース、作曲、編曲、作詞\n* Original Work <TOMORROW!> — プロデュース\n* Original Work <Sketchbook> — プロデュース",
+          "mbti": "ENTJ",
+          "traits": [
+            "#ALL-Rounded",
+            "#Creative Direction",
+            "#Music Production",
+            "#Piano"
+          ]
+        }
+      }
+    },
+    {
+      "name": "JAEHA",
+      "brand": "JAEHA",
+      "role": "Producer & Project Manager",
+      "accent": "#403F6F",
+      "tint": "#efe0c8",
+      "photo": "assets/bundle/2936393b-bae2-443d-9fe4-54d5abe29362.jpg",
+      "tagline": "A map for every tale.",
+      "taglineKo": "이야기에 길을 놓는 사람.",
+      "education": "호원대학교 실용음악학부 베이스 전공 졸업",
+      "creditsText": "| 2025\n\n* 호요버스 게임 젠레스 존 제로 1주년 기념 OST <여름을 그리다> 베이스 참여\n* 2025 DDP 서울콘(SeoulCon) 게임 음악 심포니 콘서트 참여\n\n| 2024\n\n* GXG2024 게임음악 경연대회 <Run into Galaxy> 팀 금상 수상\n* KT 광화문 K 페스타 게임 OST 오케스트라 공연 참여\n\n| 2023\n\n* 라스트오리진 라비아타 캐릭터 송 작편곡, 프로듀싱, 베이스 참여\n* 라스트오리진 멀린 캐릭터 송 작편곡, 프로듀싱, 베이스 참여\n\n| Live / Session\n\n* 감제이, 꽃감이, 밤양갱, 가습기 등 인터넷 방송인 라이브 공연 참여 다수\n* 도롱챠, 해봄, 헥시아 등 인터넷 방송인 앨범 녹음 참여 다수\n\n| Portfolio\n\n* 개인 포트폴리오 사이트\n  [https://jaehadesu.creatorlink.net/](https://jaehadesu.creatorlink.net/)\n\n#Bass #Arrangement #Management",
+      "traits": [
+        "#Bass",
+        "#Project Management",
+        "#Arrangement"
+      ],
+      "mbti": "INFJ",
+      "iglink": "https://www.instagram.com/jaehadesu_/",
+      "translations": {
+        "kr": {
+          "name": "JAEHA",
+          "brand": "JAEHA",
+          "role": "Producer & Project Manager",
+          "tagline": "이야기가 흘러갈 소리의 길을 놓는 사람.",
+          "taglineKo": "",
+          "education": "호원대학교 실용음악학부 베이스 전공 졸업",
+          "creditsText": "| 2025\n\n* 호요버스 게임 젠레스 존 제로 1주년 기념 OST <여름을 그리다> 베이스 참여\n* 2025 DDP 서울콘(SeoulCon) 게임 음악 심포니 콘서트 참여\n\n| 2024\n\n* GXG2024 게임음악 경연대회 <Run into Galaxy> 팀 금상 수상\n* KT 광화문 K 페스타 게임 OST 오케스트라 공연 참여\n\n| 2023\n\n* 라스트오리진 라비아타 캐릭터 송 작편곡, 프로듀싱, 베이스 참여\n* 라스트오리진 멀린 캐릭터 송 작편곡, 프로듀싱, 베이스 참여\n\n| Live / Session\n\n* 감제이, 꽃감이, 밤양갱, 가습기 등 인터넷 방송인 라이브 공연 참여 다수\n* 도롱챠, 해봄, 헥시아 등 인터넷 방송인 앨범 녹음 참여 다수\n\n| Portfolio\n\n* 개인 포트폴리오 사이트\n  [https://jaehadesu.creatorlink.net/](https://jaehadesu.creatorlink.net/)\n\n#Bass #Arrangement #Management",
+          "mbti": "INFJ",
+          "traits": [
+            "#Bass",
+            "#Project Management",
+            "#Arrangement"
+          ]
+        },
+        "en": {
+          "name": "JAEHA",
+          "brand": "JAEHA",
+          "role": "Producer & Project Manager",
+          "tagline": "A person who lays the path of sound for stories to flow.",
+          "taglineKo": "",
+          "education": "Howon University\nBass, School of Applied Music",
+          "creditsText": "English\n\n| 2025\n\n* HoYoverse Game <Zenless Zone Zero> 1st Anniversary OST <Drawing Summer> — Bass\n* 2025 DDP SeoulCon Game Music Symphony Concert — Participated as Bassist\n\n| 2024\n\n* GXG2024 Game Music Competition <Run into Galaxy> — Team Gold Prize\n* KT Gwanghwamun K Festa Game OST Orchestra Concert — Participated as Bassist\n\n| 2023\n\n* Last Origin Labiata Character Song — Composition, Arrangement, Producing, Bass\n* Last Origin Merlin Character Song — Composition, Arrangement, Producing, Bass\n\n| Live / Session\n\n* Participated in numerous live performances for internet broadcasters, including Gamjey, Kkotgami, Bamyanggaeng, Gaseubgi, and more\n* Participated in numerous album recording sessions for internet broadcasters, including DOLONGCHA, Haebom, Hexia, and more\n\n| Portfolio\n\n* Personal Portfolio Site\n  https://jaehadesu.creatorlink.net/\n\n#Bass #Arrangement #Management",
+          "mbti": "INFJ",
+          "traits": [
+            "#Bass",
+            "#Project Management",
+            "#Arrangement"
+          ]
+        },
+        "jp": {
+          "name": "JAEHA",
+          "brand": "JAEHA",
+          "role": "Producer & Project Manager",
+          "tagline": "物語が流れていくための、音の道を敷く人。",
+          "taglineKo": "",
+          "education": "湖原大学\n実用音楽学部 ベース専攻 卒業",
+          "creditsText": "日本語\n\n| 2025\n\n* HoYoverse Game <Zenless Zone Zero> 1周年記念OST <Drawing Summer> — ベース参加\n* 2025 DDP SeoulCon Game Music Symphony Concert — ベーシストとして参加\n\n| 2024\n\n* GXG2024 Game Music Competition <Run into Galaxy> — チーム金賞受賞\n* KT Gwanghwamun K Festa Game OST Orchestra Concert — ベーシストとして参加\n\n| 2023\n\n* Last Origin Labiata Character Song — 作曲、編曲、プロデュース、ベース参加\n* Last Origin Merlin Character Song — 作曲、編曲、プロデュース、ベース参加\n\n| Live / Session\n\n* Gamjey、Kkotgami、Bamyanggaeng、Gaseubgi ほか、インターネット配信者のライブ公演に多数参加\n* DOLONGCHA、Haebom、Hexia ほか、インターネット配信者のアルバムレコーディングに多数参加\n\n| Portfolio\n\n* 個人ポートフォリオサイト\n  https://jaehadesu.creatorlink.net/\n\n#Bass #Arrangement #Management",
+          "mbti": "INFJ",
+          "traits": [
+            "#Bass",
+            "#Project Management",
+            "#Arrangement"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Seine",
+      "brand": "Seine",
+      "role": "Artist, Vocal Director",
+      "accent": "#0E6E7D",
+      "tint": "#efe2da",
+      "photo": "assets/bundle/5aaf5dfc-26e8-42fc-86ff-06c8c639c589.jpg",
+      "tagline": "The voice of the tale.",
+      "taglineKo": "이야기에 목소리를 입히는 사람.",
+      "education": "서울예술대학교 실용음악과 보컬전공 졸업",
+      "creditsText": "| 2025\n\n* 디지털 싱글 <나답지 않게>, <고집> 음원 발매\n* 젠레스 존 제로 OST <여름을 그리다> 보컬 녹음\n\n| 2024\n\n* 2024 GXG 게임음악 공모전 <Run into Galaxy> 팀 금상 수상\n\n| 2023\n\n* Soraniwa 프로젝트 <수채화> 보컬 녹음\n* 라스트오리진 OST <북극성> 보컬 녹음\n* 라스트오리진 OST <Overdose> 보컬 녹음\n* 서울예술대학교 방송연예과 <보름에 소원을 빌까요> OST 보컬 녹음\n* 스튜디오 메타케이 <시간을 달려> 보컬 녹음\n* HAROO <Mastermind> 보컬 녹음\n* KT&G 상상유니브 집현전 결선 진출 — 밴드 휘낭시아\n\n| 2022\n\n* 한국해양대학교 교가 녹음\n* 경인지방우정청 로고송 녹음\n\n#Vocal #Recording #Performance",
+      "traits": [
+        "#Vocal",
+        "#Vocal_Coaching",
+        "#Live_Performance"
+      ],
+      "mbti": "ISFP",
+      "iglink": "https://www.instagram.com/eternally_yours97/",
+      "translations": {
+        "kr": {
+          "name": "Seine",
+          "brand": "Seine",
+          "role": "Artist, Vocal Director",
+          "tagline": "이야기에 목소리를 입히는 사람.",
+          "taglineKo": "",
+          "education": "서울예술대학교 실용음악과 보컬전공 졸업",
+          "creditsText": "| 2025\n\n* 디지털 싱글 <나답지 않게>, <고집> 음원 발매\n* 젠레스 존 제로 OST <여름을 그리다> 보컬 녹음\n\n| 2024\n\n* 2024 GXG 게임음악 공모전 <Run into Galaxy> 팀 금상 수상\n\n| 2023\n\n* Soraniwa 프로젝트 <수채화> 보컬 녹음\n* 라스트오리진 OST <북극성> 보컬 녹음\n* 라스트오리진 OST <Overdose> 보컬 녹음\n* 서울예술대학교 방송연예과 <보름에 소원을 빌까요> OST 보컬 녹음\n* 스튜디오 메타케이 <시간을 달려> 보컬 녹음\n* HAROO <Mastermind> 보컬 녹음\n* KT&G 상상유니브 집현전 결선 진출 — 밴드 휘낭시아\n\n| 2022\n\n* 한국해양대학교 교가 녹음\n* 경인지방우정청 로고송 녹음\n\n#Vocal #Recording #Performance",
+          "mbti": "ISFP",
+          "traits": [
+            "#Vocal",
+            "#Vocal_Coaching",
+            "#Live_Performance"
+          ]
+        },
+        "en": {
+          "name": "Seine",
+          "brand": "Seine",
+          "role": "Artist, Vocal Director",
+          "tagline": "A person who gives voice to stories.",
+          "taglineKo": "",
+          "education": "Seoul Institute of the Arts\nVocal, Applied Music",
+          "creditsText": "English\n\n| 2025\n\n* Released digital singles <Not Like Me> and <Stubborn>\n* Zenless Zone Zero OST <Drawing Summer> — Vocal Recording\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — Team Gold Prize\n\n| 2023\n\n* Soraniwa Project <Watercolour> — Vocal Recording\n* Last Origin OST <Polaris> — Vocal Recording\n* Last Origin OST <Overdose> — Vocal Recording\n* Seoul Institute of the Arts, Department of Acting <Shall We Make a Wish on the Full Moon?> OST — Vocal Recording\n* Studio Meta-K <Running Through Time> — Vocal Recording\n* HAROO <Mastermind> — Vocal Recording\n* KT&G Sangsang Univ. Jiphyeonjeon Finalist — Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — Vocal Recording\n* Korea Post Gyeongin Regional Office Logo Song — Vocal Recording\n\n#Vocal #Recording #Performance",
+          "mbti": "ISFP",
+          "traits": [
+            "#Vocal",
+            "#Vocal_Coaching",
+            "#Live_Performance"
+          ]
+        },
+        "jp": {
+          "name": "Seine",
+          "brand": "Seine",
+          "role": "Artist, Vocal Director",
+          "tagline": "物語に声を吹き込む人。",
+          "taglineKo": "",
+          "education": "ソウル芸術大学\n実用音楽学科 ボーカル専攻 卒業",
+          "creditsText": "日本語\n\n| 2025\n\n* デジタルシングル <Not Like Me>, <Stubborn> — 音源リリース\n* Zenless Zone Zero OST <Drawing Summer> — ボーカルレコーディング\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — チーム金賞受賞\n\n| 2023\n\n* Soraniwa Project <Watercolour> — ボーカルレコーディング\n* Last Origin OST <Polaris> — ボーカルレコーディング\n* Last Origin OST <Overdose> — ボーカルレコーディング\n* Seoul Institute of the Arts Department of Acting <Shall We Make a Wish on the Full Moon?> OST — ボーカルレコーディング\n* Studio Meta-K <Running Through Time> — ボーカルレコーディング\n* HAROO <Mastermind> — ボーカルレコーディング\n* KT&G Sangsang Univ. Jiphyeonjeon — 決選進出 / Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — ボーカルレコーディング\n* Korea Post Gyeongin Regional Office Logo Song — ボーカルレコーディング\n\n#Vocal #Recording #Performance",
+          "mbti": "ISFP",
+          "traits": [
+            "#Vocal",
+            "#Vocal_Coaching",
+            "#Live_Performance"
+          ]
+        }
+      }
+    },
+    {
+      "name": "MIEE",
+      "brand": "MIEE",
+      "role": "Art Director",
+      "accent": "#0E6E7D",
+      "tint": "#dce9ea",
+      "photo": "assets/bundle/0798ce9e-b2f2-4409-817a-c1c4ad73150b.jpg",
+      "tagline": "Color of the unseen.",
+      "taglineKo": "보이지 않는 것에 색을 입히는 사람.",
+      "education": "Private",
+      "creditsText": "soraniwa Project 총괄 아트 디렉터\n\n도롱챠 1st Single 'The Run Catch' 작편곡, 작사, 타이틀 디자인, 썸네일, 3D Prop 아트워크, 컬러그레이드",
+      "traits": [
+        "Art Direction",
+        "Illustration",
+        "Visual"
+      ],
+      "mbti": "Private",
+      "iglink": "",
+      "translations": {
+        "kr": {
+          "name": "MIEE",
+          "brand": "MIEE",
+          "role": "Art Director",
+          "tagline": "보이지 않는 이야기에 색을 입히는 사람.",
+          "taglineKo": "",
+          "education": "Private",
+          "creditsText": "soraniwa Project 총괄 아트 디렉터\n\n도롱챠 1st Single 'The Run Catch' 작편곡, 작사, 타이틀 디자인, 썸네일, 3D Prop 아트워크, 컬러그레이드",
+          "mbti": "Private",
+          "traits": [
+            "Art Direction",
+            "Illustration",
+            "Visual"
+          ]
+        },
+        "en": {
+          "name": "MIEE",
+          "brand": "MIEE",
+          "role": "Art Director",
+          "tagline": "A person who gives color to unseen stories.",
+          "taglineKo": "",
+          "education": "Private",
+          "creditsText": "Soraniwa Project — Executive Art Director\n\nDOLONGCHA 1st Single <The Run Catch> — Composition, Arrangement, Lyrics, Title Design, Thumbnail, 3D Prop Artwork, Color Grading",
+          "mbti": "Private",
+          "traits": [
+            "Art Direction",
+            "Illustration",
+            "Visual"
+          ]
+        },
+        "jp": {
+          "name": "MIEE",
+          "brand": "MIEE",
+          "role": "Art Director",
+          "tagline": "目に見えない物語に、色を添える人。",
+          "taglineKo": "",
+          "education": "Private",
+          "creditsText": "Soraniwa Project — 総合アートディレクター\n\nDOLONGCHA 1st Single <The Run Catch> — 作曲、編曲、作詞、タイトルデザイン、サムネイル、3D Propアートワーク、カラーグレーディング",
+          "mbti": "Private",
+          "traits": [
+            "Art Direction",
+            "Illustration",
+            "Visual"
+          ]
+        }
+      }
+    }
+  ],
+  "memberCardLayout": {
+    "gap": "26px",
+    "partnerGap": "16px",
+    "containerPadding": "20px",
+    "borderRadius": "18px",
+    "boxShadow": "0 22px 50px rgba(20,28,60,.13)",
+    "cardBorder": "rgba(24,32,52,.08)",
+    "cardBg": "rgba(255,255,255,.5)"
+  },
+  "news": [
+    {
+      "slotId": "news-1",
+      "tag": "Update",
+      "category": "Update",
+      "date": "2026.06.27",
+      "title": "TALETONE, 첫 이야기를 시작합니다",
+      "summary": "드디어 TALETONE이 첫걸음을 시작했습니다.",
+      "body": "드디어 TALETONE이 첫걸음을 시작했습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\n이야기는 고유한 빛깔을 품고,\n그 빛깔은 음악으로 피어난다.\nTALETONE MUSIC",
+      "image": "assets\\pictures\\logomock.png",
+      "fit": "cover",
+      "posX": 50,
+      "posY": 50,
+      "brightness": 100,
+      "saturation": 100,
+      "lightness": 100,
+      "translations": {
+        "kr": {
+          "tag": "Update",
+          "category": "Update",
+          "title": "TALETONE, 첫 이야기를 시작합니다",
+          "summary": "드디어 TALETONE이 첫걸음을 시작했습니다.",
+          "body": "드디어 TALETONE이 첫걸음을 시작했습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+        },
+        "en": {
+          "tag": "Update",
+          "category": "Update",
+          "title": "TALETONE Begins Its First Story",
+          "summary": "At last, TALETONE has taken its first step.",
+          "body": "At last, TALETONE has taken its first step.\n\nIt took longer than we ever imagined to gather the stories, the music, and the world we had dreamed of into a single name. It wasn't always an easy journey, but thanks to everyone who believed in us and walked alongside us, we're finally able to share this beginning.\n\nTALETONE is more than a place where music is made.\nWe hope to become a team where stories become sound, and that sound finds its way into someone's world.\n\nTo our members, everyone who lent their hands to this journey, and everyone who has continued to support us—thank you from the bottom of our hearts.\n\nThis may be a small beginning, but we'll continue writing new stories through music, one page at a time.\n\nThank you for being part of TALETONE's story.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC\n"
+        },
+        "jp": {
+          "tag": "Update",
+          "category": "Update",
+          "title": "TALETONE、最初の物語を始めます。",
+          "summary": "ついに、TALETONEが最初の一歩を踏み出しました。",
+          "body": "ついに、TALETONEが最初の一歩を踏み出しました。\n\n長いあいだ胸の中で温めてきた物語と音楽、そして私たちが描きたかった世界を、一つの名前のもとに形にするまでには、想像以上の時間がかかりました。決して平坦な道ではありませんでしたが、ともに考え、ともに歩んでくださった皆さまのおかげで、この始まりをお届けできることを心から嬉しく思います。\n\nTALETONEは、ただ音楽をつくる場所ではありません。\n物語が音になり、その音が誰かの世界へ届いていく――そんなチームを目指しています。\n\n支えてくださったメンバーの皆さま、制作に力を貸してくださった皆さま、そしていつも応援してくださるすべての皆さまへ、心より感謝申し上げます。\n\nまだ小さな一歩ではありますが、これからも音楽と物語を一ページずつ丁寧に紡いでまいります。\n\nこれからのTALETONEも、どうぞよろしくお願いいたします。\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+        }
+      }
+    },
+    {
+      "slotId": "news-2",
+      "tag": "Project",
+      "category": "Project",
+      "date": "2026.06.11",
+      "title": "soraniwa Project archive refreshed",
+      "summary": "soraniwa and WORKS assets are available through the new static data and media structure.",
+      "body": "soraniwa Project and WORKS archive assets were moved into the new static data and media structure.\n\nImages, audio, credits, multilingual versions, and album tracks can now be managed from one data flow.\n\nSee the WORKS chapter for the archive view.",
+      "image": "assets\\pictures\\asset-mq5x4pqt-a1nz-.png-dbd67de3c381.jpg",
+      "fit": "cover",
+      "posX": 50,
+      "posY": 50,
+      "brightness": 100,
+      "saturation": 100,
+      "lightness": 100,
+      "translations": {
+        "kr": {
+          "tag": "Project",
+          "category": "Project",
+          "title": "STELLIVE Universe ‘마음악보’ 발매",
+          "summary": "TALETONE이 음악 제작으로 함께한 STELLIVE Universe의 단체 오리지널 싱글 ‘마음악보’가 발매되었습니다.",
+          "body": "TALETONE이 음악 제작으로 함께한 STELLIVE Universe의 단체 오리지널 싱글 ‘마음악보’가 발매되었습니다.\n\n‘마음악보’는 스텔라이브 2기생 유닛 'Universe' 소속 아티스트\n'시라유키 히나', '네네코 마시로', '아카네 리제', '아라하시 타비'가 함께한 곡으로, ‘청춘’이라는 테마 아래 시간과 추억이 노래 안에 새겨지는 순간을 그려냅니다.\n\nTALETONE은 이번 곡에서 작곡, 편곡, 연주, 보컬 가이드 및 보컬 에디팅 등 음악 제작 전반에 참여했습니다.\n청량한 멜로디와 록 밴드 사운드 위에, 서툴지만 눈부셨던 순간들이 하나의 악보처럼 남을 수 있도록 마음을 담았습니다.\n\n소중한 프로젝트에 함께할 수 있어 진심으로 감사드립니다.\n‘마음악보’가 많은 분들의 마음속에도 오래 남는 노래가 되기를 바랍니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+        },
+        "en": {
+          "tag": "Project",
+          "category": "Project",
+          "title": "STELLIVE Universe 'Heart Score' Released",
+          "summary": "The original group single 'Heart Score' by STELLIVE Universe, with music production by TALETONE, has officially been released.",
+          "body": "The original group single 'Heart Score' by STELLIVE Universe, with music production by TALETONE, has officially been released.\n\n'Heart Score' is performed by the four artists of STELLIVE's 2nd Generation unit 'Universe'—Shirayuki Hina, Neneko Mashiro, Akane Lize, and Arahashi Tabi. Under the theme of youth, the song captures the moments when time and memories are written into music.\n\nTALETONE participated throughout the music production, including composition, arrangement, instrumental performance, vocal guide production, and vocal editing.\n\nBuilt upon bright melodies and a rock band sound, we poured our hearts into creating a song where those clumsy yet radiant moments could remain like notes on a musical score.\n\nWe are sincerely grateful to have been part of such a meaningful project.\n\nWe hope 'Heart Score' will remain in the hearts of many listeners for a long time.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+        },
+        "jp": {
+          "tag": "Project",
+          "category": "Project",
+          "title": "STELLIVE Universe『心の楽譜』リリース",
+          "summary": "TALETONEが音楽制作で参加した、STELLIVE Universeのオリジナルグループシングル『心の楽譜』がリリースされました。",
+          "body": "STELLIVE Universe『心の楽譜』リリース\n\nTALETONEが音楽制作で参加した、STELLIVE Universeのオリジナルグループシングル『心の楽譜』がリリースされました。\n\n『心の楽譜』は、STELLIVE第2期生ユニット『Universe』に所属する白雪ひな、ねねこマシロ、茜リゼ、アラハシ・タビの4人が歌う楽曲です。「青春」をテーマに、時間と思い出が歌の中へ刻まれていく瞬間を描いています。\n\nTALETONEは本作において、作曲・編曲・演奏・ボーカルガイド制作・ボーカルエディットなど、音楽制作全般を担当しました。\n\n爽やかなメロディーとロックバンドサウンドに乗せて、不器用でありながらも輝いていた日々が、一冊の楽譜のように残ることを願い、心を込めて制作しました。\n\nこの素晴らしいプロジェクトに参加できたことを、心より感謝申し上げます。\n\n『心の楽譜』が、多くの方々の心に長く残る一曲となりますように。\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+        }
+      }
+    }
+  ],
+  "partners": [
+    {
+      "id": "p1",
+      "name": "TEMACA",
+      "role": "Motion Graphic Designer",
+      "image": "assets\\bundle\\temaca.jpg",
+      "link": "https://x.com/Temaca333",
+      "brightness": 100,
+      "saturation": 100,
+      "lightness": 100,
+      "textColor": "#ffffff",
+      "translations": {
+        "kr": {
+          "name": "TEMACA",
+          "role": "Motion Graphic Designer"
+        },
+        "en": {
+          "name": "TEMACA",
+          "role": "Motion Graphic Designer"
+        },
+        "jp": {
+          "name": "TEMACA",
+          "role": "Motion Graphic Designer"
+        }
+      }
+    }
+  ],
+  "typography": {
+    "sectionTitleSize": "clamp(32px, 4.2vw, 64px)",
+    "sectionTitleWeight": 800,
+    "memberNameSize": "36px",
+    "memberNameWeight": 700,
+    "memberRoleSize": "11px",
+    "memberRoleWeight": 700,
+    "fontStack": "'Hanken Grotesk','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',system-ui,sans-serif",
+    "fontStackJP": "'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif"
+  },
+  "spacing": {
+    "memberCardGap": "26px",
+    "partnerCardGap": "16px",
+    "sectionPaddingVertical": "clamp(60px, 7vw, 120px)",
+    "sectionPaddingHorizontal": "clamp(20px, 3.5vw, 60px)"
+  },
+  "home": {
+    "eyebrow": "WHERE STORIES BECOME MUSIC",
+    "titleLine1": "TALETONE",
+    "titleLine2": "MUSIC",
+    "subtitleLine1": "A tale becomes a tone.",
+    "subtitleLine2": "A tone becomes music.",
+    "descriptionLine1": "이야기는 고유한 빛깔을 품고,",
+    "descriptionLine2": "그 빛깔은 음악이 된다.",
+    "scrollHint": "Dive in with scroll",
+    "translations": {
+      "kr": {
+        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "titleLine1": "TALETONE",
+        "titleLine2": "MUSIC",
+        "subtitleLine1": "A tale becomes a tone.",
+        "subtitleLine2": "A tone becomes music.",
+        "descriptionLine1": "",
+        "descriptionLine2": "",
+        "scrollHint": "Dive in with scroll",
+        "backgroundLine1": "",
+        "backgroundLine2": ""
+      },
+      "en": {
+        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "titleLine1": "TALETONE",
+        "titleLine2": "MUSIC",
+        "subtitleLine1": "A tale becomes a tone.",
+        "subtitleLine2": "A tone becomes music.",
+        "descriptionLine1": "",
+        "descriptionLine2": "",
+        "scrollHint": "Dive in with scroll",
+        "backgroundLine1": "",
+        "backgroundLine2": ""
+      },
+      "jp": {
+        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "titleLine1": "TALETONE",
+        "titleLine2": "MUSIC",
+        "subtitleLine1": "A tale becomes a tone.",
+        "subtitleLine2": "A tone becomes music.",
+        "descriptionLine1": "",
+        "descriptionLine2": "",
+        "scrollHint": "Dive in with scroll",
+        "backgroundLine1": "",
+        "backgroundLine2": ""
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Where the tones live",
+    "title": "Our",
+    "titleAccent": "Projects.",
+    "subtitle": "Two worlds where stories keep singing.",
+    "description": "이야기가 계속 노래하는 두 개의 세계.",
+    "cards": [
+      {
+        "id": "soraniwa",
+        "slotId": "sora-art",
+        "label": "Storytelling Project",
+        "title": "soraniwa",
+        "placeholder": "하늘 정원 일러스트 드롭",
+        "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
+        "buttonLabel": "soraniwa 들어가기",
+        "link": "#c-works",
+        "buttonColor": "var(--ink,#141C30)",
+        "buttonTextColor": "var(--paper,#fffdf8)",
+        "image": "assets\\bundle\\Thumbnail_Fix-en.jpg",
+        "fit": "cover",
+        "posX": 54,
+        "posY": 44,
+        "brightness": 103,
+        "saturation": 100,
+        "lightness": 100,
+        "translations": {
+          "kr": {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
+            "buttonLabel": "soraniwa 들어가기"
+          },
+          "en": {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
+            "buttonLabel": "soraniwa 들어가기"
+          },
+          "jp": {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
+            "buttonLabel": "soraniwa 들어가기"
+          }
+        },
+        "openInNewTab": false
+      },
+      {
+        "id": "taletones",
+        "slotId": "tone-art",
+        "label": "Band by Storytellers",
+        "title": "TALETONES",
+        "placeholder": "TALETONES 이미지 드롭",
+        "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+        "buttonLabel": "TALETONES 만나기",
+        "link": "",
+        "buttonColor": "var(--accent2,#3d8a98)",
+        "buttonTextColor": "#ffffff",
+        "image": "",
+        "fit": "cover",
+        "posX": 50,
+        "posY": 50,
+        "brightness": 100,
+        "saturation": 100,
+        "lightness": 100,
+        "translations": {
+          "kr": {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "TALETONES 만나기"
+          },
+          "en": {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "TALETONES 만나기"
+          },
+          "jp": {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "TALETONES 만나기"
+          }
+        },
+        "openInNewTab": false
+      }
+    ],
+    "translations": {
+      "kr": {
+        "eyebrow": "Where the tones live",
+        "title": "Our",
+        "titleAccent": "Projects.",
+        "subtitle": "\" 우리가 세상에 건네고픈 작은 이야기들 \"",
+        "description": "",
+        "cards": [
+          {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "하늘 너머로 피어나는 두 소녀의 우정 이야기.\nsoraniwa Project는 그 세계를 음악과 영상으로 펼쳐가는 TALETONE의 본편 프로젝트입니다.",
+            "buttonLabel": "soraniwa 들어가기"
+          },
+          {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "준비중"
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "Where the tones live",
+        "title": "Our",
+        "titleAccent": "Projects.",
+        "subtitle": "\" The little stories we hope to offer to the world \"",
+        "description": "",
+        "cards": [
+          {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "Beyond the sky blooms the story of two girls and their friendship.\nSoraniwa Project is TALETONE's flagship music and film project.",
+            "buttonLabel": "soraniwa 들어가기"
+          },
+          {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "A stage where stories become songs.\nA TALETONE band project where storytellers give their own voices to each story.",
+            "buttonLabel": "Coming Soon"
+          }
+        ]
+      },
+      "jp": {
+        "eyebrow": "Where the tones live",
+        "title": "Our",
+        "titleAccent": "Projects.",
+        "subtitle": "\" 私たちが世界へ届けたい、小さな物語たち \"",
+        "description": "",
+        "cards": [
+          {
+            "label": "Storytelling Project",
+            "title": "soraniwa",
+            "placeholder": "하늘 정원 일러스트 드롭",
+            "description": "空の向こうに咲く、二人の少女の友情の物語。\nSoraniwa Projectは、TALETONEが贈る音楽と映像のメインプロジェクトです。",
+            "buttonLabel": "soraniwa 들어가기"
+          },
+          {
+            "label": "Band by Storytellers",
+            "title": "TALETONES",
+            "placeholder": "TALETONES 이미지 드롭",
+            "description": "物語が歌になる舞台。\n語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
+            "buttonLabel": "準備中"
+          }
+        ]
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "titleLine1": "Let's begin with",
+    "titleAccent": "Your Story.",
+    "subtitle": "이번엔, 당신의 이야기가 음악이 될 차례입니다.",
+    "caption": "Tell us the tale — we'll find its tone.",
+    "buttonLabel": "Tell us your story",
+    "link": "mailto:n4ml@taletone.net",
+    "translations": {
+      "kr": {
+        "eyebrow": "Contact",
+        "titleLine1": "Let's begin with",
+        "titleAccent": "Your Story.",
+        "subtitle": "\" 이번엔, 당신의 이야기가 음악이 될 차례입니다. \"",
+        "caption": "",
+        "buttonLabel": "n4ml@taletone.net"
+      },
+      "en": {
+        "eyebrow": "Contact",
+        "titleLine1": "Let's begin with",
+        "titleAccent": "Your Story.",
+        "subtitle": "\" Now, it's your story's turn to become music. \"",
+        "caption": "",
+        "buttonLabel": "n4ml@taletone.net"
+      },
+      "jp": {
+        "eyebrow": "Contact",
+        "titleLine1": "Let's begin with",
+        "titleAccent": "Your Story.",
+        "subtitle": "\" 今度は、あなたの物語が音楽になる番です。\"",
+        "caption": "",
+        "buttonLabel": "n4ml@taletone.net"
+      }
+    }
+  },
+  "membersMeta": {
+    "eyebrow": "The Storytellers · 번역하는 사람들",
+    "title": "Members",
+    "subtitle": "Voices that shape the tone.",
+    "description": "그 음색을 만드는 목소리들.",
+    "translations": {
+      "kr": {
+        "eyebrow": "The Storytellers",
+        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "subtitle": "\" 이야기를 음악으로 꽃피우는 사람들 \"",
+        "description": ""
+      },
+      "en": {
+        "eyebrow": "The Storytellers",
+        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "subtitle": "\" The people who help stories bloom into music. \"",
+        "description": ""
+      },
+      "jp": {
+        "eyebrow": "The Storytellers",
+        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "subtitle": "\" 物語を音楽へと咲かせる人たち。\"",
+        "description": ""
+      }
+    }
+  },
+  "translation": {
+    "caption1": "①  Tale  ·  이야기",
+    "caption2": "②  Tone  ·  음색",
+    "caption3": "③  Music  ·  음악",
+    "sentence": "Once, a quiet story wished to be heard.",
+    "footer": "우리는 그 이야기를, 음악으로 옮깁니다.",
+    "translations": {
+      "kr": {
+        "caption1": "①  Tale  ·  이야기",
+        "caption2": "②  Tone  ·  음색",
+        "caption3": "③  Music  ·  음악",
+        "sentence": "이야기는, 고유한 빛깔을 품습니다.",
+        "footer": "우리는 그 빛깔을, 음악으로 꽃피웁니다."
+      },
+      "en": {
+        "caption1": "①  Tale ",
+        "caption2": "②  Tone",
+        "caption3": "③  Music",
+        "sentence": "Every story carries\na little light of its own.",
+        "footer": "We let that light bloom into music."
+      },
+      "jp": {
+        "caption1": "①  Tale  ·  物語",
+        "caption2": "②  Tone  ·  音色",
+        "caption3": "③  Music  ·  音楽",
+        "sentence": "物語は、それぞれ小さな光を宿しています。",
+        "footer": "私たちは、その光を音楽として咲かせます。"
+      }
+    }
+  },
+  "bridges": [
+    {
+      "id": "translation-projects",
+      "eyebrow": "Where the tones gather",
+      "text": "이렇게 옮긴 음색들이 머무를\n두 개의 세계가 되었습니다.",
+      "translations": {
+        "kr": {
+          "eyebrow": "",
+          "text": "이렇게 옮긴 음색들이 머무를\n두 개의 세계가 되었습니다."
+        },
+        "en": {
+          "eyebrow": "",
+          "text": "The tones we gathered\nhave found a home in two worlds."
+        },
+        "jp": {
+          "eyebrow": "",
+          "text": "紡がれた音色は、\nやがて二つの世界の居場所となりました。"
+        }
+      }
+    },
+    {
+      "id": "projects-members",
+      "eyebrow": "Behind every tone, a person",
+      "text": "그 세계를 음악으로 짓기 위해,\n우리는 모였습니다.",
+      "translations": {
+        "kr": {
+          "eyebrow": "",
+          "text": "그 세계를 음악으로 짓기 위해,\n우리는 모였습니다."
+        },
+        "en": {
+          "eyebrow": "",
+          "text": "To build those worlds through music,\nwe came together."
+        },
+        "jp": {
+          "eyebrow": "",
+          "text": "その世界を音楽で紡ぐために、\n私たちは集まりました。"
+        }
+      }
+    },
+    {
+      "id": "members-works",
+      "eyebrow": "From their hands, into records",
+      "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어났습니다.",
+      "translations": {
+        "kr": {
+          "eyebrow": "",
+          "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어났습니다."
+        },
+        "en": {
+          "eyebrow": "",
+          "text": "The stories that reached our fingertips became sound,\nand at last, blossomed into music."
+        },
+        "jp": {
+          "eyebrow": "",
+          "text": "指先に触れた物語は音となり、\nやがて一篇の音楽として花開きました。"
+        }
+      }
+    },
+    {
+      "id": "works-news",
+      "eyebrow": "THE TALE KEEPS TRAVELING BEYOND THE PAGE.",
+      "text": "책장 밖으로 흘러나온 이야기들은\n작은 소식이 되어,\n먼 곳의 마음까지 닿아갑니다.",
+      "translations": {
+        "kr": {
+          "eyebrow": "",
+          "text": "책장 밖으로 흘러나온 이야기는\n작은 소식이 되어 날아갑니다."
+        },
+        "en": {
+          "eyebrow": "",
+          "text": "The story that drifted beyond the pages\nbecomes a little piece of news\nand flies away."
+        },
+        "jp": {
+          "eyebrow": "",
+          "text": "ページの外へこぼれ出した物語は、\n小さなお知らせとなって\n飛んでいきます。"
+        }
+      }
+    },
+    {
+      "id": "news-contact",
+      "eyebrow": "The last page is yours",
+      "text": "이제 남은 한 페이지는,\n당신의 이야기입니다.",
+      "translations": {
+        "kr": {
+          "eyebrow": "",
+          "text": "이제 남은 한 페이지는,\n당신의 이야기입니다."
+        },
+        "en": {
+          "eyebrow": "",
+          "text": "Now, the final page is yours."
+        },
+        "jp": {
+          "eyebrow": "",
+          "text": "そして最後の一ページは、\nあなたの物語です。"
+        }
+      }
+    }
+  ],
+  "worksMeta": {
+    "eyebrow": "WORKS / PROJECT ARCHIVE",
+    "title": "Selected",
+    "titleAccent": "Works.",
+    "subtitle": "A storybook of the sounds we made.",
+    "description": "우리가 써 내려간 소리의 이야기책.",
+    "collaborationLabel": "IN COLLABORATION WITH",
+    "showcaseLabel": "Showcase",
+    "galleryLabel": "Gallery",
+    "infoKicker": "Original Score",
+    "playLabel": "Play",
+    "pauseLabel": "Pause",
+    "creditsLabel": "Credits",
+    "detailLabel": "Works Detail",
+    "closeLabel": "Close",
+    "yearLabel": "Year",
+    "typeLabel": "Type",
+    "releaseLabel": "Release",
+    "translations": {
+      "kr": {
+        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
+        "title": "Our",
+        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
+        "subtitle": "<span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"><span style=\"color:#ffffff\">\" 우</span>리가 써 내려가는 소리의 이야기책. \"</span></span></span>",
+        "description": "",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "showcaseLabel": "Showcase",
+        "galleryLabel": "Gallery",
+        "infoKicker": "Original Score",
+        "playLabel": "Play",
+        "pauseLabel": "Pause",
+        "creditsLabel": "Credits",
+        "detailLabel": "Works Detail",
+        "closeLabel": "Close",
+        "yearLabel": "Year",
+        "typeLabel": "Type",
+        "releaseLabel": "Release"
+      },
+      "en": {
+        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
+        "title": "Our",
+        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
+        "subtitle": "<span style=\"color:#ffffff\">\" The storybook of sounds we continue to write. \"</span>",
+        "description": "",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "showcaseLabel": "Showcase",
+        "galleryLabel": "Gallery",
+        "infoKicker": "Original Score",
+        "playLabel": "Play",
+        "pauseLabel": "Pause",
+        "creditsLabel": "Credits",
+        "detailLabel": "Works Detail",
+        "closeLabel": "Close",
+        "yearLabel": "Year",
+        "typeLabel": "Type",
+        "releaseLabel": "Release"
+      },
+      "jp": {
+        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
+        "title": "Our",
+        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
+        "subtitle": "<span style=\"color:#ffffff\">\" 私たちが綴り続ける、音の物語。\"</span>",
+        "description": "",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "showcaseLabel": "Showcase",
+        "galleryLabel": "Gallery",
+        "infoKicker": "Original Score",
+        "playLabel": "Play",
+        "pauseLabel": "Pause",
+        "creditsLabel": "Credits",
+        "detailLabel": "Works Detail",
+        "closeLabel": "Close",
+        "yearLabel": "Year",
+        "typeLabel": "Type",
+        "releaseLabel": "Release"
+      }
+    }
+  },
+  "newsMeta": {
+    "eyebrow": "UPDATES / NOTES",
+    "title": "Latest",
+    "titleAccent": "News.",
+    "subtitle": "Small updates from TALETONE.",
+    "description": "새로운 소식과 업데이트를 모아둡니다.",
+    "readMoreLabel": "Read more →",
+    "translations": {
+      "kr": {
+        "eyebrow": "UPDATES / NOTES",
+        "title": "Latest",
+        "titleAccent": "News.",
+        "subtitle": "\" 새로 피어난 이야기와 소식들을 모아둡니다. \"",
+        "description": "",
+        "readMoreLabel": "Read more →"
+      },
+      "en": {
+        "eyebrow": "UPDATES / NOTES",
+        "title": "Latest",
+        "titleAccent": "News.",
+        "subtitle": "\" A place where newly blossomed stories and updates come together. \"",
+        "description": "",
+        "readMoreLabel": "Read more →"
+      },
+      "jp": {
+        "eyebrow": "UPDATES / NOTES",
+        "title": "Latest",
+        "titleAccent": "News.",
+        "subtitle": "\" 新しく咲いた物語と、お知らせを集めた場所です。\"",
+        "description": "",
+        "readMoreLabel": "Read more →"
+      }
+    }
+  },
+  "partnersMeta": {
+    "eyebrow": "EXTENDED NETWORK",
+    "title": "Partnership / MOU",
+    "openLabel": "Open",
+    "closeLabel": "Close",
+    "translations": {
+      "kr": {
+        "eyebrow": "EXTENDED NETWORK",
+        "title": "Partnership / MOU",
+        "openLabel": "Open",
+        "closeLabel": "Close"
+      },
+      "en": {
+        "eyebrow": "EXTENDED NETWORK",
+        "title": "Partnership / MOU",
+        "openLabel": "Open",
+        "closeLabel": "Close"
+      },
+      "jp": {
+        "eyebrow": "EXTENDED NETWORK",
+        "title": "Partnership / MOU",
+        "openLabel": "Open",
+        "closeLabel": "Close"
+      }
+    }
+  },
+  "footerMeta": {
+    "title": "TALETONE MUSIC",
+    "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+    "copyright": "© 2026 TALETONE MUSIC",
+    "translations": {
+      "kr": {
+        "title": "TALETONE MUSIC",
+        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "copyright": "© 2026 TALETONE MUSIC"
+      },
+      "en": {
+        "title": "TALETONE MUSIC",
+        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "copyright": "© 2026 TALETONE MUSIC"
+      },
+      "jp": {
+        "title": "TALETONE MUSIC",
+        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "copyright": "© 2026 TALETONE MUSIC"
+      }
+    }
+  },
+  "uiLabels": {
+    "brandLine1": "TALETONE",
+    "brandLine2": "MUSIC",
+    "langKr": "KR",
+    "langEn": "EN",
+    "langJp": "JP",
+    "navHome": "HOME",
+    "navProjects": "PROJECTS",
+    "navMembers": "MEMBERS",
+    "navWorks": "WORKS",
+    "navNews": "NEWS",
+    "navContact": "CONTACT",
+    "progressInitial": "01",
+    "progressTotal": "07",
+    "close": "Close",
+    "basicInfo": "Basic Info",
+    "education": "Education",
+    "mbti": "MBTI",
+    "traits": "Traits",
+    "sns": "SNS ↗",
+    "snsLink": "Instagram link",
+    "role": "Role",
+    "name": "Name",
+    "taglineEn": "Tagline (EN)",
+    "taglineKo": "Tagline (KO)",
+    "credit": "Credit",
+    "credits": "Credits",
+    "add": "+ 추가",
+    "brightness": "Bright",
+    "saturation": "Saturation",
+    "lightness": "Light",
+    "delete": "Delete",
+    "memberSnsPlaceholder": "https://instagram.com/...",
+    "thumbnailPlaceholder": "썸네일",
+    "photoPlaceholder": "Photo",
+    "imageUrlPlaceholder": "Image URL",
+    "snsUrlPlaceholder": "SNS / YouTube link",
+    "rolePlaceholder": "Role",
+    "namePlaceholder": "Name",
+    "textColorPlaceholder": "Text color #ffffff",
+    "translations": {
+      "kr": {
+        "brandLine1": "TALETONE",
+        "brandLine2": "MUSIC",
+        "langKr": "KR",
+        "langEn": "EN",
+        "langJp": "JP",
+        "navHome": "HOME",
+        "navProjects": "PROJECTS",
+        "navMembers": "MEMBERS",
+        "navWorks": "WORKS",
+        "navNews": "NEWS",
+        "navContact": "CONTACT",
+        "progressInitial": "01",
+        "progressTotal": "07",
+        "close": "Close",
+        "basicInfo": "Basic Info",
+        "education": "Education",
+        "mbti": "MBTI",
+        "traits": "Traits",
+        "sns": "SNS ↗",
+        "snsLink": "Instagram link",
+        "role": "Role",
+        "name": "Name",
+        "taglineEn": "Tagline (EN)",
+        "taglineKo": "Tagline (KO)",
+        "credit": "Credit",
+        "credits": "Credits",
+        "add": "+ 추가",
+        "brightness": "Bright",
+        "saturation": "Saturation",
+        "lightness": "Light",
+        "delete": "Delete",
+        "memberSnsPlaceholder": "https://instagram.com/...",
+        "thumbnailPlaceholder": "썸네일",
+        "photoPlaceholder": "Photo",
+        "imageUrlPlaceholder": "Image URL",
+        "snsUrlPlaceholder": "SNS / YouTube link",
+        "rolePlaceholder": "Role",
+        "namePlaceholder": "Name",
+        "textColorPlaceholder": "Text color #ffffff"
+      },
+      "en": {
+        "brandLine1": "TALETONE",
+        "brandLine2": "MUSIC",
+        "langKr": "KR",
+        "langEn": "EN",
+        "langJp": "JP",
+        "navHome": "HOME",
+        "navProjects": "PROJECTS",
+        "navMembers": "MEMBERS",
+        "navWorks": "WORKS",
+        "navNews": "NEWS",
+        "navContact": "CONTACT",
+        "progressInitial": "01",
+        "progressTotal": "07",
+        "close": "Close",
+        "basicInfo": "Basic Info",
+        "education": "Education",
+        "mbti": "MBTI",
+        "traits": "Traits",
+        "sns": "SNS ↗",
+        "snsLink": "Instagram link",
+        "role": "Role",
+        "name": "Name",
+        "taglineEn": "Tagline (EN)",
+        "taglineKo": "Tagline (KO)",
+        "credit": "Credit",
+        "credits": "Credits",
+        "add": "+ 추가",
+        "brightness": "Bright",
+        "saturation": "Saturation",
+        "lightness": "Light",
+        "delete": "Delete",
+        "memberSnsPlaceholder": "https://instagram.com/...",
+        "thumbnailPlaceholder": "썸네일",
+        "photoPlaceholder": "Photo",
+        "imageUrlPlaceholder": "Image URL",
+        "snsUrlPlaceholder": "SNS / YouTube link",
+        "rolePlaceholder": "Role",
+        "namePlaceholder": "Name",
+        "textColorPlaceholder": "Text color #ffffff"
+      },
+      "jp": {
+        "brandLine1": "TALETONE",
+        "brandLine2": "MUSIC",
+        "langKr": "KR",
+        "langEn": "EN",
+        "langJp": "JP",
+        "navHome": "HOME",
+        "navProjects": "PROJECTS",
+        "navMembers": "MEMBERS",
+        "navWorks": "WORKS",
+        "navNews": "NEWS",
+        "navContact": "CONTACT",
+        "progressInitial": "01",
+        "progressTotal": "07",
+        "close": "Close",
+        "basicInfo": "Basic Info",
+        "education": "Education",
+        "mbti": "MBTI",
+        "traits": "Traits",
+        "sns": "SNS ↗",
+        "snsLink": "Instagram link",
+        "role": "Role",
+        "name": "Name",
+        "taglineEn": "Tagline (EN)",
+        "taglineKo": "Tagline (KO)",
+        "credit": "Credit",
+        "credits": "Credits",
+        "add": "+ 추가",
+        "brightness": "Bright",
+        "saturation": "Saturation",
+        "lightness": "Light",
+        "delete": "Delete",
+        "memberSnsPlaceholder": "https://instagram.com/...",
+        "thumbnailPlaceholder": "썸네일",
+        "photoPlaceholder": "Photo",
+        "imageUrlPlaceholder": "Image URL",
+        "snsUrlPlaceholder": "SNS / YouTube link",
+        "rolePlaceholder": "Role",
+        "namePlaceholder": "Name",
+        "textColorPlaceholder": "Text color #ffffff"
+      }
+    }
+  }
+};
