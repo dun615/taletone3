@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&amp;family=Noto+Sans+JP:wght@400;500;600;700;800&amp;family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/works.css?v=20260625-qa4">
+<link rel="stylesheet" href="assets/css/works.css?v=20260629-hotfix6">
 <script src="assets/js/image-slot.js"></script>
 <style>
 *{box-sizing:border-box}
@@ -110,7 +110,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 .tt-bridge-pin-stage{position:sticky;top:0;height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.1vh,20px);padding:0 8vw;overflow:visible;pointer-events:none;}
 .tt-bridge-pin-stage::before{content:none;}
 .tt-bridge-pin-stage::after{content:none;}
-.tt-bridge-pin-stage [data-bridge]{position:relative;z-index:4;text-wrap:balance;text-shadow:0 0 28px rgba(183,246,255,.16);}
+.tt-bridge-pin-stage [data-bridge]{position:relative;z-index:4;text-wrap:nowrap!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;text-shadow:0 0 28px rgba(183,246,255,.16);}
 .tt-bridge-pin-stage [data-bridge-line]{position:relative;z-index:4;box-shadow:0 0 18px rgba(124,226,238,.42);}
 .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){position:relative;z-index:4;text-shadow:0 0 16px rgba(125,226,238,.24);}
 .tt-bridge-visual{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1120px,90vw);height:clamp(260px,39vw,500px);pointer-events:none;display:grid;place-items:center;contain:layout style;will-change:opacity,transform;z-index:1;overflow:visible;}
@@ -171,8 +171,8 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
   .tt-bloom-stage{transform:scale(.62)}
   .tt-bridge-orb{width:78px;height:78px;margin:-39px}
   .tt-page-stage{transform:scale(.76)}
-  .tt-bridge-pin-stage [data-bridge]{max-width:min(86vw,430px)!important;font-size:clamp(32px,9.8vw,48px)!important;line-height:1.18!important;text-align:center!important;white-space:pre-wrap!important;word-break:keep-all!important;overflow-wrap:break-word!important;color:#fffdf8!important;filter:none!important;text-shadow:0 2px 4px rgba(3,12,24,.46),0 0 18px rgba(3,12,24,.34)!important}
-  .tt-bridge-pin-stage [data-bridge] span{max-width:100%!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:anywhere!important;filter:none!important}
+  .tt-bridge-pin-stage [data-bridge]{max-width:calc(100vw - 36px)!important;font-size:clamp(28px,8.6vw,44px)!important;line-height:1.18!important;text-align:center!important;white-space:pre!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;color:#fffdf8!important;filter:none!important;text-shadow:0 2px 4px rgba(3,12,24,.46),0 0 18px rgba(3,12,24,.34)!important}
+  .tt-bridge-pin-stage [data-bridge] span{max-width:none!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;filter:none!important}
   .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){font-size:11px!important;line-height:1.25!important;text-align:center!important;color:#0E6E7D!important;text-shadow:0 1px 10px rgba(255,255,255,.58)!important}
   #progress{z-index:95!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:none!important}
   .tt-member-card-index{left:18px!important;top:18px!important;font-size:16px!important;gap:8px!important;text-shadow:0 1px 12px rgba(255,255,255,.82)!important}
@@ -228,12 +228,12 @@ image-slot#tone-art::part(ring){display:none !important}
 @media (min-width:1800px) and (max-height:1200px){
   #chapnav{
     right:24px !important;
-    padding:12px 14px !important;
-    border-radius:24px !important;
-    background:rgba(8,42,64,.34) !important;
-    -webkit-backdrop-filter:blur(12px) saturate(1.04) !important;
-    backdrop-filter:blur(12px) saturate(1.04) !important;
-    box-shadow:0 16px 36px rgba(4,20,36,.18) !important;
+    padding:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    box-shadow:none !important;
     z-index:96 !important;
   }
   #chapnav .navbtn{
@@ -1321,7 +1321,7 @@ image-slot#tone-art::part(ring){display:none !important}
 <div data-story-bridge-wrap="" style="height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div style="font-weight:800;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:.7">{{ BRIDGE_0.eyebrow }}</div>
-  <div data-bridge="" style="font-family: 'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: #ffffff; max-width: 20ch; opacity: 0; white-space: pre-wrap">{{ BRIDGE_0.text }}</div>
+  <div data-bridge="" style="font-family: 'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: #ffffff; max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap">{{ BRIDGE_0.text }}</div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -1362,7 +1362,7 @@ image-slot#tone-art::part(ring){display:none !important}
 <div data-story-bridge-wrap="" style="height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div style="font-weight:800;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:.7">{{ BRIDGE_1.eyebrow }}</div>
-  <div data-bridge="" style="font-family: 'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: #ffffff; opacity: 0; white-space: pre-wrap">{{ BRIDGE_1.text }}</div>
+  <div data-bridge="" style="font-family: 'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: #ffffff; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap">{{ BRIDGE_1.text }}</div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -1435,7 +1435,7 @@ image-slot#tone-art::part(ring){display:none !important}
 <div data-story-bridge-wrap="" style="height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div style="font-weight:800;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:.7">{{ BRIDGE_2.eyebrow }}</div>
-  <div data-bridge="" style="font-family:'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre-wrap">{{ BRIDGE_2.text }}</div>
+  <div data-bridge="" style="font-family:'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap">{{ BRIDGE_2.text }}</div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -1448,7 +1448,7 @@ image-slot#tone-art::part(ring){display:none !important}
 <div class="tt-gh-story-bridge" data-story-bridge-wrap="">
   <div class="tt-gh-bridge-line" data-bridge-line=""></div>
   <div class="tt-gh-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
-  <div class="tt-gh-bridge-copy" data-bridge="" style="white-space: pre-wrap">{{ BRIDGE_3.text }}</div>
+  <div class="tt-gh-bridge-copy" data-bridge="" style="white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap">{{ BRIDGE_3.text }}</div>
   <div class="tt-gh-bridge-line is-bottom" data-bridge-line=""></div>
 </div>
 
@@ -1482,7 +1482,7 @@ image-slot#tone-art::part(ring){display:none !important}
 <div data-story-bridge-wrap="" style="height:64vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div style="font-weight:800;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:.7">{{ BRIDGE_4.eyebrow }}</div>
-  <div data-bridge="" style="font-family:'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif;font-style:italic;font-weight:500;font-size:clamp(22px,3.4vw,42px);line-height:1.32;color:var(--ink,#141C30);max-width:20ch;opacity:0;white-space:pre-wrap">{{ BRIDGE_4.text }}</div>
+  <div data-bridge="" style="font-family:'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif;font-style:italic;font-weight:500;font-size:clamp(22px,3.4vw,42px);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap">{{ BRIDGE_4.text }}</div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -1896,11 +1896,17 @@ class Component extends DCLogic {
       if(!this.chapnav) return;
       this.chapnav.classList.add('tt-nav-peek');
       clearTimeout(this._navPeekTimer);
-      this._navPeekTimer = setTimeout(()=>{ if(this.chapnav) this.chapnav.classList.remove('tt-nav-peek'); }, 1700);
+    };
+    this._hideNavPeek = (e)=>{
+      if(!this.chapnav || !this.chapnav.classList.contains('tt-nav-peek')) return;
+      if(this.chapnav.contains(e.target)) return;
+      clearTimeout(this._navPeekTimer);
+      this.chapnav.classList.remove('tt-nav-peek');
     };
     if(this.chapnav){
       this.chapnav.addEventListener('pointerdown', this._showNavPeek);
       this.chapnav.addEventListener('focusin', this._showNavPeek);
+      document.addEventListener('pointerdown', this._hideNavPeek, true);
     }
     this.raf = requestAnimationFrame(this.loop);
   }
@@ -1913,6 +1919,7 @@ class Component extends DCLogic {
       this.chapnav.removeEventListener('pointerdown', this._showNavPeek);
       this.chapnav.removeEventListener('focusin', this._showNavPeek);
     }
+    if(this._hideNavPeek) document.removeEventListener('pointerdown', this._hideNavPeek, true);
     clearTimeout(this._navPeekTimer);
     if(this.io) this.io.disconnect();
     if(this.imageHydrator) this.imageHydrator.disconnect();
@@ -3344,6 +3351,10 @@ this.updateTranslation(scEl, tA);
     var st=scEl?scEl.scrollTop:window.scrollY;
     for(var gi=0;gi<this.bridges.length;gi++){
       var bg=this.bridges[gi];
+      bg.style.whiteSpace='pre';
+      bg.style.wordBreak='keep-all';
+      bg.style.overflowWrap='normal';
+      bg.style.textWrap='nowrap';
       var type=this.bridgeTypeForIndex(gi);
       if(!bg._words){
         var txt=this.bridgePhraseForIndex(gi) || bg.textContent.replace(/\s+/g,' ').trim();
@@ -3352,7 +3363,7 @@ this.updateTranslation(scEl, tA);
         if(richBridge){
           var rs=document.createElement('span');
           rs.innerHTML = this.looksLikeRichText(txt) ? this.sanitizeRichHtml(txt) : this.plainTextHtml(txt);
-          rs.style.cssText='display:inline-block;max-width:100%;white-space:pre-wrap;will-change:transform,opacity;word-break:keep-all;overflow-wrap:anywhere;';
+          rs.style.cssText='display:inline-block;max-width:none;white-space:pre;will-change:transform,opacity;word-break:keep-all;overflow-wrap:normal;';
           bg.appendChild(rs);
           bg._words.push(rs);
         } else {
@@ -3360,7 +3371,7 @@ this.updateTranslation(scEl, tA);
           for(var wi=0; wi<words.length; wi++){
           var s=document.createElement('span');
           s.textContent=words[wi];
-          s.style.cssText='display:inline-block;max-width:100%;white-space:pre-wrap;will-change:transform,opacity;word-break:keep-all;overflow-wrap:anywhere;';
+          s.style.cssText='display:inline-block;max-width:none;white-space:pre;will-change:transform,opacity;word-break:keep-all;overflow-wrap:normal;';
           bg.appendChild(s); if(wi<words.length-1) bg.appendChild(document.createTextNode(' '));
           bg._words.push(s);
           }
@@ -3368,6 +3379,8 @@ this.updateTranslation(scEl, tA);
         bg.style.opacity='1'; bg.style.transition='none'; bg.style.letterSpacing='-0.015em';
         bg.style.fontStyle='normal'; bg.style.fontWeight='650'; bg.style.maxWidth='min(920px,92vw)';
         bg.style.fontSize='clamp(28px,4.4vw,68px)'; bg.style.lineHeight='1.16';
+        bg.style.whiteSpace='pre'; bg.style.wordBreak='keep-all'; bg.style.overflowWrap='normal';
+        bg.style.textWrap='nowrap';
         this.buildBridgeVisual(bg,type,gi);
         bg._kicker=bg.previousElementSibling;
         if(bg._kicker){ bg._kicker.style.transition='none'; bg._kicker.style.opacity='0'; bg._kicker.style.willChange='opacity,transform,letter-spacing'; }

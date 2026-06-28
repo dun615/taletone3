@@ -2408,3 +2408,87 @@
   }
 }
 
+@media (min-width: 761px) {
+  #chapnav,
+  #chapnav.tt-nav-peek,
+  #chapnav:focus-within {
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html,
+  body,
+  #content,
+  x-dc {
+    background:
+      linear-gradient(180deg,
+        #dff5f3 0%,
+        #93ccd5 31%,
+        #2f7f9d 63%,
+        #154866 100%) !important;
+  }
+
+  #chapnav {
+    transition:
+      width .28s cubic-bezier(.2,.8,.2,1),
+      right .28s cubic-bezier(.2,.8,.2,1),
+      padding .28s cubic-bezier(.2,.8,.2,1),
+      border-radius .28s cubic-bezier(.2,.8,.2,1),
+      background-color .28s ease,
+      box-shadow .28s ease,
+      -webkit-backdrop-filter .28s ease,
+      backdrop-filter .28s ease !important;
+  }
+
+  #chapnav .nav-label {
+    opacity: 0 !important;
+    transform: translateX(8px) !important;
+    transition: opacity .22s ease, transform .28s cubic-bezier(.2,.8,.2,1) !important;
+  }
+
+  #chapnav.tt-nav-peek .nav-label,
+  #chapnav:focus-within .nav-label {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  .tt-gh-gallery {
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    justify-content: stretch !important;
+    align-items: start !important;
+    overflow: visible !important;
+  }
+
+  .tt-gh-gallery-card {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .tt-bridge-pin-stage [data-bridge] {
+    max-width: calc(100vw - 36px) !important;
+    white-space: pre !important;
+    text-wrap: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  .tt-bridge-pin-stage [data-bridge] span {
+    max-width: none !important;
+    white-space: pre !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+}
+
