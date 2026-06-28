@@ -2882,7 +2882,16 @@ this.updateTranslation(scEl, tA);
   // Each bridge is a narrative beat: its sentence surfaces word-by-word (rising from the deep),
   // the kicker fades in, the connective thread draws down, then the words release upward as you pass.
   bridgeTypeForIndex(i){
-    return ['line','orbs','gather','bloom','ripple','page'][i] || 'line';
+    var bridge = this.BRIDGES && this.BRIDGES[i];
+    var id = String((bridge && bridge.id) || '').toLowerCase();
+    var byId = {
+      'translation-projects': 'orbs',
+      'projects-members': 'gather',
+      'members-works': 'bloom',
+      'works-news': 'ripple',
+      'news-contact': 'page'
+    };
+    return byId[id] || ['orbs','gather','bloom','ripple','page'][i] || 'orbs';
   }
 
   bridgePhraseForIndex(i){
@@ -3285,7 +3294,7 @@ this.updateTranslation(scEl, tA);
     if(this._transNext===undefined) this._transNext=this.transSec.nextElementSibling||null;
     var nowT=performance.now();
     var rectT=this.transSec.getBoundingClientRect();
-    var DUR_T=6000, ADV_T=0.93, prog;
+    var DUR_T=6000, ADV_T=1.0, prog;
     if(this._reduceMotion){
       prog = (rectT.bottom<=vh*0.5) ? 1 : ((rectT.top<vh*0.55 && rectT.bottom>vh*0.45) ? 0.85 : 0);
     } else if(this._transPlaying){
