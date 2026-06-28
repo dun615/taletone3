@@ -3161,6 +3161,14 @@ this.updateTranslation(scEl, tA);
     }
   }
 
+  nextSectionAfterBridge(outer, bridgeIndex){
+    var node = outer;
+    while(node && node.nextElementSibling){
+      node = node.nextElementSibling;
+      if(node && node.tagName === 'SECTION' && node.id) return node;
+    }
+    return (this.sections && this.sections[bridgeIndex + 2]) || (this.sections && this.sections[bridgeIndex + 1]) || null;
+  }
   updateBridges(vhR){
     if(!this.bridges) return;
     var tA=(performance.now()-this.t0)/1000;
@@ -3203,7 +3211,7 @@ this.updateTranslation(scEl, tA);
       if(this._reduceMotion===undefined) this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       var now=performance.now();
       var rect=outer.getBoundingClientRect();
-      var cN=(this.sections && this.sections.length>gi+1) ? this.sections[gi+1] : null;  // chapter to reveal next
+      var cN=this.nextSectionAfterBridge(outer, gi);  // chapter to reveal next
       // playback phases: A = motif builds + text reveals (original pace), HOLD = text dwells fully shown, B = exit
       var A=1800, HOLD=1300, B=500, PH=0.66;
       var prog;
