@@ -18,11 +18,11 @@
 <script src="assets/js/image-slot.js"></script>
 <style>
 *{box-sizing:border-box}
-:root{color-scheme:light only;forced-color-adjust:none;background:#eef6f4}
+:root{color-scheme:light only;forced-color-adjust:none}
 html{scroll-behavior:smooth;color-scheme:light only;background:#eef6f4}
-html,body{height:100%;margin:0;background:#eef6f4!important;color-scheme:light only;forced-color-adjust:none;font-family:'Hanken Grotesk','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html,body{height:100%;margin:0;background:#eef6f4;color-scheme:light only;forced-color-adjust:none;font-family:'Hanken Grotesk','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button{font-family:inherit}
-#content,x-dc{background:#eef6f4;color-scheme:light only;forced-color-adjust:none}
+#content,x-dc{color-scheme:light only;forced-color-adjust:none}
 #content::-webkit-scrollbar{display:none}
 image-slot{display:block}
 .tt-rich-text{white-space:pre-wrap;line-height:inherit;word-break:keep-all;overflow-wrap:anywhere}
@@ -32,7 +32,7 @@ image-slot{display:block}
 #chapnav .nav-label{grid-column:1 !important;justify-self:end !important;white-space:nowrap !important;background:transparent !important;position:relative !important;z-index:2 !important;text-align:right !important;overflow:visible !important}
 #chapnav .nav-dot,#chapnav .navbtn span:last-child{grid-column:2 !important;justify-self:center !important;position:relative !important;z-index:1 !important;width:7px !important;height:7px !important;min-width:7px !important;min-height:7px !important;flex:none !important}
 @media (prefers-color-scheme: dark){
-  :root,html,body,#content,x-dc{color-scheme:light only!important;background:#eef6f4!important;forced-color-adjust:none!important}
+  :root,html,body{color-scheme:light only!important;forced-color-adjust:none!important}
 }
 @media (max-width:1366px){
   #chapnav{width:44px !important;right:12px !important;align-items:center !important}
@@ -62,7 +62,8 @@ image-slot{display:block}
 .lift img{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 .tt-member-card{z-index:10}
 .tt-member-card-index{position:absolute!important;left:16px!important;top:14px!important;z-index:6!important;display:inline-flex!important;align-items:center!important;gap:7px!important;font-weight:900!important;font-size:13px!important;line-height:1!important;letter-spacing:.02em!important;color:#141C30!important;text-shadow:0 1px 10px rgba(255,255,255,.72)!important;pointer-events:none!important}
-.tt-member-card-index::before{content:attr(data-member-number);display:inline-block;color:#141C30!important}
+.tt-member-card-index::before{content:none}
+.tt-member-card-index .tt-member-card-number{display:inline-block;color:#141C30!important}
 .tt-member-card-index .tt-member-card-dot{width:8px!important;height:8px!important;border-radius:50%!important;display:block!important;flex:0 0 auto!important}
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
@@ -160,10 +161,16 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 .tt-page-fold{position:absolute;left:50%;top:0;height:100%;width:1px;background:linear-gradient(180deg,transparent,rgba(42,100,119,.34),transparent);box-shadow:0 0 18px rgba(118,226,238,.22);}
 .tt-page-glow{position:absolute;left:50%;top:50%;width:min(520px,72vw);height:min(320px,42vw);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,253,248,.30),rgba(118,226,238,.10) 34%,transparent 72%);filter:blur(12px);}
 @media (max-width:760px){
-  [data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important;height:100vh!important;background:#dff4f3!important}
-  .tt-bridge-pin-stage{padding:0 7vw;gap:12px;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#e6f6f5 0%,#d2efef 100%)!important}
-  .tt-bridge-pin-stage::after{content:'';position:absolute;left:50%;top:50%;width:86vw;height:86vw;max-width:430px;max-height:430px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.52) 0%,rgba(116,210,220,.20) 42%,rgba(116,210,220,0) 72%);opacity:.72;pointer-events:none;z-index:1}
-  .tt-bridge-visual{display:none!important}
+  [data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important;height:100vh!important}
+  .tt-bridge-pin-stage{padding:0 7vw;gap:12px;overflow:visible;isolation:isolate}
+  .tt-bridge-pin-stage::after{content:'';position:absolute;left:50%;top:50%;width:82vw;height:82vw;max-width:410px;max-height:410px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.24) 0%,rgba(116,210,220,.14) 42%,rgba(116,210,220,0) 72%);opacity:.58;pointer-events:none;z-index:1}
+  .tt-bridge-visual{display:grid!important;width:92vw;height:clamp(190px,54vw,320px);filter:none!important}
+  .tt-bridge-visual::before{width:74vw;height:74vw;filter:blur(7px);opacity:.52}
+  .tt-bridge-dot,.tt-bridge-spark,.tt-bridge-thread{box-shadow:0 0 10px rgba(150,239,247,.55)}
+  .tt-line-ritual{height:190px}
+  .tt-bloom-stage{transform:scale(.62)}
+  .tt-bridge-orb{width:78px;height:78px;margin:-39px}
+  .tt-page-stage{transform:scale(.76)}
   .tt-bridge-pin-stage [data-bridge]{max-width:min(86vw,430px)!important;font-size:clamp(32px,9.8vw,48px)!important;line-height:1.18!important;text-align:center!important;white-space:pre-wrap!important;word-break:keep-all!important;overflow-wrap:break-word!important;color:#fffdf8!important;filter:none!important;text-shadow:0 2px 4px rgba(3,12,24,.46),0 0 18px rgba(3,12,24,.34)!important}
   .tt-bridge-pin-stage [data-bridge] span{white-space:normal!important;word-break:keep-all!important;overflow-wrap:break-word!important;filter:none!important}
   .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){font-size:11px!important;line-height:1.25!important;text-align:center!important;color:#0E6E7D!important;text-shadow:0 1px 10px rgba(255,255,255,.58)!important}
@@ -171,7 +178,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
   .tt-member-card-index{left:18px!important;top:18px!important;font-size:16px!important;gap:8px!important;text-shadow:0 1px 12px rgba(255,255,255,.82)!important}
   .tt-member-card-index .tt-member-card-dot{width:10px!important;height:10px!important}
 }
-@media (prefers-reduced-motion: reduce){.tt-bridge-visual{display:none!important}[data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important}.tt-bridge-pin-stage{position:relative!important;height:100vh!important}}
+@media (prefers-reduced-motion: reduce){.tt-bridge-visual{display:grid!important;opacity:.5!important;filter:none!important}.tt-bridge-visual *{animation:none!important;transition:none!important}[data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important}.tt-bridge-pin-stage{position:relative!important;height:100vh!important}}
 
 
 
@@ -1299,7 +1306,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
     <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="4">
     <div onclick="{{ member.open }}" class="lift tt-member-card" style="cursor:pointer;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 22px 50px rgba(20,28,60,.13);display:flex;flex-direction:column;justify-content:flex-end">
       <img src="{{ member.photo }}" alt="{{ member.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-      <div class="tt-member-card-index" data-member-number="{{ member.number }}" aria-label="{{ member.number }}"><span class="tt-member-card-dot" style="background:{{ member.accent }}"></span></div>
+      <div class="tt-member-card-index" data-member-number="{{ member.number }}" aria-label="{{ member.number }}"><span class="tt-member-card-number">{{ member.number }}</span><span class="tt-member-card-dot" style="background:{{ member.accent }}"></span></div>
       <div style="position:relative;padding:20px 18px 18px;background:linear-gradient(to top,rgba(255,253,248,.96) 30%,transparent)">
         <div style="font-family:'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif;font-weight:700;font-size:36px;letter-spacing:0;color:#141C30;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.name }}</div>
         <div style="margin-top:9px;display:inline-block;max-width:100%;padding:6px 12px;border-radius:999px;background:rgba(24,32,52,.07);font-weight:700;font-size:11px;line-height:1.25;color:#3a4252;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.role }}</div>
@@ -2975,14 +2982,6 @@ this.updateTranslation(scEl, tA);
     }
     bg._bridgeOuter=outer; bg._bridgeStage=stage;
     bg.style.position='relative'; bg.style.zIndex='4';
-
-    var mobileLite = !!(window.matchMedia && window.matchMedia('(max-width: 760px)').matches);
-    if(mobileLite){
-      bg._visual=null;
-      bg._visualItems=[];
-      outer.classList.add('tt-bridge-mobile-lite');
-      return null;
-    }
 
     var v=document.createElement('div');
     v.className='tt-bridge-visual tt-bridge-visual--'+type;
