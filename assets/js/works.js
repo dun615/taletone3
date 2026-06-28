@@ -10,8 +10,11 @@
   var rendering = false;
   var mounted = false;
   var renderTimer = 0;
-  var dragState = { active: false, startX: 0, lastX: 0, anchorX: 0, moved: false };
+  var dragState = { active: false, startX: 0, lastX: 0, anchorX: 0, moved: false, stage: null };
   var suppressClick = false;
+  var pointerMoveFrame = 0;
+  var queuedPointerX = 0;
+  var pauseVisibilityFrame = 0;
 var audioPool = new Map();
 
   var state = {
@@ -975,6 +978,7 @@ var audioPool = new Map();
     dragState.lastX = event.clientX;
     dragState.anchorX = event.clientX;
     dragState.moved = false;
+    dragState.stage = stage;
     stage.classList.add('is-dragging');
     stage.style.setProperty('--drag-x', '0px');
     // NOTE: intentionally not using setPointerCapture because capturing the pointer on the
@@ -988,27 +992,39 @@ var audioPool = new Map();
     onPointerDown(event);
   }
 
-  function onPointerMove(event) {
+  function applyPointerMove(clientX) {
     if (!dragState.active) return;
-    var section = document.getElementById('c-works');
-    var stage = section && section.querySelector('[data-works-drag-stage]');
+    var stage = dragState.stage;
+    if (stage && !stage.isConnected) stage = null;
     if (!stage) return;
-    dragState.lastX = event.clientX;
-    if (Math.abs(event.clientX - dragState.startX) > 6) dragState.moved = true;
+    dragState.lastX = clientX;
+    if (Math.abs(clientX - dragState.startX) > 6) dragState.moved = true;
     // Live stepping: every STEP_PX dragged advances one card, so a fast sweep
     // flips through the deck continuously instead of waiting for release.
     var STEP_PX = 56;
-    var fromAnchor = event.clientX - dragState.anchorX;
+    var fromAnchor = clientX - dragState.anchorX;
     var steps = (fromAnchor / STEP_PX) | 0; // toward 0
     if (steps !== 0) {
       go(steps < 0 ? Math.abs(steps) : -Math.abs(steps)); // drag left: next, drag right: prev
       dragState.anchorX += steps * STEP_PX;
+      dragState.stage = stage;
       stage.style.setProperty('--drag-x', '0px');
       return;
     }
     // Residual sub-step movement gives a gentle damped nudge for tactile feedback.
-    var dx = Math.max(-40, Math.min(40, (event.clientX - dragState.anchorX) * 0.5));
+    var dx = Math.max(-40, Math.min(40, (clientX - dragState.anchorX) * 0.5));
     stage.style.setProperty('--drag-x', dx + 'px');
+  }
+
+  function onPointerMove(event) {
+    if (!dragState.active) return;
+    queuedPointerX = event.clientX;
+    if (pointerMoveFrame) return;
+    var raf = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 16); };
+    pointerMoveFrame = raf(function () {
+      pointerMoveFrame = 0;
+      applyPointerMove(queuedPointerX);
+    });
   }
 
   function onMouseMove(event) {
@@ -1021,6 +1037,7 @@ var audioPool = new Map();
     var section = document.getElementById('c-works');
     var stage = section && section.querySelector('[data-works-drag-stage]');
     dragState.active = false;
+    dragState.stage = null;
     if (stage) {
       stage.classList.remove('is-dragging');
       stage.style.setProperty('--drag-x', '0px');
@@ -1043,6 +1060,7 @@ var audioPool = new Map();
     var stage = section && section.querySelector('[data-works-drag-stage]');
     dragState.active = false;
     dragState.moved = false;
+    dragState.stage = null;
     if (stage) {
       stage.classList.remove('is-dragging');
       stage.style.setProperty('--drag-x', '0px');
@@ -1060,10 +1078,19 @@ var audioPool = new Map();
     if (document.hidden || !section || !isSectionVisible(section)) pauseAll();
   }
 
+  function requestPauseWhenWorksHidden() {
+    if (pauseVisibilityFrame) return;
+    var raf = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 80); };
+    pauseVisibilityFrame = raf(function () {
+      pauseVisibilityFrame = 0;
+      pauseWhenWorksHidden();
+    });
+  }
+
   function bindVisibilityPause() {
     var content = document.getElementById('content');
-    window.addEventListener('scroll', pauseWhenWorksHidden, { passive: true });
-    if (content) content.addEventListener('scroll', pauseWhenWorksHidden, { passive: true });
+    window.addEventListener('scroll', requestPauseWhenWorksHidden, { passive: true });
+    if (content) content.addEventListener('scroll', requestPauseWhenWorksHidden, { passive: true });
     document.addEventListener('visibilitychange', pauseWhenWorksHidden);
   }
 
@@ -1131,7 +1158,7 @@ var audioPool = new Map();
       });
       (w.versions || []).forEach(function (v) { if (v.image) urls[v.image] = 1; });
     });
-    Object.keys(urls).forEach(function (u) { var im = new Image(); im.src = u; _imgCache.push(im); });
+    Object.keys(urls).forEach(function (u) { var im = new Image(); im.decoding = 'async'; im.loading = 'eager'; im.src = u; _imgCache.push(im); });
   }
 
   function boot(json) {
