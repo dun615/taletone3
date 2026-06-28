@@ -4,7 +4,6 @@
 
 포함:
 - index.html
-- TALETONE-final.html
 - support.js
 - image-slot.js
 - assets/
@@ -19,3 +18,4 @@
 
 주의:
 이 폴더는 배포 전용입니다. 편집용 에디터는 원본 작업 폴더에만 유지합니다.
+GitHub Pages 업로드 기준 HTML은 index.html 하나만 사용합니다.
