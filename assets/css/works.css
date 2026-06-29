@@ -2992,3 +2992,228 @@
   }
 }
 
+/* ===== Final mobile card layering + modal controls ===== */
+@media (min-width: 761px) {
+  .tt-bridge-pin-stage {
+    padding-left: clamp(80px, 8vw, 160px) !important;
+    padding-right: clamp(80px, 8vw, 160px) !important;
+    text-align: center !important;
+  }
+
+  .tt-bridge-pin-stage [data-bridge] {
+    width: min(1180px, 92vw) !important;
+    max-width: min(1180px, 92vw) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    align-self: center !important;
+  }
+
+  .tt-bridge-pin-stage [data-bridge] > span {
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body:has(.tt-member-modal) #lang-switcher.tt-lang-switcher {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  #lang-switcher.tt-lang-switcher {
+    right: max(12px, env(safe-area-inset-right)) !important;
+    top: max(14px, env(safe-area-inset-top)) !important;
+    max-width: calc(100vw - 132px) !important;
+  }
+
+  #lang-switcher.tt-lang-switcher > div {
+    width: clamp(168px, 46vw, 196px) !important;
+    min-height: 48px !important;
+    padding: 3px !important;
+    gap: 0 !important;
+  }
+
+  #lang-switcher.tt-lang-switcher button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0 5px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  #c-projects article.lift {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+    min-height: clamp(184px, 47vw, 210px) !important;
+    padding: clamp(18px, 4.8vw, 22px) clamp(20px, 5.4vw, 24px) !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    background: rgba(255, 253, 248, .78) !important;
+    isolation: isolate !important;
+  }
+
+  #c-projects article.lift::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(90deg, rgba(255, 253, 248, .78) 0%, rgba(255, 253, 248, .58) 56%, rgba(255, 253, 248, .14) 100%),
+      radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 48%) !important;
+  }
+
+  #c-projects article.lift > :nth-child(2) {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    border-radius: inherit !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    transform: none !important;
+  }
+
+  #c-projects article.lift > :nth-child(2) image-slot,
+  #c-projects article.lift > :nth-child(2) img {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border-radius: inherit !important;
+    object-fit: cover !important;
+    object-position: 78% 50% !important;
+    filter: brightness(.98) saturate(1.04) contrast(1.02) !important;
+    opacity: .90 !important;
+  }
+
+  #c-projects article.lift > :not(:nth-child(2)) {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  #c-projects article.lift > :nth-child(1),
+  #c-projects article.lift > :nth-child(3),
+  #c-projects article.lift > :nth-child(4) {
+    max-width: min(76%, 280px) !important;
+  }
+
+  #c-projects article.lift > :nth-child(1) {
+    min-height: 58px !important;
+    align-items: flex-start !important;
+  }
+
+  #c-projects article.lift > :nth-child(1) > :first-child {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  #c-projects article.lift > :nth-child(1) > :nth-child(2) {
+    position: absolute !important;
+    top: clamp(13px, 3.5vw, 17px) !important;
+    right: clamp(15px, 4vw, 20px) !important;
+    transform: scale(.78) !important;
+    transform-origin: top right !important;
+  }
+
+  #c-projects article.lift > :nth-child(4) {
+    margin-top: 2px !important;
+  }
+
+  #c-projects article.lift [style*="font-size:clamp(34px"],
+  #c-projects article.lift [style*="font-size: clamp(34px"] {
+    font-size: clamp(28px, 7.3vw, 34px) !important;
+    line-height: 1 !important;
+  }
+
+  #c-projects article.lift p {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: initial !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-height: none !important;
+    font-size: clamp(10.4px, 2.65vw, 11.8px) !important;
+    line-height: 1.38 !important;
+  }
+
+  #c-projects article.lift a {
+    min-height: 44px !important;
+    padding: 10px 18px !important;
+    font-size: clamp(12.5px, 3.2vw, 14px) !important;
+  }
+
+  #c-news .lift {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    min-height: clamp(190px, 50vw, 242px) !important;
+    padding: 0 !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    background: rgba(17, 28, 49, .78) !important;
+    isolation: isolate !important;
+  }
+
+  #c-news .lift::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(180deg, rgba(8, 18, 35, .18) 0%, rgba(8, 18, 35, .46) 48%, rgba(8, 18, 35, .84) 100%),
+      radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 46%) !important;
+  }
+
+  #c-news .lift > image-slot:first-child,
+  #c-news .lift > :first-child {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border-radius: inherit !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    filter: brightness(.6) saturate(1.05) contrast(1.03) !important;
+  }
+
+  #c-news .lift > :last-child {
+    position: relative !important;
+    z-index: 2 !important;
+    min-height: clamp(190px, 50vw, 242px) !important;
+    width: 100% !important;
+    padding: clamp(13px, 3.5vw, 18px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    color: #fffdf8 !important;
+    text-shadow: 0 2px 12px rgba(2, 10, 22, .58) !important;
+  }
+
+  #c-news .lift > :last-child *,
+  #c-news .lift p,
+  #c-news .lift [style*="color:var(--ink"],
+  #c-news .lift [style*="color: var(--ink"],
+  #c-news .lift [style*="color:#141C30"],
+  #c-news .lift [style*="color: #141C30"] {
+    color: #fffdf8 !important;
+  }
+
+  #c-news .lift a,
+  #c-news .lift [style*="color:var(--accent"],
+  #c-news .lift [style*="color: var(--accent"] {
+    color: #8ddde5 !important;
+  }
+}
+
