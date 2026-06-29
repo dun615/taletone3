@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&amp;family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&amp;family=Noto+Sans+JP:wght@400;500;600;700;800&amp;family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/works.css?v=20260629-hotfix11">
+<link rel="stylesheet" href="assets/css/works.css?v=20260629-hotfix15">
 <script src="assets/js/image-slot.js"></script>
 <style>
 *{box-sizing:border-box}
@@ -252,6 +252,29 @@ image-slot#tone-art::part(ring){display:none !important}
 @media (min-width:2400px) and (max-height:1200px){
   #chapnav{right:34px !important}
   #chapnav .navbtn{width:142px !important}
+}
+
+@media (max-width:760px){
+  html{background-color:#071a2e!important;color-scheme:light only!important;forced-color-adjust:none!important}
+  body{
+    background-color:#071a2e!important;
+    background-image:
+      radial-gradient(circle at 78% 18%,rgba(235,252,255,.24) 0 2px,transparent 4px),
+      radial-gradient(circle at 24% 30%,rgba(235,252,255,.16) 0 2px,transparent 5px),
+      linear-gradient(180deg,#eef8f7 0%,#c8e9ed 20%,#75bdce 42%,#225c7d 64%,#071a2e 100%)!important;
+    background-repeat:repeat,repeat,no-repeat!important;
+    background-size:240px 380px,280px 440px,100% 100%!important;
+    background-position:center top,center top,center top!important;
+    color-scheme:light only!important;
+    forced-color-adjust:none!important;
+    overscroll-behavior-y:none!important;
+  }
+  #sky{display:block!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:0!important;pointer-events:none!important}
+  #content,x-dc{background:none!important;background-color:transparent!important;background-image:none!important;overscroll-behavior-y:none!important}
+  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="translation"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="news"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
+  #lang-switcher.tt-lang-switcher{right:max(14px,env(safe-area-inset-right))!important;top:max(18px,env(safe-area-inset-top))!important;max-width:calc(100vw - 150px)!important;z-index:340!important}
+  #lang-switcher.tt-lang-switcher>div{width:clamp(210px,54vw,236px)!important;max-width:100%!important;justify-content:space-between!important;gap:0!important;padding:4px!important}
+  #lang-switcher.tt-lang-switcher button{flex:1 1 0!important;min-width:44px!important;min-height:44px!important;padding:0 8px!important;display:inline-grid!important;place-items:center!important}
 }
 
 
@@ -1098,7 +1121,7 @@ image-slot#tone-art::part(ring){display:none !important}
 
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
 <div id="glow" aria-hidden="true" style="position:fixed;left:50%;bottom:-26vh;width:150vw;height:96vh;transform:translateX(-50%);z-index:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side, rgba(255,224,168,.85), rgba(120,196,200,.22) 46%, rgba(120,196,200,0) 72%);filter:blur(10px)"></div>
-<canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:1;pointer-events:none"></canvas>
+<canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100dvh;min-height:100vh;z-index:2;pointer-events:none;mix-blend-mode:normal;opacity:.82"></canvas>
 <!-- BRAND -->
 <div id="brand" style="position:fixed;left:32px;top:26px;z-index:60;display:flex;align-items:center;gap:11px">
   <img id="brand-mark" src="assets/logo/mark-ink.png" alt="TALETONE" style="width:40px;height:40px;object-fit:contain;display:block;filter:drop-shadow(0 8px 22px rgba(20,28,60,.18))">
@@ -1749,6 +1772,29 @@ class Component extends DCLogic {
     this.glow = document.getElementById('glow');
     this.canvas = document.getElementById('fx');
     this.ctx = this.canvas.getContext('2d');
+    this.enforceMobileFxLayer = () => {
+      var mobile = window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+      if(!mobile || !this.canvas) return;
+      this.canvas.style.setProperty('display','block','important');
+      this.canvas.style.setProperty('visibility','visible','important');
+      this.canvas.style.setProperty('opacity','.82','important');
+      this.canvas.style.setProperty('position','fixed','important');
+      this.canvas.style.setProperty('inset','0','important');
+      this.canvas.style.setProperty('width','100vw','important');
+      this.canvas.style.setProperty('height','100dvh','important');
+      this.canvas.style.setProperty('min-height','100vh','important');
+      this.canvas.style.setProperty('z-index','2','important');
+      this.canvas.style.setProperty('pointer-events','none','important');
+      this.canvas.style.setProperty('mix-blend-mode','normal','important');
+      this.canvas.style.setProperty('transform','translateZ(0)','important');
+      var content = document.getElementById('content');
+      if(content){
+        content.style.setProperty('background','none','important');
+        content.style.setProperty('background-color','transparent','important');
+        content.style.setProperty('background-image','none','important');
+      }
+    };
+    this.enforceMobileFxLayer();
     this.sections = ['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact']
       .map(id=>document.getElementById(id)).filter(Boolean);
     this.pxEls = Array.from(document.querySelectorAll('[data-px]'));
@@ -1885,7 +1931,18 @@ class Component extends DCLogic {
     }
 
     window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') this.closeAll(); });
-    window.addEventListener('pointerdown', (e)=>{ this.spawnInk(e.clientX, e.clientY); });
+    this._lastInkSpawn = 0;
+    this._spawnInkFromEvent = (e)=>{
+      var point = e && ((e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]) || e);
+      if(!point || typeof point.clientX !== 'number' || typeof point.clientY !== 'number') return;
+      var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      if(now - this._lastInkSpawn < 70) return;
+      this._lastInkSpawn = now;
+      this.spawnInk(point.clientX, point.clientY);
+    };
+    window.addEventListener('pointerdown', this._spawnInkFromEvent, { passive:true });
+    window.addEventListener('touchstart', this._spawnInkFromEvent, { passive:true });
+    window.addEventListener('click', this._spawnInkFromEvent, { passive:true });
     // Wire + position the arc independent of rAF (so handlers attach even before the loop ticks)
     this._arcPoll = setInterval(()=>{ try{ this.updateArc(0.016); }catch(_){}; }, 120);
     // language: restore saved choice (KR default) and apply after first paint
@@ -1917,6 +1974,11 @@ class Component extends DCLogic {
     cancelAnimationFrame(this._imageHydrateRaf);
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('message', this._siteDataListener);
+    if(this._spawnInkFromEvent){
+      window.removeEventListener('pointerdown', this._spawnInkFromEvent);
+      window.removeEventListener('touchstart', this._spawnInkFromEvent);
+      window.removeEventListener('click', this._spawnInkFromEvent);
+    }
     if(this.chapnav && this._showNavPeek){
       this.chapnav.removeEventListener('pointerdown', this._showNavPeek);
       this.chapnav.removeEventListener('focusin', this._showNavPeek);
@@ -2465,6 +2527,7 @@ class Component extends DCLogic {
   resize(){
     this.dpr = Math.min(window.devicePixelRatio||1, 2);
     this.W = window.innerWidth; this.H = window.innerHeight;
+    if(this.enforceMobileFxLayer) this.enforceMobileFxLayer();
     this.canvas.width = this.W*this.dpr; this.canvas.height = this.H*this.dpr;
     this.ctx.setTransform(this.dpr,0,0,this.dpr,0,0);
   }
