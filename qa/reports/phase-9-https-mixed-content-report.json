@@ -1,0 +1,17 @@
+{
+  "createdAt": "2026-06-29T11:20:40.819Z",
+  "canonicalBase": "https://taletone.net/",
+  "title": "TALETONE MUSIC — Stories become sound",
+  "description": "이야기는 소리가 됩니다. TALETONE MUSIC은 이야기를 소리와 장면으로 빚는 음악 프로덕션입니다.",
+  "canonical": "https://taletone.net/",
+  "lang": "ko",
+  "httpMatches": [
+    {
+      "file": "sitemap.xml",
+      "line": 2,
+      "text": "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">",
+      "allowed": true
+    }
+  ],
+  "mixedContentFailures": []
+}

@@ -1,0 +1,67 @@
+{
+  "createdAt": "2026-06-29T11:20:40.819Z",
+  "canonicalBase": "https://taletone.net/",
+  "title": "TALETONE MUSIC — Stories become sound",
+  "description": "이야기는 소리가 됩니다. TALETONE MUSIC은 이야기를 소리와 장면으로 빚는 음악 프로덕션입니다.",
+  "canonical": "https://taletone.net/",
+  "lang": "ko",
+  "browserSummary": {
+    "screenshots": 28,
+    "horizontalOverflow": 0,
+    "progressHidden": 0,
+    "chapnavHidden": 0,
+    "mojibakeVisible": 0,
+    "newsMissing": 0,
+    "projectMissing": 0
+  },
+  "files": {
+    "assets/social/og-image.png": {
+      "exists": true,
+      "size": 29977
+    },
+    "assets/icons/favicon.svg": {
+      "exists": true,
+      "size": 356
+    },
+    "assets/icons/favicon-32.png": {
+      "exists": true,
+      "size": 226
+    },
+    "assets/icons/apple-touch-icon.png": {
+      "exists": true,
+      "size": 1026
+    },
+    "assets/icons/icon-192.png": {
+      "exists": true,
+      "size": 1106
+    },
+    "assets/icons/icon-512.png": {
+      "exists": true,
+      "size": 3398
+    },
+    "site.webmanifest": {
+      "exists": true,
+      "size": 559
+    },
+    "robots.txt": {
+      "exists": true,
+      "size": 81
+    },
+    "sitemap.xml": {
+      "exists": true,
+      "size": 263
+    },
+    "CNAME": {
+      "exists": true,
+      "size": 12
+    }
+  },
+  "status": "PARTIAL",
+  "partialReason": "Local/static/browser checks pass for metadata and deploy files. External social crawler cache and Cloudflare DNS/redirect settings require live manual confirmation.",
+  "liveCheck": {
+    "url": "https://taletone.net/",
+    "status": 200,
+    "title": "",
+    "note": "Live domain responded, but head title is empty at check time. Local repo output contains the new metadata; deploy/cache needs manual confirmation after push."
+  }
+}

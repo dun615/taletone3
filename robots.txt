@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /qa/
+
+Sitemap: https://taletone.net/sitemap.xml

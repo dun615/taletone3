@@ -1,0 +1,86 @@
+{
+  "url": "http://127.0.0.1:4332/index.html?v=hotfix24check",
+  "langMetrics": [
+    {
+      "id": "lang-kr",
+      "text": "KR",
+      "x": 204.234375,
+      "y": 18,
+      "width": 57.578125,
+      "height": 44,
+      "bg": "rgb(20, 28, 48)",
+      "color": "rgb(255, 253, 248)",
+      "border": "0px none rgb(255, 253, 248)",
+      "outline": "rgb(255, 253, 248) none 0px",
+      "boxShadow": "none",
+      "borderRadius": "999px",
+      "overflow": "hidden",
+      "appearance": "none"
+    },
+    {
+      "id": "lang-en",
+      "text": "EN",
+      "x": 261.8125,
+      "y": 18,
+      "width": 57.59375,
+      "height": 44,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(20, 28, 48)",
+      "border": "0px none rgb(20, 28, 48)",
+      "outline": "rgb(20, 28, 48) none 0px",
+      "boxShadow": "none",
+      "borderRadius": "999px",
+      "overflow": "hidden",
+      "appearance": "none"
+    },
+    {
+      "id": "lang-jp",
+      "text": "JP",
+      "x": 319.40625,
+      "y": 18,
+      "width": 57.59375,
+      "height": 44,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(20, 28, 48)",
+      "border": "0px none rgb(20, 28, 48)",
+      "outline": "rgb(20, 28, 48) none 0px",
+      "boxShadow": "none",
+      "borderRadius": "999px",
+      "overflow": "hidden",
+      "appearance": "none"
+    }
+  ],
+  "state": {
+    "active": "home",
+    "htmlW": 393,
+    "htmlSW": 393,
+    "bodyW": 393,
+    "bodySW": 393,
+    "visuals": 0,
+    "progress": {
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "x": 16,
+      "y": 788,
+      "width": 111.6875,
+      "height": 16
+    },
+    "chapnav": {
+      "display": "flex",
+      "visibility": "visible",
+      "opacity": "1",
+      "x": 346.67999267578125,
+      "y": 521.1556396484375,
+      "width": 34.32000732421875,
+      "height": 252.719970703125
+    }
+  },
+  "bad": [],
+  "errors": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+    }
+  ]
+}
