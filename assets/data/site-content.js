@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "1.0",
-  "lastUpdated": "2026-06-27T20:21:01.444Z",
+  "lastUpdated": "2026-07-02T13:24:20.468Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -613,7 +613,7 @@ window.TALETONE_CONTENT = {
         "placeholder": "하늘 정원 일러스트 드롭",
         "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
         "buttonLabel": "soraniwa 들어가기",
-        "link": "#c-works",
+        "link": "https://www.youtube.com/@soraniwaproject",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
         "image": "assets\\bundle\\Thumbnail_Fix-en.jpg",
@@ -629,21 +629,21 @@ window.TALETONE_CONTENT = {
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           },
           "en": {
             "label": "Storytelling Project",
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           },
           "jp": {
             "label": "Storytelling Project",
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           }
         },
         "openInNewTab": false
@@ -672,21 +672,21 @@ window.TALETONE_CONTENT = {
             "title": "TALETONES",
             "placeholder": "TALETONES 이미지 드롭",
             "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "TALETONES 만나기"
+            "buttonLabel": "준비중"
           },
           "en": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
             "placeholder": "TALETONES 이미지 드롭",
             "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "TALETONES 만나기"
+            "buttonLabel": "Coming Soon"
           },
           "jp": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
             "placeholder": "TALETONES 이미지 드롭",
             "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "TALETONES 만나기"
+            "buttonLabel": "準備中"
           }
         },
         "openInNewTab": false
@@ -1278,4 +1278,5 @@ window.TALETONE_CONTENT = {
       }
     }
   }
-};
+}
+;
