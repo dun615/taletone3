@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-07-02T14:26:13.508Z",
+  "lastUpdated": "2026-07-02T15:09:06.361Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -705,7 +705,7 @@
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "하늘 너머로 피어나는 두 소녀의 우정 이야기.\nsoraniwa Project는 그 세계를 음악과 영상으로 펼쳐가는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           },
           {
             "label": "Band by Storytellers",
@@ -728,7 +728,7 @@
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "Beyond the sky blooms the story of two girls and their friendship.\nSoraniwa Project is TALETONE's flagship music and film project.",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           },
           {
             "label": "Band by Storytellers",
@@ -751,7 +751,7 @@
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "空の向こうに咲く、二人の少女の友情の物語。\nSoraniwa Projectは、TALETONEが贈る音楽と映像のメインプロジェクトです。",
-            "buttonLabel": "soraniwa 들어가기"
+            "buttonLabel": "soraniwa Youtube"
           },
           {
             "label": "Band by Storytellers",
