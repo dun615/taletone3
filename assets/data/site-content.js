@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "1.0",
-  "lastUpdated": "2026-07-02T13:24:20.468Z",
+  "lastUpdated": "2026-07-02T14:26:13.508Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
