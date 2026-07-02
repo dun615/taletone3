@@ -1,0 +1,55 @@
+window.TALETONE_SEO = {
+  "siteName": "TALETONE MUSIC",
+  "baseUrl": "https://taletone.net",
+  "pages": [
+    {
+      "key": "home",
+      "label": "Home",
+      "path": "/",
+      "sectionId": "c-home",
+      "title": "TALETONE MUSIC",
+      "description": "A tale becomes a tone, A tone becomes music.\nTALETONE MUSIC 공식 사이트"
+    },
+    {
+      "key": "projects",
+      "label": "Projects",
+      "path": "/projects/",
+      "sectionId": "c-projects",
+      "title": "Projects | TALETONE MUSIC",
+      "description": "우리가 세상에 건네고픈 작은 이야기들"
+    },
+    {
+      "key": "members",
+      "label": "Members",
+      "path": "/members/",
+      "sectionId": "c-members",
+      "title": "Members | TALETONE MUSIC",
+      "description": "이야기를 음악으로 꽃피우는 사람들"
+    },
+    {
+      "key": "works",
+      "label": "Works",
+      "path": "/works/",
+      "sectionId": "c-works",
+      "title": "Works | TALETONE MUSIC",
+      "description": "우리가 써 내려가는 소리의 이야기책."
+    },
+    {
+      "key": "news",
+      "label": "News",
+      "path": "/news/",
+      "sectionId": "c-news",
+      "title": "News | TALETONE MUSIC",
+      "description": "새로 피어난 이야기와 소식들."
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "path": "/contact/",
+      "sectionId": "c-contact",
+      "title": "Contact | TALETONE MUSIC",
+      "description": "이번엔, 당신의 이야기가 음악이 될 차례입니다."
+    }
+  ]
+}
+;
