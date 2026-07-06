@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-07-06T13:02:38.466Z",
+  "lastUpdated": "2026-07-06T15:11:02.110Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -607,11 +607,11 @@
     "ctaInquiryLabel": "Project Inquiry"
   },
   "projects": {
-    "eyebrow": "ORIGINAL PROJECTS / IP READING",
-    "title": "Original",
-    "titleAccent": "Projects.",
-    "subtitle": "직접 이야기를 기획해 본 팀입니다.",
-    "description": "자체 IP 경험은 클라이언트의 세계관과 캐릭터를 더 입체적으로 해석하는 기반이 됩니다.",
+    "eyebrow": "FOR STORY-DRIVEN IP",
+    "title": "Stories We",
+    "titleAccent": "Work With.",
+    "subtitle": "직접 이야기를 기획해 본 팀이, 클라이언트의 세계관도 함께 읽습니다.",
+    "description": "자체 IP 경험은 레퍼런스 너머의 감정, 캐릭터, 팬덤 문맥까지 음악으로 해석하는 기반이 됩니다.",
     "cards": [
       {
         "id": "soraniwa",
@@ -620,7 +620,7 @@
         "title": "soraniwa",
         "placeholder": "하늘 정원 일러스트 드롭",
         "description": "soraniwa는 캐릭터, 아트워크, 사운드가 하나의 이야기로 이어지는 오리지널 IP 프로젝트입니다.",
-        "buttonLabel": "soraniwa Youtube",
+        "buttonLabel": "soraniwa YouTube",
         "link": "https://www.youtube.com/@soraniwaproject",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
@@ -633,25 +633,25 @@
         "lightness": 100,
         "translations": {
           "kr": {
-            "label": "Storytelling Project",
+            "label": "Original IP Project",
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "description": "soraniwa는 캐릭터, 아트워크, 사운드가 하나의 이야기로 이어지는 오리지널 IP 프로젝트입니다.",
+            "buttonLabel": "soraniwa YouTube"
           },
           "en": {
-            "label": "Storytelling Project",
+            "label": "Original IP Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa image",
+            "description": "soraniwa is an original IP project where characters, artwork, and sound connect as one story.",
+            "buttonLabel": "soraniwa YouTube"
           },
           "jp": {
-            "label": "Storytelling Project",
+            "label": "Original IP Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa image",
+            "description": "soraniwaは、キャラクター、アートワーク、サウンドが一つの物語としてつながるオリジナルIPプロジェクトです。",
+            "buttonLabel": "soraniwa YouTube"
           }
         },
         "openInNewTab": false
@@ -676,24 +676,24 @@
         "lightness": 100,
         "translations": {
           "kr": {
-            "label": "Band by Storytellers",
+            "label": "Brand Story Project",
             "title": "TALETONES",
             "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "description": "TALETONES는 TALETONE의 세계관과 브랜드 감성을 음악과 목소리로 확장하는 프로젝트입니다.",
             "buttonLabel": "준비중"
           },
           "en": {
-            "label": "Band by Storytellers",
+            "label": "Brand Story Project",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "placeholder": "TALETONES image",
+            "description": "TALETONES expands the TALETONE world and brand feeling through music and voices.",
             "buttonLabel": "Coming Soon"
           },
           "jp": {
-            "label": "Band by Storytellers",
+            "label": "Brand Story Project",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
+            "placeholder": "TALETONES image",
+            "description": "TALETONESは、TALETONEの世界観とブランド感性を音楽と声で広げるプロジェクトです。",
             "buttonLabel": "準備中"
           }
         },
@@ -702,18 +702,18 @@
     ],
     "translations": {
       "kr": {
-        "eyebrow": "ORIGINAL PROJECTS / IP READING",
-        "title": "Original",
-        "titleAccent": "Projects.",
-        "subtitle": "직접 이야기를 기획해 본 팀입니다.",
-        "description": "자체 IP 경험은 클라이언트의 세계관과 캐릭터를 더 입체적으로 해석하는 기반이 됩니다.",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "직접 이야기를 기획해 본 팀이, 클라이언트의 세계관도 함께 읽습니다.",
+        "description": "자체 IP 경험은 레퍼런스 너머의 감정, 캐릭터, 팬덤 문맥까지 음악으로 해석하는 기반이 됩니다.",
         "cards": [
           {
             "label": "Original IP Project",
             "title": "soraniwa",
             "placeholder": "하늘 정원 일러스트 드롭",
             "description": "soraniwa는 캐릭터, 아트워크, 사운드가 하나의 이야기로 이어지는 오리지널 IP 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Brand Story Project",
@@ -723,28 +723,30 @@
             "buttonLabel": "준비중"
           }
         ],
-        "audienceTitle": "세계관이 있고, 팬이 있는 콘텐츠를 위해",
+        "audienceTitle": "Who We Work With",
         "audienceBody": "세계관은 있지만 음악 방향이 고민되는 팀, 캐릭터의 정체성을 음악으로 만들고 싶은 팀, 레퍼런스 너머의 해석이 필요한 팀과 함께합니다.",
         "audienceCard1Title": "서브컬쳐 게임",
         "audienceCard1Body": "OST · 캐릭터 테마 · 이벤트 곡 · PV/트레일러 음악",
         "audienceCard2Title": "버튜버 · 버추얼 엔터테인먼트",
         "audienceCard2Body": "오리지널 송 · 데뷔곡 · 유닛곡 · 세계관 곡",
         "audienceCard3Title": "애니메이션 · 웹툰 · 웹소설 IP",
-        "audienceCard3Body": "오프닝 · 엔딩 · 삽입곡 · 캐릭터 송 · 프로모션 음악"
+        "audienceCard3Body": "오프닝 · 엔딩 · 삽입곡 · 캐릭터 송 · 프로모션 음악",
+        "originalTitle": "Original Projects",
+        "originalBody": "우리가 직접 기획한 IP는 클라이언트의 세계관을 읽는 방식을 보여주는 증거입니다."
       },
       "en": {
-        "eyebrow": "ORIGINAL PROJECTS / IP READING",
-        "title": "Original",
-        "titleAccent": "Projects.",
-        "subtitle": "A team that has planned its own stories.",
-        "description": "Our original IP experience helps us read a client world and its characters with more depth.",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "A team that has built its own stories can read a client world with care.",
+        "description": "Our original IP experience helps us turn emotions, characters, and fan context beyond references into music.",
         "cards": [
           {
             "label": "Original IP Project",
             "title": "soraniwa",
             "placeholder": "soraniwa image",
             "description": "soraniwa is an original IP project where characters, artwork, and sound connect as one story.",
-            "buttonLabel": "soraniwa Youtube"
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Brand Story Project",
@@ -754,28 +756,30 @@
             "buttonLabel": "Coming Soon"
           }
         ],
-        "audienceTitle": "For content with a world, characters, and fans",
+        "audienceTitle": "Who We Work With",
         "audienceBody": "We work with teams that have a world but need music direction, teams that want character identity expressed through sound, and teams that need interpretation beyond references.",
         "audienceCard1Title": "Subculture Games",
         "audienceCard1Body": "OST · Character themes · Event songs · PV / trailer music",
         "audienceCard2Title": "VTubers · Virtual Entertainment",
         "audienceCard2Body": "Original songs · Debut songs · Unit songs · Worldbuilding songs",
         "audienceCard3Title": "Animation · Webtoon · Web Novel IP",
-        "audienceCard3Body": "Openings · Endings · Insert songs · Character songs · Promotion music"
+        "audienceCard3Body": "Openings · Endings · Insert songs · Character songs · Promotion music",
+        "originalTitle": "Original Projects",
+        "originalBody": "Our own IP projects show how we read a world before turning it into sound."
       },
       "jp": {
-        "eyebrow": "ORIGINAL PROJECTS / IP READING",
-        "title": "Original",
-        "titleAccent": "Projects.",
-        "subtitle": "自分たちでも物語を企画してきたチームです。",
-        "description": "オリジナルIPの経験は、クライアントの世界観とキャラクターをより立体的に読む土台になります。",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "自分たちでも物語を企画してきたチームだから、クライアントの世界観も丁寧に読みます。",
+        "description": "オリジナルIPの経験は、レファレンスの先にある感情、キャラクター、ファン文脈を音楽へ解釈する土台になります。",
         "cards": [
           {
             "label": "Original IP Project",
             "title": "soraniwa",
             "placeholder": "soraniwa image",
             "description": "soraniwaは、キャラクター、アートワーク、サウンドが一つの物語としてつながるオリジナルIPプロジェクトです。",
-            "buttonLabel": "soraniwa Youtube"
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Brand Story Project",
@@ -785,31 +789,35 @@
             "buttonLabel": "準備中"
           }
         ],
-        "audienceTitle": "世界観があり、ファンがいるコンテンツのために",
+        "audienceTitle": "Who We Work With",
         "audienceBody": "世界観はあるが音楽の方向に悩むチーム、キャラクターの個性を音で表したいチーム、レファレンスの先にある解釈が必要なチームとご一緒します。",
         "audienceCard1Title": "サブカルチャーゲーム",
         "audienceCard1Body": "OST · キャラクターテーマ · イベント曲 · PV / トレーラー音楽",
         "audienceCard2Title": "VTuber · バーチャルエンタメ",
         "audienceCard2Body": "オリジナル曲 · デビュー曲 · ユニット曲 · 世界観楽曲",
         "audienceCard3Title": "アニメ · Webtoon · Web小説IP",
-        "audienceCard3Body": "OP · ED · 挿入歌 · キャラクターソング · プロモーション音楽"
+        "audienceCard3Body": "OP · ED · 挿入歌 · キャラクターソング · プロモーション音楽",
+        "originalTitle": "Original Projects",
+        "originalBody": "自分たちで企画したIPは、世界観を読み取る姿勢を示す証拠です。"
       }
     },
-    "audienceTitle": "세계관이 있고, 팬이 있는 콘텐츠를 위해",
+    "audienceTitle": "Who We Work With",
     "audienceBody": "세계관은 있지만 음악 방향이 고민되는 팀, 캐릭터의 정체성을 음악으로 만들고 싶은 팀, 레퍼런스 너머의 해석이 필요한 팀과 함께합니다.",
     "audienceCard1Title": "서브컬쳐 게임",
     "audienceCard1Body": "OST · 캐릭터 테마 · 이벤트 곡 · PV/트레일러 음악",
     "audienceCard2Title": "버튜버 · 버추얼 엔터테인먼트",
     "audienceCard2Body": "오리지널 송 · 데뷔곡 · 유닛곡 · 세계관 곡",
     "audienceCard3Title": "애니메이션 · 웹툰 · 웹소설 IP",
-    "audienceCard3Body": "오프닝 · 엔딩 · 삽입곡 · 캐릭터 송 · 프로모션 음악"
+    "audienceCard3Body": "오프닝 · 엔딩 · 삽입곡 · 캐릭터 송 · 프로모션 음악",
+    "originalTitle": "Original Projects",
+    "originalBody": "우리가 직접 기획한 IP는 클라이언트의 세계관을 읽는 방식을 보여주는 증거입니다."
   },
   "contact": {
     "eyebrow": "Project Inquiry",
     "titleLine1": "당신의 이야기를",
     "titleAccent": "들려주세요.",
     "subtitle": "필요한 음악은 함께 찾겠습니다.",
-    "caption": "세계관, 캐릭터, 레퍼런스, 아직 정리되지 않은 아이디어도 괜찮습니다. 먼저 이야기를 듣고, 어울리는 음악의 방향을 함께 정리합니다.",
+    "caption": "세계관, 캐릭터, 레퍼런스, 아직 정리되지 않은 아이디어도 괜찮습니다. TALETONE은 먼저 이야기를 듣고, 그 이야기에 어울리는 음악의 방향을 함께 정리합니다.",
     "buttonLabel": "Project Inquiry",
     "link": "mailto:n4ml@taletone.net",
     "translations": {
@@ -818,7 +826,7 @@
         "titleLine1": "당신의 이야기를",
         "titleAccent": "들려주세요.",
         "subtitle": "필요한 음악은 함께 찾겠습니다.",
-        "caption": "세계관, 캐릭터, 레퍼런스, 아직 정리되지 않은 아이디어도 괜찮습니다. 먼저 이야기를 듣고, 어울리는 음악의 방향을 함께 정리합니다.",
+        "caption": "세계관, 캐릭터, 레퍼런스, 아직 정리되지 않은 아이디어도 괜찮습니다. TALETONE은 먼저 이야기를 듣고, 그 이야기에 어울리는 음악의 방향을 함께 정리합니다.",
         "buttonLabel": "Project Inquiry"
       },
       "en": {
@@ -826,15 +834,15 @@
         "titleLine1": "Tell us",
         "titleAccent": "your story.",
         "subtitle": "We will find the music it needs together.",
-        "caption": "Worldbuilding, characters, references, and unfinished ideas are all welcome. TALETONE listens first, then shapes the right musical direction with you.",
+        "caption": "Worldbuilding, characters, references, and even unfinished ideas are welcome. TALETONE starts by listening, then shapes the musical direction that fits the story.",
         "buttonLabel": "Project Inquiry"
       },
       "jp": {
         "eyebrow": "Project Inquiry",
         "titleLine1": "あなたの物語を",
         "titleAccent": "聞かせてください。",
-        "subtitle": "必要な音楽は、一緒に探します。",
-        "caption": "世界観、キャラクター、レファレンス、まだ整理されていないアイデアでも大丈夫です。まず物語を聞き、その物語に合う音楽の方向を一緒に整えます。",
+        "subtitle": "必要な音楽は一緒に見つけます。",
+        "caption": "世界観、キャラクター、レファレンス、まだ整理されていないアイデアでも大丈夫です。TALETONEはまず物語を聞き、その物語に合う音楽の方向を一緒に整理します。",
         "buttonLabel": "Project Inquiry"
       }
     }
@@ -854,14 +862,14 @@
       "en": {
         "eyebrow": "THE TEAM THAT READS THE BRIEF",
         "title": "<span style=\"color:#335e6c\">Members</span>",
-        "subtitle": "A team that reads stories and builds them into sound.",
-        "description": "Planning, production, vocal, and visual leads read the brief together so music and character interpretation stay connected."
+        "subtitle": "People who read the story and build it into sound.",
+        "description": "Planning, production, vocal, and visual roles read the brief together so music and character interpretation stay connected."
       },
       "jp": {
         "eyebrow": "THE TEAM THAT READS THE BRIEF",
         "title": "<span style=\"color:#335e6c\">Members</span>",
-        "subtitle": "物語を読み、音として組み立てる人たち。",
-        "description": "企画、プロダクション、ボーカル、ビジュアルの担当者が一緒にブリーフを読み、音楽とキャラクター解釈が分離しないように進行します。"
+        "subtitle": "物語を読み、音として組み上げる人たち。",
+        "description": "企画、プロダクション、ボーカル、ビジュアル担当が一緒にブリーフを読み、音楽とキャラクター解釈が切り離されないように進めます。"
       }
     }
   },
@@ -1071,35 +1079,35 @@
     }
   },
   "newsMeta": {
-    "eyebrow": "UPDATES / NOTES",
+    "eyebrow": "PROJECT NOTES",
     "title": "Latest",
     "titleAccent": "News.",
-    "subtitle": "새 소식은 짧게, 작업과 문의는 더 빠르게.",
-    "description": "업데이트는 보조로 두고, 실제 작업물과 프로젝트 문의로 이어지게 정리합니다.",
+    "subtitle": "최근 공개된 작업, 프로젝트 업데이트, 팀의 소식을 전합니다.",
+    "description": "TALETONE의 작업과 이야기가 이어지는 기록입니다.",
     "readMoreLabel": "Read more →",
     "translations": {
       "kr": {
-        "eyebrow": "UPDATES / NOTES",
+        "eyebrow": "PROJECT NOTES",
         "title": "Latest",
         "titleAccent": "News.",
-        "subtitle": "새 소식은 짧게, 작업과 문의는 더 빠르게.",
-        "description": "업데이트는 보조로 두고, 실제 작업물과 프로젝트 문의로 이어지게 정리합니다.",
+        "subtitle": "최근 공개된 작업, 프로젝트 업데이트, 팀의 소식을 전합니다.",
+        "description": "TALETONE의 작업과 이야기가 이어지는 기록입니다.",
         "readMoreLabel": "Read more →"
       },
       "en": {
-        "eyebrow": "UPDATES / NOTES",
+        "eyebrow": "PROJECT NOTES",
         "title": "Latest",
         "titleAccent": "News.",
-        "subtitle": "Short updates, with faster paths to works and inquiries.",
-        "description": "News stays as a supporting section while works and project contact lead the flow.",
+        "subtitle": "Recent works, project updates, and notes from the team.",
+        "description": "A quiet record of TALETONE projects and the stories around them.",
         "readMoreLabel": "Read more →"
       },
       "jp": {
-        "eyebrow": "UPDATES / NOTES",
+        "eyebrow": "PROJECT NOTES",
         "title": "Latest",
         "titleAccent": "News.",
-        "subtitle": "ニュースは短く、作品とお問い合わせへより早く。",
-        "description": "更新情報は補助的に置き、作品とプロジェクト相談への流れを優先します。",
+        "subtitle": "最近公開された作品、プロジェクト更新、チームの知らせを届けます。",
+        "description": "TALETONEの作品と物語が続いていく記録です。",
         "readMoreLabel": "Read more →"
       }
     }
@@ -1132,22 +1140,22 @@
   },
   "footerMeta": {
     "title": "TALETONE MUSIC",
-    "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+    "tagline": "이야기가 필요로 하는 음악을 만듭니다.\nA tale becomes a tone. A tone becomes music.",
     "copyright": "© 2026 TALETONE MUSIC",
     "translations": {
       "kr": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "이야기가 필요로 하는 음악을 만듭니다.\nA tale becomes a tone. A tone becomes music.",
         "copyright": "© 2026 TALETONE MUSIC"
       },
       "en": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "A tale becomes a tone. A tone becomes music.",
         "copyright": "© 2026 TALETONE MUSIC"
       },
       "jp": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "物語が必要とする音楽をつくります。\nA tale becomes a tone. A tone becomes music.",
         "copyright": "© 2026 TALETONE MUSIC"
       }
     }

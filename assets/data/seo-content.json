@@ -15,8 +15,8 @@
       "label": "Projects",
       "path": "/projects/",
       "sectionId": "c-projects",
-      "title": "Original Projects | TALETONE MUSIC",
-      "description": "soraniwa와 TALETONES를 통해 TALETONE이 직접 세계관을 기획하고 음악과 비주얼로 확장해온 방식을 소개합니다."
+      "title": "Stories We Work With | TALETONE MUSIC",
+      "description": "서브컬쳐 게임, 버튜버, 애니메이션·웹툰·웹소설 IP를 위한 음악 방향을 함께 정리하고, TALETONE의 오리지널 프로젝트 경험을 소개합니다."
     },
     {
       "key": "members",
@@ -24,7 +24,7 @@
       "path": "/members/",
       "sectionId": "c-members",
       "title": "Members | TALETONE MUSIC",
-      "description": "기획, 프로덕션, 보컬, 비주얼 담당자가 함께 브리프를 읽고 스토리 기반 IP의 음악을 설계합니다."
+      "description": "기획, 프로덕션, 보컬, 비주얼 담당자가 함께 브리프를 읽고 스토리 기반 IP의 음악과 캐릭터 해석을 설계합니다."
     },
     {
       "key": "works",
@@ -32,15 +32,15 @@
       "path": "/works/",
       "sectionId": "c-works",
       "title": "Selected Works | TALETONE MUSIC",
-      "description": "TALETONE MUSIC이 실제 IP와 아티스트의 맥락을 음악으로 해석해온 작업물과 크레딧을 확인하세요."
+      "description": "TALETONE MUSIC이 실제 IP와 아티스트의 맥락을 음악으로 해석해온 대표 작업물과 크레딧을 확인하세요."
     },
     {
       "key": "news",
       "label": "News",
       "path": "/news/",
       "sectionId": "c-news",
-      "title": "News | TALETONE MUSIC",
-      "description": "TALETONE MUSIC의 새 작업과 프로젝트 업데이트를 짧게 전합니다."
+      "title": "Latest News | TALETONE MUSIC",
+      "description": "TALETONE MUSIC의 최근 공개 작업, 프로젝트 업데이트, 팀의 소식을 전합니다."
     },
     {
       "key": "contact",
