@@ -1,4 +1,5 @@
 qa/
+/.image-slots.state.json
 /DEPLOY_CHECKLIST.md
 /README_DEPLOY_ONLY.txt
 /image-slot.js

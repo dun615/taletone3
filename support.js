@@ -21,6 +21,35 @@
   ));
 
   // src/parse.ts
+  function decodeDcPayload(raw) {
+    if (!raw) return "";
+    try {
+      const bin = atob(String(raw).replace(/\s+/g, ""));
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return new TextDecoder().decode(bytes);
+    } catch {
+      return "";
+    }
+  }
+  function readEncodedPayload(el, attrName) {
+    if (!el) return "";
+    const fromAttr = el.getAttribute(attrName);
+    return decodeDcPayload(fromAttr || el.textContent || "");
+  }
+  function readDcTemplate(doc, dc, fallback) {
+    const templateEl = doc.querySelector("script[data-dc-template-b64]");
+    if (templateEl) return readEncodedPayload(templateEl, "data-dc-template-b64");
+    if (dc?.hasAttribute("data-dc-template-b64")) return readEncodedPayload(dc, "data-dc-template-b64");
+    return fallback;
+  }
+  function readDcScript(scriptEl) {
+    if (!scriptEl) return "";
+    if (scriptEl.hasAttribute("data-dc-script-b64")) {
+      return readEncodedPayload(scriptEl, "data-dc-script-b64");
+    }
+    return scriptEl.textContent || "";
+  }
   function parseDcDocument(doc) {
     const dc = doc.querySelector("x-dc");
     if (!dc) return null;
@@ -29,8 +58,8 @@
       scriptEl?.getAttribute("data-props") ?? null
     );
     return {
-      template: dc.innerHTML,
-      js: scriptEl ? scriptEl.textContent || "" : "",
+      template: readDcTemplate(doc, dc, dc.innerHTML),
+      js: readDcScript(scriptEl),
       props,
       preview
     };
@@ -42,13 +71,14 @@
     if (close === -1 || close < openMatch.index) return null;
     const template = src.slice(openMatch.index + openMatch[0].length, close);
     const doc = new DOMParser().parseFromString(src, "text/html");
+    const dc = doc.querySelector("x-dc");
     const scriptEl = doc.querySelector("script[data-dc-script]");
     const { props, preview } = parseDataProps(
       scriptEl?.getAttribute("data-props") ?? null
     );
     return {
-      template,
-      js: scriptEl ? scriptEl.textContent || "" : "",
+      template: readDcTemplate(doc, dc, template),
+      js: readDcScript(scriptEl),
       props,
       preview
     };
@@ -358,7 +388,7 @@
       const path = whole[1];
       return (vals) => resolve(vals, path);
     }
-    if (raw.includes("{{")) {
+    if (raw.includes("{" + "{")) {
       const parts = raw.split(/\{\{([\s\S]+?)\}\}/g);
       return (vals) => parts.map((s, i) => i & 1 ? resolve(vals, s) ?? "" : s).join("");
     }
@@ -442,8 +472,8 @@
     if (node.nodeType !== Node.ELEMENT_NODE) return null;
     const el = node;
     const tag = el.tagName.toLowerCase();
-    if (tag === "sc-for") return walkFor(el, host);
-    if (tag === "sc-if") return walkIf(el, host);
+    if (tag === "sc" + "-for") return walkFor(el, host);
+    if (tag === "sc" + "-if") return walkIf(el, host);
     if (tag === "x-import") return walkXImport(el, host);
     if (tag === "sc-helmet") return host.helmet(el);
     if (tag === "dc-import") return walkComponent(el, host);
@@ -516,7 +546,7 @@
   }
   function walkText(node) {
     const txt = node.nodeValue ?? "";
-    if (!txt.includes("{{")) {
+    if (!txt.includes("{" + "{")) {
       if (!txt.trim() && !txt.includes(" ")) return null;
       return () => txt;
     }
@@ -533,12 +563,12 @@
               return h(
                 "span",
                 { key: i, className: "sc-interp sc-unresolved" },
-                "{{ " + p.trim() + " }}"
+                "{" + "{ " + p.trim() + " }" + "}"
               );
             }
             warnUnresolved(
               ctx,
-              "{{ " + p.trim() + " }} never resolved \u2014 rendered as empty"
+              "{" + "{ " + p.trim() + " }" + "} never resolved \u2014 rendered as empty"
             );
             return null;
           }
@@ -577,7 +607,7 @@
           if (list !== void 0 && list !== null) {
             warnUnresolved(
               ctx,
-              'sc-for list="' + listSrc + '" is not an array (' + typeof list + ")"
+              "sc" + '-for list="' + listSrc + '" is not an array (' + typeof list + ")"
             );
           }
           list = [];
@@ -660,12 +690,12 @@
     const { propGetters, hintSize } = collectProps(el, "x-import", host);
     const hasContent = el.children.length > 0 || !!(el.textContent || "").trim();
     const kids = hasContent ? walkChildren(el, host) : [];
-    const urlBindable = url.includes("{{");
+    const urlBindable = url.includes("{" + "{");
     if (url && !urlBindable) host.loadExternal(kind, url);
     const evalName = (g, vals) => {
       const v = g(vals);
       const s = v == null ? "" : String(v);
-      return s.includes("{{") ? "" : s;
+      return s.includes("{" + "{") ? "" : s;
     };
     return (vals, ctx, key) => {
       const globalName = evalName(globalNameGet, vals);
@@ -679,7 +709,7 @@
         style: hostStyle || { display: "contents" }
       } : null;
       if (!C) {
-        const error = urlBindable ? "x-import `from` cannot contain {{ \u2026 }} \u2014 module URLs are resolved at parse time; use a literal URL" : host.resolveExternalError(url, name);
+        const error = urlBindable ? "x-import `from` cannot contain " + "{" + "{ \u2026 }" + "} \u2014 module URLs are resolved at parse time; use a literal URL" : host.resolveExternalError(url, name);
         const ph = host.placeholder({
           key: wrapper ? void 0 : key,
           name,
