@@ -75,6 +75,13 @@
 
   function load() {
     if (loadP) return loadP;
+    if (!window.omelette) {
+      loadP = Promise.resolve().then(() => {
+        loaded = true;
+        subs.forEach((fn) => fn());
+      });
+      return loadP;
+    }
     loadP = fetch(STATE_FILE)
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
