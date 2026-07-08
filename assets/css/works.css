@@ -3259,3 +3259,31 @@
   }
 }
 
+/* Public audience cards added for the production site. Keep them clear of the
+   fixed mobile progress rail without changing the existing project cards. */
+@media (max-width: 760px) {
+  #c-projects [data-public-audience][data-reveal] {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: min(320px, calc(100vw - 116px)) !important;
+    max-width: calc(100vw - 116px) !important;
+    margin-left: auto !important;
+    margin-right: max(18px, env(safe-area-inset-right)) !important;
+  }
+
+  #c-projects [data-public-audience][data-reveal] > * {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  #c-projects [data-public-audience] article {
+    padding: 16px !important;
+  }
+
+  #c-projects [data-public-audience] article p {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: initial !important;
+    overflow: visible !important;
+  }
+}
+

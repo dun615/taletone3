@@ -559,7 +559,7 @@
         const v = resolve(vals, p);
         if (v === void 0) {
           if (!ctx?.__streamingNow) {
-            if (document.body?.hasAttribute("data-dc-editor-on")) {
+            if (document.body?.hasAttribute("data-dc-authoring-on")) {
               return h(
                 "span",
                 { key: i, className: "sc-interp sc-unresolved" },
@@ -1648,13 +1648,13 @@
       /** Name of the component currently mounted as the page root — DC tools
        *  push their template-stream here when targeting "the open page". */
       __dcRootName: () => rootName,
-      /** Editor bridge — the encoded, `data-dc-tpl`-annotated template source.
-       *  The host editor parses this into its own template DOM so it can map a
+      /** Authoring bridge — the encoded, `data-dc-tpl`-annotated template source.
+       *  The host tool parses this into its own template DOM so it can map a
        *  rendered node (carrying the same `data-dc-tpl`) back to the source
        *  node that emitted it. Returns the encoded form (`<sc-comp>`,
-       *  `sc-camel-*` attrs); the editor decodes on serialize. */
+       *  `sc-camel-*` attrs); the host tool decodes on serialize. */
       __dcAnnotatedTemplate: (name) => runtime.annotatedTemplate(name),
-      /** Editor bridge — the *original* (decoded) template source. */
+      /** Authoring bridge — the *original* (decoded) template source. */
       __dcTemplateSource: (name) => runtime.templateSource(name),
       __dcBoot: () => {
         rootName = boot(runtime, document) ?? rootName;

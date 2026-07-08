@@ -7,8 +7,8 @@ window.TALETONE_SEO = {
       "label": "Home",
       "path": "/",
       "sectionId": "c-home",
-      "title": "TALETONE MUSIC",
-      "description": "A tale becomes a tone, A tone becomes music.\nTALETONE MUSIC 공식 사이트"
+      "title": "TALETONE MUSIC — 스토리 기반 IP 음악 프로덕션",
+      "description": "TALETONE MUSIC은 서브컬쳐 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송, BGM을 기획·제작하는 스토리 기반 음악 프로덕션입니다."
     },
     {
       "key": "projects",
@@ -16,7 +16,7 @@ window.TALETONE_SEO = {
       "path": "/projects/",
       "sectionId": "c-projects",
       "title": "Projects | TALETONE MUSIC",
-      "description": "우리가 세상에 건네고픈 작은 이야기들"
+      "description": "TALETONE MUSIC의 자체 IP와 스토리 기반 제작 철학을 소개합니다. 자체 IP를 기획해 본 팀은 클라이언트의 IP를 더 깊이 읽습니다."
     },
     {
       "key": "members",
@@ -24,7 +24,7 @@ window.TALETONE_SEO = {
       "path": "/members/",
       "sectionId": "c-members",
       "title": "Members | TALETONE MUSIC",
-      "description": "이야기를 음악으로 꽃피우는 사람들"
+      "description": "TALETONE MUSIC을 함께 만드는 프로듀서, 보컬, 아트 디렉터와 크리에이터 멤버를 소개합니다."
     },
     {
       "key": "works",
@@ -32,7 +32,7 @@ window.TALETONE_SEO = {
       "path": "/works/",
       "sectionId": "c-works",
       "title": "Works | TALETONE MUSIC",
-      "description": "우리가 써 내려가는 소리의 이야기책."
+      "description": "오리지널송, OST, 캐릭터송, BGM 등 TALETONE MUSIC의 공개 가능한 작업물과 크레딧을 확인하세요."
     },
     {
       "key": "news",
@@ -40,7 +40,7 @@ window.TALETONE_SEO = {
       "path": "/news/",
       "sectionId": "c-news",
       "title": "News | TALETONE MUSIC",
-      "description": "새로 피어난 이야기와 소식들."
+      "description": "TALETONE MUSIC의 프로젝트 소식, 업데이트, 공개 작업물 안내를 모아둔 공간입니다."
     },
     {
       "key": "contact",
@@ -48,8 +48,8 @@ window.TALETONE_SEO = {
       "path": "/contact/",
       "sectionId": "c-contact",
       "title": "Contact | TALETONE MUSIC",
-      "description": "이번엔, 당신의 이야기가 음악이 될 차례입니다."
+      "description": "세계관이 있는 IP의 오리지널송, OST, 캐릭터송, BGM 제작을 TALETONE MUSIC에 문의하세요."
     }
   ]
-}
-;
+};
+window.TALETONE_SEO_CONTENT = window.TALETONE_SEO;

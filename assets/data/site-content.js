@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
-  "version": "1.0",
-  "lastUpdated": "2026-07-02T15:09:06.361Z",
+  "version": "public-site-pass-20260709",
+  "lastUpdated": "2026-07-09T02:20:00+09:00",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -551,68 +551,68 @@ window.TALETONE_CONTENT = {
     "sectionPaddingHorizontal": "clamp(20px, 3.5vw, 60px)"
   },
   "home": {
-    "eyebrow": "WHERE STORIES BECOME MUSIC",
+    "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
     "titleLine1": "TALETONE",
     "titleLine2": "MUSIC",
     "subtitleLine1": "A tale becomes a tone.",
     "subtitleLine2": "A tone becomes music.",
-    "descriptionLine1": "이야기는 고유한 빛깔을 품고,",
-    "descriptionLine2": "그 빛깔은 음악이 된다.",
+    "descriptionLine1": "세계관이 있는 IP를 음악으로 확장하는",
+    "descriptionLine2": "스토리 기반 음악 프로덕션",
     "scrollHint": "Dive in with scroll",
     "translations": {
       "kr": {
-        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "subtitleLine1": "A tale becomes a tone.",
         "subtitleLine2": "A tone becomes music.",
-        "descriptionLine1": "",
-        "descriptionLine2": "",
+        "descriptionLine1": "세계관이 있는 IP를 음악으로 확장하는",
+        "descriptionLine2": "스토리 기반 음악 프로덕션",
         "scrollHint": "Dive in with scroll",
-        "backgroundLine1": "",
-        "backgroundLine2": ""
+        "backgroundLine1": "TALE",
+        "backgroundLine2": "TONE"
       },
       "en": {
-        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "subtitleLine1": "A tale becomes a tone.",
         "subtitleLine2": "A tone becomes music.",
-        "descriptionLine1": "",
-        "descriptionLine2": "",
+        "descriptionLine1": "Music production for story-driven IPs",
+        "descriptionLine2": "games, VTubers, animation, webtoon and novel worlds",
         "scrollHint": "Dive in with scroll",
-        "backgroundLine1": "",
-        "backgroundLine2": ""
+        "backgroundLine1": "TALE",
+        "backgroundLine2": "TONE"
       },
       "jp": {
-        "eyebrow": "WHERE STORIES BECOME MUSIC",
+        "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "subtitleLine1": "A tale becomes a tone.",
         "subtitleLine2": "A tone becomes music.",
-        "descriptionLine1": "",
-        "descriptionLine2": "",
+        "descriptionLine1": "世界観を持つIPを音楽へ広げる",
+        "descriptionLine2": "ストーリー基盤の音楽プロダクション",
         "scrollHint": "Dive in with scroll",
-        "backgroundLine1": "",
-        "backgroundLine2": ""
+        "backgroundLine1": "TALE",
+        "backgroundLine2": "TONE"
       }
     }
   },
   "projects": {
-    "eyebrow": "Where the tones live",
-    "title": "Our",
-    "titleAccent": "Projects.",
-    "subtitle": "Two worlds where stories keep singing.",
-    "description": "이야기가 계속 노래하는 두 개의 세계.",
+    "eyebrow": "FOR STORY-DRIVEN IP",
+    "title": "Stories We",
+    "titleAccent": "Work With.",
+    "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
+    "description": "자체 IP를 기획해 본 팀은, 클라이언트의 IP를 더 깊이 읽습니다.",
     "cards": [
       {
         "id": "soraniwa",
         "slotId": "sora-art",
         "label": "Storytelling Project",
         "title": "soraniwa",
-        "placeholder": "하늘 정원 일러스트 드롭",
-        "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-        "buttonLabel": "soraniwa 들어가기",
+        "placeholder": "soraniwa visual",
+        "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
+        "buttonLabel": "soraniwa YouTube",
         "link": "https://www.youtube.com/@soraniwaproject",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
@@ -627,36 +627,36 @@ window.TALETONE_CONTENT = {
           "kr": {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
+            "buttonLabel": "soraniwa YouTube"
           },
           "en": {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "TALETONE's storytelling project: original IP planning expanded through music and video.",
+            "buttonLabel": "soraniwa YouTube"
           },
           "jp": {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 이야기. 동화적 세계관을 음악과 영상으로 풀어내는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "TALETONEが企画する自社IPを、音楽と映像へ広げていくストーリーテリングプロジェクトです。",
+            "buttonLabel": "soraniwa YouTube"
           }
         },
-        "openInNewTab": false
+        "openInNewTab": true
       },
       {
         "id": "taletones",
         "slotId": "tone-art",
         "label": "Band by Storytellers",
         "title": "TALETONES",
-        "placeholder": "TALETONES 이미지 드롭",
-        "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-        "buttonLabel": "TALETONES 만나기",
-        "link": "",
+        "placeholder": "TALETONES visual",
+        "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
+        "buttonLabel": "Works 듣기",
+        "link": "/works/",
         "buttonColor": "var(--accent2,#3d8a98)",
         "buttonTextColor": "#ffffff",
         "image": "",
@@ -670,23 +670,23 @@ window.TALETONE_CONTENT = {
           "kr": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "준비중"
+            "placeholder": "TALETONES visual",
+            "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "Works 듣기"
           },
           "en": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "Coming Soon"
+            "placeholder": "TALETONES visual",
+            "description": "A TALETONE band project where storytellers give their own voices to each story.",
+            "buttonLabel": "Listen to Works"
           },
           "jp": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "準備中"
+            "placeholder": "TALETONES visual",
+            "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
+            "buttonLabel": "Worksを聴く"
           }
         },
         "openInNewTab": false
@@ -694,71 +694,71 @@ window.TALETONE_CONTENT = {
     ],
     "translations": {
       "kr": {
-        "eyebrow": "Where the tones live",
-        "title": "Our",
-        "titleAccent": "Projects.",
-        "subtitle": "\" 우리가 세상에 건네고픈 작은 이야기들 \"",
-        "description": "",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
+        "description": "자체 IP를 기획해 본 팀은, 클라이언트의 IP를 더 깊이 읽습니다.",
         "cards": [
           {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "하늘 너머로 피어나는 두 소녀의 우정 이야기.\nsoraniwa Project는 그 세계를 음악과 영상으로 펼쳐가는 TALETONE의 본편 프로젝트입니다.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "이야기가 노래가 되는 무대. 스토리텔러들이 직접 목소리를 입히는, TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "준비중"
+            "placeholder": "TALETONES visual",
+            "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
+            "buttonLabel": "Works 듣기"
           }
         ]
       },
       "en": {
-        "eyebrow": "Where the tones live",
-        "title": "Our",
-        "titleAccent": "Projects.",
-        "subtitle": "\" The little stories we hope to offer to the world \"",
-        "description": "",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "Story-based music production for IPs with living worlds.",
+        "description": "A team that builds its own IP can read a client IP more deeply.",
         "cards": [
           {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "Beyond the sky blooms the story of two girls and their friendship.\nSoraniwa Project is TALETONE's flagship music and film project.",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "TALETONE's storytelling project: original IP planning expanded through music and video.",
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "A stage where stories become songs.\nA TALETONE band project where storytellers give their own voices to each story.",
-            "buttonLabel": "Coming Soon"
+            "placeholder": "TALETONES visual",
+            "description": "A TALETONE band project where storytellers give their own voices to each story.",
+            "buttonLabel": "Listen to Works"
           }
         ]
       },
       "jp": {
-        "eyebrow": "Where the tones live",
-        "title": "Our",
-        "titleAccent": "Projects.",
-        "subtitle": "\" 私たちが世界へ届けたい、小さな物語たち \"",
-        "description": "",
+        "eyebrow": "FOR STORY-DRIVEN IP",
+        "title": "Stories We",
+        "titleAccent": "Work With.",
+        "subtitle": "世界観のあるIPを音楽へ広げるストーリー基盤の音楽プロダクション",
+        "description": "自社IPを企画してきたチームだからこそ、クライアントのIPをより深く読みます。",
         "cards": [
           {
             "label": "Storytelling Project",
             "title": "soraniwa",
-            "placeholder": "하늘 정원 일러스트 드롭",
-            "description": "空の向こうに咲く、二人の少女の友情の物語。\nSoraniwa Projectは、TALETONEが贈る音楽と映像のメインプロジェクトです。",
-            "buttonLabel": "soraniwa Youtube"
+            "placeholder": "soraniwa visual",
+            "description": "TALETONEが企画する自社IPを、音楽と映像へ広げていくストーリーテリングプロジェクトです。",
+            "buttonLabel": "soraniwa YouTube"
           },
           {
             "label": "Band by Storytellers",
             "title": "TALETONES",
-            "placeholder": "TALETONES 이미지 드롭",
-            "description": "物語が歌になる舞台。\n語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
-            "buttonLabel": "準備中"
+            "placeholder": "TALETONES visual",
+            "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
+            "buttonLabel": "Worksを聴く"
           }
         ]
       }
@@ -766,36 +766,36 @@ window.TALETONE_CONTENT = {
   },
   "contact": {
     "eyebrow": "Contact",
-    "titleLine1": "Let's begin with",
-    "titleAccent": "Your Story.",
-    "subtitle": "이번엔, 당신의 이야기가 음악이 될 차례입니다.",
-    "caption": "Tell us the tale — we'll find its tone.",
-    "buttonLabel": "Tell us your story",
-    "link": "mailto:n4ml@taletone.net",
+    "titleLine1": "당신의 이야기를",
+    "titleAccent": "들려주세요.",
+    "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
+    "caption": "그 이야기가 어떤 음악이 될 수 있을지, 첫 질문부터 함께 설계하겠습니다.",
+    "buttonLabel": "프로젝트 문의하기",
+    "link": "mailto:n4ml@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
     "translations": {
       "kr": {
         "eyebrow": "Contact",
-        "titleLine1": "Let's begin with",
-        "titleAccent": "Your Story.",
-        "subtitle": "\" 이번엔, 당신의 이야기가 음악이 될 차례입니다. \"",
-        "caption": "",
-        "buttonLabel": "n4ml@taletone.net"
+        "titleLine1": "당신의 이야기를",
+        "titleAccent": "들려주세요.",
+        "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
+        "caption": "그 이야기가 어떤 음악이 될 수 있을지, 첫 질문부터 함께 설계하겠습니다.",
+        "buttonLabel": "프로젝트 문의하기"
       },
       "en": {
         "eyebrow": "Contact",
-        "titleLine1": "Let's begin with",
+        "titleLine1": "Tell us",
         "titleAccent": "Your Story.",
-        "subtitle": "\" Now, it's your story's turn to become music. \"",
-        "caption": "",
-        "buttonLabel": "n4ml@taletone.net"
+        "subtitle": "The story does not need to be fully arranged yet.",
+        "caption": "We can begin with the first question and shape what the music can become.",
+        "buttonLabel": "Start a Project"
       },
       "jp": {
         "eyebrow": "Contact",
-        "titleLine1": "Let's begin with",
-        "titleAccent": "Your Story.",
-        "subtitle": "\" 今度は、あなたの物語が音楽になる番です。\"",
-        "caption": "",
-        "buttonLabel": "n4ml@taletone.net"
+        "titleLine1": "あなたの物語を",
+        "titleAccent": "聞かせてください。",
+        "subtitle": "まだ整理されていない物語でも大丈夫です。",
+        "caption": "その物語がどんな音楽になれるか、最初の問いから一緒に設計します。",
+        "buttonLabel": "プロジェクトを相談する"
       }
     }
   },
@@ -826,32 +826,32 @@ window.TALETONE_CONTENT = {
     }
   },
   "translation": {
-    "caption1": "①  Tale  ·  이야기",
-    "caption2": "②  Tone  ·  음색",
-    "caption3": "③  Music  ·  음악",
-    "sentence": "Once, a quiet story wished to be heard.",
-    "footer": "우리는 그 이야기를, 음악으로 옮깁니다.",
+    "caption1": "①  TALE  ·  이야기를 읽습니다",
+    "caption2": "②  TONE  ·  톤을 설계합니다",
+    "caption3": "③  MUSIC  ·  음악으로 완성합니다",
+    "sentence": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다.",
+    "footer": "그 이야기가 어떤 톤으로 들려야 하는지 설계하고, 음악으로 완성합니다.",
     "translations": {
       "kr": {
-        "caption1": "①  Tale  ·  이야기",
-        "caption2": "②  Tone  ·  음색",
-        "caption3": "③  Music  ·  음악",
-        "sentence": "이야기는, 고유한 빛깔을 품습니다.",
-        "footer": "우리는 그 빛깔을, 음악으로 꽃피웁니다."
+        "caption1": "①  TALE  ·  이야기를 읽습니다",
+        "caption2": "②  TONE  ·  톤을 설계합니다",
+        "caption3": "③  MUSIC  ·  음악으로 완성합니다",
+        "sentence": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다.",
+        "footer": "그 이야기가 어떤 톤으로 들려야 하는지 설계하고, 음악으로 완성합니다."
       },
       "en": {
-        "caption1": "①  Tale ",
-        "caption2": "②  Tone",
-        "caption3": "③  Music",
-        "sentence": "Every story carries\na little light of its own.",
-        "footer": "We let that light bloom into music."
+        "caption1": "①  TALE  ·  Read the story",
+        "caption2": "②  TONE  ·  Design the tone",
+        "caption3": "③  MUSIC  ·  Complete the music",
+        "sentence": "We do not begin by copying references. We begin by reading the story.",
+        "footer": "Then we design how it should sound, and complete it as music."
       },
       "jp": {
-        "caption1": "①  Tale  ·  物語",
-        "caption2": "②  Tone  ·  音色",
-        "caption3": "③  Music  ·  音楽",
-        "sentence": "物語は、それぞれ小さな光を宿しています。",
-        "footer": "私たちは、その光を音楽として咲かせます。"
+        "caption1": "①  TALE  ·  物語を読む",
+        "caption2": "②  TONE  ·  音色を設計する",
+        "caption3": "③  MUSIC  ·  音楽として完成させる",
+        "sentence": "参考曲をなぞる前に、まず物語を読みます。",
+        "footer": "その物語がどのように響くべきかを設計し、音楽として完成させます。"
       }
     }
   },
@@ -859,38 +859,38 @@ window.TALETONE_CONTENT = {
     {
       "id": "translation-projects",
       "eyebrow": "Where the tones gather",
-      "text": "이렇게 옮긴 음색들이 머무를\n두 개의 세계가 되었습니다.",
+      "text": "TALE → TONE → MUSIC\n이야기를 읽고, 톤을 설계하고, 음악으로 완성합니다.",
       "translations": {
         "kr": {
-          "eyebrow": "",
-          "text": "이렇게 옮긴 음색들이 머무를\n두 개의 세계가 되었습니다."
+          "eyebrow": "METHOD",
+          "text": "TALE → TONE → MUSIC\n이야기를 읽고, 톤을 설계하고, 음악으로 완성합니다."
         },
         "en": {
-          "eyebrow": "",
-          "text": "The tones we gathered\nhave found a home in two worlds."
+          "eyebrow": "METHOD",
+          "text": "TALE → TONE → MUSIC\nWe read the story, design the tone, and complete the music."
         },
         "jp": {
-          "eyebrow": "",
-          "text": "紡がれた音色は、\nやがて二つの世界の居場所となりました。"
+          "eyebrow": "METHOD",
+          "text": "TALE → TONE → MUSIC\n物語を読み、音色を設計し、音楽として完成させます。"
         }
       }
     },
     {
       "id": "projects-members",
       "eyebrow": "Behind every tone, a person",
-      "text": "그 세계를 음악으로 짓기 위해,\n우리는 모였습니다.",
+      "text": "서브컬쳐 게임, 버튜버, 애니메이션 IP까지\n세계관이 있는 이야기를 음악으로 옮깁니다.",
       "translations": {
         "kr": {
-          "eyebrow": "",
-          "text": "그 세계를 음악으로 짓기 위해,\n우리는 모였습니다."
+          "eyebrow": "FOR WHOM",
+          "text": "서브컬쳐 게임, 버튜버, 애니메이션 IP까지\n세계관이 있는 이야기를 음악으로 옮깁니다."
         },
         "en": {
-          "eyebrow": "",
-          "text": "To build those worlds through music,\nwe came together."
+          "eyebrow": "FOR WHOM",
+          "text": "From subculture games to VTubers and animation IPs,\nwe translate story worlds into music."
         },
         "jp": {
-          "eyebrow": "",
-          "text": "その世界を音楽で紡ぐために、\n私たちは集まりました。"
+          "eyebrow": "FOR WHOM",
+          "text": "サブカルチャーゲーム、VTuber、アニメIPまで、\n世界観のある物語を音楽へ移します。"
         }
       }
     },
@@ -935,29 +935,29 @@ window.TALETONE_CONTENT = {
     {
       "id": "news-contact",
       "eyebrow": "The last page is yours",
-      "text": "이제 남은 한 페이지는,\n당신의 이야기입니다.",
+      "text": "아직 정리되지 않은 이야기라도 괜찮습니다.\n첫 질문부터 함께 설계하겠습니다.",
       "translations": {
         "kr": {
-          "eyebrow": "",
-          "text": "이제 남은 한 페이지는,\n당신의 이야기입니다."
+          "eyebrow": "START WITH A STORY",
+          "text": "아직 정리되지 않은 이야기라도 괜찮습니다.\n첫 질문부터 함께 설계하겠습니다."
         },
         "en": {
-          "eyebrow": "",
-          "text": "Now, the final page is yours."
+          "eyebrow": "START WITH A STORY",
+          "text": "The story does not need to be fully arranged.\nWe can begin from the first question."
         },
         "jp": {
-          "eyebrow": "",
-          "text": "そして最後の一ページは、\nあなたの物語です。"
+          "eyebrow": "START WITH A STORY",
+          "text": "まだ整理されていない物語でも大丈夫です。\n最初の問いから一緒に設計します。"
         }
       }
     }
   ],
   "worksMeta": {
-    "eyebrow": "WORKS / PROJECT ARCHIVE",
+    "eyebrow": "WORKS / TRACK RECORD",
     "title": "Selected",
     "titleAccent": "Works.",
-    "subtitle": "A storybook of the sounds we made.",
-    "description": "우리가 써 내려간 소리의 이야기책.",
+    "subtitle": "공개 가능한 작업물과 크레딧을 중심으로 정리한 포트폴리오입니다.",
+    "description": "오리지널송, OST, 캐릭터송, BGM 등 공개 가능한 작업물을 모았습니다.",
     "collaborationLabel": "IN COLLABORATION WITH",
     "showcaseLabel": "Showcase",
     "galleryLabel": "Gallery",
@@ -972,10 +972,10 @@ window.TALETONE_CONTENT = {
     "releaseLabel": "Release",
     "translations": {
       "kr": {
-        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
-        "title": "Our",
-        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
-        "subtitle": "<span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"><span style=\"color:#ffffff\">\" 우</span>리가 써 내려가는 소리의 이야기책. \"</span></span></span>",
+        "eyebrow": "WORKS / TRACK RECORD",
+        "title": "Selected",
+        "titleAccent": "Works.",
+        "subtitle": "공개 가능한 작업물과 크레딧을 중심으로 정리한 포트폴리오입니다.",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
         "showcaseLabel": "Showcase",
@@ -991,10 +991,10 @@ window.TALETONE_CONTENT = {
         "releaseLabel": "Release"
       },
       "en": {
-        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
-        "title": "Our",
-        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
-        "subtitle": "<span style=\"color:#ffffff\">\" The storybook of sounds we continue to write. \"</span>",
+        "eyebrow": "WORKS / TRACK RECORD",
+        "title": "Selected",
+        "titleAccent": "Works.",
+        "subtitle": "A portfolio focused on publicly available works and credits.",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
         "showcaseLabel": "Showcase",
@@ -1010,10 +1010,10 @@ window.TALETONE_CONTENT = {
         "releaseLabel": "Release"
       },
       "jp": {
-        "eyebrow": "<span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\"><span style=\"color:#77a9d2\">WORKS / PROJECT ARCHIVE</span></span></span>",
-        "title": "Our",
-        "titleAccent": "<span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#3c819f\"><span style=\"color:#ffffff\"></span><span style=\"color:#ffffff\"><span style=\"color:#ffffff\"></span><span style=\"color:#74a9d2\"><span style=\"color:#74a9d2\"><span style=\"color:#ffffff\"><span style=\"color:#74a9d2\">W</span></span>orks.</span></span></span></span></span></span></span></span>",
-        "subtitle": "<span style=\"color:#ffffff\">\" 私たちが綴り続ける、音の物語。\"</span>",
+        "eyebrow": "WORKS / TRACK RECORD",
+        "title": "Selected",
+        "titleAccent": "Works.",
+        "subtitle": "公開可能な制作物とクレジットを中心にまとめたポートフォリオです。",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
         "showcaseLabel": "Showcase",
@@ -1092,22 +1092,22 @@ window.TALETONE_CONTENT = {
   },
   "footerMeta": {
     "title": "TALETONE MUSIC",
-    "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+    "tagline": "세계관이 있는 IP를 음악으로 확장합니다 · A tale becomes a tone.",
     "copyright": "© 2026 TALETONE MUSIC",
     "translations": {
       "kr": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "세계관이 있는 IP를 음악으로 확장합니다 · A tale becomes a tone.",
         "copyright": "© 2026 TALETONE MUSIC"
       },
       "en": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "Story-based music production for IP worlds · A tale becomes a tone.",
         "copyright": "© 2026 TALETONE MUSIC"
       },
       "jp": {
         "title": "TALETONE MUSIC",
-        "tagline": "이야기를 음악으로 번역합니다 · A tale becomes a tone.",
+        "tagline": "世界観のあるIPを音楽へ広げます · A tale becomes a tone.",
         "copyright": "© 2026 TALETONE MUSIC"
       }
     }
@@ -1278,5 +1278,4 @@ window.TALETONE_CONTENT = {
       }
     }
   }
-}
-;
+};

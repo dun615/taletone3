@@ -319,7 +319,7 @@ var audioPool = new Map();
     return '--fit:' + esc((unit && unit.fit) || 'cover') + ';--pos-x:' + esc((unit && unit.posX) || '50%') + ';--pos-y:' + esc((unit && unit.posY) || '50%') + ';--brightness:' + esc(brightness);
   }
 
-  function editorBreakpoint() {
+  function layoutBreakpoint() {
     var width = window.innerWidth || document.documentElement.clientWidth || 1440;
     if (width <= 720) return 'mobile';
     if (width <= 1100) return 'tablet';
@@ -328,7 +328,7 @@ var audioPool = new Map();
 
   function responsiveOverride(unit) {
     var responsive = unit && unit.responsive;
-    var bp = editorBreakpoint();
+    var bp = layoutBreakpoint();
     var override = responsive && (responsive[bp] || responsive.desktop);
     override = override || {};
     return {

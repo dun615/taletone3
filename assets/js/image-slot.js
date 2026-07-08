@@ -247,7 +247,7 @@
         '  <img part="image" alt="" draggable="false" style="display:none">' +
         '  <div class="empty" part="empty">' + icon +
         '    <div class="cap"></div>' +
-        '    <div class="sub">or <u>browse files</u></div></div>' +
+        '    <div class="sub"><u>Select a file</u></div></div>' +
         '  <div class="ring" part="ring"></div>' +
         '</div>' +
         '<div class="spill">' +
@@ -255,8 +255,8 @@
         '  <div class="handle" data-c="nw"></div><div class="handle" data-c="ne"></div>' +
         '  <div class="handle" data-c="sw"></div><div class="handle" data-c="se"></div>' +
         '</div>' +
-        '<div class="ctl"><button data-act="replace" title="Replace image">Replace</button>' +
-        '  <button data-act="clear" title="Remove image">Remove</button></div>' +
+        '<div class="ctl"><button data-act="replace" title="Change image">Change image</button>' +
+        '  <button data-act="clear" title="Clear image">Clear image</button></div>' +
         '<input type="file" accept="' + ACCEPT.join(',') + '" hidden>';
       this._frame = root.querySelector('.frame');
       this._ring = root.querySelector('.ring');
