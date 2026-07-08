@@ -1,6 +1,6 @@
 {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T02:20:00+09:00",
+  "lastUpdated": "2026-07-09T05:54:00+09:00",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -570,7 +570,9 @@
         "descriptionLine2": "스토리 기반 음악 프로덕션",
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
-        "backgroundLine2": "TONE"
+        "backgroundLine2": "TONE",
+        "prologueCopy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+        "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
       },
       "en": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -582,7 +584,9 @@
         "descriptionLine2": "games, VTubers, animation, webtoon and novel worlds",
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
-        "backgroundLine2": "TONE"
+        "backgroundLine2": "TONE",
+        "prologueCopy": "Countless stories drift on the surface. We dive beneath them.",
+        "prologueHint": "Below the surface, an unwritten book is waiting."
       },
       "jp": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -594,9 +598,13 @@
         "descriptionLine2": "ストーリー基盤の音楽プロダクション",
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
-        "backgroundLine2": "TONE"
+        "backgroundLine2": "TONE",
+        "prologueCopy": "水面には無数の物語が漂っています。私たちはその下へ潜っていきます。",
+        "prologueHint": "水面の下で、まだ書かれていない本が待っています。"
       }
-    }
+    },
+    "prologueCopy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+    "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
@@ -871,102 +879,102 @@
   "bridges": [
     {
       "id": "translation-projects",
-      "eyebrow": "Where the tones gather",
-      "text": "TALE → TONE → MUSIC\n이야기를 읽고, 톤을 설계하고, 음악으로 완성합니다.",
+      "eyebrow": "CHAPTER 1 · TALE",
+      "text": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다.",
       "translations": {
         "kr": {
-          "eyebrow": "METHOD",
-          "text": "TALE → TONE → MUSIC\n이야기를 읽고, 톤을 설계하고, 음악으로 완성합니다."
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다."
         },
         "en": {
-          "eyebrow": "METHOD",
-          "text": "TALE → TONE → MUSIC\nWe read the story, design the tone, and complete the music."
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "We do not chase references first. We read the story first."
         },
         "jp": {
-          "eyebrow": "METHOD",
-          "text": "TALE → TONE → MUSIC\n物語を読み、音色を設計し、音楽として完成させます。"
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "レファレンスを追う前に、私たちはまず物語を読みます。"
         }
       }
     },
     {
       "id": "projects-members",
-      "eyebrow": "Behind every tone, a person",
-      "text": "서브컬쳐 게임, 버튜버, 애니메이션 IP까지\n세계관이 있는 이야기를 음악으로 옮깁니다.",
+      "eyebrow": "CHAPTER 2 · TONE",
+      "text": "읽힌 이야기는,\n자기만의 톤을 찾기 시작합니다.",
       "translations": {
         "kr": {
-          "eyebrow": "FOR WHOM",
-          "text": "서브컬쳐 게임, 버튜버, 애니메이션 IP까지\n세계관이 있는 이야기를 음악으로 옮깁니다."
+          "eyebrow": "CHAPTER 2 · TONE",
+          "text": "읽힌 이야기는,\n자기만의 톤을 찾기 시작합니다."
         },
         "en": {
-          "eyebrow": "FOR WHOM",
-          "text": "From subculture games to VTubers and animation IPs,\nwe translate story worlds into music."
+          "eyebrow": "CHAPTER 2 · TONE",
+          "text": "Once read, the story begins\nto find its own tone."
         },
         "jp": {
-          "eyebrow": "FOR WHOM",
-          "text": "サブカルチャーゲーム、VTuber、アニメIPまで、\n世界観のある物語を音楽へ移します。"
+          "eyebrow": "CHAPTER 2 · TONE",
+          "text": "読み解かれた物語は、\n自分だけの音色を探し始めます。"
         }
       }
     },
     {
       "id": "members-works",
-      "eyebrow": "From their hands, into records",
-      "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어났습니다.",
+      "eyebrow": "CHAPTER 3 · MUSIC",
+      "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어납니다.",
       "translations": {
         "kr": {
-          "eyebrow": "",
-          "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어났습니다."
+          "eyebrow": "CHAPTER 3 · MUSIC",
+          "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어납니다."
         },
         "en": {
-          "eyebrow": "",
-          "text": "The stories that reached our fingertips became sound,\nand at last, blossomed into music."
+          "eyebrow": "CHAPTER 3 · MUSIC",
+          "text": "The story at our fingertips becomes sound,\nand finally blossoms into a piece of music."
         },
         "jp": {
-          "eyebrow": "",
-          "text": "指先に触れた物語は音となり、\nやがて一篇の音楽として花開きました。"
+          "eyebrow": "CHAPTER 3 · MUSIC",
+          "text": "指先に触れた物語は音になり、\nやがて一篇の音楽として咲きます。"
         }
       }
     },
     {
       "id": "works-news",
-      "eyebrow": "THE TALE KEEPS TRAVELING BEYOND THE PAGE.",
-      "text": "책장 밖으로 흘러나온 이야기들은\n작은 소식이 되어,\n먼 곳의 마음까지 닿아갑니다.",
+      "eyebrow": "RESURFACE",
+      "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다.",
       "translations": {
         "kr": {
-          "eyebrow": "",
-          "text": "책장 밖으로 흘러나온 이야기는\n작은 소식이 되어 날아갑니다."
+          "eyebrow": "RESURFACE",
+          "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다."
         },
         "en": {
-          "eyebrow": "",
-          "text": "The story that drifted beyond the pages\nbecomes a little piece of news\nand flies away."
+          "eyebrow": "RESURFACE",
+          "text": "The story in bloom now ripples\nback across the surface of the world."
         },
         "jp": {
-          "eyebrow": "",
-          "text": "ページの外へこぼれ出した物語は、\n小さなお知らせとなって\n飛んでいきます。"
+          "eyebrow": "RESURFACE",
+          "text": "花開いた物語は、\nいま世界の水面へと広がっていきます。"
         }
       }
     },
     {
       "id": "news-contact",
-      "eyebrow": "The last page is yours",
-      "text": "아직 정리되지 않은 이야기라도 괜찮습니다.\n첫 질문부터 함께 설계하겠습니다.",
+      "eyebrow": "EPILOGUE",
+      "text": "그리고 심해의 책은,\n다음 페이지를 비워두었습니다.\n당신의 이야기를 들려주세요.",
       "translations": {
         "kr": {
-          "eyebrow": "START WITH A STORY",
-          "text": "아직 정리되지 않은 이야기라도 괜찮습니다.\n첫 질문부터 함께 설계하겠습니다."
+          "eyebrow": "EPILOGUE",
+          "text": "그리고 심해의 책은,\n다음 페이지를 비워두었습니다.\n당신의 이야기를 들려주세요."
         },
         "en": {
-          "eyebrow": "START WITH A STORY",
-          "text": "The story does not need to be fully arranged.\nWe can begin from the first question."
+          "eyebrow": "EPILOGUE",
+          "text": "And the book in the deep\nleaves its next page blank.\nTell us your story."
         },
         "jp": {
-          "eyebrow": "START WITH A STORY",
-          "text": "まだ整理されていない物語でも大丈夫です。\n最初の問いから一緒に設計します。"
+          "eyebrow": "EPILOGUE",
+          "text": "そして深海の本は、\n次のページを空白のまま残しました。\nあなたの物語を聞かせてください。"
         }
       }
     }
   ],
   "worksMeta": {
-    "eyebrow": "WORKS / TRACK RECORD",
+    "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
     "title": "Selected",
     "titleAccent": "Works.",
     "subtitle": "공개 가능한 작업물과 크레딧을 중심으로 정리한 포트폴리오입니다.",
@@ -985,7 +993,7 @@
     "releaseLabel": "Release",
     "translations": {
       "kr": {
-        "eyebrow": "WORKS / TRACK RECORD",
+        "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
         "title": "Selected",
         "titleAccent": "Works.",
         "subtitle": "공개 가능한 작업물과 크레딧을 중심으로 정리한 포트폴리오입니다.",
@@ -1004,7 +1012,7 @@
         "releaseLabel": "Release"
       },
       "en": {
-        "eyebrow": "WORKS / TRACK RECORD",
+        "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
         "title": "Selected",
         "titleAccent": "Works.",
         "subtitle": "A portfolio focused on publicly available works and credits.",
@@ -1023,7 +1031,7 @@
         "releaseLabel": "Release"
       },
       "jp": {
-        "eyebrow": "WORKS / TRACK RECORD",
+        "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
         "title": "Selected",
         "titleAccent": "Works.",
         "subtitle": "公開可能な制作物とクレジットを中心にまとめたポートフォリオです。",
@@ -1057,7 +1065,8 @@
         "titleAccent": "News.",
         "subtitle": "\" 새로 피어난 이야기와 소식들을 모아둡니다. \"",
         "description": "",
-        "readMoreLabel": "Read more →"
+        "readMoreLabel": "Read more →",
+        "resurfaceNote": "세상에 닿은 흔적"
       },
       "en": {
         "eyebrow": "UPDATES / NOTES",
@@ -1065,7 +1074,8 @@
         "titleAccent": "News.",
         "subtitle": "\" A place where newly blossomed stories and updates come together. \"",
         "description": "",
-        "readMoreLabel": "Read more →"
+        "readMoreLabel": "Read more →",
+        "resurfaceNote": "Traces reaching the world"
       },
       "jp": {
         "eyebrow": "UPDATES / NOTES",
@@ -1073,9 +1083,11 @@
         "titleAccent": "News.",
         "subtitle": "\" 新しく咲いた物語と、お知らせを集めた場所です。\"",
         "description": "",
-        "readMoreLabel": "Read more →"
+        "readMoreLabel": "Read more →",
+        "resurfaceNote": "世界に届いた跡"
       }
-    }
+    },
+    "resurfaceNote": "세상에 닿은 흔적"
   },
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
@@ -1288,6 +1300,120 @@
         "rolePlaceholder": "Role",
         "namePlaceholder": "Name",
         "textColorPlaceholder": "Text color #ffffff"
+      }
+    }
+  },
+  "chapterLabels": {
+    "prologue": {
+      "label": "PROLOGUE",
+      "note": "수면에서 아래로",
+      "copy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+      "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
+    },
+    "tale": {
+      "label": "CHAPTER 1 · TALE",
+      "note": "어떤 이야기와 일하는가"
+    },
+    "tone": {
+      "label": "CHAPTER 2 · TONE",
+      "note": "이야기를 읽는 사람들"
+    },
+    "music": {
+      "label": "CHAPTER 3 · MUSIC",
+      "note": "심해에서 피어난 결과물"
+    },
+    "resurface": {
+      "label": "RESURFACE",
+      "note": "세상에 닿은 흔적"
+    },
+    "epilogue": {
+      "label": "EPILOGUE",
+      "note": "다음 페이지는 비어 있습니다"
+    },
+    "translations": {
+      "kr": {
+        "prologue": {
+          "label": "PROLOGUE",
+          "note": "수면에서 아래로",
+          "copy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+          "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
+        },
+        "tale": {
+          "label": "CHAPTER 1 · TALE",
+          "note": "어떤 이야기와 일하는가"
+        },
+        "tone": {
+          "label": "CHAPTER 2 · TONE",
+          "note": "이야기를 읽는 사람들"
+        },
+        "music": {
+          "label": "CHAPTER 3 · MUSIC",
+          "note": "심해에서 피어난 결과물"
+        },
+        "resurface": {
+          "label": "RESURFACE",
+          "note": "세상에 닿은 흔적"
+        },
+        "epilogue": {
+          "label": "EPILOGUE",
+          "note": "다음 페이지는 비어 있습니다"
+        }
+      },
+      "en": {
+        "prologue": {
+          "label": "PROLOGUE",
+          "note": "From surface to below",
+          "copy": "Countless stories drift on the surface. We dive beneath them.",
+          "hint": "Below the surface, an unwritten book is waiting."
+        },
+        "tale": {
+          "label": "CHAPTER 1 · TALE",
+          "note": "The stories we begin with"
+        },
+        "tone": {
+          "label": "CHAPTER 2 · TONE",
+          "note": "The people who read the story"
+        },
+        "music": {
+          "label": "CHAPTER 3 · MUSIC",
+          "note": "What blooms in the deep"
+        },
+        "resurface": {
+          "label": "RESURFACE",
+          "note": "Traces reaching the world"
+        },
+        "epilogue": {
+          "label": "EPILOGUE",
+          "note": "The next page is blank"
+        }
+      },
+      "jp": {
+        "prologue": {
+          "label": "PROLOGUE",
+          "note": "水面からその下へ",
+          "copy": "水面には無数の物語が漂っています。私たちはその下へ潜っていきます。",
+          "hint": "水面の下で、まだ書かれていない本が待っています。"
+        },
+        "tale": {
+          "label": "CHAPTER 1 · TALE",
+          "note": "どんな物語と向き合うのか"
+        },
+        "tone": {
+          "label": "CHAPTER 2 · TONE",
+          "note": "物語を読む人たち"
+        },
+        "music": {
+          "label": "CHAPTER 3 · MUSIC",
+          "note": "深海で咲いた結果"
+        },
+        "resurface": {
+          "label": "RESURFACE",
+          "note": "世界に届いた跡"
+        },
+        "epilogue": {
+          "label": "EPILOGUE",
+          "note": "次のページは空白です"
+        }
       }
     }
   }
