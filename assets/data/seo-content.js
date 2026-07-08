@@ -1,4 +1,4 @@
-window.TALETONE_SEO_CONTENT = {
+window.TALETONE_SEO = {
   "siteName": "TALETONE MUSIC",
   "baseUrl": "https://taletone.net",
   "pages": [
@@ -8,15 +8,15 @@ window.TALETONE_SEO_CONTENT = {
       "path": "/",
       "sectionId": "c-home",
       "title": "TALETONE MUSIC",
-      "description": "스토리 기반 IP를 위한 서브컬쳐 음악 프로덕션. TALETONE MUSIC은 세계관과 캐릭터가 필요로 하는 음악의 방향을 함께 찾습니다."
+      "description": "A tale becomes a tone, A tone becomes music.\nTALETONE MUSIC 공식 사이트"
     },
     {
       "key": "projects",
       "label": "Projects",
       "path": "/projects/",
       "sectionId": "c-projects",
-      "title": "Stories We Work With | TALETONE MUSIC",
-      "description": "서브컬쳐 게임, 버튜버, 애니메이션·웹툰·웹소설 IP를 위한 음악 방향을 함께 정리하고, TALETONE의 오리지널 프로젝트 경험을 소개합니다."
+      "title": "Projects | TALETONE MUSIC",
+      "description": "우리가 세상에 건네고픈 작은 이야기들"
     },
     {
       "key": "members",
@@ -24,31 +24,32 @@ window.TALETONE_SEO_CONTENT = {
       "path": "/members/",
       "sectionId": "c-members",
       "title": "Members | TALETONE MUSIC",
-      "description": "기획, 프로덕션, 보컬, 비주얼 담당자가 함께 브리프를 읽고 스토리 기반 IP의 음악과 캐릭터 해석을 설계합니다."
+      "description": "이야기를 음악으로 꽃피우는 사람들"
     },
     {
       "key": "works",
       "label": "Works",
       "path": "/works/",
       "sectionId": "c-works",
-      "title": "Selected Works | TALETONE MUSIC",
-      "description": "TALETONE MUSIC이 실제 IP와 아티스트의 맥락을 음악으로 해석해온 대표 작업물과 크레딧을 확인하세요."
+      "title": "Works | TALETONE MUSIC",
+      "description": "우리가 써 내려가는 소리의 이야기책."
     },
     {
       "key": "news",
       "label": "News",
       "path": "/news/",
       "sectionId": "c-news",
-      "title": "Latest News | TALETONE MUSIC",
-      "description": "TALETONE MUSIC의 최근 공개 작업, 프로젝트 업데이트, 팀의 소식을 전합니다."
+      "title": "News | TALETONE MUSIC",
+      "description": "새로 피어난 이야기와 소식들."
     },
     {
       "key": "contact",
       "label": "Contact",
       "path": "/contact/",
       "sectionId": "c-contact",
-      "title": "Project Inquiry | TALETONE MUSIC",
-      "description": "세계관, 캐릭터, 레퍼런스, 아직 정리되지 않은 아이디어까지 TALETONE MUSIC과 함께 이야기해보세요."
+      "title": "Contact | TALETONE MUSIC",
+      "description": "이번엔, 당신의 이야기가 음악이 될 차례입니다."
     }
   ]
-};
+}
+;
