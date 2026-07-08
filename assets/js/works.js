@@ -1174,7 +1174,7 @@ var audioPool = new Map();
     resetSubState(works[0]);
     ensureSelectedVisible();
     preloadAllImages();
-    setTimeout(function () { waitForHost(0); }, 1800);
+    setTimeout(function () { waitForHost(0); }, 260);
     setInterval(function () {
       if (rendering || !works.length) return;
       var app = document.getElementById('tt-gh-works-app');

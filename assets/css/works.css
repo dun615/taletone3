@@ -3287,3 +3287,25 @@
   }
 }
 
+/* Visual QA: keep mobile section headers clear of the fixed logo/language UI
+   without changing the established card layouts or scroll narrative. */
+@media (max-width: 760px) {
+  #c-projects,
+  #c-members {
+    justify-content: flex-start !important;
+    padding-top: max(132px, calc(104px + env(safe-area-inset-top))) !important;
+  }
+
+  #c-projects > [data-reveal]:first-child,
+  #c-members > [data-reveal]:first-child {
+    margin-top: 0 !important;
+    margin-bottom: clamp(24px, 6vw, 36px) !important;
+    position: relative !important;
+    z-index: 6 !important;
+  }
+
+  #c-projects > [data-public-audience][data-reveal] {
+    margin-top: 0 !important;
+  }
+}
+
