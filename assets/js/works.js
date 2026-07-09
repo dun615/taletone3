@@ -307,7 +307,7 @@ var audioPool = new Map();
 
   function imgTag(unit, className) {
     if (!unit || !unit.image) return '<span class="' + esc(className || '') + '"></span>';
-    return '<img class="' + esc(className || '') + '" src="' + esc(unit.image) + '" alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
+    return '<img draggable="false" class="' + esc(className || '') + '" src="' + esc(unit.image) + '" alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
   }
 
   function numeric(value, fallback) {
@@ -599,7 +599,10 @@ var audioPool = new Map();
     var maxStart = Math.max(0, works.length - visibleCount);
     var center = Math.floor(visibleCount / 2);
     var pos = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
-    var start = clamp(pos - center, 0, maxStart);
+    var rawStart = pos - center;
+    var start = clamp(rawStart, 0, maxStart);
+    if (dragState.active && rawStart < 0) start = rawStart * 0.34;
+    if (dragState.active && rawStart > maxStart) start = maxStart + (rawStart - maxStart) * 0.34;
     var offset = index - start;
     return fluidLayout(index, offset, pos, slots);
   }
@@ -707,7 +710,7 @@ var audioPool = new Map();
       var unit = cardUnit(work, index);
       return '<div role="button" tabindex="0" class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '') + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || work.type || itemKind(work), 20) + '</span></span></span>' + cardPreview(work) + '</div>';
     }).join('');
-    return '<div class="tt-gh-stage" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + segments() + '</div>';
+    return '<div class="tt-gh-stage" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
 
   function videoLightbox() {
@@ -892,8 +895,6 @@ var audioPool = new Map();
       }
     });
     if (layoutOnly) return true;
-    var segmentNode = root.querySelector('.tt-gh-segments');
-    if (segmentNode) segmentNode.outerHTML = segments();
     var controlsNode = root.querySelector('.tt-gh-controls');
     var controlsHtml = controls();
     if (controlsNode) controlsNode.outerHTML = controlsHtml;
@@ -1060,6 +1061,25 @@ var audioPool = new Map();
     return;
   }
 
+  function shelfNodeFromTarget(target) {
+    var node = target && target.nodeType === 1 ? target : target && target.parentElement;
+    if (!node || !node.closest) return null;
+    var section = document.getElementById('c-works');
+    var stage = node.closest('[data-works-drag-stage]');
+    if (!section || !stage || !section.contains(stage)) return null;
+    return stage;
+  }
+
+  function onNativeDragStart(event) {
+    if (!shelfNodeFromTarget(event.target)) return;
+    event.preventDefault();
+  }
+
+  function onNativeSelectStart(event) {
+    if (!shelfNodeFromTarget(event.target)) return;
+    event.preventDefault();
+  }
+
   function onPointerDown(event) {
     if (dragState.active) return;
     var actionButton = event.target && event.target.closest ? event.target.closest('[data-works-action]') : null;
@@ -1078,6 +1098,7 @@ var audioPool = new Map();
     var stage = event.target && event.target.closest ? event.target.closest('[data-works-drag-stage]') : null;
     if (!stage || !section.contains(stage)) return;
     if (event.target.closest('[data-works-action="prev"],[data-works-action="next"],.tt-gh-tabs,.tt-gh-segments,.tt-gh-info,.tt-gh-modal,input')) return;
+    if (event.cancelable) event.preventDefault();
     dragState.active = true;
     dragState.startX = event.clientX;
     dragState.lastX = event.clientX;
@@ -1105,7 +1126,7 @@ var audioPool = new Map();
     dragState.lastX = clientX;
     var delta = clientX - dragState.startX;
     if (Math.abs(delta) > 6) dragState.moved = true;
-    var step = Math.max(120, Math.min(270, stage.getBoundingClientRect().width * 0.18));
+    var step = Math.max(100, Math.min(160, stage.getBoundingClientRect().width * 0.115));
     var nextPosition = dragState.startPosition - (delta / step);
     if (nextPosition < 0) nextPosition = nextPosition * 0.28;
     if (nextPosition > works.length - 1) {
@@ -1355,6 +1376,8 @@ var audioPool = new Map();
   document.addEventListener('click', onClick, true);
   document.addEventListener('input', onInput, true);
   document.addEventListener('keydown', onKey, true);
+  document.addEventListener('dragstart', onNativeDragStart, true);
+  document.addEventListener('selectstart', onNativeSelectStart, true);
   document.addEventListener('pointerdown', onPointerDown, true);
   document.addEventListener('pointermove', onPointerMove, true);
   document.addEventListener('pointerup', onPointerUp, true);
