@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T11:46:21.364Z",
+  "lastUpdated": "2026-07-09T17:47:51Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -616,8 +616,8 @@ window.TALETONE_CONTENT = {
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
-    "title": "Stories We",
-    "titleAccent": "Work With.",
+    "title": "STORY",
+    "titleAccent": " TYPES",
     "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
     "description": "자체 IP를 기획해 본 팀은, 클라이언트의 IP를 더 깊이 읽습니다.",
     "cards": [
@@ -711,10 +711,10 @@ window.TALETONE_CONTENT = {
     "translations": {
       "kr": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "Stories We",
-        "titleAccent": "Work With.",
+        "title": "STORY",
+        "titleAccent": " TYPES",
         "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
-        "description": "자체 IP를 기획해 본 팀은, 클라이언트의 IP를 더 깊이 읽습니다.",
+        "description": "자체 IP를 기획해 본 팀은, 여러분의 IP를 더 깊이 읽습니다.",
         "cards": [
           {
             "label": "Storytelling Project",
@@ -734,10 +734,10 @@ window.TALETONE_CONTENT = {
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "Stories We",
-        "titleAccent": "Work With.",
+        "title": "STORY",
+        "titleAccent": " TYPES",
         "subtitle": "Story-based music production for IPs with living worlds.",
-        "description": "A team that builds its own IP can read a client IP more deeply.",
+        "description": "A team that builds its own IP can read your IP more deeply.",
         "cards": [
           {
             "label": "Storytelling Project",
@@ -757,10 +757,10 @@ window.TALETONE_CONTENT = {
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "Stories We",
-        "titleAccent": "Work With.",
+        "title": "STORY",
+        "titleAccent": " TYPES",
         "subtitle": "世界観のあるIPを音楽へ広げるストーリー基盤の音楽プロダクション",
-        "description": "自社IPを企画してきたチームだからこそ、クライアントのIPをより深く読みます。",
+        "description": "自社IPを企画してきたチームだからこそ、皆さまのIPをより深く読み解きます。",
         "cards": [
           {
             "label": "Storytelling Project",
@@ -802,8 +802,8 @@ window.TALETONE_CONTENT = {
       },
       "en": {
         "eyebrow": "Contact",
-        "titleLine1": "Tell us",
-        "titleAccent": "Your Story.",
+        "titleLine1": "TELL US",
+        "titleAccent": "YOUR STORY",
         "subtitle": "The story does not need to be fully arranged yet.",
         "caption": "We can begin with the first question and shape what the music can become.",
         "buttonLabel": "Start a Project",
@@ -836,19 +836,19 @@ window.TALETONE_CONTENT = {
     "translations": {
       "kr": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
         "subtitle": "\" 이야기를 음악으로 꽃피우는 사람들 \"",
         "description": ""
       },
       "en": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
         "subtitle": "\" The people who help stories bloom into music. \"",
         "description": ""
       },
       "jp": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">Members</span>",
+        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
         "subtitle": "\" 物語を音楽へと咲かせる人たち。\"",
         "description": ""
       }
@@ -1394,8 +1394,8 @@ window.TALETONE_CONTENT = {
     "translations": {
       "kr": {
         "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
-        "title": "Selected",
-        "titleAccent": "Works.",
+        "title": "RELEASED",
+        "titleAccent": "WORKS",
         "subtitle": "공개 가능한 작업물과 크레딧을 중심으로 정리한 포트폴리오입니다.",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1413,8 +1413,8 @@ window.TALETONE_CONTENT = {
       },
       "en": {
         "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
-        "title": "Selected",
-        "titleAccent": "Works.",
+        "title": "RELEASED",
+        "titleAccent": "WORKS",
         "subtitle": "A portfolio focused on publicly available works and credits.",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1432,8 +1432,8 @@ window.TALETONE_CONTENT = {
       },
       "jp": {
         "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
-        "title": "Selected",
-        "titleAccent": "Works.",
+        "title": "RELEASED",
+        "titleAccent": "WORKS",
         "subtitle": "公開可能な制作物とクレジットを中心にまとめたポートフォリオです。",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1461,8 +1461,8 @@ window.TALETONE_CONTENT = {
     "translations": {
       "kr": {
         "eyebrow": "UPDATES / NOTES",
-        "title": "Latest",
-        "titleAccent": "News.",
+        "title": "LATEST",
+        "titleAccent": "NEWS",
         "subtitle": "\" 새로 피어난 이야기와 소식들을 모아둡니다. \"",
         "description": "",
         "readMoreLabel": "Read more →",
@@ -1470,8 +1470,8 @@ window.TALETONE_CONTENT = {
       },
       "en": {
         "eyebrow": "UPDATES / NOTES",
-        "title": "Latest",
-        "titleAccent": "News.",
+        "title": "LATEST",
+        "titleAccent": "NEWS",
         "subtitle": "\" A place where newly blossomed stories and updates come together. \"",
         "description": "",
         "readMoreLabel": "Read more →",
@@ -1479,8 +1479,8 @@ window.TALETONE_CONTENT = {
       },
       "jp": {
         "eyebrow": "UPDATES / NOTES",
-        "title": "Latest",
-        "titleAccent": "News.",
+        "title": "LATEST",
+        "titleAccent": "NEWS",
         "subtitle": "\" 新しく咲いた物語と、お知らせを集めた場所です。\"",
         "description": "",
         "readMoreLabel": "Read more →",
@@ -1544,7 +1544,7 @@ window.TALETONE_CONTENT = {
     "langEn": "EN",
     "langJp": "JP",
     "navHome": "HOME",
-    "navProjects": "PROJECTS",
+    "navProjects": "STORY TYPES",
     "navMembers": "MEMBERS",
     "navWorks": "WORKS",
     "navNews": "NEWS",
@@ -1585,7 +1585,7 @@ window.TALETONE_CONTENT = {
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "PROJECTS",
+        "navProjects": "STORY TYPES",
         "navMembers": "MEMBERS",
         "navWorks": "WORKS",
         "navNews": "NEWS",
@@ -1626,7 +1626,7 @@ window.TALETONE_CONTENT = {
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "PROJECTS",
+        "navProjects": "STORY TYPES",
         "navMembers": "MEMBERS",
         "navWorks": "WORKS",
         "navNews": "NEWS",
@@ -1667,7 +1667,7 @@ window.TALETONE_CONTENT = {
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "PROJECTS",
+        "navProjects": "STORY TYPES",
         "navMembers": "MEMBERS",
         "navWorks": "WORKS",
         "navNews": "NEWS",
