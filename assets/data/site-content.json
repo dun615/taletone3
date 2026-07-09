@@ -1,6 +1,6 @@
 {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T08:34:21.242Z",
+  "lastUpdated": "2026-07-09T08:47:48.505Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -904,11 +904,11 @@
         "footer": "A tone becomes music.",
         "mobileLines": [
           {
-            "text": "A tale becomes",
+            "text": "A tale",
             "indent": 0
           },
           {
-            "text": "a tone.",
+            "text": "becomes a tone.",
             "indent": 0
           },
           {

@@ -3418,6 +3418,51 @@
   }
 }
 
+/* Mobile priority: the audience list is supporting context, not a main project
+   card. Keep it readable while making soraniwa / TALETONES reclaim the space. */
+@media (max-width: 760px) {
+  #c-projects [data-public-audience][data-reveal] {
+    gap: 8px !important;
+    margin-bottom: 20px !important;
+  }
+
+  #c-projects [data-public-audience] article {
+    min-height: 0 !important;
+    padding: 11px 13px 12px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 8px 18px rgba(8, 22, 38, .045) !important;
+    background: rgba(255, 255, 255, .34) !important;
+  }
+
+  #c-projects [data-public-audience] article > div:first-child {
+    margin-bottom: 4px !important;
+    font-size: 9px !important;
+    line-height: 1.15 !important;
+    letter-spacing: .14em !important;
+  }
+
+  #c-projects [data-public-audience] article h3 {
+    margin: 0 0 5px !important;
+    font-size: 15px !important;
+    line-height: 1.18 !important;
+    word-break: keep-all !important;
+  }
+
+  #c-projects [data-public-audience] article p {
+    margin: 0 !important;
+    font-size: 10.5px !important;
+    line-height: 1.35 !important;
+    font-weight: 650 !important;
+    max-height: 2.7em !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+  }
+
+  #c-projects [data-public-audience] article p:last-child {
+    display: none !important;
+  }
+}
+
 /* Visual QA: keep mobile section headers clear of the fixed logo/language UI
    without changing the established card layouts or scroll narrative. */
 @media (max-width: 760px) {
@@ -3437,6 +3482,13 @@
 
   #c-projects > [data-public-audience][data-reveal] {
     margin-top: 0 !important;
+  }
+
+  #c-projects > [data-reveal]:first-child > p:last-of-type {
+    width: min(250px, calc(100vw - 128px)) !important;
+    margin-left: auto !important;
+    margin-right: max(18px, env(safe-area-inset-right)) !important;
+    text-align: center !important;
   }
 }
 
@@ -3566,6 +3618,30 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
     min-height: 44px;
     padding: 0 17px;
     font-size: 12px;
+  }
+}
+
+/* Contact title: keep Korean/Japanese particles attached on narrow phones. */
+@media (max-width: 760px) {
+  #c-contact h2 {
+    width: max-content !important;
+    max-width: calc(100vw - 44px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-size: clamp(36px, 10.35vw, 46px) !important;
+    line-height: .92 !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    text-align: center !important;
+  }
+
+  #c-contact h2 span,
+  #c-contact h2 .sc-interp {
+    display: inline-block !important;
+    max-width: 100% !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
   }
 }
 
