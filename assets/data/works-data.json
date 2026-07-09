@@ -27,7 +27,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "STELLIVE 'Universe' 2nd Single",
+          "description": "버추얼 아티스트 유닛 싱글의 세계관과 밴드 감정을 음악으로 정리한 작업."
+        },
+        "en": {
+          "type": "STELLIVE 'Universe' 2nd Single",
+          "description": "A virtual artist unit single shaped around its worldbuilding and band-driven emotion."
+        },
+        "jp": {
+          "type": "STELLIVE『Universe』2nd Single",
+          "description": "バーチャルアーティストユニットの世界観とバンド感を音楽として整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-run-galaxy",
@@ -56,7 +70,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "게임 'Zenless Zone Zero' 공식 1st Anniversary Album 수록곡",
+          "description": "게임 IP의 여름 이벤트 정서를 보컬 곡으로 정리한 공식 앨범 수록 작업."
+        },
+        "en": {
+          "type": "Official 1st Anniversary Album track for game 'Zenless Zone Zero'",
+          "description": "An official album track that turns a game IP's summer event mood into a vocal song."
+        },
+        "jp": {
+          "type": "ゲーム『Zenless Zone Zero』公式1st Anniversary Album収録曲",
+          "description": "ゲームIPの夏イベントの空気をボーカル曲として整えた公式アルバム収録制作です。"
+        }
+      }
     },
     {
       "id": "work-parable",
@@ -85,7 +113,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "'해봄' 3rd Single",
+          "description": "캐릭터의 밝은 에너지와 감정선을 오리지널 송으로 정리한 작업."
+        },
+        "en": {
+          "type": "'해봄' 3rd Single",
+          "description": "An original song shaping the character's bright energy and emotional line."
+        },
+        "jp": {
+          "type": "『해봄』3rd Single",
+          "description": "キャラクターの明るいエネルギーと感情線をオリジナルソングとして整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-taletones",
@@ -114,7 +156,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "'Arune' 1st Single",
+          "description": "슬픔과 그리움 이후 다시 시작되는 감정을 서사적 팝 사운드로 정리한 작업."
+        },
+        "en": {
+          "type": "'Arune' 1st Single",
+          "description": "A narrative pop track about beginning again after sadness and longing."
+        },
+        "jp": {
+          "type": "『Arune』1st Single",
+          "description": "悲しみと恋しさの先で、もう一度始まる感情を物語性のあるポップサウンドに整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-stellive",
@@ -143,7 +199,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "V-llage '쿠로가미 사샤' 1st Single",
+          "description": "캐릭터의 어두운 서사와 감정선을 싱글 곡으로 정리한 작업."
+        },
+        "en": {
+          "type": "V-llage '쿠로가미 사샤' 1st Single",
+          "description": "A single that shapes the character's darker story and emotional line into music."
+        },
+        "jp": {
+          "type": "V-llage『쿠로가미 사샤』1st Single",
+          "description": "キャラクターの暗い物語と感情線をシングル曲として整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-zzz",
@@ -172,7 +242,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
+          "description": "애니메이션 오프닝의 밝은 세계관과 모험감을 음악으로 정리한 작업."
+        },
+        "en": {
+          "type": "Animation '강치 아일랜드' 1st OP (Produced by 장준호)",
+          "description": "An animation opening that captures a bright world and a sense of adventure."
+        },
+        "jp": {
+          "type": "アニメーション『강치 아일랜드』1st OP（Produced by 장준호）",
+          "description": "アニメーションの明るい世界観と冒険感を音楽として整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-bubble-sweet",
@@ -201,7 +285,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "DOLONGCHA(도롱챠) 1st Single",
+          "description": "좋아하는 사람을 향해 달려가는 감정을 캐릭터 송으로 정리한 작업."
+        },
+        "en": {
+          "type": "DOLONGCHA(도롱챠) 1st Single",
+          "description": "A character song about running toward someone you like."
+        },
+        "jp": {
+          "type": "DOLONGCHA(도롱챠) 1st Single",
+          "description": "好きな人へ向かって走っていく感情をキャラクターソングとして整えた制作です。"
+        }
+      }
     },
     {
       "id": "work-ocd",
@@ -230,7 +328,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "V-llage '플로리스 로에' 1st Single",
+          "description": "불안과 집착의 감정선을 서사적 음악으로 풀어낸 작업."
+        },
+        "en": {
+          "type": "V-llage '플로리스 로에' 1st Single",
+          "description": "A narrative work built from unease, attachment, and emotional tension."
+        },
+        "jp": {
+          "type": "V-llage『플로리스 로에』1st Single",
+          "description": "不安と執着の感情線を物語性のある音楽として広げた制作です。"
+        }
+      }
     },
     {
       "id": "work-mq82acph-nd1j",
@@ -264,7 +376,18 @@
           "trackNo": 1,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=fUo3rFXmvU0"
+          "youtube": "https://www.youtube.com/watch?v=fUo3rFXmvU0",
+          "translations": {
+            "kr": {
+              "description": "끝을 앞둔 계절 속에서 사랑을 만나고, 그리움과 원망 사이에 남겨진 한 사람의 이야기"
+            },
+            "en": {
+              "description": "A story of meeting love at the edge of a season, left between longing and resentment."
+            },
+            "jp": {
+              "description": "終わりを目前にした季節の中で恋に出会い、恋しさと恨みの間に残された一人の物語です。"
+            }
+          }
         },
         {
           "id": "work-mq82acck-jkn2",
@@ -282,7 +405,18 @@
           "trackNo": 2,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk"
+          "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
+          "translations": {
+            "kr": {
+              "description": "봄이 찾아왔지만 아직 겨울에 머문 마음으로, 떠나간 사랑을 미워하고 그리워하는 이야기"
+            },
+            "en": {
+              "description": "A story of hating and missing a love that has left, with a heart still in winter even after spring arrives."
+            },
+            "jp": {
+              "description": "春が訪れても心はまだ冬にいて、去っていった恋を憎み、恋しがる物語です。"
+            }
+          }
         },
         {
           "id": "work-mq82ad65-wqtc",
@@ -300,7 +434,18 @@
           "trackNo": 3,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=GwKXPt9Kkqc"
+          "youtube": "https://www.youtube.com/watch?v=GwKXPt9Kkqc",
+          "translations": {
+            "kr": {
+              "description": "모든 모험이 끝난 뒤의 오후, 무덤덤한 풍경 속에 조용히 남아 있는 마음의 이야기"
+            },
+            "en": {
+              "description": "A quiet story of feelings left in an ordinary afternoon after every adventure has ended."
+            },
+            "jp": {
+              "description": "すべての冒険が終わった後の午後、何気ない風景の中に静かに残る心の物語です。"
+            }
+          }
         },
         {
           "id": "work-mq82adqb-nkqh",
@@ -318,7 +463,18 @@
           "trackNo": 4,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=hgRS_eGvyII"
+          "youtube": "https://www.youtube.com/watch?v=hgRS_eGvyII",
+          "translations": {
+            "kr": {
+              "description": "잠들지 못하는 슬픔의 밤에, 남겨진 마음을 조용히 안아주는 이야기"
+            },
+            "en": {
+              "description": "A story that quietly embraces the feelings left behind on a sleepless night of sorrow."
+            },
+            "jp": {
+              "description": "眠れない悲しみの夜に、残された心を静かに抱きしめる物語です。"
+            }
+          }
         }
       ],
       "kind": "album",
@@ -332,7 +488,21 @@
           "offsetY": 0
         }
       },
-      "format": "Album (EP)"
+      "format": "Album (EP)",
+      "translations": {
+        "kr": {
+          "type": "Dear my heroes 1st EP",
+          "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기\n"
+        },
+        "en": {
+          "type": "Dear my heroes 1st EP",
+          "description": "An album about the hearts left after death and farewell, moving through grief and returning to life with the cycle of seasons."
+        },
+        "jp": {
+          "type": "Dear my heroes 1st EP",
+          "description": "死と別れの後に残された心が、季節の巡りの中で悲しみを越え、再び生きていく物語です。"
+        }
+      }
     },
     {
       "id": "work-can-you-stay",
@@ -361,7 +531,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "V-LUP 'Beldir' 1st Single",
+          "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기"
+        },
+        "en": {
+          "type": "V-LUP 'Beldir' 1st Single",
+          "description": "A story that shouts boldly toward vanity and the desire for approval on social media."
+        },
+        "jp": {
+          "type": "V-LUP『Beldir』1st Single",
+          "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
+        }
+      }
     },
     {
       "id": "work-watercolor",
@@ -390,7 +574,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "MAIMATSU 2nd Single",
+          "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기"
+        },
+        "en": {
+          "type": "MAIMATSU 2nd Single",
+          "description": "A story of four girls making New Year's plans that will likely fail again."
+        },
+        "jp": {
+          "type": "MAIMATSU 2nd Single",
+          "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
+        }
+      }
     },
     {
       "id": "work-client-a",
@@ -419,7 +617,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "RoA 4th Single",
+          "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기\n"
+        },
+        "en": {
+          "type": "RoA 4th Single",
+          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward."
+        },
+        "jp": {
+          "type": "RoA 4th Single",
+          "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
+        }
+      }
     },
     {
       "id": "work-client-b",
@@ -453,7 +665,18 @@
           "trackNo": 1,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI"
+          "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
+          "translations": {
+            "kr": {
+              "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
+            },
+            "en": {
+              "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
+            },
+            "jp": {
+              "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
+            }
+          }
         },
         {
           "id": "work-game-cue-01",
@@ -471,7 +694,18 @@
           "trackNo": 2,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc"
+          "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc",
+          "translations": {
+            "kr": {
+              "description": "서로 다른 음악을 사랑하는 두 소녀가 함께 밴드를 시작하는 이야기\n"
+            },
+            "en": {
+              "description": "A story of two girls who love different kinds of music starting a band together."
+            },
+            "jp": {
+              "description": "異なる音楽を愛する二人の少女が、一緒にバンドを始める物語です。"
+            }
+          }
         },
         {
           "id": "work-game-cue-02",
@@ -489,7 +723,18 @@
           "trackNo": 3,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs"
+          "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs",
+          "translations": {
+            "kr": {
+              "description": "각자의 고민을 안고 아이돌부에 모인 소녀들의 변화와 성장 이야기"
+            },
+            "en": {
+              "description": "A story of change and growth for girls who gather in an idol club, each carrying her own worries."
+            },
+            "jp": {
+              "description": "それぞれの悩みを抱えてアイドル部に集まった少女たちの、変化と成長の物語です。"
+            }
+          }
         },
         {
           "id": "work-vtuber-theme",
@@ -507,7 +752,18 @@
           "trackNo": 4,
           "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y"
+          "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y",
+          "translations": {
+            "kr": {
+              "description": "음악을 통해 연결된 두 소녀가 함께 꿈을 그려 나가는 이야기"
+            },
+            "en": {
+              "description": "A story of two girls connected through music, drawing their dream together."
+            },
+            "jp": {
+              "description": "音楽を通じてつながった二人の少女が、ともに夢を描いていく物語です。"
+            }
+          }
         }
       ],
       "kind": "album",
@@ -521,7 +777,21 @@
           "offsetY": 0
         }
       },
-      "format": "Album (EP)"
+      "format": "Album (EP)",
+      "translations": {
+        "kr": {
+          "type": "SilverLine [ALBUM]",
+          "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
+        },
+        "en": {
+          "type": "SilverLine [ALBUM]",
+          "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
+        },
+        "jp": {
+          "type": "SilverLine [ALBUM]",
+          "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
+        }
+      }
     },
     {
       "id": "work-mq82ashm-1ju7",
@@ -550,7 +820,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "게임 '브이리지에 어서오세요!' 주제곡",
+          "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기\n"
+        },
+        "en": {
+          "type": "Theme song for game '브이리지에 어서오세요!'",
+          "description": "A warm story made together by everyone gathered in the small village called 브이리지."
+        },
+        "jp": {
+          "type": "ゲーム『브이리지에 어서오세요!』主題歌",
+          "description": "브이리지という小さな村に集まったみんなで作っていく、あたたかな物語です。"
+        }
+      }
     },
     {
       "id": "work-mix-archive-01",
@@ -612,7 +896,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "V-llage '티그리스 카닌' 1st Single",
+          "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+        },
+        "en": {
+          "type": "V-llage '티그리스 카닌' 1st Single",
+          "description": "A story of everyone gathered at 티그리스 laughing, talking, and making memories together."
+        },
+        "jp": {
+          "type": "V-llage『티그리스 카닌』1st Single",
+          "description": "酒場『티그리스』に集まったみんなが笑い、語り合い、思い出を作っていく物語です。"
+        }
+      }
     },
     {
       "id": "work-master-archive",
@@ -641,7 +939,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "Mafhills 1st Single",
+          "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기"
+        },
+        "en": {
+          "type": "Mafhills 1st Single",
+          "description": "A story of artists waiting with excitement to meet fans before a live show."
+        },
+        "jp": {
+          "type": "Mafhills 1st Single",
+          "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
+        }
+      }
     },
     {
       "id": "work-mix-archive-02",
@@ -719,7 +1031,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "soraniwa Project 1st Single",
+          "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n"
+        },
+        "en": {
+          "type": "soraniwa Project 1st Single",
+          "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+        },
+        "jp": {
+          "type": "soraniwa Project 1st Single",
+          "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
+        }
+      }
     },
     {
       "id": "work-arrange-work",
@@ -748,7 +1074,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
+          "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기"
+        },
+        "en": {
+          "type": "붕괴 스타레일 '2023 Multiverse Vistas' Popularity and Excellence award work",
+          "description": "A story of continuing a pioneering journey against fate while connecting star to star."
+        },
+        "jp": {
+          "type": "붕괴 스타레일『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
+          "description": "星と星をつなぐ旅の中で、運命に向き合い開拓を続ける物語です。"
+        }
+      }
     },
     {
       "id": "work-selected-demo",
@@ -777,7 +1117,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "침대점령(Bed Taker) 1st Single",
+          "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기"
+        },
+        "en": {
+          "type": "침대점령(Bed Taker) 1st Single",
+          "description": "A story of telling the night sky about pain that could not be shared with anyone."
+        },
+        "jp": {
+          "type": "침대점령(Bed Taker) 1st Single",
+          "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
+        }
+      }
     },
     {
       "id": "work-archive-21",
@@ -806,7 +1160,21 @@
           "offsetY": 0
         }
       },
-      "format": "Single"
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "type": "우타이테 8인 합창 프로젝트",
+          "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기"
+        },
+        "en": {
+          "type": "Eight utaite chorus project",
+          "description": "A story of holding each other's hands and moving toward a shining tomorrow."
+        },
+        "jp": {
+          "type": "歌い手8人合唱プロジェクト",
+          "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
+        }
+      }
     }
   ],
   "clientLogos": [

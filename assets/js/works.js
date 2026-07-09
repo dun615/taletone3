@@ -231,24 +231,37 @@ var audioPool = new Map();
     return clamp(state.track, 0, work.tracks.length - 1);
   }
 
+  function localizedUnit(source) {
+    var result = Object.assign({}, source || {});
+    var translated = source && source.translations && source.translations[pageLangKey()];
+    if (translated && typeof translated === 'object') {
+      Object.keys(translated).forEach(function (key) {
+        if (translated[key] != null) result[key] = translated[key];
+      });
+    }
+    return result;
+  }
+
   function variantsFor(work, trackIndex) {
     if (!work) return [];
-    var track = work.tracks && work.tracks.length ? work.tracks[clamp(trackIndex, 0, work.tracks.length - 1)] : null;
+    var localizedWork = localizedUnit(work);
+    var rawTrack = work.tracks && work.tracks.length ? work.tracks[clamp(trackIndex, 0, work.tracks.length - 1)] : null;
+    var track = rawTrack ? localizedUnit(rawTrack) : null;
     if (track && track.versions && track.versions.length) return track.versions;
     if ((!track || !track.audio) && work.versions && work.versions.length) return work.versions;
     return [{
       language: 'MAIN',
-      title: track && track.title ? track.title : work.title,
-      date: track && track.date ? track.date : work.date,
-      type: track && track.type ? track.type : work.type,
-      description: track && track.description ? track.description : work.description,
-      credits: track && track.credits ? track.credits : work.credits,
-      image: track && track.image ? track.image : work.image,
-      audio: track && track.audio ? track.audio : work.audio,
-      fit: track && track.fit ? track.fit : work.fit,
-      posX: track && track.posX ? track.posX : work.posX,
-      posY: track && track.posY ? track.posY : work.posY,
-      brightness: track && track.brightness ? track.brightness : work.brightness
+      title: track && track.title ? track.title : localizedWork.title,
+      date: track && track.date ? track.date : localizedWork.date,
+      type: track && track.type ? track.type : localizedWork.type,
+      description: track && track.description ? track.description : localizedWork.description,
+      credits: track && track.credits ? track.credits : localizedWork.credits,
+      image: track && track.image ? track.image : localizedWork.image,
+      audio: track && track.audio ? track.audio : localizedWork.audio,
+      fit: track && track.fit ? track.fit : localizedWork.fit,
+      posX: track && track.posX ? track.posX : localizedWork.posX,
+      posY: track && track.posY ? track.posY : localizedWork.posY,
+      brightness: track && track.brightness ? track.brightness : localizedWork.brightness
     }];
   }
 
@@ -275,26 +288,28 @@ var audioPool = new Map();
   function mergeDisplayUnit(work) {
     if (!work) return {};
     var trackIndex = activeTrackIndex(work);
-    var track = work.tracks && work.tracks.length ? work.tracks[trackIndex] : null;
-    var version = activeVariant(work, trackIndex);
+    var localizedWork = localizedUnit(work);
+    var rawTrack = work.tracks && work.tracks.length ? work.tracks[trackIndex] : null;
+    var track = rawTrack ? localizedUnit(rawTrack) : null;
+    var version = localizedUnit(activeVariant(work, trackIndex));
     var kind = itemKind(work);
     var coverOnly = (kind === 'album' || kind === 'ep') && !state.bookOpen;
-    var source = coverOnly ? work : Object.assign({}, work, track || {}, version || {});
-    return Object.assign({}, work, track || {}, version || {}, {
-      title: source.title || work.title,
-      date: source.date || work.date,
-      type: source.type || work.type,
-      description: source.description || work.description || '',
-      credits: source.credits || work.credits || '',
-      format: source.format || work.format || '',
-      image: source.image || work.image,
+    var source = coverOnly ? localizedWork : Object.assign({}, localizedWork, track || {}, version || {});
+    return Object.assign({}, localizedWork, track || {}, version || {}, {
+      title: source.title || localizedWork.title,
+      date: source.date || localizedWork.date,
+      type: source.type || localizedWork.type,
+      description: source.description || localizedWork.description || '',
+      credits: source.credits || localizedWork.credits || '',
+      format: source.format || localizedWork.format || '',
+      image: source.image || localizedWork.image,
       audio: (version && version.audio) || (track && track.audio) || work.audio,
       youtube: coverOnly ? (work.youtube || '') : ((version && version.youtube) || (track && track.youtube) || work.youtube || ''),
       fit: source.fit || work.fit || 'cover',
       posX: source.posX || work.posX || '50%',
       posY: source.posY || work.posY || '50%',
-      brightness: source.brightness != null ? source.brightness : (work.brightness != null ? work.brightness : 1),
-      responsive: source.responsive || work.responsive || null
+      brightness: source.brightness != null ? source.brightness : (localizedWork.brightness != null ? localizedWork.brightness : 1),
+      responsive: source.responsive || localizedWork.responsive || null
     });
   }
 
@@ -539,10 +554,13 @@ var audioPool = new Map();
   }
 
   function cardUnit(work, index) {
-    if (index !== state.selected) return Object.assign({}, work, {
-      brightness: work && work.brightness != null ? work.brightness : 1,
-      responsive: work && work.responsive ? work.responsive : null
-    });
+    if (index !== state.selected) {
+      var unit = localizedUnit(work);
+      return Object.assign({}, unit, {
+        brightness: unit && unit.brightness != null ? unit.brightness : 1,
+        responsive: unit && unit.responsive ? unit.responsive : null
+      });
+    }
     return mergeDisplayUnit(work);
   }
 
@@ -730,7 +748,8 @@ var audioPool = new Map();
 
   function gallery() {
     return '<div class="tt-gh-gallery">' + works.map(function (work, index) {
-      return '<div role="button" tabindex="0" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(work, '') + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(work.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(work.type || itemKind(work), 20) + '</span></span></span></div>';
+      var unit = localizedUnit(work);
+      return '<div role="button" tabindex="0" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '') + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || itemKind(work), 20) + '</span></span></span></div>';
     }).join('') + '</div>';
   }
 

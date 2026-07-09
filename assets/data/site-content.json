@@ -730,7 +730,22 @@
             "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
             "buttonLabel": "준비중"
           }
-        ]
+        ],
+        "audienceGameKicker": "SUBCULTURE GAME",
+        "audienceGameTitle": "서브컬쳐 게임",
+        "audienceGameService1": "OST · 캐릭터 테마송 · 이벤트 곡",
+        "audienceGameService2": "PV / 트레일러 음악 · BGM",
+        "audienceGameHook": "이 스토리가 남겨야 할 감정은?",
+        "audienceCreatorKicker": "VTUBER / ARTIST",
+        "audienceCreatorTitle": "버튜버 · 인플루언서 · 아티스트",
+        "audienceCreatorService1": "오리지널 송 · 데뷔곡 · 유닛곡",
+        "audienceCreatorService2": "세계관 곡 · 기념 싱글 및 앨범",
+        "audienceCreatorHook": "이 사람만이 부를 수 있는 노래는?",
+        "audienceAnimationKicker": "ANIMATION / WEB IP",
+        "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
+        "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
+        "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
+        "audienceAnimationHook": "이 장면을 기억하게 만들 소리는?"
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
@@ -753,7 +768,22 @@
             "description": "A TALETONE band project where storytellers give their own voices to each story.",
             "buttonLabel": "Coming Soon"
           }
-        ]
+        ],
+        "audienceGameKicker": "SUBCULTURE GAME",
+        "audienceGameTitle": "Subculture Game",
+        "audienceGameService1": "OST · Character themes · Event songs",
+        "audienceGameService2": "PV / trailer music · BGM",
+        "audienceGameHook": "What emotion should this story leave behind?",
+        "audienceCreatorKicker": "VTUBER / ARTIST",
+        "audienceCreatorTitle": "VTuber · Influencer · Artist",
+        "audienceCreatorService1": "Original songs · Debut songs · Unit songs",
+        "audienceCreatorService2": "Worldbuilding songs · Anniversary singles and albums",
+        "audienceCreatorHook": "What song could only this person sing?",
+        "audienceAnimationKicker": "ANIMATION / WEB IP",
+        "audienceAnimationTitle": "Animation · Webtoon · Web Novel IP",
+        "audienceAnimationService1": "Opening · Ending · Insert songs · BGM",
+        "audienceAnimationService2": "Character songs · Promotional music",
+        "audienceAnimationHook": "What sound will make this scene memorable?"
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
@@ -776,9 +806,39 @@
             "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
             "buttonLabel": "準備中"
           }
-        ]
+        ],
+        "audienceGameKicker": "SUBCULTURE GAME",
+        "audienceGameTitle": "サブカルチャーゲーム",
+        "audienceGameService1": "OST・キャラクターテーマソング・イベント曲",
+        "audienceGameService2": "PV／トレーラー音楽・BGM",
+        "audienceGameHook": "この物語が残すべき感情は？",
+        "audienceCreatorKicker": "VTUBER / ARTIST",
+        "audienceCreatorTitle": "VTuber・インフルエンサー・アーティスト",
+        "audienceCreatorService1": "オリジナルソング・デビュー曲・ユニット曲",
+        "audienceCreatorService2": "世界観ソング・記念シングル／アルバム",
+        "audienceCreatorHook": "その人だけが歌える歌は？",
+        "audienceAnimationKicker": "ANIMATION / WEB IP",
+        "audienceAnimationTitle": "アニメ・ウェブトゥーン・ウェブ小説IP",
+        "audienceAnimationService1": "オープニング・エンディング・挿入歌・BGM",
+        "audienceAnimationService2": "キャラクターソング・プロモーション音楽",
+        "audienceAnimationHook": "その場面を記憶に残す音は？"
       }
-    }
+    },
+    "audienceGameKicker": "SUBCULTURE GAME",
+    "audienceGameTitle": "서브컬쳐 게임",
+    "audienceGameService1": "OST · 캐릭터 테마송 · 이벤트 곡",
+    "audienceGameService2": "PV / 트레일러 음악 · BGM",
+    "audienceGameHook": "이 스토리가 남겨야 할 감정은?",
+    "audienceCreatorKicker": "VTUBER / ARTIST",
+    "audienceCreatorTitle": "버튜버 · 인플루언서 · 아티스트",
+    "audienceCreatorService1": "오리지널 송 · 데뷔곡 · 유닛곡",
+    "audienceCreatorService2": "세계관 곡 · 기념 싱글 및 앨범",
+    "audienceCreatorHook": "이 사람만이 부를 수 있는 노래는?",
+    "audienceAnimationKicker": "ANIMATION / WEB IP",
+    "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
+    "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
+    "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
+    "audienceAnimationHook": "이 장면을 기억하게 만들 소리는?"
   },
   "contact": {
     "eyebrow": "Contact",
