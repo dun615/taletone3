@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T05:54:00+09:00",
+  "lastUpdated": "2026-07-09T07:15:47.996Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -857,22 +857,22 @@ window.TALETONE_CONTENT = {
         "caption1": "①  TALE  ·  이야기를 읽습니다",
         "caption2": "②  TONE  ·  톤을 설계합니다",
         "caption3": "③  MUSIC  ·  음악으로 완성합니다",
-        "sentence": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다.",
-        "footer": "그 이야기가 어떤 톤으로 들려야 하는지 설계하고, 음악으로 완성합니다."
+        "sentence": "이야기는 하나의 빛깔이 됩니다.",
+        "footer": "그 빛깔은 음악으로 피어납니다."
       },
       "en": {
         "caption1": "①  TALE  ·  Read the story",
         "caption2": "②  TONE  ·  Design the tone",
         "caption3": "③  MUSIC  ·  Complete the music",
-        "sentence": "We do not begin by copying references. We begin by reading the story.",
-        "footer": "Then we design how it should sound, and complete it as music."
+        "sentence": "A tale becomes a tone.",
+        "footer": "A tone becomes music."
       },
       "jp": {
         "caption1": "①  TALE  ·  物語を読む",
         "caption2": "②  TONE  ·  音色を設計する",
         "caption3": "③  MUSIC  ·  音楽として完成させる",
-        "sentence": "参考曲をなぞる前に、まず物語を読みます。",
-        "footer": "その物語がどのように響くべきかを設計し、音楽として完成させます。"
+        "sentence": "物語は、ひとつの彩りになる。",
+        "footer": "その彩りは、音楽となって花開く。"
       }
     }
   },
@@ -884,15 +884,15 @@ window.TALETONE_CONTENT = {
       "translations": {
         "kr": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "레퍼런스만 따라가지 않습니다. 우리는 먼저 이야기를 읽습니다."
+          "text": "우리는 곡을 만들기 전에, 먼저 이야기를 듣습니다."
         },
         "en": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "We do not chase references first. We read the story first."
+          "text": "Before we make music, we first read the world behind it."
         },
         "jp": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "レファレンスを追う前に、私たちはまず物語を読みます。"
+          "text": "私たちは音楽をつくる前に、まずその世界を読み解きます。"
         }
       }
     },
@@ -903,7 +903,7 @@ window.TALETONE_CONTENT = {
       "translations": {
         "kr": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "읽힌 이야기는,\n자기만의 톤을 찾기 시작합니다."
+          "text": "읽힌 이야기는,\n자기만의 빛을 찾기 시작합니다."
         },
         "en": {
           "eyebrow": "CHAPTER 2 · TONE",
@@ -911,7 +911,7 @@ window.TALETONE_CONTENT = {
         },
         "jp": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "読み解かれた物語は、\n自分だけの音色を探し始めます。"
+          "text": "読み解かれた物語は、\nやがて自らの光を見つけはじめます。"
         }
       }
     },
@@ -960,15 +960,15 @@ window.TALETONE_CONTENT = {
       "translations": {
         "kr": {
           "eyebrow": "EPILOGUE",
-          "text": "그리고 심해의 책은,\n다음 페이지를 비워두었습니다.\n당신의 이야기를 들려주세요."
+          "text": "이제, 당신의 이야기가\n음악이 될 차례입니다."
         },
         "en": {
           "eyebrow": "EPILOGUE",
-          "text": "And the book in the deep\nleaves its next page blank.\nTell us your story."
+          "text": "Now, it’s time for your story\nto become music."
         },
         "jp": {
           "eyebrow": "EPILOGUE",
-          "text": "そして深海の本は、\n次のページを空白のまま残しました。\nあなたの物語を聞かせてください。"
+          "text": "さあ、あなたの物語が\n音楽になる番です。"
         }
       }
     }
@@ -1433,4 +1433,5 @@ window.TALETONE_CONTENT = {
       }
     }
   }
-};
+}
+;
