@@ -3352,3 +3352,38 @@ body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-note {
     0 0 18px rgba(156, 238, 244, .24) !important;
 }
 
+/* Visual QA: the Members chapter title is centered by scroll progress, but the
+   reveal script can leave a fractional blur/scale at that exact timing. */
+body[data-active-chapter="members"] #c-members > [data-reveal]:first-child {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  will-change: auto !important;
+}
+
+body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
+  filter: none !important;
+}
+
+/* Visual QA: keep the language switcher readable while the page background
+   crosses from light surface tones into the darker chapter bands. */
+#lang-switcher.tt-lang-switcher > div {
+  background: rgba(249, 249, 250, .96) !important;
+  border-color: rgba(20, 28, 48, .14) !important;
+  box-shadow: 0 18px 48px rgba(2, 10, 22, .12) !important;
+}
+
+#lang-switcher.tt-lang-switcher button,
+#lang-switcher.tt-lang-switcher button[style*="var(--ink"] {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#lang-switcher.tt-lang-switcher button[style*="var(--paper"] {
+  background: #141C30 !important;
+  color: #fffdf8 !important;
+  opacity: 1 !important;
+  box-shadow: 0 10px 24px rgba(2, 10, 22, .18) !important;
+}
+
