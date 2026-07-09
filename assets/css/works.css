@@ -685,15 +685,18 @@
 }
 
 .tt-gh-controls {
-  display: none;
   position: absolute;
-  right: clamp(34px, 5vw, 72px);
-  top: 44%;
-  z-index: 10;
+  left: 50%;
+  right: auto;
+  top: auto;
+  bottom: -18px;
+  z-index: 24;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  transform: translateX(-50%);
+  pointer-events: auto;
 }
 
 .tt-gh-round {

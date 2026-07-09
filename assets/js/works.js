@@ -10,7 +10,7 @@
   var rendering = false;
   var mounted = false;
   var renderTimer = 0;
-  var dragState = { active: false, startX: 0, lastX: 0, anchorX: 0, moved: false, stage: null };
+  var dragState = { active: false, startX: 0, lastX: 0, moved: false, stage: null };
   var suppressClick = false;
   var pointerMoveFrame = 0;
   var queuedPointerX = 0;
@@ -515,6 +515,12 @@ var audioPool = new Map();
     return '<div class="tt-gh-tabs" role="tablist"><button type="button" data-works-action="mode" data-mode="showcase" class="' + (state.mode === 'showcase' ? 'is-active' : '') + '">' + preserve(meta.showcaseLabel) + '</button><button type="button" data-works-action="mode" data-mode="gallery" class="' + (state.mode === 'gallery' ? 'is-active' : '') + '">' + preserve(meta.galleryLabel) + '</button></div>';
   }
 
+  function controls() {
+    if (works.length <= 1 || isMobileWorksLayout()) return '';
+    var progress = ((state.selected + 1) / works.length) * 100;
+    return '<div class="tt-gh-controls" aria-label="WORKS shelf navigation"><button type="button" class="tt-gh-round" data-works-action="prev" aria-label="Previous work" ' + (state.selected <= 0 ? 'disabled' : '') + '>&lsaquo;</button><div class="tt-gh-indicator" aria-hidden="true"><span class="tt-gh-page">' + pad(state.selected + 1) + ' / ' + pad(works.length) + '</span><span class="tt-gh-progress"><i style="--progress:' + progress.toFixed(2) + '%"></i></span></div><button type="button" class="tt-gh-round" data-works-action="next" aria-label="Next work" ' + (state.selected >= works.length - 1 ? 'disabled' : '') + '>&rsaquo;</button></div>';
+  }
+
   function visibleWorks() {
     var slots = activeSlots();
     var total = Math.min(slots.length, works.length);
@@ -632,7 +638,7 @@ var audioPool = new Map();
       var unit = cardUnit(work, index);
       return '<div role="button" tabindex="0" class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '') + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || work.type || itemKind(work), 20) + '</span></span></span>' + cardPreview(work) + '</div>';
     }).join('');
-    return '<div class="tt-gh-stage" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + segments() + '</div>';
+    return '<div class="tt-gh-stage" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + segments() + '</div>';
   }
 
   function videoLightbox() {
@@ -729,6 +735,11 @@ var audioPool = new Map();
     document.body.classList.toggle('tt-works-modal-open', !!(state.modalOpen || state.videoOpen));
   }
 
+  function blockFollowupClick(ms) {
+    suppressClick = true;
+    setTimeout(function () { suppressClick = false; }, ms || 260);
+  }
+
   function render() {
     root = ensureRoot();
     if (!root || !works.length) return;
@@ -748,6 +759,7 @@ var audioPool = new Map();
       node.onclick = function (event) {
         event.preventDefault();
         event.stopPropagation();
+        blockFollowupClick(320);
         state.videoOpen = false;
         render();
       };
@@ -757,6 +769,7 @@ var audioPool = new Map();
       node.onclick = function (event) {
         event.preventDefault();
         event.stopPropagation();
+        blockFollowupClick(320);
         state.modalOpen = false;
         render();
       };
@@ -810,6 +823,10 @@ var audioPool = new Map();
     });
     var segmentNode = root.querySelector('.tt-gh-segments');
     if (segmentNode) segmentNode.outerHTML = segments();
+    var controlsNode = root.querySelector('.tt-gh-controls');
+    var controlsHtml = controls();
+    if (controlsNode) controlsNode.outerHTML = controlsHtml;
+    else if (controlsHtml) stage.insertAdjacentHTML('beforeend', controlsHtml);
     var infoNode = root.querySelector('.tt-gh-info');
     if (infoNode) infoNode.outerHTML = infoPanel();
     syncAudioState();
@@ -840,6 +857,9 @@ var audioPool = new Map();
       return;
     }
     if (action === 'video-close') {
+      event.preventDefault();
+      event.stopPropagation();
+      blockFollowupClick(320);
       state.videoOpen = false;
       render();
       return;
@@ -861,6 +881,9 @@ var audioPool = new Map();
       return;
     }
     if (action === 'modal-close') {
+      event.preventDefault();
+      event.stopPropagation();
+      blockFollowupClick(320);
       state.modalOpen = false;
       render();
       return;
@@ -968,6 +991,7 @@ var audioPool = new Map();
     if (action === 'video-close' || action === 'modal-close') {
       event.preventDefault();
       event.stopPropagation();
+      blockFollowupClick(320);
       if (action === 'video-close') state.videoOpen = false;
       if (action === 'modal-close') state.modalOpen = false;
       render();
@@ -981,7 +1005,6 @@ var audioPool = new Map();
     dragState.active = true;
     dragState.startX = event.clientX;
     dragState.lastX = event.clientX;
-    dragState.anchorX = event.clientX;
     dragState.moved = false;
     dragState.stage = stage;
     stage.classList.add('is-dragging');
@@ -1003,21 +1026,11 @@ var audioPool = new Map();
     if (stage && !stage.isConnected) stage = null;
     if (!stage) return;
     dragState.lastX = clientX;
-    if (Math.abs(clientX - dragState.startX) > 6) dragState.moved = true;
-    // Live stepping: every STEP_PX dragged advances one card, so a fast sweep
-    // flips through the deck continuously instead of waiting for release.
-    var STEP_PX = 56;
-    var fromAnchor = clientX - dragState.anchorX;
-    var steps = (fromAnchor / STEP_PX) | 0; // toward 0
-    if (steps !== 0) {
-      go(steps < 0 ? Math.abs(steps) : -Math.abs(steps)); // drag left: next, drag right: prev
-      dragState.anchorX += steps * STEP_PX;
-      dragState.stage = stage;
-      stage.style.setProperty('--drag-x', '0px');
-      return;
-    }
-    // Residual sub-step movement gives a gentle damped nudge for tactile feedback.
-    var dx = Math.max(-40, Math.min(40, (clientX - dragState.anchorX) * 0.5));
+    var delta = clientX - dragState.startX;
+    if (Math.abs(delta) > 6) dragState.moved = true;
+    var resistance = Math.max(-76, Math.min(76, delta * 0.38));
+    var edgePull = (state.selected <= 0 && delta > 0) || (state.selected >= works.length - 1 && delta < 0);
+    var dx = edgePull ? resistance * 0.35 : resistance;
     stage.style.setProperty('--drag-x', dx + 'px');
   }
 
@@ -1033,7 +1046,7 @@ var audioPool = new Map();
   }
 
   function onMouseMove(event) {
-    if (!dragState.active || event.buttons === 0) return;
+    if (!dragState.active) return;
     onPointerMove(event);
   }
 
@@ -1047,10 +1060,13 @@ var audioPool = new Map();
       stage.classList.remove('is-dragging');
       stage.style.setProperty('--drag-x', '0px');
     }
-    // Stepping already happened live during the move; nothing to commit here.
+    var delta = dragState.lastX - dragState.startX;
+    var threshold = Math.max(72, Math.min(128, (window.innerWidth || 1280) * 0.07));
+    if (Math.abs(delta) >= threshold) {
+      go(delta < 0 ? 1 : -1);
+    }
     if (dragState.moved) {
-      suppressClick = true;
-      setTimeout(function () { suppressClick = false; }, 80);
+      blockFollowupClick(140);
     }
     dragState.moved = false;
   }
