@@ -1,6 +1,6 @@
 {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T07:19:47.784Z",
+  "lastUpdated": "2026-07-09T00:00:00+09:00",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -892,17 +892,73 @@
       "translations": {
         "kr": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "우리는 곡을 만들기 전에, 먼저 이야기를 듣습니다."
+          "text": "우리는 곡을 만들기 전에, 먼저 이야기를 듣습니다.",
+          "mobileLines": [
+            {
+              "text": "우리는 곡을 만들기 전에,",
+              "indent": 0
+            },
+            {
+              "text": "먼저 이야기를",
+              "indent": 0
+            },
+            {
+              "text": "듣습니다.",
+              "indent": 0
+            }
+          ]
         },
         "en": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "Before we make music, we first read the world behind it."
+          "text": "Before we make music, we first read the world behind it.",
+          "mobileLines": [
+            {
+              "text": "Before we make music,",
+              "indent": 0
+            },
+            {
+              "text": "we first read",
+              "indent": 0
+            },
+            {
+              "text": "the world behind it.",
+              "indent": 0
+            }
+          ]
         },
         "jp": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "私たちは音楽をつくる前に、まずその世界を読み解きます。"
+          "text": "私たちは音楽をつくる前に、まずその世界を読み解きます。",
+          "mobileLines": [
+            {
+              "text": "私たちは音楽をつくる前に、",
+              "indent": 0
+            },
+            {
+              "text": "まずその世界を",
+              "indent": 0
+            },
+            {
+              "text": "読み解きます。",
+              "indent": 0
+            }
+          ]
         }
-      }
+      },
+      "mobileLines": [
+        {
+          "text": "우리는 곡을 만들기 전에,",
+          "indent": 0
+        },
+        {
+          "text": "먼저 이야기를",
+          "indent": 0
+        },
+        {
+          "text": "듣습니다.",
+          "indent": 0
+        }
+      ]
     },
     {
       "id": "projects-members",
@@ -911,17 +967,73 @@
       "translations": {
         "kr": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "읽힌 이야기는,\n자기만의 빛을 찾기 시작합니다."
+          "text": "읽힌 이야기는,\n자기만의 빛을 찾기 시작합니다.",
+          "mobileLines": [
+            {
+              "text": "읽힌 이야기는,",
+              "indent": 0
+            },
+            {
+              "text": "자기만의 빛을",
+              "indent": 0
+            },
+            {
+              "text": "찾기 시작합니다.",
+              "indent": 0
+            }
+          ]
         },
         "en": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "Once read, the story begins\nto find its own tone."
+          "text": "Once read, the story begins\nto find its own tone.",
+          "mobileLines": [
+            {
+              "text": "Once read,",
+              "indent": 0
+            },
+            {
+              "text": "the story begins",
+              "indent": 0
+            },
+            {
+              "text": "to find its own tone.",
+              "indent": 0
+            }
+          ]
         },
         "jp": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "読み解かれた物語は、\nやがて自らの光を見つけはじめます。"
+          "text": "読み解かれた物語は、\nやがて自らの光を見つけはじめます。",
+          "mobileLines": [
+            {
+              "text": "読み解かれた物語は、",
+              "indent": 0
+            },
+            {
+              "text": "やがて自らの光を",
+              "indent": 0
+            },
+            {
+              "text": "見つけはじめます。",
+              "indent": 0
+            }
+          ]
         }
-      }
+      },
+      "mobileLines": [
+        {
+          "text": "읽힌 이야기는,",
+          "indent": 0
+        },
+        {
+          "text": "자기만의 빛을",
+          "indent": 0
+        },
+        {
+          "text": "찾기 시작합니다.",
+          "indent": 0
+        }
+      ]
     },
     {
       "id": "members-works",
@@ -930,17 +1042,73 @@
       "translations": {
         "kr": {
           "eyebrow": "CHAPTER 3 · MUSIC",
-          "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어납니다."
+          "text": "손끝에 닿은 이야기는 소리가 되고,\n마침내 한 편의 음악으로 피어납니다.",
+          "mobileLines": [
+            {
+              "text": "손끝에 닿은 이야기는",
+              "indent": 0
+            },
+            {
+              "text": "소리가 되고,",
+              "indent": 0
+            },
+            {
+              "text": "마침내 음악으로 피어납니다.",
+              "indent": 0
+            }
+          ]
         },
         "en": {
           "eyebrow": "CHAPTER 3 · MUSIC",
-          "text": "The story at our fingertips becomes sound,\nand finally blossoms into a piece of music."
+          "text": "The story at our fingertips becomes sound,\nand finally blossoms into a piece of music.",
+          "mobileLines": [
+            {
+              "text": "The story at our fingertips",
+              "indent": 0
+            },
+            {
+              "text": "becomes sound,",
+              "indent": 0
+            },
+            {
+              "text": "then blossoms into music.",
+              "indent": 0
+            }
+          ]
         },
         "jp": {
           "eyebrow": "CHAPTER 3 · MUSIC",
-          "text": "指先に触れた物語は音になり、\nやがて一篇の音楽として咲きます。"
+          "text": "指先に触れた物語は音になり、\nやがて一篇の音楽として咲きます。",
+          "mobileLines": [
+            {
+              "text": "指先に触れた物語は",
+              "indent": 0
+            },
+            {
+              "text": "音になり、",
+              "indent": 0
+            },
+            {
+              "text": "音楽として咲きます。",
+              "indent": 0
+            }
+          ]
         }
-      }
+      },
+      "mobileLines": [
+        {
+          "text": "손끝에 닿은 이야기는",
+          "indent": 0
+        },
+        {
+          "text": "소리가 되고,",
+          "indent": 0
+        },
+        {
+          "text": "마침내 음악으로 피어납니다.",
+          "indent": 0
+        }
+      ]
     },
     {
       "id": "works-news",
@@ -949,17 +1117,73 @@
       "translations": {
         "kr": {
           "eyebrow": "RESURFACE",
-          "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다."
+          "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다.",
+          "mobileLines": [
+            {
+              "text": "피어난 이야기는,",
+              "indent": 0
+            },
+            {
+              "text": "세상의 수면 위로",
+              "indent": 0
+            },
+            {
+              "text": "퍼져나갑니다.",
+              "indent": 0
+            }
+          ]
         },
         "en": {
           "eyebrow": "RESURFACE",
-          "text": "The story in bloom now ripples\nback across the surface of the world."
+          "text": "The story in bloom now ripples\nback across the surface of the world.",
+          "mobileLines": [
+            {
+              "text": "The story in bloom",
+              "indent": 0
+            },
+            {
+              "text": "ripples back across",
+              "indent": 0
+            },
+            {
+              "text": "the world's surface.",
+              "indent": 0
+            }
+          ]
         },
         "jp": {
           "eyebrow": "RESURFACE",
-          "text": "花開いた物語は、\nいま世界の水面へと広がっていきます。"
+          "text": "花開いた物語は、\nいま世界の水面へと広がっていきます。",
+          "mobileLines": [
+            {
+              "text": "花開いた物語は、",
+              "indent": 0
+            },
+            {
+              "text": "世界の水面へと",
+              "indent": 0
+            },
+            {
+              "text": "広がっていきます。",
+              "indent": 0
+            }
+          ]
         }
-      }
+      },
+      "mobileLines": [
+        {
+          "text": "피어난 이야기는,",
+          "indent": 0
+        },
+        {
+          "text": "세상의 수면 위로",
+          "indent": 0
+        },
+        {
+          "text": "퍼져나갑니다.",
+          "indent": 0
+        }
+      ]
     },
     {
       "id": "news-contact",
@@ -968,17 +1192,73 @@
       "translations": {
         "kr": {
           "eyebrow": "EPILOGUE",
-          "text": "이제, 당신의 이야기가\n음악이 될 차례입니다."
+          "text": "이제, 당신의 이야기가\n음악이 될 차례입니다.",
+          "mobileLines": [
+            {
+              "text": "이제,",
+              "indent": 0
+            },
+            {
+              "text": "당신의 이야기가",
+              "indent": 0
+            },
+            {
+              "text": "음악이 될 차례입니다.",
+              "indent": 0
+            }
+          ]
         },
         "en": {
           "eyebrow": "EPILOGUE",
-          "text": "Now, it’s time for your story\nto become music."
+          "text": "Now, it’s time for your story\nto become music.",
+          "mobileLines": [
+            {
+              "text": "Now, it's time",
+              "indent": 0
+            },
+            {
+              "text": "for your story",
+              "indent": 0
+            },
+            {
+              "text": "to become music.",
+              "indent": 0
+            }
+          ]
         },
         "jp": {
           "eyebrow": "EPILOGUE",
-          "text": "さあ、あなたの物語が\n音楽になる番です。"
+          "text": "さあ、あなたの物語が\n音楽になる番です。",
+          "mobileLines": [
+            {
+              "text": "さあ、",
+              "indent": 0
+            },
+            {
+              "text": "あなたの物語が",
+              "indent": 0
+            },
+            {
+              "text": "音楽になる番です。",
+              "indent": 0
+            }
+          ]
         }
-      }
+      },
+      "mobileLines": [
+        {
+          "text": "이제,",
+          "indent": 0
+        },
+        {
+          "text": "당신의 이야기가",
+          "indent": 0
+        },
+        {
+          "text": "음악이 될 차례입니다.",
+          "indent": 0
+        }
+      ]
     }
   ],
   "worksMeta": {
