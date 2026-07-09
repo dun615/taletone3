@@ -2526,19 +2526,25 @@
   }
 
   .tt-bridge-pin-stage [data-bridge] {
-    max-width: none !important;
-    font-size: clamp(18px, 8.2vw, 40px);
-    white-space: pre !important;
-    text-wrap: nowrap !important;
+    width: min(620px, calc(100vw - 56px)) !important;
+    max-width: min(620px, calc(100vw - 56px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    text-align: center !important;
+    font-size: clamp(18px, 6.4vw, 34px);
+    line-height: 1.28 !important;
+    white-space: normal !important;
+    text-wrap: balance !important;
     word-break: keep-all !important;
-    overflow-wrap: normal !important;
+    overflow-wrap: anywhere !important;
   }
 
   .tt-bridge-pin-stage [data-bridge] span {
-    max-width: none !important;
-    white-space: pre !important;
+    max-width: 100% !important;
+    white-space: normal !important;
     word-break: keep-all !important;
-    overflow-wrap: normal !important;
+    overflow-wrap: anywhere !important;
   }
 }
 
@@ -3022,16 +3028,25 @@
   }
 
   .tt-bridge-pin-stage [data-bridge] {
-    width: min(1180px, 92vw) !important;
-    max-width: min(1180px, 92vw) !important;
+    width: min(1120px, 74vw) !important;
+    max-width: min(1120px, 74vw) !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    display: block !important;
     text-align: center !important;
     align-self: center !important;
+    white-space: normal !important;
+    text-wrap: balance !important;
+    word-break: keep-all !important;
+    overflow-wrap: anywhere !important;
   }
 
   .tt-bridge-pin-stage [data-bridge] > span {
+    display: inline !important;
     text-align: center !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: anywhere !important;
   }
 }
 
@@ -3307,5 +3322,33 @@
   #c-projects > [data-public-audience][data-reveal] {
     margin-top: 0 !important;
   }
+}
+
+/* Visual QA: WORKS sits on the darkest depth band, so accent copy needs a
+   brighter treatment than the upper light-blue chapters. */
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-gh-kicker,
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-gh-title span,
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-gh-sub,
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-gh-client-label {
+  color: #9ceef4 !important;
+  opacity: 1 !important;
+  text-shadow:
+    0 2px 8px rgba(2, 10, 22, .48),
+    0 0 18px rgba(156, 238, 244, .22) !important;
+}
+
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-gh-sub small {
+  color: rgba(238, 249, 251, .92) !important;
+  opacity: 1 !important;
+  text-shadow: 0 2px 8px rgba(2, 10, 22, .42) !important;
+}
+
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-chapter,
+body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-note {
+  color: #9ceef4 !important;
+  opacity: .96 !important;
+  text-shadow:
+    0 2px 8px rgba(2, 10, 22, .52),
+    0 0 18px rgba(156, 238, 244, .24) !important;
 }
 
