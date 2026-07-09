@@ -1234,6 +1234,14 @@
   display: block;
 }
 
+.tt-translation-mobile-line {
+  display: block;
+}
+
+.tt-translation-mobile-line-inner {
+  display: inline-block;
+}
+
 @keyframes tt-bridge-line {
   0%, 100% {
     transform: scaleY(.3);
@@ -1843,6 +1851,46 @@
     white-space: normal !important;
   }
 
+  #tale-line.tt-translation-mobile-mode {
+    flex-direction: column !important;
+    gap: .05em !important;
+    font-size: clamp(28px, 8vw, 36px) !important;
+    line-height: 1.14 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+  }
+
+  .tt-translation-mobile-line {
+    display: block !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    text-wrap: nowrap !important;
+    text-align: center !important;
+  }
+
+  .tt-translation-mobile-line[data-indent="-2"],
+  #trans-foot .tt-translation-mobile-line[data-indent="-2"] {
+    transform: translateX(-1.15em) !important;
+  }
+
+  .tt-translation-mobile-line[data-indent="-1"],
+  #trans-foot .tt-translation-mobile-line[data-indent="-1"] {
+    transform: translateX(-.58em) !important;
+  }
+
+  .tt-translation-mobile-line[data-indent="1"],
+  #trans-foot .tt-translation-mobile-line[data-indent="1"] {
+    transform: translateX(.58em) !important;
+  }
+
+  .tt-translation-mobile-line[data-indent="2"],
+  #trans-foot .tt-translation-mobile-line[data-indent="2"] {
+    transform: translateX(1.15em) !important;
+  }
+
   #wave-row {
     width: 100% !important;
     max-width: calc(100vw - 44px) !important;
@@ -1863,6 +1911,16 @@
   #trans-foot {
     max-width: calc(100vw - 48px) !important;
     line-height: 1.45 !important;
+  }
+
+  #trans-foot.tt-translation-mobile-foot {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: .1em !important;
+    text-align: center !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
   }
 
   div[style*="z-index:300"]:has(#m-photo) {

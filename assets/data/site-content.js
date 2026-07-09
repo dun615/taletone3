@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T00:00:00+09:00",
+  "lastUpdated": "2026-07-09T08:34:21.242Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -866,23 +866,135 @@ window.TALETONE_CONTENT = {
         "caption2": "②  TONE  ·  톤을 설계합니다",
         "caption3": "③  MUSIC  ·  음악으로 완성합니다",
         "sentence": "이야기는 하나의 빛깔이 됩니다.",
-        "footer": "그 빛깔은 음악으로 피어납니다."
+        "footer": "그 빛깔은 음악으로 피어납니다.",
+        "mobileLines": [
+          {
+            "text": "이야기는 하나의",
+            "indent": 0
+          },
+          {
+            "text": "빛깔이 됩니다.",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ],
+        "footerMobileLines": [
+          {
+            "text": "그 빛깔은",
+            "indent": 0
+          },
+          {
+            "text": "음악으로 피어납니다.",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ]
       },
       "en": {
         "caption1": "①  TALE  ·  Read the story",
         "caption2": "②  TONE  ·  Design the tone",
         "caption3": "③  MUSIC  ·  Complete the music",
         "sentence": "A tale becomes a tone.",
-        "footer": "A tone becomes music."
+        "footer": "A tone becomes music.",
+        "mobileLines": [
+          {
+            "text": "A tale becomes",
+            "indent": 0
+          },
+          {
+            "text": "a tone.",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ],
+        "footerMobileLines": [
+          {
+            "text": "A tone becomes",
+            "indent": 0
+          },
+          {
+            "text": "music.",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ]
       },
       "jp": {
         "caption1": "①  TALE  ·  物語を読む",
         "caption2": "②  TONE  ·  音色を設計する",
         "caption3": "③  MUSIC  ·  音楽として完成させる",
         "sentence": "物語は、ひとつの彩りになる。",
-        "footer": "その彩りは、音楽となって花開く。"
+        "footer": "その彩りは、音楽となって花開く。",
+        "mobileLines": [
+          {
+            "text": "物語は、",
+            "indent": 0
+          },
+          {
+            "text": "ひとつの彩りになる。",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ],
+        "footerMobileLines": [
+          {
+            "text": "その彩りは、",
+            "indent": 0
+          },
+          {
+            "text": "音楽となって花開く。",
+            "indent": 0
+          },
+          {
+            "text": "",
+            "indent": 0
+          }
+        ]
       }
-    }
+    },
+    "mobileLines": [
+      {
+        "text": "이야기는 하나의",
+        "indent": 0
+      },
+      {
+        "text": "빛깔이 됩니다.",
+        "indent": 0
+      },
+      {
+        "text": "",
+        "indent": 0
+      }
+    ],
+    "footerMobileLines": [
+      {
+        "text": "그 빛깔은",
+        "indent": 0
+      },
+      {
+        "text": "음악으로 피어납니다.",
+        "indent": 0
+      },
+      {
+        "text": "",
+        "indent": 0
+      }
+    ]
   },
   "bridges": [
     {
@@ -1049,11 +1161,11 @@ window.TALETONE_CONTENT = {
               "indent": 0
             },
             {
-              "text": "소리가 되고,",
+              "text": "소리가 되고, 마침내 ",
               "indent": 0
             },
             {
-              "text": "마침내 음악으로 피어납니다.",
+              "text": "음악으로 피어납니다.",
               "indent": 0
             }
           ]
