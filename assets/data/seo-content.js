@@ -12,9 +12,9 @@ window.TALETONE_SEO = {
     },
     {
       "key": "projects",
-      "label": "Projects",
-      "path": "/projects/",
-      "title": "Projects | TALETONE MUSIC — 자체 IP와 스토리텔링",
+      "label": "Story Types",
+      "path": "/story-types/",
+      "title": "Story Types | TALETONE MUSIC — 자체 IP와 스토리텔링",
       "description": "우리만의 스토리텔링으로 만드는 자체 IP",
       "sectionId": "c-projects"
     },
