@@ -10,7 +10,7 @@
   var rendering = false;
   var mounted = false;
   var renderTimer = 0;
-  var dragState = { active: false, startX: 0, lastX: 0, moved: false, stage: null };
+  var dragState = { active: false, startX: 0, lastX: 0, startPosition: 0, moved: false, stage: null };
   var suppressClick = false;
   var pointerMoveFrame = 0;
   var queuedPointerX = 0;
@@ -21,6 +21,7 @@ var audioPool = new Map();
     mode: 'showcase',
     selected: 0,
     start: 0,
+    position: 0,
     track: 0,
     language: 'KR',
     playing: false,
@@ -355,10 +356,10 @@ var audioPool = new Map();
     var slots = activeSlots();
     var visibleCount = Math.min(slots.length, works.length);
     var maxStart = Math.max(0, works.length - visibleCount);
-    state.start = clamp(state.start, 0, maxStart);
-    if (state.selected < state.start) state.start = state.selected;
-    if (state.selected >= state.start + visibleCount) state.start = state.selected - (visibleCount - 1);
-    state.start = clamp(state.start, 0, maxStart);
+    var center = Math.floor(visibleCount / 2);
+    var pos = dragState.active ? numeric(state.position, state.selected) : state.selected;
+    state.position = clamp(pos, 0, Math.max(0, works.length - 1));
+    state.start = clamp(Math.round(state.position - center), 0, maxStart);
   }
 
   function resetSubState(work) {
@@ -445,6 +446,7 @@ var audioPool = new Map();
     var next = clamp(Number(index) || 0, 0, works.length - 1);
     var wasPlaying = state.playing && keepPlayback;
     state.selected = next;
+    state.position = next;
     resetSubState(currentWork());
     ensureSelectedVisible();
     syncAudioState();
@@ -595,34 +597,101 @@ var audioPool = new Map();
     var slots = activeSlots();
     var visibleCount = Math.min(slots.length, works.length);
     var maxStart = Math.max(0, works.length - visibleCount);
-    var start = clamp(state.start, 0, maxStart);
+    var center = Math.floor(visibleCount / 2);
+    var pos = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
+    var start = clamp(pos - center, 0, maxStart);
     var offset = index - start;
-    var slot = slots[offset];
-    if (slot) {
+    return fluidLayout(index, offset, pos, slots);
+  }
+
+  function topNumber(slot) {
+    return numeric(String(slot && slot.top || '12%').replace('%', ''), 12);
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function slotValue(slot, key, fallback) {
+    return numeric(slot && slot[key], fallback);
+  }
+
+  function virtualSlot(slots, side) {
+    var first = slots[0] || { left: 0, top: '12%', rot: -7, scale: .86 };
+    var last = slots[slots.length - 1] || { left: 100, top: '12%', rot: 7, scale: .86 };
+    if (side < 0) {
+      var second = slots[1] || first;
       return {
-        visible: true,
-        left: slot.left,
-        top: slot.top,
-        rot: slot.rot,
-        scale: index === state.selected ? (slot.activeScale || 1.05) : (slot.scale || 1),
-        z: index === state.selected ? 9 : slots.length - Math.abs(offset - (slots.length - 1) / 2),
-        delay: (index % slots.length) * -0.8
+        left: first.left - Math.max(16, second.left - first.left),
+        top: first.top,
+        rot: first.rot - 4,
+        scale: .82,
+        activeScale: .9
       };
     }
+    var beforeLast = slots[slots.length - 2] || last;
     return {
-      visible: false,
-      left: index < start ? -8 : 108,
-      top: '16%',
-      rot: index < start ? -8 : 8,
-      scale: .86,
-      z: 0,
+      left: last.left + Math.max(16, last.left - beforeLast.left),
+      top: last.top,
+      rot: last.rot + 4,
+      scale: .82,
+      activeScale: .9
+    };
+  }
+
+  function mixedSlot(slots, offset) {
+    var lastIndex = slots.length - 1;
+    var a;
+    var b;
+    var t;
+    if (offset < 0) {
+      a = virtualSlot(slots, -1);
+      b = slots[0];
+      t = clamp(offset + 1, 0, 1);
+    } else if (offset > lastIndex) {
+      a = slots[lastIndex];
+      b = virtualSlot(slots, 1);
+      t = clamp(offset - lastIndex, 0, 1);
+    } else {
+      var lo = Math.floor(offset);
+      var hi = Math.min(lastIndex, lo + 1);
+      a = slots[lo];
+      b = slots[hi];
+      t = offset - lo;
+    }
+    return {
+      left: lerp(slotValue(a, 'left', 50), slotValue(b, 'left', 50), t),
+      top: lerp(topNumber(a), topNumber(b), t),
+      rot: lerp(slotValue(a, 'rot', 0), slotValue(b, 'rot', 0), t),
+      scale: lerp(slotValue(a, 'scale', 1), slotValue(b, 'scale', 1), t),
+      activeScale: lerp(slotValue(a, 'activeScale', 1.06), slotValue(b, 'activeScale', 1.06), t)
+    };
+  }
+
+  function fluidLayout(index, offset, pos, slots) {
+    var slot = mixedSlot(slots, offset);
+    var last = slots.length - 1;
+    var focus = clamp(1 - Math.abs(index - pos), 0, 1);
+    var visible = offset > -1.02 && offset < last + 1.02;
+    var leftFade = clamp((offset + 1.02) / 0.34, 0, 1);
+    var rightFade = clamp((last + 1.02 - offset) / 0.34, 0, 1);
+    var opacity = visible ? leftFade * rightFade : 0;
+    return {
+      visible: visible && opacity > 0.01,
+      opacity: opacity,
+      left: Number(slot.left.toFixed(3)),
+      top: slot.top.toFixed(3) + '%',
+      rot: Number(slot.rot.toFixed(3)),
+      scale: Number((slot.scale + (slot.activeScale - slot.scale) * focus).toFixed(4)),
+      z: Math.round(100 - Math.abs(index - pos) * 12),
       delay: (index % slots.length) * -0.8
     };
   }
 
   function cardStyle(layout, unit) {
     var res = responsiveOverride(unit);
-    return '--left:' + layout.left + '%;--top:' + layout.top + ';--rot:' + layout.rot + 'deg;--scale:' + layout.scale + ';--z:' + layout.z + ';--opacity:' + (layout.visible ? 1 : 0) + ';--float-delay:' + layout.delay + 's;--card-scale-override:' + res.cardScale + ';--title-scale:' + res.titleSize + ';--offset-x:' + res.offsetX + 'px;--offset-y:' + res.offsetY + 'px';
+    var opacity = layout.opacity != null ? layout.opacity : (layout.visible ? 1 : 0);
+    return '--left:' + layout.left + '%;--top:' + layout.top + ';--rot:' + layout.rot + 'deg;--scale:' + layout.scale + ';--z:' + layout.z + ';--opacity:' + opacity.toFixed(3) + ';--float-delay:' + layout.delay + 's;--card-scale-override:' + res.cardScale + ';--title-scale:' + res.titleSize + ';--offset-x:' + res.offsetX + 'px;--offset-y:' + res.offsetY + 'px';
   }
 
   function cardPlay(work, index, unit) {
@@ -777,7 +846,7 @@ var audioPool = new Map();
     });
   }
 
-  function updateShowcaseDom() {
+  function updateShowcaseDom(layoutOnly) {
     if (!root || state.mode !== 'showcase') return false;
     var stage = root.querySelector('[data-works-drag-stage]');
     if (!stage) return false;
@@ -790,6 +859,7 @@ var audioPool = new Map();
       var work = works[index];
       var unit = cardUnit(work, index);
       card.setAttribute('style', cardStyle(layout, unit));
+      if (layoutOnly) return;
       var img = card.querySelector('.tt-gh-card-cover img');
       if (img && unit && unit.image) {
         if (img.getAttribute('src') !== unit.image) img.setAttribute('src', unit.image);
@@ -821,6 +891,7 @@ var audioPool = new Map();
         }
       }
     });
+    if (layoutOnly) return true;
     var segmentNode = root.querySelector('.tt-gh-segments');
     if (segmentNode) segmentNode.outerHTML = segments();
     var controlsNode = root.querySelector('.tt-gh-controls');
@@ -848,7 +919,12 @@ var audioPool = new Map();
       if (suppressClick) return;
       var videoIndex = button.hasAttribute('data-index') ? Number(button.getAttribute('data-index')) : state.selected;
       if (Number.isFinite(videoIndex)) {
+        if (videoIndex !== state.selected) {
+          selectIndex(videoIndex, true);
+          return;
+        }
         state.selected = clamp(videoIndex, 0, works.length - 1);
+        state.position = state.selected;
         resetSubState(currentWork());
         ensureSelectedVisible();
       }
@@ -1001,10 +1077,11 @@ var audioPool = new Map();
     if (!section || !section.contains(event.target)) return;
     var stage = event.target && event.target.closest ? event.target.closest('[data-works-drag-stage]') : null;
     if (!stage || !section.contains(stage)) return;
-    if (event.target.closest('[data-works-action="prev"],[data-works-action="next"],[data-works-action="card-language"],[data-works-action="album-prev"],[data-works-action="album-next"],[data-works-action="video-open"],.tt-gh-card-play,.tt-gh-tabs,.tt-gh-segments,.tt-gh-info,.tt-gh-modal,input,button.tt-gh-action,button.tt-gh-select,.tt-gh-card-tab,.tt-gh-album-turn')) return;
+    if (event.target.closest('[data-works-action="prev"],[data-works-action="next"],.tt-gh-tabs,.tt-gh-segments,.tt-gh-info,.tt-gh-modal,input')) return;
     dragState.active = true;
     dragState.startX = event.clientX;
     dragState.lastX = event.clientX;
+    dragState.startPosition = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
     dragState.moved = false;
     dragState.stage = stage;
     stage.classList.add('is-dragging');
@@ -1028,10 +1105,14 @@ var audioPool = new Map();
     dragState.lastX = clientX;
     var delta = clientX - dragState.startX;
     if (Math.abs(delta) > 6) dragState.moved = true;
-    var resistance = Math.max(-76, Math.min(76, delta * 0.38));
-    var edgePull = (state.selected <= 0 && delta > 0) || (state.selected >= works.length - 1 && delta < 0);
-    var dx = edgePull ? resistance * 0.35 : resistance;
-    stage.style.setProperty('--drag-x', dx + 'px');
+    var step = Math.max(120, Math.min(270, stage.getBoundingClientRect().width * 0.18));
+    var nextPosition = dragState.startPosition - (delta / step);
+    if (nextPosition < 0) nextPosition = nextPosition * 0.28;
+    if (nextPosition > works.length - 1) {
+      nextPosition = (works.length - 1) + (nextPosition - (works.length - 1)) * 0.28;
+    }
+    state.position = clamp(nextPosition, -0.38, Math.max(0, works.length - 1) + 0.38);
+    if (!updateShowcaseDom(true)) render();
   }
 
   function onPointerMove(event) {
@@ -1060,11 +1141,8 @@ var audioPool = new Map();
       stage.classList.remove('is-dragging');
       stage.style.setProperty('--drag-x', '0px');
     }
-    var delta = dragState.lastX - dragState.startX;
-    var threshold = Math.max(72, Math.min(128, (window.innerWidth || 1280) * 0.07));
-    if (Math.abs(delta) >= threshold) {
-      go(delta < 0 ? 1 : -1);
-    }
+    state.position = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
+    updateShowcaseDom(true);
     if (dragState.moved) {
       blockFollowupClick(140);
     }
@@ -1081,6 +1159,8 @@ var audioPool = new Map();
     var stage = section && section.querySelector('[data-works-drag-stage]');
     dragState.active = false;
     dragState.moved = false;
+    state.position = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
+    updateShowcaseDom(true);
     dragState.stage = null;
     if (stage) {
       stage.classList.remove('is-dragging');
