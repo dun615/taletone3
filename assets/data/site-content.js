@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T10:38:24.853Z",
+  "lastUpdated": "2026-07-09T11:46:21.364Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -672,7 +672,7 @@ window.TALETONE_CONTENT = {
         "placeholder": "TALETONES visual",
         "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
         "buttonLabel": "Works 듣기",
-        "link": "/works/",
+        "link": "",
         "buttonColor": "var(--accent2,#3d8a98)",
         "buttonTextColor": "#ffffff",
         "image": "",
@@ -688,21 +688,21 @@ window.TALETONE_CONTENT = {
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "Works 듣기"
+            "buttonLabel": "준비중"
           },
           "en": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "A TALETONE band project where storytellers give their own voices to each story.",
-            "buttonLabel": "Listen to Works"
+            "buttonLabel": "Coming Soon"
           },
           "jp": {
             "label": "Band by Storytellers",
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
-            "buttonLabel": "Worksを聴く"
+            "buttonLabel": "準備中"
           }
         },
         "openInNewTab": false
@@ -728,7 +728,7 @@ window.TALETONE_CONTENT = {
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "Works 듣기"
+            "buttonLabel": "준비중"
           }
         ]
       },
@@ -751,7 +751,7 @@ window.TALETONE_CONTENT = {
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "A TALETONE band project where storytellers give their own voices to each story.",
-            "buttonLabel": "Listen to Works"
+            "buttonLabel": "Coming Soon"
           }
         ]
       },
@@ -774,7 +774,7 @@ window.TALETONE_CONTENT = {
             "title": "TALETONES",
             "placeholder": "TALETONES visual",
             "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
-            "buttonLabel": "Worksを聴く"
+            "buttonLabel": "準備中"
           }
         ]
       }
@@ -787,7 +787,7 @@ window.TALETONE_CONTENT = {
     "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
     "caption": "그 이야기가 어떤 음악이 될 수 있을지,\n첫 질문부터 함께 설계하겠습니다.",
     "buttonLabel": "프로젝트 문의하기",
-    "link": "mailto:n4ml@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
+    "link": "mailto:contact@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
     "translations": {
       "kr": {
         "eyebrow": "Contact",
@@ -823,7 +823,7 @@ window.TALETONE_CONTENT = {
         "copyFail": "コピーに失敗しました"
       }
     },
-    "email": "n4ml@taletone.net",
+    "email": "contact@taletone.net",
     "copyLabel": "이메일 주소 복사",
     "copyDone": "복사됨",
     "copyFail": "복사 실패"
