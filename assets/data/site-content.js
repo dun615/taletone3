@@ -890,25 +890,25 @@ window.TALETONE_CONTENT = {
   },
   "membersMeta": {
     "eyebrow": "The Storytellers · 번역하는 사람들",
-    "title": "Members",
+    "title": "MEMBERS",
     "subtitle": "Voices that shape the tone.",
     "description": "그 음색을 만드는 목소리들.",
     "translations": {
       "kr": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
+        "title": "MEMBERS",
         "subtitle": "\" 이야기를 음악으로 꽃피우는 사람들 \"",
         "description": ""
       },
       "en": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
+        "title": "MEMBERS",
         "subtitle": "\" The people who help stories bloom into music. \"",
         "description": ""
       },
       "jp": {
         "eyebrow": "The Storytellers",
-        "title": "<span style=\"color:#335e6c\">MEMBERS</span>",
+        "title": "MEMBERS",
         "subtitle": "\" 物語を音楽へと咲かせる人たち。\"",
         "description": ""
       }

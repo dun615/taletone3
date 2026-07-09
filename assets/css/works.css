@@ -41,8 +41,7 @@
   overflow: visible !important;
 }
 
-#chapnav .nav-dot,
-#chapnav .navbtn span:last-child {
+#chapnav .nav-dot {
   grid-column: 2 !important;
   justify-self: center !important;
   position: relative !important;
@@ -143,7 +142,7 @@ body[data-active-chapter="contact"] #nav-6 {
     justify-content: center !important;
   }
 
-  #chapnav .navbtn span:last-child {
+  #chapnav .nav-dot {
     width: 9px !important;
     height: 9px !important;
   }
@@ -3862,3 +3861,83 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
     text-align: left !important;
   }
 }
+
+/* Members readability lock: keep this chapter from inheriting scroll blur or low-contrast nav states. */
+#c-members > [data-reveal]:first-child,
+#c-members > [data-reveal]:first-child * {
+  filter: none !important;
+}
+
+#c-members > [data-reveal]:first-child {
+  opacity: 1 !important;
+  will-change: auto !important;
+}
+
+#c-members > [data-reveal]:first-child h2,
+#c-members > [data-reveal]:first-child h2 * {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
+
+#c-members > [data-reveal]:first-child p:first-of-type {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child p:last-of-type {
+  color: #44505F !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child .tt-section-chapter,
+#c-members > [data-reveal]:first-child > div:not(.tt-section-chapter-block) {
+  color: #0E6E7D !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child .tt-section-note {
+  color: #44505F !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+body[data-active-chapter="members"] #chapnav,
+body[data-active-chapter="members"] #chapnav * {
+  filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body[data-active-chapter="members"] #chapnav .navbtn,
+body[data-active-chapter="members"] #chapnav .nav-label {
+  color: rgba(20, 28, 48, .76) !important;
+  text-shadow: none !important;
+}
+
+body[data-active-chapter="members"] #chapnav #nav-3.navbtn,
+body[data-active-chapter="members"] #chapnav #nav-3 .nav-label {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .24) !important;
+}
+
+body[data-active-chapter="members"] #chapnav .nav-dot {
+  background: rgba(255, 255, 255, .12) !important;
+  box-shadow:
+    0 0 0 1px rgba(20, 28, 48, .42),
+    0 2px 8px rgba(255, 255, 255, .18) !important;
+}
+
+body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
+  background: #0E6E7D !important;
+  box-shadow:
+    0 0 0 1px rgba(14, 110, 125, .76),
+    0 2px 10px rgba(255, 255, 255, .22) !important;
+}
+
