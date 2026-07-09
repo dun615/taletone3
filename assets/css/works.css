@@ -3704,5 +3704,69 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
     word-break: keep-all !important;
     overflow-wrap: normal !important;
   }
-}
 
+  #c-contact h2 + p + p {
+    white-space: pre-line !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  body:has(div[style*="width: min(760px, 96vw)"]) #lang-switcher.tt-lang-switcher,
+  body:has(div[style*="width:min(760px,96vw)"]) #lang-switcher.tt-lang-switcher {
+    display: none !important;
+  }
+
+  div[style*="position:fixed"][style*="z-index:300"]:has(> div[style*="width: min(760px, 96vw)"]),
+  div[style*="position:fixed"][style*="z-index:300"]:has(> div[style*="width:min(760px,96vw)"]) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+  }
+
+  div[style*="width: min(760px, 96vw)"],
+  div[style*="width:min(760px,96vw)"] {
+    width: min(360px, calc(100vw - 28px)) !important;
+    max-width: calc(100vw - 28px) !important;
+    max-height: calc(100dvh - 24px) !important;
+    margin: 0 !important;
+    text-align: left !important;
+    border-radius: 18px !important;
+    overflow-x: hidden !important;
+    flex: 0 0 auto !important;
+  }
+
+  div[style*="width: min(760px, 96vw)"] > button,
+  div[style*="width:min(760px,96vw)"] > button {
+    position: sticky !important;
+    top: 12px !important;
+    right: 12px !important;
+    left: auto !important;
+    float: right !important;
+    z-index: 30 !important;
+    min-width: 74px !important;
+    min-height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 18px !important;
+    margin: 12px 12px -54px auto !important;
+  }
+
+  div[style*="width: min(760px, 96vw)"] > div:last-child,
+  div[style*="width:min(760px,96vw)"] > div:last-child {
+    clear: both !important;
+    padding: 24px 20px 30px !important;
+    text-align: left !important;
+  }
+
+  div[style*="width: min(760px, 96vw)"] h3,
+  div[style*="width:min(760px,96vw)"] h3,
+  div[style*="width: min(760px, 96vw)"] p,
+  div[style*="width:min(760px,96vw)"] p,
+  div[style*="width: min(760px, 96vw)"] > div:last-child > div,
+  div[style*="width:min(760px,96vw)"] > div:last-child > div {
+    text-align: left !important;
+  }
+}
