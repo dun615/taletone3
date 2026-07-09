@@ -3906,6 +3906,16 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
   text-shadow: none !important;
 }
 
+
+#c-members > [data-reveal]:first-child h2 {
+  color: #0E6E7D !important;
+  -webkit-text-fill-color: #0E6E7D !important;
+  background: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
 body[data-active-chapter="members"] #chapnav,
 body[data-active-chapter="members"] #chapnav * {
   filter: none !important;
