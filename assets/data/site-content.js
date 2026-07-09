@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-09T07:15:47.996Z",
+  "lastUpdated": "2026-07-09T07:19:47.784Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -571,8 +571,10 @@ window.TALETONE_CONTENT = {
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "prologueCopy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
-        "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
+        "prologueCopy": "",
+        "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다.",
+        "worksCtaLabel": "WORKS 바로 보기",
+        "contactCtaLabel": "프로젝트 문의"
       },
       "en": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -585,8 +587,10 @@ window.TALETONE_CONTENT = {
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "prologueCopy": "Countless stories drift on the surface. We dive beneath them.",
-        "prologueHint": "Below the surface, an unwritten book is waiting."
+        "prologueCopy": "",
+        "prologueHint": "Below the surface, an unwritten book is waiting.",
+        "worksCtaLabel": "View Works",
+        "contactCtaLabel": "Project Inquiry"
       },
       "jp": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -599,12 +603,16 @@ window.TALETONE_CONTENT = {
         "scrollHint": "Dive in with scroll",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "prologueCopy": "水面には無数の物語が漂っています。私たちはその下へ潜っていきます。",
-        "prologueHint": "水面の下で、まだ書かれていない本が待っています。"
+        "prologueCopy": "",
+        "prologueHint": "水面の下で、まだ書かれていない本が待っています。",
+        "worksCtaLabel": "WORKSを見る",
+        "contactCtaLabel": "プロジェクト相談"
       }
     },
-    "prologueCopy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
-    "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
+    "prologueCopy": "",
+    "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다.",
+    "worksCtaLabel": "WORKS 바로 보기",
+    "contactCtaLabel": "프로젝트 문의"
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
@@ -1307,7 +1315,7 @@ window.TALETONE_CONTENT = {
     "prologue": {
       "label": "PROLOGUE",
       "note": "수면에서 아래로",
-      "copy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+      "copy": "",
       "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
     },
     "method": {
@@ -1339,7 +1347,7 @@ window.TALETONE_CONTENT = {
         "prologue": {
           "label": "PROLOGUE",
           "note": "수면에서 아래로",
-          "copy": "수면 위엔 수많은 이야기가 떠다닙니다. 우리는 그 아래로 내려갑니다.",
+          "copy": "",
           "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
         },
         "method": {
@@ -1371,7 +1379,7 @@ window.TALETONE_CONTENT = {
         "prologue": {
           "label": "PROLOGUE",
           "note": "From surface to below",
-          "copy": "Countless stories drift on the surface. We dive beneath them.",
+          "copy": "",
           "hint": "Below the surface, an unwritten book is waiting."
         },
         "method": {
@@ -1403,7 +1411,7 @@ window.TALETONE_CONTENT = {
         "prologue": {
           "label": "PROLOGUE",
           "note": "水面からその下へ",
-          "copy": "水面には無数の物語が漂っています。私たちはその下へ潜っていきます。",
+          "copy": "",
           "hint": "水面の下で、まだ書かれていない本が待っています。"
         },
         "method": {
@@ -1434,4 +1442,3 @@ window.TALETONE_CONTENT = {
     }
   }
 }
-;
