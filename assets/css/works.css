@@ -3921,6 +3921,12 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
   text-shadow: none !important;
   mix-blend-mode: normal !important;
 }
+
+#c-members > [data-reveal]:first-child h2 .sc-interp {
+  color: #0E6E7D !important;
+  -webkit-text-fill-color: #0E6E7D !important;
+}
+
 body[data-active-chapter="members"] #chapnav,
 body[data-active-chapter="members"] #chapnav * {
   filter: none !important;
