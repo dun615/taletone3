@@ -4281,6 +4281,14 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
 }
 
 @media (max-width: 760px) {
+  /* Keep mobile fling scrolling responsive; motion resumes as soon as it settles. */
+  body.tt-mobile-scroll-active .tt-gh-bridge-line,
+  body.tt-mobile-scroll-active .tt-gh-bridge-copy,
+  body.tt-mobile-scroll-active #c-contact .tt-book-light-stage > *,
+  body:not([data-active-chapter="news"]):not([data-active-chapter="contact"]) #c-contact .tt-book-light-stage > * {
+    animation-play-state: paused !important;
+  }
+
   #chapnav {
     display: none !important;
   }
