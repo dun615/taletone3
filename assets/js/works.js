@@ -10,7 +10,7 @@
   var rendering = false;
   var mounted = false;
   var renderTimer = 0;
-  var dragState = { active: false, startX: 0, lastX: 0, startPosition: 0, moved: false, stage: null };
+  var dragState = { active: false, startX: 0, lastX: 0, startPosition: 0, moved: false, stage: null, step: 120 };
   var suppressClick = false;
   var pointerMoveFrame = 0;
   var queuedPointerX = 0;
@@ -991,6 +991,7 @@ var audioPool = new Map();
     }
     if (action === 'video-open') {
       if (suppressClick) return;
+      rememberDialogTrigger(button);
       var videoIndex = button.hasAttribute('data-index') ? Number(button.getAttribute('data-index')) : state.selected;
       if (Number.isFinite(videoIndex)) {
         if (videoIndex !== state.selected) {
@@ -1023,6 +1024,7 @@ var audioPool = new Map();
     }
     if (action === 'gallery-open') {
       if (suppressClick) return;
+      rememberDialogTrigger(button);
       state.selected = clamp(Number(button.getAttribute('data-index')) || 0, 0, works.length - 1);
       resetSubState(currentWork());
       state.modalOpen = true;
@@ -1213,6 +1215,7 @@ var audioPool = new Map();
     dragState.startPosition = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
     dragState.moved = false;
     dragState.stage = stage;
+    dragState.step = Math.max(100, Math.min(160, stage.getBoundingClientRect().width * 0.115));
     stage.classList.add('is-dragging');
     stage.style.setProperty('--drag-x', '0px');
     // NOTE: intentionally not using setPointerCapture because capturing the pointer on the
@@ -1234,8 +1237,7 @@ var audioPool = new Map();
     dragState.lastX = clientX;
     var delta = clientX - dragState.startX;
     if (Math.abs(delta) > 6) dragState.moved = true;
-    var step = Math.max(100, Math.min(160, stage.getBoundingClientRect().width * 0.115));
-    var nextPosition = dragState.startPosition - (delta / step);
+    var nextPosition = dragState.startPosition - (delta / dragState.step);
     if (nextPosition < 0) nextPosition = nextPosition * 0.28;
     if (nextPosition > works.length - 1) {
       nextPosition = (works.length - 1) + (nextPosition - (works.length - 1)) * 0.28;
@@ -1812,13 +1814,16 @@ var audioPool = new Map();
     section.querySelectorAll('button').forEach(function (button) {
       var text = button.textContent.trim();
       if (!/복사|copy|コピー/i.test(text)) return;
+      var defaultLabel = localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー');
       button.setAttribute('type', 'button');
       button.setAttribute('aria-live', 'polite');
       button.setAttribute('aria-atomic', 'true');
-      if (!button.getAttribute('aria-label')) button.setAttribute('aria-label', localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー'));
+      if (!button.ttCopyResetTimer) {
+        button.dataset.ttCopyLabel = text || defaultLabel;
+        button.setAttribute('aria-label', defaultLabel);
+      }
       if (button.dataset.ttCopyBound) return;
       button.dataset.ttCopyBound = 'true';
-      button.dataset.ttCopyLabel = text;
       button.addEventListener('click', function (event) {
         event.preventDefault();
         var feedback = section.querySelector('#email-copy-feedback');
@@ -1832,6 +1837,8 @@ var audioPool = new Map();
           if (button.ttCopyResetTimer) clearTimeout(button.ttCopyResetTimer);
           button.ttCopyResetTimer = setTimeout(function () {
             var copyLabel = localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー');
+            button.ttCopyResetTimer = 0;
+            button.dataset.ttCopyLabel = copyLabel;
             button.textContent = button.dataset.ttCopyLabel || copyLabel;
             button.setAttribute('aria-label', copyLabel);
             if (feedback) feedback.textContent = '';
@@ -1941,10 +1948,10 @@ var audioPool = new Map();
     }
     setSiblingsInert(dialog);
     if (document.body) document.body.classList.add('tt-site-dialog-open');
-    requestAnimationFrame(function () {
+    setTimeout(function () {
       var target = close || dialogFocusable(dialog)[0] || dialog;
       if (target && target.isConnected) target.focus({ preventScroll: true });
-    });
+    }, 60);
   }
 
   function deactivateSiteDialog(restoreFocus) {
@@ -1952,7 +1959,7 @@ var audioPool = new Map();
     globalUxState.dialog = null;
     restoreInertSiblings();
     if (document.body) document.body.classList.remove('tt-site-dialog-open');
-    if (restoreFocus) restoreDialogTriggerFocus();
+    if (restoreFocus) setTimeout(restoreDialogTriggerFocus, 60);
   }
 
   function refreshSiteDialog() {

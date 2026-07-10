@@ -3226,6 +3226,11 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 }
 
+#lang-switcher.tt-lang-switcher button:focus-visible {
+  outline: 3px solid #F0A634 !important;
+  outline-offset: -3px !important;
+}
+
 /* ===== Final mobile card layering + modal controls ===== */
 @media (min-width: 761px) {
   .tt-bridge-pin-stage {
