@@ -15,6 +15,7 @@
   var pointerMoveFrame = 0;
   var queuedPointerX = 0;
   var pauseVisibilityFrame = 0;
+  var galleryImageObserver = null;
 var audioPool = new Map();
 
   var state = {
@@ -320,9 +321,12 @@ var audioPool = new Map();
     return 'Track ' + pad(track.trackNo || index + 1) + (index === titleTrackIndex(work) || track.isTitle ? ' (Title)' : '');
   }
 
-  function imgTag(unit, className) {
+  function imgTag(unit, className, defer) {
     if (!unit || !unit.image) return '<span class="' + esc(className || '') + '"></span>';
-    return '<img draggable="false" class="' + esc(className || '') + '" src="' + esc(unit.image) + '" alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
+    var transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+    var source = defer ? transparent : unit.image;
+    var deferredSource = defer ? ' data-works-src="' + esc(unit.image) + '"' : '';
+    return '<img draggable="false" loading="lazy" decoding="async" class="' + esc(className || '') + '" src="' + esc(source) + '"' + deferredSource + ' alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
   }
 
   function numeric(value, fallback) {
@@ -405,7 +409,7 @@ var audioPool = new Map();
   function ensureAudio(entry) {
     if (!audioPool.has(entry.key)) {
       var audio = new Audio(entry.audio);
-      audio.preload = 'auto';
+      audio.preload = 'metadata';
       audio.loop = true; // #6 loop the track when it finishes
       audioPool.set(entry.key, audio);
     }
@@ -527,15 +531,24 @@ var audioPool = new Map();
     }).join('') + '</div></div>';
   }
 
+  function worksStatus() {
+    var work = currentWork();
+    var unit = work ? localizedUnit(work) : null;
+    var title = plainRichText((unit && unit.title) || (work && work.title) || 'WORKS');
+    return '<p class="tt-gh-sr-status" aria-live="polite" aria-atomic="true">' + esc((state.selected + 1) + ' / ' + works.length + ' · ' + title) + '</p>';
+  }
+
   function tabs() {
     var meta = localizedMeta();
-    return '<div class="tt-gh-tabs" role="tablist"><button type="button" data-works-action="mode" data-mode="showcase" class="' + (state.mode === 'showcase' ? 'is-active' : '') + '">' + preserve(meta.showcaseLabel) + '</button><button type="button" data-works-action="mode" data-mode="gallery" class="' + (state.mode === 'gallery' ? 'is-active' : '') + '">' + preserve(meta.galleryLabel) + '</button></div>';
+    var showcaseActive = state.mode === 'showcase';
+    var galleryActive = state.mode === 'gallery';
+    return '<div class="tt-gh-tabs" role="tablist" aria-label="' + esc(localizedUiLabel('WORKS 보기 방식', 'WORKS view mode', 'WORKS 表示モード')) + '"><button type="button" role="tab" id="tt-gh-tab-showcase" aria-controls="tt-gh-panel-showcase" aria-selected="' + (showcaseActive ? 'true' : 'false') + '" tabindex="' + (showcaseActive ? '0' : '-1') + '" data-works-action="mode" data-mode="showcase" class="' + (showcaseActive ? 'is-active' : '') + '">' + preserve(meta.showcaseLabel) + '</button><button type="button" role="tab" id="tt-gh-tab-gallery" aria-controls="tt-gh-panel-gallery" aria-selected="' + (galleryActive ? 'true' : 'false') + '" tabindex="' + (galleryActive ? '0' : '-1') + '" data-works-action="mode" data-mode="gallery" class="' + (galleryActive ? 'is-active' : '') + '">' + preserve(meta.galleryLabel) + '</button></div>';
   }
 
   function controls() {
     if (works.length <= 1 || isMobileWorksLayout()) return '';
     var progress = ((state.selected + 1) / works.length) * 100;
-    return '<div class="tt-gh-controls" aria-label="WORKS shelf navigation"><button type="button" class="tt-gh-round" data-works-action="prev" aria-label="Previous work" ' + (state.selected <= 0 ? 'disabled' : '') + '>&lsaquo;</button><div class="tt-gh-indicator" aria-hidden="true"><span class="tt-gh-page">' + pad(state.selected + 1) + ' / ' + pad(works.length) + '</span><span class="tt-gh-progress"><i style="--progress:' + progress.toFixed(2) + '%"></i></span></div><button type="button" class="tt-gh-round" data-works-action="next" aria-label="Next work" ' + (state.selected >= works.length - 1 ? 'disabled' : '') + '>&rsaquo;</button></div>';
+    return '<div class="tt-gh-controls" role="group" aria-label="' + esc(localizedUiLabel('WORKS 책장 이동', 'WORKS shelf navigation', 'WORKS シェルフ移動')) + '"><button type="button" class="tt-gh-round" data-works-action="prev" aria-label="' + esc(localizedUiLabel('이전 작업물', 'Previous work', '前の作品')) + '" ' + (state.selected <= 0 ? 'disabled' : '') + '>&lsaquo;</button><div class="tt-gh-indicator" aria-hidden="true"><span class="tt-gh-page">' + pad(state.selected + 1) + ' / ' + pad(works.length) + '</span><span class="tt-gh-progress"><i style="--progress:' + progress.toFixed(2) + '%"></i></span></div><button type="button" class="tt-gh-round" data-works-action="next" aria-label="' + esc(localizedUiLabel('다음 작업물', 'Next work', '次の作品')) + '" ' + (state.selected >= works.length - 1 ? 'disabled' : '') + '>&rsaquo;</button></div>';
   }
 
   function visibleWorks() {
@@ -726,9 +739,10 @@ var audioPool = new Map();
       var layout = layoutForIndex(index);
       var active = index === state.selected;
       var unit = cardUnit(work, index);
-      return '<div role="button" tabindex="0" class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '') + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || work.type || itemKind(work), 20) + '</span></span></span>' + cardPreview(work) + '</div>';
+      var cardLabel = (index + 1) + ' / ' + works.length + ' · ' + plainRichText(unit.title || work.title || 'WORKS');
+      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !layout.visible) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || work.type || itemKind(work), 20) + '</span></span></span>' + cardPreview(work) + '</div>';
     }).join('');
-    return '<div class="tt-gh-stage" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
+    return '<div id="tt-gh-panel-showcase" class="tt-gh-stage" role="tabpanel" aria-labelledby="tt-gh-tab-showcase" aria-roledescription="carousel" aria-label="' + esc(localizedUiLabel('WORKS 포트폴리오 책장', 'WORKS portfolio shelf', 'WORKS ポートフォリオシェルフ')) + '" tabindex="0" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
 
   function videoLightbox() {
@@ -737,7 +751,7 @@ var audioPool = new Map();
     if (!work) return '';
     var unit = mergeDisplayUnit(work);
     var meta = localizedMeta();
-    return '<div class="tt-gh-modal tt-gh-video-modal" role="dialog" aria-modal="true"><button type="button" class="tt-gh-modal-backdrop" data-works-action="video-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' video"></button><section class="tt-gh-modal-panel tt-gh-video-panel"><button type="button" class="tt-gh-modal-close" data-works-action="video-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div></section></div>';
+    return '<div class="tt-gh-modal tt-gh-video-modal" role="dialog" aria-modal="true" aria-label="' + esc(plainRichText(unit.title || work.title || 'WORKS')) + ' video" tabindex="-1"><button type="button" class="tt-gh-modal-backdrop" data-works-action="video-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' video"></button><section class="tt-gh-modal-panel tt-gh-video-panel" role="document"><button type="button" class="tt-gh-modal-close" data-works-action="video-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div></section></div>';
   }
 
   function segments() {
@@ -747,9 +761,10 @@ var audioPool = new Map();
   }
 
   function gallery() {
-    return '<div class="tt-gh-gallery">' + works.map(function (work, index) {
+    return '<div id="tt-gh-panel-gallery" class="tt-gh-gallery" role="tabpanel" aria-labelledby="tt-gh-tab-gallery">' + works.map(function (work, index) {
       var unit = localizedUnit(work);
-      return '<div role="button" tabindex="0" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '') + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || itemKind(work), 20) + '</span></span></span></div>';
+      var detailLabel = plainRichText(unit.title || 'WORKS') + localizedUiLabel(' 상세', ' details', ' 詳細');
+      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', true) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || itemKind(work), 20) + '</span></span></span></div>';
     }).join('') + '</div>';
   }
 
@@ -819,7 +834,7 @@ var audioPool = new Map();
     var format = [kind, trackLabel(work), state.language].filter(Boolean).join(' / ');
     var controls = trackButtons(work) + languageButtons(work);
     var meta = localizedMeta();
-    return '<div class="tt-gh-modal" role="dialog" aria-modal="true"><button type="button" class="tt-gh-modal-backdrop" data-works-action="modal-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' detail"></button><section class="tt-gh-modal-panel"><button type="button" class="tt-gh-modal-close" data-works-action="modal-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-main"><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div><div class="tt-gh-modal-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.detailLabel) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || 'TALETONE MUSIC archive.') + '</p>' + detailTable(work, unit, kind, format) + (controls ? '<div class="tt-gh-side">' + controls + '</div>' : '') + '</div></div><aside class="tt-gh-modal-credits"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.creditsLabel) + '</span><pre>' + preserve(creditsText(work, unit)) + '</pre></aside></section></div>';
+    return '<div class="tt-gh-modal" role="dialog" aria-modal="true" aria-label="' + esc(plainRichText(unit.title || work.title || 'WORKS')) + ' detail" tabindex="-1"><button type="button" class="tt-gh-modal-backdrop" data-works-action="modal-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' detail"></button><section class="tt-gh-modal-panel" role="document"><button type="button" class="tt-gh-modal-close" data-works-action="modal-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-main"><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div><div class="tt-gh-modal-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.detailLabel) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || 'TALETONE MUSIC archive.') + '</p>' + detailTable(work, unit, kind, format) + (controls ? '<div class="tt-gh-side">' + controls + '</div>' : '') + '</div></div><aside class="tt-gh-modal-credits"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.creditsLabel) + '</span><pre>' + preserve(creditsText(work, unit)) + '</pre></aside></section></div>';
   }
 
   function syncModalBodyClass() {
@@ -831,12 +846,41 @@ var audioPool = new Map();
     setTimeout(function () { suppressClick = false; }, ms || 260);
   }
 
+  function loadDeferredImage(image) {
+    if (!image || !image.dataset || !image.dataset.worksSrc) return;
+    image.src = image.dataset.worksSrc;
+    image.removeAttribute('data-works-src');
+  }
+
+  function bindLazyGalleryImages() {
+    if (galleryImageObserver) {
+      galleryImageObserver.disconnect();
+      galleryImageObserver = null;
+    }
+    if (!root || state.mode !== 'gallery') return;
+    var deferred = root.querySelectorAll('.tt-gh-gallery img[data-works-src]');
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(deferred, loadDeferredImage);
+      return;
+    }
+    galleryImageObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        loadDeferredImage(entry.target);
+        galleryImageObserver.unobserve(entry.target);
+      });
+    }, { root: null, rootMargin: '260px 0px', threshold: 0.01 });
+    Array.prototype.forEach.call(deferred, function (image) { galleryImageObserver.observe(image); });
+  }
+
   function render() {
     root = ensureRoot();
     if (!root || !works.length) return;
     rendering = true;
     ensureSelectedVisible();
-    root.innerHTML = '<div class="tt-gh-shell">' + head() + clients() + tabs() + (state.mode === 'gallery' ? gallery() : showcase()) + (state.mode === 'showcase' ? infoPanel() : '') + galleryModal() + videoLightbox() + '</div>';
+    preloadNearbyImages(state.selected);
+    root.innerHTML = '<div class="tt-gh-shell">' + worksStatus() + head() + clients() + tabs() + (state.mode === 'gallery' ? gallery() : showcase()) + (state.mode === 'showcase' ? infoPanel() : '') + galleryModal() + videoLightbox() + '</div>';
+    bindLazyGalleryImages();
     syncModalBodyClass();
     bindModalCloseHandlers();
     mounted = true;
@@ -878,13 +922,17 @@ var audioPool = new Map();
       card.classList.toggle('is-active', index === state.selected);
       card.classList.toggle('is-visible', layout.visible);
       card.classList.toggle('is-hidden', !layout.visible);
+      if (index === state.selected) card.setAttribute('aria-current', 'true');
+      else card.removeAttribute('aria-current');
       var work = works[index];
       var unit = cardUnit(work, index);
+      card.setAttribute('aria-label', (index + 1) + ' / ' + works.length + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
       card.setAttribute('style', cardStyle(layout, unit));
       if (layoutOnly) return;
       var img = card.querySelector('.tt-gh-card-cover img');
-      if (img && unit && unit.image) {
+      if (img && unit && unit.image && layout.visible) {
         if (img.getAttribute('src') !== unit.image) img.setAttribute('src', unit.image);
+        img.removeAttribute('data-works-src');
         img.setAttribute('alt', unit.title || '');
         img.setAttribute('style', imageStyle(unit));
       }
@@ -914,6 +962,12 @@ var audioPool = new Map();
       }
     });
     if (layoutOnly) return true;
+    var statusNode = root.querySelector('.tt-gh-sr-status');
+    if (statusNode) {
+      var statusWork = currentWork();
+      var statusUnit = statusWork ? localizedUnit(statusWork) : null;
+      statusNode.textContent = (state.selected + 1) + ' / ' + works.length + ' · ' + plainRichText((statusUnit && statusUnit.title) || (statusWork && statusWork.title) || 'WORKS');
+    }
     var controlsNode = root.querySelector('.tt-gh-controls');
     var controlsHtml = controls();
     if (controlsNode) controlsNode.outerHTML = controlsHtml;
@@ -1053,21 +1107,56 @@ var audioPool = new Map();
   }
 
   function onKey(event) {
+    var volumeInput = event.target && event.target.closest ? event.target.closest('[data-works-action="volume"]') : null;
+    if (volumeInput && ['ArrowLeft', 'ArrowDown', 'ArrowRight', 'ArrowUp', 'Home', 'End'].indexOf(event.key) !== -1) {
+      event.preventDefault();
+      var step = numeric(volumeInput.step, 0.01);
+      if (event.key === 'Home') state.volume = 0;
+      else if (event.key === 'End') state.volume = 1;
+      else state.volume = clamp(state.volume + ((event.key === 'ArrowRight' || event.key === 'ArrowUp') ? step : -step), 0, 1);
+      volumeInput.value = String(state.volume);
+      var volumeLabel = document.querySelector('[data-works-db]');
+      if (volumeLabel) volumeLabel.textContent = volumeToDb(state.volume);
+      syncAudioState();
+      return;
+    }
     var actionable = event.target && event.target.closest ? event.target.closest('[role="button"][data-works-action]') : null;
     if (actionable && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       actionable.click();
       return;
     }
+    var modeTab = event.target && event.target.closest ? event.target.closest('.tt-gh-tabs [role="tab"]') : null;
+    if (modeTab && (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'Home' || event.key === 'End')) {
+      event.preventDefault();
+      var nextMode = (event.key === 'ArrowLeft' || event.key === 'Home') ? 'showcase' : 'gallery';
+      setMode(nextMode);
+      var nextTab = document.getElementById('tt-gh-tab-' + nextMode);
+      if (nextTab) nextTab.focus({ preventScroll: true });
+      return;
+    }
     var section = document.getElementById('c-works');
     if (!section || !isSectionVisible(section)) return;
+    var stage = event.target && event.target.closest ? event.target.closest('[data-works-drag-stage]') : null;
+    var card = event.target && event.target.closest ? event.target.closest('[data-works-card]') : null;
+    var shelfKeyboardTarget = event.target === document.body || event.target === stage || event.target === card;
     if (event.key === 'ArrowLeft') {
+      if (!shelfKeyboardTarget) return;
       event.preventDefault();
       go(-1);
     }
     if (event.key === 'ArrowRight') {
+      if (!shelfKeyboardTarget) return;
       event.preventDefault();
       go(1);
+    }
+    if (event.key === 'Home' && shelfKeyboardTarget) {
+      event.preventDefault();
+      selectIndex(0, true);
+    }
+    if (event.key === 'End' && shelfKeyboardTarget) {
+      event.preventDefault();
+      selectIndex(works.length - 1, true);
     }
     if (event.key === ' ' && event.target === document.body) {
       event.preventDefault();
@@ -1251,9 +1340,10 @@ var audioPool = new Map();
     section.classList.add('tt-gh-works');
     var app = document.getElementById('tt-gh-works-app');
     if (!app || !section.contains(app)) {
-      section.innerHTML = '<div id="tt-gh-works-app" aria-live="polite"></div>';
+      section.innerHTML = '<div id="tt-gh-works-app" aria-live="off"></div>';
       app = document.getElementById('tt-gh-works-app');
     }
+    app.setAttribute('aria-live', 'off');
     return app;
   }
 
@@ -1287,20 +1377,44 @@ var audioPool = new Map();
     }
   }
 
-  // #7 preload every track/version cover so album page-turns never flash a blank
-  // frame while a new image loads over the network.
-  var _imgCache = [];
-  function preloadAllImages() {
-    var urls = {};
-    works.forEach(function (w) {
-      if (w.image) urls[w.image] = 1;
-      (w.tracks || []).forEach(function (t) {
-        if (t.image) urls[t.image] = 1;
-        (t.versions || []).forEach(function (v) { if (v.image) urls[v.image] = 1; });
+  // Keep only the selected work and its immediate neighbours warm. Preloading
+  // the full archive pulled every high-resolution cover into the first visit.
+  var _imgCache = new Map();
+  var _neighbourPreloadTimer = 0;
+
+  function cacheImage(url) {
+    if (!url || _imgCache.has(url)) return;
+    var image = new Image();
+    image.decoding = 'async';
+    image.loading = 'lazy';
+    image.src = url;
+    _imgCache.set(url, image);
+  }
+
+  function preloadCurrentWork(work) {
+    if (!work) return;
+    var trackIndex = activeTrackIndex(work);
+    var track = work.tracks && work.tracks.length ? work.tracks[trackIndex] : null;
+    var previousTrack = work.tracks && work.tracks[trackIndex - 1];
+    var nextTrack = work.tracks && work.tracks[trackIndex + 1];
+    cacheImage(work.image);
+    cacheImage(track && track.image);
+    cacheImage(previousTrack && previousTrack.image);
+    cacheImage(nextTrack && nextTrack.image);
+    variantsFor(work, trackIndex).forEach(function (version) { cacheImage(version && version.image); });
+  }
+
+  function preloadNearbyImages(index) {
+    var selectedIndex = clamp(Number(index) || 0, 0, Math.max(0, works.length - 1));
+    preloadCurrentWork(works[selectedIndex]);
+    clearTimeout(_neighbourPreloadTimer);
+    _neighbourPreloadTimer = setTimeout(function () {
+      [selectedIndex - 1, selectedIndex + 1].forEach(function (workIndex) {
+        var work = works[workIndex];
+        if (!work) return;
+        cacheImage(work.image || (localizedUnit(work) || {}).image);
       });
-      (w.versions || []).forEach(function (v) { if (v.image) urls[v.image] = 1; });
-    });
-    Object.keys(urls).forEach(function (u) { var im = new Image(); im.decoding = 'async'; im.loading = 'eager'; im.src = u; _imgCache.push(im); });
+    }, 180);
   }
 
   function boot(json) {
@@ -1309,7 +1423,7 @@ var audioPool = new Map();
     state.selected = 0;
     resetSubState(works[0]);
     ensureSelectedVisible();
-    preloadAllImages();
+    preloadNearbyImages(0);
     setTimeout(function () { waitForHost(0); }, 260);
     setInterval(function () {
       if (rendering || !works.length) return;
@@ -1325,7 +1439,7 @@ var audioPool = new Map();
     state.selected = clamp(state.selected, 0, Math.max(0, works.length - 1));
     resetSubState(currentWork());
     ensureSelectedVisible();
-    preloadAllImages();
+    preloadNearbyImages(state.selected);
     render();
   }
 
@@ -1352,6 +1466,583 @@ var audioPool = new Map();
     ensureSelectedVisible();
     syncAudioState();
     if (!updateShowcaseDom()) render();
+  }
+
+  var globalUxState = {
+    dialog: null,
+    trigger: null,
+    triggerDescriptor: null,
+    inerted: [],
+    menu: null,
+    skipLink: null,
+    routeLandingTimers: [],
+    routeLandingScheduled: false,
+    routeLandingInteracted: false,
+    observer: null,
+    chapterObserver: null
+  };
+
+  function activeNavId() {
+    var chapter = (document.body && document.body.getAttribute('data-active-chapter')) || 'home';
+    return {
+      home: 'nav-0',
+      translation: 'nav-0',
+      projects: 'nav-2',
+      members: 'nav-3',
+      works: 'nav-4',
+      news: 'nav-5',
+      contact: 'nav-6'
+    }[chapter] || 'nav-0';
+  }
+
+  function localizedUiLabel(ko, en, jp) {
+    var language = pageLangKey();
+    if (language === 'en') return en;
+    if (language === 'jp') return jp;
+    return ko;
+  }
+
+  function activeSectionId() {
+    var chapter = (document.body && document.body.getAttribute('data-active-chapter')) || 'home';
+    return {
+      home: 'c-home',
+      translation: 'c-translation',
+      projects: 'c-projects',
+      members: 'c-members',
+      works: 'c-works',
+      news: 'c-news',
+      contact: 'c-contact'
+    }[chapter] || 'c-home';
+  }
+
+  function onSkipLinkClick(event) {
+    if (!event.target || !event.target.closest || !event.target.closest('#tt-skip-link')) return;
+    event.preventDefault();
+    var target = document.getElementById(activeSectionId()) || document.getElementById('content');
+    if (!target) return;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  }
+
+  function ensureSkipLink() {
+    if (!document.body) return;
+    var link = globalUxState.skipLink || document.getElementById('tt-skip-link');
+    if (!link) {
+      link = document.createElement('a');
+      link.id = 'tt-skip-link';
+      link.className = 'tt-skip-link';
+      link.href = '#content';
+      document.body.insertBefore(link, document.body.firstChild);
+      globalUxState.skipLink = link;
+    }
+    var label = localizedUiLabel('본문으로 바로가기', 'Skip to main content', '本文へ移動');
+    if (link.textContent !== label) link.textContent = label;
+    link.setAttribute('aria-label', label);
+  }
+
+  function routeSectionId() {
+    var path = String((location && location.pathname) || '/').toLowerCase();
+    if (path.indexOf('/story-types/') !== -1 || path.indexOf('/projects/') !== -1) return 'c-projects';
+    if (path.indexOf('/members/') !== -1) return 'c-members';
+    if (path.indexOf('/works/') !== -1) return 'c-works';
+    if (path.indexOf('/news/') !== -1) return 'c-news';
+    if (path.indexOf('/contact/') !== -1) return 'c-contact';
+    return '';
+  }
+
+  function clearRouteLandingTimers() {
+    globalUxState.routeLandingTimers.forEach(function (timer) {
+      clearTimeout(timer);
+      clearInterval(timer);
+    });
+    globalUxState.routeLandingTimers = [];
+  }
+
+  function markRouteLandingInteraction(event) {
+    if (event && event.isTrusted === false) return;
+    globalUxState.routeLandingInteracted = true;
+    clearRouteLandingTimers();
+  }
+
+  function syncRouteLandingUi(scroller, expectedChapter) {
+    var number = {
+      projects: '03',
+      members: '04',
+      works: '05',
+      news: '06',
+      contact: '07'
+    }[expectedChapter];
+    if (document.body) document.body.setAttribute('data-active-chapter', expectedChapter);
+    var pnum = document.getElementById('pnum');
+    if (pnum && number) pnum.textContent = number;
+    var maxScroll = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
+    var progressValue = clamp((scroller.scrollTop / maxScroll) * 100, 0, 100);
+    var pbar = document.getElementById('pbar');
+    if (pbar) pbar.style.width = progressValue.toFixed(4) + '%';
+    var progress = document.getElementById('progress');
+    if (progress && progress.getAttribute('role') === 'progressbar') progress.setAttribute('aria-valuenow', String(Math.round(progressValue)));
+    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_CHANGE', { detail: { chapter: expectedChapter } }));
+  }
+
+  function scheduleRouteLandingCorrections() {
+    if (globalUxState.routeLandingScheduled) return;
+    var sectionId = routeSectionId();
+    if (!sectionId) return;
+    globalUxState.routeLandingScheduled = true;
+    var navId = {
+      'c-projects': 'nav-2',
+      'c-members': 'nav-3',
+      'c-works': 'nav-4',
+      'c-news': 'nav-5',
+      'c-contact': 'nav-6'
+    }[sectionId];
+    var expectedChapter = {
+      'c-projects': 'projects',
+      'c-members': 'members',
+      'c-works': 'works',
+      'c-news': 'news',
+      'c-contact': 'contact'
+    }[sectionId];
+    globalUxState.routeLandingInteracted = false;
+    clearRouteLandingTimers();
+    var attempts = 0;
+    var routeWatcher = setInterval(function () {
+      attempts += 1;
+      if (globalUxState.routeLandingInteracted) {
+        clearRouteLandingTimers();
+        return;
+      }
+      var scroller = document.getElementById('content');
+      var section = document.getElementById(sectionId);
+      if (!scroller || !section) {
+        if (attempts >= 24) clearRouteLandingTimers();
+        return;
+      }
+      var top = section.getBoundingClientRect().top;
+      var activeChapter = document.body && document.body.getAttribute('data-active-chapter');
+      if (activeChapter === expectedChapter && Math.abs(top) <= 320) {
+        clearRouteLandingTimers();
+        return;
+      }
+      if (Math.abs(top) <= 96) {
+        syncRouteLandingUi(scroller, expectedChapter);
+        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
+        window.dispatchEvent(new Event('scroll'));
+        clearRouteLandingTimers();
+        return;
+      } else if (attempts === 4 || attempts === 8) {
+        var navLink = navId ? document.getElementById(navId) : null;
+        if (navLink) navLink.click();
+      } else if (attempts === 12) {
+        scroller.scrollTo({ top: Math.max(0, section.offsetTop - 2), behavior: 'auto' });
+        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
+      }
+      if (attempts >= 24) clearRouteLandingTimers();
+    }, 250);
+    globalUxState.routeLandingTimers.push(routeWatcher);
+  }
+
+  function closeMobileChapterMenu(restoreFocus) {
+    var progress = document.getElementById('progress');
+    if (!document.body || !document.body.classList.contains('tt-mobile-chapter-open')) return;
+    document.body.classList.remove('tt-mobile-chapter-open');
+    if (progress) progress.setAttribute('aria-expanded', 'false');
+    if (restoreFocus && progress) progress.focus({ preventScroll: true });
+  }
+
+  function toggleMobileChapterMenu() {
+    if (window.innerWidth > 760 || !document.body || globalUxState.dialog) return;
+    var progress = document.getElementById('progress');
+    var opening = !document.body.classList.contains('tt-mobile-chapter-open');
+    document.body.classList.toggle('tt-mobile-chapter-open', opening);
+    if (progress) progress.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    if (opening && globalUxState.menu) {
+      var current = globalUxState.menu.querySelector('[aria-current="page"]');
+      var first = current || globalUxState.menu.querySelector('a');
+      if (first) first.focus({ preventScroll: true });
+    }
+  }
+
+  function ensureMobileChapterMenu() {
+    var nav = document.getElementById('chapnav');
+    var progress = document.getElementById('progress');
+    if (!nav || !progress || !document.body) return;
+
+    if (!globalUxState.menu) {
+      var menu = document.createElement('nav');
+      menu.id = 'tt-mobile-chapter-menu';
+      menu.setAttribute('aria-label', localizedUiLabel('챕터 이동', 'Chapter navigation', 'チャプター移動'));
+      nav.querySelectorAll('.navbtn').forEach(function (navButton) {
+        var link = document.createElement('a');
+        link.href = navButton.getAttribute('href') || '/';
+        link.dataset.navId = navButton.id || '';
+        var label = navButton.querySelector('.nav-label');
+        link.textContent = (label && label.textContent.trim()) || navButton.textContent.trim();
+        link.addEventListener('click', function () { closeMobileChapterMenu(false); });
+        menu.appendChild(link);
+      });
+      document.body.appendChild(menu);
+      globalUxState.menu = menu;
+    }
+
+    progress.setAttribute('aria-label', localizedUiLabel('챕터 메뉴 열기', 'Open chapter menu', 'チャプターメニューを開く'));
+    progress.setAttribute('aria-haspopup', 'menu');
+    progress.setAttribute('aria-controls', 'tt-mobile-chapter-menu');
+    progress.setAttribute('aria-expanded', document.body.classList.contains('tt-mobile-chapter-open') ? 'true' : 'false');
+    if (!progress.dataset.ttChapterBound) {
+      progress.dataset.ttChapterBound = 'true';
+      progress.addEventListener('click', toggleMobileChapterMenu);
+    }
+  }
+
+  function refreshChapterControls() {
+    var nav = document.getElementById('chapnav');
+    var progress = document.getElementById('progress');
+    if (!nav || !progress) return;
+    var currentId = activeNavId();
+    nav.setAttribute('role', 'navigation');
+    nav.setAttribute('aria-label', localizedUiLabel('주요 섹션', 'Main sections', 'メインセクション'));
+    nav.querySelectorAll('.navbtn').forEach(function (button) {
+      var active = button.id === currentId;
+      if (active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+
+    ensureMobileChapterMenu();
+    if (globalUxState.menu) {
+      globalUxState.menu.querySelectorAll('a').forEach(function (link) {
+        if (link.dataset.navId === currentId) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+    }
+
+    if (window.innerWidth <= 760) {
+      progress.setAttribute('role', 'button');
+      progress.setAttribute('tabindex', '0');
+      progress.removeAttribute('aria-valuemin');
+      progress.removeAttribute('aria-valuemax');
+      progress.removeAttribute('aria-valuenow');
+    } else {
+      closeMobileChapterMenu(false);
+      progress.setAttribute('role', 'progressbar');
+      progress.removeAttribute('tabindex');
+      progress.removeAttribute('aria-haspopup');
+      progress.removeAttribute('aria-controls');
+      progress.removeAttribute('aria-expanded');
+      progress.setAttribute('aria-label', localizedUiLabel('사이트 탐색 진행도', 'Site journey progress', 'サイト進行状況'));
+      progress.setAttribute('aria-valuemin', '0');
+      progress.setAttribute('aria-valuemax', '100');
+      var bar = document.getElementById('pbar');
+      progress.setAttribute('aria-valuenow', String(Math.round(parseFloat((bar && bar.style.width) || '0') || 0)));
+    }
+
+    var currentLanguage = pageLangKey();
+    [['lang-kr', 'kr'], ['lang-en', 'en'], ['lang-jp', 'jp']].forEach(function (entry) {
+      var button = document.getElementById(entry[0]);
+      if (button) button.setAttribute('aria-pressed', entry[1] === currentLanguage ? 'true' : 'false');
+    });
+  }
+
+  function interactiveCardLabel(card, kind) {
+    var image = card.querySelector('img[alt]');
+    var name = image && image.getAttribute('alt');
+    if (!name) {
+      var heading = card.querySelector('h2,h3,[style*="font-size:21px"],[style*="font-size: 21px"]');
+      name = heading && heading.textContent.trim();
+    }
+    name = name || card.textContent.trim().split(/\n+/)[0] || 'TALETONE';
+    if (kind === 'member') return name + localizedUiLabel(' 멤버 상세', ' member details', ' メンバー詳細');
+    return name + localizedUiLabel(' 기사 상세', ' article details', ' 記事詳細');
+  }
+
+  function patchInteractiveCards() {
+    document.querySelectorAll('#c-members .tt-member-card, #c-news .lift').forEach(function (card) {
+      var kind = card.classList.contains('tt-member-card') ? 'member' : 'news';
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-haspopup', 'dialog');
+      card.setAttribute('aria-label', interactiveCardLabel(card, kind));
+      card.dataset.ttDialogTrigger = 'true';
+    });
+  }
+
+  function fallbackCopyText(text) {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    field.style.opacity = '0';
+    document.body.appendChild(field);
+    field.select();
+    var copied = false;
+    try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+    field.remove();
+    return copied;
+  }
+
+  function copyContactEmail() {
+    var email = 'contact@taletone.net';
+    var clipboardWrite = null;
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      try { clipboardWrite = navigator.clipboard.writeText(email); } catch (error) { clipboardWrite = null; }
+    }
+    var fallbackCopied = fallbackCopyText(email);
+    if (clipboardWrite) {
+      return clipboardWrite
+        .then(function () { return true; })
+        .catch(function () { return fallbackCopied; });
+    }
+    return Promise.resolve(fallbackCopied);
+  }
+
+  function patchContactControls() {
+    var section = document.getElementById('c-contact');
+    if (!section) return;
+    var emailLink = section.querySelector('a[href^="mailto:"]');
+    if (emailLink) emailLink.setAttribute('aria-label', localizedUiLabel('프로젝트 문의 이메일 열기', 'Open project inquiry email', 'プロジェクト問い合わせメールを開く'));
+    section.querySelectorAll('button').forEach(function (button) {
+      var text = button.textContent.trim();
+      if (!/복사|copy|コピー/i.test(text)) return;
+      button.setAttribute('type', 'button');
+      button.setAttribute('aria-live', 'polite');
+      button.setAttribute('aria-atomic', 'true');
+      if (!button.getAttribute('aria-label')) button.setAttribute('aria-label', localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー'));
+      if (button.dataset.ttCopyBound) return;
+      button.dataset.ttCopyBound = 'true';
+      button.dataset.ttCopyLabel = text;
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var feedback = section.querySelector('#email-copy-feedback');
+        copyContactEmail().then(function (copied) {
+          var message = copied
+            ? localizedUiLabel('복사됨', 'Copied', 'コピーしました')
+            : localizedUiLabel('복사 실패', 'Copy failed', 'コピーできませんでした');
+          button.textContent = message;
+          button.setAttribute('aria-label', message);
+          if (feedback) feedback.textContent = message;
+          if (button.ttCopyResetTimer) clearTimeout(button.ttCopyResetTimer);
+          button.ttCopyResetTimer = setTimeout(function () {
+            var copyLabel = localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー');
+            button.textContent = button.dataset.ttCopyLabel || copyLabel;
+            button.setAttribute('aria-label', copyLabel);
+            if (feedback) feedback.textContent = '';
+          }, 1800);
+        });
+      });
+    });
+  }
+
+  function findSiteDialog() {
+    var explicit = document.querySelector('.tt-gh-modal[role="dialog"], .tt-member-modal');
+    if (explicit) return explicit;
+    var nodes = document.querySelectorAll('div[style]');
+    for (var index = 0; index < nodes.length; index += 1) {
+      var node = nodes[index];
+      if (node.style.position !== 'fixed' || Number(node.style.zIndex || 0) < 300) continue;
+      if (node.querySelector('image-slot') && node.querySelector('h3')) {
+        node.classList.add('tt-news-modal');
+        return node;
+      }
+    }
+    return null;
+  }
+
+  function setSiblingsInert(dialog) {
+    globalUxState.inerted = [];
+    var current = dialog;
+    while (current && current.parentElement && current.parentElement !== document.body) {
+      Array.prototype.forEach.call(current.parentElement.children, function (sibling) {
+        if (sibling === current || sibling.nodeType !== 1 || sibling.tagName === 'SCRIPT' || sibling.tagName === 'STYLE') return;
+        globalUxState.inerted.push({
+          node: sibling,
+          inert: !!sibling.inert,
+          ariaHidden: sibling.getAttribute('aria-hidden')
+        });
+        sibling.inert = true;
+        sibling.setAttribute('aria-hidden', 'true');
+      });
+      current = current.parentElement;
+    }
+  }
+
+  function restoreInertSiblings() {
+    globalUxState.inerted.forEach(function (record) {
+      if (!record.node || !record.node.isConnected) return;
+      record.node.inert = record.inert;
+      if (record.ariaHidden == null) record.node.removeAttribute('aria-hidden');
+      else record.node.setAttribute('aria-hidden', record.ariaHidden);
+    });
+    globalUxState.inerted = [];
+  }
+
+  function dialogFocusable(dialog) {
+    return Array.prototype.filter.call(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'), function (node) {
+      return !node.hasAttribute('hidden') && node.getClientRects().length > 0;
+    });
+  }
+
+  function rememberDialogTrigger(trigger) {
+    if (!trigger) return;
+    globalUxState.trigger = trigger;
+    globalUxState.triggerDescriptor = {
+      action: trigger.getAttribute('data-works-action') || '',
+      index: trigger.getAttribute('data-index') || '',
+      label: trigger.getAttribute('aria-label') || ''
+    };
+  }
+
+  function restoreDialogTriggerFocus() {
+    var trigger = globalUxState.trigger;
+    var descriptor = globalUxState.triggerDescriptor || {};
+    if (!trigger || !trigger.isConnected) {
+      trigger = Array.prototype.find.call(document.querySelectorAll('[data-tt-dialog-trigger], [data-works-action="gallery-open"], [data-works-action="video-open"]'), function (candidate) {
+        if (descriptor.action) {
+          return candidate.getAttribute('data-works-action') === descriptor.action && candidate.getAttribute('data-index') === descriptor.index;
+        }
+        return descriptor.label && candidate.getAttribute('aria-label') === descriptor.label;
+      }) || null;
+    }
+    if (trigger && trigger.isConnected) {
+      globalUxState.trigger = trigger;
+      trigger.focus({ preventScroll: true });
+    }
+  }
+
+  function activateSiteDialog(dialog) {
+    if (!dialog || dialog === globalUxState.dialog) return;
+    if (globalUxState.dialog) deactivateSiteDialog(false);
+    closeMobileChapterMenu(false);
+    globalUxState.dialog = dialog;
+    dialog.classList.add('tt-site-dialog');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('tabindex', '-1');
+
+    var heading = dialog.querySelector('.tt-member-brand, h3');
+    if (heading && !dialog.hasAttribute('aria-label')) {
+      if (!heading.id) heading.id = 'tt-dialog-title-' + Date.now();
+      dialog.setAttribute('aria-labelledby', heading.id);
+    }
+    var panel = dialog.querySelector('.tt-member-panel, .tt-gh-modal-panel') || dialog.firstElementChild;
+    if (panel) panel.setAttribute('role', 'document');
+    var close = dialog.querySelector('.tt-member-close, .tt-gh-modal-close, :scope > div > button');
+    if (close) {
+      close.setAttribute('type', 'button');
+      if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
+    }
+    setSiblingsInert(dialog);
+    if (document.body) document.body.classList.add('tt-site-dialog-open');
+    requestAnimationFrame(function () {
+      var target = close || dialogFocusable(dialog)[0] || dialog;
+      if (target && target.isConnected) target.focus({ preventScroll: true });
+    });
+  }
+
+  function deactivateSiteDialog(restoreFocus) {
+    if (!globalUxState.dialog) return;
+    globalUxState.dialog = null;
+    restoreInertSiblings();
+    if (document.body) document.body.classList.remove('tt-site-dialog-open');
+    if (restoreFocus) restoreDialogTriggerFocus();
+  }
+
+  function refreshSiteDialog() {
+    var found = findSiteDialog();
+    if (found === globalUxState.dialog) return;
+    if (!found) {
+      deactivateSiteDialog(true);
+      return;
+    }
+    activateSiteDialog(found);
+  }
+
+  function refreshGlobalUx() {
+    refreshChapterControls();
+    ensureSkipLink();
+    patchInteractiveCards();
+    patchContactControls();
+    refreshSiteDialog();
+    scheduleRouteLandingCorrections();
+  }
+
+  function onGlobalUxKeydown(event) {
+    var target = event.target;
+    if ((event.key === 'Enter' || event.key === ' ') && target && target.dataset && target.dataset.ttDialogTrigger === 'true') {
+      event.preventDefault();
+      rememberDialogTrigger(target);
+      target.click();
+      return;
+    }
+    if ((event.key === 'Enter' || event.key === ' ') && target && target.id === 'progress' && window.innerWidth <= 760) {
+      event.preventDefault();
+      toggleMobileChapterMenu();
+      return;
+    }
+    if (event.key === 'Escape' && document.body && document.body.classList.contains('tt-mobile-chapter-open')) {
+      event.preventDefault();
+      closeMobileChapterMenu(true);
+      return;
+    }
+    var dialog = globalUxState.dialog;
+    if (!dialog) return;
+    if (event.key === 'Escape') {
+      var close = dialog.querySelector('.tt-member-close, .tt-gh-modal-close, :scope > div > button');
+      if (close) {
+        event.preventDefault();
+        close.click();
+      }
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    var focusable = dialogFocusable(dialog);
+    if (!focusable.length) {
+      event.preventDefault();
+      dialog.focus({ preventScroll: true });
+      return;
+    }
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  }
+
+  function initGlobalUx() {
+    refreshGlobalUx();
+    window.addEventListener('wheel', markRouteLandingInteraction, { passive: true, capture: true });
+    window.addEventListener('touchstart', markRouteLandingInteraction, { passive: true, capture: true });
+    window.addEventListener('pointerdown', markRouteLandingInteraction, { passive: true, capture: true });
+    window.addEventListener('keydown', function (event) {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].indexOf(event.key) !== -1) markRouteLandingInteraction(event);
+    }, true);
+    document.addEventListener('keydown', onGlobalUxKeydown, true);
+    document.addEventListener('click', onSkipLinkClick, true);
+    document.addEventListener('pointerdown', function (event) {
+      var trigger = event.target && event.target.closest ? event.target.closest('[data-tt-dialog-trigger], [data-works-action="gallery-open"], [data-works-action="video-open"]') : null;
+      if (trigger) rememberDialogTrigger(trigger);
+      if (document.body && document.body.classList.contains('tt-mobile-chapter-open')) {
+        var progress = document.getElementById('progress');
+        if ((!globalUxState.menu || !globalUxState.menu.contains(event.target)) && (!progress || !progress.contains(event.target))) {
+          closeMobileChapterMenu(false);
+        }
+      }
+    }, true);
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.closest && event.target.closest('#lang-switcher')) {
+        setTimeout(refreshChapterControls, 40);
+      }
+    }, true);
+    window.addEventListener('resize', refreshChapterControls, { passive: true });
+    globalUxState.observer = new MutationObserver(function () { refreshGlobalUx(); });
+    globalUxState.observer.observe(document.body, { childList: true, subtree: true });
+    globalUxState.chapterObserver = new MutationObserver(refreshChapterControls);
+    globalUxState.chapterObserver.observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
+    globalUxState.chapterObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   }
 
   window.TALETONE_WORKS_API = {
@@ -1406,8 +2097,12 @@ var audioPool = new Map();
   document.addEventListener('mousemove', onMouseMove, true);
   window.addEventListener('mouseup', onPointerUp, true);
   window.addEventListener('mouseup', onMouseUp, true);
-    window.addEventListener('hashchange', scrollToWorksFromHash);
+  window.addEventListener('hashchange', scrollToWorksFromHash);
   bindVisibilityPause();
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  function start() {
+    initGlobalUx();
+    init();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();

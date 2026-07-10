@@ -23,7 +23,7 @@ window.TALETONE_SEO_CONTENT = {
       "label": "Members",
       "path": "/members/",
       "title": "Members | TALETONE MUSIC — 제작 멤버",
-      "description": "TALETONE MUSIC의 프로듀서, 프로젝트 매니저, 보컬 디렉터, 아트 디렉터 등 스토리 기반 음악 제작 멤버를 소개합니다.",
+      "description": "이야기를 음악으로 바꾸는 제작 멤버들을 소개합니다.",
       "sectionId": "c-members"
     },
     {
@@ -31,7 +31,7 @@ window.TALETONE_SEO_CONTENT = {
       "label": "Works",
       "path": "/works/",
       "title": "Works | TALETONE MUSIC — 공개 작업물 포트폴리오",
-      "description": "공개 가능한 작업물과 크레딧을 한 번에 확인하는 포트폴리오입니다. 마음악보, 여름을 그리다, Love Dopamine, Love Novel, Fallen Leaves, 강치 아일랜드 등 오리지널송, OST, 캐릭터송, BGM 제작 기록을 소개합니다.",
+      "description": "STELLIVE 마음악보, Zenless Zone Zero 여름을 그리다, 해봄 Love Dopamine 등 우리의 작업물을 소개합니다.",
       "sectionId": "c-works"
     },
     {
@@ -39,7 +39,7 @@ window.TALETONE_SEO_CONTENT = {
       "label": "News",
       "path": "/news/",
       "title": "News | TALETONE MUSIC — 소식과 업데이트",
-      "description": "TALETONE MUSIC의 최신 소식, 프로젝트 업데이트, STELLIVE 마음악보 발매 소식 등 팬과 클라이언트를 위한 공지를 모아둡니다.",
+      "description": "우리의 최신 소식과 공지를 모아둡니다.",
       "sectionId": "c-news"
     },
     {
@@ -47,8 +47,9 @@ window.TALETONE_SEO_CONTENT = {
       "label": "Contact",
       "path": "/contact/",
       "title": "Contact | TALETONE MUSIC — 프로젝트 문의",
-      "description": "아직 정리되지 않은 이야기라도 괜찮습니다. 첫 질문부터 함께 설계하겠습니다. 프로젝트 문의: contact@taletone.net",
+      "description": "프로젝트 문의: contact@taletone.net",
       "sectionId": "c-contact"
     }
   ]
-};
+}
+;
