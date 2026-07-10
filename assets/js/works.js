@@ -1526,6 +1526,8 @@ var audioPool = new Map();
 
   function ensureSkipLink() {
     if (!document.body) return;
+    var content = document.getElementById('content');
+    if (content && !content.hasAttribute('role')) content.setAttribute('role', 'main');
     var link = globalUxState.skipLink || document.getElementById('tt-skip-link');
     if (!link) {
       link = document.createElement('a');
@@ -1629,6 +1631,12 @@ var audioPool = new Map();
         scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
         window.dispatchEvent(new Event('scroll'));
         clearRouteLandingTimers();
+        return;
+      } else if (attempts === 1) {
+        scroller.scrollTo({ top: Math.max(0, section.offsetTop - 2), behavior: 'auto' });
+        syncRouteLandingUi(scroller, expectedChapter);
+        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
+        window.dispatchEvent(new Event('scroll'));
         return;
       } else if (attempts === 4 || attempts === 8) {
         var navLink = navId ? document.getElementById(navId) : null;

@@ -53,3 +53,4 @@ window.TALETONE_SEO_CONTENT = {
   ]
 }
 ;
+window.TALETONE_SEO = window.TALETONE_SEO_CONTENT;
