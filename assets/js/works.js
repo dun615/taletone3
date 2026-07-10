@@ -55,6 +55,11 @@
     { left: 36, top: '17%', rot: -5, scale: .9 },
     { left: 58, top: '8%', rot: 2, scale: 1.06, activeScale: 1.08 }
   ];
+  var mobileMiddleSlots = [
+    { left: 50, top: '8%', rot: 0, scale: 1.06, activeScale: 1.08 },
+    { left: 76, top: '17%', rot: 5, scale: .86 },
+    { left: 24, top: '17%', rot: -5, scale: .86 }
+  ];
 
   function esc(value) {
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
@@ -680,11 +685,14 @@
   function layoutForIndex(index) {
     if (isMobileWorksLayout()) {
       var mobileOffset = index - state.selected;
+      var hasPrevious = state.selected > 0;
+      var hasNext = state.selected < works.length - 1;
+      var hasBothSides = hasPrevious && hasNext;
       var selectedIsLast = state.selected >= works.length - 1;
       var mobileSlot = null;
-      if (index === state.selected) mobileSlot = selectedIsLast ? mobileSlots[3] : mobileSlots[0];
-      else if (!selectedIsLast && mobileOffset === 1) mobileSlot = mobileSlots[1];
-      else if (selectedIsLast && mobileOffset === -1) mobileSlot = mobileSlots[2];
+      if (index === state.selected) mobileSlot = hasBothSides ? mobileMiddleSlots[0] : (selectedIsLast ? mobileSlots[3] : mobileSlots[0]);
+      else if (mobileOffset === 1 && hasNext) mobileSlot = hasBothSides ? mobileMiddleSlots[1] : mobileSlots[1];
+      else if (mobileOffset === -1 && hasPrevious) mobileSlot = hasBothSides ? mobileMiddleSlots[2] : mobileSlots[2];
       if (mobileSlot) {
         return {
           visible: true,
