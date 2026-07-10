@@ -88,7 +88,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     decodedApp ||= decoded;
     payloadHashes.push(createHash('sha256').update(decoded).digest('hex'));
     assert(decoded.includes('assets/js/image-slot.js?v=20260710-p1'), `${file}: stale image-slot cache key`);
-    assert(decoded.includes('assets/js/works.js?v=20260710-p1-p2-final15'), `${file}: stale works cache key`);
+    assert(decoded.includes('assets/js/works.js?v=20260710-p1-p2-final16'), `${file}: stale works cache key`);
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);

@@ -16,7 +16,9 @@
   var queuedPointerX = 0;
   var pauseVisibilityFrame = 0;
   var galleryImageObserver = null;
-var audioPool = new Map();
+  var seoHeadObserver = null;
+  var seoSyncQueued = false;
+  var audioPool = new Map();
 
   var state = {
     mode: 'showcase',
@@ -58,6 +60,86 @@ var audioPool = new Map();
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
     });
+  }
+
+  function normalizeSeoPath(value) {
+    var pathname = String(value || '/').split(/[?#]/)[0] || '/';
+    if (pathname.charAt(0) !== '/') pathname = '/' + pathname;
+    return pathname === '/' ? '/' : pathname.replace(/\/+$/, '') + '/';
+  }
+
+  function syncStructuredData() {
+    var cfg = window.TALETONE_SEO_CONTENT || window.TALETONE_SEO;
+    var script = document.head && document.head.querySelector('script[type="application/ld+json"]');
+    if (!cfg || !Array.isArray(cfg.pages) || !script) return;
+
+    var currentPath = normalizeSeoPath(location.pathname);
+    var page = cfg.pages.find(function (item) {
+      return normalizeSeoPath(item && item.path) === currentPath;
+    }) || cfg.pages[0];
+    if (!page) return;
+
+    var siteName = cfg.siteName || 'TALETONE MUSIC';
+    var alternateName = Array.isArray(cfg.alternateNames) ? cfg.alternateNames : [];
+    var rootUrl = new URL('/', String(cfg.baseUrl || 'https://taletone.net').replace(/\/+$/, '') + '/').href;
+    var pageUrl = new URL(normalizeSeoPath(page.path), rootUrl).href;
+    var schema = page.key === 'home'
+      ? {
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Organization',
+              '@id': rootUrl + '#organization',
+              name: siteName,
+              alternateName: alternateName,
+              url: rootUrl,
+              logo: new URL('/assets/icons/icon-512.png', rootUrl).href,
+              description: page.description
+            },
+            {
+              '@type': 'WebSite',
+              '@id': rootUrl + '#website',
+              name: siteName,
+              alternateName: alternateName,
+              url: rootUrl,
+              publisher: { '@id': rootUrl + '#organization' }
+            }
+          ]
+        }
+      : {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: page.title,
+          url: pageUrl,
+          description: page.description,
+          isPartOf: {
+            '@type': 'WebSite',
+            name: siteName,
+            alternateName: alternateName,
+            url: rootUrl
+          }
+        };
+    var next = JSON.stringify(schema);
+    if (script.textContent !== next) script.textContent = next;
+  }
+
+  function scheduleStructuredDataSync() {
+    if (seoSyncQueued) return;
+    seoSyncQueued = true;
+    Promise.resolve().then(function () {
+      seoSyncQueued = false;
+      syncStructuredData();
+    });
+  }
+
+  function initStructuredDataGuard() {
+    syncStructuredData();
+    if (!seoHeadObserver && document.head) {
+      seoHeadObserver = new MutationObserver(scheduleStructuredDataSync);
+      seoHeadObserver.observe(document.head, { childList: true, characterData: true, subtree: true });
+      window.addEventListener('popstate', scheduleStructuredDataSync, { passive: true });
+      window.addEventListener('hashchange', scheduleStructuredDataSync, { passive: true });
+    }
   }
 
   function looksLikeRichText(value) {
@@ -2115,6 +2197,7 @@ var audioPool = new Map();
   window.addEventListener('hashchange', scrollToWorksFromHash);
   bindVisibilityPause();
   function start() {
+    initStructuredDataGuard();
     initGlobalUx();
     init();
   }
