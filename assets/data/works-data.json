@@ -1,6 +1,52 @@
 {
   "works": [
     {
+      "id": "work-new-21",
+      "title": "Bubble Sweet",
+      "date": "2026",
+      "type": "DOLONGCHA 2nd Single",
+      "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기.\n",
+      "credits": "Creative Directed by DOLONGCHA\nMusic Produced by N4ML (TALETONE)\nInvested by DOLONGCHA\nProject Management by Kimbeaver\n\nSong by DOLONGCHA\nComposed by N4ML (TALETONE)\nLyrics by N4ML (TALETONE)\nArranged by N4ML (TALETONE)\n\nBass Guitar by Jaeha Yoon (TALETONE)\nAcoustic Guitar by JJ Kim\nSynthesizers by N4ML (TALETONE)\nDrum Programming by N4ML (TALETONE)\n\nVocal Recorded by Moonsoo Park (U-il SoundWorks)\nMixed by Moonsoo Park (U-il SoundWorks)\nMastered by Junyong Lee (U-il SoundWorks)",
+      "image": "assets\\works\\images\\bubblesweet.png",
+      "audio": "assets\\works\\audio\\Fix-Bubblesweet.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 1,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=P6fUuhq3XSQ",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기.\n"
+        },
+        "en": {
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "A story that captures the sweet excitement of bubbles popping beneath the midsummer sun in one refreshingly cool drink."
+        },
+        "jp": {
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "真夏の陽射しの下、泡のように弾ける甘いときめきを、ひんやりとした一杯に閉じ込めた物語。"
+        }
+      }
+    },
+    {
       "id": "work-soraniwa",
       "title": "마음악보",
       "date": "2026.06.11",
@@ -13,7 +59,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 1,
+      "index": 2,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -59,7 +105,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 2,
+      "index": 3,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -105,7 +151,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 3,
+      "index": 4,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -151,7 +197,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.59,
-      "index": 4,
+      "index": 5,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -197,7 +243,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 5,
+      "index": 6,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -243,7 +289,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 6,
+      "index": 7,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -289,7 +335,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 7,
+      "index": 8,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -335,7 +381,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 8,
+      "index": 9,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -381,7 +427,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 9,
+      "index": 10,
       "versions": [],
       "tracks": [
         {
@@ -544,7 +590,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 10,
+      "index": 11,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -590,7 +636,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 11,
+      "index": 12,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -636,7 +682,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 12,
+      "index": 13,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -682,7 +728,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 13,
+      "index": 14,
       "versions": [],
       "tracks": [
         {
@@ -845,7 +891,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 14,
+      "index": 15,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -891,7 +937,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 15,
+      "index": 16,
       "versions": [
         {
           "id": "work-mix-archive-01",
@@ -1004,7 +1050,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 16,
+      "index": 17,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1050,7 +1096,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 17,
+      "index": 18,
       "versions": [
         {
           "id": "work-mix-archive-02",
@@ -1179,7 +1225,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 18,
+      "index": 19,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1225,7 +1271,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 19,
+      "index": 20,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1271,7 +1317,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 20,
+      "index": 21,
       "versions": [],
       "tracks": [],
       "kind": "single",
