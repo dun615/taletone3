@@ -4393,3 +4393,130 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
   }
 }
 
+/* ===== Mobile production polish: bridge fit, member roles and WORKS gallery ===== */
+@media (max-width: 760px) {
+  .tt-bridge-mobile-text {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(18px, 5.9vw, 26px) !important;
+  }
+
+  .tt-bridge-pin-stage .tt-bridge-visual {
+    scale: .86 !important;
+    transform-origin: center center !important;
+  }
+
+  .tt-mobile-bridge-line[data-indent="-2"] {
+    transform: translateX(-.8em) !important;
+  }
+
+  .tt-mobile-bridge-line[data-indent="-1"] {
+    transform: translateX(-.4em) !important;
+  }
+
+  .tt-mobile-bridge-line[data-indent="1"] {
+    transform: translateX(.4em) !important;
+  }
+
+  .tt-mobile-bridge-line[data-indent="2"] {
+    transform: translateX(.8em) !important;
+  }
+
+  #c-members .tt-member-card [style*="font-size:11px"],
+  #c-members .tt-member-card [style*="font-size: 11px"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    box-sizing: border-box !important;
+    padding: 5px !important;
+    font-size: clamp(7.5px, 2.3vw, 9.2px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card {
+    aspect-ratio: 2 / 3 !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-cover {
+    flex: 0 0 auto !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-meta {
+    flex: 1 1 auto !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    min-height: 46px !important;
+    padding: 8px 7px 8px !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-title {
+    min-height: 1.25em !important;
+    max-height: 2.5em !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-type {
+    margin-top: 1px !important;
+    min-height: 1.25em !important;
+    max-height: 1.25em !important;
+    font-size: 7.2px !important;
+    line-height: 1.25 !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tabs {
+    top: 6px !important;
+    right: 6px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 3px !important;
+    transform: none !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tab,
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tab.is-active {
+    width: 26px !important;
+    height: 20px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    font-size: 7.5px !important;
+    line-height: 20px !important;
+    text-align: center !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-album-turn {
+    left: 6px !important;
+    right: auto !important;
+    bottom: 6px !important;
+    gap: 0 !important;
+    padding: 4px 6px !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-album-turn button {
+    display: none !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-album-turn b {
+    min-width: 0 !important;
+    font-size: 0 !important;
+    line-height: 1 !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-album-turn b::after {
+    content: "ALBUM";
+    font-size: 7.5px;
+    font-weight: 950;
+    letter-spacing: .08em;
+  }
+}
+
