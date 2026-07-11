@@ -30,16 +30,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "마음악보",
           "type": "STELLIVE 'Universe' 2nd Single",
           "description": "서로 다른 색을 가진 네 소녀가 하나의 밴드가 되어, 자신들만의 이야기를 써 내려가는 이야기."
         },
         "en": {
+          "title": "Heart Score",
           "type": "STELLIVE 'Universe' 2nd Single",
-          "description": "A virtual artist unit single shaped around its worldbuilding and band-driven emotion."
+          "description": "A story of four girls, each with her own color, coming together as a band to write a story of their own."
         },
         "jp": {
+          "title": "Heart Score",
           "type": "STELLIVE『Universe』2nd Single",
-          "description": "バーチャルアーティストユニットの世界観とバンド感を音楽として整えた制作です。"
+          "description": "それぞれ異なる色を持つ4人の少女が一つのバンドとなり、自分たちだけの物語を紡いでいく物語。"
         }
       }
     },
@@ -47,7 +50,7 @@
       "id": "work-run-galaxy",
       "title": "여름을 그리다",
       "date": "2025.07.06",
-      "type": "게임 'Zenless Zone Zero' 공식 1st Anniversary Album 수록곡",
+      "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
       "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기",
       "credits": "Illustration Assistant - Surps, eruN, Meow, 개혀\n\nMusic Composed by N4ML (TONALIE)\nMusic Arranged by N4ML (TONALIE)\nLyrics by Ruafka (TONALIE)\n\nVocal Played by Seine (TONALIE)\nPiano Played by N4ML (TONALIE)\nBass Guitar Played by Jaeha Yoon (TONALIE)\nElectric Guitar Played by BlueArpeggio\nAcoustic Guitar Played by JJ Kim\nHarmonica Played by Yongseong Cho\n\nVocal Chorus Designed by Ruafka (TONALIE)\nVocal Coached by N4ML (TONALIE)\n\nAudio Mixed by Moonsoo Park (U-il SoundWorks)\nAudio Mastered by Junyong Lee (U-il SoundWorks)\n\nPV, Illustration - SSS",
       "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.jpg",
@@ -73,16 +76,19 @@
       "format": "Single",
       "translations": {
         "kr": {
-          "type": "게임 'Zenless Zone Zero' 공식 1st Anniversary Album 수록곡",
+          "title": "여름을 그리다",
+          "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
           "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기"
         },
         "en": {
-          "type": "Official 1st Anniversary Album track for game 'Zenless Zone Zero'",
-          "description": "An official album track that turns a game IP's summer event mood into a vocal song."
+          "title": "Drawing Summer",
+          "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "description": "The story of the Cunning Hares setting off on a summer vacation."
         },
         "jp": {
-          "type": "ゲーム『Zenless Zone Zero』公式1st Anniversary Album収録曲",
-          "description": "ゲームIPの夏イベントの空気をボーカル曲として整えた公式アルバム収録制作です。"
+          "title": "Drawing Summer",
+          "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
         }
       }
     },
@@ -116,16 +122,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Love Dopamine",
           "type": "'해봄' 3rd Single",
           "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기"
         },
         "en": {
-          "type": "'해봄' 3rd Single",
-          "description": "An original song shaping the character's bright energy and emotional line."
+          "title": "Love Dopamine",
+          "type": "'Haebom' 3rd Single",
+          "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
         },
         "jp": {
-          "type": "『해봄』3rd Single",
-          "description": "キャラクターの明るいエネルギーと感情線をオリジナルソングとして整えた制作です。"
+          "title": "Love Dopamine",
+          "type": "『Haebom』3rd Single",
+          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出す「Haebom」の物語。"
         }
       }
     },
@@ -159,16 +168,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Love Novel",
           "type": "'Arune' 1st Single",
           "description": "슬픔과 그리움을 지나 다시 사랑을 시작하게 되는 두 사람의 이야기."
         },
         "en": {
+          "title": "Love Novel",
           "type": "'Arune' 1st Single",
-          "description": "A narrative pop track about beginning again after sadness and longing."
+          "description": "A story of two people who move through sorrow and longing, then begin to love again."
         },
         "jp": {
+          "title": "Love Novel",
           "type": "『Arune』1st Single",
-          "description": "悲しみと恋しさの先で、もう一度始まる感情を物語性のあるポップサウンドに整えた制作です。"
+          "description": "悲しみと恋しさを越え、もう一度愛を始める二人の物語。"
         }
       }
     },
@@ -202,16 +214,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Fallen Leaves",
           "type": "V-llage '쿠로가미 사샤' 1st Single",
           "description": "'그때의 나'를 끝내기 위해 러시안 룰렛을 시작한 한 소녀의 이야기"
         },
         "en": {
-          "type": "V-llage '쿠로가미 사샤' 1st Single",
-          "description": "A single that shapes the character's darker story and emotional line into music."
+          "title": "Fallen Leaves",
+          "type": "V-llage 'Kurogami Sasha' 1st Single",
+          "description": "The story of a girl who begins a game of Russian roulette to put an end to 'the person she was then.'"
         },
         "jp": {
-          "type": "V-llage『쿠로가미 사샤』1st Single",
-          "description": "キャラクターの暗い物語と感情線をシングル曲として整えた制作です。"
+          "title": "Fallen Leaves",
+          "type": "V-llage『Kurogami Sasha』1st Single",
+          "description": "「あの頃の自分」を終わらせるため、ロシアンルーレットを始めた一人の少女の物語。"
         }
       }
     },
@@ -245,16 +260,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "강치 아일랜드(OP)",
           "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
           "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기"
         },
         "en": {
-          "type": "Animation '강치 아일랜드' 1st OP (Produced by 장준호)",
-          "description": "An animation opening that captures a bright world and a sense of adventure."
+          "title": "Gangchi Island (OP)",
+          "type": "Animation 'Gangchi Island' 1st OP (Produced by Jang Junho)",
+          "description": "A story of friends growing their dreams and friendships on Gangchi Island."
         },
         "jp": {
-          "type": "アニメーション『강치 아일랜드』1st OP（Produced by 장준호）",
-          "description": "アニメーションの明るい世界観と冒険感を音楽として整えた制作です。"
+          "title": "Gangchi Island (OP)",
+          "type": "アニメーション『Gangchi Island』1st OP（Produced by Jang Junho）",
+          "description": "Gangchi Islandで夢と友情を育んでいく仲間たちの物語。"
         }
       }
     },
@@ -288,16 +306,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "The Run Catch",
           "type": "DOLONGCHA(도롱챠) 1st Single",
           "description": "좋아하는 사람을 향해 망설임 없이 달려가는 한 소녀(?) 이야기"
         },
         "en": {
-          "type": "DOLONGCHA(도롱챠) 1st Single",
-          "description": "A character song about running toward someone you like."
+          "title": "The Run Catch",
+          "type": "DOLONGCHA 1st Single",
+          "description": "The story of a girl(?) who runs straight toward the person she likes without hesitation."
         },
         "jp": {
-          "type": "DOLONGCHA(도롱챠) 1st Single",
-          "description": "好きな人へ向かって走っていく感情をキャラクターソングとして整えた制作です。"
+          "title": "The Run Catch",
+          "type": "DOLONGCHA 1st Single",
+          "description": "好きな人に向かって、迷わず駆け出す一人の少女（？）の物語。"
         }
       }
     },
@@ -331,16 +352,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Floris Waltz",
           "type": "V-llage '플로리스 로에' 1st Single",
           "description": "불안과 집착의 감정선을 서사적 음악으로 풀어낸 작업."
         },
         "en": {
-          "type": "V-llage '플로리스 로에' 1st Single",
-          "description": "A narrative work built from unease, attachment, and emotional tension."
+          "title": "Floris Waltz",
+          "type": "V-llage 'Floris Loe' 1st Single",
+          "description": "A work that unfolds emotions of anxiety and obsession through narrative-driven music."
         },
         "jp": {
-          "type": "V-llage『플로리스 로에』1st Single",
-          "description": "不安と執着の感情線を物語性のある音楽として広げた制作です。"
+          "title": "Floris Waltz",
+          "type": "V-llage『Floris Loe』1st Single",
+          "description": "不安と執着の感情を、物語性のある音楽で描いた作品。"
         }
       }
     },
@@ -491,16 +515,19 @@
       "format": "Album (EP)",
       "translations": {
         "kr": {
+          "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기\n"
         },
         "en": {
+          "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
-          "description": "An album about the hearts left after death and farewell, moving through grief and returning to life with the cycle of seasons."
+          "description": "A story of the hearts left behind after death and farewell, moving through grief and returning to life within the cycles of time and the seasons."
         },
         "jp": {
+          "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
-          "description": "死と別れの後に残された心が、季節の巡りの中で悲しみを越え、再び生きていく物語です。"
+          "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
         }
       }
     },
@@ -534,14 +561,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Pompous",
           "type": "V-LUP 'Beldir' 1st Single",
           "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기"
         },
         "en": {
+          "title": "Pompous",
           "type": "V-LUP 'Beldir' 1st Single",
           "description": "A story that shouts boldly toward vanity and the desire for approval on social media."
         },
         "jp": {
+          "title": "Pompous",
           "type": "V-LUP『Beldir』1st Single",
           "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
         }
@@ -577,14 +607,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "새해결심 작심삼일",
           "type": "MAIMATSU 2nd Single",
           "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기"
         },
         "en": {
           "type": "MAIMATSU 2nd Single",
-          "description": "A story of four girls making New Year's plans that will likely fail again."
+          "description": "A story of four girls making New Year's plans that will likely fail again.",
+          "title": "NEW YEAR SYNDROME"
         },
         "jp": {
+          "title": "NEW YEAR SYNDROME",
           "type": "MAIMATSU 2nd Single",
           "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
         }
@@ -620,14 +653,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Wrap Up",
           "type": "RoA 4th Single",
           "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기\n"
         },
         "en": {
           "type": "RoA 4th Single",
-          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward."
+          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward.",
+          "title": "Wrap Up"
         },
         "jp": {
+          "title": "Wrap Up",
           "type": "RoA 4th Single",
           "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
         }
@@ -780,14 +816,17 @@
       "format": "Album (EP)",
       "translations": {
         "kr": {
+          "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
         },
         "en": {
+          "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
         },
         "jp": {
+          "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
         }
@@ -823,16 +862,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "My Village",
           "type": "게임 '브이리지에 어서오세요!' 주제곡",
           "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기\n"
         },
         "en": {
-          "type": "Theme song for game '브이리지에 어서오세요!'",
-          "description": "A warm story made together by everyone gathered in the small village called 브이리지."
+          "title": "My Village",
+          "type": "Theme Song for Game 'Welcome to V-llage!'",
+          "description": "A warm story created together by everyone gathered in the small village of V-llage."
         },
         "jp": {
-          "type": "ゲーム『브이리지에 어서오세요!』主題歌",
-          "description": "브이리지という小さな村に集まったみんなで作っていく、あたたかな物語です。"
+          "title": "My Village",
+          "type": "ゲーム『Welcome to V-llage!』主題歌",
+          "description": "V-llageという小さな村に集まったみんなで作っていく、あたたかな物語。"
         }
       }
     },
@@ -865,11 +907,28 @@
           "posY": "50%",
           "brightness": 0.6,
           "language": "KR",
-          "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8"
+          "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
+          "translations": {
+            "kr": {
+              "title": "카니즘☆홀릭",
+              "type": "V-llage '티그리스 카닌' 1st Single",
+              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+            },
+            "jp": {
+              "title": "かにずむ☆ほりっく / ティグリス・カニン",
+              "type": "V-llage『ティグリス・カニン』1st Single",
+              "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
+            },
+            "en": {
+              "title": "Kanism☆Holic",
+              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
+            }
+          }
         },
         {
           "id": "work-mq82ab62-ht07",
-          "title": " かにずむ☆ほりっく",
+          "title": "카니즘☆홀릭",
           "date": "2024.04.06",
           "type": "V-llage '티그리스 카닌' 1st Single",
           "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기",
@@ -881,7 +940,24 @@
           "posY": "50%",
           "brightness": 0.6,
           "language": "JP",
-          "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8"
+          "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8",
+          "translations": {
+            "kr": {
+              "title": "카니즘☆홀릭",
+              "type": "V-llage '티그리스 카닌' 1st Single",
+              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+            },
+            "jp": {
+              "title": "かにずむ☆ほりっく",
+              "type": "V-llage『ティグリス・カニン』1st Single",
+              "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
+            },
+            "en": {
+              "title": "Kanism☆Holic",
+              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
+            }
+          }
         }
       ],
       "tracks": [],
@@ -899,16 +975,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "카니즘☆홀릭",
           "type": "V-llage '티그리스 카닌' 1st Single",
           "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
         },
         "en": {
-          "type": "V-llage '티그리스 카닌' 1st Single",
-          "description": "A story of everyone gathered at 티그리스 laughing, talking, and making memories together."
+          "type": "V-llage 'Tigris Kanin' 1st Single",
+          "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
+          "title": "Kanism☆Holic"
         },
         "jp": {
-          "type": "V-llage『티그리스 카닌』1st Single",
-          "description": "酒場『티그리스』に集まったみんなが笑い、語り合い、思い出を作っていく物語です。"
+          "type": "V-llage『ティグリス・カニン』1st Single",
+          "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
+          "title": "かにずむ☆ほりっく / ティグリス・カニン"
         }
       }
     },
@@ -942,14 +1021,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기"
         },
         "en": {
+          "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "A story of artists waiting with excitement to meet fans before a live show."
         },
         "jp": {
+          "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
         }
@@ -975,7 +1057,7 @@
           "title": "수채화 (Watercolour)",
           "date": "2024.02.22",
           "type": "soraniwa Project 1st Single",
-          "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n",
+          "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기",
           "credits": "Planned by N4ML\nInvested by N4ML\nExecutive Produced by N4ML\n\nMusic Written by N4ML\nLyrics Written by RuafKa\n\nVocal by 황문경\nPiano by N4ML\nAcoustic Guitar by 김홍빈\nSynth Designed by N4ML\nDrums Designed by N4ML\nStrings Designed by  N4ML\n\nMixed by N4ML\nRecorded by 박문수 (U-il Soundworks)\nRecord Operated by N4ML\nMastered by 이준용 (U-il Soundworks)\n\nStoryboard Written by : N4ML\nCharacter Designed by 인쓰, N4ML \nIllustration by 인쓰\nAnimated by 인쓰",
           "image": "assets/works/images/asset-mq6aimxx-2c2o-.jpg-a9bb3c69bc18.jpg",
           "audio": "assets/works/audio/asset-mq7ky3ls-nj7w-N4ML-KR-AR-Master-4824.mp3-f7b3919c6f5f.mp3",
@@ -992,14 +1074,31 @@
               "offsetX": 0,
               "offsetY": 0
             }
+          },
+          "translations": {
+            "kr": {
+              "title": "수채화 (Watercolour)",
+              "type": "soraniwa Project 1st Single",
+              "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
+            },
+            "en": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+            },
+            "jp": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
+            }
           }
         },
         {
           "id": "work-mq7ko73m-tb6m",
-          "title": "水絵 (Watercolour)",
+          "title": "수채화 (Watercolour)",
           "date": "2024.02.22",
           "type": "soraniwa Project 1st Single",
-          "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n",
+          "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기",
           "credits": "Planned by N4ML\nInvested by N4ML\nExecutive Produced by N4ML\n\nMusic Written by N4ML\nLyrics Written by RuafKa\nJP Lyrics Adaptation by 氷露 \n\nVocal by CeVIO with KAFU\nPiano by N4ML\nAcoustic Guitar by Hongbin Kim\nSynth Designed by N4ML\nDrums Designed by N4ML\nStrings Designed by  N4ML\n\nMixed by N4ML\nMastered by Junyong Lee (U-il Soundworks)\n\nStoryboard Written by : N4ML\nCharacter Designed by 人間ごみ, N4ML \nIllustration by 人間ごみ\nAnimated by 人間ごみ\nVideo Edited by TEMACA",
           "image": "assets/works/images/asset-mq7l2lcd-rip9-.jpg-b23b63241c94.jpg",
           "audio": "assets/works/audio/asset-mq7kygdn-gdh7-N4ML-JP-AR-Master-4824.mp3-52075a11f99f.mp3",
@@ -1015,6 +1114,23 @@
               "titleSize": 1,
               "offsetX": 0,
               "offsetY": 0
+            }
+          },
+          "translations": {
+            "kr": {
+              "title": "수채화 (Watercolour)",
+              "type": "soraniwa Project 1st Single",
+              "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
+            },
+            "en": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+            },
+            "jp": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
             }
           }
         }
@@ -1034,14 +1150,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "수채화 (Watercolour)",
           "type": "soraniwa Project 1st Single",
           "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n"
         },
         "en": {
+          "title": "Watercolour",
           "type": "soraniwa Project 1st Single",
           "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
         },
         "jp": {
+          "title": "Watercolour",
           "type": "soraniwa Project 1st Single",
           "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
         }
@@ -1077,16 +1196,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "STAR to STAR",
           "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
           "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기"
         },
         "en": {
-          "type": "붕괴 스타레일 '2023 Multiverse Vistas' Popularity and Excellence award work",
+          "title": "STAR to STAR",
+          "type": "Honkai: Star Rail '2023 Multiverse Vistas' Popularity & Excellence Award Winner",
           "description": "A story of continuing a pioneering journey against fate while connecting star to star."
         },
         "jp": {
-          "type": "붕괴 스타레일『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
-          "description": "星と星をつなぐ旅の中で、運命に向き合い開拓を続ける物語です。"
+          "title": "STAR to STAR",
+          "type": "Honkai: Star Rail『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
+          "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
         }
       }
     },
@@ -1120,15 +1242,18 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "밤하늘",
           "type": "침대점령(Bed Taker) 1st Single",
           "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기"
         },
         "en": {
-          "type": "침대점령(Bed Taker) 1st Single",
+          "title": "Night Sky",
+          "type": "Bed Taker 1st Single",
           "description": "A story of telling the night sky about pain that could not be shared with anyone."
         },
         "jp": {
-          "type": "침대점령(Bed Taker) 1st Single",
+          "title": "Night Sky",
+          "type": "Bed Taker 1st Single",
           "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
         }
       }
@@ -1163,14 +1288,17 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "title": "Sailing StarS!",
           "type": "우타이테 8인 합창 프로젝트",
           "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기"
         },
         "en": {
+          "title": "Sailing StarS!",
           "type": "Eight utaite chorus project",
           "description": "A story of holding each other's hands and moving toward a shining tomorrow."
         },
         "jp": {
+          "title": "Sailing StarS!",
           "type": "歌い手8人合唱プロジェクト",
           "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
         }

@@ -35,12 +35,12 @@ window.TALETONE_TRACK_RECORD = [
       "en": {
         "value": "No. 6",
         "label": "YouTube daily music video trending",
-        "note": "STELLIVE 〈마음악보〉 · 2nd Universe Single"
+        "note": "STELLIVE 〈Heart Score〉 · 2nd Universe Single"
       },
       "jp": {
         "value": "6位",
         "label": "YouTubeミュージックビデオ日間人気",
-        "note": "STELLIVE 〈마음악보〉 · 2nd Universe Single"
+        "note": "STELLIVE 〈Heart Score〉 · 2nd Universe Single"
       }
     }
   }
