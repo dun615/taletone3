@@ -5069,3 +5069,34 @@ body.tt-network-open #tt-mobile-chapter-menu {
   pointer-events: none !important;
 }
 
+/* NEWS previews always come from the localized article body. The card decides
+   how many lines fit; editors no longer maintain a separate excerpt. */
+#c-news .tt-news-card-preview {
+  --tt-news-preview-lines: 3;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: var(--tt-news-preview-lines) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (min-width: 761px) and (max-height: 720px) {
+  #c-news .tt-news-card-preview {
+    --tt-news-preview-lines: 2;
+  }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  #c-news .tt-news-card-preview {
+    --tt-news-preview-lines: 4;
+  }
+}
+
+@media (max-width: 760px) and (orientation: landscape),
+       (max-width: 420px) and (max-height: 740px) {
+  #c-news .tt-news-card-preview {
+    --tt-news-preview-lines: 2;
+  }
+}
+
