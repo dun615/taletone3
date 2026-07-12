@@ -5014,6 +5014,11 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
   color: #fff !important;
 }
 
+body.tt-site-dialog-open #brand,
+body.tt-site-dialog-open #lang-switcher,
+body.tt-site-dialog-open #chapnav,
+body.tt-site-dialog-open #progress,
+body.tt-site-dialog-open #tt-mobile-chapter-menu,
 body.tt-network-open #brand,
 body.tt-network-open #lang-switcher,
 body.tt-network-open #chapnav,
