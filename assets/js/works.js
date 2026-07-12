@@ -1981,6 +1981,41 @@
     globalUxState.inerted = [];
   }
 
+  function setDialogChromeHidden(hidden) {
+    ['brand', 'lang-switcher', 'chapnav', 'progress', 'tt-mobile-chapter-menu'].forEach(function (id) {
+      var node = document.getElementById(id);
+      if (!node) return;
+
+      if (hidden) {
+        if (node.dataset.ttDialogChromeHidden !== 'true') {
+          node.dataset.ttDialogChromeHidden = 'true';
+          node.dataset.ttDialogPrevVisibility = node.style.visibility || '';
+          node.dataset.ttDialogPrevPointerEvents = node.style.pointerEvents || '';
+          node.dataset.ttDialogPrevAriaHidden = node.hasAttribute('aria-hidden')
+            ? (node.getAttribute('aria-hidden') || '')
+            : '__missing__';
+        }
+        node.style.setProperty('visibility', 'hidden', 'important');
+        node.style.setProperty('pointer-events', 'none', 'important');
+        node.setAttribute('aria-hidden', 'true');
+        return;
+      }
+
+      if (node.dataset.ttDialogChromeHidden !== 'true') return;
+      if (document.body && document.body.classList.contains('tt-network-open')) return;
+
+      node.style.visibility = node.dataset.ttDialogPrevVisibility || '';
+      node.style.pointerEvents = node.dataset.ttDialogPrevPointerEvents || '';
+      if (node.dataset.ttDialogPrevAriaHidden === '__missing__') node.removeAttribute('aria-hidden');
+      else node.setAttribute('aria-hidden', node.dataset.ttDialogPrevAriaHidden || '');
+
+      delete node.dataset.ttDialogChromeHidden;
+      delete node.dataset.ttDialogPrevVisibility;
+      delete node.dataset.ttDialogPrevPointerEvents;
+      delete node.dataset.ttDialogPrevAriaHidden;
+    });
+  }
+
   function dialogFocusable(dialog) {
     return Array.prototype.filter.call(dialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'), function (node) {
       return !node.hasAttribute('hidden') && node.getClientRects().length > 0;
@@ -2036,6 +2071,7 @@
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
     }
+    setDialogChromeHidden(true);
     setSiblingsInert(dialog);
     if (document.body) document.body.classList.add('tt-site-dialog-open');
     setTimeout(function () {
@@ -2049,6 +2085,7 @@
     globalUxState.dialog = null;
     restoreInertSiblings();
     if (document.body) document.body.classList.remove('tt-site-dialog-open');
+    setDialogChromeHidden(false);
     if (restoreFocus) setTimeout(restoreDialogTriggerFocus, 60);
   }
 
