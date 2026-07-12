@@ -44,6 +44,11 @@ const rawEditorMarkers = [
   'seo' + 'EditMode', 'members' + 'EditMode', '<sc-' + 'if', '<sc-' + 'for',
   'onclick="' + '{' + '{', 'value="' + '{' + '{',
 ];
+const expectedCacheKeys = {
+  'assets/js/image-slot.js': '20260710-p1',
+  'assets/css/works.css': '20260712-dlgfix',
+  'assets/js/works.js': '20260712-dialog-tablet-hardfix',
+};
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
@@ -87,8 +92,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     const decoded = Buffer.from(payload, 'base64').toString('utf8');
     decodedApp ||= decoded;
     payloadHashes.push(createHash('sha256').update(decoded).digest('hex'));
-    assert(decoded.includes('assets/js/image-slot.js?v=20260710-p1'), `${file}: stale image-slot cache key`);
-    assert(decoded.includes('assets/js/works.js?v=20260710-p1-p2-final16'), `${file}: stale works cache key`);
+    for (const [asset, cacheKey] of Object.entries(expectedCacheKeys)) {
+      assert(decoded.includes(`${asset}?v=${cacheKey}`), `${file}: stale cache key for ${asset}`);
+    }
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
