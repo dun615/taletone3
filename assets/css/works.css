@@ -3234,8 +3234,8 @@ body.tt-network-open #content {
 
 #c-members .tt-network-directory {
   width: min(1180px, 94vw) !important;
-  min-height: 92px;
-  margin-top: 20px !important;
+  min-height: 76px;
+  margin-top: 16px !important;
   display: block !important;
   opacity: 0;
   transform: translateY(22px);
@@ -3244,12 +3244,12 @@ body.tt-network-open #content {
 
 #c-members .tt-network-summary {
   width: 100%;
-  min-height: 92px;
+  min-height: 76px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 28px;
-  padding: 18px 22px 18px 26px;
+  gap: 22px;
+  padding: 13px 18px 13px 22px;
   border: 1px solid rgba(20, 28, 48, .18);
   border-radius: 8px;
   background: rgba(248, 251, 251, .72);
@@ -3300,7 +3300,7 @@ body.tt-network-open #content {
 }
 
 .tt-network-title {
-  font-size: clamp(22px, 2.4vw, 34px);
+  font-size: clamp(21px, 2vw, 30px);
   line-height: 1.05;
 }
 
@@ -3372,11 +3372,11 @@ body.tt-network-open #content {
 }
 
 .tt-network-panel {
-  width: min(1180px, 100%);
-  height: min(82dvh, 780px);
-  max-height: 100%;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  width: min(880px, 100%);
+  height: auto;
+  max-height: min(82dvh, 720px);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .38);
   border-radius: 8px;
@@ -3389,20 +3389,20 @@ body.tt-network-open #content {
 .tt-network-panel-head {
   position: relative;
   z-index: 2;
-  min-height: 94px;
+  min-height: 82px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 20px 24px 18px;
+  padding: 16px 20px 15px;
   border-bottom: 1px solid rgba(20, 28, 48, .12);
   background: rgba(248, 251, 251, .96);
 }
 
 .tt-network-panel-title {
-  margin-top: 7px;
-  font-size: clamp(28px, 3.2vw, 46px);
-  line-height: .95;
+  margin-top: 5px;
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1;
 }
 
 .tt-network-panel-actions {
@@ -3439,82 +3439,116 @@ body.tt-network-open #content {
 }
 
 .tt-network-scroll {
+  flex: 0 1 auto;
   min-height: 0;
+  max-height: calc(82dvh - 82px);
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
-  padding: 24px;
+  padding: 16px;
 }
 
 .tt-network-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px;
   align-items: start;
 }
 
 .tt-network-card {
   position: relative;
   min-width: 0;
-  aspect-ratio: 1 / 1.08;
-  display: block;
+  min-height: 86px;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px 6px 6px;
   contain: layout paint style;
   content-visibility: auto;
   overflow: hidden;
   border: 1px solid rgba(20, 28, 48, .12);
   border-radius: 8px;
-  background: #dbe7e9;
-  color: #fff;
+  background: rgba(255, 255, 255, .82);
+  color: #141c30 !important;
   text-decoration: none;
-  transition: transform .2s ease, border-color .2s ease;
+  transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
 }
 
 .tt-network-card:hover,
 .tt-network-card:focus-visible {
   z-index: 1;
   border-color: var(--accent, #0e6e7d);
-  transform: translateY(-3px);
+  background: #fff;
+  transform: translateX(2px);
 }
 
-.tt-network-card-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.tt-network-card::after {
+  content: '\2192';
+  grid-column: 3;
+  grid-row: 1;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(20, 28, 48, .08);
+  color: #141c30;
+  font: 800 15px/1 sans-serif;
+}
+
+.tt-network-card-image,
+.tt-network-card > image-slot {
+  position: relative !important;
+  inset: auto !important;
+  grid-column: 1;
+  grid-row: 1;
+  width: 72px !important;
+  height: 72px !important;
+  min-width: 72px !important;
+  max-width: 72px !important;
   display: block;
+  overflow: hidden;
+  border-radius: 6px;
 }
 
 .tt-network-card-shade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(3, 13, 24, .84), rgba(3, 13, 24, .08) 62%, transparent);
-  pointer-events: none;
+  display: none;
 }
 
 .tt-network-card-copy {
-  position: absolute;
-  inset: auto 0 0;
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 15px;
+  gap: 3px;
+  padding: 0;
   pointer-events: none;
 }
 
 .tt-network-card-role {
   overflow: hidden;
-  font: 700 12px/1.25 'Hanken Grotesk', 'Pretendard', 'Noto Sans KR', sans-serif;
+  color: #52606f;
+  font: 700 11px/1.25 'Hanken Grotesk', 'Pretendard', 'Noto Sans KR', sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
-  opacity: .9;
+  opacity: 1;
 }
 
 .tt-network-card-name {
   overflow: hidden;
-  font: 800 24px/1.05 'Quicksand', 'Pretendard', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+  color: #141c30;
+  font: 800 21px/1.08 'Quicksand', 'Pretendard', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
   letter-spacing: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+@supports selector(:has(*)) {
+  .tt-network-panel:not(:has(.tt-network-card:nth-child(2))) {
+    width: min(620px, 100%);
+  }
 }
 
 @keyframes tt-network-fade {
@@ -3530,14 +3564,14 @@ body.tt-network-open #content {
 @media (max-width: 760px) {
   #c-members .tt-network-directory {
     width: 100% !important;
-    min-height: 74px;
-    margin-top: 14px !important;
+    min-height: 64px;
+    margin-top: 12px !important;
   }
 
   #c-members .tt-network-summary {
-    min-height: 74px;
-    gap: 12px;
-    padding: 12px 12px 12px 15px;
+    min-height: 64px;
+    gap: 10px;
+    padding: 9px 10px 9px 13px;
   }
 
   .tt-network-summary-copy {
@@ -3550,7 +3584,7 @@ body.tt-network-open #content {
   }
 
   .tt-network-title {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .tt-network-summary-meta {
@@ -3563,32 +3597,32 @@ body.tt-network-open #content {
   }
 
   .tt-network-arrow {
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
   }
 
   .tt-network-overlay {
-    place-items: stretch;
-    padding: 0;
+    place-items: end center;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
   }
 
   .tt-network-panel {
     width: 100%;
-    height: 100dvh;
-    max-height: none;
-    border: 0;
-    border-radius: 0;
+    height: auto;
+    max-height: calc(100dvh - 24px);
+    border: 1px solid rgba(255, 255, 255, .38);
+    border-radius: 8px;
   }
 
   .tt-network-panel-head {
-    min-height: 82px;
-    padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) 14px max(14px, env(safe-area-inset-left));
+    min-height: 72px;
+    padding: 12px;
   }
 
   .tt-network-panel-title {
-    margin-top: 5px;
-    font-size: 25px;
+    margin-top: 4px;
+    font-size: 23px;
   }
 
   .tt-network-panel-actions {
@@ -3601,30 +3635,46 @@ body.tt-network-open #content {
   }
 
   .tt-network-close {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
 
   .tt-network-scroll {
-    padding: 12px max(12px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-  }
-
-  .tt-network-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .tt-network-card-copy {
-    gap: 3px;
+    max-height: calc(100dvh - 112px);
     padding: 10px;
   }
 
+  .tt-network-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .tt-network-card {
+    min-height: 72px;
+    grid-template-columns: 60px minmax(0, 1fr) 28px;
+    gap: 10px;
+    padding: 5px 8px 5px 5px;
+  }
+
+  .tt-network-card-image,
+  .tt-network-card > image-slot {
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+
+  .tt-network-card-copy {
+    gap: 2px;
+    padding: 0;
+  }
+
   .tt-network-card-role {
-    font-size: 9px;
+    font-size: 9.5px;
   }
 
   .tt-network-card-name {
-    font-size: clamp(16px, 5vw, 21px);
+    font-size: 18px;
   }
 }
 
