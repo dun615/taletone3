@@ -4406,9 +4406,9 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
     transform-origin: center center !important;
   }
 
-  /* The listening motif ends 150px right of center on desktop. Recenter it on mobile. */
+  /* The listening motif is optically right-heavy. Bias it left on mobile. */
   .tt-bridge-pin-stage .tt-bridge-visual--orbs {
-    left: calc(50% - 150px) !important;
+    left: calc(50% - 154px) !important;
   }
 
   .tt-mobile-bridge-line[data-indent="-2"] {
