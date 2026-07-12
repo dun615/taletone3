@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
   'assets/css/works.css': '20260712-dlgfix',
-  'assets/js/works.js': '20260712-dialog-tablet-hardfix',
+  'assets/js/works.js': '20260712-media-preload-sync-v2',
 };
 
 const required = [

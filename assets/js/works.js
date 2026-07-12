@@ -413,7 +413,9 @@
     var transparent = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
     var source = defer ? transparent : unit.image;
     var deferredSource = defer ? ' data-works-src="' + esc(unit.image) + '"' : '';
-    return '<img draggable="false" loading="lazy" decoding="async" class="' + esc(className || '') + '" src="' + esc(source) + '"' + deferredSource + ' alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
+    var loading = defer ? 'lazy' : 'eager';
+    var priority = defer ? 'low' : 'high';
+    return '<img draggable="false" loading="' + loading + '" fetchpriority="' + priority + '" decoding="async" class="' + esc(className || '') + '" src="' + esc(source) + '"' + deferredSource + ' alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
   }
 
   function numeric(value, fallback) {
@@ -495,12 +497,47 @@
 
   function ensureAudio(entry) {
     if (!audioPool.has(entry.key)) {
-      var audio = new Audio(entry.audio);
-      audio.preload = 'metadata';
+      var audio = new Audio();
+      audio.preload = 'auto';
       audio.loop = true; // #6 loop the track when it finishes
+      audio.volume = 0;
+      audio.setAttribute('playsinline', '');
+      audio.src = entry.audio;
+      try { audio.load(); } catch (_e) {}
       audioPool.set(entry.key, audio);
     }
     return audioPool.get(entry.key);
+  }
+
+  function activeAudioEntry(entries) {
+    return entries.find(function (entry) { return entry.active; }) || entries[0] || null;
+  }
+
+  function normalizedAudioTime(audio, time) {
+    var value = Number(time);
+    if (!Number.isFinite(value) || value < 0) value = 0;
+    var duration = Number(audio && audio.duration);
+    if (Number.isFinite(duration) && duration > 0 && value >= duration) value %= duration;
+    return value;
+  }
+
+  function setAudioTime(audio, time) {
+    if (!audio) return;
+    var apply = function () {
+      var target = normalizedAudioTime(audio, time);
+      if (Math.abs((Number(audio.currentTime) || 0) - target) < 0.025) return;
+      try { audio.currentTime = target; } catch (_e) {}
+    };
+    if (audio.readyState >= 1) apply();
+    else audio.addEventListener('loadedmetadata', apply, { once: true });
+  }
+
+  function startAudio(audio) {
+    try {
+      return Promise.resolve(audio.play());
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   function syncAudioState() {
@@ -514,8 +551,9 @@
     });
     entries.forEach(function (entry) {
       var audio = ensureAudio(entry);
-      audio.volume = state.playing && entry.active ? state.volume : 0;
-      if (!state.playing) audio.pause();
+      var active = state.playing && entry.active;
+      audio.volume = active ? state.volume : 0;
+      if (!active) audio.pause();
     });
   }
 
@@ -528,9 +566,15 @@
     }
     state.playing = true;
     syncAudioState();
-    Promise.allSettled(entries.map(function (entry) {
-      return ensureAudio(entry).play();
-    })).then(function () {
+    var activeEntry = activeAudioEntry(entries);
+    var activeAudio = activeEntry ? ensureAudio(activeEntry) : null;
+    if (!activeAudio) {
+      state.playing = false;
+      syncAudioState();
+      if (!updateShowcaseDom()) render();
+      return;
+    }
+    startAudio(activeAudio).then(function () {
       syncAudioState();
       if (!updateShowcaseDom()) render();
     }).catch(function () {
@@ -573,32 +617,45 @@
   }
 
   function setLanguage(language) {
-    // #3 KR/JP both play in the background from the same playhead; switching the
-    // language must ONLY flip which one is audible. Do the volume flip FIRST and
-    // synchronously (zero perceived delay), then update the UI.
+    var previousEntries = currentAudioEntries();
+    var previousEntry = activeAudioEntry(previousEntries);
+    var previousAudio = previousEntry ? ensureAudio(previousEntry) : null;
+    var previousTime = previousAudio ? Number(previousAudio.currentTime) || 0 : 0;
+    var wasPlaying = state.playing;
+    previousEntries.forEach(function (entry) {
+      var audio = ensureAudio(entry);
+      audio.volume = 0;
+      audio.pause();
+    });
+
     state.language = String(language || 'KR');
     var entries = currentAudioEntries();
+    var nextEntry = activeAudioEntry(entries);
+    var nextAudio = nextEntry ? ensureAudio(nextEntry) : null;
     entries.forEach(function (entry) {
       var audio = ensureAudio(entry);
-      if (state.playing && entry.active) {
-        // make sure the target language is actually rolling and aligned, then unmute
-        var ref = null;
-        entries.forEach(function (e2) { if (e2 !== entry) { var a2 = audioPool.get(e2.key); if (a2 && !a2.paused) ref = a2; } });
-        if (ref && Math.abs(audio.currentTime - ref.currentTime) > 0.12) {
-          try { audio.currentTime = ref.currentTime; } catch (_e) {}
-        }
-        if (audio.paused) { try { audio.play(); } catch (_e2) {} }
-        audio.volume = state.volume;
-      } else {
-        audio.volume = 0;
-      }
+      audio.volume = 0;
+      if (!entry.active) audio.pause();
     });
+    if (nextAudio) setAudioTime(nextAudio, previousTime);
+
+    if (wasPlaying && nextAudio) {
+      nextAudio.volume = state.volume;
+      startAudio(nextAudio).then(syncAudioState).catch(function () {
+        state.playing = false;
+        syncAudioState();
+        if (!updateShowcaseDom()) render();
+      });
+    } else {
+      syncAudioState();
+    }
     if (!updateShowcaseDom()) render();
   }
 
   function setMode(mode) {
     state.mode = mode === 'gallery' ? 'gallery' : 'showcase';
     state.modalOpen = false;
+    if (state.mode === 'gallery') preloadGalleryOpeningImages();
     render();
   }
 
@@ -851,10 +908,11 @@
   }
 
   function gallery() {
+    var eagerCount = galleryEagerImageCount();
     return '<div id="tt-gh-panel-gallery" class="tt-gh-gallery" role="tabpanel" aria-labelledby="tt-gh-tab-gallery">' + works.map(function (work, index) {
       var unit = localizedUnit(work);
       var detailLabel = plainRichText(unit.title || 'WORKS') + localizedUiLabel(' 상세', ' details', ' 詳細');
-      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', true) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || itemKind(work), 20) + '</span></span></span></div>';
+      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', index >= eagerCount) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span><span class="tt-gh-card-type">' + compactRichLabel(unit.type || itemKind(work), 20) + '</span></span></span></div>';
     }).join('') + '</div>';
   }
 
@@ -938,6 +996,8 @@
 
   function loadDeferredImage(image) {
     if (!image || !image.dataset || !image.dataset.worksSrc) return;
+    image.loading = 'eager';
+    image.fetchPriority = 'low';
     image.src = image.dataset.worksSrc;
     image.removeAttribute('data-works-src');
   }
@@ -959,7 +1019,7 @@
         loadDeferredImage(entry.target);
         galleryImageObserver.unobserve(entry.target);
       });
-    }, { root: null, rootMargin: '260px 0px', threshold: 0.01 });
+    }, { root: null, rootMargin: Math.round(Math.max(720, window.innerHeight * 1.25)) + 'px 0px', threshold: 0.01 });
     Array.prototype.forEach.call(deferred, function (image) { galleryImageObserver.observe(image); });
   }
 
@@ -1132,12 +1192,22 @@
     }
     if (action === 'card-language') {
       if (suppressClick) return;
-      state.selected = clamp(Number(button.getAttribute('data-index')) || 0, 0, works.length - 1);
-      state.language = String(button.getAttribute('data-language') || 'KR');
+      var languageIndex = clamp(Number(button.getAttribute('data-index')) || 0, 0, works.length - 1);
+      var nextLanguage = String(button.getAttribute('data-language') || 'KR');
+      if (languageIndex === state.selected) {
+        if (state.mode === 'gallery') state.modalOpen = true;
+        setLanguage(nextLanguage);
+        return;
+      }
+      var cardWasPlaying = state.playing;
+      state.selected = languageIndex;
+      state.position = state.selected;
+      resetSubState(currentWork());
+      state.language = nextLanguage;
       state.bookOpen = false;
       if (state.mode === 'gallery') state.modalOpen = true;
       ensureSelectedVisible();
-      syncAudioState();
+      if (cardWasPlaying) playCurrent(); else syncAudioState();
       if (state.mode === 'gallery') render(); else if (!updateShowcaseDom()) render();
       return;
     }
@@ -1474,13 +1544,30 @@
   var _imgCache = new Map();
   var _neighbourPreloadTimer = 0;
 
-  function cacheImage(url) {
+  function cacheImage(url, priority) {
     if (!url || _imgCache.has(url)) return;
     var image = new Image();
     image.decoding = 'async';
-    image.loading = 'lazy';
+    image.loading = 'eager';
+    image.fetchPriority = priority || 'low';
     image.src = url;
+    if (typeof image.decode === 'function') image.decode().catch(function () {});
     _imgCache.set(url, image);
+  }
+
+  function galleryEagerImageCount() {
+    if (window.innerWidth <= 760) return 12;
+    if (window.innerWidth <= 1180) return 8;
+    return 10;
+  }
+
+  function preloadGalleryOpeningImages(limit) {
+    var requested = Number(limit);
+    var count = Math.min(works.length, Number.isFinite(requested) && requested > 0 ? requested : galleryEagerImageCount());
+    for (var index = 0; index < count; index += 1) {
+      var unit = localizedUnit(works[index]);
+      cacheImage(unit && unit.image, index < 4 ? 'high' : 'low');
+    }
   }
 
   function preloadCurrentWork(work) {
@@ -1489,11 +1576,11 @@
     var track = work.tracks && work.tracks.length ? work.tracks[trackIndex] : null;
     var previousTrack = work.tracks && work.tracks[trackIndex - 1];
     var nextTrack = work.tracks && work.tracks[trackIndex + 1];
-    cacheImage(work.image);
-    cacheImage(track && track.image);
-    cacheImage(previousTrack && previousTrack.image);
-    cacheImage(nextTrack && nextTrack.image);
-    variantsFor(work, trackIndex).forEach(function (version) { cacheImage(version && version.image); });
+    cacheImage(work.image, 'high');
+    cacheImage(track && track.image, 'high');
+    cacheImage(previousTrack && previousTrack.image, 'low');
+    cacheImage(nextTrack && nextTrack.image, 'low');
+    variantsFor(work, trackIndex).forEach(function (version) { cacheImage(version && version.image, 'high'); });
   }
 
   function preloadNearbyImages(index) {
@@ -1504,7 +1591,7 @@
       [selectedIndex - 1, selectedIndex + 1].forEach(function (workIndex) {
         var work = works[workIndex];
         if (!work) return;
-        cacheImage(work.image || (localizedUnit(work) || {}).image);
+        cacheImage(work.image || (localizedUnit(work) || {}).image, 'low');
       });
     }, 180);
   }
@@ -1516,6 +1603,10 @@
     resetSubState(works[0]);
     ensureSelectedVisible();
     preloadNearbyImages(0);
+    setTimeout(function () {
+      var directWorksRoute = /\/works\/?$/i.test(location.pathname);
+      preloadGalleryOpeningImages(directWorksRoute ? galleryEagerImageCount() : Math.min(6, galleryEagerImageCount()));
+    }, /\/works\/?$/i.test(location.pathname) ? 160 : 1800);
     setTimeout(function () { waitForHost(0); }, 260);
     setInterval(function () {
       if (rendering || !works.length) return;
@@ -2197,6 +2288,7 @@
   window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
     var detail = event && event.detail ? event.detail : {};
     if (detail.chapter && detail.chapter !== 'works') pauseAll();
+    if (detail.chapter === 'works') preloadGalleryOpeningImages();
   });
 
   window.addEventListener('message', function (event) {
