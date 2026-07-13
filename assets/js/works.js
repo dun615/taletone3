@@ -1396,23 +1396,6 @@
     }).join('') + '</div>';
   }
 
-  function languageButtons(work) {
-    var variants = variantsFor(work, activeTrackIndex(work));
-    if (variants.length <= 1) return '';
-    return '<div class="tt-gh-row">' + variants.map(function (version, index) {
-      var language = languageLabel(version, index);
-      return '<button type="button" class="tt-gh-select ' + (language === state.language ? 'is-active' : '') + '" data-works-action="language" data-language="' + esc(language) + '">' + esc(language) + '</button>';
-    }).join('') + '</div>';
-  }
-
-  function trackButtons(work) {
-    var kind = itemKind(work);
-    if (!work || !work.tracks || !work.tracks.length || (kind !== 'album' && kind !== 'ep')) return '';
-    return '<div class="tt-gh-row"><button type="button" class="tt-gh-select ' + (!state.bookOpen ? 'is-active' : '') + '" data-works-action="cover">Cover</button>' + work.tracks.map(function (track, index) {
-      return '<button type="button" class="tt-gh-select ' + (index === activeTrackIndex(work) ? 'is-active' : '') + '" data-works-action="track" data-index="' + index + '">Track ' + pad(track.trackNo || index + 1) + (index === titleTrackIndex(work) || track.isTitle ? ' (Title)' : '') + '</button>';
-    }).join('') + '</div>';
-  }
-
   function youtubeEmbedUrl(value) {
     var url = String(value || '');
     if (!url) return '';
@@ -1447,10 +1430,9 @@
     var entries = currentAudioEntries();
     var hasAudio = entries.length > 0;
     var format = [kind, trackLabel(work), state.language].filter(Boolean).join(' / ');
-    var controls = trackButtons(work) + languageButtons(work);
     var videoBlock = '';
     var meta = localizedMeta();
-    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><button type="button" class="tt-gh-action is-primary" data-works-action="play" ' + (hasAudio ? '' : 'disabled') + '>' + preserve(state.playing ? meta.pauseLabel : meta.playLabel) + '</button><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume"><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + videoBlock + detailTable(work, unit, kind, format) + (controls ? '<div class="tt-gh-side">' + controls + '</div>' : '') + '</section>';
+    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><button type="button" class="tt-gh-action is-primary" data-works-action="play" ' + (hasAudio ? '' : 'disabled') + '>' + preserve(state.playing ? meta.pauseLabel : meta.playLabel) + '</button><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume"><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + videoBlock + detailTable(work, unit, kind, format) + '</section>';
   }
 
   function galleryModal() {
@@ -1460,9 +1442,8 @@
     var unit = mergeDisplayUnit(work);
     var kind = itemKind(work);
     var format = [kind, trackLabel(work), state.language].filter(Boolean).join(' / ');
-    var controls = trackButtons(work) + languageButtons(work);
     var meta = localizedMeta();
-    return '<div class="tt-gh-modal" role="dialog" aria-modal="true" aria-label="' + esc(plainRichText(unit.title || work.title || 'WORKS')) + ' detail" tabindex="-1"><button type="button" class="tt-gh-modal-backdrop" data-works-action="modal-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' detail"></button><section class="tt-gh-modal-panel" role="document"><button type="button" class="tt-gh-modal-close" data-works-action="modal-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-main"><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div><div class="tt-gh-modal-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.detailLabel) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || 'TALETONE MUSIC archive.') + '</p>' + detailTable(work, unit, kind, format) + (controls ? '<div class="tt-gh-side">' + controls + '</div>' : '') + '</div></div><aside class="tt-gh-modal-credits"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.creditsLabel) + '</span><pre>' + preserve(creditsText(work, unit)) + '</pre></aside></section></div>';
+    return '<div class="tt-gh-modal" role="dialog" aria-modal="true" aria-label="' + esc(plainRichText(unit.title || work.title || 'WORKS')) + ' detail" tabindex="-1"><button type="button" class="tt-gh-modal-backdrop" data-works-action="modal-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' detail"></button><section class="tt-gh-modal-panel" role="document"><button type="button" class="tt-gh-modal-close" data-works-action="modal-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-main"><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div><div class="tt-gh-modal-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.detailLabel) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || 'TALETONE MUSIC archive.') + '</p>' + detailTable(work, unit, kind, format) + '</div></div><aside class="tt-gh-modal-credits"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.creditsLabel) + '</span><pre>' + preserve(creditsText(work, unit)) + '</pre></aside></section></div>';
   }
 
   function syncModalBodyClass() {

@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
   'assets/css/works.css': '20260713-artist-badge-v3-q3',
-  'assets/js/works.js': '20260713-artist-badge-v2-q2',
+  'assets/js/works.js': '20260713-no-lower-select-v1',
 };
 
 const required = [
