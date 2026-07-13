@@ -49,6 +49,7 @@ const expectedCacheKeys = {
   'assets/css/works.css': '20260713-artist-badge-v3-q3',
   'assets/js/works.js': '20260713-no-lower-select-v1',
 };
+const expectedSiteContentCacheKey = '20260713-member-colors-v1';
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
@@ -82,6 +83,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   }
   assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
   assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
+  assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
 
   const ld = attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i);
   try { JSON.parse(ld); } catch { errors.push(`${file}: invalid JSON-LD`); }
