@@ -5401,3 +5401,89 @@ body.tt-network-open #tt-mobile-chapter-menu {
   }
 }
 
+/* Intro handoff: the atmospheric plunge clears into the real home UI,
+   so the animation ends on the exact responsive layout rather than a cut. */
+body.tt-intro-running #intro.tt-intro {
+  animation: ttIntroOverlayHandoff 2s cubic-bezier(.24, .72, .22, 1) both;
+  pointer-events: auto;
+}
+
+body.tt-intro-running #content {
+  pointer-events: none;
+}
+
+body.tt-intro-running #c-home > [data-reveal] {
+  animation: ttIntroHeroHandoff 2s cubic-bezier(.2, .8, .2, 1) both !important;
+}
+
+body.tt-intro-running #c-home > h1[data-reveal] {
+  animation-name: ttIntroTitleHandoff !important;
+}
+
+@keyframes ttIntroOverlayHandoff {
+  0%, 64% {
+    opacity: 1;
+  }
+  82% {
+    opacity: .46;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ttIntroTitleHandoff {
+  0%, 46% {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0) scale(.965);
+  }
+  72% {
+    opacity: .72;
+  }
+  88%, 100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ttIntroHeroHandoff {
+  0%, 56% {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(.985);
+  }
+  78% {
+    opacity: .62;
+  }
+  92%, 100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  @keyframes ttIntroTitleHandoff {
+    0%, 46% {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0) scale(.98);
+    }
+    72% {
+      opacity: .72;
+    }
+    88%, 100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.tt-intro-running #intro.tt-intro,
+  body.tt-intro-running #c-home > [data-reveal] {
+    animation: none !important;
+  }
+
+  body.tt-intro-running #content {
+    pointer-events: auto;
+  }
+}
+

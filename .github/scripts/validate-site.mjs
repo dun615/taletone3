@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
-  'assets/css/works.css': '20260713-artist-badge-v3-q3',
+  'assets/css/works.css': '20260714-home-handoff-v1-q1',
   'assets/js/works.js': '20260713-no-lower-select-v1',
 };
 const expectedSiteContentCacheKey = '20260713-member-colors-v1';
@@ -62,6 +62,7 @@ const required = [
 for (const file of required) assert(await exists(file), `missing required file: ${file}`);
 
 const payloadHashes = [];
+const scriptPayloadHashes = [];
 const fallbackHashes = new Map();
 let decodedApp = '';
 for (const [key, file, route, expectedTitle] of routes) {
@@ -99,12 +100,22 @@ for (const [key, file, route, expectedTitle] of routes) {
     }
   }
 
+  const scriptPayload = attr(html, /<script\b[^>]*\bdata-dc-script-b64\b[^>]*>([\s\S]*?)<\/script>/i).replace(/\s/g, '');
+  assert(scriptPayload.length > 1000, `${file}: encoded app script missing`);
+  if (scriptPayload) {
+    const decodedScript = Buffer.from(scriptPayload, 'base64').toString('utf8');
+    scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
+    assert(decodedScript.includes('Keep rendering the live home scene beneath the fading intro.'), `${file}: intro does not render the live home scene`);
+    assert(!/if\(!this\.introDone\)\{\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;\s*\}/.test(decodedScript), `${file}: intro pauses the live home scene`);
+  }
+
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
   const fallbackText = cleanText(fallback);
   assert(fallbackText.length > 80, `${file}: fallback content is too short`);
   fallbackHashes.set(key, createHash('sha256').update(fallbackText).digest('hex'));
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
+assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synchronized');
 assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
@@ -208,6 +219,10 @@ for (const [file, expected] of Object.entries(sri)) {
   const bytes = await readFile(path.join(root, file));
   assert(createHash('sha384').update(bytes).digest('base64') === expected, `${file}: integrity mismatch`);
 }
+
+const worksCss = await text('assets/css/works.css');
+assert(/body\.tt-intro-running\s+#intro\.tt-intro\s*\{[^}]*pointer-events:\s*auto;/i.test(worksCss), 'intro overlay does not guard underlying controls');
+assert(/body\.tt-intro-running\s+#c-home\s*>\s*\[data-reveal\]/i.test(worksCss), 'intro does not land on the real home UI');
 
 const redirect = await text('projects/index.html');
 assert(/noindex/i.test(redirect) && /\/story-types\//.test(redirect), 'legacy projects redirect is invalid');
