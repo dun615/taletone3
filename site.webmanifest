@@ -1,7 +1,7 @@
 {
   "name": "TALETONE MUSIC",
   "short_name": "TALETONE",
-  "description": "TALETONE MUSIC은 서브컬쳐 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송, BGM을 기획·제작하는 스토리 기반 음악 프로덕션입니다.",
+  "description": "TALETONE MUSIC은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송, BGM을 기획·제작하는 스토리 기반 음악 프로덕션입니다.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -192,7 +192,7 @@ window.TALETONE_CONTENT = {
           "tagline": "A person who weaves stories into sound.",
           "taglineKo": "",
           "education": "Seoul Institute of the Arts\nElectronic Music · Graduated\n\nSejong Arts High School\nComposition · Graduated",
-          "creditsText": "| 2026\n\n* arune 1st Original <Love Novel> — Executive Producer, Composer, Arranger, Bass\n* Soonimoon Special Stage <BIGBANG - BLUE> — Arranger\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> — Arranger, Strings, Piano, MIDI Programming\n* V-llage Kurogami Sasha 1st Single <Fallen Leaves> — Executive Producer, Composer, Arranger\n* Haebin (gugudan) <Cleaning My Heart> — Arranger, Piano\n* Soonimoon Special Stage <FIFTY FIFTY - Gravity> — Arranger\n* TV Anime <Gangchi Island> Opening Theme — Arranger, Vocal Tuning\n* Haebom 3rd Single <Love Dopamine> — Composer, Arranger, Vocal Director, Vocal Editor\n* DOLONGCHA 1st Single <The Run Catch> — Co-Composer, Co-Arranger, Vocal Coach, Vocal Editor\n* Official 1st Anniversary OST Album for Zenless Zone Zero <Drawing Summer> — Producer, Composer, Arranger\n* OSDS (Osondoson) 1st Single <Bluetooth> — Track Maker, Composer, Arranger\n* Mainichi Matsuri 3rd Single <NEW YEAR SYNDROME> — Executive Producer, Composer, Arranger, Lyricist, Recording Engineer\n* V-llage Floweress Loe 1st Single <Floris Waltz> — Executive Producer, Composer, Arranger\n* Dear my heroes 1st Album <Early Spring> — Arranger\n* V-LUP Veldir 1st Single <Pompous> — Producer, Composer, Arranger, Vocal Editor\n\n| 2024\n\n* RoA <WRAP UP> — Composer, Arranger\n* GXG Game Music Competition <Run into Galaxy> Gold Prize — Composer, Arranger, Executive Producer\n* V-llage 1st Album <SilverLine> — Album Planning, Investment, Executive Producer, Composer, Arranger, Lyricist\n* V-llage Visual Novel <Welcome to V-llage!> Theme Song <My Village> — Composer, Arranger\n* V-llage Tigris Kanin 1st Single <Kanism☆Holic> — Composer, Arranger\n* Mafia Dongsan Crew Performance <Backstage> — Composer, Arranger, Executive Producer\n* Soraniwa Project <Watercolour> — Composer, Arranger\n\n| 2023\n\n* POCOTONE × Sixtar Gate: STARTRAIL POCOTONE Pack — Project Manager\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> — Chord Composer, Piano\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Cosmic Telepathy> — Composer, Arranger\n* Honkai: Star Rail <STAR to STAR / Multiverse Moment> Contest — Excellence Award & Popularity Award / Composer, Arranger, Executive Producer\n* Monthly POCOTONE <TO YOU> — Arranger\n* Project Connect SEASON 1 <Side Road (ED)> — Composer, Arranger\n\n| 2022\n\n* POCOTONE <With Me> — Executive Producer, Track Maker, Vocal Editor, Vocal Tuning\n* Project Connect SEASON 1 — Executive Producer, Project Contributor\n* Project Connect SEASON 1 <CONNECT, to World!>, <Between the Stars>, <Party Night>, <Clear FANFARE!>, etc. — Composer, Arranger, Producer\n* Last Origin Miss Orca <New Page>, <My Master Overdose>, <Polaris> — Composer, Arranger\n* Last Origin Miss Orca <A Story I Want to Tell> — Producer\n* Last Origin Café Amor × Horizon <Gray Clouds>, <GO UP!>, <Welcome to Last Paradise!> — Composer, Arranger\n* Last Origin Café Amor × Horizon <Love Is Like Parfait> — Arranger\n* V-LUP <MyWaY!!!> — Producer\n* V-LUP <Paradise> — Composer, Arranger\n* V-LUP Lee Juin <Shining Day!> — Track Maker, Composer, Arranger\n* Tayo the Little Bus <Heavy Equipment Race> — Arranger\n\n| 2021\n\n* Webtoon <My Neighbor's Younger Brother Is an Elementary School Student, but He's Too Good!> Ending Theme <Destiny> — Track Maker, Arranger\n* Game <Fantasy Town> Advertisement Music — Composer, Arranger\n* Game <Last Origin> <FLIGHT AGAIN> — Composer, Arranger\n* Bed Taker <Night Sky> — Composer, Arranger, Lyricist\n* Seoul Institute of the Arts Promotional Film <WE ARE SIA!> — Composer, Arranger, Vocal Tuning\n* Pororo <Pororo and Petty's Colorful Ball Game>, <Tell Me Honestly> — Arranger\n* HUBOG Cover <Remember> — Arranger\n\n| 2020\n\n* Atofriends <New Year's Wish Dance>, <2020 Christmas> — Arranger\n* 2020 AINSE Creative Music Festival <Welly Goes to School>, <Good Comments, My Face>, <A Warm Internet World> — Arranger\n* KEBIKIDS <Dinosaur Extinction Song> — Arranger\n* HUBOG Cover <Tenbyou no Uta>, <Merry Go Round (Solo Ver.)> — Arranger\n\n| 2019\n\n* HUBOG Cover <Eine Kleine> — Arranger\n* Original Work <Sailing StarS!> — Producer\n* Original Work <Growing!> — Producer\n\n| 2018\n\n* Sejong Arts High School School Anthem — Executive Producer, Composer, Arranger, Lyricist\n* Original Work <TOMORROW!> — Producer\n* Original Work <Sketchbook> — Producer",
+          "creditsText": "| 2026\n\n* arune 1st Original <Love Novel> — Executive Producer, Composer, Arranger, Bass\n* Soonimoon Special Stage <BIGBANG - BLUE> — Arranger\n\n| 2025\n\n* TOVE <Daisy in Eternity (Fairy Tale Ver.)> — Arranger, Strings, Piano, MIDI Programming\n* V-llage Kurogami Sasha 1st Single <Fallen Leaves> — Executive Producer, Composer, Arranger\n* Haebin (gugudan) <Cleaning My Heart> — Arranger, Piano\n* Soonimoon Special Stage <FIFTY FIFTY - Gravity> — Arranger\n* TV Anime <Gangchi Island> Opening Theme — Arranger, Vocal Tuning\n* Haebom 3rd Single <Love Dopamine> — Composer, Arranger, Vocal Director, Vocal Editor\n* DOLONGCHA 1st Single <The Run Catch> — Co-Composer, Co-Arranger, Vocal Coach, Vocal Editor\n* Official 1st Anniversary OST Album for Zenless Zone Zero <Drawing Summer> — Producer, Composer, Arranger\n* OSDS (Osondoson) 1st Single <Bluetooth> — Track Maker, Composer, Arranger\n* Mainichi Matsuri 3rd Single <NEW YEAR SYNDROME> — Executive Producer, Composer, Arranger, Lyricist, Recording Engineer\n* V-llage Floweress Loe 1st Single <Floris Waltz> — Executive Producer, Composer, Arranger\n* Dear my heroes 1st Album <Early Spring> — Arranger\n* V-LUP Veldir 1st Single <Pompous> — Producer, Composer, Arranger, Vocal Editor\n\n| 2024\n\n* RoA <WRAP UP> — Composer, Arranger\n* GXG Game Music Competition <Run into Galaxy> Gold Prize — Composer, Arranger, Executive Producer\n* V-llage 1st Album <SilverLine> — Album Planning, Investment, Executive Producer, Composer, Arranger, Lyricist\n* V-llage Visual Novel <Welcome to V-llage!> Theme Song <My Village> — Composer, Arranger\n* V-llage Tigris Kanin 1st Single <Kanism☆Holic> — Composer, Arranger\n* Mafia Dongsan Crew Performance <Backstage> — Composer, Arranger, Executive Producer\n* Soraniwa Project <Watercolour> — Composer, Arranger\n\n| 2023\n\n* POCOTONE × Sixtar Gate: STARTRAIL POCOTONE Pack — Project Manager\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Flower Garden> — Chord Composer, Piano\n* Sixtar Gate: STARTRAIL - POCOTONE Pack <Cosmic Telepathy> — Composer, Arranger\n* Honkai: Star Rail <STAR to STAR / Multiverse Moment> Contest — Excellence Award & Popularity Award / Composer, Arranger, Executive Producer\n* Monthly POCOTONE <TO YOU> — Arranger\n* Project Connect SEASON 1 <Side Road (ED)> — Composer, Arranger\n\n| 2022\n\n* POCOTONE <With Me> — Executive Producer, Track Maker, Vocal Editor, Vocal Tuning\n* Project Connect SEASON 1 — Executive Producer, Project Contributor\n* Project Connect SEASON 1 <CONNECT, to World!>, <Between the Stars>, <Party Night>, <Clear FANFARE!>, etc. — Composer, Arranger, Producer\n* Last Origin Miss Orca <New Page>, <My Master Overdose>, <Polaris> — Composer, Arranger\n* Last Origin Miss Orca <A Story I Want to Tell> — Producer\n* Last Origin Café Amor × Horizon <Gray Clouds>, <GO UP!>, <Welcome to Last Paradise!> — Composer, Arranger\n* Last Origin Café Amor × Horizon <Love Is Like Parfait> — Arranger\n* V-LUP <MyWaY!!!> — Producer\n* V-LUP <Paradise> — Composer, Arranger\n* V-LUP Lee Juin <Shining Day!> — Track Maker, Composer, Arranger\n* Tayo the Little Bus <Heavy Equipment Race> — Arranger\n\n| 2021\n\n* Webtoon <My Neighbor's Younger Brother Is an Elementary School Student, but He's Too Good!> Ending Theme <Destiny> — Track Maker, Arranger\n* Game <Fantasy Town> Advertisement Music — Composer, Arranger\n* Game <Last Origin> <FLIGHT AGAIN> — Composer, Arranger\n* Bed Taker <Night Sky> — Composer, Arranger, Lyricist\n* Seoul Institute of the Arts Promotional Film <WE ARE SIA!> — Composer, Arranger, Vocal Tuning\n* Pororo <Pororo and Petty's Colorful Ball Game>, <Tell Me Honestly> — Arranger\n* HUBOG Cover <Remember> — Arranger\n\n| 2020\n\n* Atofriends <New Year's Wish Dance>, <2020 Christmas> — Arranger\n* 2020 AINSE Creative Music Festival <Welly Goes to School>, <Good Comments, My Face>, <A Warm Internet World> — Arranger\n* KEBIKIDS <Dinosaur Extinction Song> — Arranger\n* HUBOG Cover <Tenbyou no Uta>, <Merry Go Round (Solo Ver.)> — Arranger\n\n| 2019\n\n* HUBOG Cover <Eine Kleine> — Arranger\n* Original Work <Sailing StarS!> — Producer\n* Original Work <Growing!> — Producer\n\n| 2018\n\n* Sejong Arts High School Anthem — Executive Producer, Composer, Arranger, Lyricist\n* Original Work <TOMORROW!> — Producer\n* Original Work <Sketchbook> — Producer",
           "mbti": "ENTJ",
           "traits": [
             "#ALL-Rounded",
@@ -260,7 +260,7 @@ window.TALETONE_CONTENT = {
           "tagline": "A person who lays the path of sound for stories to flow.",
           "taglineKo": "",
           "education": "Howon University\nBass, School of Applied Music · Graduated",
-          "creditsText": "| 2025\n\n* HoYoverse Game <Zenless Zone Zero> 1st Anniversary OST <Drawing Summer> — Bass\n* 2025 DDP SeoulCon Game Music Symphony Concert — Participated as Bassist\n\n| 2024\n\n* GXG2024 Game Music Competition <Run into Galaxy> — Team Gold Prize\n* KT Gwanghwamun K Festa Game OST Orchestra Concert — Participated as Bassist\n\n| 2023\n\n* Last Origin Labiata Character Song — Composition, Arrangement, Producing, Bass\n* Last Origin Merlin Character Song — Composition, Arrangement, Producing, Bass\n\n| Live / Session\n\n* Participated in numerous live performances for internet broadcasters, including Gamjey, Kkotgami, Bamyanggaeng, Gaseubgi, and more\n* Participated in numerous album recording sessions for internet broadcasters, including DOLONGCHA, Haebom, Hexia, and more\n\n| Portfolio\n\n* Personal Portfolio Site\n  https://jaehadesu.creatorlink.net/\n\n#Bass #Arrangement #Management",
+          "creditsText": "| 2025\n\n* HoYoverse Game <Zenless Zone Zero> 1st Anniversary OST <Drawing Summer> — Bass\n* 2025 DDP SeoulCon Game Music Symphony Concert — Participated as Bassist\n\n| 2024\n\n* GXG2024 Game Music Competition <Run into Galaxy> — Team Gold Prize\n* KT Gwanghwamun K Festa Game OST Orchestra Concert — Participated as Bassist\n\n| 2023\n\n* Last Origin Labiata Character Song — Composition, Arrangement, Producing, Bass\n* Last Origin Merlin Character Song — Composition, Arrangement, Producing, Bass\n\n| Live / Session\n\n* Participated in numerous live performances for streamers including Gamjey, Kkotgami, Bamyanggaeng, and Gaseubgi\n* Participated in numerous album recording sessions for streamers including DOLONGCHA, Haebom, and Hexia\n\n| Portfolio\n\n* Personal Portfolio Site\n  https://jaehadesu.creatorlink.net/\n\n#Bass #Arrangement #Management",
           "mbti": "INFJ",
           "traits": [
             "#Bass",
@@ -326,7 +326,7 @@ window.TALETONE_CONTENT = {
           "tagline": "A person who gives voice to stories.",
           "taglineKo": "",
           "education": "Seoul Institute of the Arts\nVocal, Applied Music · Graduated",
-          "creditsText": "| 2025\n\n* Released digital singles <Not Like Me> and <Stubborn>\n* Zenless Zone Zero OST <Drawing Summer> — Vocal Recording\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — Team Gold Prize\n\n| 2023\n\n* Soraniwa Project <Watercolour> — Vocal Recording\n* Last Origin OST <Polaris> — Vocal Recording\n* Last Origin OST <Overdose> — Vocal Recording\n* Seoul Institute of the Arts, Department of Acting <Shall We Make a Wish on the Full Moon?> OST — Vocal Recording\n* Studio Meta-K <Running Through Time> — Vocal Recording\n* HAROO <Mastermind> — Vocal Recording\n* KT&G Sangsang Univ. Jiphyeonjeon Finalist — Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — Vocal Recording\n* Korea Post Gyeongin Regional Office Logo Song — Vocal Recording\n\n#Vocal #Recording #Performance",
+          "creditsText": "| 2025\n\n* Released digital singles <Not Like Me> and <Stubborn>\n* Zenless Zone Zero OST <Drawing Summer> — Vocal Recording\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — Team Gold Prize\n\n| 2023\n\n* Soraniwa Project <Watercolour> — Vocal Recording\n* Last Origin OST <Polaris> — Vocal Recording\n* Last Origin OST <Overdose> — Vocal Recording\n* Seoul Institute of the Arts, Department of Broadcasting & Entertainment <Shall We Make a Wish on the Full Moon?> OST — Vocal Recording\n* Studio Meta-K <Running Through Time> — Vocal Recording\n* HAROO <Mastermind> — Vocal Recording\n* KT&G Sangsang Univ. Jiphyeonjeon Finalist — Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — Vocal Recording\n* Korea Post Gyeongin Regional Office Logo Song — Vocal Recording\n\n#Vocal #Recording #Performance",
           "mbti": "ISFP",
           "traits": [
             "#Vocal",
@@ -341,7 +341,7 @@ window.TALETONE_CONTENT = {
           "tagline": "物語に声を吹き込む人。",
           "taglineKo": "",
           "education": "ソウル芸術大学\n実用音楽学科 ボーカル専攻 卒業",
-          "creditsText": "| 2025\n\n* デジタルシングル <Not Like Me>, <Stubborn> — 音源リリース\n* Zenless Zone Zero OST <Drawing Summer> — ボーカルレコーディング\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — チーム金賞受賞\n\n| 2023\n\n* Soraniwa Project <Watercolour> — ボーカルレコーディング\n* Last Origin OST <Polaris> — ボーカルレコーディング\n* Last Origin OST <Overdose> — ボーカルレコーディング\n* Seoul Institute of the Arts Department of Acting <Shall We Make a Wish on the Full Moon?> OST — ボーカルレコーディング\n* Studio Meta-K <Running Through Time> — ボーカルレコーディング\n* HAROO <Mastermind> — ボーカルレコーディング\n* KT&G Sangsang Univ. Jiphyeonjeon — 決選進出 / Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — ボーカルレコーディング\n* Korea Post Gyeongin Regional Office Logo Song — ボーカルレコーディング\n\n#Vocal #Recording #Performance",
+          "creditsText": "| 2025\n\n* デジタルシングル <Not Like Me>, <Stubborn> — 音源リリース\n* Zenless Zone Zero OST <Drawing Summer> — ボーカルレコーディング\n\n| 2024\n\n* 2024 GXG Game Music Competition <Run into Galaxy> — チーム金賞受賞\n\n| 2023\n\n* Soraniwa Project <Watercolour> — ボーカルレコーディング\n* Last Origin OST <Polaris> — ボーカルレコーディング\n* Last Origin OST <Overdose> — ボーカルレコーディング\n* ソウル芸術大学 放送芸能学科『Shall We Make a Wish on the Full Moon?』OST — ボーカルレコーディング\n* Studio Meta-K <Running Through Time> — ボーカルレコーディング\n* HAROO <Mastermind> — ボーカルレコーディング\n* KT&G Sangsang Univ. Jiphyeonjeon — 決選進出 / Band Huinancia\n\n| 2022\n\n* Korea Maritime & Ocean University School Song — ボーカルレコーディング\n* Korea Post Gyeongin Regional Office Logo Song — ボーカルレコーディング\n\n#Vocal #Recording #Performance",
           "mbti": "ISFP",
           "traits": [
             "#Vocal",
@@ -391,9 +391,9 @@ window.TALETONE_CONTENT = {
           "role": "Art Director",
           "tagline": "A person who gives color to unseen stories.",
           "taglineKo": "",
-          "education": "Private",
+          "education": "Undisclosed",
           "creditsText": "Soraniwa Project — Executive Art Director\n\nDOLONGCHA 1st Single <The Run Catch> — Composition, Arrangement, Lyrics, Title Design, Thumbnail, 3D Prop Artwork, Color Grading",
-          "mbti": "Private",
+          "mbti": "Undisclosed",
           "traits": [
             "Art Direction",
             "Illustration",
@@ -406,9 +406,9 @@ window.TALETONE_CONTENT = {
           "role": "Art Director",
           "tagline": "目に見えない物語に、色を添える人。",
           "taglineKo": "",
-          "education": "Private",
+          "education": "非公開",
           "creditsText": "Soraniwa Project — 総合アートディレクター\n\nDOLONGCHA 1st Single <The Run Catch> — 作曲、編曲、作詞、タイトルデザイン、サムネイル、3D Propアートワーク、カラーグレーディング",
-          "mbti": "Private",
+          "mbti": "非公開",
           "traits": [
             "Art Direction",
             "Illustration",
@@ -434,8 +434,8 @@ window.TALETONE_CONTENT = {
       "category": "Update",
       "date": "2026.07.11",
       "title": "도롱챠 2nd Single 'Bubble Sweet' 발매",
-      "summary": "TALETONE이 음악 제작으로 함께한 버츄얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.",
-      "body": "TALETONE이 음악 제작으로 함께한 버츄얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.\n\n햇살이 반짝이는 어느 여름날, 투명한 컵 안에서 작고 달콤한 이야기가 시작됩니다.\n\n‘Bubble Sweet’은 버블티와 팝핑보바를 비롯한 다양한 카페 음료에서 영감을 받은 곡입니다. 알록달록한 음료 속을 여행하듯 흐르는 멜로디와 방울방울 피어오르는 설렘을 도롱챠만의 사랑스럽고 순수한 목소리로 그려냈습니다.\n\nTALETONE은 이번 곡의 총괄 음악 프로듀싱을 비롯해 작사, 작곡, 편곡, 신시사이저, 드럼 프로그래밍과 베이스 기타 연주 등 음악 제작 전반에 참여했습니다.\n\n통통 튀어 오르는 리듬과 중독성 있는 훅 위에 한 모금의 달콤함이 작은 행복으로 변하는 순간을 담았습니다. 버블처럼 몽글몽글 피어오른 마음이 음악을 따라 청량한 여름 하늘까지 닿을 수 있기를 바랐습니다.\n\n소중하고 사랑스러운 이야기에 함께할 수 있어 진심으로 감사드립니다.  \n‘Bubble Sweet’이 여러분의 여름에도 달콤한 마법 같은 순간으로 오래 남기를 바랍니다.\n\nA tale becomes a tone.  \nA tone becomes music.\n\nTALETONE MUSIC",
+      "summary": "TALETONE이 음악 제작으로 함께한 버추얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.",
+      "body": "TALETONE이 음악 제작으로 함께한 버추얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.\n\n햇살이 반짝이는 어느 여름날, 투명한 컵 안에서 작고 달콤한 이야기가 시작됩니다.\n\n‘Bubble Sweet’은 버블티와 팝핑보바를 비롯한 다양한 카페 음료에서 영감을 받은 곡입니다. 알록달록한 음료 속을 여행하듯 흐르는 멜로디와 방울방울 피어오르는 설렘을 도롱챠만의 사랑스럽고 순수한 목소리로 그려냈습니다.\n\nTALETONE은 이번 곡의 총괄 음악 프로듀싱을 비롯해 작사, 작곡, 편곡, 신시사이저, 드럼 프로그래밍과 베이스 기타 연주 등 음악 제작 전반에 참여했습니다.\n\n통통 튀어 오르는 리듬과 중독성 있는 훅 위에 한 모금의 달콤함이 작은 행복으로 변하는 순간을 담았습니다. 버블처럼 몽글몽글 피어오른 마음이 음악을 따라 청량한 여름 하늘까지 닿을 수 있기를 바랐습니다.\n\n소중하고 사랑스러운 이야기에 함께할 수 있어 진심으로 감사드립니다.  \n‘Bubble Sweet’이 여러분의 여름에도 달콤한 마법 같은 순간으로 오래 남기를 바랍니다.\n\nA tale becomes a tone.  \nA tone becomes music.\n\nTALETONE MUSIC",
       "image": "assets\\works\\images\\4K.mp4_20260711_020133.397.png",
       "fit": "cover",
       "posX": 50,
@@ -448,8 +448,8 @@ window.TALETONE_CONTENT = {
           "tag": "Project",
           "category": "Update",
           "title": "도롱챠 2nd Single 'Bubble Sweet' 발매",
-          "summary": "TALETONE이 음악 제작으로 함께한 버츄얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.",
-          "body": "TALETONE이 음악 제작으로 함께한 버츄얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.\n\n햇살이 반짝이는 어느 여름날, 투명한 컵 안에서 작고 달콤한 이야기가 시작됩니다.\n\n‘Bubble Sweet’은 버블티와 팝핑보바를 비롯한 다양한 카페 음료에서 영감을 받은 곡입니다. 알록달록한 음료 속을 여행하듯 흐르는 멜로디와 방울방울 피어오르는 설렘을 도롱챠만의 사랑스럽고 순수한 목소리로 그려냈습니다.\n\nTALETONE은 이번 곡의 총괄 음악 프로듀싱을 비롯해 작사, 작곡, 편곡, 신시사이저, 드럼 프로그래밍과 베이스 기타 연주 등 음악 제작 전반에 참여했습니다.\n\n통통 튀어 오르는 리듬과 중독성 있는 훅 위에 한 모금의 달콤함이 작은 행복으로 변하는 순간을 담았습니다. 버블처럼 몽글몽글 피어오른 마음이 음악을 따라 청량한 여름 하늘까지 닿을 수 있기를 바랐습니다.\n\n소중하고 사랑스러운 이야기에 함께할 수 있어 진심으로 감사드립니다.  \n‘Bubble Sweet’이 여러분의 여름에도 달콤한 마법 같은 순간으로 오래 남기를 바랍니다.\n\nA tale becomes a tone.  \nA tone becomes music.\n\nTALETONE MUSIC"
+          "summary": "TALETONE이 음악 제작으로 함께한 버추얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.",
+          "body": "TALETONE이 음악 제작으로 함께한 버추얼 아티스트 도롱챠의 두 번째 오리지널 싱글 ‘Bubble Sweet’이 발매되었습니다.\n\n햇살이 반짝이는 어느 여름날, 투명한 컵 안에서 작고 달콤한 이야기가 시작됩니다.\n\n‘Bubble Sweet’은 버블티와 팝핑보바를 비롯한 다양한 카페 음료에서 영감을 받은 곡입니다. 알록달록한 음료 속을 여행하듯 흐르는 멜로디와 방울방울 피어오르는 설렘을 도롱챠만의 사랑스럽고 순수한 목소리로 그려냈습니다.\n\nTALETONE은 이번 곡의 총괄 음악 프로듀싱을 비롯해 작사, 작곡, 편곡, 신시사이저, 드럼 프로그래밍과 베이스 기타 연주 등 음악 제작 전반에 참여했습니다.\n\n통통 튀어 오르는 리듬과 중독성 있는 훅 위에 한 모금의 달콤함이 작은 행복으로 변하는 순간을 담았습니다. 버블처럼 몽글몽글 피어오른 마음이 음악을 따라 청량한 여름 하늘까지 닿을 수 있기를 바랐습니다.\n\n소중하고 사랑스러운 이야기에 함께할 수 있어 진심으로 감사드립니다.  \n‘Bubble Sweet’이 여러분의 여름에도 달콤한 마법 같은 순간으로 오래 남기를 바랍니다.\n\nA tale becomes a tone.  \nA tone becomes music.\n\nTALETONE MUSIC"
         },
         "en": {
           "tag": "Project",
@@ -473,8 +473,8 @@ window.TALETONE_CONTENT = {
       "category": "Update",
       "date": "2026.07.11",
       "title": "TALETONE, 첫 이야기를 시작합니다",
-      "summary": "드디어 TALETONE이 첫걸음을 시작했습니다.",
-      "body": "드디어 TALETONE이 첫걸음을 시작했습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC",
+      "summary": "드디어 TALETONE이 첫걸음을 내디뎠습니다.",
+      "body": "드디어 TALETONE이 첫걸음을 내디뎠습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC",
       "image": "assets/pictures/logomock-1600.webp",
       "fit": "cover",
       "posX": 50,
@@ -487,8 +487,8 @@ window.TALETONE_CONTENT = {
           "tag": "Update",
           "category": "Update",
           "title": "TALETONE, 첫 이야기를 시작합니다",
-          "summary": "드디어 TALETONE이 첫걸음을 시작했습니다.",
-          "body": "드디어 TALETONE이 첫걸음을 시작했습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
+          "summary": "드디어 TALETONE이 첫걸음을 내디뎠습니다.",
+          "body": "드디어 TALETONE이 첫걸음을 내디뎠습니다.\n\n오래전부터 머릿속에만 있던 이야기와 음악, 그리고 우리가 만들고 싶은 세계를 하나의 이름 아래에 모으기까지 생각보다 많은 시간이 걸렸습니다.\n그 과정이 쉽지만은 않았지만, 함께 고민하고 움직여준 사람들 덕분에 이렇게 시작을 알릴 수 있게 되었습니다.\n\nTALETONE은 단순히 음악을 만드는 곳이 아니라,\n이야기가 소리가 되고, 소리가 다시 누군가의 세계로 닿을 수 있도록 만들어가는 팀이 되고자 합니다.\n\n함께해준 멤버들, 작업에 힘을 보태준 분들, 그리고 늘 응원해주시는 모든 분들께 진심으로 감사드립니다.\n아직은 작은 출발이지만, 앞으로 더 좋은 음악과 이야기로 차근차근 보여드리겠습니다.\n\n앞으로의 TALETONE도 잘 부탁드립니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC"
         },
         "en": {
           "tag": "Update",
@@ -597,7 +597,7 @@ window.TALETONE_CONTENT = {
     "subtitleLine2": "A tone becomes music.",
     "descriptionLine1": "세계관이 있는 IP를 음악으로 확장하는",
     "descriptionLine2": "스토리 기반 음악 프로덕션",
-    "scrollHint": "Dive in with scroll",
+    "scrollHint": "Scroll to dive in",
     "translations": {
       "kr": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -607,7 +607,7 @@ window.TALETONE_CONTENT = {
         "subtitleLine2": "A tone becomes music.",
         "descriptionLine1": "세계관이 있는 IP를 음악으로 확장하는",
         "descriptionLine2": "스토리 기반 음악 프로덕션",
-        "scrollHint": "Dive in with scroll",
+        "scrollHint": "Scroll to dive in",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "prologueCopy": "",
@@ -623,7 +623,7 @@ window.TALETONE_CONTENT = {
         "subtitleLine2": "A tone becomes music.",
         "descriptionLine1": "Expanding IP worlds through music",
         "descriptionLine2": "A story-based music production studio",
-        "scrollHint": "Dive in with scroll",
+        "scrollHint": "Scroll to dive in",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "prologueCopy": "",
@@ -638,8 +638,8 @@ window.TALETONE_CONTENT = {
         "subtitleLine1": "A tale becomes a tone.",
         "subtitleLine2": "A tone becomes music.",
         "descriptionLine1": "世界観のあるIPを音楽へ広げる",
-        "descriptionLine2": "ストーリー基盤の音楽プロダクション",
-        "scrollHint": "Dive in with scroll",
+        "descriptionLine2": "ストーリーベースの音楽プロダクション",
+        "scrollHint": "Scroll to dive in",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "prologueCopy": "",
@@ -692,7 +692,7 @@ window.TALETONE_CONTENT = {
             "label": "Storytelling Project",
             "title": "soraniwa",
             "placeholder": "soraniwa visual",
-            "description": "TALETONE's storytelling project: original IP planning expanded through music and video.",
+            "description": "TALETONE's storytelling project: an original IP expanded through music and video.",
             "buttonLabel": "soraniwa YouTube"
           },
           "jp": {
@@ -773,7 +773,7 @@ window.TALETONE_CONTENT = {
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAME",
-        "audienceGameTitle": "서브컬쳐 게임",
+        "audienceGameTitle": "서브컬처 게임",
         "audienceGameService1": "OST · 캐릭터 테마송 · 이벤트 곡",
         "audienceGameService2": "PV / 트레일러 음악 · BGM",
         "audienceGameHook": "이 스토리가 남겨야 할 감정은?",
@@ -799,7 +799,7 @@ window.TALETONE_CONTENT = {
             "label": "Storytelling Project",
             "title": "soraniwa",
             "placeholder": "soraniwa visual",
-            "description": "TALETONE's storytelling project: original IP planning expanded through music and video.",
+            "description": "TALETONE's storytelling project: an original IP expanded through music and video.",
             "buttonLabel": "soraniwa YouTube"
           },
           {
@@ -810,8 +810,8 @@ window.TALETONE_CONTENT = {
             "buttonLabel": "Coming Soon"
           }
         ],
-        "audienceGameKicker": "SUBCULTURE GAME",
-        "audienceGameTitle": "Subculture Game",
+        "audienceGameKicker": "SUBCULTURE GAMES",
+        "audienceGameTitle": "Subculture Games",
         "audienceGameService1": "OST · Character themes · Event songs",
         "audienceGameService2": "PV / trailer music · BGM",
         "audienceGameHook": "What emotion should this story leave behind?",
@@ -830,7 +830,7 @@ window.TALETONE_CONTENT = {
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "STORY",
         "titleAccent": " TYPES",
-        "subtitle": "世界観のあるIPを音楽へ広げるストーリー基盤の音楽プロダクション",
+        "subtitle": "世界観のあるIPを音楽へ広げるストーリーベースの音楽プロダクション",
         "description": "自社IPを企画してきたチームだからこそ、皆さまのIPをより深く読み解きます。",
         "cards": [
           {
@@ -848,8 +848,8 @@ window.TALETONE_CONTENT = {
             "buttonLabel": "準備中"
           }
         ],
-        "audienceGameKicker": "SUBCULTURE GAME",
-        "audienceGameTitle": "サブカルチャーゲーム",
+        "audienceGameKicker": "SUBCULTURE GAMES",
+        "audienceGameTitle": "ゲーム",
         "audienceGameService1": "OST・キャラクターテーマソング・イベント曲",
         "audienceGameService2": "PV／トレーラー音楽・BGM",
         "audienceGameHook": "この物語が残すべき感情は？",
@@ -866,7 +866,7 @@ window.TALETONE_CONTENT = {
       }
     },
     "audienceGameKicker": "SUBCULTURE GAME",
-    "audienceGameTitle": "서브컬쳐 게임",
+    "audienceGameTitle": "서브컬처 게임",
     "audienceGameService1": "OST · 캐릭터 테마송 · 이벤트 곡",
     "audienceGameService2": "PV / 트레일러 음악 · BGM",
     "audienceGameHook": "이 스토리가 남겨야 할 감정은?",
