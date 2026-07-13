@@ -365,7 +365,8 @@ body[data-active-chapter="contact"] #nav-6 {
   max-height: 42px;
   max-width: 176px;
   opacity: 1;
-  mix-blend-mode: multiply;
+  filter: brightness(0) invert(1);
+  mix-blend-mode: normal;
 }
 
 .tt-gh-tabs {
@@ -613,19 +614,19 @@ body[data-active-chapter="contact"] #nav-6 {
 
 .tt-gh-card-artist {
   position: absolute;
-  left: 8px;
-  top: 9px;
+  left: var(--artist-badge-left, 8px);
+  top: var(--artist-badge-top, 9px);
   z-index: 3;
   display: block;
   max-width: calc(100% - 16px);
-  padding: 5px 9px;
-  border: 1px solid rgba(255,255,255,.32);
-  border-radius: 999px;
-  background: rgba(7,25,43,.84);
+  padding: var(--artist-badge-padding-y, 5px) var(--artist-badge-padding-x, 9px);
+  border: var(--artist-badge-border-width, 1px) solid var(--artist-badge-border-color, rgba(255,255,255,.32));
+  border-radius: var(--artist-badge-radius, 999px);
+  background: var(--artist-badge-background, rgba(7,25,43,.84));
   box-shadow: 0 5px 14px rgba(0,0,0,.24);
-  color: #fff;
-  font-size: clamp(9px,.66vw,11px);
-  font-weight: 850;
+  color: var(--artist-badge-text-color, #fff);
+  font-size: var(--artist-badge-font-size, clamp(9px,.66vw,11px));
+  font-weight: var(--artist-badge-font-weight, 850);
   line-height: 1.15;
   letter-spacing: 0;
   white-space: nowrap;
@@ -639,7 +640,7 @@ body[data-active-chapter="contact"] #nav-6 {
 }
 
 .tt-gh-card-cover:has(.tt-gh-card-tabs) .tt-gh-card-artist {
-  top: 9px;
+  top: var(--artist-badge-top, 9px);
   bottom: auto;
   max-width: calc(100% - 66px);
 }

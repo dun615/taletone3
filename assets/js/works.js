@@ -581,6 +581,55 @@
     return Number.isFinite(number) ? number : fallback;
   }
 
+  function optionalBoundedNumber(value, minimum, maximum) {
+    if (value == null || value === '') return null;
+    var number = Number(value);
+    if (!Number.isFinite(number)) return null;
+    return clamp(number, minimum, maximum);
+  }
+
+  function safeHexColor(value, fallback) {
+    var color = String(value || '').trim();
+    return /^#[0-9a-f]{6}$/i.test(color) ? color : fallback;
+  }
+
+  function hexWithOpacity(color, opacity, fallbackColor, fallbackOpacity) {
+    var hex = safeHexColor(color, fallbackColor).slice(1);
+    var alpha = optionalBoundedNumber(opacity, 0, 1);
+    if (alpha == null) alpha = fallbackOpacity;
+    return 'rgba(' + parseInt(hex.slice(0, 2), 16) + ',' + parseInt(hex.slice(2, 4), 16) + ',' + parseInt(hex.slice(4, 6), 16) + ',' + alpha + ')';
+  }
+
+  function artistBadgeStyle(unit) {
+    var badge = unit && unit.artistBadge;
+    if (!badge || typeof badge !== 'object') return '';
+    var values = [];
+    var left = optionalBoundedNumber(badge.x, -100, 300);
+    var top = optionalBoundedNumber(badge.y, -100, 300);
+    var fontSize = optionalBoundedNumber(badge.fontSize, 6, 40);
+    var fontWeight = optionalBoundedNumber(badge.fontWeight, 100, 1000);
+    var paddingX = optionalBoundedNumber(badge.paddingX, 0, 40);
+    var paddingY = optionalBoundedNumber(badge.paddingY, 0, 30);
+    var borderWidth = optionalBoundedNumber(badge.borderWidth, 0, 10);
+    var radius = optionalBoundedNumber(badge.radius, 0, 999);
+    if (left != null) values.push('--artist-badge-left:' + left + 'px');
+    if (top != null) values.push('--artist-badge-top:' + top + 'px');
+    if (fontSize != null) values.push('--artist-badge-font-size:' + fontSize + 'px');
+    if (fontWeight != null) values.push('--artist-badge-font-weight:' + fontWeight);
+    if (paddingX != null) values.push('--artist-badge-padding-x:' + paddingX + 'px');
+    if (paddingY != null) values.push('--artist-badge-padding-y:' + paddingY + 'px');
+    if (borderWidth != null) values.push('--artist-badge-border-width:' + borderWidth + 'px');
+    if (radius != null) values.push('--artist-badge-radius:' + radius + 'px');
+    if (badge.textColor != null) values.push('--artist-badge-text-color:' + safeHexColor(badge.textColor, '#ffffff'));
+    if (badge.backgroundColor != null || badge.backgroundOpacity != null) {
+      values.push('--artist-badge-background:' + hexWithOpacity(badge.backgroundColor, badge.backgroundOpacity, '#07192b', .84));
+    }
+    if (badge.borderColor != null || badge.borderOpacity != null) {
+      values.push('--artist-badge-border-color:' + hexWithOpacity(badge.borderColor, badge.borderOpacity, '#ffffff', .32));
+    }
+    return values.join(';');
+  }
+
   function imageStyle(unit) {
     var brightness = numeric(unit && unit.brightness, 1);
     return '--fit:' + esc((unit && unit.fit) || 'cover') + ';--pos-x:' + esc((unit && unit.posX) || '50%') + ';--pos-y:' + esc((unit && unit.posY) || '50%') + ';--brightness:' + esc(brightness);
@@ -1309,7 +1358,7 @@
   }
 
   function cardArtistBadge(work, unit) {
-    return '<span class="tt-gh-card-artist">' + compactRichLabel(cardArtist(work, unit), 28) + '</span>';
+    return '<span class="tt-gh-card-artist" style="' + esc(artistBadgeStyle(unit)) + '">' + compactRichLabel(cardArtist(work, unit), 28) + '</span>';
   }
 
   function showcase() {
@@ -1520,7 +1569,10 @@
       var title = card.querySelector('.tt-gh-card-title');
       if (title) title.innerHTML = compactRichLabel(unit.title || (work && work.title) || '', 18);
       var artist = card.querySelector('.tt-gh-card-artist');
-      if (artist) artist.innerHTML = compactRichLabel(cardArtist(work, unit), 28);
+      if (artist) {
+        artist.innerHTML = compactRichLabel(cardArtist(work, unit), 28);
+        artist.setAttribute('style', artistBadgeStyle(unit));
+      }
       card.querySelectorAll('.tt-gh-card-tab').forEach(function (tabButton) {
         tabButton.classList.toggle('is-active', index === state.selected && tabButton.getAttribute('data-language') === state.language);
       });
