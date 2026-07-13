@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-12T04:20:19.406Z",
+  "lastUpdated": "2026-07-13T12:52:17.533Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
