@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
-  'assets/css/works.css': '20260713-card-artist-v1-qa1',
+  'assets/css/works.css': '20260713-card-artist-v2-qa2',
   'assets/js/works.js': '20260713-card-artist-v1-qa1',
 };
 
