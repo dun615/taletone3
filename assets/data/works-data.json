@@ -2,6 +2,7 @@
   "works": [
     {
       "id": "work-new-21",
+      "artist": "DOLONGCHA",
       "title": "Bubble Sweet",
       "date": "2026",
       "type": "DOLONGCHA 2nd Single",
@@ -30,16 +31,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "DOLONGCHA",
           "title": "Bubble Sweet",
           "type": "DOLONGCHA 2nd Single",
           "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기.\n"
         },
         "en": {
+          "artist": "DOLONGCHA",
           "title": "Bubble Sweet",
           "type": "DOLONGCHA 2nd Single",
           "description": "A story that captures the sweet excitement of bubbles popping beneath the midsummer sun in one refreshingly cool drink."
         },
         "jp": {
+          "artist": "DOLONGCHA",
           "title": "Bubble Sweet",
           "type": "DOLONGCHA 2nd Single",
           "description": "真夏の陽射しの下、泡のように弾ける甘いときめきを、ひんやりとした一杯に閉じ込めた物語。"
@@ -48,6 +52,7 @@
     },
     {
       "id": "work-soraniwa",
+      "artist": "STELLIVE Universe",
       "title": "마음악보",
       "date": "2026.06.11",
       "type": "STELLIVE 'Universe' 2nd Single",
@@ -76,16 +81,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "STELLIVE Universe",
           "title": "마음악보",
           "type": "STELLIVE 'Universe' 2nd Single",
           "description": "서로 다른 색을 가진 네 소녀가 하나의 밴드가 되어, 자신들만의 이야기를 써 내려가는 이야기."
         },
         "en": {
+          "artist": "STELLIVE Universe",
           "title": "Heart Score",
           "type": "STELLIVE 'Universe' 2nd Single",
           "description": "A story of four girls, each with her own color, coming together as a band to write a story of their own."
         },
         "jp": {
+          "artist": "STELLIVE Universe",
           "title": "Heart Score",
           "type": "STELLIVE『Universe』2nd Single",
           "description": "それぞれ異なる色を持つ4人の少女が一つのバンドとなり、自分たちだけの物語を紡いでいく物語。"
@@ -94,6 +102,7 @@
     },
     {
       "id": "work-run-galaxy",
+      "artist": "Seine",
       "title": "여름을 그리다",
       "date": "2025.07.06",
       "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
@@ -122,16 +131,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "Seine",
           "title": "여름을 그리다",
           "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
           "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기"
         },
         "en": {
+          "artist": "Seine",
           "title": "Drawing Summer",
           "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
           "description": "The story of the Cunning Hares setting off on a summer vacation."
         },
         "jp": {
+          "artist": "Seine",
           "title": "Drawing Summer",
           "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
@@ -140,6 +152,7 @@
     },
     {
       "id": "work-parable",
+      "artist": "해봄",
       "title": "Love Dopamine",
       "date": "2025.08.30",
       "type": "'해봄' 3rd Single",
@@ -168,16 +181,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "해봄",
           "title": "Love Dopamine",
           "type": "'해봄' 3rd Single",
           "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기"
         },
         "en": {
+          "artist": "Haebom",
           "title": "Love Dopamine",
           "type": "'Haebom' 3rd Single",
           "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
         },
         "jp": {
+          "artist": "Haebom",
           "title": "Love Dopamine",
           "type": "『Haebom』3rd Single",
           "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出す「Haebom」の物語。"
@@ -186,6 +202,7 @@
     },
     {
       "id": "work-taletones",
+      "artist": "Arune",
       "title": "Love Novel",
       "date": "2026.03.08",
       "type": "'Arune' 1st Single",
@@ -214,16 +231,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "Arune",
           "title": "Love Novel",
           "type": "'Arune' 1st Single",
           "description": "슬픔과 그리움을 지나 다시 사랑을 시작하게 되는 두 사람의 이야기."
         },
         "en": {
+          "artist": "Arune",
           "title": "Love Novel",
           "type": "'Arune' 1st Single",
           "description": "A story of two people who move through sorrow and longing, then begin to love again."
         },
         "jp": {
+          "artist": "Arune",
           "title": "Love Novel",
           "type": "『Arune』1st Single",
           "description": "悲しみと恋しさを越え、もう一度愛を始める二人の物語。"
@@ -232,6 +252,7 @@
     },
     {
       "id": "work-stellive",
+      "artist": "쿠로가미 사샤",
       "title": "Fallen Leaves",
       "date": "2025.12.23",
       "type": "V-llage '쿠로가미 사샤' 1st Single",
@@ -260,16 +281,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "쿠로가미 사샤",
           "title": "Fallen Leaves",
           "type": "V-llage '쿠로가미 사샤' 1st Single",
           "description": "'그때의 나'를 끝내기 위해 러시안 룰렛을 시작한 한 소녀의 이야기"
         },
         "en": {
+          "artist": "Kurogami Sasha",
           "title": "Fallen Leaves",
           "type": "V-llage 'Kurogami Sasha' 1st Single",
           "description": "The story of a girl who begins a game of Russian roulette to put an end to 'the person she was then.'"
         },
         "jp": {
+          "artist": "Kurogami Sasha",
           "title": "Fallen Leaves",
           "type": "V-llage『Kurogami Sasha』1st Single",
           "description": "「あの頃の自分」を終わらせるため、ロシアンルーレットを始めた一人の少女の物語。"
@@ -278,6 +302,7 @@
     },
     {
       "id": "work-zzz",
+      "artist": "SEION",
       "title": "강치 아일랜드(OP)",
       "date": "2025.09.10",
       "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
@@ -306,16 +331,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "SEION",
           "title": "강치 아일랜드(OP)",
           "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
           "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기"
         },
         "en": {
+          "artist": "SEION",
           "title": "Gangchi Island (OP)",
           "type": "Animation 'Gangchi Island' 1st OP (Produced by Jang Junho)",
           "description": "A story of friends growing their dreams and friendships on Gangchi Island."
         },
         "jp": {
+          "artist": "SEION",
           "title": "Gangchi Island (OP)",
           "type": "アニメーション『Gangchi Island』1st OP（Produced by Jang Junho）",
           "description": "Gangchi Islandで夢と友情を育んでいく仲間たちの物語。"
@@ -324,6 +352,7 @@
     },
     {
       "id": "work-bubble-sweet",
+      "artist": "DOLONGCHA",
       "title": "The Run Catch",
       "date": "2025.08.23",
       "type": "DOLONGCHA(도롱챠) 1st Single",
@@ -352,16 +381,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "DOLONGCHA",
           "title": "The Run Catch",
           "type": "DOLONGCHA(도롱챠) 1st Single",
           "description": "좋아하는 사람을 향해 망설임 없이 달려가는 한 소녀(?) 이야기"
         },
         "en": {
+          "artist": "DOLONGCHA",
           "title": "The Run Catch",
           "type": "DOLONGCHA 1st Single",
           "description": "The story of a girl(?) who runs straight toward the person she likes without hesitation."
         },
         "jp": {
+          "artist": "DOLONGCHA",
           "title": "The Run Catch",
           "type": "DOLONGCHA 1st Single",
           "description": "好きな人に向かって、迷わず駆け出す一人の少女（？）の物語。"
@@ -370,6 +402,7 @@
     },
     {
       "id": "work-ocd",
+      "artist": "플로리스 로에",
       "title": "Floris Waltz",
       "date": "2025.03.21",
       "type": "V-llage '플로리스 로에' 1st Single",
@@ -398,16 +431,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "플로리스 로에",
           "title": "Floris Waltz",
           "type": "V-llage '플로리스 로에' 1st Single",
           "description": "불안과 집착의 감정선을 서사적 음악으로 풀어낸 작업."
         },
         "en": {
+          "artist": "Floris Loe",
           "title": "Floris Waltz",
           "type": "V-llage 'Floris Loe' 1st Single",
           "description": "A work that unfolds emotions of anxiety and obsession through narrative-driven music."
         },
         "jp": {
+          "artist": "Floris Loe",
           "title": "Floris Waltz",
           "type": "V-llage『Floris Loe』1st Single",
           "description": "不安と執着の感情を、物語性のある音楽で描いた作品。"
@@ -416,6 +452,7 @@
     },
     {
       "id": "work-mq82acph-nd1j",
+      "artist": "Dear my heroes",
       "title": "Early Spring [ALBUM]",
       "date": "2025.03.06",
       "type": "Dear my heroes 1st EP",
@@ -561,16 +598,19 @@
       "format": "Album (EP)",
       "translations": {
         "kr": {
+          "artist": "Dear my heroes",
           "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기\n"
         },
         "en": {
+          "artist": "Dear my heroes",
           "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "A story of the hearts left behind after death and farewell, moving through grief and returning to life within the cycles of time and the seasons."
         },
         "jp": {
+          "artist": "Dear my heroes",
           "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
@@ -579,6 +619,7 @@
     },
     {
       "id": "work-can-you-stay",
+      "artist": "Beldir",
       "title": "Pompous",
       "date": "2025.01.27",
       "type": "V-LUP 'Beldir' 1st Single",
@@ -607,16 +648,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "Beldir",
           "title": "Pompous",
           "type": "V-LUP 'Beldir' 1st Single",
           "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기"
         },
         "en": {
+          "artist": "Beldir",
           "title": "Pompous",
           "type": "V-LUP 'Beldir' 1st Single",
           "description": "A story that shouts boldly toward vanity and the desire for approval on social media."
         },
         "jp": {
+          "artist": "Beldir",
           "title": "Pompous",
           "type": "V-LUP『Beldir』1st Single",
           "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
@@ -625,6 +669,7 @@
     },
     {
       "id": "work-watercolor",
+      "artist": "MAIMATSU",
       "title": "새해결심 작심삼일",
       "date": "2024.12.27",
       "type": "MAIMATSU 2nd Single",
@@ -653,16 +698,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "MAIMATSU",
           "title": "새해결심 작심삼일",
           "type": "MAIMATSU 2nd Single",
           "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기"
         },
         "en": {
+          "artist": "MAIMATSU",
           "type": "MAIMATSU 2nd Single",
           "description": "A story of four girls making New Year's plans that will likely fail again.",
           "title": "NEW YEAR SYNDROME"
         },
         "jp": {
+          "artist": "MAIMATSU",
           "title": "NEW YEAR SYNDROME",
           "type": "MAIMATSU 2nd Single",
           "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
@@ -671,6 +719,7 @@
     },
     {
       "id": "work-client-a",
+      "artist": "RoA",
       "title": "Wrap Up",
       "date": "2024.11.22",
       "type": "RoA 4th Single",
@@ -699,16 +748,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "RoA",
           "title": "Wrap Up",
           "type": "RoA 4th Single",
           "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기\n"
         },
         "en": {
+          "artist": "RoA",
           "type": "RoA 4th Single",
           "description": "A story of a girl neatly wrapping up a finished relationship and moving forward.",
           "title": "Wrap Up"
         },
         "jp": {
+          "artist": "RoA",
           "title": "Wrap Up",
           "type": "RoA 4th Single",
           "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
@@ -717,6 +769,7 @@
     },
     {
       "id": "work-client-b",
+      "artist": "SilverLine",
       "title": "SilverLine [ALBUM]",
       "date": "2024.07.16",
       "type": "SilverLine [ALBUM]",
@@ -862,16 +915,19 @@
       "format": "Album (EP)",
       "translations": {
         "kr": {
+          "artist": "SilverLine",
           "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
         },
         "en": {
+          "artist": "SilverLine",
           "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
         },
         "jp": {
+          "artist": "SilverLine",
           "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
@@ -880,6 +936,7 @@
     },
     {
       "id": "work-mq82ashm-1ju7",
+      "artist": "V-llage",
       "title": "My Village",
       "date": "2024.07.02",
       "type": "게임 '브이리지에 어서오세요!' 주제곡",
@@ -908,16 +965,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "V-llage",
           "title": "My Village",
           "type": "게임 '브이리지에 어서오세요!' 주제곡",
           "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기\n"
         },
         "en": {
+          "artist": "V-llage",
           "title": "My Village",
           "type": "Theme Song for Game 'Welcome to V-llage!'",
           "description": "A warm story created together by everyone gathered in the small village of V-llage."
         },
         "jp": {
+          "artist": "V-llage",
           "title": "My Village",
           "type": "ゲーム『Welcome to V-llage!』主題歌",
           "description": "V-llageという小さな村に集まったみんなで作っていく、あたたかな物語。"
@@ -926,6 +986,7 @@
     },
     {
       "id": "work-mix-archive-01",
+      "artist": "티그리스 카닌",
       "title": "카니즘☆홀릭",
       "date": "2024.04.06",
       "type": "V-llage '티그리스 카닌' 1st Single",
@@ -1021,16 +1082,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "티그리스 카닌",
           "title": "카니즘☆홀릭",
           "type": "V-llage '티그리스 카닌' 1st Single",
           "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
         },
         "en": {
+          "artist": "Tigris Kanin",
           "type": "V-llage 'Tigris Kanin' 1st Single",
           "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
           "title": "Kanism☆Holic"
         },
         "jp": {
+          "artist": "ティグリス・カニン",
           "type": "V-llage『ティグリス・カニン』1st Single",
           "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
           "title": "かにずむ☆ほりっく / ティグリス・カニン"
@@ -1039,6 +1103,7 @@
     },
     {
       "id": "work-master-archive",
+      "artist": "Mafhills",
       "title": "BACKSTAGE",
       "date": "2024.03.03",
       "type": "Mafhills 1st Single",
@@ -1067,16 +1132,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "Mafhills",
           "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기"
         },
         "en": {
+          "artist": "Mafhills",
           "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "A story of artists waiting with excitement to meet fans before a live show."
         },
         "jp": {
+          "artist": "Mafhills",
           "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
@@ -1085,6 +1153,7 @@
     },
     {
       "id": "work-mix-archive-02",
+      "artist": "soraniwa",
       "title": "수채화 (Watercolour)",
       "date": "2024.02.22",
       "type": "soraniwa Project 1st Single",
@@ -1196,16 +1265,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "soraniwa",
           "title": "수채화 (Watercolour)",
           "type": "soraniwa Project 1st Single",
           "description": "잊혀진 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n"
         },
         "en": {
+          "artist": "soraniwa",
           "title": "Watercolour",
           "type": "soraniwa Project 1st Single",
           "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
         },
         "jp": {
+          "artist": "soraniwa",
           "title": "Watercolour",
           "type": "soraniwa Project 1st Single",
           "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
@@ -1214,6 +1286,7 @@
     },
     {
       "id": "work-arrange-work",
+      "artist": "Shabel Tonya",
       "title": "STAR to STAR",
       "date": "2023.06.30",
       "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
@@ -1242,16 +1315,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "Shabel Tonya",
           "title": "STAR to STAR",
           "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
           "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기"
         },
         "en": {
+          "artist": "Shabel Tonya",
           "title": "STAR to STAR",
           "type": "Honkai: Star Rail '2023 Multiverse Vistas' Popularity & Excellence Award Winner",
           "description": "A story of continuing a pioneering journey against fate while connecting star to star."
         },
         "jp": {
+          "artist": "Shabel Tonya",
           "title": "STAR to STAR",
           "type": "Honkai: Star Rail『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
           "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
@@ -1260,6 +1336,7 @@
     },
     {
       "id": "work-selected-demo",
+      "artist": "침대점령",
       "title": "밤하늘",
       "date": "2021.11.19",
       "type": "침대점령(Bed Taker) 1st Single",
@@ -1288,16 +1365,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "침대점령",
           "title": "밤하늘",
           "type": "침대점령(Bed Taker) 1st Single",
           "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기"
         },
         "en": {
+          "artist": "Bed Taker",
           "title": "Night Sky",
           "type": "Bed Taker 1st Single",
           "description": "A story of telling the night sky about pain that could not be shared with anyone."
         },
         "jp": {
+          "artist": "Bed Taker",
           "title": "Night Sky",
           "type": "Bed Taker 1st Single",
           "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
@@ -1306,6 +1386,7 @@
     },
     {
       "id": "work-archive-21",
+      "artist": "우타이테 8인",
       "title": "Sailing StarS!",
       "date": "2019.10.06",
       "type": "우타이테 8인 합창 프로젝트",
@@ -1334,16 +1415,19 @@
       "format": "Single",
       "translations": {
         "kr": {
+          "artist": "우타이테 8인",
           "title": "Sailing StarS!",
           "type": "우타이테 8인 합창 프로젝트",
           "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기"
         },
         "en": {
+          "artist": "8 Utaite Artists",
           "title": "Sailing StarS!",
           "type": "Eight utaite chorus project",
           "description": "A story of holding each other's hands and moving toward a shining tomorrow."
         },
         "jp": {
+          "artist": "歌い手8名",
           "title": "Sailing StarS!",
           "type": "歌い手8人合唱プロジェクト",
           "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
