@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
-  'assets/css/works.css': '20260713-bridge-original-v3',
-  'assets/js/works.js': '20260713-bridge-original-v3',
+  'assets/css/works.css': '20260713-card-artist-v1-qa1',
+  'assets/js/works.js': '20260713-card-artist-v1-qa1',
 };
 
 const required = [
