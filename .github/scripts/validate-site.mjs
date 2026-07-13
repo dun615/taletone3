@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
-  'assets/css/works.css': '20260713-newspv',
-  'assets/js/works.js': '20260713-news-preview-auto-v01',
+  'assets/css/works.css': '20260713-bridge-news-intro-v1',
+  'assets/js/works.js': '20260713-bridge-news-intro-v1',
 };
 
 const required = [

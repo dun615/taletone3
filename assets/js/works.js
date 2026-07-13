@@ -302,6 +302,124 @@
     });
   }
 
+  function localizedMemberItem(item) {
+    var result = Object.assign({}, item || {});
+    var translated = item && item.translations && item.translations[pageLangKey()];
+    if (translated && typeof translated === 'object') Object.assign(result, translated);
+    return result;
+  }
+
+  function memberCreditLabels() {
+    var language = pageLangKey();
+    if (language === 'en') {
+      return { featured: 'Selected Credits', all: 'View all credits', count: ' entries', empty: 'Credits will be updated soon.' };
+    }
+    if (language === 'jp') {
+      return { featured: '主なクレジット', all: 'すべてのクレジットを見る', count: '件', empty: 'クレジットは近日更新予定です。' };
+    }
+    return { featured: '주요 크레딧', all: '전체 크레딧 보기', count: '개 항목', empty: '크레딧을 준비 중입니다.' };
+  }
+
+  function normalizeFeaturedCredits(value) {
+    var items = Array.isArray(value) ? value : String(value || '').split(/\r?\n/);
+    return items.map(function (item) {
+      return String(item || '').replace(/^\s*[-*•]\s*/, '').trim();
+    }).filter(Boolean).slice(0, 3);
+  }
+
+  function parsedMemberCreditEntries(value) {
+    var text = String(value || '');
+    var marked = text.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(function (line) {
+      return /^[-*•]\s*\S/.test(line);
+    }).map(function (line) {
+      return line.replace(/^[-*•]\s*/, '').trim();
+    });
+    if (marked.length) return marked;
+    return text.split(/\n\s*\n/).map(function (block) {
+      return block.replace(/^\s*\|\s*[^\n]+\s*/g, '').replace(/\s+/g, ' ').trim();
+    }).filter(Boolean);
+  }
+
+  function findOpenMemberContent(modal) {
+    var content = liveSiteContent || window.TALETONE_CONTENT;
+    if (!content || !Array.isArray(content.members)) return null;
+    var brandNode = modal.querySelector('.tt-member-brand');
+    var brand = brandNode ? brandNode.textContent.replace(/\s+/g, ' ').trim() : '';
+    var match = null;
+    content.members.some(function (item) {
+      var localized = localizedMemberItem(item);
+      var candidates = [localized.brand, localized.name, item && item.brand, item && item.name].map(function (value) {
+        return String(value || '').replace(/\s+/g, ' ').trim();
+      });
+      if (brand && candidates.indexOf(brand) !== -1) {
+        match = localized;
+        return true;
+      }
+      return false;
+    });
+    return match;
+  }
+
+  function patchMemberCreditDetails() {
+    var modal = document.querySelector('.tt-member-modal');
+    if (!modal) return;
+    var box = modal.querySelector('.tt-member-credit-box');
+    if (!box) return;
+    var member = findOpenMemberContent(modal);
+    var legacy = box.querySelector('[style*="white-space"]');
+    var fullText = String((member && member.creditsText) || (legacy && legacy.textContent) || box.dataset.ttMemberCreditSource || '').trim();
+    var allEntries = parsedMemberCreditEntries(fullText);
+    var featured = normalizeFeaturedCredits(member && member.featuredCredits);
+    if (!featured.length) featured = allEntries.slice(0, 3);
+    var labels = memberCreditLabels();
+    var fingerprint = [pageLangKey(), fullText, featured.join('\n')].join('::');
+    if (box.dataset.ttMemberCreditFingerprint === fingerprint) return;
+
+    box.dataset.ttMemberCreditSource = fullText;
+    box.dataset.ttMemberCreditFingerprint = fingerprint;
+    box.style.setProperty('--tt-member-accent', String((member && member.accent) || '#0E6E7D'));
+
+    var headingRow = box.previousElementSibling;
+    var heading = headingRow && headingRow.firstElementChild;
+    if (heading) {
+      heading.classList.add('tt-member-credit-heading');
+      heading.textContent = labels.featured;
+    }
+
+    var list = document.createElement('ol');
+    list.className = 'tt-member-featured-list';
+    (featured.length ? featured : [labels.empty]).forEach(function (credit, index) {
+      var item = document.createElement('li');
+      var number = document.createElement('span');
+      number.className = 'tt-member-featured-number';
+      number.textContent = String(index + 1).padStart(2, '0');
+      var copy = document.createElement('p');
+      copy.textContent = credit;
+      item.append(number, copy);
+      list.appendChild(item);
+    });
+
+    var details = document.createElement('details');
+    details.className = 'tt-member-credit-details';
+    var summary = document.createElement('summary');
+    var summaryLabel = document.createElement('span');
+    summaryLabel.className = 'tt-member-credit-summary-label';
+    summaryLabel.textContent = labels.all;
+    var count = document.createElement('span');
+    count.className = 'tt-member-credit-count';
+    count.textContent = String(allEntries.length) + labels.count;
+    var arrow = document.createElement('span');
+    arrow.className = 'tt-member-credit-arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    summary.append(summaryLabel, count, arrow);
+    var all = document.createElement('div');
+    all.className = 'tt-member-credit-all';
+    all.textContent = fullText || labels.empty;
+    details.append(summary, all);
+
+    box.replaceChildren(list, details);
+  }
+
   function localizedMeta() {
     var raw = worksMeta || (window.TALETONE_CONTENT && window.TALETONE_CONTENT.worksMeta) || {};
     var result = Object.assign({}, defaultMeta, raw || {});
@@ -2555,6 +2673,7 @@
     refreshChapterControls();
     ensureSkipLink();
     patchNewsPreviews();
+    patchMemberCreditDetails();
     patchInteractiveCards();
     patchContactControls();
     refreshSiteDialog();
@@ -2632,6 +2751,7 @@
         setTimeout(function () {
           refreshChapterControls();
           patchNewsPreviews();
+          patchMemberCreditDetails();
         }, 40);
       }
     }, true);
@@ -2662,7 +2782,10 @@
     if (message.type === 'TALETONE_SITE_SET_DATA' && message.data) {
       liveSiteContent = message.data;
       setMeta(message.data.worksMeta || {});
-      setTimeout(patchNewsPreviews, 60);
+      setTimeout(function () {
+        patchNewsPreviews();
+        patchMemberCreditDetails();
+      }, 60);
     }
     if (message.type === 'TALETONE_SET_LANG' && mounted) render();
     if (message.type === 'TALETONE_WORKS_SELECT') selectEditorWork(message);
