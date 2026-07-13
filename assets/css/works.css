@@ -360,6 +360,14 @@ body[data-active-chapter="contact"] #nav-6 {
   filter: saturate(1.05);
 }
 
+.tt-gh-client-pill img[alt="Parable"] {
+  height: 42px;
+  max-height: 42px;
+  max-width: 176px;
+  opacity: 1;
+  mix-blend-mode: multiply;
+}
+
 .tt-gh-tabs {
   position: relative;
   z-index: 6;
@@ -610,13 +618,13 @@ body[data-active-chapter="contact"] #nav-6 {
   z-index: 3;
   display: block;
   max-width: calc(100% - 16px);
-  padding: 4px 7px;
-  border: 1px solid rgba(255,255,255,.22);
+  padding: 5px 9px;
+  border: 1px solid rgba(255,255,255,.32);
   border-radius: 999px;
-  background: rgba(7,25,43,.68);
-  box-shadow: 0 5px 14px rgba(0,0,0,.16);
-  color: rgba(255,255,255,.96);
-  font-size: clamp(7.5px,.54vw,9px);
+  background: rgba(7,25,43,.84);
+  box-shadow: 0 5px 14px rgba(0,0,0,.24);
+  color: #fff;
+  font-size: clamp(9px,.66vw,11px);
   font-weight: 850;
   line-height: 1.15;
   letter-spacing: 0;
@@ -631,9 +639,9 @@ body[data-active-chapter="contact"] #nav-6 {
 }
 
 .tt-gh-card-cover:has(.tt-gh-card-tabs) .tt-gh-card-artist {
-  top: auto;
-  bottom: 8px;
-  max-width: calc(100% - 16px);
+  top: 9px;
+  bottom: auto;
+  max-width: calc(100% - 66px);
 }
 
 .tt-gh-card-tabs {
@@ -1425,6 +1433,11 @@ body[data-active-chapter="contact"] #nav-6 {
     max-height: 26px;
     max-width: 142px;
   }
+  .tt-gh-client-pill img[alt="Parable"] {
+    height: 34px;
+    max-height: 34px;
+    max-width: 150px;
+  }
   .tt-gh-stage {
     height: clamp(252px, 24vh, 276px);
   }
@@ -1488,6 +1501,11 @@ body[data-active-chapter="contact"] #nav-6 {
   .tt-gh-client-pill img {
     max-height: 22px;
     max-width: 124px;
+  }
+  .tt-gh-client-pill img[alt="Parable"] {
+    height: 36px;
+    max-height: 36px;
+    max-width: 150px;
   }
   .tt-gh-tabs {
     padding: 5px;
@@ -4543,6 +4561,12 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
     max-height: 20px !important;
   }
 
+  #c-works.tt-gh-works .tt-gh-client-pill img[alt="Parable"] {
+    height: 28px !important;
+    max-width: 118px !important;
+    max-height: 28px !important;
+  }
+
   #c-works.tt-gh-works .tt-gh-tabs {
     margin-bottom: 0 !important;
     padding: 4px !important;
@@ -4937,22 +4961,26 @@ body.tt-site-dialog-open #c-works .tt-gh-line {
   }
 
   #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tabs {
-    top: 6px !important;
+    top: 34px !important;
     right: 6px !important;
-    flex-direction: row !important;
+    flex-direction: column !important;
     align-items: center !important;
-    gap: 3px !important;
+    gap: 2px !important;
     transform: none !important;
+  }
+
+  #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-cover:has(.tt-gh-card-tabs) .tt-gh-card-artist {
+    max-width: calc(100% - 16px) !important;
   }
 
   #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tab,
   #c-works.tt-gh-works .tt-gh-gallery-card .tt-gh-card-tab.is-active {
-    width: 26px !important;
-    height: 20px !important;
+    width: 24px !important;
+    height: 18px !important;
     padding: 0 !important;
     border-radius: 6px !important;
     font-size: 7.5px !important;
-    line-height: 20px !important;
+    line-height: 18px !important;
     text-align: center !important;
   }
 
