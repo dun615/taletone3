@@ -217,7 +217,6 @@ assert(/noindex/i.test(notFound) && /href="\/works\/"/.test(notFound), '404 page
 const forbidden = [
   ['5', '30'].join(''),
   ['LI', 'LPA'].join(''),
-  ['EP', 'IC7'].join(''),
   '\uCE58\uC5B4\uB9AC\uB529',
   ['J-', 'ROCK'].join(''),
   '\uBCF5\uC2DD',
@@ -226,6 +225,7 @@ const forbidden = [
 ];
 const memberPortfolioOnly = [
   ['Always', ' with you'].join(''),
+  ['EP', 'IC7'].join(''),
 ];
 const publicText = [JSON.stringify(siteJson), JSON.stringify(seoJson), JSON.stringify(worksJson)].join('\n');
 for (const term of forbidden) assert(!publicText.toLowerCase().includes(term.toLowerCase()), `forbidden public term found: ${term}`);
