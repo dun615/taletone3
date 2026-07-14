@@ -247,6 +247,10 @@ function capturePhase(client, origin) {
       item.status = response.status;
       item.fromCache = !!(response.fromDiskCache || response.fromPrefetchCache || response.fromServiceWorker);
     }),
+    client.on('Network.requestServedFromCache', ({ requestId }) => {
+      const item = requests.get(requestId);
+      if (item) item.fromCache = true;
+    }),
     client.on('Network.loadingFinished', ({ requestId, encodedDataLength }) => {
       const item = requests.get(requestId);
       if (item) item.bytes = Math.max(0, encodedDataLength || 0);
@@ -271,9 +275,15 @@ function capturePhase(client, origin) {
       const list = [...requests.values()];
       const byType = {};
       for (const request of list) byType[request.type] = (byType[request.type] || 0) + request.bytes;
+      const uncachedRequests = list
+        .filter((request) => !request.fromCache && request.bytes > 0)
+        .sort((a, b) => b.bytes - a.bytes)
+        .map(({ url, type, bytes }) => ({ url, type, bytes }));
       return {
         requestCount: list.length,
-        transferBytes: list.reduce((sum, request) => sum + request.bytes, 0),
+        transferBytes: list.reduce((sum, request) => sum + (request.fromCache ? 0 : request.bytes), 0),
+        resourceBytes: list.reduce((sum, request) => sum + request.bytes, 0),
+        uncachedRequests,
         byType,
         worksDataRequests: list.filter((request) => /\/assets\/data\/works-data\.json(?:[?#]|$)/.test(request.url)).length,
         audioRequests: list.filter((request) => /\.mp3(?:[?#]|$)/i.test(request.url)).length,
@@ -286,8 +296,22 @@ function capturePhase(client, origin) {
 }
 
 const observerScript = `(() => {
-  window.__ttRuntimePerf = { cls: 0, lcp: 0, longTasks: 0, longTaskDuration: 0, errors: [] };
-  try { new PerformanceObserver((list) => { for (const e of list.getEntries()) if (!e.hadRecentInput) __ttRuntimePerf.cls += e.value; }).observe({ type: 'layout-shift', buffered: true }); } catch {}
+  window.__ttRuntimePerf = { cls: 0, shifts: [], lcp: 0, longTasks: 0, longTaskDuration: 0, errors: [] };
+  try {
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (entry.hadRecentInput) continue;
+        const sources = (entry.sources || []).map(({ node }) => {
+          if (!node) return 'unknown';
+          if (node.id) return '#' + node.id;
+          const classes = node.classList ? [...node.classList].slice(0, 3) : [];
+          return (node.tagName || 'unknown').toLowerCase() + (classes.length ? '.' + classes.join('.') : '');
+        });
+        __ttRuntimePerf.cls += entry.value;
+        __ttRuntimePerf.shifts.push({ value: entry.value, sources });
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+  } catch {}
   try { new PerformanceObserver((list) => { for (const e of list.getEntries()) __ttRuntimePerf.lcp = Math.max(__ttRuntimePerf.lcp, e.startTime); }).observe({ type: 'largest-contentful-paint', buffered: true }); } catch {}
   try { new PerformanceObserver((list) => { for (const e of list.getEntries()) { __ttRuntimePerf.longTasks += 1; __ttRuntimePerf.longTaskDuration += e.duration; } }).observe({ type: 'longtask', buffered: true }); } catch {}
   addEventListener('error', (event) => __ttRuntimePerf.errors.push(event.message || 'window error'));
@@ -305,11 +329,13 @@ async function snapshot(client) {
       fcp: paints['first-contentful-paint'] || 0,
       lcp: perf.lcp || 0,
       cls: perf.cls || 0,
+      shifts: perf.shifts || [],
       longTasks: perf.longTasks || 0,
       longTaskDuration: perf.longTaskDuration || 0,
       domNodes: document.getElementsByTagName('*').length,
       chapter: document.body.getAttribute('data-active-chapter') || '',
       worksCards: document.querySelectorAll('[data-works-card]').length,
+      memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
       overflow: document.documentElement.scrollWidth > innerWidth + 1,
       homeTop: document.querySelector('#c-home')?.getBoundingClientRect().top ?? null,
       contentScrollTop: content?.scrollTop ?? null,
@@ -424,6 +450,8 @@ async function runFunctionalMatrix(chrome, origin) {
               sectionTop: rect ? rect.top : null,
               textLength: section ? section.innerText.trim().length : 0,
               worksCards: document.querySelectorAll('[data-works-card]').length,
+              memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
+              memberImagesDeferred: document.querySelectorAll('#c-members .tt-member-card img[data-member-src]').length,
               overflow: document.documentElement.scrollWidth > innerWidth + 1,
               broken,
               langButton: !!document.querySelector('#lang-${language}'),
@@ -441,7 +469,17 @@ async function runFunctionalMatrix(chrome, origin) {
           assert(state.langButton, `${key}: language button is missing`);
           assert(network.sameOriginFailures.length === 0, `${key}: network errors: ${network.sameOriginFailures.join(', ')}`);
           assert(network.runtimeErrors.length === 0 && state.observerErrors.length === 0, `${key}: runtime errors: ${[...network.runtimeErrors, ...state.observerErrors].join(' | ')}`);
-          if (route.key === 'works') assert(state.worksCards === 21, `${key}: expected 21 WORKS cards, found ${state.worksCards}`);
+          if (route.key === 'members') {
+            assert(state.memberImagesAssigned === 4 && state.memberImagesDeferred === 0, `${key}: member images were not activated on entry`);
+          } else {
+            assert(state.memberImagesAssigned === 0 && state.memberImagesDeferred === 4, `${key}: hidden member images were activated`);
+          }
+          if (route.key === 'works') {
+            assert(state.worksCards === 21, `${key}: expected 21 WORKS cards, found ${state.worksCards}`);
+            assert(network.worksDataRequests === 1, `${key}: expected one WORKS data request, found ${network.worksDataRequests}`);
+          } else {
+            assert(network.worksDataRequests === 0, `${key}: hidden WORKS data was requested`);
+          }
           checked.push(key);
         }
       }
@@ -548,13 +586,14 @@ async function runInteractionSmoke(chrome, origin) {
     })()`);
     assert(memberFocused, 'interaction: MEMBERS keyboard trigger is not focusable');
     await pressKey(client, 'Enter', 'Enter', 13);
-    await sleep(120);
+    await sleep(220);
     const memberOpen = await evaluate(client, `(() => ({
       dialog: !!document.querySelector('.tt-member-modal[role="dialog"][aria-modal="true"]'),
       closeFocused: document.activeElement?.matches('.tt-member-close') || false,
-      focusVisible: document.activeElement?.matches(':focus-visible') || false
+      focusVisible: document.activeElement?.matches(':focus-visible') || false,
+      photoReady: (() => { const image = document.querySelector('.tt-member-modal #m-photo'); return !!(image?.currentSrc && image.complete && image.naturalWidth > 0); })()
     }))()`);
-    assert(memberOpen.dialog && memberOpen.closeFocused && memberOpen.focusVisible, 'interaction: MEMBERS keyboard dialog focus is invalid');
+    assert(memberOpen.dialog && memberOpen.closeFocused && memberOpen.focusVisible && memberOpen.photoReady, 'interaction: MEMBERS keyboard dialog or photo is invalid');
     await pressKey(client, 'Escape', 'Escape', 27);
     await sleep(120);
     const memberClosed = await evaluate(client, `!document.querySelector('.tt-member-modal[role="dialog"]') && document.activeElement?.matches('#c-members .tt-member-card[data-tt-dialog-trigger="true"]')`);
@@ -581,6 +620,20 @@ async function runInteractionSmoke(chrome, origin) {
     assert(newsClosed, 'interaction: NEWS dialog did not close cleanly');
     passed.push('news-language-dialog');
 
+    await navigateForInteraction(client, `${origin}/story-types/?lang=kr&runtime-interaction=1`);
+    const beforeSkippedMembers = await evaluate(client, `document.querySelectorAll('#c-members .tt-member-card img[src]').length`);
+    await clickSelector(client, '#nav-4');
+    await sleep(1_800);
+    const chapterTransition = await evaluate(client, `(() => ({
+      path: location.pathname,
+      chapter: document.body.getAttribute('data-active-chapter'),
+      cards: document.querySelectorAll('[data-works-card]').length,
+      memberImages: document.querySelectorAll('#c-members .tt-member-card img[src]').length
+    }))()`);
+    assert(beforeSkippedMembers === 0 && chapterTransition.memberImages === 0, 'interaction: skipped MEMBERS chapter loaded hidden member images');
+    assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards === 21, 'interaction: STORY TYPES to WORKS transition did not settle');
+    passed.push('chapter-transition-preload');
+
     const network = capture.finish();
     assert(network.audioRequests === 1 && new Set(network.audioUrls).size === 1, `interaction: expected one selected MP3 request, found ${network.audioRequests}`);
     assert(network.audioUrls[0]?.endsWith('/assets/works/audio/Fix-Bubblesweet.mp3'), `interaction: unexpected MP3 requested: ${network.audioUrls.join(', ')}`);
@@ -597,7 +650,7 @@ function validateResult(result) {
   const { key, page, cold, warm, idle } = result;
   assert(cold.requestCount <= page.maxRequests, `${key}: cold requests ${cold.requestCount} > ${page.maxRequests}`);
   assert(cold.transferBytes <= page.maxTransferBytes, `${key}: cold transfer ${cold.transferBytes} > ${page.maxTransferBytes}`);
-  assert(cold.cls <= page.maxCls, `${key}: cold CLS ${cold.cls.toFixed(4)} > ${page.maxCls}`);
+  assert(cold.cls <= page.maxCls, `${key}: cold CLS ${cold.cls.toFixed(4)} > ${page.maxCls}: ${JSON.stringify(cold.shifts)}`);
   assert(cold.fcp > 0 && cold.fcp <= page.maxFcpMs, `${key}: cold FCP ${cold.fcp.toFixed(1)}ms is outside budget`);
   assert(cold.lcp > 0 && cold.lcp <= page.maxLcpMs, `${key}: cold LCP ${cold.lcp.toFixed(1)}ms is outside budget`);
   assert(cold.longTasks <= page.maxLongTasks, `${key}: cold long tasks ${cold.longTasks} > ${page.maxLongTasks}`);
@@ -607,7 +660,8 @@ function validateResult(result) {
   assert(cold.runtimeErrors.length === 0 && warm.runtimeErrors.length === 0, `${key}: runtime errors: ${[...cold.runtimeErrors, ...warm.runtimeErrors].join(' | ')}`);
   assert(cold.observerErrors.length === 0 && warm.observerErrors.length === 0, `${key}: window errors: ${[...cold.observerErrors, ...warm.observerErrors].join(' | ')}`);
   assert(cold.audioRequests === 0 && warm.audioRequests === 0, `${key}: MP3 requested before user playback`);
-  assert(warm.transferBytes <= 100_000, `${key}: warm transfer ${warm.transferBytes} > 100000`);
+  assert(cold.memberImagesAssigned === 0 && warm.memberImagesAssigned === 0, `${key}: hidden member images were assigned outside MEMBERS`);
+  assert(warm.transferBytes <= 100_000, `${key}: warm transfer ${warm.transferBytes} > 100000: ${JSON.stringify(warm.uncachedRequests.slice(0, 8))}`);
   if (page.key === 'home') {
     assert(cold.worksDataRequests === 0 && warm.worksDataRequests === 0, `${key}: HOME requested works-data.json`);
     assert(cold.chapter === 'home' && warm.chapter === 'home', `${key}: intro did not settle on HOME`);

@@ -46,17 +46,16 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260715-font-language-order-v1',
-  'assets/js/works.js': '20260715-nearby-data-p2-v1',
+  'assets/css/works.css': '20260715-dead-code-cleanup-v1',
+  'assets/js/works.js': '20260715-dead-code-cleanup-v1',
 };
-const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
-const routeDocumentBudgetBytes = 475_000;
-const decodedTemplateBudgetBytes = 165_000;
-const decodedScriptBudgetBytes = 180_000;
+const expectedSiteContentCacheKey = '20260715-dead-code-cleanup-v1';
+const routeDocumentBudgetBytes = 370_000;
+const decodedTemplateBudgetBytes = 112_000;
+const decodedScriptBudgetBytes = 155_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;family=Noto+Sans+KR:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
-  'assets/fonts/hanken-grotesk-latin-italic-v12.woff2': ['BB432642D7E97D11BD8F7ADBCB79DC69B772211C9B6EAE5251A969496674D299', 35_592],
   'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
 };
 
@@ -92,6 +91,7 @@ for (const requiredGuard of [
   'maxTransferBytes', 'maxRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
   'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
   'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
+  'network.worksDataRequests === 0',
   "dataset.ttMediaPlayback === 'paused'", 'members-keyboard-dialog', 'news-language-dialog',
 ]) {
   assert(runtimePerformanceValidator.includes(requiredGuard), `runtime performance validator is missing guard: ${requiredGuard}`);
@@ -124,6 +124,8 @@ for (const [key, file, route, expectedTitle] of routes) {
   assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
   assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
   assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
+  assert(!html.includes('assets/data/track-record.js'), `${file}: standalone track-record request returned`);
+  assert(!html.includes('assets/icons/favicon.svg'), `${file}: PNG-wrapped SVG favicon returned`);
   assert(html.includes('<link rel="preload" href="assets/fonts/hanken-grotesk-latin-normal-v12.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Hanken Grotesk preload is missing`);
   assert(html.includes('<link rel="preload" href="assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Quicksand preload is missing`);
 
@@ -144,7 +146,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decoded.includes('family=Quicksand') && !decoded.includes('family=Hanken+Grotesk'), `${file}: remote Latin font request returned`);
     assert(!decoded.includes('Noto+Sans+JP:wght@400;500;600;700;800') && !decoded.includes('Noto+Sans+KR:wght@400;500;600;700;800'), `${file}: duplicate per-weight CJK font CSS returned`);
     assert((decoded.match(/hanken-grotesk-latin-normal-v12\.woff2/g) || []).length === 5, `${file}: local Hanken Grotesk normal weights changed`);
-    assert((decoded.match(/hanken-grotesk-latin-italic-v12\.woff2/g) || []).length === 3, `${file}: local Hanken Grotesk italic weights changed`);
+    assert(!decoded.includes('hanken-grotesk-latin-italic-v12.woff2'), `${file}: unused Hanken Grotesk italic face returned`);
     assert((decoded.match(/quicksand-latin-normal-v37\.woff2/g) || []).length === 4, `${file}: local Quicksand weights changed`);
     assert(decoded.includes(":root{--tt-noto-primary:'Noto Sans KR';--tt-noto-secondary:'Noto Sans JP';") && decoded.includes(":root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Noto Sans KR'}"), `${file}: language-aware CJK font order is missing`);
     const decodedFontDeclarations = [...decoded.matchAll(/font-family\s*:\s*([^;}\r\n]+)/gi)].map((match) => match[1]);
@@ -153,6 +155,16 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decoded.includes('id="intro-skyw"') && decoded.includes('id="intro-ocean"'), `${file}: original above-water intro is missing`);
     assert(decoded.includes('id="intro-sea"') && decoded.includes('id="intro-bubbles"'), `${file}: original underwater intro is missing`);
     assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
+    assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
+    assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
+    assert(decoded.includes('class="tt-news-modal" role="dialog" aria-modal="true"'), `${file}: NEWS dialog lacks a direct selector`);
+    assert(!decoded.includes('id="tt-works-data"'), `${file}: stale embedded WORKS fallback returned`);
+    for (const deadTemplateSymbol of ['notMembersEditMode', '{{ accent }}', '.tt-prologue-copy', '.tt-orb-link', '.tt-orb-ring', '.tt-sigil', '.tt-page-stage']) {
+      assert(!decoded.includes(deadTemplateSymbol), `${file}: dead template symbol returned: ${deadTemplateSymbol}`);
+    }
+    for (const deadKeyframe of ['bob', 'haloSpin', 'haloSpinR', 'eq', 'floaty']) {
+      assert(!decoded.includes(`@keyframes ${deadKeyframe}`), `${file}: dead keyframe returned: ${deadKeyframe}`);
+    }
     assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: generic story bridges do not reserve their final height`);
     assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
     assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
@@ -198,7 +210,11 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
     assert(!drawBody.includes("document.getElementById('deep-book-svg')") && !drawBody.includes('getBoundingClientRect()') && !drawBody.includes('refreshLayoutGeometry'), `${file}: draw still performs layout measurement`);
     assert(!decodedScript.includes('refreshMotionBounds') && !decodedScript.includes('_motionBoundsDirty') && !decodedScript.includes('_motionBoundsHeight'), `${file}: obsolete motion-only cache state remains`);
-    assert((decodedScript.match(/new MutationObserver/g) || []).length === 1, `${file}: redundant mutation observer added for geometry caching`);
+    assert((decodedScript.match(/new MutationObserver/g) || []).length === 0, `${file}: broad component mutation observer returned`);
+    assert(decodedScript.includes('loadMemberImages(){') && decodedScript.includes("document.body.getAttribute('data-active-chapter')!=='members'"), `${file}: member image loading is not scoped to the active MEMBERS chapter`);
+    assert(decodedScript.includes("querySelectorAll('img[data-member-src]')") && decodedScript.includes("image.removeAttribute('data-member-src')"), `${file}: member image loading is not one-shot`);
+    assert(decodedScript.includes("this._chapterTarget&&this._chapterTarget!=='c-members'") && decodedScript.includes('this._chapterTarget=id;') && decodedScript.includes("activeSection.id===this._chapterTarget) this._chapterTarget=''"), `${file}: pass-through navigation can activate hidden member images`);
+    assert(!decodedScript.includes('tt-mobile-bridge-line-inner'), `${file}: unused mobile bridge inner class returned`);
     assert(!decodedScript.includes('fastMobile ? 0.38 : 0.72'), `${file}: unreachable fast-mobile motion margin returned`);
     assert(decodedScript.includes('this.raf=0;\n    if(document.hidden) return;'), `${file}: hidden documents can keep the main animation loop alive`);
     const visibilityHandlerSource = decodedScript.match(/this\._visibilityHandler=\(\)=>\{[\s\S]*?\n    \};/)?.[0] || '';
@@ -237,9 +253,17 @@ assert(decodedScriptApp.includes('var handoff=this.smooth(this.INTRO_PLUNGE_MS*0
 assert((decodedApp.match(/\.tt-book-light-stage\{position:absolute/g) || []).length === 1, 'duplicate deep-book CSS returned');
 assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length === 3, 'deep-book CSS animations are not fully tied to viewport lifecycle');
 assert(!decodedApp.includes('WORK DETAIL MODAL') && !decodedApp.includes('{{ wOpen }}'), 'removed legacy WORK detail modal returned');
-for (const symbol of ['drawBridgeMotifs', 'drawBook(', 'updateYouWave', 'bridgePhraseForIndexOld', 'playStory', 'worksView', '_arcPoll', '_worksInitTimer', 'applyWorksEdit', '_navPeekTimer', 'this.io']) {
+for (const symbol of [
+  'drawBridgeMotifs', 'drawBook(', 'updateYouWave', 'bridgePhraseForIndexOld', 'playStory',
+  'worksView', '_arcPoll', '_worksInitTimer', 'applyWorksEdit', '_navPeekTimer', 'this.io',
+  '_siteFallbacks', '_saveMembers', '_loadMembers', '_savePartners', '_loadPartners',
+  'imageHydrator', 'hydrateDeferredImages', '_partnerSlotTimer', 'seoEditMode',
+  'SEO_EDITOR_PAGES', 'membersEditMode', 'partnersEditMode', 'TALETONE_TRACK_RECORD',
+  "localStorage.getItem('tt-seo-v1')", '_saveSeoLocal',
+]) {
   assert(!decodedScriptApp.includes(symbol), `removed embedded legacy code returned: ${symbol}`);
 }
+assert(decodedScriptApp.includes("window.dispatchEvent(new Event('TALETONE_UI_UPDATED'))"), 'component updates do not explicitly refresh global UI state');
 
 const publicHtmlFiles = [...new Set([...routes.map(([, file]) => file), 'projects/index.html', '404.html'])];
 for (const file of publicHtmlFiles) {
@@ -313,6 +337,16 @@ const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
 assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/JS drift');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
+for (const key of ['home', 'translation', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
+  assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
+}
+for (const [key, minimum] of Object.entries({ members: 4, news: 1, partners: 1, bridges: 5, trackRecord: 2 })) {
+  assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
+}
+for (const [index, item] of (siteJson.trackRecord || []).entries()) {
+  assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
+  for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
+}
 for (const [name, value] of Object.entries({ fontStack: siteJson.typography?.fontStack, fontStackJP: siteJson.typography?.fontStackJP })) {
   assert(value?.includes('var(--tt-noto-primary)') && value?.includes('var(--tt-noto-secondary)'), `site typography ${name} is not language-aware`);
   assert(!/Noto Sans (?:KR|JP)/.test(value || ''), `site typography ${name} contains a fixed CJK order`);
@@ -336,11 +370,11 @@ const canonicalDuplicateWorkImage = 'assets/works/images/asset-mq7l26qf-jqvi-.jp
 assert(!(await exists(removedDuplicateWorkImage)), 'removed byte-identical WORKS image returned');
 assert(!normalizedWorksSource.includes(removedDuplicateWorkImage) && !normalizedDecodedApp.includes(removedDuplicateWorkImage), 'removed byte-identical WORKS image is still referenced');
 assert(normalizedWorksSource.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected works-data reference count');
-assert(normalizedDecodedApp.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected encoded-template reference count');
+assert(!normalizedDecodedApp.includes(canonicalDuplicateWorkImage), 'external WORKS data leaked back into the encoded template');
 const optimizedWorkImages = [
   { path: 'assets/works/images/bubblesweet-work-1024.webp', legacy: 'assets/works/images/bubblesweet.png', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
-  { path: 'assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp', legacy: 'assets/works/images/asset-mq832pb9-dgmx-early.jpg-f814379f3b3a.jpg', width: 1024, height: 1024, refs: 5, templateRefs: 5 },
-  { path: 'assets/works/images/kanism-jp-cover-1024-78517c40b71d-v1.webp', legacy: 'assets/works/images/asset-mq83ztj3-ncy4-.jpg-78517c40b71d.jpg', width: 1024, height: 1024, refs: 1, templateRefs: 1 },
+  { path: 'assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp', legacy: 'assets/works/images/asset-mq832pb9-dgmx-early.jpg-f814379f3b3a.jpg', width: 1024, height: 1024, refs: 5, templateRefs: 0 },
+  { path: 'assets/works/images/kanism-jp-cover-1024-78517c40b71d-v1.webp', legacy: 'assets/works/images/asset-mq83ztj3-ncy4-.jpg-78517c40b71d.jpg', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
 ];
 for (const image of optimizedWorkImages) {
   assert(normalizedWorksSource.split(image.path).length - 1 === image.refs, `${image.path}: unexpected works-data reference count`);
@@ -355,6 +389,15 @@ for (const image of optimizedWorkImages) {
 }
 const removedLogoMockSource = 'assets/pictures/logomock.png';
 assert(!(await exists(removedLogoMockSource)), `${removedLogoMockSource}: removed oversized source image returned`);
+for (const removedAsset of [
+  'assets/data/track-record.js',
+  'assets/icons/favicon.svg',
+  'assets/icons/favicon-48.png',
+  'assets/fonts/hanken-grotesk-latin-italic-v12.woff2',
+  'assets/bundle/946dad72-7af1-419c-a0eb-24bca34317f8.png',
+]) {
+  assert(!(await exists(removedAsset)), `removed unused asset returned: ${removedAsset}`);
+}
 const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
 for (const member of siteJson.members || []) {
   if (Object.hasOwn(expectedMemberDots, member.name)) {
@@ -416,17 +459,31 @@ assert((worksCss.match(/var\(--tt-noto-primary\)/g) || []).length === 11 && (wor
 const storyBridgeRule = worksCss.match(/\.tt-gh-story-bridge \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/height:\s*100vh;/.test(storyBridgeRule) && /min-height:\s*100vh;/.test(storyBridgeRule), 'WORKS story bridge does not reserve its final height');
 assert(!/height:\s*64vh;/.test(storyBridgeRule), 'WORKS story bridge can still expand after first paint');
-assert(Buffer.byteLength(worksCss) <= 150_000, 'WORKS CSS exceeds 150 KB source budget');
-assert(Buffer.byteLength(worksJs) <= 125_000, 'WORKS JavaScript exceeds 125 KB source budget');
+assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
+assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
 assert(worksJs.includes('var worksDataPromise = null;') && worksJs.includes('if (worksDataPromise) return worksDataPromise;'), 'WORKS data fetch is not single-flight');
-assert(worksJs.includes("if (chapter === 'members') {\n      init();") && worksJs.includes("if (isWorksChapterActive() || window.parent !== window) init();"), 'WORKS data is not deferred until the chapter is near or directly active');
+assert(!worksJs.includes("if (chapter === 'members')") && worksJs.includes("if (isWorksChapterActive() || window.parent !== window) init();"), 'WORKS data is not limited to the active chapter or editor');
 assert((worksJs.match(/fetch\(new URL\('data\/works-data\.json'/g) || []).length === 1, 'WORKS data fetch path must remain singular');
+assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
+assert(worksJs.includes('function bindWorksInteractions()') && worksJs.includes('bindWorksInteractions();\n    works = json.works || [];'), 'WORKS interactions are not bound on demand');
+const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
+assert(setEditorDataSource.includes('bindWorksInteractions();'), 'editor-supplied WORKS data does not bind interactions');
+for (const deadSymbol of ['var rendering =', 'function bindModalCloseHandlers()', 'bindModalCloseHandlers();', 'function onMouseDown(', 'function onMouseMove(', "classList.add('tt-site-dialog')"]) {
+  assert(!worksJs.includes(deadSymbol), `removed WORKS JavaScript returned: ${deadSymbol}`);
+}
+const worksBindingIndex = worksJs.indexOf('function bindWorksInteractions()');
+const worksClickListenerIndex = worksJs.indexOf("document.addEventListener('click', onClick, true);");
+assert(worksBindingIndex >= 0 && worksClickListenerIndex > worksBindingIndex, 'WORKS listeners returned to unconditional startup');
 const resetAudioForContentChangeSource = worksJs.match(/function resetAudioForContentChange\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(resetAudioForContentChangeSource.includes("audio.removeAttribute('src');") && resetAudioForContentChangeSource.includes('audio.load();'), 'WORKS content changes retain native audio media resources');
 assert(resetAudioForContentChangeSource.includes('audioPool.clear();') && resetAudioForContentChangeSource.includes('layeredBufferPool.clear();'), 'WORKS content changes retain audio pools in memory');
 const audioReleaseOrder = ['audio.pause();', "audio.removeAttribute('src');", 'audio.load();', 'audioPool.clear();', 'layeredBufferPool.clear();'].map((step) => resetAudioForContentChangeSource.indexOf(step));
 assert(audioReleaseOrder.every((index, position) => index >= 0 && (!position || index > audioReleaseOrder[position - 1])), 'WORKS audio resources are not released in pause/src/load/pool order');
-for (const symbol of ['visibleWorks', 'onWheel', 'onMouseUp', 'cardPreview']) {
+for (const symbol of [
+  'visibleWorks', 'onWheel', 'onMouseUp', 'cardPreview', 'function segments()',
+  'state.start', 'dragState.lastX', 'videoBlock', 'scheduleRouteLandingCorrections',
+  'patchContactControls', 'fallbackCopyText', 'globalUxState.observer',
+]) {
   assert(!worksJs.includes(symbol), `removed WORKS dead code returned: ${symbol}`);
 }
 assert((worksJs.match(/window\.addEventListener\('mouseup', onPointerUp, true\);/g) || []).length === 1, 'WORKS mouseup lifecycle must use one onPointerUp listener');
@@ -453,7 +510,7 @@ assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"),
 assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
 const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
-assert(worksChapterGateSource.includes("return routeSectionId() === 'c-works' || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
+assert(worksChapterGateSource.includes("return /^\\/works(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
 assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME chapter can trigger hidden WORKS cover requests');
 for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
 assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
@@ -491,6 +548,12 @@ assert(/:where\(body\[data-active-chapter="works"\] #c-works \.tt-gh-card\.is-vi
 assert(/:where\(body\[data-active-chapter="works"\] #c-works\) \.tt-gh-stage\.is-dragging \.tt-gh-card\.is-visible,\s*:where\(body\[data-active-chapter="works"\]\.tt-site-dialog-open #c-works\) \.tt-gh-card\.is-visible\s*\{\s*animation-play-state:\s*paused;\s*\}/.test(worksCss), 'WORKS interaction pause states are missing');
 assert(!worksCss.includes('body:not([data-active-chapter="works"]) #c-works .tt-gh-line'), 'dead WORKS line animation pause selector returned');
 assert((worksCss.match(/animation-play-state:\s*var\(--tt-bridge-play-state, running\);/g) || []).length === 2, 'WORKS bridge CSS animations are not tied to bridge visibility');
+for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-date', '.tt-gh-info-meta', '.tt-gh-chip', '.tt-gh-side', '.tt-gh-row', '.tt-gh-select', '.tt-gh-info-video', '.tt-gh-segments', '.tt-bridge-visual--orbs']) {
+  assert(!worksCss.includes(deadSelector) && !worksJs.includes(deadSelector), `removed WORKS selector returned: ${deadSelector}`);
+}
+assert((worksCss.match(/\.tt-mobile-bridge-line\[data-indent=/g) || []).length === 4, 'duplicate mobile bridge indent rules returned');
+assert((worksCss.match(/#lang-switcher\.tt-lang-switcher button:focus,\s*#lang-switcher\.tt-lang-switcher button:focus-visible,\s*#lang-switcher\.tt-lang-switcher button:active\s*\{\s*border: 0 !important;\s*outline: 0 !important;\s*box-shadow: none !important;\s*border-radius: 999px !important;\s*\}/g) || []).length === 1, 'duplicate mobile language focus rule returned');
+assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="news"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px !important;\s*top: auto !important;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\) !important;\s*transform: none !important;\s*transform-origin: left bottom !important;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
 assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
 assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');

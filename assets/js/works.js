@@ -8,9 +8,8 @@
   var logos = [];
   var worksMeta = null;
   var liveSiteContent = null;
-  var rendering = false;
   var mounted = false;
-  var dragState = { active: false, startX: 0, lastX: 0, startPosition: 0, moved: false, stage: null, step: 120 };
+  var dragState = { active: false, startX: 0, startPosition: 0, moved: false, stage: null, step: 120 };
   var suppressClick = false;
   var pointerMoveFrame = 0;
   var queuedPointerX = 0;
@@ -24,6 +23,7 @@
   var layeredPlayback = null;
   var playbackSessionToken = 0;
   var worksDataPromise = null;
+  var worksInteractionsBound = false;
   var layeredFallbackActive = false;
   var pausedLayeredSignature = '';
   var pausedLayeredOffset = 0;
@@ -31,7 +31,6 @@
   var state = {
     mode: 'showcase',
     selected: 0,
-    start: 0,
     position: 0,
     track: 0,
     language: 'KR',
@@ -668,13 +667,8 @@
   }
 
   function ensureSelectedVisible() {
-    var slots = activeSlots();
-    var visibleCount = Math.min(slots.length, works.length);
-    var maxStart = Math.max(0, works.length - visibleCount);
-    var center = Math.floor(visibleCount / 2);
     var pos = dragState.active ? numeric(state.position, state.selected) : state.selected;
     state.position = clamp(pos, 0, Math.max(0, works.length - 1));
-    state.start = clamp(Math.round(state.position - center), 0, maxStart);
   }
 
   function resetSubState(work) {
@@ -844,7 +838,7 @@
   function isWorksChapterActive() {
     var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
     if (activeChapter) return activeChapter === 'works';
-    return routeSectionId() === 'c-works' || location.hash === '#c-works';
+    return /^\/works(?:\/index\.html)?\/?$/i.test(location.pathname) || location.hash === '#c-works';
   }
 
   function isShowcasePlaybackView() {
@@ -1360,12 +1354,6 @@
     return '<div class="tt-gh-modal tt-gh-video-modal" role="dialog" aria-modal="true" aria-label="' + esc(plainRichText(unit.title || work.title || 'WORKS')) + ' video" tabindex="-1"><button type="button" class="tt-gh-modal-backdrop" data-works-action="video-close" aria-label="' + esc(plainRichText(meta.closeLabel || 'Close')) + ' video"></button><section class="tt-gh-modal-panel tt-gh-video-panel" role="document"><button type="button" class="tt-gh-modal-close" data-works-action="video-close">' + preserve(meta.closeLabel) + '</button><div class="tt-gh-modal-video">' + modalVideo(unit) + '</div></section></div>';
   }
 
-  function segments() {
-    return '<div class="tt-gh-segments" style="--count:' + works.length + '">' + works.map(function (_work, index) {
-      return '<button type="button" class="' + (index === state.selected ? 'is-active' : '') + '" data-works-action="select" data-index="' + index + '" aria-label="Select work ' + (index + 1) + '"></button>';
-    }).join('') + '</div>';
-  }
-
   function gallery() {
     var eagerCount = galleryEagerImageCount();
     var loadImages = isWorksChapterActive();
@@ -1410,9 +1398,8 @@
     var entries = currentAudioEntries();
     var hasAudio = entries.length > 0;
     var format = [kind, trackLabel(work), state.language].filter(Boolean).join(' / ');
-    var videoBlock = '';
     var meta = localizedMeta();
-    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><button type="button" class="tt-gh-action is-primary" data-works-action="play" ' + (hasAudio ? '' : 'disabled') + '>' + preserve(state.playing ? meta.pauseLabel : meta.playLabel) + '</button><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume"><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + videoBlock + detailTable(work, unit, kind, format) + '</section>';
+    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><button type="button" class="tt-gh-action is-primary" data-works-action="play" ' + (hasAudio ? '' : 'disabled') + '>' + preserve(state.playing ? meta.pauseLabel : meta.playLabel) + '</button><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume"><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + detailTable(work, unit, kind, format) + '</section>';
   }
 
   function galleryModal() {
@@ -1467,39 +1454,13 @@
   function render() {
     root = ensureRoot();
     if (!root || !works.length) return;
-    rendering = true;
     ensureSelectedVisible();
     root.innerHTML = '<div class="tt-gh-shell">' + worksStatus() + head() + clients() + tabs() + (state.mode === 'gallery' ? gallery() : showcase()) + (state.mode === 'showcase' ? infoPanel() : '') + galleryModal() + videoLightbox() + '</div>';
     bindLazyGalleryImages();
     syncModalBodyClass();
-    bindModalCloseHandlers();
     mounted = true;
-    rendering = false;
     syncAudioState();
-  }
-
-  function bindModalCloseHandlers() {
-    if (!root) return;
-    root.querySelectorAll('[data-works-action="video-close"]').forEach(function (node) {
-      node.onclick = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        blockFollowupClick(320);
-        state.videoOpen = false;
-        render();
-      };
-      node.onpointerdown = node.onclick;
-    });
-    root.querySelectorAll('[data-works-action="modal-close"]').forEach(function (node) {
-      node.onclick = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        blockFollowupClick(320);
-        state.modalOpen = false;
-        render();
-      };
-      node.onpointerdown = node.onclick;
-    });
+    window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
   function updateShowcaseDom(layoutOnly) {
@@ -1812,11 +1773,10 @@
     if (!section || !section.contains(event.target)) return;
     var stage = event.target && event.target.closest ? event.target.closest('[data-works-drag-stage]') : null;
     if (!stage || !section.contains(stage)) return;
-    if (event.target.closest('[data-works-action="prev"],[data-works-action="next"],.tt-gh-tabs,.tt-gh-segments,.tt-gh-info,.tt-gh-modal,input')) return;
+    if (event.target.closest('[data-works-action="prev"],[data-works-action="next"],.tt-gh-tabs,.tt-gh-info,.tt-gh-modal,input')) return;
     if (event.cancelable) event.preventDefault();
     dragState.active = true;
     dragState.startX = event.clientX;
-    dragState.lastX = event.clientX;
     dragState.startPosition = clamp(numeric(state.position, state.selected), 0, Math.max(0, works.length - 1));
     dragState.moved = false;
     dragState.stage = stage;
@@ -1829,17 +1789,11 @@
     // pointermove/up listeners already track the gesture reliably.
   }
 
-  function onMouseDown(event) {
-    if (dragState.active) return;
-    onPointerDown(event);
-  }
-
   function applyPointerMove(clientX) {
     if (!dragState.active) return;
     var stage = dragState.stage;
     if (stage && !stage.isConnected) stage = null;
     if (!stage) return;
-    dragState.lastX = clientX;
     var delta = clientX - dragState.startX;
     if (Math.abs(delta) > 6) dragState.moved = true;
     var nextPosition = dragState.startPosition - (delta / dragState.step);
@@ -1860,11 +1814,6 @@
       pointerMoveFrame = 0;
       applyPointerMove(queuedPointerX);
     });
-  }
-
-  function onMouseMove(event) {
-    if (!dragState.active) return;
-    onPointerMove(event);
   }
 
   function onPointerUp(event) {
@@ -1911,7 +1860,7 @@
   }
 
   function requestPauseWhenWorksHidden() {
-    if (pauseVisibilityFrame) return;
+    if (!state.playing || pauseVisibilityFrame) return;
     var raf = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 80); };
     pauseVisibilityFrame = raf(function () {
       pauseVisibilityFrame = 0;
@@ -1961,16 +1910,6 @@
     }
   }
 
-  function embeddedData() {
-    var node = document.getElementById('tt-works-data');
-    if (!node) return null;
-    try {
-      return JSON.parse(node.textContent || '{}');
-    } catch (error) {
-      return null;
-    }
-  }
-
   function galleryEagerImageCount() {
     if (window.innerWidth <= 760) return 6;
     if (window.innerWidth <= 1180) return 8;
@@ -1978,6 +1917,7 @@
   }
 
   function boot(json) {
+    bindWorksInteractions();
     works = json.works || [];
     logos = json.clientLogos || [];
     state.selected = 0;
@@ -1988,6 +1928,7 @@
 
   function setEditorData(json) {
     if (!json || !json.works) return;
+    bindWorksInteractions();
     resetAudioForContentChange();
     state.playing = false;
     works = json.works || [];
@@ -2032,10 +1973,6 @@
     inerted: [],
     menu: null,
     skipLink: null,
-    routeLandingTimers: [],
-    routeLandingScheduled: false,
-    routeLandingInteracted: false,
-    observer: null,
     chapterObserver: null
   };
 
@@ -2097,114 +2034,6 @@
     var label = localizedUiLabel('본문으로 바로가기', 'Skip to main content', '本文へ移動');
     if (link.textContent !== label) link.textContent = label;
     link.setAttribute('aria-label', label);
-  }
-
-  function routeSectionId() {
-    var path = String((location && location.pathname) || '/').toLowerCase();
-    if (path.indexOf('/story-types/') !== -1 || path.indexOf('/projects/') !== -1) return 'c-projects';
-    if (path.indexOf('/members/') !== -1) return 'c-members';
-    if (path.indexOf('/works/') !== -1) return 'c-works';
-    if (path.indexOf('/news/') !== -1) return 'c-news';
-    if (path.indexOf('/contact/') !== -1) return 'c-contact';
-    return '';
-  }
-
-  function clearRouteLandingTimers() {
-    globalUxState.routeLandingTimers.forEach(function (timer) {
-      clearTimeout(timer);
-      clearInterval(timer);
-    });
-    globalUxState.routeLandingTimers = [];
-  }
-
-  function markRouteLandingInteraction(event) {
-    if (event && event.isTrusted === false) return;
-    globalUxState.routeLandingInteracted = true;
-    clearRouteLandingTimers();
-  }
-
-  function syncRouteLandingUi(scroller, expectedChapter) {
-    var number = {
-      projects: '03',
-      members: '04',
-      works: '05',
-      news: '06',
-      contact: '07'
-    }[expectedChapter];
-    if (document.body) document.body.setAttribute('data-active-chapter', expectedChapter);
-    var pnum = document.getElementById('pnum');
-    if (pnum && number) pnum.textContent = number;
-    var maxScroll = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
-    var progressValue = clamp((scroller.scrollTop / maxScroll) * 100, 0, 100);
-    var pbar = document.getElementById('pbar');
-    if (pbar) pbar.style.width = progressValue.toFixed(4) + '%';
-    var progress = document.getElementById('progress');
-    if (progress && progress.getAttribute('role') === 'progressbar') progress.setAttribute('aria-valuenow', String(Math.round(progressValue)));
-    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_CHANGE', { detail: { chapter: expectedChapter } }));
-  }
-
-  function scheduleRouteLandingCorrections() {
-    if (globalUxState.routeLandingScheduled) return;
-    var sectionId = routeSectionId();
-    if (!sectionId) return;
-    globalUxState.routeLandingScheduled = true;
-    var navId = {
-      'c-projects': 'nav-2',
-      'c-members': 'nav-3',
-      'c-works': 'nav-4',
-      'c-news': 'nav-5',
-      'c-contact': 'nav-6'
-    }[sectionId];
-    var expectedChapter = {
-      'c-projects': 'projects',
-      'c-members': 'members',
-      'c-works': 'works',
-      'c-news': 'news',
-      'c-contact': 'contact'
-    }[sectionId];
-    globalUxState.routeLandingInteracted = false;
-    clearRouteLandingTimers();
-    var attempts = 0;
-    var routeWatcher = setInterval(function () {
-      attempts += 1;
-      if (globalUxState.routeLandingInteracted) {
-        clearRouteLandingTimers();
-        return;
-      }
-      var scroller = document.getElementById('content');
-      var section = document.getElementById(sectionId);
-      if (!scroller || !section) {
-        if (attempts >= 24) clearRouteLandingTimers();
-        return;
-      }
-      var top = section.getBoundingClientRect().top;
-      var activeChapter = document.body && document.body.getAttribute('data-active-chapter');
-      if (activeChapter === expectedChapter && Math.abs(top) <= 320) {
-        clearRouteLandingTimers();
-        return;
-      }
-      if (Math.abs(top) <= 96) {
-        syncRouteLandingUi(scroller, expectedChapter);
-        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
-        window.dispatchEvent(new Event('scroll'));
-        clearRouteLandingTimers();
-        return;
-      } else if (attempts === 1) {
-        scroller.scrollTo({ top: Math.max(0, section.offsetTop - 2), behavior: 'auto' });
-        syncRouteLandingUi(scroller, expectedChapter);
-        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
-        window.dispatchEvent(new Event('scroll'));
-        return;
-      } else if (attempts === 4 || attempts === 8) {
-        var navLink = navId ? document.getElementById(navId) : null;
-        if (navLink) navLink.click();
-      } else if (attempts === 12) {
-        scroller.scrollTo({ top: Math.max(0, section.offsetTop - 2), behavior: 'auto' });
-        scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
-      }
-      if (attempts >= 24) clearRouteLandingTimers();
-    }, 250);
-    globalUxState.routeLandingTimers.push(routeWatcher);
   }
 
   function closeMobileChapterMenu(restoreFocus) {
@@ -2331,91 +2160,8 @@
     });
   }
 
-  function fallbackCopyText(text) {
-    var field = document.createElement('textarea');
-    field.value = text;
-    field.setAttribute('readonly', '');
-    field.style.position = 'fixed';
-    field.style.left = '-9999px';
-    field.style.opacity = '0';
-    document.body.appendChild(field);
-    field.select();
-    var copied = false;
-    try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
-    field.remove();
-    return copied;
-  }
-
-  function copyContactEmail() {
-    var email = 'contact@taletone.net';
-    var clipboardWrite = null;
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-      try { clipboardWrite = navigator.clipboard.writeText(email); } catch (error) { clipboardWrite = null; }
-    }
-    var fallbackCopied = fallbackCopyText(email);
-    if (clipboardWrite) {
-      return clipboardWrite
-        .then(function () { return true; })
-        .catch(function () { return fallbackCopied; });
-    }
-    return Promise.resolve(fallbackCopied);
-  }
-
-  function patchContactControls() {
-    var section = document.getElementById('c-contact');
-    if (!section) return;
-    var emailLink = section.querySelector('a[href^="mailto:"]');
-    if (emailLink) emailLink.setAttribute('aria-label', localizedUiLabel('프로젝트 문의 이메일 열기', 'Open project inquiry email', 'プロジェクト問い合わせメールを開く'));
-    section.querySelectorAll('button').forEach(function (button) {
-      var text = button.textContent.trim();
-      if (!/복사|copy|コピー/i.test(text)) return;
-      var defaultLabel = localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー');
-      button.setAttribute('type', 'button');
-      button.setAttribute('aria-live', 'polite');
-      button.setAttribute('aria-atomic', 'true');
-      if (!button.ttCopyResetTimer) {
-        button.dataset.ttCopyLabel = text || defaultLabel;
-        button.setAttribute('aria-label', defaultLabel);
-      }
-      if (button.dataset.ttCopyBound) return;
-      button.dataset.ttCopyBound = 'true';
-      button.addEventListener('click', function (event) {
-        event.preventDefault();
-        var feedback = section.querySelector('#email-copy-feedback');
-        copyContactEmail().then(function (copied) {
-          var message = copied
-            ? localizedUiLabel('복사됨', 'Copied', 'コピーしました')
-            : localizedUiLabel('복사 실패', 'Copy failed', 'コピーできませんでした');
-          button.textContent = message;
-          button.setAttribute('aria-label', message);
-          if (feedback) feedback.textContent = message;
-          if (button.ttCopyResetTimer) clearTimeout(button.ttCopyResetTimer);
-          button.ttCopyResetTimer = setTimeout(function () {
-            var copyLabel = localizedUiLabel('이메일 주소 복사', 'Copy email address', 'メールアドレスをコピー');
-            button.ttCopyResetTimer = 0;
-            button.dataset.ttCopyLabel = copyLabel;
-            button.textContent = button.dataset.ttCopyLabel || copyLabel;
-            button.setAttribute('aria-label', copyLabel);
-            if (feedback) feedback.textContent = '';
-          }, 1800);
-        });
-      });
-    });
-  }
-
   function findSiteDialog() {
-    var explicit = document.querySelector('.tt-gh-modal[role="dialog"], .tt-member-modal');
-    if (explicit) return explicit;
-    var nodes = document.querySelectorAll('div[style]');
-    for (var index = 0; index < nodes.length; index += 1) {
-      var node = nodes[index];
-      if (node.style.position !== 'fixed' || Number(node.style.zIndex || 0) < 300) continue;
-      if (node.querySelector('image-slot') && node.querySelector('h3')) {
-        node.classList.add('tt-news-modal');
-        return node;
-      }
-    }
-    return null;
+    return document.querySelector('.tt-gh-modal[role="dialog"], .tt-member-modal, .tt-news-modal');
   }
 
   function setSiblingsInert(dialog) {
@@ -2520,7 +2266,6 @@
     closeMobileChapterMenu(false);
     if (state.playing) pauseAll();
     globalUxState.dialog = dialog;
-    dialog.classList.add('tt-site-dialog');
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-modal', 'true');
     dialog.setAttribute('tabindex', '-1');
@@ -2571,9 +2316,7 @@
     patchNewsPreviews();
     patchMemberCreditDetails();
     patchInteractiveCards();
-    patchContactControls();
     refreshSiteDialog();
-    scheduleRouteLandingCorrections();
   }
 
   function onGlobalUxKeydown(event) {
@@ -2624,12 +2367,6 @@
 
   function initGlobalUx() {
     refreshGlobalUx();
-    window.addEventListener('wheel', markRouteLandingInteraction, { passive: true, capture: true });
-    window.addEventListener('touchstart', markRouteLandingInteraction, { passive: true, capture: true });
-    window.addEventListener('pointerdown', markRouteLandingInteraction, { passive: true, capture: true });
-    window.addEventListener('keydown', function (event) {
-      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].indexOf(event.key) !== -1) markRouteLandingInteraction(event);
-    }, true);
     document.addEventListener('keydown', onGlobalUxKeydown, true);
     document.addEventListener('click', onSkipLinkClick, true);
     document.addEventListener('pointerdown', function (event) {
@@ -2642,18 +2379,8 @@
         }
       }
     }, true);
-    document.addEventListener('click', function (event) {
-      if (event.target && event.target.closest && event.target.closest('#lang-switcher')) {
-        setTimeout(function () {
-          refreshChapterControls();
-          patchNewsPreviews();
-          patchMemberCreditDetails();
-        }, 40);
-      }
-    }, true);
     window.addEventListener('resize', refreshChapterControls, { passive: true });
-    globalUxState.observer = new MutationObserver(function () { refreshGlobalUx(); });
-    globalUxState.observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('TALETONE_UI_UPDATED', refreshGlobalUx);
     globalUxState.chapterObserver = new MutationObserver(refreshChapterControls);
     globalUxState.chapterObserver.observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
     globalUxState.chapterObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
@@ -2670,11 +2397,6 @@
     var detail = event && event.detail ? event.detail : {};
     var chapter = detail.chapter;
     if (!chapter) return;
-    if (chapter === 'members') {
-      init();
-      pauseAll(true);
-      return;
-    }
     if (chapter !== 'works') {
       pauseAll(true);
       return;
@@ -2698,10 +2420,6 @@
     if (message.type === 'TALETONE_SITE_SET_DATA' && message.data) {
       liveSiteContent = message.data;
       setMeta(message.data.worksMeta || {});
-      setTimeout(function () {
-        patchNewsPreviews();
-        patchMemberCreditDetails();
-      }, 60);
     }
     if (message.type === 'TALETONE_SET_LANG' && mounted) render();
     if (message.type === 'TALETONE_WORKS_SELECT') selectEditorWork(message);
@@ -2709,43 +2427,41 @@
 
   function init() {
     if (worksDataPromise) return worksDataPromise;
-    if (location.protocol === 'file:') {
-      var localData = embeddedData();
-      if (localData && localData.works) {
-        boot(localData);
-        worksDataPromise = Promise.resolve(localData);
-        return worksDataPromise;
-      }
-    }
     worksDataPromise = fetch(new URL('data/works-data.json', assetBase).href)
-      .then(function (response) { return response.json(); })
+      .then(function (response) {
+        if (!response.ok) throw new Error('WORKS data request failed: ' + response.status);
+        return response.json();
+      })
       .then(function (data) { boot(data); return data; })
       .catch(function (error) {
-        var fallback = embeddedData();
-        if (fallback && fallback.works) {
-          boot(fallback);
-          return fallback;
-        }
-        else console.error('[works]', error);
+        worksDataPromise = null;
+        console.error('[works]', error);
+        return null;
       });
     return worksDataPromise;
   }
 
-  document.addEventListener('click', onClick, true);
-  document.addEventListener('input', onInput, true);
-  document.addEventListener('keydown', onKey, true);
-  document.addEventListener('dragstart', onNativeDragStart, true);
-  document.addEventListener('selectstart', onNativeSelectStart, true);
-  document.addEventListener('pointerdown', onPointerDown, true);
-  document.addEventListener('pointermove', onPointerMove, true);
-  document.addEventListener('pointerup', onPointerUp, true);
-  window.addEventListener('pointerup', onPointerUp, true);
-  document.addEventListener('pointercancel', onPointerCancel, true);
-  document.addEventListener('mousedown', onMouseDown, true);
-  document.addEventListener('mousemove', onMouseMove, true);
-  window.addEventListener('mouseup', onPointerUp, true);
-  window.addEventListener('hashchange', scrollToWorksFromHash);
-  bindVisibilityPause();
+  function bindWorksInteractions() {
+    if (worksInteractionsBound) return;
+    worksInteractionsBound = true;
+    document.addEventListener('click', onClick, true);
+    document.addEventListener('input', onInput, true);
+    document.addEventListener('keydown', onKey, true);
+    document.addEventListener('dragstart', onNativeDragStart, true);
+    document.addEventListener('selectstart', onNativeSelectStart, true);
+    if (window.PointerEvent) {
+      document.addEventListener('pointerdown', onPointerDown, true);
+      document.addEventListener('pointermove', onPointerMove, true);
+      document.addEventListener('pointerup', onPointerUp, true);
+      document.addEventListener('pointercancel', onPointerCancel, true);
+    } else {
+      document.addEventListener('mousedown', onPointerDown, true);
+      document.addEventListener('mousemove', onPointerMove, true);
+      window.addEventListener('mouseup', onPointerUp, true);
+    }
+    window.addEventListener('hashchange', scrollToWorksFromHash);
+    bindVisibilityPause();
+  }
   function start() {
     initStructuredDataGuard();
     initGlobalUx();
