@@ -570,9 +570,10 @@
   function imgTag(unit, className, defer) {
     if (!unit || !unit.image) return '<span class="' + esc(className || '') + '"></span>';
     var source = unit.image;
-    var loading = 'eager';
+    var loading = defer ? 'lazy' : 'eager';
     var priority = defer ? 'low' : 'high';
-    return '<img draggable="false" loading="' + loading + '" fetchpriority="' + priority + '" decoding="async" class="' + esc(className || '') + '" src="' + esc(source) + '" alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
+    var sourceAttribute = defer ? 'data-works-src' : 'src';
+    return '<img draggable="false" loading="' + loading + '" fetchpriority="' + priority + '" decoding="async" class="' + esc(className || '') + '" ' + sourceAttribute + '="' + esc(source) + '" alt="' + esc(plainRichText(unit.title || '')) + '" style="' + imageStyle(unit) + '">';
   }
 
   function numeric(value, fallback) {
@@ -834,16 +835,20 @@
     audioPool.forEach(function (audio) { audio.pause(); });
   }
 
+  function isWorksChapterActive() {
+    var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
+    return !activeChapter || activeChapter === 'works';
+  }
+
   function isShowcasePlaybackView() {
     var section = document.getElementById('c-works');
-    var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
     var dialogOpen = !!(document.body && document.body.classList.contains('tt-site-dialog-open'));
     return state.mode === 'showcase'
       && !state.modalOpen
       && !state.videoOpen
       && !dialogOpen
       && !document.hidden
-      && (!activeChapter || activeChapter === 'works')
+      && isWorksChapterActive()
       && !!section
       && isSectionVisible(section);
   }
@@ -1109,7 +1114,6 @@
     if (nextMode !== 'showcase') pauseAll(true);
     state.mode = nextMode;
     state.modalOpen = false;
-    if (state.mode === 'gallery') preloadGalleryOpeningImages();
     render();
   }
 
@@ -1344,12 +1348,13 @@
   }
 
   function showcase() {
+    var loadImages = isWorksChapterActive();
     var cards = works.map(function (work, index) {
       var layout = layoutForIndex(index);
       var active = index === state.selected;
       var unit = cardUnit(work, index);
       var cardLabel = (index + 1) + ' / ' + works.length + ' · ' + plainRichText(unit.title || work.title || 'WORKS');
-      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span></span></span>' + cardPreview(work) + '</div>';
+      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span></span></span>' + cardPreview(work) + '</div>';
     }).join('');
     return '<div id="tt-gh-panel-showcase" class="tt-gh-stage" role="tabpanel" aria-labelledby="tt-gh-tab-showcase" aria-roledescription="carousel" aria-label="' + esc(localizedUiLabel('WORKS 포트폴리오 책장', 'WORKS portfolio shelf', 'WORKS ポートフォリオシェルフ')) + '" tabindex="0" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
@@ -1371,10 +1376,11 @@
 
   function gallery() {
     var eagerCount = galleryEagerImageCount();
+    var loadImages = isWorksChapterActive();
     return '<div id="tt-gh-panel-gallery" class="tt-gh-gallery" role="tabpanel" aria-labelledby="tt-gh-tab-gallery">' + works.map(function (work, index) {
       var unit = localizedUnit(work);
       var detailLabel = plainRichText(unit.title || 'WORKS') + localizedUiLabel(' 상세', ' details', ' 詳細');
-      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', index >= eagerCount) + cardArtistBadge(work, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span></span></span></div>';
+      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || index >= eagerCount) + cardArtistBadge(work, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span></span></span></div>';
     }).join('') + '</div>';
   }
 
@@ -1462,7 +1468,7 @@
         loadDeferredImage(entry.target);
         galleryImageObserver.unobserve(entry.target);
       });
-    }, { root: null, rootMargin: Math.round(Math.max(720, window.innerHeight * 1.25)) + 'px 0px', threshold: 0.01 });
+    }, { root: null, rootMargin: Math.round(Math.max(240, window.innerHeight * 0.35)) + 'px 0px', threshold: 0.01 });
     Array.prototype.forEach.call(deferred, function (image) { galleryImageObserver.observe(image); });
   }
 
@@ -1471,7 +1477,6 @@
     if (!root || !works.length) return;
     rendering = true;
     ensureSelectedVisible();
-    preloadNearbyImages(state.selected);
     root.innerHTML = '<div class="tt-gh-shell">' + worksStatus() + head() + clients() + tabs() + (state.mode === 'gallery' ? gallery() : showcase()) + (state.mode === 'showcase' ? infoPanel() : '') + galleryModal() + videoLightbox() + '</div>';
     bindLazyGalleryImages();
     syncModalBodyClass();
@@ -1521,8 +1526,9 @@
       var unit = cardUnit(work, index);
       card.setAttribute('aria-label', (index + 1) + ' / ' + works.length + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
       card.setAttribute('style', cardStyle(layout, unit));
-      if (layoutOnly) return;
       var img = card.querySelector('.tt-gh-card-cover img');
+      if (img && layout.visible && img.hasAttribute('data-works-src')) loadDeferredImage(img);
+      if (layoutOnly) return;
       if (img && unit && unit.image && layout.visible) {
         if (img.getAttribute('src') !== unit.image) img.setAttribute('src', unit.image);
         img.removeAttribute('data-works-src');
@@ -1988,103 +1994,10 @@
     }
   }
 
-  // Keep the visible cards high-priority, then warm the remaining covers in
-  // small batches so rapid shelf drags never reveal transparent placeholders.
-  var _imgCache = new Map();
-  var _neighbourPreloadTimer = 0;
-  var _allImagePreloadStarted = false;
-
-  function cacheImage(url, priority) {
-    if (!url || _imgCache.has(url)) return;
-    var image = new Image();
-    image.decoding = 'async';
-    image.loading = 'eager';
-    image.fetchPriority = priority || 'low';
-    image.src = url;
-    if (typeof image.decode === 'function') image.decode().catch(function () {});
-    _imgCache.set(url, image);
-  }
-
   function galleryEagerImageCount() {
-    if (window.innerWidth <= 760) return 12;
+    if (window.innerWidth <= 760) return 6;
     if (window.innerWidth <= 1180) return 8;
     return 10;
-  }
-
-  function preloadGalleryOpeningImages(limit) {
-    var requested = Number(limit);
-    var count = Math.min(works.length, Number.isFinite(requested) && requested > 0 ? requested : galleryEagerImageCount());
-    for (var index = 0; index < count; index += 1) {
-      var unit = localizedUnit(works[index]);
-      cacheImage(unit && unit.image, index < 4 ? 'high' : 'low');
-    }
-  }
-
-  function collectWorkImageUrls(value, urls) {
-    if (Array.isArray(value)) {
-      value.forEach(function (item) { collectWorkImageUrls(item, urls); });
-      return;
-    }
-    if (!value || typeof value !== 'object') return;
-    Object.keys(value).forEach(function (key) {
-      var item = value[key];
-      if (key === 'image' && typeof item === 'string' && item) urls.add(item);
-      else if (item && typeof item === 'object') collectWorkImageUrls(item, urls);
-    });
-  }
-
-  function preloadAllWorkImages() {
-    if (_allImagePreloadStarted || !works.length) return;
-    _allImagePreloadStarted = true;
-    var urls = new Set();
-    works.forEach(function (work) { collectWorkImageUrls(work, urls); });
-    var queue = Array.from(urls);
-    var index = 0;
-    var loadBatch = function () {
-      var end = Math.min(queue.length, index + 5);
-      for (; index < end; index += 1) cacheImage(queue[index], index < 8 ? 'high' : 'low');
-      if (index < queue.length) setTimeout(loadBatch, 90);
-    };
-    loadBatch();
-  }
-
-  function scheduleAllWorkImagePreload() {
-    var directWorksRoute = /\/works\/?$/i.test(location.pathname);
-    if (directWorksRoute) {
-      setTimeout(preloadAllWorkImages, 80);
-      return;
-    }
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(preloadAllWorkImages, { timeout: 1800 });
-    } else {
-      setTimeout(preloadAllWorkImages, 1400);
-    }
-  }
-
-  function preloadCurrentWork(work) {
-    if (!work) return;
-    var trackIndex = activeTrackIndex(work);
-    var track = work.tracks && work.tracks.length ? work.tracks[trackIndex] : null;
-    var previousTrack = work.tracks && work.tracks[trackIndex - 1];
-    var nextTrack = work.tracks && work.tracks[trackIndex + 1];
-    cacheImage(work.image, 'high');
-    cacheImage(track && track.image, 'high');
-    cacheImage(previousTrack && previousTrack.image, 'low');
-    cacheImage(nextTrack && nextTrack.image, 'low');
-    variantsFor(work, trackIndex).forEach(function (version) { cacheImage(version && version.image, 'high'); });
-  }
-
-  function preloadNearbyImages(index) {
-    var selectedIndex = clamp(Number(index) || 0, 0, Math.max(0, works.length - 1));
-    preloadCurrentWork(works[selectedIndex]);
-    clearTimeout(_neighbourPreloadTimer);
-    _neighbourPreloadTimer = setTimeout(function () {
-      [selectedIndex - 1, selectedIndex + 1].forEach(function (workIndex) {
-        var work = works[workIndex];
-        if (!work) return;
-        cacheImage(work.image || (localizedUnit(work) || {}).image, 'low');
-      });
-    }, 180);
   }
 
   function boot(json) {
@@ -2093,12 +2006,6 @@
     state.selected = 0;
     resetSubState(works[0]);
     ensureSelectedVisible();
-    preloadNearbyImages(0);
-    scheduleAllWorkImagePreload();
-    setTimeout(function () {
-      var directWorksRoute = /\/works\/?$/i.test(location.pathname);
-      preloadGalleryOpeningImages(directWorksRoute ? galleryEagerImageCount() : Math.min(6, galleryEagerImageCount()));
-    }, /\/works\/?$/i.test(location.pathname) ? 160 : 1800);
     setTimeout(function () { waitForHost(0); }, 260);
     setInterval(function () {
       if (rendering || !works.length) return;
@@ -2113,12 +2020,9 @@
     state.playing = false;
     works = json.works || [];
     logos = json.clientLogos || [];
-    _allImagePreloadStarted = false;
     state.selected = clamp(state.selected, 0, Math.max(0, works.length - 1));
     resetSubState(currentWork());
     ensureSelectedVisible();
-    preloadNearbyImages(state.selected);
-    scheduleAllWorkImagePreload();
     render();
   }
 
@@ -2792,8 +2696,8 @@
 
   window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
     var detail = event && event.detail ? event.detail : {};
-    if (detail.chapter && detail.chapter !== 'works') pauseAll();
-    if (detail.chapter === 'works') preloadGalleryOpeningImages();
+    if (detail.chapter && detail.chapter !== 'works') pauseAll(true);
+    if (detail.chapter) render();
   });
 
   window.addEventListener('message', function (event) {

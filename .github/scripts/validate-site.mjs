@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
-  'assets/js/works.js': '20260714-no-audio-preload-p0-v1',
+  'assets/js/works.js': '20260714-lazy-work-images-p1-v1',
 };
 const expectedSiteContentCacheKey = '20260714-member-colors-v4';
 
@@ -254,6 +254,31 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
+const removedImagePreloadSymbols = [
+  '_allImagePreloadStarted',
+  'collectWorkImageUrls',
+  'preloadAllWorkImages',
+  'scheduleAllWorkImagePreload',
+  'preloadGalleryOpeningImages',
+  '_imgCache',
+  '_neighbourPreloadTimer',
+  'cacheImage',
+  'preloadCurrentWork',
+  'preloadNearbyImages',
+];
+for (const symbol of removedImagePreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager image preload returned: ${symbol}`);
+const imgTagSource = worksJs.match(/function imgTag\(unit, className, defer\) \{[\s\S]*?\n  \}\n\n  function numeric/)?.[0] || '';
+assert(imgTagSource.includes("var loading = defer ? 'lazy' : 'eager';"), 'WORKS deferred images are not marked lazy');
+assert(imgTagSource.includes("var priority = defer ? 'low' : 'high';"), 'WORKS image priority does not follow visibility');
+assert(imgTagSource.includes("var sourceAttribute = defer ? 'data-works-src' : 'src';"), 'WORKS deferred images still receive an eager src');
+assert(worksJs.includes("imgTag(unit, '', !loadImages || !layout.visible)"), 'hidden Showcase cards can load images eagerly');
+assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"), 'offscreen Gallery cards can load images eagerly');
+assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
+assert(worksJs.includes("if (detail.chapter) render();"), 'WORKS images are not reconciled when the active chapter changes');
+const updateShowcaseDomSource = worksJs.match(/function updateShowcaseDom\(layoutOnly\) \{[\s\S]*?\n  \}\n\n  function onClick/)?.[0] || '';
+const dragImageHydrationIndex = updateShowcaseDomSource.indexOf("if (img && layout.visible && img.hasAttribute('data-works-src')) loadDeferredImage(img);");
+const layoutOnlyReturnIndex = updateShowcaseDomSource.indexOf('if (layoutOnly) return;');
+assert(dragImageHydrationIndex >= 0 && layoutOnlyReturnIndex >= 0 && dragImageHydrationIndex < layoutOnlyReturnIndex, 'WORKS drag can reveal a deferred card before its image is loaded');
 const removedAudioPreloadSymbols = [
   'allLayeredAudioWarmStarted',
   'warmAudioEntries',
