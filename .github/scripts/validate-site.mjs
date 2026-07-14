@@ -216,6 +216,8 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("this._chapterTarget&&this._chapterTarget!=='c-members'") && decodedScript.includes('this._chapterTarget=id;') && decodedScript.includes("activeSection.id===this._chapterTarget) this._chapterTarget=''"), `${file}: pass-through navigation can activate hidden member images`);
     assert(!decodedScript.includes('tt-mobile-bridge-line-inner'), `${file}: unused mobile bridge inner class returned`);
     assert(!decodedScript.includes('fastMobile ? 0.38 : 0.72'), `${file}: unreachable fast-mobile motion margin returned`);
+    assert(decodedScript.includes("var bl=(1-exit)*4; re.style.filter = bl>0.25 ? 'blur('+bl.toFixed(1)+'px)' : 'none';"), `${file}: relaxed scroll-exit blur condition is missing`);
+    assert(!decodedScript.includes('var bl=(1-exit)*5;'), `${file}: aggressive scroll-exit blur returned`);
     assert(decodedScript.includes('this.raf=0;\n    if(document.hidden) return;'), `${file}: hidden documents can keep the main animation loop alive`);
     const visibilityHandlerSource = decodedScript.match(/this\._visibilityHandler=\(\)=>\{[\s\S]*?\n    \};/)?.[0] || '';
     assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation order changed`);
