@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
-  'assets/js/works.js': '20260714-chapter-rerender-p2-v1',
+  'assets/js/works.js': '20260715-host-poll-delete-p2-v1',
 };
 const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
 
@@ -320,6 +320,12 @@ assert(imgTagSource.includes("var sourceAttribute = defer ? 'data-works-src' : '
 assert(worksJs.includes("imgTag(unit, '', !loadImages || !layout.visible)"), 'hidden Showcase cards can load images eagerly');
 assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"), 'offscreen Gallery cards can load images eagerly');
 assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
+const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
+assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
+assert(worksChapterGateSource.includes("return routeSectionId() === 'c-works' || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
+assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME chapter can trigger hidden WORKS cover requests');
+for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
+assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
 assert(!/if\s*\(detail\.chapter\)\s*render\(\)/.test(worksJs), 'WORKS unconditional chapter-change render returned');
 assert(/pauseAll:\s*function\s*\(\)\s*\{\s*pauseAll\(state\.mode\s*!==\s*'showcase'\s*\|\|\s*!isWorksChapterActive\(\)\);\s*\}/.test(worksJs), 'WORKS external pause API no longer separates visible UI sync from hidden chapters');
 assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(true\);\s*return;/.test(worksJs), 'WORKS non-active chapters do not return before rendering');

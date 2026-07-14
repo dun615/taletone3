@@ -10,7 +10,6 @@
   var liveSiteContent = null;
   var rendering = false;
   var mounted = false;
-  var renderTimer = 0;
   var dragState = { active: false, startX: 0, lastX: 0, startPosition: 0, moved: false, stage: null, step: 120 };
   var suppressClick = false;
   var pointerMoveFrame = 0;
@@ -837,7 +836,8 @@
 
   function isWorksChapterActive() {
     var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
-    return !activeChapter || activeChapter === 'works';
+    if (activeChapter) return activeChapter === 'works';
+    return routeSectionId() === 'c-works' || location.hash === '#c-works';
   }
 
   function isShowcasePlaybackView() {
@@ -1964,13 +1964,6 @@
     return app;
   }
 
-  function scheduleRender() {
-    clearTimeout(renderTimer);
-    renderTimer = setTimeout(function () {
-      if (works.length) render();
-    }, 80);
-  }
-
   function waitForHost(attempt) {
     attempt = attempt || 0;
     var app = ensureRoot();
@@ -2007,11 +2000,6 @@
     resetSubState(works[0]);
     ensureSelectedVisible();
     setTimeout(function () { waitForHost(0); }, 260);
-    setInterval(function () {
-      if (rendering || !works.length) return;
-      var app = document.getElementById('tt-gh-works-app');
-      if (mounted && (!app || !app.querySelector('.tt-gh-shell'))) { scheduleRender(); return; }
-    }, 1000);
   }
 
   function setEditorData(json) {
