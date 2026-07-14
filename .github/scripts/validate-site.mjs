@@ -113,7 +113,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
     assert(decodedScript.includes('horizon -> water impact -> underwater -> real HOME assembly'), `${file}: restored plunge sequence is missing`);
     assert(decodedScript.includes("#c-home > [data-px],#c-home > [data-reveal],#c-home > [data-bob]"), `${file}: intro does not assemble the real HOME elements`);
-    assert(decodedScript.includes("forceIntro=location.search.includes('intro=1')"), `${file}: forced intro replay query is missing`);
+    assert(decodedScript.includes("forceIntro=new URLSearchParams(location.search).get('intro')==='1'"), `${file}: forced intro replay query is missing`);
     assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v3','1')"), `${file}: restored intro session key is stale`);
     assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
     assert(decodedScript.includes('mobile?1.35:2'), `${file}: mobile canvas DPR cap is missing`);
