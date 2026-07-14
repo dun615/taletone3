@@ -46,13 +46,19 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260715-idle-lifecycle-p2-v1',
+  'assets/css/works.css': '20260715-font-language-order-v1',
   'assets/js/works.js': '20260715-nearby-data-p2-v1',
 };
 const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
 const routeDocumentBudgetBytes = 475_000;
 const decodedTemplateBudgetBytes = 165_000;
 const decodedScriptBudgetBytes = 180_000;
+const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;family=Noto+Sans+KR:wght@400..800&amp;display=swap';
+const expectedFontAssets = {
+  'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
+  'assets/fonts/hanken-grotesk-latin-italic-v12.woff2': ['BB432642D7E97D11BD8F7ADBCB79DC69B772211C9B6EAE5251A969496674D299', 35_592],
+  'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
+};
 
 const imageSlotJs = await text('assets/js/image-slot.js');
 assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
@@ -70,8 +76,27 @@ const required = [
   'assets/data/seo-content.json', 'assets/data/seo-content.js',
   'assets/data/works-data.json', 'assets/vendor/react-18.3.1.min.js',
   'assets/vendor/react-dom-18.3.1.min.js',
+  ...Object.keys(expectedFontAssets), 'assets/fonts/LICENSES.txt',
+  '.github/scripts/validate-runtime-performance.mjs', '.github/workflows/site-validation.yml',
 ];
 for (const file of required) assert(await exists(file), `missing required file: ${file}`);
+for (const [file, [expectedHash, expectedBytes]] of Object.entries(expectedFontAssets)) {
+  if (!await exists(file)) continue;
+  const bytes = await readFile(path.join(root, file));
+  assert(bytes.length === expectedBytes, `${file}: unexpected font byte size`);
+  assert(createHash('sha256').update(bytes).digest('hex').toUpperCase() === expectedHash, `${file}: font asset hash mismatch`);
+}
+const runtimePerformanceValidator = await text('.github/scripts/validate-runtime-performance.mjs');
+const validationWorkflow = await text('.github/workflows/site-validation.yml');
+for (const requiredGuard of [
+  'maxTransferBytes', 'maxRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
+  'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
+  'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
+  "dataset.ttMediaPlayback === 'paused'", 'members-keyboard-dialog', 'news-language-dialog',
+]) {
+  assert(runtimePerformanceValidator.includes(requiredGuard), `runtime performance validator is missing guard: ${requiredGuard}`);
+}
+assert(validationWorkflow.includes('node-version: 24') && validationWorkflow.includes('node .github/scripts/validate-runtime-performance.mjs'), 'site-validation workflow does not run the browser performance budgets');
 
 const payloadHashes = [];
 const scriptPayloadHashes = [];
@@ -99,6 +124,8 @@ for (const [key, file, route, expectedTitle] of routes) {
   assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
   assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
   assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
+  assert(html.includes('<link rel="preload" href="assets/fonts/hanken-grotesk-latin-normal-v12.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Hanken Grotesk preload is missing`);
+  assert(html.includes('<link rel="preload" href="assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Quicksand preload is missing`);
 
   const ld = attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i);
   try { JSON.parse(ld); } catch { errors.push(`${file}: invalid JSON-LD`); }
@@ -113,9 +140,21 @@ for (const [key, file, route, expectedTitle] of routes) {
     for (const [asset, cacheKey] of Object.entries(expectedCacheKeys)) {
       assert(decoded.includes(`${asset}?v=${cacheKey}`), `${file}: stale cache key for ${asset}`);
     }
+    assert(decoded.includes(expectedFontStylesheet), `${file}: optimized font stylesheet query is missing`);
+    assert(!decoded.includes('family=Quicksand') && !decoded.includes('family=Hanken+Grotesk'), `${file}: remote Latin font request returned`);
+    assert(!decoded.includes('Noto+Sans+JP:wght@400;500;600;700;800') && !decoded.includes('Noto+Sans+KR:wght@400;500;600;700;800'), `${file}: duplicate per-weight CJK font CSS returned`);
+    assert((decoded.match(/hanken-grotesk-latin-normal-v12\.woff2/g) || []).length === 5, `${file}: local Hanken Grotesk normal weights changed`);
+    assert((decoded.match(/hanken-grotesk-latin-italic-v12\.woff2/g) || []).length === 3, `${file}: local Hanken Grotesk italic weights changed`);
+    assert((decoded.match(/quicksand-latin-normal-v37\.woff2/g) || []).length === 4, `${file}: local Quicksand weights changed`);
+    assert(decoded.includes(":root{--tt-noto-primary:'Noto Sans KR';--tt-noto-secondary:'Noto Sans JP';") && decoded.includes(":root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Noto Sans KR'}"), `${file}: language-aware CJK font order is missing`);
+    const decodedFontDeclarations = [...decoded.matchAll(/font-family\s*:\s*([^;}\r\n]+)/gi)].map((match) => match[1]);
+    assert(!decodedFontDeclarations.some((value) => /Noto Sans (?:KR|JP)/.test(value)), `${file}: literal CJK family order remains in a template font declaration`);
+    assert(decoded.includes("font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"), `${file}: Japanese language button does not preserve Quicksand before the CJK fallbacks`);
     assert(decoded.includes('id="intro-skyw"') && decoded.includes('id="intro-ocean"'), `${file}: original above-water intro is missing`);
     assert(decoded.includes('id="intro-sea"') && decoded.includes('id="intro-bubbles"'), `${file}: original underwater intro is missing`);
     assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
+    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: generic story bridges do not reserve their final height`);
+    assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
     assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
   }
 
@@ -152,7 +191,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('var geometryDirty=this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight;') && decodedScript.includes('if(geometryDirty) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
     assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
     assert(decodedScript.includes('this._layoutGeometryDirty=true;\n      this._sceneDirty=true;\n      this.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
-    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds\)/g) || []).length === 6, `${file}: decorative motion still measures the viewport every frame`);
+    assert(decodedScript.includes('isNearViewport(el, margin, bounds, scrollTop, viewportHeight){'), `${file}: viewport helper does not accept cached loop geometry`);
+    assert(decodedScript.includes('var vh=viewportHeight==null?(window.innerHeight||800):viewportHeight') && decodedScript.includes('scrollTop==null?(this.scroller?this.scroller.scrollTop:window.scrollY):scrollTop'), `${file}: viewport helper no longer falls back safely outside the main loop`);
+    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds,sc,vhR\)/g) || []).length === 6, `${file}: decorative motion still rereads viewport geometry between style writes`);
     assert(decodedScript.includes('this._layoutGeometryDirty = true;') && decodedScript.includes('this._layoutGeometryDirty=true;'), `${file}: shared layout geometry lifecycle invalidation is missing`);
     assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
     assert(!drawBody.includes("document.getElementById('deep-book-svg')") && !drawBody.includes('getBoundingClientRect()') && !drawBody.includes('refreshLayoutGeometry'), `${file}: draw still performs layout measurement`);
@@ -164,6 +205,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation order changed`);
     assert((visibilityHandlerSource.match(/requestAnimationFrame\(this\.loop\)/g) || []).length === 1 && visibilityHandlerSource.includes('if(!this.raf){'), `${file}: visible animation loop does not resume exactly once`);
     assert(decodedScript.includes("document.addEventListener('visibilitychange',this._visibilityHandler)") && decodedScript.includes("document.removeEventListener('visibilitychange',this._visibilityHandler)"), `${file}: animation visibility lifecycle is incomplete`);
+    const synchronousLangIndex = decodedScript.indexOf("document.documentElement.lang=this.lang==='kr'?'ko':(this.lang==='jp'?'ja':'en');");
+    const deferredLangIndex = decodedScript.indexOf('this._langInitTimer=setTimeout');
+    assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
     assert(decodedScript.includes('if(sceneDirty||bridgePlaying) this.updateBridges(vhR);'), `${file}: bridge work is not limited to changes or active playback`);
     assert(decodedScript.includes('if((sceneDirty||this._transPlaying||this.lastActive===1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
@@ -172,6 +216,8 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
     assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
     assert(decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','paused')") && decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','running')"), `${file}: bridge CSS animation lifecycle is incomplete`);
+    assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
+    assert(!decodedScript.includes("outer.style.minHeight='100vh'") && !decodedScript.includes("outer.style.height='100vh'"), `${file}: runtime bridge geometry writes can reintroduce layout shift`);
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
@@ -267,12 +313,16 @@ const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
 assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/JS drift');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
+for (const [name, value] of Object.entries({ fontStack: siteJson.typography?.fontStack, fontStackJP: siteJson.typography?.fontStackJP })) {
+  assert(value?.includes('var(--tt-noto-primary)') && value?.includes('var(--tt-noto-secondary)'), `site typography ${name} is not language-aware`);
+  assert(!/Noto Sans (?:KR|JP)/.test(value || ''), `site typography ${name} contains a fixed CJK order`);
+}
 const optimizedNewsImagePath = 'assets/works/images/bubblesweet-news-1920.webp';
 const legacyNewsImagePath = 'assets/works/images/4K.mp4_20260711_020133.397.png';
 const optimizedNewsEntry = (siteJson.news || []).find((item) => item.slotId === 'news-3');
 assert(optimizedNewsEntry?.image === optimizedNewsImagePath, 'news-3 does not use the optimized WebP image');
 assert(!JSON.stringify(siteJson).replace(/\\/g, '/').includes(legacyNewsImagePath), 'legacy 8.94 MB NEWS PNG is still referenced');
-assert(await exists(legacyNewsImagePath), 'legacy NEWS source image was removed instead of preserved');
+assert(!(await exists(legacyNewsImagePath)), 'removed legacy NEWS source image returned');
 const optimizedNewsImage = await readFile(path.join(root, optimizedNewsImagePath));
 assert(optimizedNewsImage.toString('ascii', 0, 4) === 'RIFF' && optimizedNewsImage.toString('ascii', 8, 16) === 'WEBPVP8 ', 'optimized NEWS image is not lossy WebP');
 assert((optimizedNewsImage.readUInt16LE(26) & 0x3fff) === 1920 && (optimizedNewsImage.readUInt16LE(28) & 0x3fff) === 1080, 'optimized NEWS image must be 1920x1080');
@@ -297,12 +347,14 @@ for (const image of optimizedWorkImages) {
   assert(!normalizedWorksSource.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced`);
   assert(normalizedDecodedApp.split(image.path).length - 1 === image.templateRefs, `${image.path}: unexpected encoded-template reference count`);
   assert(!normalizedDecodedApp.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced by the encoded template`);
-  assert(await exists(image.legacy), `${image.legacy}: original source image was removed instead of preserved`);
+  assert(!(await exists(image.legacy)), `${image.legacy}: removed oversized source image returned`);
   const bytes = await readFile(path.join(root, image.path));
   assert(bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 16) === 'WEBPVP8 ', `${image.path}: expected lossy WebP`);
   assert((bytes.readUInt16LE(26) & 0x3fff) === image.width && (bytes.readUInt16LE(28) & 0x3fff) === image.height, `${image.path}: unexpected dimensions`);
   assert(bytes.byteLength <= 300_000, `${image.path}: exceeds 300 KB budget (${bytes.byteLength} bytes)`);
 }
+const removedLogoMockSource = 'assets/pictures/logomock.png';
+assert(!(await exists(removedLogoMockSource)), `${removedLogoMockSource}: removed oversized source image returned`);
 const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
 for (const member of siteJson.members || []) {
   if (Object.hasOwn(expectedMemberDots, member.name)) {
@@ -327,6 +379,10 @@ for (const match of normalizedDecodedApp.matchAll(/["'](assets\/works\/images\/[
 const referencedWorkImageHashes = new Map();
 for (const file of assetRefs) {
   assert(await exists(file), `missing referenced asset: ${file}`);
+  if (/\.mp3$/i.test(file)) {
+    const bytes = await readFile(path.join(root, file));
+    assert(bytes.byteLength <= 3_200_000, `${file}: referenced MP3 exceeds the current 3.2 MB quality-preserving budget (${bytes.byteLength} bytes)`);
+  }
   if (/^assets\/works\/images\//i.test(file)) {
     const bytes = await readFile(path.join(root, file));
     assert(bytes.byteLength <= 300_000, `${file}: referenced WORKS image exceeds 300 KB budget (${bytes.byteLength} bytes)`);
@@ -355,6 +411,11 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
+assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
+assert((worksCss.match(/var\(--tt-noto-primary\)/g) || []).length === 11 && (worksCss.match(/var\(--tt-noto-secondary\)/g) || []).length === 11, 'WORKS CSS language-aware CJK fallbacks changed');
+const storyBridgeRule = worksCss.match(/\.tt-gh-story-bridge \{[\s\S]*?\n\}/)?.[0] || '';
+assert(/height:\s*100vh;/.test(storyBridgeRule) && /min-height:\s*100vh;/.test(storyBridgeRule), 'WORKS story bridge does not reserve its final height');
+assert(!/height:\s*64vh;/.test(storyBridgeRule), 'WORKS story bridge can still expand after first paint');
 assert(Buffer.byteLength(worksCss) <= 150_000, 'WORKS CSS exceeds 150 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 125_000, 'WORKS JavaScript exceeds 125 KB source budget');
 assert(worksJs.includes('var worksDataPromise = null;') && worksJs.includes('if (worksDataPromise) return worksDataPromise;'), 'WORKS data fetch is not single-flight');

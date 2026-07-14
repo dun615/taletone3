@@ -624,8 +624,8 @@
     "memberNameWeight": 700,
     "memberRoleSize": "11px",
     "memberRoleWeight": 700,
-    "fontStack": "'Hanken Grotesk','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',system-ui,sans-serif",
-    "fontStackJP": "'Quicksand','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic','Noto Sans JP',sans-serif"
+    "fontStack": "'Hanken Grotesk','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),system-ui,sans-serif",
+    "fontStackJP": "'Quicksand','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),sans-serif"
   },
   "spacing": {
     "memberCardGap": "26px",
