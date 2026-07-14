@@ -2691,13 +2691,24 @@
     setData: setEditorData,
     setMeta: setMeta,
     select: selectEditorWork,
-    pauseAll: pauseAll
+    pauseAll: function () { pauseAll(state.mode !== 'showcase' || !isWorksChapterActive()); }
   };
 
   window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
     var detail = event && event.detail ? event.detail : {};
-    if (detail.chapter && detail.chapter !== 'works') pauseAll(true);
-    if (detail.chapter) render();
+    var chapter = detail.chapter;
+    if (!chapter) return;
+    if (chapter !== 'works') {
+      pauseAll(true);
+      return;
+    }
+    var app = document.getElementById('tt-gh-works-app');
+    if (!mounted || !app || app !== root || !app.querySelector('.tt-gh-shell')) {
+      render();
+      return;
+    }
+    if (state.mode === 'showcase') updateShowcaseDom();
+    else bindLazyGalleryImages();
   });
 
   window.addEventListener('message', function (event) {

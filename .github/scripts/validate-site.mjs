@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
-  'assets/js/works.js': '20260714-lazy-work-images-p1-v1',
+  'assets/js/works.js': '20260714-chapter-rerender-p2-v1',
 };
 const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
 
@@ -238,6 +238,24 @@ assert((optimizedNewsImage.readUInt16LE(26) & 0x3fff) === 1920 && (optimizedNews
 assert(optimizedNewsImage.byteLength <= 300_000, `optimized NEWS image exceeds 300 KB budget: ${optimizedNewsImage.byteLength} bytes`);
 assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
+const normalizedWorksSource = JSON.stringify(worksJson).replace(/\\/g, '/');
+const normalizedDecodedApp = decodedApp.replace(/\\/g, '/');
+const optimizedWorkImages = [
+  { path: 'assets/works/images/bubblesweet-work-1024.webp', legacy: 'assets/works/images/bubblesweet.png', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
+  { path: 'assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp', legacy: 'assets/works/images/asset-mq832pb9-dgmx-early.jpg-f814379f3b3a.jpg', width: 1024, height: 1024, refs: 5, templateRefs: 5 },
+  { path: 'assets/works/images/kanism-jp-cover-1024-78517c40b71d-v1.webp', legacy: 'assets/works/images/asset-mq83ztj3-ncy4-.jpg-78517c40b71d.jpg', width: 1024, height: 1024, refs: 1, templateRefs: 1 },
+];
+for (const image of optimizedWorkImages) {
+  assert(normalizedWorksSource.split(image.path).length - 1 === image.refs, `${image.path}: unexpected works-data reference count`);
+  assert(!normalizedWorksSource.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced`);
+  assert(normalizedDecodedApp.split(image.path).length - 1 === image.templateRefs, `${image.path}: unexpected encoded-template reference count`);
+  assert(!normalizedDecodedApp.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced by the encoded template`);
+  assert(await exists(image.legacy), `${image.legacy}: original source image was removed instead of preserved`);
+  const bytes = await readFile(path.join(root, image.path));
+  assert(bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 16) === 'WEBPVP8 ', `${image.path}: expected lossy WebP`);
+  assert((bytes.readUInt16LE(26) & 0x3fff) === image.width && (bytes.readUInt16LE(28) & 0x3fff) === image.height, `${image.path}: unexpected dimensions`);
+  assert(bytes.byteLength <= 300_000, `${image.path}: exceeds 300 KB budget (${bytes.byteLength} bytes)`);
+}
 const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
 for (const member of siteJson.members || []) {
   if (Object.hasOwn(expectedMemberDots, member.name)) {
@@ -256,7 +274,16 @@ const collectAssets = (value) => {
   }
 };
 [siteJson, worksJson].forEach(collectAssets);
-for (const file of assetRefs) assert(await exists(file), `missing referenced asset: ${file}`);
+for (const match of normalizedDecodedApp.matchAll(/["'](assets\/works\/images\/[^"']+)["']/gi)) {
+  assetRefs.add(match[1].split(/[?#]/)[0]);
+}
+for (const file of assetRefs) {
+  assert(await exists(file), `missing referenced asset: ${file}`);
+  if (/^assets\/works\/images\//i.test(file)) {
+    const bytes = await readFile(path.join(root, file));
+    assert(bytes.byteLength <= 300_000, `${file}: referenced WORKS image exceeds 300 KB budget (${bytes.byteLength} bytes)`);
+  }
+}
 
 const support = await text('support.js');
 assert(support.includes('assets/vendor/react-18.3.1.min.js'), 'React is not self-hosted');
@@ -293,7 +320,11 @@ assert(imgTagSource.includes("var sourceAttribute = defer ? 'data-works-src' : '
 assert(worksJs.includes("imgTag(unit, '', !loadImages || !layout.visible)"), 'hidden Showcase cards can load images eagerly');
 assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"), 'offscreen Gallery cards can load images eagerly');
 assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
-assert(worksJs.includes("if (detail.chapter) render();"), 'WORKS images are not reconciled when the active chapter changes');
+assert(!/if\s*\(detail\.chapter\)\s*render\(\)/.test(worksJs), 'WORKS unconditional chapter-change render returned');
+assert(/pauseAll:\s*function\s*\(\)\s*\{\s*pauseAll\(state\.mode\s*!==\s*'showcase'\s*\|\|\s*!isWorksChapterActive\(\)\);\s*\}/.test(worksJs), 'WORKS external pause API no longer separates visible UI sync from hidden chapters');
+assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(true\);\s*return;/.test(worksJs), 'WORKS non-active chapters do not return before rendering');
+assert(worksJs.includes("if (!mounted || !app || app !== root || !app.querySelector('.tt-gh-shell')) {"), 'WORKS live host integrity guard is missing');
+assert(/if\s*\(state\.mode\s*===\s*'showcase'\)\s*updateShowcaseDom\(\);\s*else\s*bindLazyGalleryImages\(\);/.test(worksJs), 'WORKS chapter entry no longer uses incremental hydration');
 const updateShowcaseDomSource = worksJs.match(/function updateShowcaseDom\(layoutOnly\) \{[\s\S]*?\n  \}\n\n  function onClick/)?.[0] || '';
 const dragImageHydrationIndex = updateShowcaseDomSource.indexOf("if (img && layout.visible && img.hasAttribute('data-works-src')) loadDeferredImage(img);");
 const layoutOnlyReturnIndex = updateShowcaseDomSource.indexOf('if (layoutOnly) return;');
