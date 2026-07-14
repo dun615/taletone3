@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
-  'assets/js/works.js': '20260713-no-lower-select-v1',
+  'assets/js/works.js': '20260714-showcase-only-audio-v2',
 };
 const expectedSiteContentCacheKey = '20260714-member-colors-v4';
 
@@ -253,6 +253,15 @@ for (const [file, expected] of Object.entries(sri)) {
 }
 
 const worksCss = await text('assets/css/works.css');
+const worksJs = await text('assets/js/works.js');
+assert(worksJs.includes('function isShowcasePlaybackView()'), 'WORKS playback view guard is missing');
+assert(worksJs.includes("state.mode === 'showcase'") && worksJs.includes('!state.modalOpen') && worksJs.includes('!state.videoOpen'), 'WORKS playback guard does not require an uncovered Showcase');
+assert(worksJs.includes("if (nextMode !== 'showcase') pauseAll(true);"), 'Gallery entry does not force Pause state');
+assert(worksJs.includes('function pauseAll(skipRender)') && worksJs.includes('if (!skipRender && !updateShowcaseDom()) render();'), 'WORKS transition-safe pause path is missing');
+assert(worksJs.includes('var playbackSessionToken = 0;') && worksJs.includes('sessionToken !== playbackSessionToken || signature !== audioEntriesSignature(currentAudioEntries())'), 'native WORKS playback is missing stale-session protection');
+assert(!worksJs.includes('galleryWasPlaying'), 'Gallery detail still restores Showcase audio');
+assert(worksJs.includes("if (!isShowcasePlaybackView()) {\n      if (state.playing) pauseAll();"), 'WORKS play action bypasses the Showcase guard');
+assert(worksJs.includes('if (state.playing) pauseAll();\n    globalUxState.dialog = dialog;'), 'site detail dialogs do not pause WORKS audio');
 assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
 assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');

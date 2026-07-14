@@ -23,7 +23,7 @@
   var layeredAudioContext = null;
   var layeredBufferPool = new Map();
   var layeredPlayback = null;
-  var layeredPlayToken = 0;
+  var playbackSessionToken = 0;
   var layeredFallbackActive = false;
   var pausedLayeredSignature = '';
   var pausedLayeredOffset = 0;
@@ -887,12 +887,26 @@
   }
 
   function resetAudioForContentChange() {
-    layeredPlayToken += 1;
+    playbackSessionToken += 1;
     stopLayeredPlayback(false);
     layeredFallbackActive = false;
     pausedLayeredSignature = '';
     pausedLayeredOffset = 0;
     audioPool.forEach(function (audio) { audio.pause(); });
+  }
+
+  function isShowcasePlaybackView() {
+    var section = document.getElementById('c-works');
+    var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
+    var dialogOpen = !!(document.body && document.body.classList.contains('tt-site-dialog-open'));
+    return state.mode === 'showcase'
+      && !state.modalOpen
+      && !state.videoOpen
+      && !dialogOpen
+      && !document.hidden
+      && (!activeChapter || activeChapter === 'works')
+      && !!section
+      && isSectionVisible(section);
   }
 
   function applyLayeredGains(entries, fadeSeconds) {
@@ -920,7 +934,9 @@
     });
   }
 
-  function startNativePlayback(entries, offset, layeredFallback) {
+  function startNativePlayback(entries, offset, layeredFallback, token) {
+    var sessionToken = token == null ? ++playbackSessionToken : token;
+    var signature = audioEntriesSignature(entries);
     var activeEntry = activeAudioEntry(entries);
     var targets = layeredFallback ? entries : (activeEntry ? [activeEntry] : []);
     layeredFallbackActive = !!layeredFallback;
@@ -933,26 +949,35 @@
     });
     return Promise.allSettled(targets.map(function (entry) { return startAudio(ensureAudio(entry)); }))
       .then(function (results) {
+        if (sessionToken !== playbackSessionToken || signature !== audioEntriesSignature(currentAudioEntries())) return;
         var played = results.some(function (result) { return result.status === 'fulfilled'; });
         if (!played) throw new Error('Audio playback was blocked.');
+        if (!state.playing || !isShowcasePlaybackView()) {
+          pauseAll();
+          return;
+        }
         setMediaStatus('playback', 'playing');
         syncAudioState();
       });
   }
 
-  function startLayeredPlayback(entries) {
+  function startLayeredPlayback(entries, token) {
     var context = ensureLayeredAudioContext();
     var signature = audioEntriesSignature(entries);
     var offset = pausedLayeredSignature === signature ? pausedLayeredOffset : 0;
-    var token = ++layeredPlayToken;
-    if (!context) return startNativePlayback(entries, offset, true);
+    var sessionToken = token == null ? ++playbackSessionToken : token;
+    if (!context) return startNativePlayback(entries, offset, true, sessionToken);
     layeredFallbackActive = false;
     try {
       var resume = context.resume();
       if (resume && typeof resume.catch === 'function') resume.catch(function () {});
     } catch (_resumeError) {}
     return Promise.all(entries.map(function (entry) { return ensureLayeredBuffer(entry); })).then(function (buffers) {
-      if (token !== layeredPlayToken || !state.playing) return;
+      if (sessionToken !== playbackSessionToken || !state.playing) return;
+      if (!isShowcasePlaybackView()) {
+        pauseAll();
+        return;
+      }
       var latestEntries = currentAudioEntries();
       if (audioEntriesSignature(latestEntries) !== signature) return;
       stopLayeredPlayback(false);
@@ -986,15 +1011,16 @@
       };
       setMediaStatus('audio-engine', 'web-audio-layered');
       setMediaStatus('layered-sources', nodes.size);
-      setMediaStatus('layered-session', token);
+      setMediaStatus('layered-session', sessionToken);
       setMediaStatus('playback', 'playing');
       pausedLayeredSignature = signature;
       pausedLayeredOffset = offset;
       applyLayeredGains(latestEntries, 0);
       if (!updateShowcaseDom()) render();
     }).catch(function () {
-      if (token !== layeredPlayToken || !state.playing) return;
-      return startNativePlayback(currentAudioEntries(), offset, true).catch(function () {
+      if (sessionToken !== playbackSessionToken || !state.playing) return;
+      return startNativePlayback(currentAudioEntries(), offset, true, sessionToken).catch(function () {
+        if (sessionToken !== playbackSessionToken) return;
         state.playing = false;
         syncAudioState();
         if (!updateShowcaseDom()) render();
@@ -1003,6 +1029,10 @@
   }
 
   function syncAudioState() {
+    if (state.playing && !isShowcasePlaybackView()) {
+      pauseAll();
+      return;
+    }
     var entries = currentAudioEntries();
     var signature = audioEntriesSignature(entries);
     warmAudioEntries(entries);
@@ -1038,6 +1068,10 @@
   }
 
   function playCurrent() {
+    if (!isShowcasePlaybackView()) {
+      if (state.playing) pauseAll();
+      return;
+    }
     var entries = currentAudioEntries();
     if (!entries.length) {
       state.playing = false;
@@ -1046,9 +1080,11 @@
     }
     state.playing = true;
     var signature = audioEntriesSignature(entries);
+    var sessionToken = ++playbackSessionToken;
     var offset = entries.length > 1 ? (pausedLayeredSignature === signature ? pausedLayeredOffset : 0) : null;
-    if (entries.length > 1 && ensureLayeredAudioContext()) startLayeredPlayback(entries);
-    else startNativePlayback(entries, offset, entries.length > 1).catch(function () {
+    if (entries.length > 1 && ensureLayeredAudioContext()) startLayeredPlayback(entries, sessionToken);
+    else startNativePlayback(entries, offset, entries.length > 1, sessionToken).catch(function () {
+      if (sessionToken !== playbackSessionToken || signature !== audioEntriesSignature(currentAudioEntries())) return;
       state.playing = false;
       syncAudioState();
       if (!updateShowcaseDom()) render();
@@ -1056,7 +1092,7 @@
     if (!updateShowcaseDom()) render();
   }
 
-  function pauseAll() {
+  function pauseAll(skipRender) {
     var entries = currentAudioEntries();
     var signature = audioEntriesSignature(entries);
     if (layeredPlayback && layeredPlayback.signature === signature) stopLayeredPlayback(true);
@@ -1066,12 +1102,12 @@
       pausedLayeredSignature = signature;
       pausedLayeredOffset = activeAudio ? Number(activeAudio.currentTime) || 0 : 0;
     }
-    layeredPlayToken += 1;
+    playbackSessionToken += 1;
     state.playing = false;
     audioPool.forEach(function (audio) { audio.pause(); });
     layeredFallbackActive = false;
     setMediaStatus('playback', 'paused');
-    if (!updateShowcaseDom()) render();
+    if (!skipRender && !updateShowcaseDom()) render();
   }
 
   function selectIndex(index, keepPlayback) {
@@ -1125,7 +1161,9 @@
   }
 
   function setMode(mode) {
-    state.mode = mode === 'gallery' ? 'gallery' : 'showcase';
+    var nextMode = mode === 'gallery' ? 'gallery' : 'showcase';
+    if (nextMode !== 'showcase') pauseAll(true);
+    state.mode = nextMode;
     state.modalOpen = false;
     if (state.mode === 'gallery') preloadGalleryOpeningImages();
     render();
@@ -1617,6 +1655,7 @@
         resetSubState(currentWork());
         ensureSelectedVisible();
       }
+      pauseAll(true);
       state.videoOpen = true;
       render();
       return;
@@ -1639,12 +1678,12 @@
     if (action === 'gallery-open') {
       if (suppressClick) return;
       rememberDialogTrigger(button);
-      var galleryWasPlaying = state.playing;
+      pauseAll(true);
       resetAudioForContentChange();
       state.selected = clamp(Number(button.getAttribute('data-index')) || 0, 0, works.length - 1);
       resetSubState(currentWork());
       state.modalOpen = true;
-      if (galleryWasPlaying) playCurrent(); else syncAudioState();
+      syncAudioState();
       render();
       return;
     }
@@ -1934,9 +1973,7 @@
 
   function pauseWhenWorksHidden() {
     if (!state.playing) return;
-    var section = document.getElementById('c-works');
-    var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
-    if (document.hidden || (activeChapter && activeChapter !== 'works') || !section || !isSectionVisible(section)) pauseAll();
+    if (!isShowcasePlaybackView()) pauseAll();
   }
 
   function requestPauseWhenWorksHidden() {
@@ -2664,6 +2701,7 @@
     if (!dialog || dialog === globalUxState.dialog) return;
     if (globalUxState.dialog) deactivateSiteDialog(false);
     closeMobileChapterMenu(false);
+    if (state.playing) pauseAll();
     globalUxState.dialog = dialog;
     dialog.classList.add('tt-site-dialog');
     dialog.setAttribute('role', 'dialog');
