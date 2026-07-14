@@ -47,7 +47,7 @@ const rawEditorMarkers = [
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
-  'assets/js/works.js': '20260714-showcase-only-audio-v2',
+  'assets/js/works.js': '20260714-no-audio-preload-p0-v1',
 };
 const expectedSiteContentCacheKey = '20260714-member-colors-v4';
 
@@ -254,6 +254,17 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
+const removedAudioPreloadSymbols = [
+  'allLayeredAudioWarmStarted',
+  'warmAudioEntries',
+  'collectLayeredAudioEntries',
+  'preloadAllLayeredAudio',
+  'scheduleLayeredAudioPreload',
+];
+for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
+const syncAudioStateSource = worksJs.match(/function syncAudioState\(\) \{[\s\S]*?\n  \}\n\n  function playCurrent\(\)/)?.[0] || '';
+assert(/if \(!state\.playing\) \{\s*if \(layeredPlayback\) stopLayeredPlayback\(true\);\s*audioPool\.forEach\(function \(audio\) \{ audio\.pause\(\); \}\);\s*layeredFallbackActive = false;\s*return;\s*\}/.test(syncAudioStateSource), 'WORKS paused state can create or preload audio');
+assert(syncAudioStateSource.indexOf('if (!state.playing)') < syncAudioStateSource.indexOf('currentAudioEntries()'), 'WORKS paused guard must run before audio entries are created');
 assert(worksJs.includes('function isShowcasePlaybackView()'), 'WORKS playback view guard is missing');
 assert(worksJs.includes("state.mode === 'showcase'") && worksJs.includes('!state.modalOpen') && worksJs.includes('!state.videoOpen'), 'WORKS playback guard does not require an uncovered Showcase');
 assert(worksJs.includes("if (nextMode !== 'showcase') pauseAll(true);"), 'Gallery entry does not force Pause state');

@@ -27,7 +27,6 @@
   var layeredFallbackActive = false;
   var pausedLayeredSignature = '';
   var pausedLayeredOffset = 0;
-  var allLayeredAudioWarmStarted = false;
 
   var state = {
     mode: 'showcase',
@@ -778,66 +777,6 @@
     return layeredBufferPool.get(url);
   }
 
-  function warmAudioEntries(entries) {
-    if (!entries.length) return;
-    if (entries.length > 1 && ensureLayeredAudioContext()) {
-      entries.forEach(function (entry) { ensureLayeredBuffer(entry).catch(function () {}); });
-      return;
-    }
-    entries.forEach(function (entry) { ensureAudio(entry); });
-  }
-
-  function collectLayeredAudioEntries(value, entries) {
-    if (Array.isArray(value)) {
-      value.forEach(function (item) { collectLayeredAudioEntries(item, entries); });
-      return;
-    }
-    if (!value || typeof value !== 'object') return;
-    if (Array.isArray(value.versions)) {
-      var versions = value.versions.filter(function (version) { return version && version.audio; });
-      if (versions.length > 1) {
-        versions.forEach(function (version, index) {
-          var audio = String(version.audio).replace(/\\/g, '/');
-          entries.set(audio, {
-            key: ['preload', languageLabel(version, index), audio].join('::'),
-            audio: audio,
-            language: languageLabel(version, index),
-            active: index === 0
-          });
-        });
-      }
-    }
-    Object.keys(value).forEach(function (key) {
-      if (key !== 'versions') collectLayeredAudioEntries(value[key], entries);
-    });
-  }
-
-  function preloadAllLayeredAudio() {
-    if (allLayeredAudioWarmStarted || !works.length || !ensureLayeredAudioContext()) return;
-    allLayeredAudioWarmStarted = true;
-    var entries = new Map();
-    works.forEach(function (work) { collectLayeredAudioEntries(work, entries); });
-    var requests = [];
-    entries.forEach(function (entry) { requests.push(ensureLayeredBuffer(entry)); });
-    setMediaStatus('layered-total', requests.length);
-    Promise.allSettled(requests).then(function (results) {
-      var ready = results.filter(function (result) { return result.status === 'fulfilled'; }).length;
-      setMediaStatus('layered-ready', ready);
-    });
-  }
-
-  function scheduleLayeredAudioPreload() {
-    if (/\/works\/?$/i.test(location.pathname)) {
-      setTimeout(preloadAllLayeredAudio, 180);
-      return;
-    }
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(preloadAllLayeredAudio, { timeout: 2400 });
-    } else {
-      setTimeout(preloadAllLayeredAudio, 1800);
-    }
-  }
-
   function normalizedAudioTime(audio, time) {
     var value = Number(time);
     if (!Number.isFinite(value) || value < 0) value = 0;
@@ -1033,9 +972,14 @@
       pauseAll();
       return;
     }
+    if (!state.playing) {
+      if (layeredPlayback) stopLayeredPlayback(true);
+      audioPool.forEach(function (audio) { audio.pause(); });
+      layeredFallbackActive = false;
+      return;
+    }
     var entries = currentAudioEntries();
     var signature = audioEntriesSignature(entries);
-    warmAudioEntries(entries);
     if (layeredPlayback) {
       if (!state.playing || layeredPlayback.signature !== signature) stopLayeredPlayback(!state.playing);
       else {
@@ -2151,7 +2095,6 @@
     ensureSelectedVisible();
     preloadNearbyImages(0);
     scheduleAllWorkImagePreload();
-    scheduleLayeredAudioPreload();
     setTimeout(function () {
       var directWorksRoute = /\/works\/?$/i.test(location.pathname);
       preloadGalleryOpeningImages(directWorksRoute ? galleryEagerImageCount() : Math.min(6, galleryEagerImageCount()));
@@ -2171,13 +2114,11 @@
     works = json.works || [];
     logos = json.clientLogos || [];
     _allImagePreloadStarted = false;
-    allLayeredAudioWarmStarted = false;
     state.selected = clamp(state.selected, 0, Math.max(0, works.length - 1));
     resetSubState(currentWork());
     ensureSelectedVisible();
     preloadNearbyImages(state.selected);
     scheduleAllWorkImagePreload();
-    scheduleLayeredAudioPreload();
     render();
   }
 
