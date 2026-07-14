@@ -137,6 +137,22 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
     assert(decodedScript.includes('mobile?1.35:2'), `${file}: mobile canvas DPR cap is missing`);
     assert(decodedScript.includes("this.scroller.addEventListener('scroll',this._mobileScrollHandler"), `${file}: mobile scroll busy path is missing`);
+    const drawBody = (decodedScript.match(/\n  draw\(n, pal, fastMobile\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
+    const drawRailBody = (decodedScript.match(/\n  drawRail\(n, pal, time\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
+    assert(decodedScript.includes('refreshLayoutGeometry(layoutHeight){') && decodedScript.includes('el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};'), `${file}: shared layout geometry cache is missing`);
+    assert(decodedScript.includes('this._railCenters.push(section.offsetTop+section.clientHeight*0.5);'), `${file}: rail centers are not cached with layout geometry`);
+    assert(decodedScript.includes('docY:bookRect.top+scrollTop+bookRect.height*0.30-currentFloatY') && decodedScript.includes('bookGeometry.docY+bookFloatY'), `${file}: deep-book float compensation is missing`);
+    assert(decodedScript.includes('fl._floatY=Number(floatY);'), `${file}: live deep-book float offset is not retained`);
+    assert(decodedScript.includes('if(this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
+    assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
+    assert(decodedScript.includes('this._layoutGeometryDirty=true;\n      this.introDone=true;'), `${file}: intro completion does not invalidate layout geometry`);
+    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds\)/g) || []).length === 6, `${file}: decorative motion still measures the viewport every frame`);
+    assert(decodedScript.includes('this._layoutGeometryDirty = true;') && decodedScript.includes('this._layoutGeometryDirty=true;'), `${file}: shared layout geometry lifecycle invalidation is missing`);
+    assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
+    assert(!drawBody.includes("document.getElementById('deep-book-svg')") && !drawBody.includes('getBoundingClientRect()') && !drawBody.includes('refreshLayoutGeometry'), `${file}: draw still performs layout measurement`);
+    assert(!decodedScript.includes('refreshMotionBounds') && !decodedScript.includes('_motionBoundsDirty') && !decodedScript.includes('_motionBoundsHeight'), `${file}: obsolete motion-only cache state remains`);
+    assert((decodedScript.match(/new MutationObserver/g) || []).length === 1, `${file}: redundant mutation observer added for geometry caching`);
+    assert(!decodedScript.includes('fastMobile ? 0.38 : 0.72'), `${file}: unreachable fast-mobile motion margin returned`);
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
