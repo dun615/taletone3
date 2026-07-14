@@ -49,7 +49,7 @@ const expectedCacheKeys = {
   'assets/css/works.css': '20260714-plunge-mobile-v2',
   'assets/js/works.js': '20260714-lazy-work-images-p1-v1',
 };
-const expectedSiteContentCacheKey = '20260714-member-colors-v4';
+const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
 
 const imageSlotJs = await text('assets/js/image-slot.js');
 assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
@@ -226,6 +226,16 @@ const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
 assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/JS drift');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
+const optimizedNewsImagePath = 'assets/works/images/bubblesweet-news-1920.webp';
+const legacyNewsImagePath = 'assets/works/images/4K.mp4_20260711_020133.397.png';
+const optimizedNewsEntry = (siteJson.news || []).find((item) => item.slotId === 'news-3');
+assert(optimizedNewsEntry?.image === optimizedNewsImagePath, 'news-3 does not use the optimized WebP image');
+assert(!JSON.stringify(siteJson).replace(/\\/g, '/').includes(legacyNewsImagePath), 'legacy 8.94 MB NEWS PNG is still referenced');
+assert(await exists(legacyNewsImagePath), 'legacy NEWS source image was removed instead of preserved');
+const optimizedNewsImage = await readFile(path.join(root, optimizedNewsImagePath));
+assert(optimizedNewsImage.toString('ascii', 0, 4) === 'RIFF' && optimizedNewsImage.toString('ascii', 8, 16) === 'WEBPVP8 ', 'optimized NEWS image is not lossy WebP');
+assert((optimizedNewsImage.readUInt16LE(26) & 0x3fff) === 1920 && (optimizedNewsImage.readUInt16LE(28) & 0x3fff) === 1080, 'optimized NEWS image must be 1920x1080');
+assert(optimizedNewsImage.byteLength <= 300_000, `optimized NEWS image exceeds 300 KB budget: ${optimizedNewsImage.byteLength} bytes`);
 assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
 const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
