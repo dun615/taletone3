@@ -45,11 +45,20 @@ const rawEditorMarkers = [
   'onclick="' + '{' + '{', 'value="' + '{' + '{',
 ];
 const expectedCacheKeys = {
-  'assets/js/image-slot.js': '20260710-p1',
+  'assets/js/image-slot.js': '20260714-p2',
   'assets/css/works.css': '20260714-plunge-mobile-v2',
   'assets/js/works.js': '20260714-lazy-work-images-p1-v1',
 };
 const expectedSiteContentCacheKey = '20260714-member-colors-v4';
+
+const imageSlotJs = await text('assets/js/image-slot.js');
+assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
+assert(imageSlotJs.includes("if (!slot.closest('#c-news')) return true;"), 'image-slot: hidden NEWS cards are not scoped for deferred loading');
+assert(imageSlotJs.includes("if (activeChapter) return activeChapter === 'news';"), 'image-slot: hidden NEWS cards are no longer gated by the active chapter');
+assert(imageSlotJs.includes("return /^\\/news(?:\\/index\\.html)?\\/?$/i.test(location.pathname);"), 'image-slot: direct NEWS route fallback is missing');
+assert(imageSlotJs.includes("const url = shouldLoadNewsImage(this) ? (this._userUrl || srcAttr) : '';"), 'image-slot: NEWS image URL is assigned before the chapter is active');
+assert(imageSlotJs.includes("document.querySelectorAll('#c-news image-slot').forEach((slot) => slot._render());"), 'image-slot: NEWS cards do not refresh on chapter entry');
+assert(imageSlotJs.includes("window.addEventListener('TALETONE_CHAPTER_CHANGE', refreshNewsImages);"), 'image-slot: chapter-change refresh hook is missing');
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
