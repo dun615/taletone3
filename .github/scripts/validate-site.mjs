@@ -46,10 +46,10 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260710-p1',
-  'assets/css/works.css': '20260714-home-handoff-v1-q1',
+  'assets/css/works.css': '20260714-plunge-mobile-v2',
   'assets/js/works.js': '20260713-no-lower-select-v1',
 };
-const expectedSiteContentCacheKey = '20260713-member-colors-v1';
+const expectedSiteContentCacheKey = '20260714-member-dot-v2';
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
@@ -65,6 +65,7 @@ const payloadHashes = [];
 const scriptPayloadHashes = [];
 const fallbackHashes = new Map();
 let decodedApp = '';
+let decodedScriptApp = '';
 for (const [key, file, route, expectedTitle] of routes) {
   const html = await text(file);
   const title = attr(html, /<title>([\s\S]*?)<\/title>/i);
@@ -98,15 +99,24 @@ for (const [key, file, route, expectedTitle] of routes) {
     for (const [asset, cacheKey] of Object.entries(expectedCacheKeys)) {
       assert(decoded.includes(`${asset}?v=${cacheKey}`), `${file}: stale cache key for ${asset}`);
     }
+    assert(decoded.includes('id="intro-skyw"') && decoded.includes('id="intro-ocean"'), `${file}: original above-water intro is missing`);
+    assert(decoded.includes('id="intro-sea"') && decoded.includes('id="intro-bubbles"'), `${file}: original underwater intro is missing`);
+    assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
+    assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
   }
 
   const scriptPayload = attr(html, /<script\b[^>]*\bdata-dc-script-b64\b[^>]*>([\s\S]*?)<\/script>/i).replace(/\s/g, '');
   assert(scriptPayload.length > 1000, `${file}: encoded app script missing`);
   if (scriptPayload) {
     const decodedScript = Buffer.from(scriptPayload, 'base64').toString('utf8');
+    decodedScriptApp ||= decodedScript;
     scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
-    assert(decodedScript.includes('Keep rendering the live home scene beneath the fading intro.'), `${file}: intro does not render the live home scene`);
-    assert(!/if\(!this\.introDone\)\{\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;\s*\}/.test(decodedScript), `${file}: intro pauses the live home scene`);
+    assert(decodedScript.includes('horizon -> water impact -> underwater -> real HOME assembly'), `${file}: restored plunge sequence is missing`);
+    assert(decodedScript.includes("#c-home > [data-px],#c-home > [data-reveal],#c-home > [data-bob]"), `${file}: intro does not assemble the real HOME elements`);
+    assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v2','1')"), `${file}: restored intro session key is stale`);
+    assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
+    assert(decodedScript.includes('mobile?1.35:2'), `${file}: mobile canvas DPR cap is missing`);
+    assert(decodedScript.includes("this.scroller.addEventListener('scroll',this._mobileScrollHandler"), `${file}: mobile scroll busy path is missing`);
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
@@ -119,6 +129,9 @@ assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synch
 assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
+assert(decodedScriptApp.includes('var skyY=-22-76*plunge;') && decodedScriptApp.includes('var seaY=104-110*plunge;'), 'original plunge trajectory changed');
+assert(decodedScriptApp.includes('var entryHit=this.smooth(0.13,0.21,p)'), 'original water-impact timing changed');
+assert(decodedScriptApp.includes('var sceneExit=this.smooth(0.58,0.90,p)'), 'original underwater handoff timing changed');
 
 const publicHtmlFiles = [...new Set([...routes.map(([, file]) => file), 'projects/index.html', '404.html'])];
 for (const file of publicHtmlFiles) {
@@ -194,6 +207,10 @@ assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS d
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
 assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
+const expectedMemberDots = { N4ML: '#0E6E7D', JAEHA: '#403F6F', Seine: '#0E6E7D', MIEE: '#0E6E7D' };
+for (const member of siteJson.members || []) {
+  if (Object.hasOwn(expectedMemberDots, member.name)) assert(member.dotAccent === expectedMemberDots[member.name], `member dot color drift: ${member.name}`);
+}
 
 const assetRefs = new Set();
 const collectAssets = (value) => {
@@ -221,8 +238,10 @@ for (const [file, expected] of Object.entries(sri)) {
 }
 
 const worksCss = await text('assets/css/works.css');
-assert(/body\.tt-intro-running\s+#intro\.tt-intro\s*\{[^}]*pointer-events:\s*auto;/i.test(worksCss), 'intro overlay does not guard underlying controls');
-assert(/body\.tt-intro-running\s+#c-home\s*>\s*\[data-reveal\]/i.test(worksCss), 'intro does not land on the real home UI');
+assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
+assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
+assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');
+assert(!worksCss.includes('ttIntroOverlayHandoff'), 'obsolete CSS-only intro handoff is still present');
 
 const redirect = await text('projects/index.html');
 assert(/noindex/i.test(redirect) && /\/story-types\//.test(redirect), 'legacy projects redirect is invalid');
