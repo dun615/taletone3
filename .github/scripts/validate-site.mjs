@@ -49,7 +49,7 @@ const expectedCacheKeys = {
   'assets/css/works.css': '20260714-plunge-mobile-v2',
   'assets/js/works.js': '20260713-no-lower-select-v1',
 };
-const expectedSiteContentCacheKey = '20260714-member-dot-v3';
+const expectedSiteContentCacheKey = '20260714-member-colors-v4';
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
@@ -114,11 +114,15 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('Preserve the original plunge, then resolve the underwater frame into the real HOME DOM'), `${file}: continuous HOME handoff is missing`);
     assert(decodedScript.includes("#c-home > [data-px],#c-home > [data-reveal],#c-home > [data-bob]"), `${file}: intro does not assemble the real HOME elements`);
     assert(decodedScript.includes("forceIntro=new URLSearchParams(location.search).get('intro')==='1'"), `${file}: forced intro replay query is missing`);
-    assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v4','1')"), `${file}: restored intro session key is stale`);
+    assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v5','1')"), `${file}: restored intro session key is stale`);
     assert(decodedScript.includes("this.introEl.style.zIndex='4'") && decodedScript.includes("this.iContent.style.zIndex='5'"), `${file}: real HOME layer is not raised safely into the underwater frame`);
     assert(decodedScript.includes("this.iScene.style.opacity='1'") && decodedScript.includes('clipPath=sceneClip'), `${file}: underwater scene is not using the structural surface mask`);
     assert(decodedScript.includes('strokeDashoffset') && decodedScript.includes('targetBubble._targetX'), `${file}: HOME path/particle assembly is missing`);
     assert(decodedScript.includes('this.draw(0,this.P[this.mood],this._introMobile)'), `${file}: live HOME FX does not continue through the handoff`);
+    assert(decodedScript.includes('this.iContent.scrollTop=0;'), `${file}: intro does not begin at the canonical HOME sky position`);
+    assert(decodedScript.includes('var introSky=[introPalette.stops[0][1],introPalette.stops[0][2]];'), `${file}: intro HOME gradient is not using valid raw palette colors`);
+    assert(decodedScript.includes('var backgroundBlend=this.smooth(0.04,0.72,handoff);') && decodedScript.includes('var lightSettle=this.smooth(0.38,0.78,handoff);'), `${file}: intro background settling phase is missing`);
+    assert(decodedScript.includes('backgroundBlend>=0.999&&this._introHomeBackground'), `${file}: intro background does not lock to the exact HOME gradient`);
     assert(!decodedScript.includes('this.iScene.style.opacity=(1-sceneExit)'), `${file}: whole-scene opacity crossfade returned`);
     assert(!decodedScript.includes('assembly.finalOpacity*ae'), `${file}: HOME opacity crossfade returned`);
     assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
@@ -139,7 +143,7 @@ assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: ma
 assert(decodedScriptApp.includes('this.INTRO_PLUNGE_MS=2000') && decodedScriptApp.includes('var diveP=this.cl(elapsed/this.INTRO_PLUNGE_MS,0,1);'), 'original plunge clock changed');
 assert(decodedScriptApp.includes('var skyY=-22-76*plunge;') && decodedScriptApp.includes('var seaY=104-110*plunge;'), 'original plunge trajectory changed');
 assert(decodedScriptApp.includes('var entryHit=this.smooth(0.13,0.21,diveP)*(1-this.smooth(0.29,0.38,diveP));'), 'original water-impact timing changed');
-assert(decodedScriptApp.includes('var handoff=this.smooth(this.INTRO_PLUNGE_MS*0.56,this.INTRO_MS*0.965,elapsed);'), 'structural underwater handoff timing changed');
+assert(decodedScriptApp.includes('var handoff=this.smooth(this.INTRO_PLUNGE_MS*0.56,this.INTRO_MS*0.82,elapsed);'), 'structural underwater handoff timing changed');
 
 const publicHtmlFiles = [...new Set([...routes.map(([, file]) => file), 'projects/index.html', '404.html'])];
 for (const file of publicHtmlFiles) {
@@ -215,9 +219,12 @@ assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS d
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
 assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
-const expectedMemberDots = { N4ML: '#3E576F', JAEHA: '#403F6F', Seine: '#6F3E4A', MIEE: '#3E6F57' };
+const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
 for (const member of siteJson.members || []) {
-  if (Object.hasOwn(expectedMemberDots, member.name)) assert(member.dotAccent === expectedMemberDots[member.name], `member dot color drift: ${member.name}`);
+  if (Object.hasOwn(expectedMemberDots, member.name)) {
+    assert(member.accent === expectedMemberDots[member.name], `member detail color drift: ${member.name}`);
+    assert(member.dotAccent === expectedMemberDots[member.name], `member dot color drift: ${member.name}`);
+  }
 }
 
 const assetRefs = new Set();
