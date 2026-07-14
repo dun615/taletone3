@@ -489,12 +489,15 @@ body[data-active-chapter="contact"] #nav-6 {
   overflow: visible;
   transform: translate(-50%,0) rotate(var(--rot)) scale(var(--scale, 1));
   translate: 0 0;
-  animation: tt-card-float 6.2s ease-in-out infinite;
-  animation-delay: var(--float-delay, 0s);
   cursor: pointer;
   transition: left .42s cubic-bezier(.2,.85,.25,1), top .42s cubic-bezier(.2,.85,.25,1), opacity .24s ease, transform .42s cubic-bezier(.2,.85,.25,1), filter .3s ease;
-  will-change: transform, opacity;
   backface-visibility: hidden;
+}
+
+:where(body[data-active-chapter="works"] #c-works .tt-gh-card.is-visible) {
+  animation: tt-card-float 6.2s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+  will-change: transform, opacity;
 }
 
 .tt-gh-stage.is-dragging .tt-gh-card {
@@ -570,7 +573,8 @@ body[data-active-chapter="contact"] #nav-6 {
   transform: translateZ(0);
 }
 
-.tt-gh-stage.is-dragging .tt-gh-card {
+:where(body[data-active-chapter="works"] #c-works) .tt-gh-stage.is-dragging .tt-gh-card.is-visible,
+:where(body[data-active-chapter="works"].tt-site-dialog-open #c-works) .tt-gh-card.is-visible {
   animation-play-state: paused;
 }
 
@@ -4509,13 +4513,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 .tt-member-modal > *,
 .tt-news-modal > * {
   overscroll-behavior: contain;
-}
-
-body:not([data-active-chapter="works"]) #c-works .tt-gh-card,
-body:not([data-active-chapter="works"]) #c-works .tt-gh-line,
-body.tt-site-dialog-open #c-works .tt-gh-card,
-body.tt-site-dialog-open #c-works .tt-gh-line {
-  animation-play-state: paused !important;
 }
 
 @media (min-width: 641px) and (max-height: 680px) {

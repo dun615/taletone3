@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260714-plunge-mobile-v2',
+  'assets/css/works.css': '20260714-cards-gate-p2-v1',
   'assets/js/works.js': '20260715-host-poll-delete-p2-v1',
 };
 const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
@@ -354,6 +354,11 @@ assert(worksJs.includes('var playbackSessionToken = 0;') && worksJs.includes('se
 assert(!worksJs.includes('galleryWasPlaying'), 'Gallery detail still restores Showcase audio');
 assert(worksJs.includes("if (!isShowcasePlaybackView()) {\n      if (state.playing) pauseAll();"), 'WORKS play action bypasses the Showcase guard');
 assert(worksJs.includes('if (state.playing) pauseAll();\n    globalUxState.dialog = dialog;'), 'site detail dialogs do not pause WORKS audio');
+const baseWorksCardRule = worksCss.match(/\.tt-gh-card \{[\s\S]*?\n\}/)?.[0] || '';
+assert(!baseWorksCardRule.includes('animation:') && !baseWorksCardRule.includes('will-change:'), 'inactive WORKS cards still allocate animation or compositor state');
+assert(/:where\(body\[data-active-chapter="works"\] #c-works \.tt-gh-card\.is-visible\)\s*\{[\s\S]*?animation:\s*tt-card-float 6\.2s ease-in-out infinite;[\s\S]*?animation-delay:\s*var\(--float-delay, 0s\);[\s\S]*?will-change:\s*transform, opacity;[\s\S]*?\}/.test(worksCss), 'WORKS card animation is not limited to visible cards in the active chapter');
+assert(/:where\(body\[data-active-chapter="works"\] #c-works\) \.tt-gh-stage\.is-dragging \.tt-gh-card\.is-visible,\s*:where\(body\[data-active-chapter="works"\]\.tt-site-dialog-open #c-works\) \.tt-gh-card\.is-visible\s*\{\s*animation-play-state:\s*paused;\s*\}/.test(worksCss), 'WORKS interaction pause states are missing');
+assert(!worksCss.includes('body:not([data-active-chapter="works"]) #c-works .tt-gh-line'), 'dead WORKS line animation pause selector returned');
 assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
 assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');
