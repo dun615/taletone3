@@ -1320,6 +1320,7 @@ body[data-active-chapter="contact"] #nav-6 {
   transform-origin: bottom;
   opacity: .72;
   animation: tt-bridge-line 2.8s ease-in-out infinite;
+  animation-play-state: var(--tt-bridge-play-state, running);
 }
 
 .tt-gh-bridge-line.is-bottom {
@@ -1344,6 +1345,7 @@ body[data-active-chapter="contact"] #nav-6 {
   color: var(--ink, #141C30);
   opacity: .86;
   animation: tt-bridge-copy 5.2s ease-in-out infinite;
+  animation-play-state: var(--tt-bridge-play-state, running);
 }
 
 .tt-bridge-desktop-text {

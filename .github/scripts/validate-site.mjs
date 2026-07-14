@@ -46,10 +46,13 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260714-cards-gate-p2-v1',
-  'assets/js/works.js': '20260715-host-poll-delete-p2-v1',
+  'assets/css/works.css': '20260715-idle-lifecycle-p2-v1',
+  'assets/js/works.js': '20260715-nearby-data-p2-v1',
 };
 const expectedSiteContentCacheKey = '20260714-news-webp-q85-v1';
+const routeDocumentBudgetBytes = 475_000;
+const decodedTemplateBudgetBytes = 165_000;
+const decodedScriptBudgetBytes = 180_000;
 
 const imageSlotJs = await text('assets/js/image-slot.js');
 assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
@@ -77,6 +80,7 @@ let decodedApp = '';
 let decodedScriptApp = '';
 for (const [key, file, route, expectedTitle] of routes) {
   const html = await text(file);
+  assert(Buffer.byteLength(html) <= routeDocumentBudgetBytes, `${file}: route document exceeds ${routeDocumentBudgetBytes} byte budget`);
   const title = attr(html, /<title>([\s\S]*?)<\/title>/i);
   const description = attr(html, /<meta\s+name="description"\s+content="([^"]+)"/i);
   const canonical = attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i);
@@ -103,6 +107,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   assert(payload.length > 1000, `${file}: encoded app template missing`);
   if (payload) {
     const decoded = Buffer.from(payload, 'base64').toString('utf8');
+    assert(Buffer.byteLength(decoded) <= decodedTemplateBudgetBytes, `${file}: decoded template exceeds ${decodedTemplateBudgetBytes} byte budget`);
     decodedApp ||= decoded;
     payloadHashes.push(createHash('sha256').update(decoded).digest('hex'));
     for (const [asset, cacheKey] of Object.entries(expectedCacheKeys)) {
@@ -118,6 +123,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   assert(scriptPayload.length > 1000, `${file}: encoded app script missing`);
   if (scriptPayload) {
     const decodedScript = Buffer.from(scriptPayload, 'base64').toString('utf8');
+    assert(Buffer.byteLength(decodedScript) <= decodedScriptBudgetBytes, `${file}: decoded app script exceeds ${decodedScriptBudgetBytes} byte budget`);
     decodedScriptApp ||= decodedScript;
     scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
     assert(decodedScript.includes('Preserve the original plunge, then resolve the underwater frame into the real HOME DOM'), `${file}: continuous HOME handoff is missing`);
@@ -143,9 +149,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('this._railCenters.push(section.offsetTop+section.clientHeight*0.5);'), `${file}: rail centers are not cached with layout geometry`);
     assert(decodedScript.includes('docY:bookRect.top+scrollTop+bookRect.height*0.30-currentFloatY') && decodedScript.includes('bookGeometry.docY+bookFloatY'), `${file}: deep-book float compensation is missing`);
     assert(decodedScript.includes('fl._floatY=Number(floatY);'), `${file}: live deep-book float offset is not retained`);
-    assert(decodedScript.includes('if(this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
+    assert(decodedScript.includes('var geometryDirty=this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight;') && decodedScript.includes('if(geometryDirty) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
     assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
-    assert(decodedScript.includes('this._layoutGeometryDirty=true;\n      this.introDone=true;'), `${file}: intro completion does not invalidate layout geometry`);
+    assert(decodedScript.includes('this._layoutGeometryDirty=true;\n      this._sceneDirty=true;\n      this.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
     assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds\)/g) || []).length === 6, `${file}: decorative motion still measures the viewport every frame`);
     assert(decodedScript.includes('this._layoutGeometryDirty = true;') && decodedScript.includes('this._layoutGeometryDirty=true;'), `${file}: shared layout geometry lifecycle invalidation is missing`);
     assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
@@ -153,6 +159,19 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decodedScript.includes('refreshMotionBounds') && !decodedScript.includes('_motionBoundsDirty') && !decodedScript.includes('_motionBoundsHeight'), `${file}: obsolete motion-only cache state remains`);
     assert((decodedScript.match(/new MutationObserver/g) || []).length === 1, `${file}: redundant mutation observer added for geometry caching`);
     assert(!decodedScript.includes('fastMobile ? 0.38 : 0.72'), `${file}: unreachable fast-mobile motion margin returned`);
+    assert(decodedScript.includes('this.raf=0;\n    if(document.hidden) return;'), `${file}: hidden documents can keep the main animation loop alive`);
+    const visibilityHandlerSource = decodedScript.match(/this\._visibilityHandler=\(\)=>\{[\s\S]*?\n    \};/)?.[0] || '';
+    assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation order changed`);
+    assert((visibilityHandlerSource.match(/requestAnimationFrame\(this\.loop\)/g) || []).length === 1 && visibilityHandlerSource.includes('if(!this.raf){'), `${file}: visible animation loop does not resume exactly once`);
+    assert(decodedScript.includes("document.addEventListener('visibilitychange',this._visibilityHandler)") && decodedScript.includes("document.removeEventListener('visibilitychange',this._visibilityHandler)"), `${file}: animation visibility lifecycle is incomplete`);
+    assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
+    assert(decodedScript.includes('if(sceneDirty||bridgePlaying) this.updateBridges(vhR);'), `${file}: bridge work is not limited to changes or active playback`);
+    assert(decodedScript.includes('if((sceneDirty||this._transPlaying||this.lastActive===1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
+    assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
+    assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
+    assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
+    assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
+    assert(decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','paused')") && decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','running')"), `${file}: bridge CSS animation lifecycle is incomplete`);
   }
 
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
@@ -169,6 +188,12 @@ assert(decodedScriptApp.includes('this.INTRO_PLUNGE_MS=2000') && decodedScriptAp
 assert(decodedScriptApp.includes('var skyY=-22-76*plunge;') && decodedScriptApp.includes('var seaY=104-110*plunge;'), 'original plunge trajectory changed');
 assert(decodedScriptApp.includes('var entryHit=this.smooth(0.13,0.21,diveP)*(1-this.smooth(0.29,0.38,diveP));'), 'original water-impact timing changed');
 assert(decodedScriptApp.includes('var handoff=this.smooth(this.INTRO_PLUNGE_MS*0.56,this.INTRO_MS*0.82,elapsed);'), 'structural underwater handoff timing changed');
+assert((decodedApp.match(/\.tt-book-light-stage\{position:absolute/g) || []).length === 1, 'duplicate deep-book CSS returned');
+assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length === 3, 'deep-book CSS animations are not fully tied to viewport lifecycle');
+assert(!decodedApp.includes('WORK DETAIL MODAL') && !decodedApp.includes('{{ wOpen }}'), 'removed legacy WORK detail modal returned');
+for (const symbol of ['drawBridgeMotifs', 'drawBook(', 'updateYouWave', 'bridgePhraseForIndexOld', 'playStory', 'worksView', '_arcPoll', '_worksInitTimer', 'applyWorksEdit', '_navPeekTimer', 'this.io']) {
+  assert(!decodedScriptApp.includes(symbol), `removed embedded legacy code returned: ${symbol}`);
+}
 
 const publicHtmlFiles = [...new Set([...routes.map(([, file]) => file), 'projects/index.html', '404.html'])];
 for (const file of publicHtmlFiles) {
@@ -256,6 +281,12 @@ assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
 const normalizedWorksSource = JSON.stringify(worksJson).replace(/\\/g, '/');
 const normalizedDecodedApp = decodedApp.replace(/\\/g, '/');
+const removedDuplicateWorkImage = 'assets/works/images/asset-mq6aimxx-2c2o-.jpg-a9bb3c69bc18.jpg';
+const canonicalDuplicateWorkImage = 'assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.jpg';
+assert(!(await exists(removedDuplicateWorkImage)), 'removed byte-identical WORKS image returned');
+assert(!normalizedWorksSource.includes(removedDuplicateWorkImage) && !normalizedDecodedApp.includes(removedDuplicateWorkImage), 'removed byte-identical WORKS image is still referenced');
+assert(normalizedWorksSource.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected works-data reference count');
+assert(normalizedDecodedApp.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected encoded-template reference count');
 const optimizedWorkImages = [
   { path: 'assets/works/images/bubblesweet-work-1024.webp', legacy: 'assets/works/images/bubblesweet.png', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
   { path: 'assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp', legacy: 'assets/works/images/asset-mq832pb9-dgmx-early.jpg-f814379f3b3a.jpg', width: 1024, height: 1024, refs: 5, templateRefs: 5 },
@@ -293,12 +324,20 @@ const collectAssets = (value) => {
 for (const match of normalizedDecodedApp.matchAll(/["'](assets\/works\/images\/[^"']+)["']/gi)) {
   assetRefs.add(match[1].split(/[?#]/)[0]);
 }
+const referencedWorkImageHashes = new Map();
 for (const file of assetRefs) {
   assert(await exists(file), `missing referenced asset: ${file}`);
   if (/^assets\/works\/images\//i.test(file)) {
     const bytes = await readFile(path.join(root, file));
     assert(bytes.byteLength <= 300_000, `${file}: referenced WORKS image exceeds 300 KB budget (${bytes.byteLength} bytes)`);
+    const hash = createHash('sha256').update(bytes).digest('hex');
+    const matches = referencedWorkImageHashes.get(hash) || [];
+    matches.push(file);
+    referencedWorkImageHashes.set(hash, matches);
   }
+}
+for (const matches of referencedWorkImageHashes.values()) {
+  assert(matches.length === 1, `byte-identical referenced WORKS images: ${matches.join(', ')}`);
 }
 
 const support = await text('support.js');
@@ -316,6 +355,21 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
+assert(Buffer.byteLength(worksCss) <= 150_000, 'WORKS CSS exceeds 150 KB source budget');
+assert(Buffer.byteLength(worksJs) <= 125_000, 'WORKS JavaScript exceeds 125 KB source budget');
+assert(worksJs.includes('var worksDataPromise = null;') && worksJs.includes('if (worksDataPromise) return worksDataPromise;'), 'WORKS data fetch is not single-flight');
+assert(worksJs.includes("if (chapter === 'members') {\n      init();") && worksJs.includes("if (isWorksChapterActive() || window.parent !== window) init();"), 'WORKS data is not deferred until the chapter is near or directly active');
+assert((worksJs.match(/fetch\(new URL\('data\/works-data\.json'/g) || []).length === 1, 'WORKS data fetch path must remain singular');
+const resetAudioForContentChangeSource = worksJs.match(/function resetAudioForContentChange\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
+assert(resetAudioForContentChangeSource.includes("audio.removeAttribute('src');") && resetAudioForContentChangeSource.includes('audio.load();'), 'WORKS content changes retain native audio media resources');
+assert(resetAudioForContentChangeSource.includes('audioPool.clear();') && resetAudioForContentChangeSource.includes('layeredBufferPool.clear();'), 'WORKS content changes retain audio pools in memory');
+const audioReleaseOrder = ['audio.pause();', "audio.removeAttribute('src');", 'audio.load();', 'audioPool.clear();', 'layeredBufferPool.clear();'].map((step) => resetAudioForContentChangeSource.indexOf(step));
+assert(audioReleaseOrder.every((index, position) => index >= 0 && (!position || index > audioReleaseOrder[position - 1])), 'WORKS audio resources are not released in pause/src/load/pool order');
+for (const symbol of ['visibleWorks', 'onWheel', 'onMouseUp', 'cardPreview']) {
+  assert(!worksJs.includes(symbol), `removed WORKS dead code returned: ${symbol}`);
+}
+assert((worksJs.match(/window\.addEventListener\('mouseup', onPointerUp, true\);/g) || []).length === 1, 'WORKS mouseup lifecycle must use one onPointerUp listener');
+assert((worksJs.match(/window\.addEventListener\('mouseup'/g) || []).length === 1, 'duplicate WORKS mouseup listener returned');
 const removedImagePreloadSymbols = [
   '_allImagePreloadStarted',
   'collectWorkImageUrls',
@@ -375,6 +429,7 @@ assert(!baseWorksCardRule.includes('animation:') && !baseWorksCardRule.includes(
 assert(/:where\(body\[data-active-chapter="works"\] #c-works \.tt-gh-card\.is-visible\)\s*\{[\s\S]*?animation:\s*tt-card-float 6\.2s ease-in-out infinite;[\s\S]*?animation-delay:\s*var\(--float-delay, 0s\);[\s\S]*?will-change:\s*transform, opacity;[\s\S]*?\}/.test(worksCss), 'WORKS card animation is not limited to visible cards in the active chapter');
 assert(/:where\(body\[data-active-chapter="works"\] #c-works\) \.tt-gh-stage\.is-dragging \.tt-gh-card\.is-visible,\s*:where\(body\[data-active-chapter="works"\]\.tt-site-dialog-open #c-works\) \.tt-gh-card\.is-visible\s*\{\s*animation-play-state:\s*paused;\s*\}/.test(worksCss), 'WORKS interaction pause states are missing');
 assert(!worksCss.includes('body:not([data-active-chapter="works"]) #c-works .tt-gh-line'), 'dead WORKS line animation pause selector returned');
+assert((worksCss.match(/animation-play-state:\s*var\(--tt-bridge-play-state, running\);/g) || []).length === 2, 'WORKS bridge CSS animations are not tied to bridge visibility');
 assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
 assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');

@@ -23,6 +23,7 @@
   var layeredBufferPool = new Map();
   var layeredPlayback = null;
   var playbackSessionToken = 0;
+  var worksDataPromise = null;
   var layeredFallbackActive = false;
   var pausedLayeredSignature = '';
   var pausedLayeredOffset = 0;
@@ -831,7 +832,13 @@
     layeredFallbackActive = false;
     pausedLayeredSignature = '';
     pausedLayeredOffset = 0;
-    audioPool.forEach(function (audio) { audio.pause(); });
+    audioPool.forEach(function (audio) {
+      audio.pause();
+      audio.removeAttribute('src');
+      try { audio.load(); } catch (_error) {}
+    });
+    audioPool.clear();
+    layeredBufferPool.clear();
   }
 
   function isWorksChapterActive() {
@@ -1153,21 +1160,6 @@
     return '<div class="tt-gh-controls" role="group" aria-label="' + esc(localizedUiLabel('WORKS 책장 이동', 'WORKS shelf navigation', 'WORKS シェルフ移動')) + '"><button type="button" class="tt-gh-round" data-works-action="prev" aria-label="' + esc(localizedUiLabel('이전 작업물', 'Previous work', '前の作品')) + '" ' + (state.selected <= 0 ? 'disabled' : '') + '>&lsaquo;</button><div class="tt-gh-indicator" aria-hidden="true"><span class="tt-gh-page">' + pad(state.selected + 1) + ' / ' + pad(works.length) + '</span><span class="tt-gh-progress"><i style="--progress:' + progress.toFixed(2) + '%"></i></span></div><button type="button" class="tt-gh-round" data-works-action="next" aria-label="' + esc(localizedUiLabel('다음 작업물', 'Next work', '次の作品')) + '" ' + (state.selected >= works.length - 1 ? 'disabled' : '') + '>&rsaquo;</button></div>';
   }
 
-  function visibleWorks() {
-    var slots = activeSlots();
-    var total = Math.min(slots.length, works.length);
-    var list = [];
-    for (var i = 0; i < total; i += 1) {
-      var abs = state.start + i;
-      if (abs < works.length) list.push({ abs: abs, slot: slots[i], item: works[abs] });
-    }
-    return list;
-  }
-
-  function cardPreview(work) {
-    return '';
-  }
-
   function cardUnit(work, index) {
     if (index !== state.selected) {
       var unit = localizedUnit(work);
@@ -1354,7 +1346,7 @@
       var active = index === state.selected;
       var unit = cardUnit(work, index);
       var cardLabel = (index + 1) + ' / ' + works.length + ' · ' + plainRichText(unit.title || work.title || 'WORKS');
-      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span></span></span>' + cardPreview(work) + '</div>';
+      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span></span></span></div>';
     }).join('');
     return '<div id="tt-gh-panel-showcase" class="tt-gh-stage" role="tabpanel" aria-labelledby="tt-gh-tab-showcase" aria-roledescription="carousel" aria-label="' + esc(localizedUiLabel('WORKS 포트폴리오 책장', 'WORKS portfolio shelf', 'WORKS ポートフォリオシェルフ')) + '" tabindex="0" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
@@ -1784,10 +1776,6 @@
     }
   }
 
-  function onWheel(event) {
-    return;
-  }
-
   function shelfNodeFromTarget(target) {
     var node = target && target.nodeType === 1 ? target : target && target.parentElement;
     if (!node || !node.closest) return null;
@@ -1895,10 +1883,6 @@
       blockFollowupClick(140);
     }
     dragState.moved = false;
-  }
-
-  function onMouseUp(event) {
-    onPointerUp(event);
   }
 
   function onPointerCancel(event) {
@@ -2686,8 +2670,17 @@
     var detail = event && event.detail ? event.detail : {};
     var chapter = detail.chapter;
     if (!chapter) return;
+    if (chapter === 'members') {
+      init();
+      pauseAll(true);
+      return;
+    }
     if (chapter !== 'works') {
       pauseAll(true);
+      return;
+    }
+    if (!mounted) {
+      init();
       return;
     }
     var app = document.getElementById('tt-gh-works-app');
@@ -2715,21 +2708,27 @@
   });
 
   function init() {
+    if (worksDataPromise) return worksDataPromise;
     if (location.protocol === 'file:') {
       var localData = embeddedData();
       if (localData && localData.works) {
         boot(localData);
-        return;
+        worksDataPromise = Promise.resolve(localData);
+        return worksDataPromise;
       }
     }
-    fetch(new URL('data/works-data.json', assetBase).href)
+    worksDataPromise = fetch(new URL('data/works-data.json', assetBase).href)
       .then(function (response) { return response.json(); })
-      .then(boot)
+      .then(function (data) { boot(data); return data; })
       .catch(function (error) {
         var fallback = embeddedData();
-        if (fallback && fallback.works) boot(fallback);
+        if (fallback && fallback.works) {
+          boot(fallback);
+          return fallback;
+        }
         else console.error('[works]', error);
       });
+    return worksDataPromise;
   }
 
   document.addEventListener('click', onClick, true);
@@ -2745,13 +2744,12 @@
   document.addEventListener('mousedown', onMouseDown, true);
   document.addEventListener('mousemove', onMouseMove, true);
   window.addEventListener('mouseup', onPointerUp, true);
-  window.addEventListener('mouseup', onMouseUp, true);
   window.addEventListener('hashchange', scrollToWorksFromHash);
   bindVisibilityPause();
   function start() {
     initStructuredDataGuard();
     initGlobalUx();
-    init();
+    if (isWorksChapterActive() || window.parent !== window) init();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
