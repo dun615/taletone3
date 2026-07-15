@@ -1124,7 +1124,12 @@
 
   function head() {
     var meta = localizedMeta();
-    return '<div class="tt-gh-head"><div class="tt-gh-kicker">' + preserve(meta.eyebrow) + '</div><h2 class="tt-gh-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2><p class="tt-gh-sub">' + preserve(meta.subtitle) + '<small>' + preserve(meta.description) + '</small></p></div>';
+    var subtitle = String(meta.subtitle || '').trim();
+    var description = String(meta.description || '').trim();
+    var copy = subtitle || description
+      ? '<p class="tt-gh-sub">' + preserve(subtitle) + (description ? '<small>' + preserve(description) + '</small>' : '') + '</p>'
+      : '';
+    return '<div class="tt-gh-head"><div class="tt-gh-kicker">' + preserve(meta.eyebrow) + '</div><h2 class="tt-gh-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' + copy + '</div>';
   }
 
   function clients() {
