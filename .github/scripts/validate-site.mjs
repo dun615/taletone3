@@ -88,7 +88,7 @@ for (const [file, [expectedHash, expectedBytes]] of Object.entries(expectedFontA
 const runtimePerformanceValidator = await text('.github/scripts/validate-runtime-performance.mjs');
 const validationWorkflow = await text('.github/workflows/site-validation.yml');
 for (const requiredGuard of [
-  'maxTransferBytes', 'maxFirstPartyRequests', 'maxGoogleFontRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
+  'maxTransferBytes', 'maxWarmFirstPartyTransferBytes', 'maxFirstPartyRequests', 'maxGoogleFontRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
   'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
   'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
   'network.worksDataRequests === 0',
