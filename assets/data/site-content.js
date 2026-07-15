@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-15T18:26:46.527Z",
+  "lastUpdated": "2026-07-15T19:38:09.759Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -1546,7 +1546,7 @@ window.TALETONE_CONTENT = {
       },
       "en": {
         "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
-        "title": "RELEASED",
+        "title": "OUR",
         "titleAccent": "WORKS",
         "subtitle": "",
         "description": "",
@@ -1565,7 +1565,7 @@ window.TALETONE_CONTENT = {
       },
       "jp": {
         "eyebrow": "CHAPTER 3 · MUSIC\nWORKS / TRACK RECORD",
-        "title": "RELEASED",
+        "title": "OUR",
         "titleAccent": "WORKS",
         "subtitle": "",
         "description": "",
