@@ -49,7 +49,11 @@ const expectedCacheKeys = {
   'assets/css/works.css': '20260715-home-tagline-lockup-v1',
   'assets/js/works.js': '20260716-chapter-copy-clear-v1',
 };
-const expectedSiteContentCacheKey = '20260716-chapter-copy-clear-v1';
+const expectedSiteContentCacheKey = attr(
+  await text('index.html'),
+  /assets\/data\/site-content\.js\?v=([^"']+)/i,
+);
+assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 370_000;
 const decodedTemplateBudgetBytes = 112_000;
 const decodedScriptBudgetBytes = 155_000;
