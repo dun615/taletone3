@@ -88,15 +88,16 @@ for (const [file, [expectedHash, expectedBytes]] of Object.entries(expectedFontA
 const runtimePerformanceValidator = await text('.github/scripts/validate-runtime-performance.mjs');
 const validationWorkflow = await text('.github/workflows/site-validation.yml');
 for (const requiredGuard of [
-  'maxTransferBytes', 'maxRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
+  'maxTransferBytes', 'maxFirstPartyRequests', 'maxGoogleFontRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
   'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
   'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
   'network.worksDataRequests === 0',
   "dataset.ttMediaPlayback === 'paused'", 'members-keyboard-dialog', 'news-language-dialog',
+  'unexpectedThirdPartyUrls.length === 0',
 ]) {
   assert(runtimePerformanceValidator.includes(requiredGuard), `runtime performance validator is missing guard: ${requiredGuard}`);
 }
-assert(validationWorkflow.includes('node-version: 24') && validationWorkflow.includes('node .github/scripts/validate-runtime-performance.mjs'), 'site-validation workflow does not run the browser performance budgets');
+assert(validationWorkflow.includes('uses: actions/setup-node@v5') && validationWorkflow.includes('node-version: 24') && validationWorkflow.includes('node .github/scripts/validate-runtime-performance.mjs'), 'site-validation workflow does not use the Node 24 action/runtime performance budgets');
 
 const payloadHashes = [];
 const scriptPayloadHashes = [];

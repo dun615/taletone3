@@ -9,6 +9,7 @@ const root = process.cwd();
 const errors = [];
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const assert = (condition, message) => { if (!condition) errors.push(message); };
+const isGoogleFontRequest = (url) => /^https:\/\/fonts\.(?:googleapis|gstatic)\.com(?:\/|$)/i.test(url);
 
 const viewports = [
   { key: 'desktop', width: 1440, height: 900, dpr: 1, mobile: false },
@@ -23,12 +24,16 @@ const functionalViewports = [
 const pages = [
   {
     key: 'home', path: '/', coldWaitMs: 7_000, warmWaitMs: 2_500,
-    maxRequests: 35, maxTransferBytes: 1_200_000, maxCls: 0.08,
+    // Runs #54-#56 measured 16 first-party requests and 20-23 Google Fonts requests on Linux.
+    maxFirstPartyRequests: 18, maxGoogleFontRequests: 30,
+    maxTransferBytes: 1_200_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 6_000, maxLongTasks: 45, maxDomNodes: 1_500,
   },
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
-    maxRequests: 50, maxTransferBytes: 2_800_000, maxCls: 0.08,
+    // Runs #54-#56 measured 28 first-party requests and up to 27 Google Fonts requests on Linux.
+    maxFirstPartyRequests: 30, maxGoogleFontRequests: 30,
+    maxTransferBytes: 2_800_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
   },
 ];
@@ -274,17 +279,31 @@ function capturePhase(client, origin) {
       remove.forEach((unsubscribe) => unsubscribe());
       const list = [...requests.values()];
       const byType = {};
+      const byOrigin = {};
       for (const request of list) byType[request.type] = (byType[request.type] || 0) + request.bytes;
+      for (const request of list) {
+        const requestOrigin = new URL(request.url).origin;
+        byOrigin[requestOrigin] = (byOrigin[requestOrigin] || 0) + 1;
+      }
       const uncachedRequests = list
         .filter((request) => !request.fromCache && request.bytes > 0)
         .sort((a, b) => b.bytes - a.bytes)
         .map(({ url, type, bytes }) => ({ url, type, bytes }));
+      const firstPartyRequestCount = list.filter((request) => request.url.startsWith(origin)).length;
+      const googleFontRequestCount = list.filter((request) => isGoogleFontRequest(request.url)).length;
+      const unexpectedThirdPartyUrls = [...new Set(list
+        .filter((request) => !request.url.startsWith(origin) && !isGoogleFontRequest(request.url))
+        .map((request) => request.url))];
       return {
         requestCount: list.length,
+        firstPartyRequestCount,
+        googleFontRequestCount,
+        unexpectedThirdPartyUrls,
         transferBytes: list.reduce((sum, request) => sum + (request.fromCache ? 0 : request.bytes), 0),
         resourceBytes: list.reduce((sum, request) => sum + request.bytes, 0),
         uncachedRequests,
         byType,
+        byOrigin,
         worksDataRequests: list.filter((request) => /\/assets\/data\/works-data\.json(?:[?#]|$)/.test(request.url)).length,
         audioRequests: list.filter((request) => /\.mp3(?:[?#]|$)/i.test(request.url)).length,
         audioUrls: list.filter((request) => /\.mp3(?:[?#]|$)/i.test(request.url)).map((request) => request.url),
@@ -648,7 +667,9 @@ async function runInteractionSmoke(chrome, origin) {
 
 function validateResult(result) {
   const { key, page, cold, warm, idle } = result;
-  assert(cold.requestCount <= page.maxRequests, `${key}: cold requests ${cold.requestCount} > ${page.maxRequests}`);
+  assert(cold.firstPartyRequestCount <= page.maxFirstPartyRequests, `${key}: cold first-party requests ${cold.firstPartyRequestCount} > ${page.maxFirstPartyRequests}: ${JSON.stringify(cold.byOrigin)}`);
+  assert(cold.googleFontRequestCount <= page.maxGoogleFontRequests, `${key}: Google Fonts requests ${cold.googleFontRequestCount} > ${page.maxGoogleFontRequests}: ${JSON.stringify(cold.byOrigin)}`);
+  assert(cold.unexpectedThirdPartyUrls.length === 0, `${key}: unexpected third-party requests: ${cold.unexpectedThirdPartyUrls.join(', ')}`);
   assert(cold.transferBytes <= page.maxTransferBytes, `${key}: cold transfer ${cold.transferBytes} > ${page.maxTransferBytes}`);
   assert(cold.cls <= page.maxCls, `${key}: cold CLS ${cold.cls.toFixed(4)} > ${page.maxCls}: ${JSON.stringify(cold.shifts)}`);
   assert(cold.fcp > 0 && cold.fcp <= page.maxFcpMs, `${key}: cold FCP ${cold.fcp.toFixed(1)}ms is outside budget`);
@@ -697,6 +718,8 @@ try {
   console.table(results.map(({ key, cold, warm, idle }) => ({
     case: key,
     requests: cold.requestCount,
+    firstParty: cold.firstPartyRequestCount,
+    googleFonts: cold.googleFontRequestCount,
     coldKB: Math.round(cold.transferBytes / 1024),
     warmKB: Math.round(warm.transferBytes / 1024),
     FCPms: Math.round(cold.fcp),
