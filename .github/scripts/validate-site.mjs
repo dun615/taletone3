@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260715-dead-code-cleanup-v1',
+  'assets/css/works.css': '20260715-home-tagline-lockup-v1',
   'assets/js/works.js': '20260715-dead-code-cleanup-v1',
 };
 const expectedSiteContentCacheKey = '20260715-home-tagline-v1';
@@ -159,7 +159,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
     assert(decoded.includes('class="tt-news-modal" role="dialog" aria-modal="true"'), `${file}: NEWS dialog lacks a direct selector`);
-    assert(decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline binding is missing`);
+    assert(decoded.includes('class="tt-home-tagline"') && decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline lockup is missing`);
     assert(!decoded.includes('HOME.subtitleLine') && !decoded.includes('HOME.descriptionLine'), `${file}: obsolete multi-line HOME copy binding returned`);
     assert(!decoded.includes('id="tt-works-data"'), `${file}: stale embedded WORKS fallback returned`);
     for (const deadTemplateSymbol of ['notMembersEditMode', '{{ accent }}', '.tt-prologue-copy', '.tt-orb-link', '.tt-orb-ring', '.tt-sigil', '.tt-page-stage']) {
@@ -477,6 +477,9 @@ const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
 assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
 assert((worksCss.match(/var\(--tt-noto-primary\)/g) || []).length === 11 && (worksCss.match(/var\(--tt-noto-secondary\)/g) || []).length === 11, 'WORKS CSS language-aware CJK fallbacks changed');
+const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
+assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
+assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
 const storyBridgeRule = worksCss.match(/\.tt-gh-story-bridge \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/height:\s*100vh;/.test(storyBridgeRule) && /min-height:\s*100vh;/.test(storyBridgeRule), 'WORKS story bridge does not reserve its final height');
 assert(!/height:\s*64vh;/.test(storyBridgeRule), 'WORKS story bridge can still expand after first paint');

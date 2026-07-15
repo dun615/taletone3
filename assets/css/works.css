@@ -3986,8 +3986,38 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
   box-shadow: 0 10px 24px rgba(2, 10, 22, .18) !important;
 }
 
+.tt-home-tagline {
+  margin: clamp(26px, 3.6vh, 36px) 0 0;
+  max-width: calc(100vw - 40px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1.4vw, 20px);
+  color: var(--soft, #44505F);
+  font-weight: 750;
+  font-size: clamp(18px, 2vw, 28px);
+  line-height: 1.3;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+.tt-home-tagline::before,
+.tt-home-tagline::after {
+  content: "";
+  width: clamp(28px, 4.5vw, 72px);
+  height: 5px;
+  flex: 0 1 clamp(28px, 4.5vw, 72px);
+  background:
+    radial-gradient(circle at 100% 50%, rgba(14, 110, 125, .66) 0 2px, transparent 2.4px),
+    linear-gradient(90deg, transparent, rgba(14, 110, 125, .42)) center / 100% 1px no-repeat;
+}
+
+.tt-home-tagline::after {
+  transform: scaleX(-1);
+}
+
 .tt-home-quick-actions {
-  margin-top: clamp(24px, 3.2vh, 36px);
+  margin-top: clamp(20px, 2.6vh, 28px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4039,8 +4069,22 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
 }
 
 @media (max-width: 760px) {
+  .tt-home-tagline {
+    margin-top: 26px;
+    max-width: calc(100vw - 24px);
+    gap: 10px;
+    font-size: clamp(16px, 4.8vw, 19px);
+    letter-spacing: -.035em;
+  }
+
+  .tt-home-tagline::before,
+  .tt-home-tagline::after {
+    width: clamp(14px, 5vw, 22px);
+    flex-basis: clamp(14px, 5vw, 22px);
+  }
+
   .tt-home-quick-actions {
-    margin-top: 22px;
+    margin-top: 18px;
     gap: 9px;
   }
 
