@@ -49,7 +49,7 @@ const expectedCacheKeys = {
   'assets/css/works.css': '20260715-dead-code-cleanup-v1',
   'assets/js/works.js': '20260715-dead-code-cleanup-v1',
 };
-const expectedSiteContentCacheKey = '20260715-dead-code-cleanup-v1';
+const expectedSiteContentCacheKey = '20260715-home-tagline-v1';
 const routeDocumentBudgetBytes = 370_000;
 const decodedTemplateBudgetBytes = 112_000;
 const decodedScriptBudgetBytes = 155_000;
@@ -159,6 +159,8 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
     assert(decoded.includes('class="tt-news-modal" role="dialog" aria-modal="true"'), `${file}: NEWS dialog lacks a direct selector`);
+    assert(decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline binding is missing`);
+    assert(!decoded.includes('HOME.subtitleLine') && !decoded.includes('HOME.descriptionLine'), `${file}: obsolete multi-line HOME copy binding returned`);
     assert(!decoded.includes('id="tt-works-data"'), `${file}: stale embedded WORKS fallback returned`);
     for (const deadTemplateSymbol of ['notMembersEditMode', '{{ accent }}', '.tt-prologue-copy', '.tt-orb-link', '.tt-orb-ring', '.tt-sigil', '.tt-page-stage']) {
       assert(!decoded.includes(deadTemplateSymbol), `${file}: dead template symbol returned: ${deadTemplateSymbol}`);
@@ -242,6 +244,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
   const fallbackText = cleanText(fallback);
   assert(fallbackText.length > 80, `${file}: fallback content is too short`);
+  assert(fallbackText.includes('당신의 이야기가 음악이 되는 곳'), `${file}: fallback HOME tagline is stale`);
   fallbackHashes.set(key, createHash('sha256').update(fallbackText).digest('hex'));
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
@@ -340,6 +343,21 @@ const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
 assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/JS drift');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
+const expectedHomeTaglines = {
+  kr: '당신의 이야기가 음악이 되는 곳',
+  en: 'Where your story becomes music.',
+  jp: 'あなたの物語が、音楽になる場所。',
+};
+assert(siteJson.home?.tagline === expectedHomeTaglines.kr, 'HOME canonical tagline is stale');
+for (const [language, tagline] of Object.entries(expectedHomeTaglines)) {
+  assert(siteJson.home?.translations?.[language]?.tagline === tagline, `HOME ${language} tagline is stale`);
+}
+for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1', 'descriptionLine2']) {
+  assert(!Object.hasOwn(siteJson.home || {}, obsoleteField), `HOME obsolete field returned: ${obsoleteField}`);
+  for (const language of Object.keys(expectedHomeTaglines)) {
+    assert(!Object.hasOwn(siteJson.home?.translations?.[language] || {}, obsoleteField), `HOME ${language} obsolete field returned: ${obsoleteField}`);
+  }
+}
 for (const key of ['home', 'translation', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
   assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
 }
