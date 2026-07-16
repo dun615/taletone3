@@ -177,6 +177,8 @@ for (const [key, file, route, expectedTitle] of routes) {
     }
     assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: generic story bridges do not reserve their final height`);
     assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
+    assert(!decoded.includes('scroll-snap-type') && !decoded.includes('scroll-snap-stop'), `${file}: native bridge snapping can jump after a content re-render`);
+    assert(decoded.includes('.tt-bridge-continue{') && decoded.includes(".tt-bridge-continue::after{content:'  \\2193';}"), `${file}: bridge continuation cue CSS is missing`);
     assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
   }
 
@@ -242,9 +244,16 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
+    assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);
     assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
     assert(decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','paused')") && decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','running')"), `${file}: bridge CSS animation lifecycle is incomplete`);
     assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
+    assert(decodedScript.includes('A bridge settles once, assembles, then waits for the visitor') && decodedScript.includes("outer.classList.add('tt-bridge-seen')"), `${file}: one-time bridge runtime lifecycle is missing`);
+    assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this._bridgeGateIndex=bi') && decodedScript.includes("this.scroller.scrollTo({top:bridgeTop,behavior:'auto'})"), `${file}: large scroll gestures can skip an unvisited bridge`);
+    assert(decodedScript.includes("'Scroll to continue'") && decodedScript.includes("'スクロールして次の章へ'") && decodedScript.includes("'계속 스크롤해 다음 장으로'"), `${file}: localized bridge continuation cues are incomplete`);
+    assert(decodedScript.includes('bypassBridges(){') && (decodedScript.match(/this\.bypassBridges\(\);/g) || []).length === 2, `${file}: direct navigation does not bypass bridge settlement consistently`);
+    assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
+    assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: timed bridge auto-advance returned`);
     assert(!decodedScript.includes("outer.style.minHeight='100vh'") && !decodedScript.includes("outer.style.height='100vh'"), `${file}: runtime bridge geometry writes can reintroduce layout shift`);
   }
 
