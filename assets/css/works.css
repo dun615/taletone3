@@ -4878,17 +4878,20 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 
 @media (min-width: 1181px) {
   .tt-gh-modal:not(.tt-gh-video-modal) .tt-gh-modal-panel {
+    height: min(780px, calc(100vh - 48px));
     align-items: stretch;
   }
 
   .tt-gh-modal:not(.tt-gh-video-modal) .tt-gh-modal-main {
     min-height: 0;
     height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .tt-gh-modal:not(.tt-gh-video-modal) .tt-gh-modal-credits {
     min-height: 0;
-    height: auto;
+    height: 100%;
     max-height: none;
     align-self: stretch;
   }

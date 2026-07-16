@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260715-home-tagline-lockup-v1',
-  'assets/js/works.js': '20260716-chapter-copy-clear-v1',
+  'assets/css/works.css': '20260716-card-credit-layout-v01',
+  'assets/js/works.js': '20260716-card-credit-layout-v1',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -513,6 +513,11 @@ for (const [file, expected] of Object.entries(sri)) {
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
 assert(worksJs.includes("var copy = subtitle || description") && worksJs.includes("+ copy + '</div>'"), 'WORKS empty section copy still renders a placeholder paragraph');
+assert(!/compactRichLabel\([^\n]+,\s*18\)/.test(worksJs), 'WORKS card title still has an 18-character JavaScript truncation');
+assert((worksJs.match(/tt-gh-card-title[^\n]+preserve\(/g) || []).length >= 2 && worksJs.includes("title.innerHTML = preserve("), 'WORKS card titles do not preserve the full title');
+assert(worksCss.includes('height: min(780px, calc(100vh - 48px));'), 'desktop WORKS detail modal lacks a definite scroll height');
+assert(worksCss.includes('.tt-gh-modal:not(.tt-gh-video-modal) .tt-gh-modal-main {') && worksCss.includes('overflow-y: auto;'), 'desktop WORKS detail body is not scrollable');
+assert(/\.tt-gh-modal:not\(\.tt-gh-video-modal\) \.tt-gh-modal-credits\s*\{[^}]*height:\s*100%;/s.test(worksCss), 'desktop WORKS credits do not fill the constrained modal height');
 assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
 assert((worksCss.match(/var\(--tt-noto-primary\)/g) || []).length === 11 && (worksCss.match(/var\(--tt-noto-secondary\)/g) || []).length === 11, 'WORKS CSS language-aware CJK fallbacks changed');
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';

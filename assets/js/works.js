@@ -1345,7 +1345,7 @@
       var active = index === state.selected;
       var unit = cardUnit(work, index);
       var cardLabel = (index + 1) + ' / ' + works.length + ' · ' + plainRichText(unit.title || work.title || 'WORKS');
-      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title || work.title, 18) + '</span></span></span></div>';
+      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + preserve(unit.title || work.title) + '</span></span></span></div>';
     }).join('');
     return '<div id="tt-gh-panel-showcase" class="tt-gh-stage" role="tabpanel" aria-labelledby="tt-gh-tab-showcase" aria-roledescription="carousel" aria-label="' + esc(localizedUiLabel('WORKS 포트폴리오 책장', 'WORKS portfolio shelf', 'WORKS ポートフォリオシェルフ')) + '" tabindex="0" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
@@ -1365,7 +1365,7 @@
     return '<div id="tt-gh-panel-gallery" class="tt-gh-gallery" role="tabpanel" aria-labelledby="tt-gh-tab-gallery">' + works.map(function (work, index) {
       var unit = localizedUnit(work);
       var detailLabel = plainRichText(unit.title || 'WORKS') + localizedUiLabel(' 상세', ' details', ' 詳細');
-      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || index >= eagerCount) + cardArtistBadge(work, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + compactRichLabel(unit.title, 18) + '</span></span></span></div>';
+      return '<div role="button" tabindex="0" aria-haspopup="dialog" aria-label="' + esc(detailLabel) + '" class="tt-gh-gallery-card" data-works-action="gallery-open" data-index="' + index + '"><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || index >= eagerCount) + cardArtistBadge(work, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + preserve(unit.title) + '</span></span></span></div>';
     }).join('') + '</div>';
   }
 
@@ -1494,7 +1494,7 @@
         img.setAttribute('style', imageStyle(unit));
       }
       var title = card.querySelector('.tt-gh-card-title');
-      if (title) title.innerHTML = compactRichLabel(unit.title || (work && work.title) || '', 18);
+      if (title) title.innerHTML = preserve(unit.title || (work && work.title) || '');
       var artist = card.querySelector('.tt-gh-card-artist');
       if (artist) {
         artist.innerHTML = compactRichLabel(cardArtist(work, unit), 28);
