@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20260714-p2',
-  'assets/css/works.css': '20260716-card-credit-layout-v01',
+  'assets/css/works.css': '20260717-bridge-clock-hold-v001',
   'assets/js/works.js': '20260716-card-credit-layout-v1',
 };
 const expectedSiteContentCacheKey = attr(
@@ -246,9 +246,16 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
     assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);
     assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
-    assert(decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','paused')") && decodedScript.includes("outer.style.setProperty('--tt-bridge-play-state','running')"), `${file}: bridge CSS animation lifecycle is incomplete`);
+    assert(!decodedScript.includes('--tt-bridge-play-state'), `${file}: removed bridge CSS clock state returned`);
     assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
-    assert(decodedScript.includes('A bridge settles once, assembles, then waits for the visitor') && decodedScript.includes("outer.classList.add('tt-bridge-seen')"), `${file}: one-time bridge runtime lifecycle is missing`);
+    const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
+    assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
+    assert(updateBridgesBody.includes('var elapsed=Math.max(0,now-bg._t0), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
+    assert(updateBridgesBody.includes('bg._finalTime=DUR/1000+gi*0.31;') && updateBridgesBody.includes('prog=FINAL; bridgeTime=bg._finalTime==null?DUR/1000+gi*0.31:bg._finalTime;'), `${file}: completed bridge frame is not deterministic`);
+    assert(updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,bridgeTime);') && !updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,tA+gi*0.31)'), `${file}: completed bridge visuals can keep drifting`);
+    assert(!updateBridgesBody.includes('(vhR*0.80-rect.top)/(vhR*1.20)') && !/prog\s*=\s*this\.cl\([^;\n]*(?:rect\.top|rect\.bottom)/.test(updateBridgesBody), `${file}: bridge progress is still scrubbed by scroll position`);
+    assert(!updateBridgesBody.includes("this.scrollToManaged(outer.offsetTop-1,'smooth',520)"), `${file}: bridge playback still moves the scroller`);
+    assert(updateBridgesBody.includes("outer.classList.add('tt-bridge-seen')"), `${file}: one-time bridge runtime lifecycle is missing`);
     assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this._bridgeGateIndex=bi') && decodedScript.includes("this.scroller.scrollTo({top:bridgeTop,behavior:'auto'})"), `${file}: large scroll gestures can skip an unvisited bridge`);
     assert(decodedScript.includes("'Scroll to continue'") && decodedScript.includes("'スクロールして次の章へ'") && decodedScript.includes("'계속 스크롤해 다음 장으로'"), `${file}: localized bridge continuation cues are incomplete`);
     assert(decodedScript.includes('bypassBridges(){') && (decodedScript.match(/this\.bypassBridges\(\);/g) || []).length === 2, `${file}: direct navigation does not bypass bridge settlement consistently`);
@@ -260,7 +267,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
   const fallbackText = cleanText(fallback);
   assert(fallbackText.length > 80, `${file}: fallback content is too short`);
-  assert(!fallbackText.includes('당신의 이야기가 음악이 되는 곳'), `${file}: cleared HOME tagline remains in fallback content`);
+  assert(fallbackText.includes('당신의 이야기가 음악이 되는 곳'), `${file}: fallback HOME tagline is missing`);
   fallbackHashes.set(key, createHash('sha256').update(fallbackText).digest('hex'));
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
@@ -360,8 +367,16 @@ assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/J
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
 const siteLanguages = ['kr', 'en', 'jp'];
+const expectedHomeTaglines = {
+  kr: '당신의 이야기가 음악이 되는 곳',
+  en: 'Where your story becomes music.',
+  jp: 'あなたの物語が、音楽になる場所。',
+};
+assert(siteJson.home?.tagline === expectedHomeTaglines.kr, 'HOME canonical tagline changed');
+for (const language of siteLanguages) {
+  assert(siteJson.home?.translations?.[language]?.tagline === expectedHomeTaglines[language], `HOME ${language} tagline changed`);
+}
 const clearedChapterCopy = {
-  home: ['tagline'],
   membersMeta: ['subtitle', 'description'],
   worksMeta: ['subtitle', 'description'],
   newsMeta: ['subtitle', 'description'],
@@ -623,7 +638,11 @@ assert(!baseWorksCardRule.includes('animation:') && !baseWorksCardRule.includes(
 assert(/:where\(body\[data-active-chapter="works"\] #c-works \.tt-gh-card\.is-visible\)\s*\{[\s\S]*?animation:\s*tt-card-float 6\.2s ease-in-out infinite;[\s\S]*?animation-delay:\s*var\(--float-delay, 0s\);[\s\S]*?will-change:\s*transform, opacity;[\s\S]*?\}/.test(worksCss), 'WORKS card animation is not limited to visible cards in the active chapter');
 assert(/:where\(body\[data-active-chapter="works"\] #c-works\) \.tt-gh-stage\.is-dragging \.tt-gh-card\.is-visible,\s*:where\(body\[data-active-chapter="works"\]\.tt-site-dialog-open #c-works\) \.tt-gh-card\.is-visible\s*\{\s*animation-play-state:\s*paused;\s*\}/.test(worksCss), 'WORKS interaction pause states are missing');
 assert(!worksCss.includes('body:not([data-active-chapter="works"]) #c-works .tt-gh-line'), 'dead WORKS line animation pause selector returned');
-assert((worksCss.match(/animation-play-state:\s*var\(--tt-bridge-play-state, running\);/g) || []).length === 2, 'WORKS bridge CSS animations are not tied to bridge visibility');
+const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
+const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
+assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');
+assert(!worksCss.includes('@keyframes tt-bridge-line') && !worksCss.includes('@keyframes tt-bridge-copy'), 'removed WORKS bridge keyframes returned');
+assert(!worksCss.includes('--tt-bridge-play-state') && !worksCss.includes('body.tt-mobile-scroll-active .tt-gh-bridge-line') && !worksCss.includes('body.tt-mobile-scroll-active .tt-gh-bridge-copy'), 'removed WORKS bridge CSS clock state returned');
 for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-date', '.tt-gh-info-meta', '.tt-gh-chip', '.tt-gh-side', '.tt-gh-row', '.tt-gh-select', '.tt-gh-info-video', '.tt-gh-segments', '.tt-bridge-visual--orbs']) {
   assert(!worksCss.includes(deadSelector) && !worksJs.includes(deadSelector), `removed WORKS selector returned: ${deadSelector}`);
 }

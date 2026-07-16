@@ -1176,13 +1176,10 @@ body[data-active-chapter="contact"] #nav-6 {
   background: currentColor;
   transform-origin: bottom;
   opacity: .72;
-  animation: tt-bridge-line 2.8s ease-in-out infinite;
-  animation-play-state: var(--tt-bridge-play-state, running);
 }
 
 .tt-gh-bridge-line.is-bottom {
   transform-origin: top;
-  animation-delay: .42s;
 }
 
 .tt-gh-bridge-label {
@@ -1201,8 +1198,6 @@ body[data-active-chapter="contact"] #nav-6 {
   line-height: 1.32;
   color: var(--ink, #141C30);
   opacity: .86;
-  animation: tt-bridge-copy 5.2s ease-in-out infinite;
-  animation-play-state: var(--tt-bridge-play-state, running);
 }
 
 .tt-bridge-desktop-text {
@@ -1223,28 +1218,6 @@ body[data-active-chapter="contact"] #nav-6 {
 
 .tt-translation-mobile-line-inner {
   display: inline-block;
-}
-
-@keyframes tt-bridge-line {
-  0%, 100% {
-    transform: scaleY(.3);
-    opacity: .28;
-  }
-  45%, 60% {
-    transform: scaleY(1);
-    opacity: .76;
-  }
-}
-
-@keyframes tt-bridge-copy {
-  0%, 100% {
-    transform: translateY(4px);
-    opacity: .72;
-  }
-  50% {
-    transform: translateY(-4px);
-    opacity: .92;
-  }
 }
 
 @media (max-width: 1180px) {
@@ -4611,9 +4584,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 @media (max-width: 760px) {
-  /* Keep mobile fling scrolling responsive; motion resumes as soon as it settles. */
-  body.tt-mobile-scroll-active .tt-gh-bridge-line,
-  body.tt-mobile-scroll-active .tt-gh-bridge-copy,
+  /* Keep contact decoration quiet while mobile scrolling is active. */
   body.tt-mobile-scroll-active #c-contact .tt-book-light-stage > *,
   body:not([data-active-chapter="news"]):not([data-active-chapter="contact"]) #c-contact .tt-book-light-stage > * {
     animation-play-state: paused !important;
