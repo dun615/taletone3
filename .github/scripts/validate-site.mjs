@@ -356,7 +356,6 @@ const clearedChapterCopy = {
   membersMeta: ['subtitle', 'description'],
   worksMeta: ['subtitle', 'description'],
   newsMeta: ['subtitle', 'description'],
-  contact: ['subtitle', 'caption'],
 };
 for (const [section, fields] of Object.entries(clearedChapterCopy)) {
   for (const field of fields) {
@@ -365,6 +364,26 @@ for (const [section, fields] of Object.entries(clearedChapterCopy)) {
       assert(siteJson[section]?.translations?.[language]?.[field] === '', `${section}.${field} ${language} must remain empty until edited`);
     }
   }
+}
+const expectedContactCopy = {
+  kr: {
+    subtitle: '아직 정리되지 않은 이야기라도 괜찮습니다.',
+    caption: '그 이야기가 어떤 음악이 될 수 있을지,\n첫 질문부터 함께 설계하겠습니다.',
+  },
+  en: {
+    subtitle: "It's okay if your story is not fully formed yet.",
+    caption: "Together, we'll shape what kind of music your story can become, starting with the very first question.",
+  },
+  jp: {
+    subtitle: 'まだ整理されていない物語でも大丈夫です。',
+    caption: 'その物語がどんな音楽になれるか、最初の問いから一緒に設計します。',
+  },
+};
+assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
+assert(siteJson.contact?.caption === expectedContactCopy.kr.caption, 'CONTACT canonical caption changed');
+for (const language of siteLanguages) {
+  assert(siteJson.contact?.translations?.[language]?.subtitle === expectedContactCopy[language].subtitle, `CONTACT ${language} subtitle changed`);
+  assert(siteJson.contact?.translations?.[language]?.caption === expectedContactCopy[language].caption, `CONTACT ${language} caption changed`);
 }
 for (const language of siteLanguages) {
   assert(String(siteJson.projects?.translations?.[language]?.subtitle || '').trim(), `Story Types ${language} subtitle was cleared`);

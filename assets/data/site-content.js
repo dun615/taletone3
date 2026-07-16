@@ -1,6 +1,6 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-15T19:55:40.834Z",
+  "lastUpdated": "2026-07-16T06:52:43.184Z",
   "colorSchemes": {
     "abyss": {
       "stops": [
@@ -917,8 +917,8 @@ window.TALETONE_CONTENT = {
     "eyebrow": "Contact",
     "titleLine1": "당신의 이야기를",
     "titleAccent": "들려주세요.",
-    "subtitle": "",
-    "caption": "",
+    "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
+    "caption": "그 이야기가 어떤 음악이 될 수 있을지,\n첫 질문부터 함께 설계하겠습니다.",
     "buttonLabel": "프로젝트 문의하기",
     "link": "mailto:contact@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
     "translations": {
@@ -926,8 +926,8 @@ window.TALETONE_CONTENT = {
         "eyebrow": "Contact",
         "titleLine1": "당신의 이야기를",
         "titleAccent": "들려주세요.",
-        "subtitle": "",
-        "caption": "",
+        "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
+        "caption": "그 이야기가 어떤 음악이 될 수 있을지,\n첫 질문부터 함께 설계하겠습니다.",
         "buttonLabel": "프로젝트 문의하기",
         "copyLabel": "이메일 주소 복사",
         "copyDone": "복사됨",
@@ -937,8 +937,8 @@ window.TALETONE_CONTENT = {
         "eyebrow": "Contact",
         "titleLine1": "TELL US",
         "titleAccent": "YOUR STORY",
-        "subtitle": "",
-        "caption": "",
+        "subtitle": "It's okay if your story is not fully formed yet.",
+        "caption": "Together, we'll shape what kind of music your story can become, starting with the very first question.",
         "buttonLabel": "Project Inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
@@ -948,8 +948,8 @@ window.TALETONE_CONTENT = {
         "eyebrow": "Contact",
         "titleLine1": "あなたの物語を",
         "titleAccent": "聞かせてください。",
-        "subtitle": "",
-        "caption": "",
+        "subtitle": "まだ整理されていない物語でも大丈夫です。",
+        "caption": "その物語がどんな音楽になれるか、最初の問いから一緒に設計します。",
         "buttonLabel": "プロジェクトについて相談する",
         "copyLabel": "メールアドレスをコピー",
         "copyDone": "コピーしました",
