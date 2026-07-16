@@ -249,8 +249,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decodedScript.includes('--tt-bridge-play-state'), `${file}: removed bridge CSS clock state returned`);
     assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
     const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
+    assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=this._reduceMotion?700:1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
     assert(updateBridgesBody.includes('var elapsed=Math.max(0,now-bg._t0), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
+    assert(updateBridgesBody.includes('bg._playing=true; bg._t0=now; bridgeTime=gi*0.31;') && !updateBridgesBody.includes("if(this._reduceMotion){\n          bg._seen=true"), `${file}: reduced-motion bridge can skip its shortened animation clock`);
     assert(updateBridgesBody.includes('bg._finalTime=DUR/1000+gi*0.31;') && updateBridgesBody.includes('prog=FINAL; bridgeTime=bg._finalTime==null?DUR/1000+gi*0.31:bg._finalTime;'), `${file}: completed bridge frame is not deterministic`);
     assert(updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,bridgeTime);') && !updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,tA+gi*0.31)'), `${file}: completed bridge visuals can keep drifting`);
     assert(!updateBridgesBody.includes('(vhR*0.80-rect.top)/(vhR*1.20)') && !/prog\s*=\s*this\.cl\([^;\n]*(?:rect\.top|rect\.bottom)/.test(updateBridgesBody), `${file}: bridge progress is still scrubbed by scroll position`);
