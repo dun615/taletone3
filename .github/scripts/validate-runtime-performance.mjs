@@ -128,7 +128,7 @@ async function findChrome() {
 async function launchChrome(chromePath) {
   const profile = await mkdtemp(path.join(os.tmpdir(), 'taletone-runtime-'));
   const args = [
-    '--headless=new', '--disable-gpu', '--disable-extensions', '--disable-background-networking',
+    '--headless=new', '--mute-audio', '--disable-gpu', '--disable-extensions', '--disable-background-networking',
     '--disable-component-update', '--disable-default-apps', '--disable-dev-shm-usage',
     '--disable-features=Translate,MediaRouter', '--no-first-run', '--no-default-browser-check',
     '--no-sandbox', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=0',

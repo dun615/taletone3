@@ -1324,10 +1324,38 @@
     return '--left:' + layout.left + '%;--top:' + layout.top + ';--rot:' + layout.rot + 'deg;--scale:' + layout.scale + ';--z:' + layout.z + ';--opacity:' + opacity.toFixed(3) + ';--float-delay:' + layout.delay + 's;--card-scale-override:' + res.cardScale + ';--title-scale:' + res.titleSize + ';--offset-x:' + res.offsetX + 'px;--offset-y:' + res.offsetY + 'px';
   }
 
+  function hasPlayableAudio(work, unit) {
+    if (!work) return false;
+    if ((unit && unit.audio) || work.audio) return true;
+    if ((work.versions || []).some(function (version) { return !!(version && version.audio); })) return true;
+    return (work.tracks || []).some(function (track) {
+      if (!track) return false;
+      if (track.audio) return true;
+      return (track.versions || []).some(function (version) { return !!(version && version.audio); });
+    });
+  }
+
+  function cardAudioLabel(index) {
+    var playing = index === state.selected && state.playing;
+    return playing
+      ? localizedUiLabel('일시정지', 'PAUSE', '一時停止')
+      : localizedUiLabel('음악 듣기', 'LISTEN', '音楽を聴く');
+  }
+
   function cardPlay(work, index, unit) {
+    if (!hasPlayableAudio(work, unit)) return '';
+    var playing = index === state.selected && state.playing;
+    var label = cardAudioLabel(index);
+    var title = plainRichText((unit && unit.title) || (work && work.title) || 'WORKS');
+    return '<button type="button" class="tt-gh-card-play ' + (playing ? 'is-playing' : '') + '" data-works-action="audio-toggle" data-index="' + index + '" aria-label="' + esc(label + ' · ' + title) + '" aria-pressed="' + (playing ? 'true' : 'false') + '"><span class="tt-gh-card-play-icon" aria-hidden="true"></span><span class="tt-gh-card-play-label">' + esc(label) + '</span></button>';
+  }
+
+  function cardVideo(work, index, unit) {
     var yt = (unit && unit.youtube) || '';
     if (!yt) return '';
-    return '<button type="button" class="tt-gh-card-play" data-works-action="video-open" data-index="' + index + '" aria-label="Watch on YouTube"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>';
+    var label = localizedUiLabel('영상 보기', 'WATCH VIDEO', '映像を見る');
+    var title = plainRichText((unit && unit.title) || (work && work.title) || 'WORKS');
+    return '<button type="button" class="tt-gh-card-video" data-works-action="video-open" data-index="' + index + '" aria-label="YouTube ' + esc(label + ' · ' + title) + '"><span class="tt-gh-card-video-mark" aria-hidden="true">▶</span><span>' + esc(label) + '</span></button>';
   }
 
   function cardArtist(work, unit) {
@@ -1345,7 +1373,7 @@
       var active = index === state.selected;
       var unit = cardUnit(work, index);
       var cardLabel = (index + 1) + ' / ' + works.length + ' · ' + plainRichText(unit.title || work.title || 'WORKS');
-      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + preserve(unit.title || work.title) + '</span></span></span></div>';
+      return '<div role="button" tabindex="0" aria-label="' + esc(cardLabel) + '" ' + (active ? 'aria-current="true" ' : '') + 'class="tt-gh-card ' + (active ? 'is-active ' : '') + (layout.visible ? 'is-visible' : 'is-hidden') + '" data-works-card data-works-action="select" data-index="' + index + '" style="' + cardStyle(layout, unit) + '"><span class="tt-gh-pin"></span><span class="tt-gh-card-inner"><span class="tt-gh-card-cover">' + imgTag(unit, '', !loadImages || !layout.visible) + cardArtistBadge(work, unit) + cardPlay(work, index, unit) + cardVideo(work, index, unit) + cardTabs(work, index) + albumPager(work, index) + '</span><span class="tt-gh-card-meta"><span class="tt-gh-card-title">' + preserve(unit.title || work.title) + '</span></span></span></div>';
     }).join('');
     return '<div id="tt-gh-panel-showcase" class="tt-gh-stage" role="tabpanel" aria-labelledby="tt-gh-tab-showcase" aria-roledescription="carousel" aria-label="' + esc(localizedUiLabel('WORKS 포트폴리오 책장', 'WORKS portfolio shelf', 'WORKS ポートフォリオシェルフ')) + '" tabindex="0" data-works-drag-stage><div class="tt-gh-waves"><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i><i class="tt-gh-line"></i></div><div class="tt-gh-showcase" data-works-drag-track>' + cards + '</div>' + controls() + '</div>';
   }
@@ -1507,17 +1535,43 @@
       if (albumLabel && work && work.tracks && work.tracks.length) {
         albumLabel.textContent = index === state.selected && state.bookOpen ? 'Track ' + pad(activeTrackIndex(work) + 1) : 'Cover';
       }
-      // Keep the center YouTube play button in sync for every card that has a link.
       var cover = card.querySelector('.tt-gh-card-cover');
       var existingPlay = cover ? cover.querySelector('.tt-gh-card-play') : null;
-      var wantPlay = unit && unit.youtube;
+      var wantPlay = hasPlayableAudio(work, unit);
       if (cover) {
         if (wantPlay && !existingPlay) {
-          cover.insertAdjacentHTML('beforeend', '<button type="button" class="tt-gh-card-play" data-works-action="video-open" data-index="' + index + '" aria-label="Watch on YouTube"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></button>');
+          cover.insertAdjacentHTML('beforeend', cardPlay(work, index, unit));
+          existingPlay = cover.querySelector('.tt-gh-card-play');
         } else if (!wantPlay && existingPlay) {
           existingPlay.remove();
-        } else if (existingPlay) {
+          existingPlay = null;
+        }
+        if (existingPlay) {
+          var cardPlaying = index === state.selected && state.playing;
+          var audioLabel = cardAudioLabel(index);
           existingPlay.setAttribute('data-index', String(index));
+          existingPlay.setAttribute('aria-pressed', cardPlaying ? 'true' : 'false');
+          existingPlay.setAttribute('aria-label', audioLabel + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
+          existingPlay.classList.toggle('is-playing', cardPlaying);
+          var playLabel = existingPlay.querySelector('.tt-gh-card-play-label');
+          if (playLabel) playLabel.textContent = audioLabel;
+        }
+
+        var existingVideo = cover.querySelector('.tt-gh-card-video');
+        var wantVideo = !!(unit && unit.youtube);
+        if (wantVideo && !existingVideo) {
+          cover.insertAdjacentHTML('beforeend', cardVideo(work, index, unit));
+          existingVideo = cover.querySelector('.tt-gh-card-video');
+        } else if (!wantVideo && existingVideo) {
+          existingVideo.remove();
+          existingVideo = null;
+        }
+        if (existingVideo) {
+          var videoLabel = localizedUiLabel('영상 보기', 'WATCH VIDEO', '映像を見る');
+          existingVideo.setAttribute('data-index', String(index));
+          existingVideo.setAttribute('aria-label', 'YouTube ' + videoLabel + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
+          var videoCopy = existingVideo.querySelector('span:last-child');
+          if (videoCopy) videoCopy.textContent = videoLabel;
         }
       }
     });
@@ -1547,6 +1601,22 @@
       state.videoOpen = false;
       state.modalOpen = false;
       setMode(button.getAttribute('data-mode'));
+      return;
+    }
+    if (action === 'audio-toggle') {
+      if (suppressClick) return;
+      var audioIndex = button.hasAttribute('data-index') ? Number(button.getAttribute('data-index')) : state.selected;
+      if (!Number.isFinite(audioIndex)) return;
+      audioIndex = clamp(audioIndex, 0, works.length - 1);
+      if (audioIndex !== state.selected) {
+        pauseAll(true);
+        selectIndex(audioIndex, false);
+        playCurrent();
+      } else if (state.playing) {
+        pauseAll();
+      } else {
+        playCurrent();
+      }
       return;
     }
     if (action === 'video-open') {
