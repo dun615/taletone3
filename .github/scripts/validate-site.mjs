@@ -526,6 +526,8 @@ const support = await text('support.js');
 assert(support.includes('assets/vendor/react-18.3.1.min.js'), 'React is not self-hosted');
 assert(support.includes('assets/vendor/react-dom-18.3.1.min.js'), 'ReactDOM is not self-hosted');
 assert(support.includes('window.parent !== window'), 'public duplicate document fetch guard missing');
+assert(support.includes('const isPastTarget = Number.isFinite(bridgeTop) && bridgeTop <= targetTop + 2;'), 'chapter navigation still bypasses future bridge animations');
+assert(support.includes('outer?.classList.remove("tt-bridge-seen")'), 'future bridge state is not reset after chapter navigation');
 const sri = {
   'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
   'assets/vendor/react-dom-18.3.1.min.js': 'gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1',

@@ -805,7 +805,42 @@
       "React",
       src + '\n;return (typeof Component!=="undefined"&&Component)||undefined;'
     );
-    return fn(StreamableLogic, StreamableLogic, getReact());
+    const Logic = fn(StreamableLogic, StreamableLogic, getReact());
+    if (Logic?.prototype && typeof Logic.prototype.bypassBridges === "function") {
+      Logic.prototype.bypassBridges = function() {
+        const seen = this._bridgeSeen || (this._bridgeSeen = {});
+        let targetId = this._chapterTarget || "";
+        if (!targetId && typeof this._seoPageKeyFromLocation === "function" && typeof this._seoPageForKey === "function") {
+          const page = this._seoPageForKey(this._seoPageKeyFromLocation());
+          targetId = page?.sectionId || "";
+        }
+        const target = targetId ? document.getElementById(targetId) : null;
+        const targetTop = target ? Math.max(0, target.offsetTop - 2) : (this.scroller?.scrollTop || 0);
+        (this.bridges || []).forEach((bridge, index) => {
+          const outer = bridge._bridgeOuter || (bridge.closest ? bridge.closest("[data-story-bridge-wrap]") : null);
+          const bridgeTop = outer ? outer.offsetTop : Number.NaN;
+          const isPastTarget = Number.isFinite(bridgeTop) && bridgeTop <= targetTop + 2;
+          bridge._playing = false;
+          bridge._seen = isPastTarget;
+          bridge._ready = false;
+          if (isPastTarget) {
+            seen[index] = true;
+            outer?.classList.add("tt-bridge-seen");
+          } else {
+            delete seen[index];
+            bridge._t0 = 0;
+            bridge._finalTime = null;
+            outer?.classList.remove("tt-bridge-seen");
+            if (typeof this.stopBridgeVisual === "function") this.stopBridgeVisual(bridge);
+          }
+        });
+        this._bridgeGateIndex = -1;
+        this._bridgeGateReleaseAt = 0;
+        this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
+        this._sceneDirty = true;
+      };
+    }
+    return Logic;
   }
 
   // src/component.ts
