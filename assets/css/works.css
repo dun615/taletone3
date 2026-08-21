@@ -911,44 +911,50 @@ body[data-active-chapter="contact"] #nav-6 {
   -webkit-box-orient: vertical;
 }
 
-.tt-gh-action {
-  height: 34px;
-  border: 0;
-  border-radius: 999px;
-  padding: 0 13px;
-  background: rgba(255,255,255,.14);
-  color: rgba(248,252,255,.92);
-  font-size: 11px;
-  font-weight: 950;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,.18);
-  box-shadow: 0 10px 26px rgba(0,0,0,.10);
-}
-
-.tt-gh-action.is-primary {
-  background: rgba(248,252,255,.96);
-  color: #14223a;
-}
-
 .tt-gh-volume {
-  width: 120px;
+  width: 100%;
+  min-width: 100px;
+  height: 20px;
+  margin: 0;
   accent-color: #0E6E7D;
+  cursor: pointer;
+}
+
+.tt-gh-volume:disabled {
+  opacity: .36;
+  cursor: default;
+}
+
+.tt-gh-volume-label {
+  color: rgba(175,216,233,.88);
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: .18em;
 }
 
 .tt-gh-db {
-  min-width: 56px;
+  min-width: 58px;
   color: rgba(229,242,248,.84);
   font-size: 10px;
   font-weight: 900;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .tt-gh-actions-line {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(100px,1fr) auto;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  width: min(360px,100%);
   margin-top: 18px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 14px;
+  background: rgba(7,24,43,.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .tt-gh-info-rule {
@@ -1442,13 +1448,9 @@ body[data-active-chapter="contact"] #nav-6 {
   .tt-gh-info-table dd {
     font-size: 12px;
   }
-  .tt-gh-action {
-    min-height: 44px;
-    height: 44px;
-  }
   .tt-gh-volume {
-    width: 96px;
-    height: 44px;
+    width: 100%;
+    height: 30px;
   }
   .tt-gh-card-tab {
     width: 30px;
@@ -1663,25 +1665,6 @@ body[data-active-chapter="contact"] #nav-6 {
   border: 0;
   background: linear-gradient(90deg, currentColor 0 31%, transparent 31% 69%, currentColor 69% 100%);
 }
-.tt-gh-card-play-label {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 7px);
-  min-width: max-content;
-  transform: translateX(-50%);
-  padding: 4px 8px;
-  border: 1px solid rgba(255,255,255,.24);
-  border-radius: 999px;
-  background: rgba(8,24,42,.76);
-  color: #fff;
-  font-size: 8px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: .06em;
-  white-space: nowrap;
-  box-shadow: 0 7px 18px rgba(8,22,38,.22);
-}
-
 .tt-gh-card-video {
   position: absolute;
   right: 8px;
@@ -1739,11 +1722,6 @@ body[data-active-chapter="contact"] #nav-6 {
   .tt-gh-card-play.is-playing .tt-gh-card-play-icon {
     width: 14px;
     height: 17px;
-  }
-  .tt-gh-card-play-label {
-    top: calc(100% + 5px);
-    padding: 3px 6px;
-    font-size: 7px;
   }
   .tt-gh-card-video {
     right: 6px;

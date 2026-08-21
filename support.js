@@ -39,9 +39,10 @@
   }
   function readDcTemplate(doc, dc, fallback) {
     const templateEl = doc.querySelector("script[data-dc-template-b64]");
-    if (templateEl) return readEncodedPayload(templateEl, "data-dc-template-b64");
-    if (dc?.hasAttribute("data-dc-template-b64")) return readEncodedPayload(dc, "data-dc-template-b64");
-    return fallback;
+    const source = templateEl ? readEncodedPayload(templateEl, "data-dc-template-b64") : dc?.hasAttribute("data-dc-template-b64") ? readEncodedPayload(dc, "data-dc-template-b64") : fallback;
+    return source
+      .replace("assets/css/works.css?v=20260717-bridge-clock-hold-v001", "assets/css/works.css?v=20260822-volume-controls-v2")
+      .replace("assets/js/works.js?v=20260716-card-credit-layout-v1", "assets/js/works.js?v=20260822-volume-controls-v2");
   }
   function readDcScript(scriptEl) {
     if (!scriptEl) return "";
@@ -807,8 +808,32 @@
     );
     const Logic = fn(StreamableLogic, StreamableLogic, getReact());
     if (Logic?.prototype && typeof Logic.prototype.bypassBridges === "function") {
+      const bridgeTargets = [
+        ["c-projects", "/story-types/"],
+        ["c-members", "/members/"],
+        ["c-works", "/works/"],
+        ["c-news", "/news/"],
+        ["c-contact", "/contact/"]
+      ];
+      const applyBridgeSnap = (instance) => {
+        if (instance.scroller) instance.scroller.style.scrollSnapType = "y proximity";
+        (instance.bridges || []).forEach((bridge) => {
+          const outer = bridge._bridgeOuter || (bridge.closest ? bridge.closest("[data-story-bridge-wrap]") : null);
+          if (!outer) return;
+          outer.style.scrollSnapAlign = "start";
+          outer.style.scrollSnapStop = "always";
+        });
+      };
+      const didMount = Logic.prototype.componentDidMount;
+      Logic.prototype.componentDidMount = function(...args) {
+        const result = didMount.apply(this, args);
+        applyBridgeSnap(this);
+        return result;
+      };
       Logic.prototype.bypassBridges = function() {
         const seen = this._bridgeSeen || (this._bridgeSeen = {});
+        const autoAdvanced = this._bridgeAutoAdvanced || (this._bridgeAutoAdvanced = {});
+        clearTimeout(this._bridgeAutoTimer);
         let targetId = this._chapterTarget || "";
         if (!targetId && typeof this._seoPageKeyFromLocation === "function" && typeof this._seoPageForKey === "function") {
           const page = this._seoPageForKey(this._seoPageKeyFromLocation());
@@ -825,9 +850,11 @@
           bridge._ready = false;
           if (isPastTarget) {
             seen[index] = true;
+            autoAdvanced[index] = true;
             outer?.classList.add("tt-bridge-seen");
           } else {
             delete seen[index];
+            delete autoAdvanced[index];
             bridge._t0 = 0;
             bridge._finalTime = null;
             outer?.classList.remove("tt-bridge-seen");
@@ -838,6 +865,39 @@
         this._bridgeGateReleaseAt = 0;
         this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
         this._sceneDirty = true;
+      };
+      const updateBridges = Logic.prototype.updateBridges;
+      if (typeof updateBridges === "function") {
+        Logic.prototype.updateBridges = function(...args) {
+          const result = updateBridges.apply(this, args);
+          applyBridgeSnap(this);
+          if (typeof this.isMobileMotion === "function" && this.isMobileMotion()) {
+            const autoAdvanced = this._bridgeAutoAdvanced || (this._bridgeAutoAdvanced = {});
+            for (let index = 0; index < bridgeTargets.length; index++) {
+              if (!this._bridgeSeen?.[index] || autoAdvanced[index]) continue;
+              autoAdvanced[index] = true;
+              const [targetId, path] = bridgeTargets[index];
+              clearTimeout(this._bridgeAutoTimer);
+              this._bridgeAutoTimer = setTimeout(() => {
+                this._bridgeGateIndex = -1;
+                this._bridgeGateReleaseAt = performance.now();
+                this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
+                if (typeof this.navigateChapter === "function") this.navigateChapter(null, targetId, path);
+                else {
+                  const target = document.getElementById(targetId);
+                  if (target && this.scroller) this.scroller.scrollTo({ top: target.offsetTop - 2, behavior: "smooth" });
+                }
+              }, 180);
+              break;
+            }
+          }
+          return result;
+        };
+      }
+      const willUnmount = Logic.prototype.componentWillUnmount;
+      Logic.prototype.componentWillUnmount = function(...args) {
+        clearTimeout(this._bridgeAutoTimer);
+        return willUnmount.apply(this, args);
       };
     }
     return Logic;

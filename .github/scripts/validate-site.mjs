@@ -528,6 +528,9 @@ assert(support.includes('assets/vendor/react-dom-18.3.1.min.js'), 'ReactDOM is n
 assert(support.includes('window.parent !== window'), 'public duplicate document fetch guard missing');
 assert(support.includes('const isPastTarget = Number.isFinite(bridgeTop) && bridgeTop <= targetTop + 2;'), 'chapter navigation still bypasses future bridge animations');
 assert(support.includes('outer?.classList.remove("tt-bridge-seen")'), 'future bridge state is not reset after chapter navigation');
+assert(support.includes('instance.scroller.style.scrollSnapType = "y proximity"') && support.includes('outer.style.scrollSnapStop = "always"'), 'chapter bridges are not scroll-snapped');
+assert(support.includes('this._bridgeAutoTimer = setTimeout') && support.includes('this.navigateChapter(null, targetId, path)'), 'mobile bridges do not auto-advance after playback');
+assert(support.includes('assets/css/works.css?v=20260822-volume-controls-v2') && support.includes('assets/js/works.js?v=20260822-volume-controls-v2'), 'WORKS runtime cache keys are stale');
 const sri = {
   'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
   'assets/vendor/react-dom-18.3.1.min.js': 'gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1',
@@ -539,6 +542,10 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
+assert(!worksJs.includes('tt-gh-card-play-label') && !worksCss.includes('.tt-gh-card-play-label'), 'WORKS card audio button still renders a visible label');
+assert((worksJs.match(/var (?:label|videoLabel) = 'MV';/g) || []).length === 2, 'WORKS video controls are not labeled MV in every language');
+assert(!worksJs.includes('class="tt-gh-action is-primary"'), 'WORKS detail still renders the redundant play/pause button');
+assert(worksCss.includes('grid-template-columns: auto minmax(100px,1fr) auto;') && worksCss.includes('.tt-gh-volume-label {'), 'WORKS volume control layout is incomplete');
 assert(worksJs.includes("var copy = subtitle || description") && worksJs.includes("+ copy + '</div>'"), 'WORKS empty section copy still renders a placeholder paragraph');
 assert(!/compactRichLabel\([^\n]+,\s*18\)/.test(worksJs), 'WORKS card title still has an 18-character JavaScript truncation');
 assert((worksJs.match(/tt-gh-card-title[^\n]+preserve\(/g) || []).length >= 2 && worksJs.includes("title.innerHTML = preserve("), 'WORKS card titles do not preserve the full title');

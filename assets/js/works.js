@@ -1347,13 +1347,13 @@
     var playing = index === state.selected && state.playing;
     var label = cardAudioLabel(index);
     var title = plainRichText((unit && unit.title) || (work && work.title) || 'WORKS');
-    return '<button type="button" class="tt-gh-card-play ' + (playing ? 'is-playing' : '') + '" data-works-action="audio-toggle" data-index="' + index + '" aria-label="' + esc(label + ' · ' + title) + '" aria-pressed="' + (playing ? 'true' : 'false') + '"><span class="tt-gh-card-play-icon" aria-hidden="true"></span><span class="tt-gh-card-play-label">' + esc(label) + '</span></button>';
+    return '<button type="button" class="tt-gh-card-play ' + (playing ? 'is-playing' : '') + '" data-works-action="audio-toggle" data-index="' + index + '" aria-label="' + esc(label + ' · ' + title) + '" aria-pressed="' + (playing ? 'true' : 'false') + '"><span class="tt-gh-card-play-icon" aria-hidden="true"></span></button>';
   }
 
   function cardVideo(work, index, unit) {
     var yt = (unit && unit.youtube) || '';
     if (!yt) return '';
-    var label = localizedUiLabel('영상 보기', 'WATCH VIDEO', '映像を見る');
+    var label = 'MV';
     var title = plainRichText((unit && unit.title) || (work && work.title) || 'WORKS');
     return '<button type="button" class="tt-gh-card-video" data-works-action="video-open" data-index="' + index + '" aria-label="YouTube ' + esc(label + ' · ' + title) + '"><span class="tt-gh-card-video-mark" aria-hidden="true">▶</span><span>' + esc(label) + '</span></button>';
   }
@@ -1432,7 +1432,7 @@
     var hasAudio = entries.length > 0;
     var format = [kind, trackLabel(work), state.language].filter(Boolean).join(' / ');
     var meta = localizedMeta();
-    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><button type="button" class="tt-gh-action is-primary" data-works-action="play" ' + (hasAudio ? '' : 'disabled') + '>' + preserve(state.playing ? meta.pauseLabel : meta.playLabel) + '</button><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume"><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + detailTable(work, unit, kind, format) + '</section>';
+    return '<section class="tt-gh-info"><div class="tt-gh-info-copy"><span class="tt-gh-info-kicker"><i></i> ' + preserve(meta.infoKicker) + '</span><h3>' + preserve(unit.title || work.title) + '</h3><p style="white-space:pre-wrap">' + preserve(unit.description || work.description || unit.credits || work.credits || 'TALETONE MUSIC archive.') + '</p><div class="tt-gh-actions-line"><span class="tt-gh-volume-label" aria-hidden="true">VOLUME</span><input class="tt-gh-volume" type="range" min="0" max="1" step="0.01" value="' + state.volume + '" data-works-action="volume" aria-label="WORKS volume" ' + (hasAudio ? '' : 'disabled') + '><span class="tt-gh-db" data-works-db>' + volumeToDb(state.volume) + '</span></div></div><span class="tt-gh-info-rule"></span>' + detailTable(work, unit, kind, format) + '</section>';
   }
 
   function galleryModal() {
@@ -1553,8 +1553,6 @@
           existingPlay.setAttribute('aria-pressed', cardPlaying ? 'true' : 'false');
           existingPlay.setAttribute('aria-label', audioLabel + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
           existingPlay.classList.toggle('is-playing', cardPlaying);
-          var playLabel = existingPlay.querySelector('.tt-gh-card-play-label');
-          if (playLabel) playLabel.textContent = audioLabel;
         }
 
         var existingVideo = cover.querySelector('.tt-gh-card-video');
@@ -1567,7 +1565,7 @@
           existingVideo = null;
         }
         if (existingVideo) {
-          var videoLabel = localizedUiLabel('영상 보기', 'WATCH VIDEO', '映像を見る');
+          var videoLabel = 'MV';
           existingVideo.setAttribute('data-index', String(index));
           existingVideo.setAttribute('aria-label', 'YouTube ' + videoLabel + ' · ' + plainRichText((unit && unit.title) || (work && work.title) || 'WORKS'));
           var videoCopy = existingVideo.querySelector('span:last-child');
