@@ -3889,8 +3889,56 @@ body.tt-network-open #content {
   }
 }
 
-/* Mobile priority: this is supporting context, so render it as a compact list
-   instead of competing with the selected-work proof cards. */
+@media (min-width: 901px) {
+  #c-projects > div[data-reveal]:last-child {
+    width:min(1080px,78vw)!important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap:clamp(18px,2vw,26px)!important;
+  }
+
+  #c-projects article.lift {
+    display: grid !important;
+    grid-template-columns: minmax(150px, .9fr) minmax(0, 1.1fr) !important;
+    grid-template-areas: "media head" "media copy" "media button" !important;
+    column-gap: 22px !important;
+    row-gap: 12px !important;
+    padding: 22px !important;
+    align-items: start !important;
+  }
+
+  #c-projects article.lift > :nth-child(1) { grid-area: head !important; min-width: 0 !important; }
+  #c-projects article.lift > :nth-child(2) { grid-area: media !important; transform: none !important; }
+  #c-projects article.lift > :nth-child(3) { grid-area: copy !important; min-width: 0 !important; }
+  #c-projects article.lift > :nth-child(4) { grid-area: button !important; align-self: end !important; }
+  #c-projects article.lift > :nth-child(1) > :last-child { display: none !important; }
+  #c-projects article.lift > :nth-child(1) > :first-child {
+    font-size: 10px !important;
+    letter-spacing: .14em !important;
+    white-space: nowrap !important;
+  }
+
+  #c-projects article.lift image-slot {
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  #c-projects article.lift [style*="font-size:clamp(34px"],
+  #c-projects article.lift [style*="font-size: clamp(34px"] {
+    font-size: clamp(28px, 2.5vw, 36px) !important;
+    word-break: keep-all !important;
+  }
+
+  #c-projects article.lift p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  #c-projects article.lift a {
+    padding: 11px 18px !important;
+    font-size: 13px !important;
+  }
+}
+
 @media (max-width: 760px) {
   #c-projects [data-public-audience][data-reveal] {
     display: block !important;
