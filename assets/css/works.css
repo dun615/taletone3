@@ -3890,7 +3890,7 @@ body.tt-network-open #content {
 }
 
 /* Mobile priority: this is supporting context, so render it as a compact list
-   instead of competing with the soraniwa / TALETONES project cards. */
+   instead of competing with the selected-work proof cards. */
 @media (max-width: 760px) {
   #c-projects [data-public-audience][data-reveal] {
     display: block !important;

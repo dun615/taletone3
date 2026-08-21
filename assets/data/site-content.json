@@ -692,63 +692,20 @@
     "title": "STORY",
     "titleAccent": " TYPES",
     "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
-    "description": "자체 IP를 기획해 본 팀은, 여러분의 IP를 더 깊이 읽습니다.",
+    "description": "게임부터 버추얼 아티스트, 애니메이션까지. 이야기의 감정과 캐릭터를 읽어 음악의 방향을 설계합니다.",
     "cards": [
       {
-        "id": "soraniwa",
-        "slotId": "sora-art",
-        "label": "Storytelling Project",
-        "title": "soraniwa",
-        "placeholder": "soraniwa visual",
-        "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
-        "buttonLabel": "soraniwa YouTube",
-        "link": "https://www.youtube.com/@soraniwaproject",
+        "id": "selected-game-ip",
+        "slotId": "selected-game-art",
+        "label": "SELECTED WORK · GAME IP",
+        "title": "여름을 그리다",
+        "placeholder": "여름을 그리다 앨범 아트",
+        "description": "여름 바캉스의 장면과 캐릭터성을 청량한 밴드 사운드로 확장한 게임 IP 앨범 프로젝트입니다.",
+        "buttonLabel": "WORKS에서 보기",
+        "link": "/works/",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
-        "image": "assets\\bundle\\Thumbnail_Fix-en.jpg",
-        "fit": "cover",
-        "posX": 54,
-        "posY": 44,
-        "brightness": 103,
-        "saturation": 100,
-        "lightness": 100,
-        "translations": {
-          "kr": {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
-            "buttonLabel": "soraniwa YouTube"
-          },
-          "en": {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "TALETONE's storytelling project: an original IP expanded through music and video.",
-            "buttonLabel": "soraniwa YouTube"
-          },
-          "jp": {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "TALETONEが企画する自社IPを、音楽と映像へ広げていくストーリーテリングプロジェクトです。",
-            "buttonLabel": "soraniwa YouTube"
-          }
-        },
-        "openInNewTab": true
-      },
-      {
-        "id": "taletones",
-        "slotId": "tone-art",
-        "label": "Band by Storytellers",
-        "title": "TALETONES",
-        "placeholder": "TALETONES visual",
-        "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
-        "buttonLabel": "준비중",
-        "link": "",
-        "buttonColor": "var(--accent2,#3d8a98)",
-        "buttonTextColor": "#ffffff",
-        "image": "",
+        "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.jpg",
         "fit": "cover",
         "posX": 50,
         "posY": 50,
@@ -757,25 +714,111 @@
         "lightness": 100,
         "translations": {
           "kr": {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "준비중"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "여름을 그리다",
+            "placeholder": "여름을 그리다 앨범 아트",
+            "description": "여름 바캉스의 장면과 캐릭터성을 청량한 밴드 사운드로 확장한 게임 IP 앨범 프로젝트입니다.",
+            "buttonLabel": "WORKS에서 보기"
           },
           "en": {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "A TALETONE band project where storytellers give their own voices to each story.",
-            "buttonLabel": "Coming Soon"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "Drawing Summer",
+            "placeholder": "Drawing Summer album artwork",
+            "description": "A game-IP album project that expands a summer vacation story and its characters through bright, band-driven sound.",
+            "buttonLabel": "View in Works"
           },
           "jp": {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
-            "buttonLabel": "準備中"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "Drawing Summer",
+            "placeholder": "Drawing Summer アルバムアート",
+            "description": "夏のバカンスの情景とキャラクター性を、爽やかなバンドサウンドへ広げたゲームIPアルバムプロジェクトです。",
+            "buttonLabel": "Worksで見る"
+          }
+        },
+        "openInNewTab": false
+      },
+      {
+        "id": "selected-vtuber-artist",
+        "slotId": "selected-vtuber-art",
+        "label": "SELECTED WORK · VTUBER / ARTIST",
+        "title": "마음악보",
+        "placeholder": "마음악보 앨범 아트",
+        "description": "서로 다른 네 소녀가 하나의 밴드가 되는 청춘 서사를 작곡과 편곡으로 한 곡 안에 설계했습니다.",
+        "buttonLabel": "WORKS에서 보기",
+        "link": "/works/",
+        "buttonColor": "var(--ink,#141C30)",
+        "buttonTextColor": "var(--paper,#fffdf8)",
+        "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.jpg",
+        "fit": "cover",
+        "posX": 50,
+        "posY": 50,
+        "brightness": 100,
+        "saturation": 100,
+        "lightness": 100,
+        "translations": {
+          "kr": {
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "마음악보",
+            "placeholder": "마음악보 앨범 아트",
+            "description": "서로 다른 네 소녀가 하나의 밴드가 되는 청춘 서사를 작곡과 편곡으로 한 곡 안에 설계했습니다.",
+            "buttonLabel": "WORKS에서 보기"
+          },
+          "en": {
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "Heart Score",
+            "placeholder": "Heart Score album artwork",
+            "description": "A youth narrative about four girls becoming one band, shaped into a single song through composition and arrangement.",
+            "buttonLabel": "View in Works"
+          },
+          "jp": {
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "Heart Score",
+            "placeholder": "Heart Score アルバムアート",
+            "description": "異なる個性を持つ4人の少女が一つのバンドになる青春の物語を、作曲と編曲で一曲に描きました。",
+            "buttonLabel": "Worksで見る"
+          }
+        },
+        "openInNewTab": false
+      },
+      {
+        "id": "selected-animation-ip",
+        "slotId": "selected-animation-art",
+        "label": "SELECTED WORK · ANIMATION IP",
+        "title": "강치 아일랜드 OP",
+        "placeholder": "강치 아일랜드 오프닝 아트",
+        "description": "꿈과 우정을 키워가는 애니메이션의 첫인상을 경쾌한 오프닝 사운드로 편곡했습니다.",
+        "buttonLabel": "WORKS에서 보기",
+        "link": "/works/",
+        "buttonColor": "var(--ink,#141C30)",
+        "buttonTextColor": "var(--paper,#fffdf8)",
+        "image": "assets/works/images/asset-mq637x6b-suft-20752505.jpg-42f728166a48.jpg",
+        "fit": "cover",
+        "posX": 50,
+        "posY": 50,
+        "brightness": 100,
+        "saturation": 100,
+        "lightness": 100,
+        "translations": {
+          "kr": {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "강치 아일랜드 OP",
+            "placeholder": "강치 아일랜드 오프닝 아트",
+            "description": "꿈과 우정을 키워가는 애니메이션의 첫인상을 경쾌한 오프닝 사운드로 편곡했습니다.",
+            "buttonLabel": "WORKS에서 보기"
+          },
+          "en": {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "Gangchi Island OP",
+            "placeholder": "Gangchi Island opening artwork",
+            "description": "An upbeat opening arrangement that introduces an animated story of friendship and growing dreams.",
+            "buttonLabel": "View in Works"
+          },
+          "jp": {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "Gangchi Island OP",
+            "placeholder": "Gangchi Island オープニングアート",
+            "description": "夢と友情を育むアニメーションの第一印象を、軽快なオープニングサウンドに編曲しました。",
+            "buttonLabel": "Worksで見る"
           }
         },
         "openInNewTab": false
@@ -787,21 +830,28 @@
         "title": "STORY",
         "titleAccent": " TYPES",
         "subtitle": "세계관 IP를 음악으로 확장하는 프로덕션",
-        "description": "자체 IP를 기획해 본 팀은, 여러분의 IP를 더 깊이 읽습니다.",
+        "description": "게임부터 버추얼 아티스트, 애니메이션까지. 이야기의 감정과 캐릭터를 읽어 음악의 방향을 설계합니다.",
         "cards": [
           {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "자체 IP를 기획하고 음악과 영상으로 확장하는 TALETONE의 스토리텔링 프로젝트입니다.",
-            "buttonLabel": "soraniwa YouTube"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "여름을 그리다",
+            "placeholder": "여름을 그리다 앨범 아트",
+            "description": "여름 바캉스의 장면과 캐릭터성을 청량한 밴드 사운드로 확장한 게임 IP 앨범 프로젝트입니다.",
+            "buttonLabel": "WORKS에서 보기"
           },
           {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "스토리텔러들이 직접 목소리를 입히는 TALETONE의 음악 밴드 프로젝트입니다.",
-            "buttonLabel": "준비중"
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "마음악보",
+            "placeholder": "마음악보 앨범 아트",
+            "description": "서로 다른 네 소녀가 하나의 밴드가 되는 청춘 서사를 작곡과 편곡으로 한 곡 안에 설계했습니다.",
+            "buttonLabel": "WORKS에서 보기"
+          },
+          {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "강치 아일랜드 OP",
+            "placeholder": "강치 아일랜드 오프닝 아트",
+            "description": "꿈과 우정을 키워가는 애니메이션의 첫인상을 경쾌한 오프닝 사운드로 편곡했습니다.",
+            "buttonLabel": "WORKS에서 보기"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAME",
@@ -825,21 +875,28 @@
         "title": "STORY",
         "titleAccent": " TYPES",
         "subtitle": "Story-based music production for IPs with living worlds.",
-        "description": "A team that builds its own IP can read your IP more deeply.",
+        "description": "From games and virtual artists to animation, we read each story's emotion and character to shape its musical direction.",
         "cards": [
           {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "TALETONE's storytelling project: an original IP expanded through music and video.",
-            "buttonLabel": "soraniwa YouTube"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "Drawing Summer",
+            "placeholder": "Drawing Summer album artwork",
+            "description": "A game-IP album project that expands a summer vacation story and its characters through bright, band-driven sound.",
+            "buttonLabel": "View in Works"
           },
           {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "A TALETONE band project where storytellers give their own voices to each story.",
-            "buttonLabel": "Coming Soon"
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "Heart Score",
+            "placeholder": "Heart Score album artwork",
+            "description": "A youth narrative about four girls becoming one band, shaped into a single song through composition and arrangement.",
+            "buttonLabel": "View in Works"
+          },
+          {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "Gangchi Island OP",
+            "placeholder": "Gangchi Island opening artwork",
+            "description": "An upbeat opening arrangement that introduces an animated story of friendship and growing dreams.",
+            "buttonLabel": "View in Works"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
@@ -863,21 +920,28 @@
         "title": "STORY",
         "titleAccent": " TYPES",
         "subtitle": "世界観のあるIPを音楽へ広げるストーリーベースの音楽プロダクション",
-        "description": "自社IPを企画してきたチームだからこそ、皆さまのIPをより深く読み解きます。",
+        "description": "ゲームからVTuber、アニメーションまで。物語の感情とキャラクターを読み解き、音楽の方向性を設計します。",
         "cards": [
           {
-            "label": "Storytelling Project",
-            "title": "soraniwa",
-            "placeholder": "soraniwa visual",
-            "description": "TALETONEが企画する自社IPを、音楽と映像へ広げていくストーリーテリングプロジェクトです。",
-            "buttonLabel": "soraniwa YouTube"
+            "label": "SELECTED WORK · GAME IP",
+            "title": "Drawing Summer",
+            "placeholder": "Drawing Summer アルバムアート",
+            "description": "夏のバカンスの情景とキャラクター性を、爽やかなバンドサウンドへ広げたゲームIPアルバムプロジェクトです。",
+            "buttonLabel": "Worksで見る"
           },
           {
-            "label": "Band by Storytellers",
-            "title": "TALETONES",
-            "placeholder": "TALETONES visual",
-            "description": "語り手たちが自らの声で物語に命を吹き込む、TALETONEのバンドプロジェクトです。",
-            "buttonLabel": "準備中"
+            "label": "SELECTED WORK · VTUBER / ARTIST",
+            "title": "Heart Score",
+            "placeholder": "Heart Score アルバムアート",
+            "description": "異なる個性を持つ4人の少女が一つのバンドになる青春の物語を、作曲と編曲で一曲に描きました。",
+            "buttonLabel": "Worksで見る"
+          },
+          {
+            "label": "SELECTED WORK · ANIMATION IP",
+            "title": "Gangchi Island OP",
+            "placeholder": "Gangchi Island オープニングアート",
+            "description": "夢と友情を育むアニメーションの第一印象を、軽快なオープニングサウンドに編曲しました。",
+            "buttonLabel": "Worksで見る"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
