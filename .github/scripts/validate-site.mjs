@@ -426,6 +426,8 @@ for (const key of ['home', 'translation', 'projects', 'contact', 'membersMeta', 
 for (const [key, minimum] of Object.entries({ members: 4, news: 1, partners: 1, bridges: 5, trackRecord: 2 })) {
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
+const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'translation-projects');
+assert(firstBridge?.translations?.jp?.text === '私たちは曲をつくる前に、\nまず物語に耳を傾けます。', 'first bridge Japanese desktop line break is missing');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);

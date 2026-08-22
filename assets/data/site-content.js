@@ -1173,7 +1173,7 @@ window.TALETONE_CONTENT = {
         },
         "jp": {
           "eyebrow": "TALE · THE STORIES WE BEGIN WITH",
-          "text": "私たちは曲をつくる前に、まず物語に耳を傾けます。",
+          "text": "私たちは曲をつくる前に、\nまず物語に耳を傾けます。",
           "mobileLines": [
             {
               "text": "私たちは曲をつくる前に、",
