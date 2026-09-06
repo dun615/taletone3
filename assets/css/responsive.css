@@ -76,8 +76,8 @@
 
 @media (min-width: 761px) and (max-width: 1180px) {
   :root { --tt-gutter: max(32px, env(safe-area-inset-left), env(safe-area-inset-right)); }
-  .tt-bridge-pin-stage .tt-bridge-desktop-text,
-  .tt-bridge-pin-stage .tt-bridge-desktop-text > span { display: block !important; width: 100% !important; max-width: 100% !important; white-space: normal !important; word-break: normal !important; overflow-wrap: break-word !important; }
+  .tt-bridge-pin-stage .tt-bridge-desktop-text { display: block !important; width: 100% !important; max-width: 100% !important; white-space: normal !important; }
+  .tt-bridge-pin-stage .tt-bridge-desktop-text > span { display: inline-block !important; width: auto !important; max-width: 100% !important; white-space: pre-wrap !important; word-break: normal !important; overflow-wrap: break-word !important; }
   #c-projects > [data-public-audience][data-reveal] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 14px !important; }
   #c-projects [data-public-audience] article { padding: 20px !important; }
   #c-projects [data-public-audience] article h3 { font-size: 19px !important; line-height: 1.35 !important; word-break: normal !important; overflow-wrap: break-word !important; }

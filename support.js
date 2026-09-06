@@ -43,7 +43,7 @@
     return source
       .replace("assets/css/works.css?v=20260717-bridge-clock-hold-v001", "assets/css/works.css?v=20260907-responsive-v1")
       .replace("assets/js/works.js?v=20260716-card-credit-layout-v1", "assets/js/works.js?v=20260907-responsive-v1")
-      .replace('</style>', '</style><link rel="stylesheet" href="assets/css/responsive.css?v=20260907-responsive-v1">');
+      .replace('</style>', '</style><link rel="stylesheet" href="assets/css/responsive.css?v=20260907-bridge-lock-v1">');
   }
   function readDcScript(scriptEl) {
     if (!scriptEl) return "";
@@ -808,7 +808,7 @@
       src + '\n;return (typeof Component!=="undefined"&&Component)||undefined;'
     );
     const Logic = fn(StreamableLogic, StreamableLogic, getReact());
-    if (Logic?.prototype && typeof Logic.prototype.bypassBridges === "function") {
+    if (Logic?.prototype) {
       // The decorative depth rail intersects reading/touch targets on compact screens.
       // Keep the background motion; the accessible chapter menu provides progress.
       const originalDrawRail = Logic.prototype.drawRail;
@@ -818,105 +818,6 @@
           return originalDrawRail.apply(this, args);
         };
       }
-      const bridgeTargets = [
-        ["c-projects", "/story-types/"],
-        ["c-members", "/members/"],
-        ["c-works", "/works/"],
-        ["c-news", "/news/"],
-        ["c-contact", "/contact/"]
-      ];
-      const applyBridgeSnap = (instance) => {
-        if (instance.scroller) instance.scroller.style.scrollSnapType = "y proximity";
-        (instance.bridges || []).forEach((bridge) => {
-          const outer = bridge._bridgeOuter || (bridge.closest ? bridge.closest("[data-story-bridge-wrap]") : null);
-          if (!outer) return;
-          outer.style.scrollSnapAlign = "start";
-          outer.style.scrollSnapStop = "always";
-        });
-      };
-      const didMount = Logic.prototype.componentDidMount;
-      Logic.prototype.componentDidMount = function(...args) {
-        const result = didMount.apply(this, args);
-        applyBridgeSnap(this);
-        return result;
-      };
-      Logic.prototype.bypassBridges = function() {
-        const seen = this._bridgeSeen || (this._bridgeSeen = {});
-        const autoAdvanced = this._bridgeAutoAdvanced || (this._bridgeAutoAdvanced = {});
-        clearTimeout(this._bridgeAutoTimer);
-        let targetId = this._chapterTarget || "";
-        if (!targetId && typeof this._seoPageKeyFromLocation === "function" && typeof this._seoPageForKey === "function") {
-          const page = this._seoPageForKey(this._seoPageKeyFromLocation());
-          targetId = page?.sectionId || "";
-        }
-        const target = targetId ? document.getElementById(targetId) : null;
-        const targetTop = target ? Math.max(0, target.offsetTop - 2) : (this.scroller?.scrollTop || 0);
-        (this.bridges || []).forEach((bridge, index) => {
-          const outer = bridge._bridgeOuter || (bridge.closest ? bridge.closest("[data-story-bridge-wrap]") : null);
-          const bridgeTop = outer ? outer.offsetTop : Number.NaN;
-          const isPastTarget = Number.isFinite(bridgeTop) && bridgeTop <= targetTop + 2;
-          bridge._playing = false;
-          bridge._seen = isPastTarget;
-          bridge._ready = false;
-          if (isPastTarget) {
-            seen[index] = true;
-            autoAdvanced[index] = true;
-            outer?.classList.add("tt-bridge-seen");
-          } else {
-            delete seen[index];
-            delete autoAdvanced[index];
-            bridge._t0 = 0;
-            bridge._finalTime = null;
-            outer?.classList.remove("tt-bridge-seen");
-            if (typeof this.stopBridgeVisual === "function") this.stopBridgeVisual(bridge);
-          }
-        });
-        this._bridgeGateIndex = -1;
-        this._bridgeGateReleaseAt = 0;
-        this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
-        this._sceneDirty = true;
-      };
-      const updateBridges = Logic.prototype.updateBridges;
-      if (typeof updateBridges === "function") {
-        Logic.prototype.updateBridges = function(...args) {
-          const result = updateBridges.apply(this, args);
-          applyBridgeSnap(this);
-          if (typeof this.isMobileMotion === "function" && this.isMobileMotion()) {
-            const autoAdvanced = this._bridgeAutoAdvanced || (this._bridgeAutoAdvanced = {});
-            for (let index = 0; index < bridgeTargets.length; index++) {
-              if (!this._bridgeSeen?.[index] || autoAdvanced[index]) continue;
-              autoAdvanced[index] = true;
-              const [targetId, path] = bridgeTargets[index];
-              const bridge = this.bridges?.[index];
-              const outer = bridge?._bridgeOuter || bridge?.closest("[data-story-bridge-wrap]");
-              const copy = outer?.querySelector(".tt-bridge-mobile-text")?.textContent || "";
-              const readingPause = Math.min(3600, Math.max(1800, copy.trim().length * 30));
-              clearTimeout(this._bridgeAutoTimer);
-              this._bridgeAutoTimer = setTimeout(() => {
-                // Do not pull the reader back after a manual scroll or menu interaction.
-                if (!outer?.isConnected || Math.abs(outer.getBoundingClientRect().top) > 32 ||
-                    document.body.classList.contains("tt-mobile-chapter-open") ||
-                    document.body.classList.contains("tt-site-dialog-open")) return;
-                this._bridgeGateIndex = -1;
-                this._bridgeGateReleaseAt = performance.now();
-                this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
-                if (typeof this.navigateChapter === "function") this.navigateChapter(null, targetId, path);
-                else {
-                  const target = document.getElementById(targetId);
-                  if (target && this.scroller) this.scroller.scrollTo({ top: target.offsetTop - 2, behavior: "smooth" });
-                }
-              }, readingPause);
-              break;
-            }
-          }
-          return result;
-        };
-      }
-      const willUnmount = Logic.prototype.componentWillUnmount;
-      Logic.prototype.componentWillUnmount = function(...args) {
-        clearTimeout(this._bridgeAutoTimer);
-        return willUnmount.apply(this, args);
-      };
     }
     return Logic;
   }

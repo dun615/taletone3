@@ -2,7 +2,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
-import { access, mkdtemp, readFile, rm, stat } from 'node:fs/promises';
+import { access, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 
 const root = process.cwd();
@@ -672,6 +672,120 @@ async function runInteractionSmoke(chrome, origin) {
   }
 }
 
+async function runBridgeSmoke(chrome, origin) {
+  const passed = [];
+  const destinations = ['c-projects','c-members','c-works','c-news','c-contact'];
+  const paths = ['/story-types/','/members/','/works/','/news/','/contact/'];
+  const bridgeViewports=[...functionalViewports,
+    {key:'small-phone-reduced',width:320,height:568,mobile:true,reduced:true},
+    {key:'phone-landscape',width:844,height:390,mobile:true}];
+  for (const [caseIndex, viewport] of bridgeViewports.entries()) {
+    const target = await (await fetch(`http://127.0.0.1:${chrome.port}/json/new?about:blank`, { method: 'PUT' })).json();
+    const client = new CdpClient(target.webSocketDebuggerUrl);
+    await client.ready;
+    try {
+      await Promise.all([client.send('Page.enable'), client.send('Runtime.enable'), client.send('Network.enable')]);
+      await client.send('Emulation.setDeviceMetricsOverride', { width: viewport.width, height: viewport.height, deviceScaleFactor: 1, mobile: viewport.mobile });
+      await client.send('Emulation.setTouchEmulationEnabled', { enabled: true });
+      await client.send('Emulation.setEmulatedMedia', { features: [{name:'prefers-reduced-motion',value:viewport.reduced?'reduce':'no-preference'}] });
+      await client.send('Page.addScriptToEvaluateOnNewDocument', { source: "sessionStorage.setItem('tt_intro_home_v5','1');" });
+      const capture = capturePhase(client, origin);
+      await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
+      for (let index=0; index<5; index++) {
+        const label = `bridge/${viewport.key}/${index+1}`;
+        await evaluate(client, `(() => {
+          const sc=document.getElementById('content'), outer=document.querySelectorAll('[data-story-bridge-wrap]')[${index}];
+          window.__bridgeFrames=[]; const token=window.__bridgeWatchToken=(window.__bridgeWatchToken||0)+1;
+          window.__bridgeHistoryLength=history.length;
+          const record=()=>{
+            if(window.__bridgeWatchToken!==token) return;
+            const r=outer.getBoundingClientRect();
+            if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgePhase||'',top:r.top,scroll:sc.scrollTop});
+            requestAnimationFrame(record);
+          }; requestAnimationFrame(record);
+          sc.scrollTo({top:outer.offsetTop-sc.clientHeight*0.35,behavior:'instant'});
+        })()`);
+        let locked=false;
+        for(let n=0;n<30;n++){
+          locked=await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`);
+          if(locked) break;
+          await sleep(50);
+        }
+        assert(locked, `${label}: entry did not lock`);
+        const lock = await evaluate(client, `(() => {const s=document.getElementById('content');return {overflow:getComputedStyle(s).overflowY,touch:getComputedStyle(s).touchAction,snap:getComputedStyle(s).scrollSnapType,cue:!!document.querySelector('.tt-bridge-continue')};})()`);
+        assert(lock.overflow==='hidden' && lock.touch==='none' && lock.snap==='none' && !lock.cue, `${label}: conflicting native scroll/cue still enabled: ${JSON.stringify(lock)}`);
+        // Real browser input, including reverse direction, during playback AND reading hold.
+        for(let n=0;n<45;n++){
+          const phase=await evaluate(client, `document.getElementById('content').dataset.bridgePhase||''`);
+          if(!phase || phase==='advancing') break;
+          await client.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:viewport.width/2,y:viewport.height/2,deltaX:0,deltaY:n%2?900:-900});
+          const keys=[['PageDown','PageDown',34],['ArrowUp','ArrowUp',38],[' ','Space',32],['Home','Home',36],['End','End',35]];
+          const key=keys[n%keys.length];
+          await pressKey(client,...key);
+          if(viewport.key==='tablet' && index===1 && n===4){
+            await evaluate(client, 'window.__bridgeResizing=true');
+            await client.send('Emulation.setDeviceMetricsOverride',{width:1180,height:820,deviceScaleFactor:1,mobile:true});
+            await sleep(200);
+            const resized=await evaluate(client, `(() => {const s=document.getElementById('content');return {phase:s.dataset.bridgePhase,top:document.querySelectorAll('[data-story-bridge-wrap]')[1].getBoundingClientRect().top};})()`);
+            assert(!!resized.phase && Math.abs(resized.top)<=1, 'bridge/tablet: rotation lost the locked anchor');
+            await evaluate(client, 'window.__bridgeResizing=false');
+          }
+          if(n===2||n===12){
+            await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:viewport.width/2,y:viewport.height*0.7}]});
+            await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:viewport.width/2,y:viewport.height*0.3}]});
+            await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+          }
+          if(n===10 && index===0 && process.env.BRIDGE_SCREENSHOTS){
+            await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
+            const shot=await client.send('Page.captureScreenshot',{format:'png'});
+            await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-bridge.png`),Buffer.from(shot.data,'base64'));
+          }
+          await sleep(100);
+        }
+        for(let n=0;n<35;n++){
+          if(!await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`)) break;
+          await sleep(100);
+        }
+        const result=await evaluate(client, `(() => {
+          window.__bridgeWatchToken++;
+          const s=document.getElementById('content'), frames=window.__bridgeFrames;
+          const fixed=frames.filter(f=>f.phase==='playing'||f.phase==='holding');
+          const advancing=frames.find(f=>f.phase==='advancing');
+          return {phase:s.dataset.bridgePhase||'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
+            top:document.getElementById('${destinations[index]}').getBoundingClientRect().top,
+            drift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.top))):999,
+            duration:fixed.length?(advancing?.time||fixed.at(-1).time)-fixed[0].time:0,historyDelta:history.length-window.__bridgeHistoryLength,
+            holding:fixed.some(f=>f.phase==='holding'),frames:fixed.length};
+        })()`);
+        assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
+        assert(result.holding && result.duration>=(viewport.reduced?2400:2900) && result.duration<=6200, `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
+        assert(result.historyDelta===1, `${label}: handoff must navigate exactly once`);
+        assert(!result.phase && result.overflow==='auto' && result.path===paths[index] && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
+        console.log(label, JSON.stringify(result));
+        passed.push(label);
+      }
+      // An explicit chapter choice cancels playback without a delayed auto-redirect.
+      await evaluate(client, `document.getElementById('nav-0').click()`);
+      await sleep(1800);
+      await evaluate(client, `(() => {const s=document.getElementById('content'),b=document.querySelector('[data-story-bridge-wrap]');s.scrollTo({top:b.offsetTop,behavior:'instant'});})()`);
+      await sleep(400);
+      assert(await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`), `bridge/${viewport.key}: HOME navigation did not reset future bridges`);
+      await evaluate(client, `document.getElementById('nav-6').click()`);
+      await sleep(3600);
+      const canceled=await evaluate(client, `(() => {const s=document.getElementById('content');return {path:location.pathname,phase:s.dataset.bridgePhase||'',overflow:getComputedStyle(s).overflowY};})()`);
+      assert(canceled.path==='/contact/' && !canceled.phase && canceled.overflow==='auto', `bridge/${viewport.key}: explicit navigation retained the old bridge lock/timer`);
+      passed.push(`bridge/${viewport.key}/navigation-cancel`);
+      const network=capture.finish();
+      assert(network.audioRequests===0, `bridge/${viewport.key}: audio loaded without playback`);
+      assert(network.runtimeErrors.length===0, `bridge/${viewport.key}: ${network.runtimeErrors.join(' | ')}`);
+    } finally {
+      client.close();
+      await fetch(`http://127.0.0.1:${chrome.port}/json/close/${target.id}`).catch(()=>{});
+    }
+  }
+  return passed;
+}
+
 function validateResult(result) {
   const { key, page, cold, warm, idle } = result;
   assert(cold.firstPartyRequestCount <= page.maxFirstPartyRequests, `${key}: cold first-party requests ${cold.firstPartyRequestCount} > ${page.maxFirstPartyRequests}: ${JSON.stringify(cold.byOrigin)}`);
@@ -712,15 +826,16 @@ try {
   serverHandle = await startStaticServer();
   chrome = await launchChrome(await findChrome());
   const results = [];
-  for (const viewport of viewports) {
+  for (const viewport of process.env.BRIDGE_ONLY ? [] : viewports) {
     for (const page of pages) {
       const result = await runCase(chrome, serverHandle.origin, page, viewport);
       validateResult(result);
       results.push(result);
     }
   }
-  const functionalChecks = await runFunctionalMatrix(chrome, serverHandle.origin);
-  const interactionChecks = await runInteractionSmoke(chrome, serverHandle.origin);
+  const functionalChecks = process.env.BRIDGE_ONLY ? [] : await runFunctionalMatrix(chrome, serverHandle.origin);
+  const interactionChecks = process.env.BRIDGE_ONLY ? [] : await runInteractionSmoke(chrome, serverHandle.origin);
+  const bridgeChecks = await runBridgeSmoke(chrome, serverHandle.origin);
 
   console.table(results.map(({ key, cold, warm, idle }) => ({
     case: key,
@@ -743,7 +858,7 @@ try {
     console.error(`Runtime performance validation failed:\n- ${errors.join('\n- ')}`);
     process.exitCode = 1;
   } else {
-    console.log(`Runtime performance validation passed: ${results.length} cold/warm performance cases, ${functionalChecks.length} route/language/viewport checks, and ${interactionChecks.length} interaction checks.`);
+    console.log(`Runtime performance validation passed: ${results.length} cold/warm performance cases, ${functionalChecks.length} route/language/viewport checks, ${interactionChecks.length} interaction checks, and ${bridgeChecks.length} bridge checks.`);
   }
 } finally {
   if (chrome) await chrome.close();

@@ -56,7 +56,8 @@ const expectedSiteContentCacheKey = attr(
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 370_000;
 const decodedTemplateBudgetBytes = 112_000;
-const decodedScriptBudgetBytes = 155_000;
+// Bridge control now lives here instead of a second controller in support.js.
+const decodedScriptBudgetBytes = 158_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;family=Noto+Sans+KR:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
@@ -178,7 +179,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: generic story bridges do not reserve their final height`);
     assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
     assert(!decoded.includes('scroll-snap-type') && !decoded.includes('scroll-snap-stop'), `${file}: native bridge snapping can jump after a content re-render`);
-    assert(decoded.includes('.tt-bridge-continue{') && decoded.includes(".tt-bridge-continue::after{content:'  \\2193';}"), `${file}: bridge continuation cue CSS is missing`);
+    assert(!decoded.includes('.tt-bridge-continue'), `${file}: obsolete bridge continuation cue CSS returned`);
     assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
   }
 
@@ -232,14 +233,14 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decodedScript.includes('var bl=(1-exit)*5;'), `${file}: aggressive scroll-exit blur returned`);
     assert(decodedScript.includes('this.raf=0;\n    if(document.hidden) return;'), `${file}: hidden documents can keep the main animation loop alive`);
     const visibilityHandlerSource = decodedScript.match(/this\._visibilityHandler=\(\)=>\{[\s\S]*?\n    \};/)?.[0] || '';
-    assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation order changed`);
+    assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*if\(this\._bridgeRun\) this\._bridgeRun\.hiddenAt=performance\.now\(\);\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation/bridge pause order changed`);
     assert((visibilityHandlerSource.match(/requestAnimationFrame\(this\.loop\)/g) || []).length === 1 && visibilityHandlerSource.includes('if(!this.raf){'), `${file}: visible animation loop does not resume exactly once`);
     assert(decodedScript.includes("document.addEventListener('visibilitychange',this._visibilityHandler)") && decodedScript.includes("document.removeEventListener('visibilitychange',this._visibilityHandler)"), `${file}: animation visibility lifecycle is incomplete`);
     const synchronousLangIndex = decodedScript.indexOf("document.documentElement.lang=this.lang==='kr'?'ko':(this.lang==='jp'?'ja':'en');");
     const deferredLangIndex = decodedScript.indexOf('this._langInitTimer=setTimeout');
     assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
-    assert(decodedScript.includes('if(sceneDirty||bridgePlaying) this.updateBridges(vhR);'), `${file}: bridge work is not limited to changes or active playback`);
+    assert(decodedScript.includes('if(sceneDirty||bridgePlaying||this._bridgeRun) this.updateBridges(vhR);'), `${file}: bridge clock does not cover playback, hold and handoff`);
     assert(decodedScript.includes('if((sceneDirty||this._transPlaying||this.lastActive===1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
     assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
@@ -250,18 +251,21 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
     const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
     assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=this._reduceMotion?700:1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
-    assert(updateBridgesBody.includes('var elapsed=Math.max(0,now-bg._t0), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
-    assert(updateBridgesBody.includes('bg._playing=true; bg._t0=now; bridgeTime=gi*0.31;') && !updateBridgesBody.includes("if(this._reduceMotion){\n          bg._seen=true"), `${file}: reduced-motion bridge can skip its shortened animation clock`);
+    assert(updateBridgesBody.includes('var elapsed=Math.max(0,now-run.startedAt), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
+    assert(decodedScript.includes('duration:reduced?700:1200') && decodedScript.includes('hold:Math.min(3600,Math.max(1800,copy.trim().length*30))'), `${file}: configured bridge animation/reading times changed`);
     assert(updateBridgesBody.includes('bg._finalTime=DUR/1000+gi*0.31;') && updateBridgesBody.includes('prog=FINAL; bridgeTime=bg._finalTime==null?DUR/1000+gi*0.31:bg._finalTime;'), `${file}: completed bridge frame is not deterministic`);
     assert(updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,bridgeTime);') && !updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,tA+gi*0.31)'), `${file}: completed bridge visuals can keep drifting`);
     assert(!updateBridgesBody.includes('(vhR*0.80-rect.top)/(vhR*1.20)') && !/prog\s*=\s*this\.cl\([^;\n]*(?:rect\.top|rect\.bottom)/.test(updateBridgesBody), `${file}: bridge progress is still scrubbed by scroll position`);
     assert(!updateBridgesBody.includes("this.scrollToManaged(outer.offsetTop-1,'smooth',520)"), `${file}: bridge playback still moves the scroller`);
     assert(updateBridgesBody.includes("outer.classList.add('tt-bridge-seen')"), `${file}: one-time bridge runtime lifecycle is missing`);
-    assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this._bridgeGateIndex=bi') && decodedScript.includes("this.scroller.scrollTo({top:bridgeTop,behavior:'auto'})"), `${file}: large scroll gestures can skip an unvisited bridge`);
-    assert(decodedScript.includes("'Scroll to continue'") && decodedScript.includes("'スクロールして次の章へ'") && decodedScript.includes("'계속 스크롤해 다음 장으로'"), `${file}: localized bridge continuation cues are incomplete`);
-    assert(decodedScript.includes('bypassBridges(){') && (decodedScript.match(/this\.bypassBridges\(\);/g) || []).length === 2, `${file}: direct navigation does not bypass bridge settlement consistently`);
+    assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this.startBridge(bi);'), `${file}: large scroll gestures can skip an unvisited bridge`);
+    for (const obsolete of ['_bridgeGate', '_continueCue', 'tt-bridge-continue', 'Scroll to continue', 'スクロールして次の章へ', '계속 스크롤해 다음 장으로', 'outer._shaken']) assert(!decodedScript.includes(obsolete), `${file}: obsolete bridge behavior returned: ${obsolete}`);
+    assert(decodedScript.includes('bypassBridges(targetId){') && decodedScript.includes('this.bypassBridges(page.sectionId);') && decodedScript.includes('this.bypassBridges(id);'), `${file}: direct navigation does not bypass bridge settlement consistently`);
+    assert(decodedScript.includes("style.setProperty('overflow-y','hidden','important')") && decodedScript.includes("style.setProperty('touch-action','none','important')") && decodedScript.includes('{capture:true,passive:false}'), `${file}: bridge does not block native wheel/touch/keyboard input`);
+    assert(updateBridgesBody.includes('elapsed>=DUR+run.hold') && decodedScript.includes("run.phase='advancing'") && decodedScript.includes('if(p>=1) this.releaseBridge();'), `${file}: bridge handoff does not retain the lock through automatic advancement`);
+    assert(decodedScript.includes('outer.offsetTop<=targetTop+2') && decodedScript.includes("outer.classList.toggle('tt-bridge-seen',past)"), `${file}: chapter jumps skip future bridges`);
     assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
-    assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: timed bridge auto-advance returned`);
+    assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: obsolete scroll-managed bridge handoff returned`);
     assert(!decodedScript.includes("outer.style.minHeight='100vh'") && !decodedScript.includes("outer.style.height='100vh'"), `${file}: runtime bridge geometry writes can reintroduce layout shift`);
   }
 
@@ -528,12 +532,9 @@ const support = await text('support.js');
 assert(support.includes('assets/vendor/react-18.3.1.min.js'), 'React is not self-hosted');
 assert(support.includes('assets/vendor/react-dom-18.3.1.min.js'), 'ReactDOM is not self-hosted');
 assert(support.includes('window.parent !== window'), 'public duplicate document fetch guard missing');
-assert(support.includes('const isPastTarget = Number.isFinite(bridgeTop) && bridgeTop <= targetTop + 2;'), 'chapter navigation still bypasses future bridge animations');
-assert(support.includes('outer?.classList.remove("tt-bridge-seen")'), 'future bridge state is not reset after chapter navigation');
-assert(support.includes('instance.scroller.style.scrollSnapType = "y proximity"') && support.includes('outer.style.scrollSnapStop = "always"'), 'chapter bridges are not scroll-snapped');
-assert(support.includes('this._bridgeAutoTimer = setTimeout') && support.includes('this.navigateChapter(null, targetId, path)'), 'mobile bridges do not auto-advance after playback');
+for (const obsolete of ['applyBridgeSnap', 'scrollSnapType', '_bridgeAutoTimer', '_bridgeAutoAdvanced', 'Logic.prototype.bypassBridges = function', 'Logic.prototype.updateBridges = function']) assert(!support.includes(obsolete), `conflicting support bridge controller returned: ${obsolete}`);
 assert(support.includes('assets/css/works.css?v=20260907-responsive-v1') && support.includes('assets/js/works.js?v=20260907-responsive-v1'), 'WORKS runtime cache keys are stale');
-assert(support.includes('assets/css/responsive.css?v=20260907-responsive-v1'), 'compact layout stylesheet is not loaded');
+assert(support.includes('assets/css/responsive.css?v=20260907-bridge-lock-v1'), 'compact layout stylesheet is not loaded');
 assert(Buffer.byteLength(await text('assets/css/responsive.css')) <= 18_000, 'compact stylesheet exceeds its 18 KB budget');
 const sri = {
   'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
