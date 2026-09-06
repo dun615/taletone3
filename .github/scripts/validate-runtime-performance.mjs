@@ -565,20 +565,21 @@ async function runInteractionSmoke(chrome, origin) {
       chapter: document.body.getAttribute('data-active-chapter'),
       cards: document.querySelectorAll('[data-works-card]').length,
       showcase: document.querySelector('#tt-gh-tab-showcase')?.getAttribute('aria-selected'),
-      play: !!document.querySelector('#tt-gh-works-app [data-works-action="play"]'),
+      play: !!document.querySelector('#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]'),
       playback: document.body.dataset.ttMediaPlayback || 'paused'
     }))()`);
     assert(worksReady.chapter === 'works' && worksReady.cards === 21 && worksReady.showcase === 'true' && worksReady.play, 'interaction: WORKS Showcase did not initialize');
     assert(worksReady.playback !== 'playing', 'interaction: WORKS audio started without user playback');
 
-    await clickSelector(client, '#tt-gh-works-app [data-works-action="play"]');
+    await clickSelector(client, '#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]');
     await sleep(1_000);
     const playing = await evaluate(client, `(() => ({
       playback: document.body.dataset.ttMediaPlayback,
       engine: document.body.dataset.ttMediaAudioEngine,
-      button: document.querySelector('#tt-gh-works-app [data-works-action="play"]')?.textContent.trim()
+      button: document.querySelector('#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]')?.getAttribute('aria-pressed')
     }))()`);
     assert(playing.playback === 'playing', `interaction: WORKS playback state is ${playing.playback || 'missing'}`);
+    assert(playing.button === 'true', 'interaction: active audio button did not expose its playing state');
     passed.push('works-play');
 
     await clickSelector(client, '#tt-gh-tab-gallery[data-works-action="mode"][data-mode="gallery"]');
@@ -587,7 +588,7 @@ async function runInteractionSmoke(chrome, origin) {
       playback: document.body.dataset.ttMediaPlayback,
       selected: document.querySelector('#tt-gh-tab-gallery')?.getAttribute('aria-selected'),
       cards: document.querySelectorAll('#tt-gh-panel-gallery [data-works-action="gallery-open"][data-index]').length,
-      play: !!document.querySelector('#tt-gh-works-app [data-works-action="play"]')
+      play: !!document.querySelector('#tt-gh-panel-gallery [data-works-action="audio-toggle"]')
     }))()`);
     assert(gallery.playback === 'paused' && gallery.selected === 'true', 'interaction: Gallery did not synchronously pause Showcase audio');
     assert(gallery.cards === 21 && !gallery.play, `interaction: Gallery expected 21 cards without a Play control, found ${gallery.cards}`);

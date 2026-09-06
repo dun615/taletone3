@@ -34,6 +34,7 @@
     word-break: normal !important; overflow-wrap: break-word !important; text-wrap: pretty;
   }
   #c-projects > [data-public-audience][data-reveal] { width: min(100%, 960px) !important; max-width: 100% !important; margin: 0 auto 28px !important; }
+  #c-projects [data-public-audience] article h3 { text-wrap: balance; }
   #c-projects article.lift { transform: none !important; height: auto !important; }
   #c-projects article.lift > :first-child > :last-child { display: none !important; }
   #c-projects article.lift [style*="font-size:clamp(34px"], #c-projects article.lift [style*="font-size: clamp(34px"] {
