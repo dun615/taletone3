@@ -532,7 +532,9 @@ assert(support.includes('const isPastTarget = Number.isFinite(bridgeTop) && brid
 assert(support.includes('outer?.classList.remove("tt-bridge-seen")'), 'future bridge state is not reset after chapter navigation');
 assert(support.includes('instance.scroller.style.scrollSnapType = "y proximity"') && support.includes('outer.style.scrollSnapStop = "always"'), 'chapter bridges are not scroll-snapped');
 assert(support.includes('this._bridgeAutoTimer = setTimeout') && support.includes('this.navigateChapter(null, targetId, path)'), 'mobile bridges do not auto-advance after playback');
-assert(support.includes('assets/css/works.css?v=20260822-volume-controls-v2') && support.includes('assets/js/works.js?v=20260822-volume-controls-v2'), 'WORKS runtime cache keys are stale');
+assert(support.includes('assets/css/works.css?v=20260907-responsive-v1') && support.includes('assets/js/works.js?v=20260907-responsive-v1'), 'WORKS runtime cache keys are stale');
+assert(support.includes('assets/css/responsive.css?v=20260907-responsive-v1'), 'compact layout stylesheet is not loaded');
+assert(Buffer.byteLength(await text('assets/css/responsive.css')) <= 18_000, 'compact stylesheet exceeds its 18 KB budget');
 const sri = {
   'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
   'assets/vendor/react-dom-18.3.1.min.js': 'gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1',

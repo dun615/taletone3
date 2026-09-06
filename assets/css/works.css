@@ -4724,8 +4724,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   }
 }
 
-@media (max-width: 760px) {
-  /* Keep contact decoration quiet while mobile scrolling is active. */
+@media (max-width: 1180px) {
+  /* Compact navigation also serves tablets and landscape phones. */
   body.tt-mobile-scroll-active #c-contact .tt-book-light-stage > *,
   body:not([data-active-chapter="news"]):not([data-active-chapter="contact"]) #c-contact .tt-book-light-stage > * {
     animation-play-state: paused !important;

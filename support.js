@@ -41,8 +41,9 @@
     const templateEl = doc.querySelector("script[data-dc-template-b64]");
     const source = templateEl ? readEncodedPayload(templateEl, "data-dc-template-b64") : dc?.hasAttribute("data-dc-template-b64") ? readEncodedPayload(dc, "data-dc-template-b64") : fallback;
     return source
-      .replace("assets/css/works.css?v=20260717-bridge-clock-hold-v001", "assets/css/works.css?v=20260822-volume-controls-v2")
-      .replace("assets/js/works.js?v=20260716-card-credit-layout-v1", "assets/js/works.js?v=20260822-volume-controls-v2");
+      .replace("assets/css/works.css?v=20260717-bridge-clock-hold-v001", "assets/css/works.css?v=20260907-responsive-v1")
+      .replace("assets/js/works.js?v=20260716-card-credit-layout-v1", "assets/js/works.js?v=20260907-responsive-v1")
+      .replace('</style>', '</style><link rel="stylesheet" href="assets/css/responsive.css?v=20260907-responsive-v1">');
   }
   function readDcScript(scriptEl) {
     if (!scriptEl) return "";
@@ -808,6 +809,15 @@
     );
     const Logic = fn(StreamableLogic, StreamableLogic, getReact());
     if (Logic?.prototype && typeof Logic.prototype.bypassBridges === "function") {
+      // The decorative depth rail intersects reading/touch targets on compact screens.
+      // Keep the background motion; the accessible chapter menu provides progress.
+      const originalDrawRail = Logic.prototype.drawRail;
+      if (typeof originalDrawRail === "function") {
+        Logic.prototype.drawRail = function(...args) {
+          if (window.innerWidth <= 1180) return;
+          return originalDrawRail.apply(this, args);
+        };
+      }
       const bridgeTargets = [
         ["c-projects", "/story-types/"],
         ["c-members", "/members/"],
@@ -877,8 +887,16 @@
               if (!this._bridgeSeen?.[index] || autoAdvanced[index]) continue;
               autoAdvanced[index] = true;
               const [targetId, path] = bridgeTargets[index];
+              const bridge = this.bridges?.[index];
+              const outer = bridge?._bridgeOuter || bridge?.closest("[data-story-bridge-wrap]");
+              const copy = outer?.querySelector(".tt-bridge-mobile-text")?.textContent || "";
+              const readingPause = Math.min(3600, Math.max(1800, copy.trim().length * 30));
               clearTimeout(this._bridgeAutoTimer);
               this._bridgeAutoTimer = setTimeout(() => {
+                // Do not pull the reader back after a manual scroll or menu interaction.
+                if (!outer?.isConnected || Math.abs(outer.getBoundingClientRect().top) > 32 ||
+                    document.body.classList.contains("tt-mobile-chapter-open") ||
+                    document.body.classList.contains("tt-site-dialog-open")) return;
                 this._bridgeGateIndex = -1;
                 this._bridgeGateReleaseAt = performance.now();
                 this._bridgeGateScrollTop = this.scroller?.scrollTop || 0;
@@ -887,7 +905,7 @@
                   const target = document.getElementById(targetId);
                   if (target && this.scroller) this.scroller.scrollTo({ top: target.offsetTop - 2, behavior: "smooth" });
                 }
-              }, 180);
+              }, readingPause);
               break;
             }
           }

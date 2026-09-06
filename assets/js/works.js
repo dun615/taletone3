@@ -2118,7 +2118,7 @@
   }
 
   function toggleMobileChapterMenu() {
-    if (window.innerWidth > 760 || !document.body || globalUxState.dialog) return;
+    if (window.innerWidth > 1180 || !document.body || globalUxState.dialog) return;
     var progress = document.getElementById('progress');
     var opening = !document.body.classList.contains('tt-mobile-chapter-open');
     document.body.classList.toggle('tt-mobile-chapter-open', opening);
@@ -2183,7 +2183,7 @@
       });
     }
 
-    if (window.innerWidth <= 760) {
+    if (window.innerWidth <= 1180) {
       progress.setAttribute('role', 'button');
       progress.setAttribute('tabindex', '0');
       progress.removeAttribute('aria-valuemin');
@@ -2400,7 +2400,7 @@
       target.click();
       return;
     }
-    if ((event.key === 'Enter' || event.key === ' ') && target && target.id === 'progress' && window.innerWidth <= 760) {
+    if ((event.key === 'Enter' || event.key === ' ') && target && target.id === 'progress' && window.innerWidth <= 1180) {
       event.preventDefault();
       toggleMobileChapterMenu();
       return;
