@@ -241,7 +241,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
     assert(decodedScript.includes('if(sceneDirty||bridgePlaying||this._bridgeRun) this.updateBridges(vhR);'), `${file}: bridge clock does not cover playback, hold and handoff`);
-    assert(decodedScript.includes('if((sceneDirty||this._transPlaying||this.lastActive===1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
+    assert(decodedScript.includes('if((sceneDirty||this._bridgeRun?.index===-1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
     assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
@@ -263,7 +263,12 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('bypassBridges(targetId){') && decodedScript.includes('this.bypassBridges(page.sectionId);') && decodedScript.includes('this.bypassBridges(id);'), `${file}: direct navigation does not bypass bridge settlement consistently`);
     assert(decodedScript.includes("style.setProperty('overflow-y','hidden','important')") && decodedScript.includes("style.setProperty('touch-action','none','important')") && decodedScript.includes('{capture:true,passive:false}'), `${file}: bridge does not block native wheel/touch/keyboard input`);
     assert(updateBridgesBody.includes('elapsed>=DUR+run.hold') && decodedScript.includes("run.phase='advancing'") && decodedScript.includes('now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();'), `${file}: bridge handoff does not drain the active scroll gesture before release`);
-    assert(decodedScript.includes('outer.offsetTop<=targetTop+2') && decodedScript.includes("outer.classList.toggle('tt-bridge-seen',past)"), `${file}: chapter jumps skip future bridges`);
+    assert(decodedScript.includes('outer.offsetTop<=targetTop+2') && decodedScript.includes('if(past) this._bridgeBypassed[i]=true;'), `${file}: chapter jumps lack temporary bypass state`);
+    assert(decodedScript.includes("sessionStorage.getItem('tt_bridge_seen_v2')") && decodedScript.includes("sessionStorage.setItem('tt_bridge_seen_v2'"), `${file}: completed bridges are not remembered for the visit`);
+    const bypassSource=(decodedScript.match(/\n  bypassBridges\(targetId\)\{([\s\S]*?)\n  \}/)||[])[1]||'';
+    assert(!/delete\s+(?:seen|this\._bridgeSeen)|this\._bridgeSeen\[[^\]]+\]\s*=/.test(bypassSource), `${file}: chapter navigation rewrites completed bridge history`);
+    assert(decodedScript.includes('this._bridgeRun.duration=reduced?700:7200') && decodedScript.includes('this.startBridge(-1);') && decodedScript.includes('Math.sin(motionTime*3.2'), `${file}: TRANSLATE is not a timed bridge with a frozen final frame`);
+    for(const obsolete of ['_transPlaying','_transDone','_transCool','_transAdv','_transT0']) assert(!decodedScript.includes(obsolete), `${file}: obsolete TRANSLATE state returned: ${obsolete}`);
     assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
     assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: obsolete scroll-managed bridge handoff returned`);
     assert(!decodedScript.includes("outer.style.minHeight='100vh'") && !decodedScript.includes("outer.style.height='100vh'"), `${file}: runtime bridge geometry writes can reintroduce layout shift`);

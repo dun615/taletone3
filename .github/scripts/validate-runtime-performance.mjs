@@ -692,8 +692,8 @@ async function runBridgeSmoke(chrome, origin) {
       await client.send('Page.addScriptToEvaluateOnNewDocument', { source: "sessionStorage.setItem('tt_intro_home_v5','1');" });
       const capture = capturePhase(client, origin);
       await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
-      for (let index=0; index<5; index++) {
-        const label = `bridge/${viewport.key}/${index+1}`;
+      for (let index=-1; index<5; index++) {
+        const label = `bridge/${viewport.key}/${index===-1?'translate':index+1}`;
         // WORKS mounts on demand after chapter entry. Do not aim at its stale placeholder boundary.
         if(index===3){
           for(let n=0;n<40;n++){
@@ -703,21 +703,21 @@ async function runBridgeSmoke(chrome, origin) {
           await sleep(300);
         }
         await evaluate(client, `(() => {
-          const sc=document.getElementById('content'), outer=document.querySelectorAll('[data-story-bridge-wrap]')[${index}];
+          const sc=document.getElementById('content'), outer=${index===-1?"document.getElementById('c-translation')":`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`};
           window.__bridgeFrames=[]; const token=window.__bridgeWatchToken=(window.__bridgeWatchToken||0)+1;
           window.__bridgeHistoryLength=history.length;
           window.__bridgeEntryRequestedAt=performance.now();
           const record=()=>{
             if(window.__bridgeWatchToken!==token) return;
-            const r=(outer.querySelector('.tt-bridge-pin-stage')||outer).getBoundingClientRect();
-            if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgePhase||'',top:r.top,scroll:sc.scrollTop});
+            const r=(outer.querySelector('.tt-bridge-pin-stage,.tt-translation-stage')||outer).getBoundingClientRect();
+            if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgeIndex==='${index}'?(sc.dataset.bridgePhase||''):'',top:r.top,scroll:sc.scrollTop});
             requestAnimationFrame(record);
           }; requestAnimationFrame(record);
-          sc.scrollTo({top:outer.offsetTop-sc.clientHeight*0.35,behavior:'instant'});
+          if(sc.dataset.bridgeIndex!=='${index}') sc.scrollTo({top:outer.offsetTop-sc.clientHeight*0.35,behavior:'instant'});
         })()`);
         let locked=false;
         for(let n=0;n<30;n++){
-          locked=await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`);
+          locked=await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='${index}'`);
           if(locked) break;
           await sleep(50);
         }
@@ -725,8 +725,8 @@ async function runBridgeSmoke(chrome, origin) {
         const lock = await evaluate(client, `(() => {const s=document.getElementById('content');return {overflow:getComputedStyle(s).overflowY,touch:getComputedStyle(s).touchAction,snap:getComputedStyle(s).scrollSnapType,cue:!!document.querySelector('.tt-bridge-continue')};})()`);
         assert(lock.overflow==='hidden' && lock.touch==='none' && lock.snap==='none' && !lock.cue, `${label}: conflicting native scroll/cue still enabled: ${JSON.stringify(lock)}`);
         // Real browser input, including reverse direction, during playback AND reading hold.
-        for(let n=0;n<45;n++){
-          const phase=await evaluate(client, `document.getElementById('content').dataset.bridgePhase||''`);
+        for(let n=0;n<(index===-1?100:45);n++){
+          const phase=await evaluate(client, `(() => {const s=document.getElementById('content');return s.dataset.bridgeIndex==='${index}'?(s.dataset.bridgePhase||''):'';})()`);
           if(!phase || phase==='advancing') break;
           await client.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:viewport.width/2,y:viewport.height/2,deltaX:0,deltaY:n%2?900:-900});
           const keys=[['PageDown','PageDown',34],['ArrowUp','ArrowUp',38],[' ','Space',32],['Home','Home',36],['End','End',35]];
@@ -749,15 +749,15 @@ async function runBridgeSmoke(chrome, origin) {
             // Simulate a late resource changing the height of an earlier chapter.
             await evaluate(client, `(() => {const spacer=document.createElement('div');spacer.id='bridge-test-late-layout';spacer.style.height='160px';document.getElementById('c-home').after(spacer);})()`);
           }
-          if(n===10 && index===0 && process.env.BRIDGE_SCREENSHOTS){
+          if(((index===0&&n===10)||(index===-1&&n===20)) && process.env.BRIDGE_SCREENSHOTS){
             await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
             const shot=await client.send('Page.captureScreenshot',{format:'png'});
-            await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-bridge.png`),Buffer.from(shot.data,'base64'));
+            await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-${index===-1?'translate':'bridge'}.png`),Buffer.from(shot.data,'base64'));
           }
           await sleep(100);
         }
         for(let n=0;n<35;n++){
-          if(!await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`)) break;
+          if(!await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='${index}'`)) break;
           await sleep(100);
         }
         const result=await evaluate(client, `(() => {
@@ -765,30 +765,64 @@ async function runBridgeSmoke(chrome, origin) {
           const s=document.getElementById('content'), frames=window.__bridgeFrames;
           const fixed=frames.filter(f=>f.phase==='playing'||f.phase==='holding');
           const advancing=frames.find(f=>f.phase==='advancing');
-          return {phase:s.dataset.bridgePhase||'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
-            top:document.getElementById('${destinations[index]}').getBoundingClientRect().top,
+          return {phase:s.dataset.bridgeIndex==='${index}'?(s.dataset.bridgePhase||''):'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
+            top:${index===-1?"document.querySelector('[data-story-bridge-wrap]')":`document.getElementById('${destinations[index]}')`}.getBoundingClientRect().top,
             drift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.top))):999,
             duration:fixed.length?(advancing?.time||fixed.at(-1).time)-window.__bridgeEntryRequestedAt:0,historyDelta:history.length-window.__bridgeHistoryLength,
             holding:fixed.some(f=>f.phase==='holding'),frames:fixed.length};
         })()`);
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
-        assert(result.holding && result.duration>=(viewport.reduced?2400:2900) && result.duration<=6200, `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
-        assert(result.historyDelta===1, `${label}: handoff must navigate exactly once`);
-        assert(!result.phase && result.overflow==='auto' && result.path===paths[index] && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
+        assert((index===-1||result.holding) && result.duration>=(viewport.reduced?2350:index===-1?7100:2850) && result.duration<=(index===-1?9500:6200), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
+        assert(result.historyDelta===(index===-1?0:1), `${label}: handoff must navigate exactly once`);
+        assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
         console.log(label, JSON.stringify(result));
         passed.push(label);
         if(index===3) await evaluate(client, `document.getElementById('bridge-test-late-layout')?.remove()`);
       }
-      // An explicit chapter choice cancels playback without a delayed auto-redirect.
+      // Completed bridges stay final and scroll freely, including after chapter/language changes.
       await evaluate(client, `document.getElementById('nav-0').click()`);
       await sleep(1800);
-      await evaluate(client, `(() => {const s=document.getElementById('content'),b=document.querySelector('[data-story-bridge-wrap]');s.scrollTo({top:b.offsetTop,behavior:'instant'});})()`);
+      for(let index=-1;index<5;index++){
+        const selector=index===-1?"document.getElementById('c-translation')":`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`;
+        await evaluate(client, `(() => {const s=document.getElementById('content'),b=${selector};s.scrollTo({top:b.offsetTop,behavior:'instant'});})()`);
+        await sleep(400);
+        const before=await evaluate(client, `(() => {
+          const s=document.getElementById('content'),b=${selector};
+          window.__finalBridgeSnapshot=()=>Array.from(b.querySelectorAll('#wave-row > div,#tcap-2,#trans-foot,[data-bridge] span,.tt-bridge-visual *')).map(el=>[el.style.height,el.style.opacity,el.style.transform].join('|')).join(';');
+          return {phase:s.dataset.bridgePhase||'',frame:window.__finalBridgeSnapshot(),top:s.scrollTop,history:history.length,footer:${index===-1?"document.getElementById('trans-foot').style.opacity":"'1.000'"}};
+        })()`);
+        await sleep(250);
+        const after=await evaluate(client,`({phase:document.getElementById('content').dataset.bridgePhase||'',frame:window.__finalBridgeSnapshot(),history:history.length})`);
+        assert(!before.phase&&!after.phase&&before.frame===after.frame&&before.history===after.history&&Number(before.footer)===1,`bridge/${viewport.key}/revisit/${index}: completed frame restarted or moved`);
+        if(index===-1&&process.env.BRIDGE_SCREENSHOTS){
+          await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
+          const shot=await client.send('Page.captureScreenshot',{format:'png'});
+          await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-translate-final.png`),Buffer.from(shot.data,'base64'));
+        }
+        await client.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:viewport.width/2,y:viewport.height/2,deltaX:0,deltaY:140});
+        await sleep(180);
+        const free=await evaluate(client,`({top:document.getElementById('content').scrollTop,phase:document.getElementById('content').dataset.bridgePhase||''})`);
+        assert(!free.phase&&free.top>before.top+20,`bridge/${viewport.key}/revisit/${index}: ordinary scrolling was blocked`);
+        passed.push(`bridge/${viewport.key}/revisit/${index}`);
+      }
+      await evaluate(client, `window.postMessage({type:'TALETONE_SET_LANG',lang:'jp'},'*')`);
       await sleep(400);
-      assert(await evaluate(client, `!!document.getElementById('content').dataset.bridgePhase`), `bridge/${viewport.key}: HOME navigation did not reset future bridges`);
+      await navigateForInteraction(client, `${origin}/?lang=jp&bridge-reload=1`,1500);
+      await evaluate(client, `document.getElementById('content').scrollTo({top:document.getElementById('c-translation').offsetTop,behavior:'instant'})`);
+      await sleep(500);
+      const restored=await evaluate(client, `({seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]'),phase:document.getElementById('content').dataset.bridgePhase||'',footer:document.getElementById('trans-foot').style.opacity})`);
+      assert(restored.seen.length===6&&!restored.phase&&Number(restored.footer)===1,`bridge/${viewport.key}: reload forgot completion or TRANSLATE final frame`);
+      passed.push(`bridge/${viewport.key}/session-reload`);
+      // A skipped/cancelled animation must not be recorded as watched.
+      await evaluate(client, `sessionStorage.removeItem('tt_bridge_seen_v2')`);
+      await navigateForInteraction(client, `${origin}/?bridge-cancel=1`,1300);
+      await evaluate(client, `document.getElementById('content').scrollTo({top:document.getElementById('c-translation').offsetTop,behavior:'instant'})`);
+      await sleep(400);
+      assert(await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='-1'`),`bridge/${viewport.key}: fresh TRANSLATE did not lock`);
       await evaluate(client, `document.getElementById('nav-6').click()`);
-      await sleep(3600);
-      const canceled=await evaluate(client, `(() => {const s=document.getElementById('content');return {path:location.pathname,phase:s.dataset.bridgePhase||'',overflow:getComputedStyle(s).overflowY};})()`);
-      assert(canceled.path==='/contact/' && !canceled.phase && canceled.overflow==='auto', `bridge/${viewport.key}: explicit navigation retained the old bridge lock/timer`);
+      await sleep(1800);
+      const canceled=await evaluate(client,`({path:location.pathname,phase:document.getElementById('content').dataset.bridgePhase||'',seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]')})`);
+      assert(canceled.path==='/contact/'&&!canceled.phase&&canceled.seen.length===0,`bridge/${viewport.key}: navigation falsely completed an unwatched animation`);
       passed.push(`bridge/${viewport.key}/navigation-cancel`);
       const network=capture.finish();
       assert(network.audioRequests===0, `bridge/${viewport.key}: audio loaded without playback`);
