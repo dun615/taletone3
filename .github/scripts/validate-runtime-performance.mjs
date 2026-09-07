@@ -722,6 +722,8 @@ async function runBridgeSmoke(chrome, origin) {
           await sleep(50);
         }
         assert(locked, `${label}: entry did not lock`);
+        const preloading = await evaluate(client, `!!document.querySelector('#${destinations[Math.max(0,index)]}[data-chapter-preloaded]')`);
+        assert(preloading, `${label}: next chapter preload did not start at bridge entry`);
         const lock = await evaluate(client, `(() => {const s=document.getElementById('content');return {overflow:getComputedStyle(s).overflowY,touch:getComputedStyle(s).touchAction,snap:getComputedStyle(s).scrollSnapType,cue:!!document.querySelector('.tt-bridge-continue')};})()`);
         assert(lock.overflow==='hidden' && lock.touch==='none' && lock.snap==='none' && !lock.cue, `${label}: conflicting native scroll/cue still enabled: ${JSON.stringify(lock)}`);
         // Real browser input, including reverse direction, during playback AND reading hold.
@@ -755,6 +757,14 @@ async function runBridgeSmoke(chrome, origin) {
             await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-${index===-1?'translate':'bridge'}.png`),Buffer.from(shot.data,'base64'));
           }
           await sleep(100);
+          if(n===10 && index>=1 && index<=3){
+            const ready = await evaluate(client, `(() => {
+              const section=document.getElementById('${destinations[index]}');
+              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.is-visible .tt-gh-card-cover img'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
+              return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
+            })()`);
+            assert(ready, `${label}: next chapter images were not ready during playback`);
+          }
         }
         for(let n=0;n<35;n++){
           if(!await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='${index}'`)) break;

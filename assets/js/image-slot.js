@@ -75,6 +75,7 @@
 
   function shouldLoadNewsImage(slot) {
     if (!slot.isConnected) return false;
+    if (slot.closest('[data-chapter-preloaded]')) return true;
     if (!slot.closest('#c-news')) return true;
     const activeChapter = document.body && document.body.getAttribute('data-active-chapter');
     if (activeChapter) return activeChapter === 'news';
@@ -652,6 +653,7 @@
       // Toggle via style.display — the [hidden] attribute alone loses to
       // the display:flex / display:block rules in the stylesheet above.
       if (url) {
+        if (this.closest('[data-chapter-preloaded]')) this._img.loading = 'eager';
         if (this._img.getAttribute('src') !== url) {
           this._img.src = url;
         }
@@ -676,4 +678,16 @@
     customElements.define('image-slot', ImageSlot);
   }
   window.addEventListener('TALETONE_CHAPTER_CHANGE', refreshNewsImages);
+  window.addEventListener('TALETONE_CHAPTER_PRELOAD', (event) => {
+    const section = document.getElementById('c-' + event.detail?.chapter);
+    if (!section) return;
+    section.setAttribute('data-chapter-preloaded', '');
+    section.querySelectorAll('image-slot').forEach((slot) => slot._render());
+    section.querySelectorAll('img').forEach((image) => {
+      image.loading = 'eager';
+      const src = image.getAttribute('data-member-src');
+      if (src) { image.src = src; image.removeAttribute('data-member-src'); }
+      if (image.src && image.decode) image.decode().catch(() => {});
+    });
+  });
 })();

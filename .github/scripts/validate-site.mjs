@@ -45,9 +45,9 @@ const rawEditorMarkers = [
   'onclick="' + '{' + '{', 'value="' + '{' + '{',
 ];
 const expectedCacheKeys = {
-  'assets/js/image-slot.js': '20260714-p2',
+  'assets/js/image-slot.js': '20260907-bridge-preload',
   'assets/css/works.css': '20260717-bridge-clock-hold-v001',
-  'assets/js/works.js': '20260716-card-credit-layout-v1',
+  'assets/js/works.js': '20260907-bridge-preload',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),

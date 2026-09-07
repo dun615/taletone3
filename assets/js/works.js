@@ -1367,7 +1367,7 @@
   }
 
   function showcase() {
-    var loadImages = isWorksChapterActive();
+    var loadImages = isWorksChapterActive() || !!document.querySelector('#c-works[data-chapter-preloaded]');
     var cards = works.map(function (work, index) {
       var layout = layoutForIndex(index);
       var active = index === state.selected;
@@ -1389,7 +1389,7 @@
 
   function gallery() {
     var eagerCount = galleryEagerImageCount();
-    var loadImages = isWorksChapterActive();
+    var loadImages = isWorksChapterActive() || !!document.querySelector('#c-works[data-chapter-preloaded]');
     return '<div id="tt-gh-panel-gallery" class="tt-gh-gallery" role="tabpanel" aria-labelledby="tt-gh-tab-gallery">' + works.map(function (work, index) {
       var unit = localizedUnit(work);
       var detailLabel = plainRichText(unit.title || 'WORKS') + localizedUiLabel(' 상세', ' details', ' 詳細');
@@ -2485,6 +2485,14 @@
     }
     if (state.mode === 'showcase') updateShowcaseDom();
     else bindLazyGalleryImages();
+  });
+
+  window.addEventListener('TALETONE_CHAPTER_PRELOAD', function (event) {
+    if (event.detail?.chapter !== 'works') return;
+    var section = document.getElementById('c-works');
+    section?.setAttribute('data-chapter-preloaded', '');
+    if (!mounted) init();
+    else if (state.mode === 'showcase') updateShowcaseDom();
   });
 
   window.addEventListener('message', function (event) {
