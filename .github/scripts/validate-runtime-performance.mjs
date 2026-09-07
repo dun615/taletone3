@@ -706,6 +706,7 @@ async function runBridgeSmoke(chrome, origin) {
           const sc=document.getElementById('content'), outer=document.querySelectorAll('[data-story-bridge-wrap]')[${index}];
           window.__bridgeFrames=[]; const token=window.__bridgeWatchToken=(window.__bridgeWatchToken||0)+1;
           window.__bridgeHistoryLength=history.length;
+          window.__bridgeEntryRequestedAt=performance.now();
           const record=()=>{
             if(window.__bridgeWatchToken!==token) return;
             const r=(outer.querySelector('.tt-bridge-pin-stage')||outer).getBoundingClientRect();
@@ -767,7 +768,7 @@ async function runBridgeSmoke(chrome, origin) {
           return {phase:s.dataset.bridgePhase||'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
             top:document.getElementById('${destinations[index]}').getBoundingClientRect().top,
             drift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.top))):999,
-            duration:fixed.length?(advancing?.time||fixed.at(-1).time)-fixed[0].time:0,historyDelta:history.length-window.__bridgeHistoryLength,
+            duration:fixed.length?(advancing?.time||fixed.at(-1).time)-window.__bridgeEntryRequestedAt:0,historyDelta:history.length-window.__bridgeHistoryLength,
             holding:fixed.some(f=>f.phase==='holding'),frames:fixed.length};
         })()`);
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
@@ -849,7 +850,7 @@ try {
   }
   const functionalChecks = process.env.BRIDGE_ONLY ? [] : await runFunctionalMatrix(chrome, serverHandle.origin);
   const interactionChecks = process.env.BRIDGE_ONLY ? [] : await runInteractionSmoke(chrome, serverHandle.origin);
-  const bridgeChecks = await runBridgeSmoke(chrome, serverHandle.origin);
+  const bridgeChecks = process.env.SKIP_BRIDGES ? [] : await runBridgeSmoke(chrome, serverHandle.origin);
 
   console.table(results.map(({ key, cold, warm, idle }) => ({
     case: key,
