@@ -680,6 +680,7 @@ async function runBridgeSmoke(chrome, origin) {
     {key:'small-phone-reduced',width:320,height:568,mobile:true,reduced:true},
     {key:'phone-landscape',width:844,height:390,mobile:true}];
   for (const [caseIndex, viewport] of bridgeViewports.entries()) {
+    if(process.env.BRIDGE_VIEWPORT && viewport.key!==process.env.BRIDGE_VIEWPORT) continue;
     const target = await (await fetch(`http://127.0.0.1:${chrome.port}/json/new?about:blank`, { method: 'PUT' })).json();
     const client = new CdpClient(target.webSocketDebuggerUrl);
     await client.ready;
@@ -693,13 +694,21 @@ async function runBridgeSmoke(chrome, origin) {
       await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
       for (let index=0; index<5; index++) {
         const label = `bridge/${viewport.key}/${index+1}`;
+        // WORKS mounts on demand after chapter entry. Do not aim at its stale placeholder boundary.
+        if(index===3){
+          for(let n=0;n<40;n++){
+            if(await evaluate(client, `document.querySelectorAll('[data-works-card]').length===21`)) break;
+            await sleep(100);
+          }
+          await sleep(300);
+        }
         await evaluate(client, `(() => {
           const sc=document.getElementById('content'), outer=document.querySelectorAll('[data-story-bridge-wrap]')[${index}];
           window.__bridgeFrames=[]; const token=window.__bridgeWatchToken=(window.__bridgeWatchToken||0)+1;
           window.__bridgeHistoryLength=history.length;
           const record=()=>{
             if(window.__bridgeWatchToken!==token) return;
-            const r=outer.getBoundingClientRect();
+            const r=(outer.querySelector('.tt-bridge-pin-stage')||outer).getBoundingClientRect();
             if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgePhase||'',top:r.top,scroll:sc.scrollTop});
             requestAnimationFrame(record);
           }; requestAnimationFrame(record);
@@ -735,6 +744,10 @@ async function runBridgeSmoke(chrome, origin) {
             await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:viewport.width/2,y:viewport.height*0.3}]});
             await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
           }
+          if(index===3 && n===5){
+            // Simulate a late resource changing the height of an earlier chapter.
+            await evaluate(client, `(() => {const spacer=document.createElement('div');spacer.id='bridge-test-late-layout';spacer.style.height='160px';document.getElementById('c-home').after(spacer);})()`);
+          }
           if(n===10 && index===0 && process.env.BRIDGE_SCREENSHOTS){
             await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
             const shot=await client.send('Page.captureScreenshot',{format:'png'});
@@ -763,6 +776,7 @@ async function runBridgeSmoke(chrome, origin) {
         assert(!result.phase && result.overflow==='auto' && result.path===paths[index] && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
         console.log(label, JSON.stringify(result));
         passed.push(label);
+        if(index===3) await evaluate(client, `document.getElementById('bridge-test-late-layout')?.remove()`);
       }
       // An explicit chapter choice cancels playback without a delayed auto-redirect.
       await evaluate(client, `document.getElementById('nav-0').click()`);
