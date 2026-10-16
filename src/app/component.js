@@ -662,6 +662,8 @@ class Component extends DCLogic {
       glyph:glyphs[(Math.random()*glyphs.length)|0],
       drop:Math.random()<0.22                               // some are water droplets
     }));
+    this.dapples = Array.from({length:mobile?5:8},()=>({x:Math.random(),y:Math.random(),r:Math.random()*0.18+0.16,sp:Math.random()*0.25+0.12,ph:Math.random()*6.28}));
+    this.motes = Array.from({length:mobile?8:14},()=>({col:Math.random()*2-1,r:Math.random()*7+5,sp:Math.random()*0.035+0.025,ph:Math.random()}));
     this.bubbles = Array.from({length:mobile?0:22},()=>({x:Math.random(),y:Math.random(),r:Math.random()*4+1.5,sp:Math.random()*0.7+0.5,ph:Math.random()*6.28}));
     this.bio = Array.from({length:mobile?14:30},()=>({x:Math.random(),y:Math.random(),ph:Math.random()*6.28,sp:Math.random()*0.9+0.35,r:Math.random()*16+8,c:Math.random()<0.62?0:(Math.random()<0.6?1:2),dx:(Math.random()-0.5)*0.012}));
     this.inks = [];
@@ -1680,23 +1682,25 @@ class Component extends DCLogic {
       for(var sx=0;sx<=W+20;sx+=20){ var wy=sy+12+Math.sin(sx*0.017+tw*1.2)*5+Math.sin(sx*0.051-tw*0.8)*2.5; if(sx===0)c.moveTo(sx,wy); else c.lineTo(sx,wy); }
       c.stroke();
     }
-    // 2) caustics: a moving net of light the surface casts through the whole sunlit water
-    if(shallow>0.02){
-      var netA=0.34*shallow*(fastMobile?0.7:1), step=fastMobile?40:24, rows=fastMobile?7:12;
-      var slopes=[0,0.58,-0.58];
-      c.lineWidth=fastMobile?1.4:2;
-      for(var fam=0;fam<(fastMobile?2:3);fam++){
-        for(var cb=0;cb<rows;cb++){
-          var y0=(cb+0.5)*H/rows-(scTop*0.18)%(H/rows);
-          var fadeY=1-this.cl(y0/H,0,1)*0.65;
-          c.strokeStyle='rgba(255,255,255,'+(netA*fadeY).toFixed(3)+')'; c.beginPath();
-          for(var cx0=-step;cx0<=W+step;cx0+=step){
-            var yy=y0+Math.sin(cx0*0.014+tw*(fam===1?-0.8:0.9)+cb*1.9+fam)*13+Math.sin(cx0*0.037+tw*0.6+cb*0.7)*6+(cx0-W*0.5)*slopes[fam];
-            if(cx0===-step)c.moveTo(cx0,yy); else c.lineTo(cx0,yy);
-          }
-          c.stroke();
-        }
+    if(!this._softLight){
+      var slc=document.createElement('canvas'); slc.width=slc.height=128; var slg=slc.getContext('2d');
+      var slr=slg.createRadialGradient(64,64,0,64,64,64);
+      slr.addColorStop(0,'rgba(255,255,255,1)'); slr.addColorStop(0.45,'rgba(255,255,255,.35)'); slr.addColorStop(1,'rgba(255,255,255,0)');
+      slg.fillStyle=slr; slg.fillRect(0,0,128,128); this._softLight=slc;
+    }
+    // 2) dappled sunlight: a few soft patches of light that drift and breathe under the surface
+    if(shallow>0.02&&this.dapples){
+      var dapN=fastMobile?Math.min(this.dapples.length,5):this.dapples.length;
+      for(var dpi=0;dpi<dapN;dpi++){
+        var dp=this.dapples[dpi];
+        var breath=0.6+0.4*Math.sin(tw*dp.sp+dp.ph);
+        var dpx=(dp.x+Math.sin(tw*0.05+dp.ph)*0.04)*W, dpy=dp.y*H*0.6-scTop*0.2;
+        if(dpy<-H*0.3) continue;
+        var dpr=dp.r*Math.min(W,H)*(0.85+0.15*breath);
+        c.globalAlpha=0.16*shallow*breath;
+        c.drawImage(this._softLight,dpx-dpr,dpy-dpr*0.6,dpr*2,dpr*1.2);
       }
+      c.globalAlpha=1;
     }
     // 3) god rays: slanted shafts of sun that sway, strongest near the surface
     var rays=Math.max(shallow,surf*0.9);
@@ -1763,16 +1767,19 @@ class Component extends DCLogic {
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
     }
-    // 6b) echo: in the news chapter, rings of sound rise from below toward the world above
+    // 6b) echo: in the news chapter a few motes of light rise slowly, the music travelling up to the world
     var echo=this.smooth(1500,1900,metres)*(1-this.smooth(2500,3000,metres));
-    if(echo>0.02){
-      c.lineWidth=1.6;
-      for(var er=0;er<4;er++){
-        var ph=((tw*0.12+er/4)%1+1)%1;
-        var ry=H*(1.05-ph*0.9), rw=W*(0.12+ph*0.55);
-        c.strokeStyle='rgba(160,232,255,'+(echo*0.55*Math.sin(ph*Math.PI)).toFixed(3)+')';
-        c.beginPath(); c.ellipse(W*0.5,ry,rw,rw*0.16,0,0,6.283); c.stroke();
+    if(echo>0.02&&this.motes){
+      c.globalCompositeOperation='lighter';
+      for(var mi=0;mi<this.motes.length;mi++){
+        var mo=this.motes[mi];
+        var life=((tw*mo.sp+mo.ph)%1+1)%1;
+        var mx=(0.5+mo.col*0.32)*W+Math.sin(tw*0.6+mo.ph*6)*14, my=H*(1.02-life*0.95);
+        var mr=mo.r*(1-life*0.4);
+        c.globalAlpha=echo*0.7*Math.sin(life*Math.PI);
+        c.drawImage(this._softLight,mx-mr,my-mr,mr*2,mr*2);
       }
+      c.globalAlpha=1; c.globalCompositeOperation='source-over';
     }
     // 7) the book's light far below: from the first screen, growing as you descend, until the real book takes over
     var bookG=this._deepBookGeometry;
