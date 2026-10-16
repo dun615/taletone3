@@ -115,7 +115,7 @@ class Component extends DCLogic {
       var current=this.scroller?this.scroller.scrollTop:0;
       var previous=this._bridgeScrollTop==null?current:this._bridgeScrollTop;
       this._bridgeScrollTop=current;
-      if(this._bridgeRun) return;
+      if(this._bridgeRun){ this._pinBridgeAnchor(); return; }
       if(this._bridgeNavTarget){
         var destination=document.getElementById(this._bridgeNavTarget);
         if(!destination||Math.abs(current-destination.offsetTop)<=3) this._bridgeNavTarget=null;
@@ -2262,6 +2262,21 @@ class Component extends DCLogic {
     this._sceneDirty=true;
     window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][Math.max(0,index)]}}));
   }
+  // Momentum (touch flicks, trackpad inertia, a wheel smooth-scroll already in flight) can keep
+  // moving the scroller after the lock engages; hold it on the bridge until the handoff takes over.
+  _pinBridgeAnchor(){
+    var run=this._bridgeRun;
+    if(!run||run.phase==='advancing'||!this.scroller) return;
+    var bg=run.index===-1?null:this.bridges[run.index];
+    var outer=run.index===-1?this.transSec:bg&&(bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null));
+    if(!outer) return;
+    var anchor=outer.offsetTop;
+    if(Math.abs(this.scroller.scrollTop-anchor)>1){
+      this.scroller.scrollTo({top:anchor,behavior:'auto'});
+      this._bridgeScrollTop=this.scroller.scrollTop;
+      this._sceneDirty=true;
+    }
+  }
   releaseBridge(){
     var run=this._bridgeRun;
     if(!run) return;
@@ -2501,6 +2516,7 @@ class Component extends DCLogic {
       var run=this._bridgeRun, active=run&&run.index===gi;
       bg._playing=!!active;
       if(active){
+        this._pinBridgeAnchor();
         DUR=run.duration;
         // Start only after the stage/copy have been assembled, not during lazy setup.
         if(run.startedAt==null) run.startedAt=performance.now();
@@ -2561,6 +2577,7 @@ class Component extends DCLogic {
     if(!seen&&!this._bridgeRun&&rectT.top<=vh*0.5&&rectT.top>=-2&&rectT.bottom>vh*0.5) this.startBridge(-1);
     var run=this._bridgeRun;
     if(run&&run.index===-1){
+      this._pinBridgeAnchor();
       this.transSec.setAttribute('data-bridge-active','');
       if(run.startedAt==null) run.startedAt=performance.now();
       var elapsed=performance.now()-run.startedAt;

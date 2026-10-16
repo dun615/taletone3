@@ -712,7 +712,7 @@ async function runBridgeSmoke(chrome, origin) {
           const record=()=>{
             if(window.__bridgeWatchToken!==token) return;
             const r=(outer.querySelector('.tt-bridge-pin-stage,.tt-translation-stage')||outer).getBoundingClientRect();
-            if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgeIndex==='${index}'?(sc.dataset.bridgePhase||''):'',top:r.top,scroll:sc.scrollTop});
+            if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgeIndex==='${index}'?(sc.dataset.bridgePhase||''):'',top:r.top,scroll:sc.scrollTop,anchor:outer.offsetTop});
             requestAnimationFrame(record);
           }; requestAnimationFrame(record);
           if(sc.dataset.bridgeIndex!=='${index}') sc.scrollTo({top:outer.offsetTop-sc.clientHeight*0.35,behavior:'instant'});
@@ -749,6 +749,10 @@ async function runBridgeSmoke(chrome, origin) {
             await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:viewport.width/2,y:viewport.height*0.3}]});
             await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
           }
+          if(n===6){
+            // Momentum (touch flick, trackpad inertia, in-flight smooth wheel scroll) moves the scroller with no input event.
+            await evaluate(client, `document.getElementById('content').scrollTop += 420`);
+          }
           if(index===3 && n===5){
             // Simulate a late resource changing the height of an earlier chapter.
             await evaluate(client, `(() => {const spacer=document.createElement('div');spacer.id='bridge-test-late-layout';spacer.style.height='160px';document.getElementById('c-home').after(spacer);})()`);
@@ -780,10 +784,12 @@ async function runBridgeSmoke(chrome, origin) {
           return {phase:s.dataset.bridgeIndex==='${index}'?(s.dataset.bridgePhase||''):'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
             top:${index===-1?"document.querySelector('[data-story-bridge-wrap]')":`document.getElementById('${destinations[index]}')`}.getBoundingClientRect().top,
             drift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.top))):999,
+            anchorDrift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.scroll-f.anchor))):999,
             duration:fixed.length?(advancing?.time||fixed.at(-1).time)-window.__bridgeEntryRequestedAt:0,historyDelta:history.length-window.__bridgeHistoryLength,
             holding:fixed.some(f=>f.phase==='holding'),frames:fixed.length};
         })()`);
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
+        assert(result.anchorDrift<=1.5, `${label}: locked scroll left its anchor by ${result.anchorDrift}px (momentum/late layout not re-pinned)`);
         assert((index===-1||result.holding) && result.duration>=(viewport.reduced?2350:index===-1?7100:2850) && result.duration<=(index===-1?9500:6200), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
         assert(result.historyDelta===(index===-1?0:1), `${label}: handoff must navigate exactly once`);
         assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===langPrefix+(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
