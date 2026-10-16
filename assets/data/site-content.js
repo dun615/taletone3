@@ -1400,59 +1400,59 @@ window.TALETONE_CONTENT = {
     },
     {
       "id": "works-news",
-      "eyebrow": "RESURFACE",
-      "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다.",
+      "eyebrow": "ECHO",
+      "text": "피어난 이야기는,\n울림이 되어 수면 위 세상으로 번져 갑니다.",
       "translations": {
         "kr": {
-          "eyebrow": "RESURFACE",
-          "text": "피어난 이야기는,\n이제 세상의 수면 위로 퍼져나갑니다.",
+          "eyebrow": "ECHO",
+          "text": "피어난 이야기는,\n울림이 되어 수면 위 세상으로 번져 갑니다.",
           "mobileLines": [
             {
               "text": "피어난 이야기는,",
               "indent": 0
             },
             {
-              "text": "세상의 수면 위로",
+              "text": "울림이 되어 수면 위",
               "indent": 0
             },
             {
-              "text": "퍼져나갑니다.",
+              "text": "세상으로 번져 갑니다.",
               "indent": 0
             }
           ]
         },
         "en": {
-          "eyebrow": "RESURFACE",
-          "text": "The story in bloom now ripples\nback across the surface of the world.",
+          "eyebrow": "ECHO",
+          "text": "The story in bloom becomes an echo,\nrising to the world above the surface.",
           "mobileLines": [
             {
               "text": "The story in bloom",
               "indent": 0
             },
             {
-              "text": "ripples back across",
+              "text": "becomes an echo,",
               "indent": 0
             },
             {
-              "text": "the world's surface.",
+              "text": "rising to the world above.",
               "indent": 0
             }
           ]
         },
         "jp": {
-          "eyebrow": "RESURFACE",
-          "text": "花開いた物語は、\nいま世界の水面へと広がっていきます。",
+          "eyebrow": "ECHO",
+          "text": "花開いた物語は、響きとなって\n水面の上の世界へ広がっていきます。",
           "mobileLines": [
             {
               "text": "花開いた物語は、",
               "indent": 0
             },
             {
-              "text": "世界の水面へと",
+              "text": "響きとなって水面の上の",
               "indent": 0
             },
             {
-              "text": "広がっていきます。",
+              "text": "世界へ広がっていきます。",
               "indent": 0
             }
           ]
@@ -1464,11 +1464,11 @@ window.TALETONE_CONTENT = {
           "indent": 0
         },
         {
-          "text": "세상의 수면 위로",
+          "text": "울림이 되어 수면 위",
           "indent": 0
         },
         {
-          "text": "퍼져나갑니다.",
+          "text": "세상으로 번져 갑니다.",
           "indent": 0
         }
       ]
@@ -1642,7 +1642,7 @@ window.TALETONE_CONTENT = {
         "subtitle": "",
         "description": "",
         "readMoreLabel": "자세히 보기 →",
-        "resurfaceNote": "세상에 닿은 흔적"
+        "resurfaceNote": "세상으로 번지는 울림"
       },
       "en": {
         "eyebrow": "UPDATES / NOTES",
@@ -1651,7 +1651,7 @@ window.TALETONE_CONTENT = {
         "subtitle": "",
         "description": "",
         "readMoreLabel": "Read more →",
-        "resurfaceNote": "Traces reaching the world"
+        "resurfaceNote": "Echoes reaching the world"
       },
       "jp": {
         "eyebrow": "UPDATES / NOTES",
@@ -1660,10 +1660,10 @@ window.TALETONE_CONTENT = {
         "subtitle": "",
         "description": "",
         "readMoreLabel": "続きを読む →",
-        "resurfaceNote": "世界に届いた跡"
+        "resurfaceNote": "世界へ広がる響き"
       }
     },
-    "resurfaceNote": "세상에 닿은 흔적"
+    "resurfaceNote": "세상으로 번지는 울림"
   },
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
@@ -1903,8 +1903,8 @@ window.TALETONE_CONTENT = {
       "note": "심해에서 피어난 음악"
     },
     "resurface": {
-      "label": "RESURFACE",
-      "note": "세상에 닿은 흔적"
+      "label": "ECHO",
+      "note": "세상으로 번지는 울림"
     },
     "epilogue": {
       "label": "EPILOGUE",
@@ -1935,8 +1935,8 @@ window.TALETONE_CONTENT = {
           "note": "심해에서 피어난 음악"
         },
         "resurface": {
-          "label": "RESURFACE",
-          "note": "세상에 닿은 흔적"
+          "label": "ECHO",
+          "note": "세상으로 번지는 울림"
         },
         "epilogue": {
           "label": "EPILOGUE",
@@ -1967,8 +1967,8 @@ window.TALETONE_CONTENT = {
           "note": "Music that bloomed in the deep"
         },
         "resurface": {
-          "label": "RESURFACE",
-          "note": "Traces reaching the world"
+          "label": "ECHO",
+          "note": "Echoes reaching the world"
         },
         "epilogue": {
           "label": "EPILOGUE",
@@ -1999,8 +1999,8 @@ window.TALETONE_CONTENT = {
           "note": "深海で花開いた音楽"
         },
         "resurface": {
-          "label": "RESURFACE",
-          "note": "世界に届いた跡"
+          "label": "ECHO",
+          "note": "世界へ広がる響き"
         },
         "epilogue": {
           "label": "EPILOGUE",

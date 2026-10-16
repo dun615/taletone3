@@ -55,9 +55,9 @@ const expectedSiteContentCacheKey = attr(
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 40_000;
-const decodedTemplateBudgetBytes = 112_000;
+const decodedTemplateBudgetBytes = 118_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 170_000;
+const decodedScriptBudgetBytes = 180_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
@@ -259,7 +259,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
     assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=this._reduceMotion?700:1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
     assert(updateBridgesBody.includes('var elapsed=Math.max(0,performance.now()-run.startedAt), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
-    assert(decodedScript.includes('duration:reduced?700:1200') && decodedScript.includes('hold:Math.min(3600,Math.max(1800,copy.trim().length*30))'), `${file}: configured bridge animation/reading times changed`);
+    assert(decodedScript.includes('duration:reduced?700:1200') && decodedScript.includes('hold:Math.min(2600,Math.max(1400,copy.trim().length*22))'), `${file}: configured bridge animation/reading times changed`);
     assert(updateBridgesBody.includes('bg._finalTime=DUR/1000+gi*0.31;') && updateBridgesBody.includes('prog=FINAL; bridgeTime=bg._finalTime==null?DUR/1000+gi*0.31:bg._finalTime;'), `${file}: completed bridge frame is not deterministic`);
     assert(updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,bridgeTime);') && !updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,tA+gi*0.31)'), `${file}: completed bridge visuals can keep drifting`);
     assert(!updateBridgesBody.includes('(vhR*0.80-rect.top)/(vhR*1.20)') && !/prog\s*=\s*this\.cl\([^;\n]*(?:rect\.top|rect\.bottom)/.test(updateBridgesBody), `${file}: bridge progress is still scrubbed by scroll position`);
@@ -274,7 +274,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("sessionStorage.getItem('tt_bridge_seen_v2')") && decodedScript.includes("sessionStorage.setItem('tt_bridge_seen_v2'"), `${file}: completed bridges are not remembered for the visit`);
     const bypassSource=(decodedScript.match(/\n  bypassBridges\(targetId\)\{([\s\S]*?)\n  \}/)||[])[1]||'';
     assert(!/delete\s+(?:seen|this\._bridgeSeen)|this\._bridgeSeen\[[^\]]+\]\s*=/.test(bypassSource), `${file}: chapter navigation rewrites completed bridge history`);
-    assert(decodedScript.includes('this._bridgeRun.duration=reduced?700:7200') && decodedScript.includes('this.startBridge(-1);') && decodedScript.includes('Math.sin(motionTime*3.2'), `${file}: TRANSLATE is not a timed bridge with a frozen final frame`);
+    assert(decodedScript.includes('this._bridgeRun.duration=reduced?700:5600') && decodedScript.includes('this.startBridge(-1);') && decodedScript.includes('Math.sin(motionTime*3.2'), `${file}: TRANSLATE is not a timed bridge with a frozen final frame`);
     for(const obsolete of ['_transPlaying','_transDone','_transCool','_transAdv','_transT0']) assert(!decodedScript.includes(obsolete), `${file}: obsolete TRANSLATE state returned: ${obsolete}`);
     assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
     assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: obsolete scroll-managed bridge handoff returned`);

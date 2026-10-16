@@ -92,6 +92,16 @@ html:lang(ja) body *{word-break:auto-phrase!important}
 h1,h2,h3,.tt-gh-card-title,.tt-project-title{text-wrap:balance}
 .tt-project-title{overflow-wrap:anywhere}
 p,li{text-wrap:pretty}
+#deep-book-svg{transition:filter 1.4s ease}
+body.tt-book-awake #deep-book-svg{filter:drop-shadow(0 0 36px rgba(255,214,140,.5)) drop-shadow(0 0 90px rgba(255,214,140,.25))}
+#tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
+#tt-bridge-progress i{display:block;width:132px;height:2px;border-radius:2px;background:var(--line,rgba(24,32,52,.18));overflow:hidden}
+#tt-bridge-progress b{display:block;height:100%;width:calc(var(--bridge-p,0)*100%);background:var(--accent,#0E6E7D)}
+#tt-bridge-progress span{font-weight:700;font-size:12px;letter-spacing:.04em;white-space:nowrap}
+/* 메뉴에도 본문과 같은 챕터 이름(TALE·TONE·MUSIC·ECHO·EPILOGUE)을 붙여 두 이름 체계를 하나로 */
+.nav-chapter{color:var(--accent,#0E6E7D);opacity:.9}
+#tale-line .tt-tale-block{display:block;max-width:min(1100px,82vw);margin:0 auto;text-align:center;text-wrap:balance;line-height:1.12}
+#tale-line .tt-tale-word{display:inline-block;white-space:nowrap}
 /* 한글·일본어에는 기울임 글꼴이 없어 브라우저가 억지로 눕힌다: 문장은 바로 세운다 */
 html:is(:lang(ko),:lang(ja)) :is(#tale-line,.tt-contact-caption,.tt-contact-title span,[data-bridge],[data-bridge] span,.tt-bridge-desktop-text){font-style:normal!important}
 /* 자간: 영문 대문자 라벨용 넓은 자간이 한글·일본어에 걸리지 않게 */
@@ -547,11 +557,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <div id="chapnav" style="position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
   <a id="nav-0" href="/" onclick="{{ nav0 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navHome }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-1" href="/" onclick="{{ nav1 }}" style="display:none"></a>
-  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TALE · </span>{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TONE · </span>{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">MUSIC · </span>{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">ECHO · </span>{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">EPILOGUE · </span>{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
 </div>
 
 <!-- PROGRESS -->
@@ -560,6 +570,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div style="width:150px;height:2px;background:var(--line,rgba(24,32,52,.16));border-radius:2px;position:relative;overflow:hidden"><div id="pbar" style="position:absolute;left:0;top:0;height:100%;width:14%;background:var(--accent,#0E6E7D);border-radius:2px"></div></div>
   <span style="font-weight:800;font-size:12px;letter-spacing:.1em;opacity:.5">{{ UI_LABELS.progressTotal }}</span>
   <span id="pdepth" class="tt-depth-chip" aria-hidden="true"></span>
+</div>
+<div id="tt-bridge-progress" aria-hidden="true"><i><b></b></i><span></span>
 </div>
 
 

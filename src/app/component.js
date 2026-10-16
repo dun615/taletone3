@@ -70,7 +70,11 @@ class Component extends DCLogic {
       if(!this._bridgeRun && !(e.timeStamp>0 && e.timeStamp<=(this._bridgeInputCutoff||0))){
         this._bridgeBypassed={}; this._bridgeNavTarget=null; this._sceneDirty=true; return;
       }
-      if(this._bridgeRun) this._bridgeRun.lastInputAt=performance.now();
+      if(this._bridgeRun){
+        var nowIn=performance.now(), runIn=this._bridgeRun;
+        runIn.lastInputAt=nowIn;
+        if(runIn.startedAt!=null&&runIn.phase!=='advancing') runIn.hold=Math.min(runIn.hold,Math.max(0,nowIn-runIn.startedAt-runIn.duration)+450);
+      }
       if(e.cancelable) e.preventDefault();
       e.stopImmediatePropagation();
     };
@@ -585,15 +589,23 @@ class Component extends DCLogic {
     this.taleLine.style.overflowWrap = '';
     this.taleLine.style.textWrap = '';
     this.taleLine.style.flexDirection = '';
+    // Letters animate one by one, but lines may only break between words (never "\uB429\uB2C8 / \uB2E4."),
+    // and the lines are balanced inside one centred block.
+    var block=document.createElement('span');
+    block.className='tt-tale-block';
+    var word=null;
     for(var ci=0; ci<sentence.length; ci++){
       var ch=sentence[ci];
+      if(!word){ word=document.createElement('span'); word.className='tt-tale-word'; block.appendChild(word); }
       var sp=document.createElement('span');
       sp.textContent = ch===' ' ? '\u00A0' : ch;
       sp.style.display='inline-block';
       sp.style.willChange='transform,opacity';
-      this.taleLine.appendChild(sp);
+      word.appendChild(sp);
       this.letters.push(sp);
+      if(ch===' '){ word=null; block.appendChild(document.createTextNode(' ')); }
     }
+    this.taleLine.appendChild(block);
     this.rebuildTranslationFooter();
   }
   loadMemberImages(){
@@ -650,6 +662,8 @@ class Component extends DCLogic {
       glyph:glyphs[(Math.random()*glyphs.length)|0],
       drop:Math.random()<0.22                               // some are water droplets
     }));
+    this.bubbles = Array.from({length:mobile?0:22},()=>({x:Math.random(),y:Math.random(),r:Math.random()*4+1.5,sp:Math.random()*0.7+0.5,ph:Math.random()*6.28}));
+    this.bio = Array.from({length:mobile?14:30},()=>({x:Math.random(),y:Math.random(),ph:Math.random()*6.28,sp:Math.random()*0.9+0.35,r:Math.random()*16+8,c:Math.random()<0.62?0:(Math.random()<0.6?1:2),dx:(Math.random()-0.5)*0.012}));
     this.inks = [];
   }
 
@@ -1277,7 +1291,7 @@ class Component extends DCLogic {
   // The descent to the next layer happens between a chapter's bridge and the next chapter,
   // so the sea visibly gets deeper at each handoff instead of drifting with page length.
   _buildDepthKeys(layoutHeight){
-    var layers=[['c-home',0.13,0],['c-translation',0.22,60],['c-projects',0.33,200],['c-members',0.44,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
+    var layers=[['c-home',0.2,0],['c-translation',0.26,60],['c-projects',0.34,200],['c-members',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
     var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
     for(var i=0;i<layers.length;i++){
       var el=document.getElementById(layers[i][0]); if(!el) continue;
@@ -1292,20 +1306,31 @@ class Component extends DCLogic {
     }
     var maxScroll=Math.max(0,(layoutHeight||(scEl?scEl.scrollHeight:0))-(scEl?scEl.clientHeight:0));
     keys.push([Math.max(maxScroll,keys.length?keys[keys.length-1][0]+1:1),0.95,4000]); // sea floor: the book
+    // the gauge counts every metre: linear between chapter tops, not held per chapter
+    this._meterKeys=keys.filter(function(k,i){ return i===0||i===keys.length-1||k[2]!==keys[i-1][2]; }).map(function(k){ return [k[0],k[2]]; });
     return keys;
   }
   _depthAt(sc){
     var k=this._depthKeys;
     if(!k||!k.length) return null;
-    if(sc<=k[0][0]) return {d:k[0][1],m:k[0][2]};
+    if(sc<=k[0][0]) return {d:k[0][1],m:this._metresAt(sc)};
     for(var i=0;i<k.length-1;i++){
       if(sc<=k[i+1][0]){
         var t=this.smooth(k[i][0],k[i+1][0],sc);
-        return {d:k[i][1]+(k[i+1][1]-k[i][1])*t,m:k[i][2]+(k[i+1][2]-k[i][2])*t};
+        return {d:k[i][1]+(k[i+1][1]-k[i][1])*t,m:this._metresAt(sc)};
       }
     }
     var last=k[k.length-1];
-    return {d:last[1],m:last[2]};
+    return {d:last[1],m:this._metresAt(sc)};
+  }
+  _metresAt(sc){
+    var k=this._meterKeys;
+    if(!k||!k.length) return 0;
+    if(sc<=k[0][0]) return k[0][1];
+    for(var i=0;i<k.length-1;i++){
+      if(sc<=k[i+1][0]) return k[i][1]+(k[i+1][1]-k[i][1])*this.cl((sc-k[i][0])/((k[i+1][0]-k[i][0])||1),0,1);
+    }
+    return k[k.length-1][1];
   }
   _depthZone(m){
     var lang=this.lang||'kr', i=m>=3800?3:(m>=1000?2:(m>=200?1:0));
@@ -1456,7 +1481,7 @@ class Component extends DCLogic {
       this._depthColor = colorP;
       if(!this._pdepth) this._pdepth = document.getElementById('pdepth');
       if(this._pdepth){
-        var depthText = Math.round(this._depthMeters).toLocaleString('en-US')+'m';
+        var depthText = Math.round(this._depthMeters).toLocaleString('en-US')+'m · '+Math.round(p*100)+'%';
         if(this._pdepth.textContent!==depthText) this._pdepth.textContent=depthText;
       }
       var ds = (this.props.descent!=null?this.props.descent:0.5);
@@ -1635,61 +1660,149 @@ class Component extends DCLogic {
     c.clearRect(0,0,W,H);
     var time=(performance.now()-this.t0)/1000;
     var scTop=this.scroller?this.scroller.scrollTop:0, tw=this._reduceMotion?0:time;
-    // the water surface seen from just below: a bright, rippling ceiling over Home that falls away as you dive
-    var surf=1-this.smooth(0,H*1.1,scTop);
+    // ---- the sea, by depth: light from the surface above, falling snow, then darkness and living light ----
+    var metres=this._depthMeters!=null?this._depthMeters:0;
+    var dd=this._depthColor!=null?this._depthColor:n;
+    var shallow=1-this.smooth(0,800,metres);            // sunlight zone: caustics + god rays
+    var deep=this.smooth(500,2600,metres);              // twilight -> midnight: vignette + bioluminescence
+    var surf=1-this.smooth(0,H*1.1,scTop);              // the surface itself, only over Home
+    c.save();
+    // 1) the surface seen from just below: a bright, rippling ceiling with a shimmering window of sky
     if(surf>0.01){
-      var sy=-scTop*0.45;                                   // the surface drifts up slower than the page
-      c.save();
-      var band=c.createLinearGradient(0,sy,0,sy+H*0.42);
-      band.addColorStop(0,'rgba(255,255,255,'+(0.95*surf)+')'); band.addColorStop(0.22,'rgba(255,255,255,'+(0.42*surf)+')'); band.addColorStop(1,'rgba(255,255,255,0)');
-      c.fillStyle=band; c.fillRect(0,sy,W,H*0.42);
+      var sy=-scTop*0.45;
+      var band=c.createLinearGradient(0,sy,0,sy+H*0.5);
+      band.addColorStop(0,'rgba(255,255,255,'+(0.95*surf)+')'); band.addColorStop(0.2,'rgba(240,252,255,'+(0.5*surf)+')'); band.addColorStop(1,'rgba(240,252,255,0)');
+      c.fillStyle=band; c.fillRect(0,sy,W,H*0.5);
+      var win=c.createRadialGradient(W*0.5,sy-H*0.05,0,W*0.5,sy-H*0.05,W*0.42);
+      win.addColorStop(0,'rgba(255,255,255,'+(0.9*surf)+')'); win.addColorStop(0.55,'rgba(255,255,255,'+(0.25*surf)+')'); win.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=win; c.fillRect(0,sy-H*0.05,W,W*0.42);
       c.lineWidth=3; c.strokeStyle='rgba(255,255,255,'+surf+')'; c.beginPath();
-      for(var sx=0;sx<=W+24;sx+=24){ var wy=sy+10+Math.sin(sx*0.018+tw*1.1)*4+Math.sin(sx*0.047-tw*0.7)*2; if(sx===0)c.moveTo(sx,wy); else c.lineTo(sx,wy); }
+      for(var sx=0;sx<=W+20;sx+=20){ var wy=sy+12+Math.sin(sx*0.017+tw*1.2)*5+Math.sin(sx*0.051-tw*0.8)*2.5; if(sx===0)c.moveTo(sx,wy); else c.lineTo(sx,wy); }
       c.stroke();
-      if(!fastMobile){
-        // caustics: rippling bands of light cast by the surface, fading with depth
-        c.lineWidth=2;
-        for(var cb=0;cb<12;cb++){
-          var y0=sy+26+cb*H*0.045, fadeC=surf*(1-cb/12);
-          c.strokeStyle='rgba(255,255,255,'+(0.8*fadeC)+')'; c.beginPath();
-          for(var cxw=0;cxw<=W+30;cxw+=30){ var cyw=y0+Math.sin(cxw*0.011+tw*0.8+cb*1.7)*12+Math.sin(cxw*0.029-tw*0.55+cb)*5; if(cxw===0)c.moveTo(cxw,cyw); else c.lineTo(cxw,cyw); }
+    }
+    // 2) caustics: a moving net of light the surface casts through the whole sunlit water
+    if(shallow>0.02){
+      var netA=0.34*shallow*(fastMobile?0.7:1), step=fastMobile?40:24, rows=fastMobile?7:12;
+      var slopes=[0,0.58,-0.58];
+      c.lineWidth=fastMobile?1.4:2;
+      for(var fam=0;fam<(fastMobile?2:3);fam++){
+        for(var cb=0;cb<rows;cb++){
+          var y0=(cb+0.5)*H/rows-(scTop*0.18)%(H/rows);
+          var fadeY=1-this.cl(y0/H,0,1)*0.65;
+          c.strokeStyle='rgba(255,255,255,'+(netA*fadeY).toFixed(3)+')'; c.beginPath();
+          for(var cx0=-step;cx0<=W+step;cx0+=step){
+            var yy=y0+Math.sin(cx0*0.014+tw*(fam===1?-0.8:0.9)+cb*1.9+fam)*13+Math.sin(cx0*0.037+tw*0.6+cb*0.7)*6+(cx0-W*0.5)*slopes[fam];
+            if(cx0===-step)c.moveTo(cx0,yy); else c.lineTo(cx0,yy);
+          }
           c.stroke();
         }
       }
-      c.restore();
     }
-    // the book's light far below: there from the first screen, growing as you descend, until the real book takes over
-    var bookG=this._deepBookGeometry;
-    var bookScreenY=(bookG?bookG.docY:(this.scroller?this.scroller.scrollHeight:H))-scTop;
-    var dd=this._depthColor!=null?this._depthColor:n;
-    var calling=(0.34+0.2*dd)*(1-this.smooth(H*1.5,H*0.85,bookScreenY))*(0.86+0.14*Math.sin(tw*0.9));
-    if(calling>0.01){
-      var gr=H*(0.42+0.45*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.28;
-      var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
-      call.addColorStop(0,'rgba(255,214,140,'+calling+')'); call.addColorStop(0.45,'rgba(255,214,140,'+(calling*0.35)+')'); call.addColorStop(1,'rgba(255,214,140,0)');
-      c.fillStyle=call; c.fillRect(0,H-gr,W,gr);
-    }
-    // god-rays from the surface (visible near the top of the journey)
-    var rays = (1-this.smooth(0.0,0.6,n));
+    // 3) god rays: slanted shafts of sun that sway, strongest near the surface
+    var rays=Math.max(shallow,surf*0.9);
     if(rays>0.02){
-      c.save(); c.globalCompositeOperation='lighter';
-      for(var rr=0;rr<5;rr++){
-        var rx=(0.16+rr*0.17)*W + Math.sin(time*0.15+rr)*30;
-        var grd=c.createLinearGradient(rx,0,rx+90,H*0.8);
-        grd.addColorStop(0,'rgba(255,255,255,'+(rays*0.10)+')'); grd.addColorStop(1,'rgba(255,255,255,0)');
-        c.fillStyle=grd; c.save(); c.translate(rx,0); c.rotate(0.12); c.fillRect(-40,0,150,H); c.restore();
+      var rayN=fastMobile?4:7;
+      for(var rr=0;rr<rayN;rr++){
+        var rx=(0.06+rr*(0.9/rayN))*W+Math.sin(tw*0.17+rr*1.7)*W*0.03;
+        var flick=0.7+0.3*Math.sin(tw*0.6+rr*2.3);
+        var grd=c.createLinearGradient(0,0,0,H*0.9);
+        grd.addColorStop(0,'rgba(255,255,255,'+(0.5*rays*flick).toFixed(3)+')'); grd.addColorStop(0.5,'rgba(235,252,255,'+(0.18*rays*flick).toFixed(3)+')'); grd.addColorStop(1,'rgba(235,252,255,0)');
+        c.fillStyle=grd; c.save(); c.translate(rx,-20); c.rotate(0.24); c.fillRect(-W*0.03,0,W*(0.045+0.03*(rr%3)),H*1.15); c.restore();
       }
-      c.restore();
+      // bubbles rising toward the light
+      if(!fastMobile&&this.bubbles){
+        c.lineWidth=1.2;
+        for(var bb=0;bb<this.bubbles.length;bb++){
+          var q=this.bubbles[bb];
+          var qy=H-((time*q.sp*60+q.y*H+scTop*0.5)%(H+40));
+          var qx=q.x*W+Math.sin(time*1.4+q.ph)*8;
+          c.strokeStyle='rgba(255,255,255,'+(0.75*rays).toFixed(3)+')'; c.fillStyle='rgba(255,255,255,'+(0.18*rays).toFixed(3)+')';
+          c.beginPath(); c.arc(qx,qy,q.r,0,6.283); c.fill(); c.stroke();
+        }
+      }
     }
-    // suspended plankton specks
-    var starLimit = fastMobile ? Math.min(this.stars.length, 48) : this.stars.length;
+    // 4) marine snow: specks that stream past as you dive (they move with the scroll), denser and brighter deeper
+    var starLimit=fastMobile?Math.min(this.stars.length,48):this.stars.length;
+    var snowA=0.28+0.5*this.smooth(100,1800,metres);
+    var snowC=deep>0.5?pal.star:[255,255,255];
+    c.fillStyle='rgb('+snowC[0]+','+snowC[1]+','+snowC[2]+')';
     for(var i=0;i<starLimit;i++){
       var s=this.stars[i];
-      var tw=0.5+0.5*Math.sin(time*s.sp+s.ph);
-      c.globalAlpha = (0.10+0.5*n)*tw*0.7;
-      c.fillStyle='rgb('+pal.star[0]+','+pal.star[1]+','+pal.star[2]+')';
-      c.beginPath(); c.arc(s.x*W, ((s.y - time*0.004)%1+1)%1*H, s.r, 0, 6.283); c.fill();
+      var twk=0.55+0.45*Math.sin(time*s.sp+s.ph);
+      var syy=((s.y*H-scTop*(0.32+s.r*0.22)+time*6*s.sp)%H+H)%H;
+      c.globalAlpha=snowA*twk;
+      c.beginPath(); c.arc(s.x*W+Math.sin(time*0.3+s.ph)*6, syy, s.r*(1+deep*0.6), 0, 6.283); c.fill();
     }
+    c.globalAlpha=1;
+    // 5) the dark: edges close in as the light from above runs out
+    if(deep>0.02){
+      var R=Math.max(W,H);
+      var vig=c.createRadialGradient(W*0.5,H*0.48,R*0.22,W*0.5,H*0.48,R*0.78);
+      vig.addColorStop(0,'rgba(1,6,18,0)'); vig.addColorStop(1,'rgba(1,6,18,'+(0.62*deep).toFixed(3)+')');
+      c.fillStyle=vig; c.fillRect(0,0,W,H);
+    }
+    // 6) bioluminescence: creatures of light drifting in the midnight zone
+    if(deep>0.05&&this.bio){
+      if(!this._bioSprites){
+        this._bioSprites=[[120,232,255],[168,140,255],[255,214,140]].map(function(rgb){
+          var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
+          var gg=g.createRadialGradient(32,32,0,32,32,32);
+          gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.22,'rgba('+rgb+',.55)'); gg.addColorStop(1,'rgba('+rgb+',0)');
+          g.fillStyle=gg; g.fillRect(0,0,64,64); return cv;
+        });
+      }
+      c.globalCompositeOperation='lighter';
+      var bioN=fastMobile?Math.min(this.bio.length,12):this.bio.length;
+      for(var b=0;b<bioN;b++){
+        var o=this.bio[b];
+        var pulse=Math.pow(0.5+0.5*Math.sin(time*o.sp+o.ph),2.2);
+        var bx=((o.x+time*o.dx)%1+1)%1*W, by=((o.y*H-scTop*0.12+Math.sin(time*0.2+o.ph)*24)%H+H)%H;
+        c.globalAlpha=deep*(0.25+0.75*pulse);
+        var rad=o.r*(0.7+0.5*pulse);
+        c.drawImage(this._bioSprites[o.c],bx-rad,by-rad,rad*2,rad*2);
+      }
+      c.globalAlpha=1; c.globalCompositeOperation='source-over';
+    }
+    // 6b) echo: in the news chapter, rings of sound rise from below toward the world above
+    var echo=this.smooth(1500,1900,metres)*(1-this.smooth(2500,3000,metres));
+    if(echo>0.02){
+      c.lineWidth=1.6;
+      for(var er=0;er<4;er++){
+        var ph=((tw*0.12+er/4)%1+1)%1;
+        var ry=H*(1.05-ph*0.9), rw=W*(0.12+ph*0.55);
+        c.strokeStyle='rgba(160,232,255,'+(echo*0.55*Math.sin(ph*Math.PI)).toFixed(3)+')';
+        c.beginPath(); c.ellipse(W*0.5,ry,rw,rw*0.16,0,0,6.283); c.stroke();
+      }
+    }
+    // 7) the book's light far below: from the first screen, growing as you descend, until the real book takes over
+    var bookG=this._deepBookGeometry;
+    var bookScreenY=(bookG?bookG.docY:(this.scroller?this.scroller.scrollHeight:H))-scTop;
+    var calling=(0.32+0.38*dd)*(1-this.smooth(H*1.5,H*0.85,bookScreenY))*(0.84+0.16*Math.sin(tw*0.9));
+    if(calling>0.01){
+      var gr=H*(0.45+0.5*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.26;
+      var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
+      call.addColorStop(0,'rgba(255,214,140,'+calling.toFixed(3)+')'); call.addColorStop(0.42,'rgba(255,214,140,'+(calling*0.38).toFixed(3)+')'); call.addColorStop(1,'rgba(255,214,140,0)');
+      c.fillStyle=call; c.fillRect(0,H-gr,W,gr);
+    }
+    // 8) the book awakens: as it reaches the middle of the screen its light opens over the sea floor
+    //    and a column of light rises toward the far surface; the illustration gets its halo too.
+    var awake=bookG?this.smooth(H*1.05,H*0.5,bookScreenY):0;
+    if(awake>0.01){
+      var abx=bookG.x, aby=bookScreenY;
+      var bloomR=Math.max(W,H)*(0.35+0.45*awake);
+      var bloom=c.createRadialGradient(abx,aby,0,abx,aby,bloomR);
+      bloom.addColorStop(0,'rgba(255,226,160,'+(0.55*awake).toFixed(3)+')'); bloom.addColorStop(0.3,'rgba(255,214,140,'+(0.2*awake).toFixed(3)+')'); bloom.addColorStop(1,'rgba(255,214,140,0)');
+      c.globalCompositeOperation='screen';
+      c.fillStyle=bloom; c.fillRect(0,0,W,H);
+      var colW=W*(0.04+0.05*awake)*(0.9+0.1*Math.sin(tw*1.3));
+      var column=c.createLinearGradient(0,aby,0,0);
+      column.addColorStop(0,'rgba(255,236,190,'+(0.45*awake).toFixed(3)+')'); column.addColorStop(1,'rgba(255,236,190,0)');
+      c.fillStyle=column; c.fillRect(abx-colW/2,0,colW,Math.max(0,aby));
+      c.globalCompositeOperation='source-over';
+    }
+    var awakeNow=awake>0.6;
+    if(this._bookAwake!==awakeNow){ this._bookAwake=awakeNow; document.body.classList.toggle('tt-book-awake',awakeNow); }
+    c.restore();
     // story fragments ??born at the book's light, rising the full deep up to Home (faint at the surface)
     var base=pal.star;
     var sc = this.scroller ? this.scroller.scrollTop : 0;
@@ -1848,7 +1961,7 @@ class Component extends DCLogic {
     c.font='700 12px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
     c.globalAlpha=0.95; c.fillText(Math.round(metres).toLocaleString('en-US')+'m', railX+20, py-7);
     c.font='600 10px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
-    c.globalAlpha=0.7; c.fillText(this._depthZone(metres), railX+20, py+9); c.globalAlpha=1;
+    c.globalAlpha=0.7; c.fillText(this._depthZone(metres)+' · '+Math.round((this.scrollP||0)*100)+'%', railX+20, py+9); c.globalAlpha=1;
   }
 
   // audio
@@ -2323,8 +2436,8 @@ class Component extends DCLogic {
       saved[key]=[style.getPropertyValue(key),style.getPropertyPriority(key)];
     });
     this._bridgeRun={index:index,phase:'playing',startedAt:null,duration:reduced?700:1200,
-      hold:Math.min(3600,Math.max(1800,copy.trim().length*30)),saved:saved};
-    if(index===-1){this._bridgeRun.duration=reduced?700:7200;this._bridgeRun.hold=reduced?1800:0;}
+      hold:Math.min(2600,Math.max(1400,copy.trim().length*22)),saved:saved};
+    if(index===-1){this._bridgeRun.duration=reduced?700:5600;this._bridgeRun.hold=reduced?1800:0;}
     outer.setAttribute('data-bridge-active','');
     style.setProperty('overflow-y','hidden','important');
     style.setProperty('touch-action','none','important');
@@ -2357,9 +2470,22 @@ class Component extends DCLogic {
       this._sceneDirty=true;
     }
   }
+  // Bottom-centre progress for a locked bridge, so a held page never looks frozen.
+  _setBridgeProgress(run){
+    var el=this._bridgeProgressEl||(this._bridgeProgressEl=document.getElementById('tt-bridge-progress'));
+    if(!el) return;
+    if(!run||run.startedAt==null){ if(el._shown){ el.style.opacity='0'; el._shown=false; } return; }
+    if(!el._shown){
+      el.style.opacity='1'; el._shown=true;
+      var label=el.querySelector('span');
+      if(label) label.textContent={kr:'스크롤하면 바로 넘어갑니다',en:'Scroll to move on',jp:'スクロールで次へ進みます'}[this.lang||'kr'];
+    }
+    el.style.setProperty('--bridge-p',this.cl((performance.now()-run.startedAt)/(run.duration+run.hold),0,1).toFixed(3));
+  }
   releaseBridge(){
     var run=this._bridgeRun;
     if(!run) return;
+    this._setBridgeProgress(null);
     this._bridgeRun=null;
     this._bridgeInputCutoff=performance.now();
     document.querySelectorAll('[data-bridge-active]').forEach(outer=>outer.removeAttribute('data-bridge-active'));
@@ -2597,6 +2723,7 @@ class Component extends DCLogic {
       bg._playing=!!active;
       if(active){
         this._pinBridgeAnchor();
+        this._setBridgeProgress(run);
         DUR=run.duration;
         // Start only after the stage/copy have been assembled, not during lazy setup.
         if(run.startedAt==null) run.startedAt=performance.now();
@@ -2658,6 +2785,7 @@ class Component extends DCLogic {
     var run=this._bridgeRun;
     if(run&&run.index===-1){
       this._pinBridgeAnchor();
+      this._setBridgeProgress(run);
       this.transSec.setAttribute('data-bridge-active','');
       if(run.startedAt==null) run.startedAt=performance.now();
       var elapsed=performance.now()-run.startedAt;
