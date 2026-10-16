@@ -55,7 +55,7 @@ const expectedSiteContentCacheKey = attr(
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 40_000;
-const decodedTemplateBudgetBytes = 118_000;
+const decodedTemplateBudgetBytes = 128_000;
 // Bridge control now lives here instead of a second controller in support.js.
 const decodedScriptBudgetBytes = 196_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';

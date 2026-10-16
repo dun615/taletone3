@@ -1432,7 +1432,7 @@ class Component extends DCLogic {
       if(Number.isFinite(anchor)) this.scroller.scrollTo({top:anchor,behavior:'auto'});
     }
     this._deepBookGeometry=null;
-    var bookEl=document.getElementById('deep-book-svg');
+    var bookEl=document.querySelector('html[data-intro-v2] .tt-book2 .tb-book')||document.getElementById('deep-book-svg');
     if(bookEl){
       var bookRect=bookEl.getBoundingClientRect();
       if(bookRect.width){
@@ -1948,7 +1948,11 @@ class Component extends DCLogic {
     }
     // 8) the book awakens: as it reaches the middle of the screen its light opens over the sea floor
     //    and a column of light rises toward the far surface; the illustration gets its halo too.
-    var awake=bookG?this.smooth(H*1.05,H*0.5,bookScreenY):0;
+    // the light breaks out only once the cover has opened (the book wakes first, then shines)
+    var openedK=this._bookOpenedAt?this.cl((performance.now()-this._bookOpenedAt-900)/1400,0,1):0;
+    var awake=Math.max(bookG?this.smooth(H*1.05,H*0.5,bookScreenY):0,this.smooth(0.95,0.995,this.scrollP||0))*openedK;
+    // near the middle of the screen, or at the very end of the journey (on phones the book never reaches the middle)
+    var near=Math.max(bookG?this.smooth(H*1.05,H*0.5,bookScreenY):0,this.smooth(0.95,0.995,this.scrollP||0));
     if(awake>0.01){
       var abx=bookG.x, aby=bookScreenY;
       var bloomR=Math.max(W,H)*(0.35+0.45*awake);
@@ -1962,8 +1966,9 @@ class Component extends DCLogic {
       c.fillStyle=column; c.fillRect(abx-colW/2,0,colW,Math.max(0,aby));
       c.globalCompositeOperation='source-over';
     }
-    var awakeNow=awake>0.6;
+    var awakeNow=near>0.6;
     if(this._bookAwake!==awakeNow){ this._bookAwake=awakeNow; document.body.classList.toggle('tt-book-awake',awakeNow); }
+    if(awakeNow&&!this._bookOpened){ this._bookOpened=true; this._bookOpenedAt=performance.now(); document.body.classList.add('tt-book-opened'); }
     c.restore();
     // story fragments ??born at the book's light, rising the full deep up to Home (faint at the surface)
     var base=pal.star;
