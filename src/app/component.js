@@ -1255,6 +1255,7 @@ class Component extends DCLogic {
       var bridge=this.bridges[bi], outer=bridge._bridgeOuter||(bridge.closest?bridge.closest('[data-story-bridge-wrap]'):null);
       this._bridgeOffsets.push(outer?outer.offsetTop:NaN);
     }
+    this._depthKeys=this._buildDepthKeys(layoutHeight);
     if(this._bridgeRun && this._bridgeRun.phase!=='advancing'){
       var anchor=this._bridgeRun.index===-1?this.transSec.offsetTop:this._bridgeOffsets[this._bridgeRun.index];
       if(Number.isFinite(anchor)) this.scroller.scrollTo({top:anchor,behavior:'auto'});
@@ -1271,6 +1272,44 @@ class Component extends DCLogic {
     }
     this._layoutGeometryHeight=layoutHeight==null?(scEl?scEl.scrollHeight:document.documentElement.scrollHeight):layoutHeight;
     this._layoutGeometryDirty=false;
+  }
+  // Depth journey: every chapter holds its own water layer (palette depth 0..1 and metres).
+  // The descent to the next layer happens between a chapter's bridge and the next chapter,
+  // so the sea visibly gets deeper at each handoff instead of drifting with page length.
+  _buildDepthKeys(layoutHeight){
+    var layers=[['c-home',0.13,0],['c-translation',0.22,60],['c-projects',0.33,200],['c-members',0.44,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
+    var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
+    for(var i=0;i<layers.length;i++){
+      var el=document.getElementById(layers[i][0]); if(!el) continue;
+      var top=el.offsetTop, next=i+1<layers.length?document.getElementById(layers[i+1][0]):null;
+      if(keys.length&&top<=keys[keys.length-1][0]) top=keys[keys.length-1][0]+1;
+      keys.push([top,layers[i][1],layers[i][2]]);
+      if(next&&next.offsetTop>top+2){
+        var hold=top+el.offsetHeight*0.5;
+        bridgeTops.forEach(function(b){ if(b>top&&b<next.offsetTop) hold=Math.max(hold,b); });
+        keys.push([Math.min(hold,next.offsetTop-1),layers[i][1],layers[i][2]]);
+      }
+    }
+    var maxScroll=Math.max(0,(layoutHeight||(scEl?scEl.scrollHeight:0))-(scEl?scEl.clientHeight:0));
+    keys.push([Math.max(maxScroll,keys.length?keys[keys.length-1][0]+1:1),0.95,4000]); // sea floor: the book
+    return keys;
+  }
+  _depthAt(sc){
+    var k=this._depthKeys;
+    if(!k||!k.length) return null;
+    if(sc<=k[0][0]) return {d:k[0][1],m:k[0][2]};
+    for(var i=0;i<k.length-1;i++){
+      if(sc<=k[i+1][0]){
+        var t=this.smooth(k[i][0],k[i+1][0],sc);
+        return {d:k[i][1]+(k[i+1][1]-k[i][1])*t,m:k[i][2]+(k[i+1][2]-k[i][2])*t};
+      }
+    }
+    var last=k[k.length-1];
+    return {d:last[1],m:last[2]};
+  }
+  _depthZone(m){
+    var lang=this.lang||'kr', i=m>=3800?3:(m>=1000?2:(m>=200?1:0));
+    return ({kr:['표층','중층','심해','마법의 서'],en:['Sunlight zone','Twilight zone','Midnight zone','The Book'],jp:['表層','中深層','深海','魔法の書']}[lang]||[])[i]||'';
   }
   isNearViewport(el, margin, bounds, scrollTop, viewportHeight){
     if(!el || !el.getBoundingClientRect) return false;
@@ -1411,11 +1450,14 @@ class Component extends DCLogic {
       this._sceneDirty=false;
       this._lastSceneScroll=sc;
       this._lastSceneHeight=layoutHeight;
-      var colorP = p;
-      if(!this.newsSec) this.newsSec = document.getElementById('c-news');
-      if(this.newsSec && max>0){
-        var rs = this.smooth(this.newsSec.offsetTop - scEl.clientHeight*0.76, this.newsSec.offsetTop + scEl.clientHeight*0.9, sc);
-        colorP = this.cl(p - rs*0.16, 0, 1);
+      var depthNow = this._depthAt(sc);
+      var colorP = depthNow ? depthNow.d : p;
+      this._depthMeters = depthNow ? depthNow.m : p*4000;
+      this._depthColor = colorP;
+      if(!this._pdepth) this._pdepth = document.getElementById('pdepth');
+      if(this._pdepth){
+        var depthText = Math.round(this._depthMeters).toLocaleString('en-US')+'m';
+        if(this._pdepth.textContent!==depthText) this._pdepth.textContent=depthText;
       }
       var ds = (this.props.descent!=null?this.props.descent:0.5);
       this._sceneDepth = this.smooth(0.6 - ds*0.34, 1.0 - ds*0.18, colorP); // descent: how soon/deep the dark sea takes over
@@ -1427,7 +1469,7 @@ class Component extends DCLogic {
       var r = this.root.style;
       // text flips dark<->light with a STEEP crossover (no muddy mid-tone) + a depth-aware halo so
       // every chapter stays legible against the sky at any depth
-      var tn = this.smooth(0.487, 0.513, p);
+      var tn = this.smooth(0.487, 0.513, colorP);
       this.setCssVar(r,'--ink',this.mix('#141C30','#f4f9ff',tn));
       this.setCssVar(r,'--soft',this.mix('#44505F','#c4d4ee',tn));
       this.setCssVar(r,'--paper',this.mix('#fffdf8','#0b1330',tn));
@@ -1591,6 +1633,41 @@ class Component extends DCLogic {
     var c=this.ctx, W=this.W, H=this.H;
     c.clearRect(0,0,W,H);
     var time=(performance.now()-this.t0)/1000;
+    var scTop=this.scroller?this.scroller.scrollTop:0, tw=this._reduceMotion?0:time;
+    // the water surface seen from just below: a bright, rippling ceiling over Home that falls away as you dive
+    var surf=1-this.smooth(0,H*1.1,scTop);
+    if(surf>0.01){
+      var sy=-scTop*0.45;                                   // the surface drifts up slower than the page
+      c.save();
+      var band=c.createLinearGradient(0,sy,0,sy+H*0.42);
+      band.addColorStop(0,'rgba(255,255,255,'+(0.95*surf)+')'); band.addColorStop(0.22,'rgba(255,255,255,'+(0.42*surf)+')'); band.addColorStop(1,'rgba(255,255,255,0)');
+      c.fillStyle=band; c.fillRect(0,sy,W,H*0.42);
+      c.lineWidth=3; c.strokeStyle='rgba(255,255,255,'+surf+')'; c.beginPath();
+      for(var sx=0;sx<=W+24;sx+=24){ var wy=sy+10+Math.sin(sx*0.018+tw*1.1)*4+Math.sin(sx*0.047-tw*0.7)*2; if(sx===0)c.moveTo(sx,wy); else c.lineTo(sx,wy); }
+      c.stroke();
+      if(!fastMobile){
+        // caustics: rippling bands of light cast by the surface, fading with depth
+        c.lineWidth=2;
+        for(var cb=0;cb<12;cb++){
+          var y0=sy+26+cb*H*0.045, fadeC=surf*(1-cb/12);
+          c.strokeStyle='rgba(255,255,255,'+(0.8*fadeC)+')'; c.beginPath();
+          for(var cxw=0;cxw<=W+30;cxw+=30){ var cyw=y0+Math.sin(cxw*0.011+tw*0.8+cb*1.7)*12+Math.sin(cxw*0.029-tw*0.55+cb)*5; if(cxw===0)c.moveTo(cxw,cyw); else c.lineTo(cxw,cyw); }
+          c.stroke();
+        }
+      }
+      c.restore();
+    }
+    // the book's light far below: there from the first screen, growing as you descend, until the real book takes over
+    var bookG=this._deepBookGeometry;
+    var bookScreenY=(bookG?bookG.docY:(this.scroller?this.scroller.scrollHeight:H))-scTop;
+    var dd=this._depthColor!=null?this._depthColor:n;
+    var calling=(0.34+0.2*dd)*(1-this.smooth(H*1.5,H*0.85,bookScreenY))*(0.86+0.14*Math.sin(tw*0.9));
+    if(calling>0.01){
+      var gr=H*(0.42+0.45*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.28;
+      var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
+      call.addColorStop(0,'rgba(255,214,140,'+calling+')'); call.addColorStop(0.45,'rgba(255,214,140,'+(calling*0.35)+')'); call.addColorStop(1,'rgba(255,214,140,0)');
+      c.fillStyle=call; c.fillRect(0,H-gr,W,gr);
+    }
     // god-rays from the surface (visible near the top of the journey)
     var rays = (1-this.smooth(0.0,0.6,n));
     if(rays>0.02){
@@ -1764,11 +1841,13 @@ class Component extends DCLogic {
     c.strokeStyle='rgb('+ncs+')'; c.lineWidth=2;
     c.beginPath(); c.arc(railX,py,12,0,6.283); c.stroke();
     c.globalAlpha=0.5; c.beginPath(); c.moveTo(railX-22,py); c.lineTo(railX-9,py); c.stroke(); c.globalAlpha=1;
-    // depth readout: how deep we've dived, in % (two decimals), trailing the crosshair
-    var pct=((this.scrollP!=null?this.scrollP:0)*100).toFixed(2)+'%';
+    // depth readout: metres below the surface and the water zone, trailing the crosshair
+    var metres=this._depthMeters!=null?this._depthMeters:0;
     c.fillStyle='rgb('+ncs+')'; c.textAlign='left'; c.textBaseline='middle';
-    c.font='600 11px "Quicksand",sans-serif';
-    c.globalAlpha=0.92; c.fillText(pct, railX+20, py); c.globalAlpha=1;
+    c.font='700 12px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
+    c.globalAlpha=0.95; c.fillText(Math.round(metres).toLocaleString('en-US')+'m', railX+20, py-7);
+    c.font='600 10px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
+    c.globalAlpha=0.7; c.fillText(this._depthZone(metres), railX+20, py+9); c.globalAlpha=1;
   }
 
   // audio

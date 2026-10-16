@@ -73,10 +73,12 @@ image-slot{display:block}
 .tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-shadow:var(--halo,none);white-space:pre-wrap}
 .tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
 
-.tt-prologue-hint{display:block;max-width:min(420px,78vw);font-weight:700;font-size:10px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.78;white-space:normal}
+.tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
 .tt-section-chapter-block{margin:0 0 16px;text-align:center}
+.tt-depth-chip{display:none;font-weight:800;font-size:11px;letter-spacing:.04em;opacity:.78;white-space:nowrap}
+@media (max-width:1180px){.tt-depth-chip{display:inline}}
 .tt-bridge-readable{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:pre-wrap!important;border:0!important}
-@media (max-width:760px){.tt-section-chapter{font-size:11px;letter-spacing:.2em}.tt-section-note{font-size:10px;letter-spacing:.06em}.tt-prologue-hint{max-width:280px;font-size:9px}.tt-bridge-label{display:block;width:min(304px,calc(100vw - 56px));max-width:calc(100vw - 56px);margin-left:auto;margin-right:auto;font-size:10px;line-height:1.45;letter-spacing:.14em;text-align:center;white-space:normal;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}}
+@media (max-width:760px){.tt-section-chapter{font-size:11px;letter-spacing:.2em}.tt-section-note{font-size:10px;letter-spacing:.06em}.tt-prologue-hint{max-width:300px;font-size:12px}.tt-bridge-label{display:block;width:min(304px,calc(100vw - 56px));max-width:calc(100vw - 56px);margin-left:auto;margin-right:auto;font-size:10px;line-height:1.45;letter-spacing:.14em;text-align:center;white-space:normal;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}}
 /* bridge text stays legible over bright motifs: strong dark glow always */
 [data-bridge]{text-shadow:0 1px 2px rgba(3,12,24,.6),0 0 14px rgba(3,12,24,.55),0 0 30px rgba(3,12,24,.4) !important;}
 [data-bridge-line]+div{color:#dfeef2 !important;text-shadow:0 1px 2px rgba(3,12,24,.7),0 0 16px rgba(3,12,24,.55) !important;}
@@ -535,6 +537,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <span id="pnum" style="font-weight:800;font-size:12px;letter-spacing:.1em">{{ UI_LABELS.progressInitial }}</span>
   <div style="width:150px;height:2px;background:var(--line,rgba(24,32,52,.16));border-radius:2px;position:relative;overflow:hidden"><div id="pbar" style="position:absolute;left:0;top:0;height:100%;width:14%;background:var(--accent,#0E6E7D);border-radius:2px"></div></div>
   <span style="font-weight:800;font-size:12px;letter-spacing:.1em;opacity:.5">{{ UI_LABELS.progressTotal }}</span>
+  <span id="pdepth" class="tt-depth-chip" aria-hidden="true"></span>
 </div>
 
 

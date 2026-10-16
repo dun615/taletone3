@@ -57,7 +57,7 @@ assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: inval
 const routeDocumentBudgetBytes = 40_000;
 const decodedTemplateBudgetBytes = 112_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 162_000;
+const decodedScriptBudgetBytes = 170_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
