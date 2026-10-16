@@ -5198,3 +5198,56 @@ body.tt-network-open #tt-mobile-chapter-menu {
     max-height: 1.5em !important;
   }
 }
+
+/* ===== 타이포그래피·위계 정리 (Works·내비) ===== */
+@media (min-width: 761px) {
+  /* 챕터 제목은 모든 챕터에서 같은 크기 */
+  #c-works.tt-gh-works .tt-gh-title {
+    font-size: clamp(48px, 6.6vw, 108px) !important;
+    line-height: .9 !important;
+    letter-spacing: -.02em !important;
+  }
+}
+
+@media (min-width: 1181px) {
+  /* 머리글이 로고·언어 선택 줄과 겹치지 않게 */
+  #c-works.tt-gh-works {
+    padding-top: clamp(76px, 9vh, 104px) !important;
+  }
+
+  /* 진행 표시가 왼쪽 수심 레일과 겹치지 않게 */
+  #progress {
+    left: calc(max(40px, 5vw) + 34px) !important;
+  }
+}
+
+/* 비활성 탭도 읽히게: 탭 바탕이 밝으므로 글자는 항상 진하게 */
+.tt-gh-tabs button:not(.is-active) {
+  color: #14223a !important;
+  opacity: .62;
+}
+
+.tt-gh-tabs button:not(.is-active):hover,
+.tt-gh-tabs button:not(.is-active):focus-visible {
+  opacity: 1;
+}
+
+/* 한글·일본어 라벨에는 넓은 자간을 쓰지 않는다 */
+html:is(:lang(ko), :lang(ja)) .tt-gh-info-table dt {
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+
+/* 넓은 카드 화면(멤버·작업물)에서는 오른쪽 챕터 메뉴를 점으로 줄이고, 마우스를 올리면 이름을 보인다 */
+@media (min-width: 1181px) and (max-width: 1600px) {
+  body:is([data-active-chapter="members"], [data-active-chapter="works"]) #chapnav .nav-label {
+    opacity: 0 !important;
+    transform: translateX(6px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+
+  body:is([data-active-chapter="members"], [data-active-chapter="works"]) #chapnav:is(:hover, :focus-within) .nav-label {
+    opacity: 1 !important;
+    transform: none;
+  }
+}

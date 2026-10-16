@@ -640,7 +640,8 @@ async function runInteractionSmoke(chrome, origin) {
     await sleep(120);
     const newsOpen = await evaluate(client, `!!document.querySelector('.tt-news-modal[role="dialog"][aria-modal="true"]') && document.body.classList.contains('tt-site-dialog-open')`);
     assert(newsOpen, 'interaction: NEWS dialog did not open');
-    await clickSelector(client, '.tt-news-modal button[aria-label="Close"]');
+    // The page is in Japanese here, so the close button carries the localized label.
+    await clickSelector(client, '.tt-news-modal button[aria-label="閉じる"]');
     await sleep(120);
     const newsClosed = await evaluate(client, `!document.querySelector('.tt-news-modal[role="dialog"]') && !document.body.classList.contains('tt-site-dialog-open')`);
     assert(newsClosed, 'interaction: NEWS dialog did not close cleanly');

@@ -1483,8 +1483,9 @@ class Component extends DCLogic {
       if(this._brandMark){ var want = tn<0.5 ? 'assets/logo/mark-ink.png' : 'assets/logo/mark-paper.png'; if(this._brandMarkSrc!==want){ this._brandMark.src=want; this._brandMarkSrc=want; } }
       this.setCssVar(r,'--accent',this.mix(pal.accent,'#ffffff',this._sceneDepth*0.42));
       this.setCssVar(r,'--accent2',this.mix(pal.accent2,'#ffffff',this._sceneDepth*0.42));
-      this.setCssVar(r,'--card',this.rgba([255,255,255,0.78],[26,40,64,0.66],this._sceneDepth));
-      this.setCssVar(r,'--cardBorder',this.rgba([24,32,52,0.1],[200,215,255,0.2],this._sceneDepth));
+      // cards flip with the text colour (light card + dark text, dark card + light text): no grey mid-tone
+      this.setCssVar(r,'--card',this.rgba([255,255,255,0.78],[18,32,56,0.72],tn));
+      this.setCssVar(r,'--cardBorder',this.rgba([24,32,52,0.1],[200,215,255,0.2],tn));
       this.setCssVar(r,'--line',this.rgba([24,32,52,0.18],[210,225,255,0.28],this._sceneDepth));
     }
     var n=this._sceneDepth==null?0:this._sceneDepth;

@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261018-prune',
+  'assets/css/works.css': '20261019-type',
   'assets/js/works.js': '20261018-permalink',
 };
 const expectedSiteContentCacheKey = attr(
