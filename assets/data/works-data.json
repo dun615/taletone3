@@ -2,6 +2,7 @@
   "works": [
     {
       "id": "work-new-21",
+      "slug": "bubble-sweet",
       "artist": "DOLONGCHA",
       "title": "Bubble Sweet",
       "date": "2026.07.11",
@@ -52,6 +53,7 @@
     },
     {
       "id": "work-soraniwa",
+      "slug": "heart-score",
       "artist": "STELLIVE Universe",
       "title": "마음악보",
       "date": "2026.06.11",
@@ -102,6 +104,7 @@
     },
     {
       "id": "work-run-galaxy",
+      "slug": "drawing-summer",
       "artist": "젠레스 존 제로",
       "title": "여름을 그리다",
       "date": "2025.07.06",
@@ -152,6 +155,7 @@
     },
     {
       "id": "work-parable",
+      "slug": "love-dopamine",
       "artist": "해봄",
       "title": "Love Dopamine",
       "date": "2025.08.30",
@@ -202,6 +206,7 @@
     },
     {
       "id": "work-taletones",
+      "slug": "love-novel",
       "artist": "Arune",
       "title": "Love Novel",
       "date": "2026.03.08",
@@ -252,6 +257,7 @@
     },
     {
       "id": "work-stellive",
+      "slug": "fallen-leaves",
       "artist": "쿠로가미 사샤",
       "title": "Fallen Leaves",
       "date": "2025.12.23",
@@ -302,6 +308,7 @@
     },
     {
       "id": "work-zzz",
+      "slug": "gangchi-island-op",
       "artist": "SEION",
       "title": "강치 아일랜드(OP)",
       "date": "2025.09.10",
@@ -352,6 +359,7 @@
     },
     {
       "id": "work-bubble-sweet",
+      "slug": "the-run-catch",
       "artist": "DOLONGCHA",
       "title": "The Run Catch",
       "date": "2025.08.23",
@@ -402,6 +410,7 @@
     },
     {
       "id": "work-ocd",
+      "slug": "floris-waltz",
       "artist": "플로리스 로에 (V-llage)",
       "title": "Floris Waltz",
       "date": "2025.03.21",
@@ -452,6 +461,7 @@
     },
     {
       "id": "work-mq82acph-nd1j",
+      "slug": "early-spring",
       "artist": "Dear my heroes",
       "title": "Early Spring [ALBUM]",
       "date": "2025.03.06",
@@ -619,6 +629,7 @@
     },
     {
       "id": "work-can-you-stay",
+      "slug": "pompous",
       "artist": "벨디르 미스틸테인 (V-LUP)",
       "title": "Pompous",
       "date": "2025.01.27",
@@ -669,6 +680,7 @@
     },
     {
       "id": "work-watercolor",
+      "slug": "new-year-syndrome",
       "artist": "MAIMATSU",
       "title": "새해결심 작심삼일",
       "date": "2024.12.27",
@@ -719,6 +731,7 @@
     },
     {
       "id": "work-client-a",
+      "slug": "wrap-up",
       "artist": "RoA",
       "title": "Wrap Up",
       "date": "2024.11.22",
@@ -769,6 +782,7 @@
     },
     {
       "id": "work-client-b",
+      "slug": "silverline",
       "artist": "V-llage",
       "title": "SilverLine [ALBUM]",
       "date": "2024.07.16",
@@ -948,6 +962,7 @@
     },
     {
       "id": "work-mq82ashm-1ju7",
+      "slug": "my-village",
       "artist": "V-llage",
       "title": "My Village",
       "date": "2024.07.02",
@@ -998,6 +1013,7 @@
     },
     {
       "id": "work-mix-archive-01",
+      "slug": "kanism-holic",
       "artist": "티그리스 카닌",
       "title": "카니즘☆홀릭",
       "date": "2024.04.06",
@@ -1115,6 +1131,7 @@
     },
     {
       "id": "work-master-archive",
+      "slug": "backstage",
       "artist": "Mafhills",
       "title": "BACKSTAGE",
       "date": "2024.03.03",
@@ -1165,6 +1182,7 @@
     },
     {
       "id": "work-mix-archive-02",
+      "slug": "watercolour",
       "artist": "soraniwa",
       "title": "수채화 (Watercolour)",
       "date": "2024.02.22",
@@ -1298,6 +1316,7 @@
     },
     {
       "id": "work-arrange-work",
+      "slug": "star-to-star",
       "artist": "Shabel Tonya",
       "title": "STAR to STAR",
       "date": "2023.06.30",
@@ -1348,6 +1367,7 @@
     },
     {
       "id": "work-selected-demo",
+      "slug": "night-sky",
       "artist": "침대점령",
       "title": "밤하늘",
       "date": "2021.11.19",
@@ -1398,6 +1418,7 @@
     },
     {
       "id": "work-archive-21",
+      "slug": "sailing-stars",
       "artist": "N4ML",
       "title": "Sailing StarS!",
       "date": "2019.10.06",

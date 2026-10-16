@@ -25,14 +25,16 @@ const pages = [
   {
     key: 'home', path: '/', coldWaitMs: 7_000, warmWaitMs: 2_500,
     // Runs #54-#56 measured 16 first-party requests and 20-23 Google Fonts requests on Linux.
-    maxFirstPartyRequests: 18, maxGoogleFontRequests: 30,
+    // Nanum Gothic (400/700) is served as many small unicode-range slices: ~37-39 requests measured.
+    maxFirstPartyRequests: 18, maxGoogleFontRequests: 45,
     maxTransferBytes: 1_200_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 6_000, maxLongTasks: 45, maxDomNodes: 1_500,
   },
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
     // Runs #54-#56 measured 28 first-party requests and up to 27 Google Fonts requests on Linux.
-    maxFirstPartyRequests: 30, maxGoogleFontRequests: 30,
+    // Nanum Gothic (400/700) is served as many small unicode-range slices: ~39-40 requests measured.
+    maxFirstPartyRequests: 30, maxGoogleFontRequests: 45,
     maxTransferBytes: 2_800_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
   },

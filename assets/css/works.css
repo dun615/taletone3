@@ -274,7 +274,7 @@ body[data-active-chapter="contact"] #nav-6 {
 
 .tt-gh-title {
   margin: 0;
-  font-family: 'Quicksand', 'Pretendard', var(--tt-noto-primary), 'Apple SD Gothic Neo', 'Malgun Gothic', var(--tt-noto-secondary), system-ui, sans-serif;
+  font-family: 'Quicksand', var(--tt-noto-primary), var(--tt-noto-secondary), system-ui, sans-serif;
   font-size: clamp(64px, 8.2vw, 126px);
   font-weight: 780;
   line-height: .86;
@@ -891,7 +891,7 @@ body[data-active-chapter="contact"] #nav-6 {
 .tt-gh-info h3 {
   margin: 0 0 9px;
   color: rgba(248,252,255,.96);
-  font-family: 'Quicksand','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),system-ui,sans-serif;
+  font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),system-ui,sans-serif;
   font-size: clamp(32px,3.8vw,58px);
   line-height: 1.22;
   letter-spacing: -.035em;
@@ -981,6 +981,25 @@ body[data-active-chapter="contact"] #nav-6 {
 .tt-gh-info-table dt,
 .tt-gh-info-table dd {
   margin: 0;
+}
+
+.tt-gh-permalink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, .92);
+  color: #141c30;
+  font-weight: 800;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.tt-gh-permalink:hover,
+.tt-gh-permalink:focus-visible {
+  background: #fffdf8;
 }
 
 .tt-gh-info-table dt {
@@ -1154,7 +1173,7 @@ body[data-active-chapter="contact"] #nav-6 {
   word-break: keep-all;
   overflow-wrap: anywhere;
   color: rgba(229,242,248,.86);
-  font-family: 'Quicksand','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),system-ui,sans-serif;
+  font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),system-ui,sans-serif;
   font-size: clamp(12px, .85vw, 14px);
   line-height: 1.55;
   font-weight: 620;
@@ -1197,7 +1216,7 @@ body[data-active-chapter="contact"] #nav-6 {
 }
 
 .tt-gh-bridge-copy {
-  font-family: 'Quicksand','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),sans-serif;
+  font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;
   font-style: italic;
   font-weight: 650;
   font-size: clamp(22px,3.4vw,42px);
@@ -3172,7 +3191,7 @@ body.tt-network-open #content {
 
 .tt-network-eyebrow {
   color: var(--accent, #0e6e7d);
-  font: 800 11px/1.2 'Hanken Grotesk', 'Pretendard', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
+  font: 800 11px/1.2 'Hanken Grotesk', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
   letter-spacing: .16em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -3182,7 +3201,7 @@ body.tt-network-open #content {
 .tt-network-panel-title {
   margin: 0;
   color: var(--ink, #141c30);
-  font-family: 'Quicksand', 'Pretendard', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
+  font-family: 'Quicksand', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
   font-weight: 700;
   letter-spacing: 0;
 }
@@ -3418,7 +3437,7 @@ body.tt-network-open #content {
 .tt-network-card-role {
   overflow: hidden;
   color: #52606f;
-  font: 700 11px/1.25 'Hanken Grotesk', 'Pretendard', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
+  font: 700 11px/1.25 'Hanken Grotesk', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
   opacity: 1;
@@ -3427,7 +3446,7 @@ body.tt-network-open #content {
 .tt-network-card-name {
   overflow: hidden;
   color: #141c30;
-  font: 800 21px/1.08 'Quicksand', 'Pretendard', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
+  font: 800 21px/1.08 'Quicksand', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
   letter-spacing: 0;
   text-overflow: ellipsis;
   white-space: nowrap;

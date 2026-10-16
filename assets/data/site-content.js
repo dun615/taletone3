@@ -474,6 +474,7 @@ window.TALETONE_CONTENT = {
   "news": [
     {
       "slotId": "news-3",
+      "slug": "bubble-sweet-release",
       "tag": "Project",
       "category": "Update",
       "date": "2026.07.11",
@@ -513,6 +514,7 @@ window.TALETONE_CONTENT = {
     },
     {
       "slotId": "news-1",
+      "slug": "taletone-begins",
       "tag": "Update",
       "category": "Update",
       "date": "2026.07.11",
@@ -552,6 +554,7 @@ window.TALETONE_CONTENT = {
     },
     {
       "slotId": "news-2",
+      "slug": "heart-score-release",
       "tag": "Project",
       "category": "Project",
       "date": "2026.06.11",
@@ -624,8 +627,8 @@ window.TALETONE_CONTENT = {
     "memberNameWeight": 700,
     "memberRoleSize": "11px",
     "memberRoleWeight": 700,
-    "fontStack": "'Hanken Grotesk','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),system-ui,sans-serif",
-    "fontStackJP": "'Quicksand','Pretendard',var(--tt-noto-primary),'Apple SD Gothic Neo','Malgun Gothic',var(--tt-noto-secondary),sans-serif"
+    "fontStack": "'Hanken Grotesk',var(--tt-noto-primary),var(--tt-noto-secondary),system-ui,sans-serif",
+    "fontStackJP": "'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"
   },
   "spacing": {
     "memberCardGap": "26px",

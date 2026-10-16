@@ -46,7 +46,7 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20260717-bridge-clock-hold-v001',
+  'assets/css/works.css': '20261017-nanum',
   'assets/js/works.js': '20261017-lang-routes',
 };
 const expectedSiteContentCacheKey = attr(
@@ -54,11 +54,11 @@ const expectedSiteContentCacheKey = attr(
   /assets\/data\/site-content\.js\?v=([^"']+)/i,
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
-const routeDocumentBudgetBytes = 390_000;
+const routeDocumentBudgetBytes = 40_000;
 const decodedTemplateBudgetBytes = 112_000;
 // Bridge control now lives here instead of a second controller in support.js.
 const decodedScriptBudgetBytes = 162_000;
-const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;family=Noto+Sans+KR:wght@400..800&amp;display=swap';
+const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&amp;family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
   'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
@@ -104,6 +104,11 @@ for (const requiredGuard of [
 }
 assert(validationWorkflow.includes('uses: actions/setup-node@v5') && validationWorkflow.includes('node-version: 24') && validationWorkflow.includes('node .github/scripts/validate-runtime-performance.mjs'), 'site-validation workflow does not use the Node 24 action/runtime performance budgets');
 
+// Route pages share one generated bundle that inserts the dc-runtime template/script blocks.
+const appBundleSource = await text('assets/app/app.js');
+const appBundle = JSON.parse(appBundleSource.match(/\}\)\((\{[\s\S]*\})\);\s*$/)?.[1] || '{}');
+const appBundleVersion = createHash('sha256').update(appBundleSource).digest('hex').slice(0, 12);
+assert(typeof appBundle.template === 'string' && typeof appBundle.script === 'string', 'assets/app/app.js: app payload missing');
 const payloadHashes = [];
 const scriptPayloadHashes = [];
 const fallbackHashes = new Map();
@@ -138,7 +143,9 @@ for (const [key, file, route, expectedTitle] of routes) {
   const ld = attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i);
   try { JSON.parse(ld); } catch { errors.push(`${file}: invalid JSON-LD`); }
 
-  const payload = attr(html, /<script\s+type="application\/octet-stream"\s+data-dc-template-b64>([\s\S]*?)<\/script>/i).replace(/\s/g, '');
+  const usesAppBundle = html.includes(`<script src="assets/app/app.js?v=${appBundleVersion}"></script>`);
+  assert(usesAppBundle, `${file}: shared app bundle reference missing or stale`);
+  const payload = usesAppBundle ? Buffer.from(appBundle.template).toString('base64') : '';
   assert(payload.length > 1000, `${file}: encoded app template missing`);
   if (payload) {
     const decoded = Buffer.from(payload, 'base64').toString('utf8');
@@ -154,7 +161,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert((decoded.match(/hanken-grotesk-latin-normal-v12\.woff2/g) || []).length === 5, `${file}: local Hanken Grotesk normal weights changed`);
     assert(!decoded.includes('hanken-grotesk-latin-italic-v12.woff2'), `${file}: unused Hanken Grotesk italic face returned`);
     assert((decoded.match(/quicksand-latin-normal-v37\.woff2/g) || []).length === 4, `${file}: local Quicksand weights changed`);
-    assert(decoded.includes(":root{--tt-noto-primary:'Noto Sans KR';--tt-noto-secondary:'Noto Sans JP';") && decoded.includes(":root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Noto Sans KR'}"), `${file}: language-aware CJK font order is missing`);
+    assert(decoded.includes(":root{--tt-noto-primary:'Nanum Gothic';--tt-noto-secondary:'Noto Sans JP';") && decoded.includes(":root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Nanum Gothic'}"), `${file}: language-aware CJK font order is missing`);
     const decodedFontDeclarations = [...decoded.matchAll(/font-family\s*:\s*([^;}\r\n]+)/gi)].map((match) => match[1]);
     assert(!decodedFontDeclarations.some((value) => /Noto Sans (?:KR|JP)/.test(value)), `${file}: literal CJK family order remains in a template font declaration`);
     assert(decoded.includes("font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"), `${file}: Japanese language button does not preserve Quicksand before the CJK fallbacks`);
@@ -183,7 +190,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
   }
 
-  const scriptPayload = attr(html, /<script\b[^>]*\bdata-dc-script-b64\b[^>]*>([\s\S]*?)<\/script>/i).replace(/\s/g, '');
+  const scriptPayload = usesAppBundle ? Buffer.from(appBundle.script).toString('base64') : '';
   assert(scriptPayload.length > 1000, `${file}: encoded app script missing`);
   if (scriptPayload) {
     const decodedScript = Buffer.from(scriptPayload, 'base64').toString('utf8');
@@ -339,6 +346,16 @@ const inspectHtmlReferences = (html, source, basePath) => {
 for (const [, file] of routes) inspectHtmlReferences(await text(file), file, '/');
 inspectHtmlReferences(await text('projects/index.html'), 'projects/index.html', '/');
 inspectHtmlReferences(await text('404.html'), '404.html', '/');
+// Generated Works/News detail pages: real assets, self canonical, valid JSON-LD.
+const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?(?:works|news)\/[a-z0-9-]+\/index\.html$/.test(file));
+assert(detailPageFiles.length >= 3 * (21 + 3), `expected Works/News detail pages for every language, found ${detailPageFiles.length}`);
+for (const file of detailPageFiles) {
+  const html = await text(file);
+  const route = `/${file.replace(/index\.html$/, '')}`;
+  inspectHtmlReferences(html, file, route);
+  assert(attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i) === `https://taletone.net${route}`, `${file}: canonical is not self-referencing`);
+  try { JSON.parse(attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i)); } catch { errors.push(`${file}: invalid JSON-LD`); }
+}
 inspectHtmlReferences(decodedApp, 'decoded app template', '/');
 for (const cssFile of inventory.filter((file) => file.endsWith('.css'))) {
   const css = await text(cssFile);
