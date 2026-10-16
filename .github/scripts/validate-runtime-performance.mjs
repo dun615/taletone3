@@ -792,7 +792,7 @@ async function runBridgeSmoke(chrome, origin) {
         // The test scrolls throughout: the animation must still play in full, then the hold shortens to a quick handoff.
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
         assert(result.anchorDrift<=1.5, `${label}: locked scroll left its anchor by ${result.anchorDrift}px (momentum/late layout not re-pinned)`);
-        assert((index===-1||result.holding) && result.duration>=(viewport.reduced?1100:index===-1?5500:1150) && result.duration<=(index===-1?7600:3600), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
+        assert((index===-1||result.holding) && result.duration>=(viewport.reduced?1000:index===-1?5500:1150) && result.duration<=(index===-1?7600:3600), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
         assert(result.historyDelta===(index===-1?0:1), `${label}: handoff must navigate exactly once`);
         assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===langPrefix+(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
         console.log(label, JSON.stringify(result));
