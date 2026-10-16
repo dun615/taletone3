@@ -4,5 +4,7 @@ Disallow: /qa/
 Disallow: /src/
 Disallow: /scripts/
 Disallow: /preview/
+Disallow: /preview-src/
+Disallow: /archive/
 
 Sitemap: https://taletone.net/sitemap.xml

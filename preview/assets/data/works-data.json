@@ -1,0 +1,1493 @@
+{
+  "works": [
+    {
+      "id": "work-new-21",
+      "slug": "bubble-sweet",
+      "artist": "DOLONGCHA",
+      "title": "Bubble Sweet",
+      "date": "2026.07.11",
+      "type": "DOLONGCHA 2nd Single",
+      "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기.\n",
+      "credits": "Creative Directed by DOLONGCHA\nMusic Produced by N4ML (TALETONE)\nInvested by DOLONGCHA\nProject Management by Kimbeaver\n\nSong by DOLONGCHA\nComposed by N4ML (TALETONE)\nLyrics by N4ML (TALETONE)\nArranged by N4ML (TALETONE)\n\nBass Guitar by Jaeha Yoon (TALETONE)\nAcoustic Guitar by JJ Kim\nSynthesizers by N4ML (TALETONE)\nDrum Programming by N4ML (TALETONE)\n\nVocal Recorded by Moonsoo Park (U-il SoundWorks)\nMixed by Moonsoo Park (U-il SoundWorks)\nMastered by Junyong Lee (U-il SoundWorks)",
+      "image": "assets/works/images/bubblesweet-work-1024.webp",
+      "audio": "assets\\works\\audio\\Fix-Bubblesweet.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 1,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=P6fUuhq3XSQ",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "DOLONGCHA",
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기.\n"
+        },
+        "en": {
+          "artist": "DOLONGCHA",
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "A story that captures the sweet excitement of bubbles popping beneath the midsummer sun in one refreshingly cool drink."
+        },
+        "jp": {
+          "artist": "DOLONGCHA",
+          "title": "Bubble Sweet",
+          "type": "DOLONGCHA 2nd Single",
+          "description": "真夏の陽射しの下、泡のように弾ける甘いときめきを、ひんやりとした一杯に閉じ込めた物語。"
+        }
+      }
+    },
+    {
+      "id": "work-soraniwa",
+      "slug": "heart-score",
+      "artist": "STELLIVE Universe",
+      "title": "마음악보",
+      "date": "2026.06.11",
+      "type": "STELLIVE 'Universe' 2nd Single",
+      "description": "서로 다른 색을 가진 네 소녀가 하나의 밴드가 되어, 자신들만의 이야기를 써 내려가는 이야기.",
+      "credits": "[Music Credits]\nLyrics by REQ\nComposed by N4ML (TALETONE), Dear my heroes\nArranged by N4ML (TALETONE)\n\nPiano Played by Minsu Choi, N4ML (TALETONE)\nBass Played by Jaeha Yoon (TALETONE)\nGuitar Played by Mingyu Jeong\nGuitar Arranged by Yeonu, N4ML (TALETONE)\nDrum Programmed by N4ML (TALETONE), Lee ShibaInu (Yubin Lee) \n\nChorus by Shirayuki Hina, Neneko Mashiro, Akane Lize, Arahashi Tabi, Park Ha-hee, Heruuna\nVocal Guided by Seine (TALETONE)\nVocal Directed by REQ\nVocal Edited by TEAM EDIT, Accelers Studio, N4ML (TALETONE)\nMixed by Jun @Accelers Studio\nMastered by \n\n[Credits]\nSTELLIVE - Universe\nShirayuki Hina / Neneko Mashiro / Akane Lize / Arahashi Tabi\n\nIllustrated by bmtol\nSD Animation by PWINY\nMusic Video Directed by TEMACA\nAlbum Cover Designed by TEMACA\n\nProduced by Accelers & STELLIVE\nExecutive Planner Pread (Accelers)\n\nProject Management LOA (STELLIVE)\nProject Management Myori (STELLIVE)\nProject Management Chaeyeong Lee (Accelers)\n\n(Music) Music Supervisor REQ (STELLIVE)\n(Visual) Creative Director TheCold (STELLIVE)\n(IP) Executive Producer 강지 (STELLIVE)",
+      "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
+      "audio": "assets/works/audio/asset-mq5x2xsj-659vp-4824_-New-AR.mp3-9e7642774047.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 2,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=yiprl7-dU04",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "STELLIVE Universe",
+          "title": "마음악보",
+          "type": "STELLIVE 'Universe' 2nd Single",
+          "description": "서로 다른 색을 가진 네 소녀가 하나의 밴드가 되어, 자신들만의 이야기를 써 내려가는 이야기."
+        },
+        "en": {
+          "artist": "STELLIVE Universe",
+          "title": "Heart Score",
+          "type": "STELLIVE 'Universe' 2nd Single",
+          "description": "A story of four girls, each with her own color, coming together as a band to write a story of their own."
+        },
+        "jp": {
+          "artist": "STELLIVE Universe",
+          "title": "Heart Score",
+          "type": "STELLIVE『Universe』2nd Single",
+          "description": "それぞれ異なる色を持つ4人の少女が一つのバンドとなり、自分たちだけの物語を紡いでいく物語。"
+        }
+      }
+    },
+    {
+      "id": "work-run-galaxy",
+      "slug": "drawing-summer",
+      "artist": "젠레스 존 제로",
+      "title": "여름을 그리다",
+      "date": "2025.07.06",
+      "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+      "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기",
+      "credits": "Illustration Assistant - Surps, eruN, Meow, 개혀\n\nMusic Composed by N4ML (TONALIE)\nMusic Arranged by N4ML (TONALIE)\nLyrics by Ruafka (TONALIE)\n\nVocal Played by Seine (TONALIE)\nPiano Played by N4ML (TONALIE)\nBass Guitar Played by Jaeha Yoon (TONALIE)\nElectric Guitar Played by BlueArpeggio\nAcoustic Guitar Played by JJ Kim\nHarmonica Played by Yongseong Cho\n\nVocal Chorus Designed by Ruafka (TONALIE)\nVocal Coached by N4ML (TONALIE)\n\nAudio Mixed by Moonsoo Park (U-il SoundWorks)\nAudio Mastered by Junyong Lee (U-il SoundWorks)\n\nPV, Illustration - SSS",
+      "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.webp",
+      "audio": "assets/works/audio/asset-mq81ynzj-nj4v3-AR-Master-MP3-320Kbps.mp3-457831b8463e.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 3,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=aTNiy1ZRbSo",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "젠레스 존 제로",
+          "title": "여름을 그리다",
+          "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기"
+        },
+        "en": {
+          "artist": "Zenless Zone Zero",
+          "title": "Drawing Summer",
+          "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "description": "The story of the Cunning Hares setting off on a summer vacation."
+        },
+        "jp": {
+          "artist": "ゼンレスゾーンゼロ",
+          "title": "Drawing Summer",
+          "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
+        }
+      }
+    },
+    {
+      "id": "work-parable",
+      "slug": "love-dopamine",
+      "artist": "해봄",
+      "title": "Love Dopamine",
+      "date": "2025.08.30",
+      "type": "'해봄' 3rd Single",
+      "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기",
+      "credits": "Composed by N4ML (TONALIE)\nLyrics by 유상희\nArranged by N4ML (TONALIE)\n\nGuitar by BlueArpeggio\nBass by 윤재하\nPiano by N4ML (TONALIE)\nSynth by N4ML (TONALIE)\nDrum Designed by N4ML (TONALIE)\n\nRecorded by 스튜디오엠랩\nDirected by 유상희, N4ML (TONALIE)\nEdited by N4ML (TONALIE)\nTuned by N4ML (TONALIE)\nMixed by 신용식@스테이튠드\nMastered by 장태인@seoul archive studio\n\nExecutive Producer - 패러블엔터테인먼트\nManagement Director - 함정훈\nArtist Management - 한유선\nArtist Production - 송윤석\nVisual Contents - 한유선, 이진우\n\nProduction of PARABLE ENTERTAINMENT Inc.\n\nAll Rights Reserved by PARABLE ENTERTAINMENT Inc.",
+      "image": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae.webp",
+      "audio": "assets/works/audio/asset-mq81ygf9-gsou9-_Love-Dopamine-Mastered-320K-.mp3-bd6f9b3eb40f.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 4,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=Atgold7UdnY",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "해봄",
+          "title": "Love Dopamine",
+          "type": "'해봄' 3rd Single",
+          "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기"
+        },
+        "en": {
+          "artist": "Haebom",
+          "title": "Love Dopamine",
+          "type": "'Haebom' 3rd Single",
+          "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
+        },
+        "jp": {
+          "artist": "ヘボム (HAEBOM)",
+          "title": "Love Dopamine",
+          "type": "ヘボム (HAEBOM) 3rd Single",
+          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すヘボムの物語。"
+        }
+      }
+    },
+    {
+      "id": "work-taletones",
+      "slug": "love-novel",
+      "artist": "Arune",
+      "title": "Love Novel",
+      "date": "2026.03.08",
+      "type": "'Arune' 1st Single",
+      "description": "슬픔과 그리움을 지나 다시 사랑을 시작하게 되는 두 사람의 이야기.",
+      "credits": "Composed by N4ML (TONALIE)\nLyrics by RuafKa\nArranged by N4ML (TONALIE)\n\nVocal by 사나에 \nElectric Guitar by Yeonu\nBass by N4ML (TONALIE)\nKeyboard by N4ML (TONALIE)\nStrings by N4ML (TONALIE)\nDrum Designed by N4ML (TONALIE)\n\nVocal Guided by Seine\nVocal Edited by N4ML (TONALIE)\nVocal Directed by Dear my heroes, N4ML (TONALIE)\n\nVocal Recorded by 박문수 (U-il SoundWorks)\nMixed by 박문수 (U-il SoundWorks)\nMastered by 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq5xd492-t0gz-Love_Novel_Album_Art.png-a3648b06dc27.webp",
+      "audio": "assets/works/audio/asset-mq5zk93v-vu5l7-Love-Novel-AR-Master-MP3-320Kbps.mp3-edf40a3c3052.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.59,
+      "index": 5,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=eNK5ERAl6BA",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "Arune",
+          "title": "Love Novel",
+          "type": "'Arune' 1st Single",
+          "description": "슬픔과 그리움을 지나 다시 사랑을 시작하게 되는 두 사람의 이야기."
+        },
+        "en": {
+          "artist": "Arune",
+          "title": "Love Novel",
+          "type": "'Arune' 1st Single",
+          "description": "A story of two people who move through sorrow and longing, then begin to love again."
+        },
+        "jp": {
+          "artist": "Arune",
+          "title": "Love Novel",
+          "type": "『Arune』1st Single",
+          "description": "悲しみと恋しさを越え、もう一度愛を始める二人の物語。"
+        }
+      }
+    },
+    {
+      "id": "work-stellive",
+      "slug": "fallen-leaves",
+      "artist": "쿠로가미 사샤",
+      "title": "Fallen Leaves",
+      "date": "2025.12.23",
+      "type": "V-llage '쿠로가미 사샤' 1st Single",
+      "description": "'그때의 나'를 끝내기 위해 러시안 룰렛을 시작한 한 소녀의 이야기",
+      "credits": "기획 : V-llage\n투자 : V-llage\n음악 총괄 프로듀서 : N4ML (TONALIE)\n\n노래 : 쿠로가미 사샤\n작곡 : N4ML (TONALIE)\n작사 : RuafKa\n편곡 : N4ML (TONALIE)\n\n건반 연주 : N4ML (TONALIE)\n드럼 프로그래밍 : N4ML (TONALIE)\n베이스 프로그래밍 : N4ML (TONALIE)\n\n보컬 편집 : N4ML (TONALIE)\n보컬 디렉팅 : N4ML (TONALIE), RuafKa\n녹음 : 노상준 @JAKOB STUDIO\n믹싱 : 박문수 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq62pguq-2ouk-fallen-leaves.jpg-6d2765c6ab78.webp",
+      "audio": "assets/works/audio/asset-mq81xsz8-sddpk-Fallen-Leaves-AR-Master-MP3-320Kbps.mp3-4f6b5de501fb.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=jyQiYCZCv-w",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "쿠로가미 사샤",
+          "title": "Fallen Leaves",
+          "type": "V-llage '쿠로가미 사샤' 1st Single",
+          "description": "'그때의 나'를 끝내기 위해 러시안 룰렛을 시작한 한 소녀의 이야기"
+        },
+        "en": {
+          "artist": "Kurogami Sasha",
+          "title": "Fallen Leaves",
+          "type": "V-llage 'Kurogami Sasha' 1st Single",
+          "description": "The story of a girl who begins a game of Russian roulette to put an end to 'the person she was then.'"
+        },
+        "jp": {
+          "artist": "Kurogami Sasha",
+          "title": "Fallen Leaves",
+          "type": "V-llage『Kurogami Sasha』1st Single",
+          "description": "「あの頃の自分」を終わらせるため、ロシアンルーレットを始めた一人の少女の物語。"
+        }
+      }
+    },
+    {
+      "id": "work-zzz",
+      "slug": "gangchi-island-op",
+      "artist": "SEION",
+      "title": "강치 아일랜드(OP)",
+      "date": "2025.09.10",
+      "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
+      "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기",
+      "credits": "Vocals: SEION\nComposed by: SEION, Jang Junho\nLyrics by: SEION\nArranged by: N4ML",
+      "image": "assets/works/images/asset-mq637x6b-suft-20752505.jpg-42f728166a48.webp",
+      "audio": "assets/works/audio/asset-mq81zrrk-ioubn-AR-mp3-320-.mp3-632ff56e7922.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 7,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=uYh0Ts9BicU",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "SEION",
+          "title": "강치 아일랜드(OP)",
+          "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
+          "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기"
+        },
+        "en": {
+          "artist": "SEION",
+          "title": "Gangchi Island (OP)",
+          "type": "Animation 'Gangchi Island' 1st OP (Produced by Jang Junho)",
+          "description": "A story of friends growing their dreams and friendships on Gangchi Island."
+        },
+        "jp": {
+          "artist": "SEION",
+          "title": "Gangchi Island (OP)",
+          "type": "アニメーション『Gangchi Island』1st OP（Produced by Jang Junho）",
+          "description": "Gangchi Islandで夢と友情を育んでいく仲間たちの物語。"
+        }
+      }
+    },
+    {
+      "id": "work-bubble-sweet",
+      "slug": "the-run-catch",
+      "artist": "DOLONGCHA",
+      "title": "The Run Catch",
+      "date": "2025.08.23",
+      "type": "DOLONGCHA(도롱챠) 1st Single",
+      "description": "좋아하는 사람을 향해 망설임 없이 달려가는 한 소녀(?) 이야기",
+      "credits": "[Credit]\nInvested by DOLONGCHA\nExecutive Produced by DOLONGCHA\nExecutive Directed by DOLONGCHA\nMusic Produced by MIEE\n\nComposed by MIEE, N4ML (TONALIE)\nLyrics Written by MIEE\nArranged by MIEE, N4ML (TONALIE)\n\nVocal Performed by DOLONGCHA\nPiano Played by MIEE, N4ML (TONALIE)\nBass Guitar Played by Jaeha Yoon\nElectric Guitar Played by JJ Kim\nDrum Designed by MIEE, N4ML (TONALIE)\nSynth Designed by MIEE, N4ML (TONALIE)\n\nVocal Guided by BIJOU\nVocal Chorus Designed by BIJOU\nVocal Coached by MIEE, N4ML (TONALIE)\nVocal Edited by N4ML (TONALIE)\n\nVocal Recorded by Moonsoo Park (U-il SoundWorks)\nMixed by Moonsoo Park (U-il SoundWorks)\nMastered by Junyong Lee (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq63sxo8-7fng-the-run-catch.webp-6448b643b3c4.webp",
+      "audio": "assets/works/audio/asset-mq81zybf-4pbw9-The-Run-Catch.mp3-3a8ea14a4e49.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 8,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=ASWrJXCcqtM",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "DOLONGCHA",
+          "title": "The Run Catch",
+          "type": "DOLONGCHA(도롱챠) 1st Single",
+          "description": "좋아하는 사람을 향해 망설임 없이 달려가는 한 소녀(?) 이야기"
+        },
+        "en": {
+          "artist": "DOLONGCHA",
+          "title": "The Run Catch",
+          "type": "DOLONGCHA 1st Single",
+          "description": "The story of a girl(?) who runs straight toward the person she likes without hesitation."
+        },
+        "jp": {
+          "artist": "DOLONGCHA",
+          "title": "The Run Catch",
+          "type": "DOLONGCHA 1st Single",
+          "description": "好きな人に向かって、迷わず駆け出す一人の少女（？）の物語。"
+        }
+      }
+    },
+    {
+      "id": "work-ocd",
+      "slug": "floris-waltz",
+      "artist": "플로리스 로에 (V-llage)",
+      "title": "Floris Waltz",
+      "date": "2025.03.21",
+      "type": "V-llage '플로리스 로에' 1st Single",
+      "description": "우리 둘만의 이야기를 써 내려가는, 작은 꽃의 요정의 이야기",
+      "credits": "기획 : V-llage\n투자 : V-llage\n총괄 프로듀싱 : N4ML (TONALIE)\n\n1. Floris Waltz\n노래 : 플로리스 로에\n\n작곡 : N4ML (TONALIE)\n편곡 : N4ML (TONALIE)\n작사 : RuafKa (TONALIE)\n\n현악기 : N4ML (TONALIE)\n금관악기 : N4ML (TONALIE)\n목관악기 : N4ML (TONALIE)\n드럼 : N4ML (TONALIE)\n팀파니 : N4ML (TONALIE)\n하프 : N4ML (TONALIE)\n글로켄슈필 : N4ML (TONALIE)\n\n보컬 가이드 : RuafKa (TONALIE)\n보컬 코칭 : RuafKa (TONALIE)\n화음 제작 : RuafKa (TONALIE)\n보컬 디렉팅 : RuafKa (TONALIE), N4ML (TONALIE)\n보컬 편집 : N4ML (TONALIE)\n\n메인 멜로디 녹음 : 김지훈 @Only One J Studio\n화음 녹음 : 노상준 @JAKOB STUDIO\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq65qtk6-e5z6-.jpg-4045efbdfb06.webp",
+      "audio": "assets/works/audio/asset-mq820ahk-xmfq0-Floris-Waltz-AR-Master-MP3-320Kbps.mp3-4bace4847ca9.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.5,
+      "index": 9,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=ZminQN7-cZ0",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "플로리스 로에 (V-llage)",
+          "title": "Floris Waltz",
+          "type": "V-llage '플로리스 로에' 1st Single",
+          "description": "우리 둘만의 이야기를 써 내려가는, 작은 꽃의 요정의 이야기"
+        },
+        "en": {
+          "artist": "Floweress Loe (V-llage)",
+          "title": "Floris Waltz",
+          "type": "V-llage 'Floris Loe' 1st Single",
+          "description": "The tale of a little flower fairy, writing a story that belongs to just the two of us."
+        },
+        "jp": {
+          "artist": "フローリス・ロエ (V-llage)",
+          "title": "Floris Waltz",
+          "type": "V-llage『Floris Loe』1st Single",
+          "description": "ふたりだけの物語を綴っていく、小さな花の妖精のお話。"
+        }
+      }
+    },
+    {
+      "id": "work-mq82acph-nd1j",
+      "slug": "early-spring",
+      "artist": "Dear my heroes",
+      "title": "Early Spring [ALBUM]",
+      "date": "2025.03.06",
+      "type": "Dear my heroes 1st EP",
+      "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기\n",
+      "credits": "",
+      "image": "assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 10,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-mq82acph-nd1j-track-01",
+          "title": "August",
+          "date": "2025.03.06",
+          "type": "Dear my heroes 1st EP 'Early Spring' 1st Track",
+          "description": "끝을 앞둔 계절 속에서 사랑을 만나고, 그리움과 원망 사이에 남겨진 한 사람의 이야기",
+          "credits": "Executive Produced by Dear my heroes\nExecutive Directed by Dear my heroes\nInvested by Dear my Heroes\nPhotography by Koi Da\n\n1. August\nComposed by Dear my heroes\nLyrics Written by Dear my heroes\nArranged by N4ML, Dear my heroes\n\nVocal Played by Dear my heroes\nPiano Played by Ruafka\n\nVocal Edited by N4ML\nRecorded by JAKOB STUDIO @노상준\nAudio Mixed by N4ML\nAudio Mastered by JunYong Lee @ U-il SoundWorks",
+          "image": "assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp",
+          "audio": "assets/works/audio/asset-mq831c7o-xr7t-1.-August-AR-Master-MP3-320Kbps.mp3-00ff38b5763c.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=fUo3rFXmvU0",
+          "translations": {
+            "kr": {
+              "description": "끝을 앞둔 계절 속에서 사랑을 만나고, 그리움과 원망 사이에 남겨진 한 사람의 이야기"
+            },
+            "en": {
+              "description": "A story of meeting love at the edge of a season, left between longing and resentment."
+            },
+            "jp": {
+              "description": "終わりを目前にした季節の中で恋に出会い、恋しさと恨みの間に残された一人の物語です。"
+            }
+          }
+        },
+        {
+          "id": "work-mq82acck-jkn2",
+          "title": "Early Spring",
+          "date": "2025.03.06",
+          "type": "Dear my heroes 1st EP 'Early Spring' 2nd Track (Title)",
+          "description": "봄이 찾아왔지만 아직 겨울에 머문 마음으로, 떠나간 사랑을 미워하고 그리워하는 이야기",
+          "credits": "Executive Produced by Dear my heroes\nExecutive Directed by Dear my heroes\nInvested by Dear my Heroes\nPhotography by Koi Da\n\n2. Early Spring\nComposed by Dear my heroes\nLyrics Written by Dear my heroes\nArranged by N4ML\n\nVocal Played by Dear my heroes\nPiano Played by Ruafka\nDrum Designed by N4ML\nBass Designed by N4ML\nSynth Designed by N4ML\n\nVocal Edited by N4ML\nRecorded by JAKOB STUDIO @노상준\nAudio Mixed by N4ML\nAudio Mastered by JunYong Lee @ U-il SoundWorks",
+          "image": "assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp",
+          "audio": "assets/works/audio/asset-mq831hlf-77vl-2.-Early-Spring-AR-Master-MP3-320Kbps.mp3-5e53cab084f1.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
+          "translations": {
+            "kr": {
+              "description": "봄이 찾아왔지만 아직 겨울에 머문 마음으로, 떠나간 사랑을 미워하고 그리워하는 이야기"
+            },
+            "en": {
+              "description": "A story of hating and missing a love that has left, with a heart still in winter even after spring arrives."
+            },
+            "jp": {
+              "description": "春が訪れても心はまだ冬にいて、去っていった恋を憎み、恋しがる物語です。"
+            }
+          }
+        },
+        {
+          "id": "work-mq82ad65-wqtc",
+          "title": "Balloon",
+          "date": "2025.03.06",
+          "type": "Dear my heroes 1st EP 'Early Spring' 3rd Track",
+          "description": "모든 모험이 끝난 뒤의 오후, 무덤덤한 풍경 속에 조용히 남아 있는 마음의 이야기",
+          "credits": "Executive Produced by Dear my heroes\nExecutive Directed by Dear my heroes\nInvested by Dear my Heroes\nPhotography by Koi Da\n\n3. Balloon\nComposed by Dear my heroes\nLyrics Written by Dear my heroes\nArranged by N4ML\n\nVocal Played by Dear my heroes\nDrum Designed by N4ML\nBass Designed by N4ML\nSynth Designed by N4ML\n\nVocal Edited by N4ML\nRecorded by N4ML\nAudio Mixed by N4ML\nAudio Mastered by JunYong Lee @ U-il SoundWorks",
+          "image": "assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp",
+          "audio": "assets/works/audio/asset-mq831lri-sgpr-3.-Balloon-AR-Master-MP3-320Kbps.mp3-468cb598921f.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 3,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=GwKXPt9Kkqc",
+          "translations": {
+            "kr": {
+              "description": "모든 모험이 끝난 뒤의 오후, 무덤덤한 풍경 속에 조용히 남아 있는 마음의 이야기"
+            },
+            "en": {
+              "description": "A quiet story of feelings left in an ordinary afternoon after every adventure has ended."
+            },
+            "jp": {
+              "description": "すべての冒険が終わった後の午後、何気ない風景の中に静かに残る心の物語です。"
+            }
+          }
+        },
+        {
+          "id": "work-mq82adqb-nkqh",
+          "title": "Lullaby For",
+          "date": "2025.03.06",
+          "type": "Dear my heroes 1st EP 'Early Spring' 4th Track",
+          "description": "잠들지 못하는 슬픔의 밤에, 남겨진 마음을 조용히 안아주는 이야기",
+          "credits": "Executive Produced by Dear my heroes\nExecutive Directed by Dear my heroes\nInvested by Dear my Heroes\nPhotography by Koi Da\n\n4. Lullaby for\nComposed by Dear my heroes\nLyrics Written by Dear my heroes\nArranged by GUNHEE, Dear my heroes\n\nVocal Played by Dear my heroes\n\nVocal Edited by N4ML\nRecorded by N4ML\nAudio Mixed by N4ML\nAudio Mastered by JunYong Lee @ U-il SoundWorks\n",
+          "image": "assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp",
+          "audio": "assets/works/audio/asset-mq831qw9-n91b-4.-Lullaby-for-AR-Master-MP3-320Kbps.mp3-7cb4cbe81d8d.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 4,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=hgRS_eGvyII",
+          "translations": {
+            "kr": {
+              "description": "잠들지 못하는 슬픔의 밤에, 남겨진 마음을 조용히 안아주는 이야기"
+            },
+            "en": {
+              "description": "A story that quietly embraces the feelings left behind on a sleepless night of sorrow."
+            },
+            "jp": {
+              "description": "眠れない悲しみの夜に、残された心を静かに抱きしめる物語です。"
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 1,
+      "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Album (EP)",
+      "translations": {
+        "kr": {
+          "artist": "Dear my heroes",
+          "title": "Early Spring [ALBUM]",
+          "type": "Dear my heroes 1st EP",
+          "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기\n"
+        },
+        "en": {
+          "artist": "Dear my heroes",
+          "title": "Early Spring [ALBUM]",
+          "type": "Dear my heroes 1st EP",
+          "description": "A story of the hearts left behind after death and farewell, moving through grief and returning to life within the cycles of time and the seasons."
+        },
+        "jp": {
+          "artist": "Dear my heroes",
+          "title": "Early Spring [ALBUM]",
+          "type": "Dear my heroes 1st EP",
+          "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-can-you-stay",
+      "slug": "pompous",
+      "artist": "벨디르 미스틸테인 (V-LUP)",
+      "title": "Pompous",
+      "date": "2025.01.27",
+      "type": "V-LUP 'Beldir' 1st Single",
+      "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기",
+      "credits": "프로젝트 디렉터 : 벨디르 미스틸테인 아스티즈 베들폴리니아 나인 아차트라 페이챠리온 나트리그\n프로젝트 프로듀싱 : N4ML\n\n노래 : 벨디르 미스틸테인 아스티즈 베들폴리니아 나인 아차트라 페이챠리온 나트리그\n작곡 : N4ML\n편곡 : N4ML\n작사 : RuafKa\n베이스 기타 연주 : 안보은\n일렉트릭 기타 연주 : 김재중\n오르간 연주 : RuafKa\n\n보컬 편집 : N4ML\n화음 제작 및 가이드 : RuafKa\n보컬 디렉팅 : N4ML, RuafKa\n\n레코딩 : 노상준 @JAKOB STUDIO\n믹싱 : N4ML\n마스터링 : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq67q5mc-7xzx-.png-cc87f8264219.webp",
+      "audio": "assets/works/audio/asset-mq820mko-a7z2e-Pompous.mp3-cd03c3ed6d91.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 11,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=CRWN3Ro8hFg",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "벨디르 미스틸테인 (V-LUP)",
+          "title": "Pompous",
+          "type": "V-LUP 'Beldir' 1st Single",
+          "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기"
+        },
+        "en": {
+          "artist": "Beldir (V-LUP)",
+          "title": "Pompous",
+          "type": "V-LUP 'Beldir' 1st Single",
+          "description": "A story that shouts boldly toward vanity and the desire for approval on social media."
+        },
+        "jp": {
+          "artist": "Beldir (V-LUP)",
+          "title": "Pompous",
+          "type": "V-LUP『Beldir』1st Single",
+          "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-watercolor",
+      "slug": "new-year-syndrome",
+      "artist": "MAIMATSU",
+      "title": "새해결심 작심삼일",
+      "date": "2024.12.27",
+      "type": "MAIMATSU 2nd Single",
+      "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기",
+      "credits": "기획 : 피피아이프로덕션\n투자 : 피피아이프로덕션\n총괄 프로듀싱 : N4ML(TONALIE)\n\n작곡 : N4ML(TONALIE)\n편곡 : N4ML(TONALIE)\n작사 : N4ML(TONALIE)\n\n노래 : 미카, 치세, 키나코, 나나치\n악기 연주 및 프로그래밍 : N4ML(TONALIE)\n\n보컬 보정 : N4ML(TONALIE)\n보컬 디렉팅 : N4ML(TONALIE)\n레코딩 : N4ML(TONALIE)\n믹싱 : N4ML(TONALIE)\n마스터링 : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq67x68i-u0rf-.jpg-2948bef820da.webp",
+      "audio": "assets/works/audio/asset-mq820qqw-gd2v5-Short-AR-Master-MP3-320Kbps.mp3-4421598762c0.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 12,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=Fu362KCf_Pk",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "MAIMATSU",
+          "title": "새해결심 작심삼일",
+          "type": "MAIMATSU 2nd Single",
+          "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기"
+        },
+        "en": {
+          "artist": "MAIMATSU",
+          "type": "MAIMATSU 2nd Single",
+          "description": "A story of four girls making New Year's plans that will likely fail again.",
+          "title": "NEW YEAR SYNDROME"
+        },
+        "jp": {
+          "artist": "MAIMATSU",
+          "title": "NEW YEAR SYNDROME",
+          "type": "MAIMATSU 2nd Single",
+          "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-client-a",
+      "slug": "wrap-up",
+      "artist": "RoA",
+      "title": "Wrap Up",
+      "date": "2024.11.22",
+      "type": "RoA 4th Single",
+      "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기\n",
+      "credits": "Song by ROA\nProduced by ROA\nComposed by ROA, N4ML\nLyrics by ROA\nArranged by N4ML\nBackground Vocal by ROA\n\nVocal Edited by HOZE\nVocal Directed by HOZE, N4ML, Mikael Bae\nRecorded by 김준상 @Dream Factory Studio\nMixed by 고현정 (Asst. 지민우, 김준영) @koko sound studio\nMastered by 고현정 (Asst. 지민우, 김준영) @koko sound studio",
+      "image": "assets/works/images/asset-mq6861vi-brdu-wrap-up.jpg-3414f089ea8f.webp",
+      "audio": "assets/works/audio/asset-mq820ymo-przok-RoA_Wrap-Up-MASTER-4416.mp3-d2e1d0ab6f8d.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.5,
+      "index": 13,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=w9nvZhBc4O0",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "RoA",
+          "title": "Wrap Up",
+          "type": "RoA 4th Single",
+          "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기\n"
+        },
+        "en": {
+          "artist": "RoA",
+          "type": "RoA 4th Single",
+          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward.",
+          "title": "Wrap Up"
+        },
+        "jp": {
+          "artist": "RoA",
+          "title": "Wrap Up",
+          "type": "RoA 4th Single",
+          "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-client-b",
+      "slug": "silverline",
+      "artist": "V-llage",
+      "title": "SilverLine [ALBUM]",
+      "date": "2024.07.16",
+      "type": "SilverLine [ALBUM]",
+      "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기",
+      "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n1. SilverLine\n노래 : 플로리스 로에, 요나, 에피오네 나시아, 아스테리 에프타, 쿠로가미 사샤, 티그리스 카닌, 코오리 세라\n작곡 : N4ML, RoA\n작사 : RoA, N4ML\n편곡 : N4ML\n어쿠스틱 기타 연주 : 김재중\n피아노 연주 : N4ML\n신디사이저 연주 : N4ML\n녹음 : 박문수 (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq68mm66-c53c-Silverline.jpg-811202ccef43.webp",
+      "audio": "assets/works/audio/asset-mq7kl9jh-5uvq4-3.-Cloudnine-AR-Master-MP3-320Kbps.mp3-5cb301829f7e.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 14,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-client-b-track-01",
+          "title": "SilverLine",
+          "date": "2024.07.16",
+          "type": "V-llage 1st Album 'SilverLine' 1st Track (Title)",
+          "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기",
+          "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n1. SilverLine\n노래 : 플로리스 로에, 요나, 에피오네 나시아, 아스테리 에프타, 쿠로가미 사샤, 티그리스 카닌, 코오리 세라\n작곡 : N4ML, RoA\n작사 : RoA, N4ML\n편곡 : N4ML\n어쿠스틱 기타 연주 : 김재중\n피아노 연주 : N4ML\n신디사이저 연주 : N4ML\n녹음 : 박문수 (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/asset-mq68mm66-c53c-Silverline.jpg-811202ccef43.webp",
+          "audio": "assets/works/audio/asset-mq7kmpgo-130s-1.-Silverline-AR-Master-MP3-320Kbps.mp3-3ef1ed131b38.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
+          "translations": {
+            "kr": {
+              "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기",
+              "title": "SilverLine"
+            },
+            "en": {
+              "description": "A story of seven girls bringing light back to a city hidden by dark clouds.",
+              "title": "SilverLine"
+            },
+            "jp": {
+              "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。",
+              "title": "SilverLine"
+            }
+          }
+        },
+        {
+          "id": "work-game-cue-01",
+          "title": "RATATA",
+          "date": "2024.07.16",
+          "type": "V-llage 1st Album 'SilverLine' 2nd Track",
+          "description": "서로 다른 음악을 사랑하는 두 소녀가 함께 밴드를 시작하는 이야기\n",
+          "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n노래 : 티그리스 카닌, 코오리 세라\n작곡 : N4ML\n작사 : Ruafka, N4ML\n편곡 : N4ML\n일렉트릭 기타 연주 : Goro.K\n베이스기타 연주 :Akikawa Yoshizumi\n가야금 연주 : N4ML\n드럼 연주 : N4ML\n녹음 : Moonsoo Park (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : Junyong Lee (U-il SoundWorks)\n마스터링 : Junyong Lee (U-il SoundWorks)",
+          "image": "assets/works/images/asset-mq68xwv3-fv7m-ratata.png-4b0c8f45b2de.webp",
+          "audio": "assets/works/audio/asset-mq7kku33-pi6c-2.-RATATA-AR-Master-MP3-320Kbps.mp3-4737a1b7a54e.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc",
+          "translations": {
+            "kr": {
+              "description": "서로 다른 음악을 사랑하는 두 소녀가 함께 밴드를 시작하는 이야기\n",
+              "title": "RATATA"
+            },
+            "en": {
+              "description": "A story of two girls who love different kinds of music starting a band together.",
+              "title": "RATATA"
+            },
+            "jp": {
+              "description": "異なる音楽を愛する二人の少女が、一緒にバンドを始める物語です。",
+              "title": "RATATA"
+            }
+          }
+        },
+        {
+          "id": "work-game-cue-02",
+          "title": "Cloudnine",
+          "date": "2024.07.16",
+          "type": "V-llage 1st Album 'SilverLine' 3rd Track",
+          "description": "각자의 고민을 안고 아이돌부에 모인 소녀들의 변화와 성장 이야기",
+          "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n노래 : 플로리스 로에, 에피오네 나시아, 쿠로가미 사샤\n작곡 : N4ML, RoA\n작사 : RoA, N4ML\n편곡 : N4ML\n신디사이저 연주 : N4ML\n녹음 : Moonsoo Park (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : Junyong Lee (U-il SoundWorks)\n마스터링 : Junyong Lee (U-il SoundWorks)",
+          "image": "assets/works/images/asset-mq69b0ta-u4wo-Cloudnine.png-c3e2d3325b33.webp",
+          "audio": "",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 3,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs",
+          "translations": {
+            "kr": {
+              "description": "각자의 고민을 안고 아이돌부에 모인 소녀들의 변화와 성장 이야기",
+              "title": "Cloudnine"
+            },
+            "en": {
+              "description": "A story of change and growth for girls who gather in an idol club, each carrying her own worries.",
+              "title": "Cloudnine"
+            },
+            "jp": {
+              "description": "それぞれの悩みを抱えてアイドル部に集まった少女たちの、変化と成長の物語です。",
+              "title": "Cloudnine"
+            }
+          }
+        },
+        {
+          "id": "work-vtuber-theme",
+          "title": "Over the Night Sky",
+          "date": "2024.07.16",
+          "type": "V-llage 1st Album 'SilverLine' 4th Track",
+          "description": "음악을 통해 연결된 두 소녀가 함께 꿈을 그려 나가는 이야기",
+          "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n노래 : 요나, 아스테리 에프타\n작곡 : Rabbit House\n작사 : Ruafka\n편곡 : Rabbit House\n신디사이저 연주 : Rabbit House\n녹음 : Moonsoo Park (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : Moonsoo Park (U-il SoundWorks)\n마스터링 : Junyong Lee (U-il SoundWorks)",
+          "image": "assets/works/images/asset-mq69pxwk-qmw6-Over-the-Night-Sky.png-ff13be8ed1bf.webp",
+          "audio": "assets/works/audio/asset-mq7klqup-ywxi-4.-The-Night-Over-Sky-AR-Master-MP3-320Kbps.mp3-b93274da633e.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 4,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y",
+          "translations": {
+            "kr": {
+              "description": "음악을 통해 연결된 두 소녀가 함께 꿈을 그려 나가는 이야기",
+              "title": "Over the Night Sky"
+            },
+            "en": {
+              "description": "A story of two girls connected through music, drawing their dream together.",
+              "title": "Over the Night Sky"
+            },
+            "jp": {
+              "description": "音楽を通じてつながった二人の少女が、ともに夢を描いていく物語です。",
+              "title": "Over the Night Sky"
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Album (EP)",
+      "translations": {
+        "kr": {
+          "artist": "V-llage",
+          "title": "SilverLine [ALBUM]",
+          "type": "SilverLine [ALBUM]",
+          "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
+        },
+        "en": {
+          "artist": "V-llage",
+          "title": "SilverLine [ALBUM]",
+          "type": "SilverLine [ALBUM]",
+          "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
+        },
+        "jp": {
+          "artist": "V-llage",
+          "title": "SilverLine [ALBUM]",
+          "type": "SilverLine [ALBUM]",
+          "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-mq82ashm-1ju7",
+      "slug": "my-village",
+      "artist": "V-llage",
+      "title": "My Village",
+      "date": "2024.07.02",
+      "type": "게임 '브이리지에 어서오세요!' 주제곡",
+      "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기\n",
+      "credits": "Planned by V-llage\nInvested by V-llage\nExecutive Produced by N4ML\nSong by Floweress Loe, Yona, Epione Naxia, Asteri Ephta\nComposed by N4ML\nArranged by N4ML\nLyrics Written by Ruafka\nElectric Guitar by JJ Kim\nBass by Akikawa Yoshizumi\nChorus Designed by Ruafka\nRecorded by Moonsoo Park (U-il SoundWorks)\nRecording Operated by N4ML\nMixed by N4ML\nMastered by Junyong Lee (U-il SoundWorks)",
+      "image": "assets/works/images/asset-mq83ootf-hwdf-my-village.jpg-83c0d47a3b6c.webp",
+      "audio": "assets\\works\\audio\\Master-Fix-My-Village-AR-MP3-320Kbps.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 15,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=oSWivTQjve4",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "V-llage",
+          "title": "My Village",
+          "type": "게임 '브이리지에 어서오세요!' 주제곡",
+          "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기\n"
+        },
+        "en": {
+          "artist": "V-llage",
+          "title": "My Village",
+          "type": "Theme Song for Game 'Welcome to V-llage!'",
+          "description": "A warm story created together by everyone gathered in the small village of V-llage."
+        },
+        "jp": {
+          "artist": "V-llage",
+          "title": "My Village",
+          "type": "ゲーム『Welcome to V-llage!』主題歌",
+          "description": "V-llageという小さな村に集まったみんなで作っていく、あたたかな物語。"
+        }
+      }
+    },
+    {
+      "id": "work-mix-archive-01",
+      "slug": "kanism-holic",
+      "artist": "티그리스 카닌",
+      "title": "카니즘☆홀릭",
+      "date": "2024.04.06",
+      "type": "V-llage '티그리스 카닌' 1st Single",
+      "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기",
+      "credits": "투자 : V-llage\n프로젝트 매니지먼트 : V-llage\n기획 : 티그리스 카닌\n총괄 프로듀서 : 티그리스 카닌\n음악 : N4ML\n작사 : 티그리스 카닌\n보컬 : 티그리스 카닌\n보컬 디렉팅 : N4ML\n보컬 편집 : 이준용 (U-il SoundWorks)\n녹음 : 박문수 (U-il SoundWorks)\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)\n애니메이션 감독 : roasting\n영상 편집 : 먀카",
+      "image": "assets/works/images/asset-mq6a2plf-g890-.jpg-bfb32fa0c88b.webp",
+      "audio": "assets/works/audio/asset-mq821nh8-7hfun-KR-AR-Master-4824.mp3-7a50684d859a.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 16,
+      "versions": [
+        {
+          "id": "work-mix-archive-01",
+          "title": "카니즘☆홀릭",
+          "date": "2024.04.06",
+          "type": "V-llage '티그리스 카닌' 1st Single",
+          "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기",
+          "credits": "투자 : V-llage\n프로젝트 매니지먼트 : V-llage\n기획 : 티그리스 카닌\n총괄 프로듀서 : 티그리스 카닌\n음악 : N4ML\n작사 : 티그리스 카닌\n보컬 : 티그리스 카닌\n보컬 디렉팅 : N4ML\n보컬 편집 : 이준용 (U-il SoundWorks)\n녹음 : 박문수 (U-il SoundWorks)\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)\n애니메이션 감독 : roasting\n영상 편집 : 먀카",
+          "image": "assets/works/images/asset-mq6a2plf-g890-.jpg-bfb32fa0c88b.webp",
+          "audio": "assets/works/audio/asset-mq821nh8-7hfun-KR-AR-Master-4824.mp3-7a50684d859a.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "KR",
+          "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
+          "translations": {
+            "kr": {
+              "title": "카니즘☆홀릭",
+              "type": "V-llage '티그리스 카닌' 1st Single",
+              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+            },
+            "jp": {
+              "title": "かにずむ☆ほりっく",
+              "type": "V-llage『ティグリス・カニン』1st Single",
+              "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
+            },
+            "en": {
+              "title": "Kanism☆Holic",
+              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
+            }
+          }
+        },
+        {
+          "id": "work-mq82ab62-ht07",
+          "title": "카니즘☆홀릭",
+          "date": "2024.04.06",
+          "type": "V-llage '티그리스 카닌' 1st Single",
+          "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기",
+          "credits": "투자 : V-llage\n프로젝트 매니지먼트 : V-llage\n기획 : 티그리스 카닌\n총괄 프로듀서 : 티그리스 카닌\n음악 : N4ML\n작사 : 티그리스 카닌\n보컬 : 티그리스 카닌\n보컬 디렉팅 : N4ML\n보컬 편집 : 이준용 (U-il SoundWorks)\n녹음 : 박문수 (U-il SoundWorks)\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)\n애니메이션 감독 : roasting\n영상 편집 : 먀카",
+          "image": "assets/works/images/kanism-jp-cover-1024-78517c40b71d-v1.webp",
+          "audio": "assets/works/audio/asset-mq83zj6q-sxn4-JP-AR-Master-4824.mp3-50c13ec12658.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "JP",
+          "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8",
+          "translations": {
+            "kr": {
+              "title": "카니즘☆홀릭",
+              "type": "V-llage '티그리스 카닌' 1st Single",
+              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+            },
+            "jp": {
+              "title": "かにずむ☆ほりっく",
+              "type": "V-llage『ティグリス・カニン』1st Single",
+              "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
+            },
+            "en": {
+              "title": "Kanism☆Holic",
+              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
+            }
+          }
+        }
+      ],
+      "tracks": [],
+      "kind": "multilingual",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "티그리스 카닌",
+          "title": "카니즘☆홀릭",
+          "type": "V-llage '티그리스 카닌' 1st Single",
+          "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
+        },
+        "en": {
+          "artist": "Tigris Kanin",
+          "type": "V-llage 'Tigris Kanin' 1st Single",
+          "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
+          "title": "Kanism☆Holic"
+        },
+        "jp": {
+          "artist": "ティグリス・カニン",
+          "type": "V-llage『ティグリス・カニン』1st Single",
+          "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
+          "title": "かにずむ☆ほりっく"
+        }
+      }
+    },
+    {
+      "id": "work-master-archive",
+      "slug": "backstage",
+      "artist": "Mafhills",
+      "title": "BACKSTAGE",
+      "date": "2024.03.03",
+      "type": "Mafhills 1st Single",
+      "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기",
+      "credits": "Official Vocalist :: Choikevin, Yeonbe, Lightsol, STwoD, SpearfishH, Nani\nFeaturing :: AnEGyeong\nSong Title :: Backstage\n\nExecutive Producer. N4ML\nExecutive Director. Choikevin, Yeonbe\nProject Manager. GroupM\n\nCompose & Arrange. N4ML\nVocal & Chorus Guide. GroupM\nLyrics. GroupM, Yeonbe, Choikevin, 청새치에이치\nRap Lyrics : SpearfishH, GroupM\n\nPiano. N4ML\nDrum. N4ML\nSynth. N4ML\nGuitar. Sangyoon\nBass. Akikawa Yoshizumi\n\nRecording. Moonsoo Park (U-il SoundWorks)\nRecord Operating. N4ML\nVocal Directing. GroupM, N4ML\nMixing. N4ML\nMastering. Junyong Lee (U-il SoundWorks)\n\nProduced by\n© Kevin Studio.\n© N4ML.\n© GroupM.",
+      "image": "assets/works/images/asset-mq6atwwe-sbzm-.jpg-34758f6d6d36.webp",
+      "audio": "assets/works/audio/asset-mq8224r7-3gctx-Back-Stage-AR-Master-MP3-320Kbps.mp3-ab607ce8004e.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 17,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=eqiU5stt1jY",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "Mafhills",
+          "title": "BACKSTAGE",
+          "type": "Mafhills 1st Single",
+          "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기"
+        },
+        "en": {
+          "artist": "Mafhills",
+          "title": "BACKSTAGE",
+          "type": "Mafhills 1st Single",
+          "description": "A story of artists waiting with excitement to meet fans before a live show."
+        },
+        "jp": {
+          "artist": "Mafhills",
+          "title": "BACKSTAGE",
+          "type": "Mafhills 1st Single",
+          "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-mix-archive-02",
+      "slug": "watercolour",
+      "artist": "soraniwa",
+      "title": "수채화 (Watercolour)",
+      "date": "2024.02.22",
+      "type": "soraniwa Project 1st Single",
+      "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n",
+      "credits": "Planned by N4ML\nInvested by N4ML\nExecutive Produced by N4ML\n\nMusic Written by N4ML\nLyrics Written by RuafKa\n\nVocal by 황문경\nPiano by N4ML\nAcoustic Guitar by 김홍빈\nSynth Designed by N4ML\nDrums Designed by N4ML\nStrings Designed by  N4ML\n\nMixed by N4ML\nRecorded by 박문수 (U-il Soundworks)\nRecord Operated by N4ML\nMastered by 이준용 (U-il Soundworks)\n\nStoryboard Written by : N4ML\nCharacter Designed by 인쓰, N4ML \nIllustration by 인쓰\nAnimated by 인쓰",
+      "image": "assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.webp",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.5,
+      "index": 18,
+      "versions": [
+        {
+          "id": "work-mix-archive-02",
+          "title": "수채화 (Watercolour)",
+          "date": "2024.02.22",
+          "type": "soraniwa Project 1st Single",
+          "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기",
+          "credits": "Planned by N4ML\nInvested by N4ML\nExecutive Produced by N4ML\n\nMusic Written by N4ML\nLyrics Written by RuafKa\n\nVocal by 황문경\nPiano by N4ML\nAcoustic Guitar by 김홍빈\nSynth Designed by N4ML\nDrums Designed by N4ML\nStrings Designed by  N4ML\n\nMixed by N4ML\nRecorded by 박문수 (U-il Soundworks)\nRecord Operated by N4ML\nMastered by 이준용 (U-il Soundworks)\n\nStoryboard Written by : N4ML\nCharacter Designed by 인쓰, N4ML \nIllustration by 인쓰\nAnimated by 인쓰",
+          "image": "assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.webp",
+          "audio": "assets/works/audio/asset-mq7ky3ls-nj7w-N4ML-KR-AR-Master-4824.mp3-f7b3919c6f5f.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "KR",
+          "youtube": "https://www.youtube.com/watch?v=d_MhBXpQGCI",
+          "responsive": {
+            "desktop": {
+              "cardScale": 1,
+              "titleSize": 1,
+              "offsetX": 0,
+              "offsetY": 0
+            }
+          },
+          "translations": {
+            "kr": {
+              "title": "수채화 (Watercolour)",
+              "type": "soraniwa Project 1st Single",
+              "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
+            },
+            "en": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+            },
+            "jp": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
+            }
+          }
+        },
+        {
+          "id": "work-mq7ko73m-tb6m",
+          "title": "수채화 (Watercolour)",
+          "date": "2024.02.22",
+          "type": "soraniwa Project 1st Single",
+          "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기",
+          "credits": "Planned by N4ML\nInvested by N4ML\nExecutive Produced by N4ML\n\nMusic Written by N4ML\nLyrics Written by RuafKa\nJP Lyrics Adaptation by 氷露 \n\nVocal by CeVIO with KAFU\nPiano by N4ML\nAcoustic Guitar by Hongbin Kim\nSynth Designed by N4ML\nDrums Designed by N4ML\nStrings Designed by  N4ML\n\nMixed by N4ML\nMastered by Junyong Lee (U-il Soundworks)\n\nStoryboard Written by : N4ML\nCharacter Designed by 人間ごみ, N4ML \nIllustration by 人間ごみ\nAnimated by 人間ごみ\nVideo Edited by TEMACA",
+          "image": "assets/works/images/asset-mq7l2lcd-rip9-.jpg-b23b63241c94.webp",
+          "audio": "assets/works/audio/asset-mq7kygdn-gdh7-N4ML-JP-AR-Master-4824.mp3-52075a11f99f.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "JP",
+          "youtube": "https://www.youtube.com/watch?v=01bDyJsI5cI",
+          "responsive": {
+            "desktop": {
+              "cardScale": 1,
+              "titleSize": 1,
+              "offsetX": 0,
+              "offsetY": 0
+            }
+          },
+          "translations": {
+            "kr": {
+              "title": "수채화 (Watercolour)",
+              "type": "soraniwa Project 1st Single",
+              "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
+            },
+            "en": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+            },
+            "jp": {
+              "title": "Watercolour",
+              "type": "soraniwa Project 1st Single",
+              "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
+            }
+          }
+        }
+      ],
+      "tracks": [],
+      "kind": "multilingual",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=d_MhBXpQGCI",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "soraniwa",
+          "title": "수채화 (Watercolour)",
+          "type": "soraniwa Project 1st Single",
+          "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기\n"
+        },
+        "en": {
+          "artist": "soraniwa",
+          "title": "Watercolour",
+          "type": "soraniwa Project 1st Single",
+          "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
+        },
+        "jp": {
+          "artist": "soraniwa",
+          "title": "Watercolour",
+          "type": "soraniwa Project 1st Single",
+          "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-arrange-work",
+      "slug": "star-to-star",
+      "artist": "Shabel Tonya",
+      "title": "STAR to STAR",
+      "date": "2023.06.30",
+      "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
+      "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기",
+      "credits": "총괄 프로듀싱, 작곡, 편곡, 믹싱 : N4ML\n노래 : Shabel Tonya\n작사 : Ruafka\n기타 연주 : BaekHal\n베이스 연주 : Akikawa Yoshizumi\n마스터링 : JunYong Lee (U-il Soundworks)\n영상편집, 썸네일 : TEMACA",
+      "image": "assets/works/images/asset-mq6bwn83-9boi-.jpg-cef332c6c1b0.webp",
+      "audio": "assets/works/audio/asset-mq822cze-3ceem-N4ML-STAR-to-STAR-AR-Master-MP3-320Kbps.mp3-5f7abf7b5c30.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 19,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=yuCRITM72pU",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "Shabel Tonya",
+          "title": "STAR to STAR",
+          "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
+          "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기"
+        },
+        "en": {
+          "artist": "Shabel Tonya",
+          "title": "STAR to STAR",
+          "type": "Honkai: Star Rail '2023 Multiverse Vistas' Popularity & Excellence Award Winner",
+          "description": "A story of continuing a pioneering journey against fate while connecting star to star."
+        },
+        "jp": {
+          "artist": "Shabel Tonya",
+          "title": "STAR to STAR",
+          "type": "Honkai: Star Rail『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
+          "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-selected-demo",
+      "slug": "night-sky",
+      "artist": "침대점령",
+      "title": "밤하늘",
+      "date": "2021.11.19",
+      "type": "침대점령(Bed Taker) 1st Single",
+      "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기",
+      "credits": "Producer. 침대점령 BED TAKER\nVocal. 침대점령 BED TAKER\nLyrics. 침대점령 BED TAKER, N4ML (DREAMSCAPEY)\nComposition & Arrangement & Audio Mix. N4ML (DREAMSCAPEY)\nAudio Mix & Master. 마감요정 (DREAMSCAPEY)\nGuitar. 나원호\nBass. 이주영\nDrum. 김승우, N4ML (DREAMSCAPEY)\nArtworks. 한울넴",
+      "image": "assets/works/images/asset-mq6c610d-mf2j-.jpg-4cd6791b5d5f.webp",
+      "audio": "assets\\works\\audio\\Night-Sky.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 20,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=HMxAsGo_ldA",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "침대점령",
+          "title": "밤하늘",
+          "type": "침대점령(Bed Taker) 1st Single",
+          "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기"
+        },
+        "en": {
+          "artist": "Bed Taker",
+          "title": "Night Sky",
+          "type": "Bed Taker 1st Single",
+          "description": "A story of telling the night sky about pain that could not be shared with anyone."
+        },
+        "jp": {
+          "artist": "Bed Taker",
+          "title": "Night Sky",
+          "type": "Bed Taker 1st Single",
+          "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
+        }
+      }
+    },
+    {
+      "id": "work-archive-21",
+      "slug": "sailing-stars",
+      "artist": "N4ML",
+      "title": "Sailing StarS!",
+      "date": "2019.10.06",
+      "type": "우타이테 8인 합창 프로젝트",
+      "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기",
+      "credits": "Producer : NSML\nLyrics : 유시\nVocal : 꽃핀, 쁘띠허브, Taramaxu, 휴복, 로메론, Enae, Sherie, APON\nGuitar Solo : BlueArpeggio\nMV : 테마카(Temaca)\nIllust : 밤메\nGuide : SharPlaw",
+      "image": "assets/works/images/asset-mq6iyu68-b1ao-Sailing-StarS-.png-1349627f54be.webp",
+      "audio": "assets/works/audio/asset-mq823oq8-9ne18-Sailing-StarS-Remastered-.mp3-10aadd13c352.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.5,
+      "index": 21,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=UFTBZFP6LMY",
+      "responsive": {
+        "desktop": {
+          "cardScale": 1,
+          "titleSize": 1,
+          "offsetX": 0,
+          "offsetY": 0
+        }
+      },
+      "format": "Single",
+      "translations": {
+        "kr": {
+          "artist": "N4ML",
+          "title": "Sailing StarS!",
+          "type": "우타이테 8인 합창 프로젝트",
+          "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기"
+        },
+        "en": {
+          "artist": "N4ML",
+          "title": "Sailing StarS!",
+          "type": "Eight utaite chorus project",
+          "description": "A story of holding each other's hands and moving toward a shining tomorrow."
+        },
+        "jp": {
+          "artist": "N4ML",
+          "title": "Sailing StarS!",
+          "type": "歌い手8人合唱プロジェクト",
+          "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
+        }
+      }
+    }
+  ],
+  "clientLogos": [
+    {
+      "src": "assets/bundle/de0afd49-77a8-4cab-af06-e84ed6bc8fd4.png",
+      "alt": "HoYoverse"
+    },
+    {
+      "src": "assets/bundle/9133ff2a-73ad-4a44-b280-378ea9a114f5.png",
+      "alt": "STELLIVE"
+    },
+    {
+      "src": "assets/bundle/parable-horizontal-2026.png",
+      "alt": "Parable"
+    },
+    {
+      "src": "assets/bundle/b52c4df3-a761-4ff7-9943-9d3d954f44ef.png",
+      "alt": "creatorbus"
+    },
+    {
+      "src": "assets/bundle/61a4a056-186b-4263-b655-8d34e244e748.png",
+      "alt": "Devmate"
+    }
+  ]
+}

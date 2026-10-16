@@ -1,0 +1,1243 @@
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261019-type">
+<script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
+<style>
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
+@font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:800;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
+
+
+
+@font-face{font-family:'Quicksand';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
+*{box-sizing:border-box}
+:root{--tt-noto-primary:'Nanum Gothic';--tt-noto-secondary:'Noto Sans JP';color-scheme:light only;forced-color-adjust:none}
+:root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Nanum Gothic'}
+html{scroll-behavior:smooth;color-scheme:light only;background:#eef6f4}
+html,body{height:100%;margin:0;background:#eef6f4;color-scheme:light only;forced-color-adjust:none;font-family:'Hanken Grotesk',var(--tt-noto-primary),var(--tt-noto-secondary),system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button{font-family:inherit}
+#content,x-dc{color-scheme:light only;forced-color-adjust:none}
+#content::-webkit-scrollbar{display:none}
+image-slot{display:block}
+.tt-rich-text{white-space:pre-wrap;line-height:inherit;word-break:keep-all;overflow-wrap:anywhere}
+.tt-rich-text span,.tt-rich-text strong,.tt-rich-text b,.tt-rich-text em,.tt-rich-text i,.tt-rich-text u,.tt-rich-text s{line-height:inherit}
+#chapnav{width:132px !important;right:clamp(18px,2vw,30px) !important;align-items:stretch !important}
+#chapnav .navbtn{display:grid !important;grid-template-columns:minmax(0,1fr) 10px !important;align-items:center !important;justify-items:end !important;column-gap:10px !important;width:100% !important;padding:4px 0 !important;background:none !important}
+#chapnav .nav-label{grid-column:1 !important;justify-self:end !important;white-space:nowrap !important;background:transparent !important;position:relative !important;z-index:2 !important;text-align:right !important;overflow:visible !important}
+#chapnav .nav-dot {grid-column:2 !important;justify-self:center !important;position:relative !important;z-index:1 !important;width:7px !important;height:7px !important;min-width:7px !important;min-height:7px !important;flex:none !important}
+@media (prefers-color-scheme: dark){
+  :root,html,body{color-scheme:light only!important;forced-color-adjust:none!important}
+}
+@media (max-width:1366px){
+  #chapnav{width:44px !important;right:12px !important;align-items:center !important}
+  #chapnav .nav-label{display:none !important}
+  #chapnav .navbtn{display:flex !important;width:44px !important;height:44px !important;justify-content:center !important;gap:0 !important;padding:0 !important}
+}
+
+
+
+
+
+@media (max-width:760px){
+  #brand{left:18px;top:16px}
+  #chapnav{right:14px;gap:16px}
+  #chapnav .nav-label{display:none}
+  #chapnav .navbtn{gap:0;padding:6px}
+  #chapnav .nav-dot {width:9px !important;height:9px !important}
+  #progress{left:16px;bottom:16px;gap:9px}
+  #progress > div{width:90px !important}
+}
+@media (max-width:480px){
+  #progress > div{width:64px !important}
+}
+.lift{transition:box-shadow .5s cubic-bezier(.2,.8,.2,1), filter .5s ease}
+.lift:hover{box-shadow:0 26px 60px rgba(8,22,38,.22);filter:brightness(1.05)}
+.lift:hover img{transform:scale(1.05)}
+.lift img{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.tt-member-card{z-index:10}
+.tt-member-card-index{position:absolute!important;left:16px!important;top:14px!important;z-index:6!important;display:inline-flex!important;align-items:center!important;gap:7px!important;font-weight:900!important;font-size:13px!important;line-height:1!important;letter-spacing:.02em!important;color:#141C30!important;text-shadow:0 1px 10px rgba(255,255,255,.72)!important;pointer-events:none!important}
+.tt-member-card-index::before{content:none}
+.tt-member-card-index .tt-member-card-number{display:inline-block;color:#141C30!important}
+.tt-member-card-index .tt-member-card-dot{width:8px!important;height:8px!important;border-radius:50%!important;display:block!important;flex:0 0 auto!important}
+/* depth-aware legibility halo behind text on the sky */
+#content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
+/* narrative chapter labels */
+.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-shadow:var(--halo,none);white-space:pre-wrap}
+.tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
+
+.tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
+.tt-section-chapter-block{margin:0 0 16px;text-align:center}
+.tt-depth-chip{display:none;font-weight:800;font-size:11px;letter-spacing:.04em;opacity:.78;white-space:nowrap}
+@media (max-width:1180px){.tt-depth-chip{display:inline}}
+.tt-bridge-readable{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:pre-wrap!important;border:0!important}
+@media (max-width:760px){.tt-section-chapter{font-size:11px;letter-spacing:.2em}.tt-section-note{font-size:10px;letter-spacing:.06em}.tt-prologue-hint{max-width:300px;font-size:12px}.tt-bridge-label{display:block;width:min(304px,calc(100vw - 56px));max-width:calc(100vw - 56px);margin-left:auto;margin-right:auto;font-size:10px;line-height:1.45;letter-spacing:.14em;text-align:center;white-space:normal;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}}
+/* bridge text stays legible over bright motifs: strong dark glow always */
+[data-bridge]{text-shadow:var(--halo,none) !important;}
+[data-bridge-line]+div{color:var(--accent,#0E6E7D) !important;text-shadow:var(--halo,none) !important;}
+/* ===== 타이포그래피·위계 정리 =====
+   줄바꿈: 한국어는 어절 단위, 일본어는 금칙 처리. 제목은 줄 길이를 고르게, 문단은 외톨이 글자를 피한다.
+   위계: 챕터 라벨 → 한 줄 설명 → 챕터 제목 → 리드 → 본문. 챕터 제목은 모든 챕터에서 같은 크기·리듬. */
+html:lang(ko) body{word-break:keep-all;overflow-wrap:break-word}
+html:lang(ja) body{line-break:strict;word-break:auto-phrase;overflow-wrap:break-word}
+/* 모바일 규칙의 keep-all(한국어용)이 일본어를 통째로 묶지 않게: 일본어는 항상 구절 단위 */
+html:lang(ja) body *{word-break:auto-phrase!important}
+h1,h2,h3,.tt-gh-card-title,.tt-project-title{text-wrap:balance}
+.tt-project-title{overflow-wrap:anywhere}
+p,li{text-wrap:pretty}
+#deep-book-svg{transition:filter 1.4s ease}
+body.tt-book-awake #deep-book-svg{filter:drop-shadow(0 0 36px rgba(255,214,140,.5)) drop-shadow(0 0 90px rgba(255,214,140,.25))}
+#tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
+#tt-bridge-progress i{display:block;width:132px;height:2px;border-radius:2px;background:var(--line,rgba(24,32,52,.18));overflow:hidden}
+#tt-bridge-progress b{display:block;height:100%;width:calc(var(--bridge-p,0)*100%);background:var(--accent,#0E6E7D)}
+#tt-bridge-progress span{font-weight:700;font-size:12px;letter-spacing:.04em;white-space:nowrap}
+/* 메뉴에도 본문과 같은 챕터 이름(TALE·TONE·MUSIC·ECHO·EPILOGUE)을 붙여 두 이름 체계를 하나로 */
+.nav-chapter{color:var(--accent,#0E6E7D);opacity:.9}
+#tale-line .tt-tale-block{display:block;max-width:min(1100px,82vw);margin:0 auto;text-align:center;text-wrap:balance;line-height:1.12}
+#tale-line .tt-tale-word{display:inline-block;white-space:nowrap}
+/* 한글·일본어에는 기울임 글꼴이 없어 브라우저가 억지로 눕힌다: 문장은 바로 세운다 */
+html:is(:lang(ko),:lang(ja)) :is(#tale-line,.tt-contact-caption,.tt-contact-title span,[data-bridge],[data-bridge] span,.tt-bridge-desktop-text){font-style:normal!important}
+/* 자간: 영문 대문자 라벨용 넓은 자간이 한글·일본어에 걸리지 않게 */
+html:is(:lang(ko),:lang(ja)) .tt-section-note{letter-spacing:.02em;text-transform:none}
+html:is(:lang(ko),:lang(ja)) :is(#tcap-0,#tcap-1,#tcap-2){letter-spacing:.1em!important}
+.tt-section-chapter-block{margin:0 0 20px!important}
+.tt-section-note{margin-top:8px;font-size:13px;font-weight:600;opacity:.9}
+.tt-chapter-title{font-size:clamp(48px,6.6vw,108px)!important;line-height:.9!important;letter-spacing:-.02em!important;text-shadow:var(--halo,none)}
+html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(40px,5.6vw,88px)!important;line-height:1.12!important;letter-spacing:-.03em!important}
+.tt-contact-caption{font-style:normal!important;opacity:1!important}
+.tt-chapter-lead{max-width:min(720px,88vw);margin-left:auto!important;margin-right:auto!important;font-weight:500!important;line-height:1.6!important;color:var(--soft,#44505F)!important;text-shadow:var(--halo,none)}
+@media (max-width:760px){.tt-section-note{font-size:11px}.tt-chapter-title{font-size:clamp(40px,12vw,64px)!important}html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(34px,10vw,52px)!important}}
+/* ===== The Book (redesign, preview only) ===== */
+html:not([data-intro-v2]) .tt-book2{display:none}
+html[data-intro-v2] #deep-book-svg{display:none!important}
+html[data-intro-v2] #c-contact .tt-book-light-stage{opacity:0!important;transition:opacity 1.6s ease .5s}
+html[data-intro-v2] body.tt-book-opened #c-contact .tt-book-light-stage{opacity:.8!important}
+.tt-book2{--bw:min(300px,56vw);--bh:calc(var(--bw)*1.34);position:relative;z-index:2;width:100%;height:calc(var(--bh)*.92);display:flex;align-items:flex-end;justify-content:center}
+.tb-floor{position:absolute;left:50%;bottom:0;width:calc(var(--bw)*3.4);height:calc(var(--bw)*.62);transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at 50% 42%,rgba(214,196,150,.34) 0%,rgba(150,160,140,.18) 38%,rgba(40,70,90,0) 70%)}
+.tb-rock{position:absolute;bottom:22%;border-radius:50% 50% 46% 46%;background:radial-gradient(ellipse at 40% 30%,#3b5867,#16293a 70%);opacity:.85}
+.tb-rock.r1{left:14%;width:7%;height:16%}.tb-rock.r2{left:20%;width:4%;height:9%;bottom:20%}.tb-rock.r3{right:16%;width:6%;height:13%}
+.tb-scene{position:relative;width:calc(var(--bw)*2.2);height:var(--bh);perspective:1300px;perspective-origin:50% 0%;margin-bottom:calc(var(--bw)*.06)}
+.tb-book{position:absolute;left:calc(50% - var(--bw)/2);bottom:0;width:var(--bw);height:var(--bh);transform-style:preserve-3d;transform-origin:50% 100%;transform:rotateX(58deg) rotateZ(-6deg);transition:transform 1.6s cubic-bezier(.6,0,.2,1)}
+body.tt-book-opened .tb-book{transform:rotateX(52deg) rotateZ(0deg) translateX(calc(var(--bw)*.5))}
+/* the page block: cream edges, a glow that wakes up, ink that writes itself */
+.tb-base{position:absolute;inset:0;border-radius:3px 10px 10px 3px;background:radial-gradient(ellipse at 50% 40%,#24485a,#0f2635);box-shadow:inset 0 0 0 1px rgba(232,203,136,.45),0 22px 46px rgba(1,7,15,.65)}
+.tb-pages{position:absolute;inset:3% 3% 3% 1%;border-radius:2px 8px 8px 2px;background:linear-gradient(90deg,#cdbf98 0%,#efe5c8 7%,#f8f1dc 30%,#f3ead1);box-shadow:0 0 0 1px rgba(120,100,60,.25),3px 3px 0 #e2d6b6,6px 6px 0 #d6c9a6,9px 9px 0 #c9bb96,12px 12px 22px rgba(2,10,20,.55);transform:translateZ(1px)}
+.tb-page-glow{position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(255,236,180,.95),rgba(255,214,140,.35) 35%,rgba(255,214,140,0) 65%);opacity:0;transition:opacity 1.4s ease 1.2s;mix-blend-mode:screen}
+body.tt-book-opened .tb-page-glow{opacity:1}
+.tb-ink{position:absolute;inset:14% 12% 16% 12%;display:flex;flex-direction:column;justify-content:space-between}
+.tb-ink i{display:block;height:2px;width:0;border-radius:2px;background:linear-gradient(90deg,rgba(28,48,70,.7),rgba(28,48,70,.35));transition:width .9s cubic-bezier(.5,0,.2,1)}
+body.tt-book-opened .tb-ink i{width:100%}
+body.tt-book-opened .tb-ink i:nth-child(1){transition-delay:2.2s;width:62%}
+body.tt-book-opened .tb-ink i:nth-child(2){transition-delay:2.6s}
+body.tt-book-opened .tb-ink i:nth-child(3){transition-delay:3.0s;width:88%}
+body.tt-book-opened .tb-ink i:nth-child(4){transition-delay:3.4s}
+body.tt-book-opened .tb-ink i:nth-child(5){transition-delay:3.8s;width:74%}
+body.tt-book-opened .tb-ink i:nth-child(6){transition-delay:4.2s;width:94%}
+body.tt-book-opened .tb-ink i:nth-child(7){transition-delay:4.6s;width:40%}
+/* loose leaves that flip over after the cover opens */
+.tb-leaf{position:absolute;inset:0;transform-origin:0 50%;border-radius:2px 8px 8px 2px;background:linear-gradient(90deg,#e9dfc3,#f7f0db);box-shadow:inset -10px 0 18px rgba(120,96,50,.12);backface-visibility:visible;transform:rotateY(0deg) translateZ(1px);transition:transform 1.1s cubic-bezier(.45,0,.2,1),opacity .3s ease}
+body.tt-book-opened .tb-leaf{transform:rotateY(-180deg) translateZ(1px)}
+body.tt-book-opened .tb-leaf.lf1{transition-delay:1.25s}
+body.tt-book-opened .tb-leaf.lf2{transition-delay:1.45s}
+body.tt-book-opened .tb-leaf.lf3{transition-delay:1.7s}
+/* the cover: deep sea leather, gold frame, the TALETONE mark; hinged on the spine */
+.tb-cover{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:0 50%;transform:translateZ(14px) rotateY(0deg);transition:transform 1.9s cubic-bezier(.55,0,.15,1) .15s}
+body.tt-book-opened .tb-cover{transform:translateZ(1px) rotateY(-180deg)}
+.tb-cover-front,.tb-cover-back{position:absolute;inset:0;border-radius:3px 10px 10px 3px;backface-visibility:hidden}
+.tb-cover-front{background:radial-gradient(ellipse at 50% 38%,#24485a 0%,#163447 46%,#0d2232 100%);box-shadow:inset 6px 0 0 #0a1a27,inset 9px 0 0 rgba(232,203,136,.35),inset 0 0 0 1px rgba(232,203,136,.4),0 18px 40px rgba(1,7,15,.6)}
+.tb-cover-back{transform:rotateY(180deg);background:radial-gradient(ellipse at 50% 40%,#24485a,#0f2635);box-shadow:inset 0 0 0 1px rgba(232,203,136,.45)}
+.tb-cover-back::before{content:'';position:absolute;inset:3% 1% 3% 3%;border-radius:8px 2px 2px 8px;background:linear-gradient(270deg,#cdbf98 0%,#efe5c8 7%,#f7f0db 30%,#f3ead1 100%);box-shadow:inset -22px 0 26px rgba(110,86,40,.22),0 0 0 1px rgba(120,100,60,.25),-3px 3px 0 #e2d6b6,-6px 6px 0 #d6c9a6,-9px 9px 0 #c9bb96,-12px 12px 22px rgba(2,10,20,.55)}
+.tb-cover-back::after{content:'';position:absolute;left:50%;top:46%;width:44%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#e9cf8f,#c79a4e);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;opacity:.28}
+.tb-frame{position:absolute;inset:7%;border:1.5px solid rgba(232,203,136,.7);border-radius:6px;box-shadow:inset 0 0 0 5px rgba(232,203,136,.08),inset 0 0 0 6px rgba(232,203,136,.35)}
+.tb-frame i{position:absolute;width:14px;height:14px;border:1.5px solid rgba(232,203,136,.85);transform:rotate(45deg);background:#163447}
+.tb-frame .c1{left:-8px;top:-8px}.tb-frame .c2{right:-8px;top:-8px}.tb-frame .c3{left:-8px;bottom:-8px}.tb-frame .c4{right:-8px;bottom:-8px}
+.tb-emblem{position:absolute;left:50%;top:40%;width:42%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#f6e3ae,#d6aa5c 55%,#f2d690);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(255,214,140,.35));animation:tbEmblem 4.5s ease-in-out infinite}
+@keyframes tbEmblem{0%,100%{opacity:.78}50%{opacity:1}}
+body.tt-book-awake .tb-emblem{filter:drop-shadow(0 0 14px rgba(255,220,150,.9)) drop-shadow(0 0 34px rgba(255,214,140,.55))}
+.tb-title{position:absolute;left:0;right:0;bottom:17%;text-align:center;font-family:'Quicksand',sans-serif;font-weight:700;font-size:calc(var(--bw)*.072);letter-spacing:.42em;padding-left:.42em;color:#e8cb88;opacity:.9}
+@media (max-width:760px){.tt-book2{--bw:42vw}}
+@media (prefers-reduced-motion: reduce){.tb-book,.tb-cover,.tb-leaf,.tb-ink i,.tb-page-glow{transition-duration:.01s!important;transition-delay:0s!important}.tb-emblem{animation:none}}
+/* accessibility: keyboard focus + reduced motion */
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent,#0E6E7D);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
+}
+
+/* deep-sea book (GPT) */
+.tt-book-light-stage{position:absolute;left:50%;bottom:34%;width:min(360px,42vw);height:min(760px,72vh);transform:translateX(-50%);pointer-events:none;z-index:1;mix-blend-mode:screen;overflow:visible;}
+          .tt-book-light-stage .beam-wide{position:absolute;left:50%;bottom:0;width:100%;height:100%;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,rgba(255,244,197,.92) 0%,rgba(255,215,126,.56) 15%,rgba(154,207,218,.22) 48%,rgba(154,207,218,0) 78%);filter:blur(18px);opacity:.96;animation:ttBeamPulse 4.8s ease-in-out infinite;animation-play-state:var(--tt-motion-play-state,running);}
+          .tt-book-light-stage .beam-core{position:absolute;left:50%;bottom:0;width:min(92px,12vw);height:100%;transform:translateX(-50%);background:linear-gradient(to top,rgba(255,250,224,.98) 0%,rgba(255,220,134,.62) 24%,rgba(201,232,235,.20) 68%,rgba(201,232,235,0) 100%);filter:blur(10px);opacity:.9;animation:ttBeamPulse 3.9s ease-in-out infinite reverse;animation-play-state:var(--tt-motion-play-state,running);}
+          .tt-book-light-stage .beam-spark{position:absolute;left:50%;bottom:0;width:2px;height:78%;background:linear-gradient(to top,rgba(255,255,245,.92),rgba(255,229,156,.34),transparent);box-shadow:0 0 18px rgba(255,233,164,.65),0 0 42px rgba(125,203,224,.22);opacity:.72;}
+          .tt-book-light-stage .beam-spark.s1{transform:translateX(-22px) rotate(-3deg);height:64%;opacity:.42}.tt-book-light-stage .beam-spark.s2{transform:translateX(24px) rotate(4deg);height:70%;opacity:.38}.tt-book-light-stage .beam-spark.s3{transform:translateX(-50%);height:90%;opacity:.64}
+          .tt-book-particle{position:absolute;left:50%;bottom:4%;font-weight:800;text-shadow:0 0 12px rgba(255,227,153,.55);font-size:var(--s);color:var(--c);opacity:0;animation:ttParticleRise var(--dur,6s) ease-in-out infinite;animation-delay:var(--d,0s);animation-play-state:var(--tt-motion-play-state,running);transform-origin:center;}
+          .tt-book-particle.drop{width:var(--s);height:calc(var(--s)*1.35);border-radius:60% 60% 70% 70%;background:linear-gradient(180deg,rgba(219,252,255,.94),rgba(57,149,178,.72));box-shadow:0 0 12px rgba(136,220,237,.55);color:transparent;clip-path:polygon(50% 0%,78% 42%,66% 88%,50% 100%,34% 88%,22% 42%);}
+          .tt-book-particle.paper{width:calc(var(--s)*1.55);height:calc(var(--s)*1.08);background:rgba(226,226,208,.78);border:1px solid rgba(255,244,217,.75);border-radius:2px;color:transparent;box-shadow:0 0 8px rgba(255,230,170,.22);}
+          .tt-book-particle.paper:after{content:'';position:absolute;left:18%;right:18%;top:34%;height:1px;background:rgba(79,101,105,.42);box-shadow:0 5px 0 rgba(79,101,105,.28);}
+          @keyframes ttBeamPulse{0%,100%{opacity:.74;transform:translateX(-50%) scaleX(.94)}50%{opacity:1;transform:translateX(-50%) scaleX(1.08)}}
+          @keyframes ttParticleRise{0%{opacity:0;transform:translate(var(--x0),28px) scale(.55) rotate(0deg)}14%{opacity:var(--o,.8)}72%{opacity:var(--o,.8)}100%{opacity:0;transform:translate(var(--x1),var(--y1)) scale(1) rotate(var(--r,18deg))}}
+
+/* story-bridge visual system */
+/* bloom v4: flower of light */
+.tt-petal-glint{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:rgba(255,255,252,.98);box-shadow:0 0 14px rgba(255,255,250,.95),0 0 34px rgba(150,235,250,.7);mix-blend-mode:screen;opacity:0;}
+/* bloom v3: layered petals + stamens */
+.tt-petal-in{width:30px !important;height:100px !important;margin:-100px 0 0 -15px !important;background:linear-gradient(0deg,rgba(255,253,244,.98),rgba(226,250,254,.72) 32%,rgba(180,238,250,.34) 62%,transparent) !important;filter:blur(3px) !important;}
+.tt-stamen{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;transform-origin:50% 50%;background:rgba(255,244,214,.98);box-shadow:0 0 10px rgba(255,236,180,.9);opacity:0;}
+/* v2 impact vocabulary */
+.tt-shock-ring{position:absolute;left:50%;top:50%;width:90px;height:90px;margin:-45px;border-radius:50%;border:2px solid rgba(255,253,248,.9);box-shadow:0 0 30px rgba(125,226,238,.6),inset 0 0 16px rgba(255,253,248,.3);opacity:0;}
+.tt-flash-core{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,252,.96),rgba(170,240,255,.4) 40%,transparent 70%);filter:blur(2px);opacity:0;}
+.tt-note-shock{top:24px !important;}
+/* redesigned bridge motifs: listen / kindle / touch-sound / surface / first-note */
+.tt-listen-ring{position:absolute;left:50%;top:50%;width:118px;height:118px;margin:-59px;border-radius:50%;border:1px dashed rgba(226,252,255,.48);box-shadow:0 0 22px rgba(124,226,238,.28);}
+.tt-listen-arc{position:absolute;left:50%;top:50%;width:180px;height:180px;margin:-90px;border-radius:50%;border:1.5px solid rgba(226,252,255,.5);box-shadow:0 0 18px rgba(124,226,238,.25);}
+.tt-kindle-core{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;background:rgba(255,249,231,.97);box-shadow:0 0 26px rgba(255,238,182,.9),0 0 80px rgba(255,224,138,.4),0 0 140px rgba(124,226,238,.25);}
+.tt-kindle-halo{position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,178,.30),rgba(255,236,178,.08) 46%,transparent 72%);filter:blur(7px);}
+.tt-touch-ring{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px;border-radius:50%;border:1.5px solid rgba(255,253,248,.85);box-shadow:0 0 18px rgba(124,226,238,.4);}
+.tt-sound-tick{position:absolute;left:50%;top:50%;width:2.5px;height:26px;margin:-13px 0 0 -1.25px;border-radius:3px;background:linear-gradient(180deg,rgba(255,253,248,.95),rgba(125,226,238,.4));box-shadow:0 0 12px rgba(125,226,238,.5);}
+.tt-surface-line{position:absolute;left:50%;top:50%;width:min(680px,72vw);height:1.5px;background:linear-gradient(90deg,transparent,rgba(255,253,248,.9) 30%,rgba(125,226,238,.75) 50%,rgba(255,253,248,.85) 70%,transparent);box-shadow:0 0 20px rgba(125,226,238,.45);}
+.tt-staff-stage{position:absolute;left:50%;top:50%;width:min(560px,72vw);height:0;transform:translateX(-50%);}
+.tt-staff-line{position:absolute;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(226,252,255,.62) 12%,rgba(226,252,255,.62) 88%,transparent);box-shadow:0 0 10px rgba(124,226,238,.25);}
+.tt-staff-note{position:absolute;left:50%;top:0;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border-radius:50%;background:rgba(255,253,248,.97);box-shadow:0 0 22px rgba(255,253,248,.8),0 0 60px rgba(124,226,238,.55);}
+.tt-note-pulse{position:absolute;left:50%;top:24px;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;border:1px solid rgba(255,253,248,.72);box-shadow:0 0 24px rgba(124,226,238,.4);}
+
+/* ===== Narrative bridges: fixed stage, timed playback and automatic handoff ===== */
+[data-story-bridge-wrap]{isolation:isolate;position:relative;}
+[data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important;height:100vh!important;display:block!important;padding:0!important;overflow:visible!important;text-align:center!important;z-index:3;}
+[data-story-bridge-wrap].tt-bridge-pinned::before{content:none;}
+.tt-bridge-pin-stage{position:sticky;top:0;left:0;height:100vh;width:100%;box-sizing:border-box;transform:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.1vh,20px);padding:0 clamp(24px,8vw,160px);overflow:visible;pointer-events:none;text-align:center;}
+.tt-bridge-pin-stage::before{content:none;}
+.tt-bridge-pin-stage::after{content:none;}
+/* The visible frame must not move when fonts/images shift an earlier chapter. */
+#content:is([data-bridge-phase="playing"],[data-bridge-phase="holding"]) [data-bridge-active] > .tt-bridge-pin-stage{position:fixed!important;inset:0 auto auto 0!important;width:100%!important;height:100%!important;}
+#content:is([data-bridge-phase="playing"],[data-bridge-phase="holding"]) #c-translation[data-bridge-active] > .tt-translation-stage{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box;}
+.tt-bridge-pin-stage [data-bridge]{position:relative;z-index:4;display:block;width:min(1120px,74vw);max-width:min(1120px,74vw);margin-left:auto;margin-right:auto;text-align:center!important;text-wrap:balance!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:anywhere!important;text-shadow:0 0 28px rgba(183,246,255,.16);}
+.tt-bridge-pin-stage [data-bridge-line]{position:relative;z-index:4;box-shadow:0 0 18px rgba(124,226,238,.42);}
+.tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){position:relative;z-index:4;text-shadow:0 0 16px rgba(125,226,238,.24);}
+.tt-bridge-visual{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1120px,90vw);height:clamp(260px,39vw,500px);pointer-events:none;display:grid;place-items:center;contain:layout style;will-change:opacity,transform;z-index:1;overflow:visible;}
+.tt-bridge-visual *{box-sizing:border-box;will-change:transform,opacity;}
+.tt-bridge-visual::before{content:'';position:absolute;left:50%;top:50%;width:min(760px,76vw);height:min(760px,76vw);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),rgba(106,229,239,.08) 24%,rgba(112,87,255,.04) 46%,transparent 72%);filter:blur(10px);opacity:var(--aura,.8);}
+.tt-bridge-dot{position:absolute;left:50%;top:50%;width:var(--dot,7px);height:var(--dot,7px);margin-left:calc(var(--dot,7px)/-2);margin-top:calc(var(--dot,7px)/-2);border-radius:999px;background:rgba(240,254,255,.95);box-shadow:0 0 12px rgba(150,239,247,.86),0 0 34px rgba(123,226,238,.30),0 0 68px rgba(132,96,255,.12);}
+.tt-bridge-spark{position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;border-radius:999px;background:rgba(255,253,248,.98);box-shadow:0 0 12px rgba(255,253,248,.95),0 0 28px rgba(125,226,238,.52);}
+.tt-bridge-thread{position:absolute;left:50%;top:50%;height:1px;width:var(--w,160px);transform-origin:left center;background:linear-gradient(90deg,rgba(206,252,255,.78),rgba(206,252,255,0));box-shadow:0 0 10px rgba(125,226,238,.42);}
+
+/* 01 ??繞?*/
+.tt-line-ritual{position:relative;width:min(900px,86vw);height:260px;display:grid;place-items:center;}
+.tt-one-line,.tt-line-echo{position:absolute;left:50%;top:50%;width:100%;height:1.5px;transform:translate(-50%,-50%) scaleX(0);transform-origin:left center;background:linear-gradient(90deg,transparent,rgba(255,253,248,.92),rgba(108,226,239,.82),rgba(255,253,248,.76),transparent);box-shadow:0 0 22px rgba(105,218,232,.42),0 0 56px rgba(105,218,232,.18);}
+.tt-line-echo{height:1px;opacity:.34;filter:blur(.1px);}
+.tt-line-echo.e1{top:calc(50% - 38px)}.tt-line-echo.e2{top:calc(50% + 38px)}
+.tt-line-note{position:absolute;top:50%;left:50%;font-size:clamp(34px,6vw,72px);font-weight:800;line-height:1;color:rgba(255,253,248,.98);text-shadow:0 0 20px rgba(255,253,248,.82),0 0 54px rgba(111,226,239,.86),0 0 110px rgba(133,97,255,.28);}
+.tt-line-trail{position:absolute;top:50%;left:50%;height:82px;width:260px;border-radius:50%;background:radial-gradient(ellipse at 100% 50%,rgba(255,255,255,.38),rgba(118,229,239,.22) 36%,transparent 72%);filter:blur(9px);mix-blend-mode:screen;}
+.tt-line-glyph{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;border:1px solid rgba(226,252,255,.82);box-shadow:0 0 18px rgba(124,226,238,.44);}
+
+/* 02 ???筌롫챸??*/
+.tt-orb-stage{position:absolute;inset:0;}
+.tt-bridge-orb{position:absolute;left:50%;top:50%;width:clamp(106px,13vw,164px);height:clamp(106px,13vw,164px);margin:calc(clamp(106px,13vw,164px)/-2);border-radius:50%;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.98),rgba(170,248,255,.56) 26%,rgba(93,188,217,.20) 56%,rgba(120,99,255,.08) 72%,transparent 78%);box-shadow:0 0 38px rgba(170,248,255,.58),0 0 100px rgba(93,188,217,.23),inset -18px -24px 46px rgba(10,54,84,.22);filter:saturate(1.12);}
+.tt-bridge-orb::after{content:'';position:absolute;inset:14%;border-radius:inherit;border:1px solid rgba(255,255,255,.34);box-shadow:inset 0 0 22px rgba(255,255,255,.16);}
+
+
+
+/* 03 嶺뚮ㅄ維????鍮??*/
+
+
+
+
+/* 04 ??源낆꽑??????덈펲 */
+.tt-bloom-stage{position:absolute;left:50%;top:50%;width:360px;height:360px;margin:-180px 0 0 -180px;}
+.tt-bloom-petal{position:absolute;left:50%;top:50%;width:42px;height:154px;margin:-154px 0 0 -21px;transform-origin:50% 100%;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:linear-gradient(0deg,rgba(255,255,255,.95),rgba(200,244,252,.62) 28%,rgba(150,228,248,.3) 58%,rgba(150,228,248,.06) 82%,transparent);filter:blur(4px);mix-blend-mode:screen;opacity:0}           
+.tt-bloom-ray{position:absolute;left:50%;top:50%;width:2px;height:184px;margin:-184px 0 0 -1px;transform-origin:50% 184px;background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(119,229,239,.22),transparent);filter:blur(.3px);}
+.tt-bloom-core{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:radial-gradient(circle at 42% 36%,rgba(255,252,240,.98),rgba(255,238,190,.92) 55%,rgba(255,214,140,.75));box-shadow:0 0 26px rgba(255,240,200,.85),0 0 70px rgba(255,224,150,.4),0 0 120px rgba(118,229,239,.3)}                                  
+
+/* 05 ??怨뺥닡?띠룆理???*/
+.tt-ripple-ring{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px;border-radius:50%;border:1px solid rgba(229,253,255,.78);box-shadow:0 0 26px rgba(112,224,238,.32),inset 0 0 18px rgba(112,224,238,.12);}
+.tt-ripple-current{position:absolute;left:50%;top:50%;width:760px;height:180px;margin:-90px 0 0 -380px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(126,229,239,.14),rgba(126,229,239,.04) 42%,transparent 70%);filter:blur(10px);}
+
+/* 06 ????瑜곷턄嶺뚯솘? */
+
+
+
+
+
+
+
+
+@media (max-width:760px){
+  [data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important;height:100vh!important}
+  .tt-bridge-pin-stage{left:0;width:100%;box-sizing:border-box;transform:none;padding:0 7vw;gap:12px;overflow:visible;isolation:isolate}
+  .tt-bridge-pin-stage::after{content:'';position:absolute;left:50%;top:50%;width:82vw;height:82vw;max-width:410px;max-height:410px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.24) 0%,rgba(116,210,220,.14) 42%,rgba(116,210,220,0) 72%);opacity:.58;pointer-events:none;z-index:1}
+  .tt-bridge-visual{display:grid!important;width:92vw;height:clamp(190px,54vw,320px);filter:none!important}
+  .tt-bridge-visual::before{width:74vw;height:74vw;filter:blur(7px);opacity:.52}
+  .tt-bridge-dot,.tt-bridge-spark,.tt-bridge-thread{box-shadow:0 0 10px rgba(150,239,247,.55)}
+  .tt-line-ritual{height:190px}
+  .tt-bloom-stage{transform:scale(.62)}
+  .tt-bridge-orb{width:78px;height:78px;margin:-39px}
+
+  .tt-bridge-pin-stage [data-bridge]{max-width:none!important;font-size:clamp(18px,8.2vw,40px);line-height:1.18!important;text-align:center!important;white-space:pre!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;color:var(--ink,#141C30)!important;filter:none!important;text-shadow:var(--halo,none)!important}
+  .tt-bridge-pin-stage [data-bridge] span{max-width:none!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;filter:none!important}
+  .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){font-size:11px!important;line-height:1.25!important;text-align:center!important;color:#0E6E7D!important;text-shadow:0 1px 10px rgba(255,255,255,.58)!important}
+  #progress{z-index:95!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:none!important}
+  .tt-member-card-index{left:18px!important;top:18px!important;font-size:16px!important;gap:8px!important;text-shadow:0 1px 12px rgba(255,255,255,.82)!important}
+  .tt-member-card-index .tt-member-card-dot{width:10px!important;height:10px!important}
+}
+@media (prefers-reduced-motion: reduce){.tt-bridge-visual{display:grid!important;opacity:.5!important;filter:none!important}.tt-bridge-visual *{animation:none!important;transition:none!important}[data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh!important}.tt-bridge-pin-stage{position:relative!important;height:100vh!important}}
+
+
+
+/* Original water-entry sequence; JS drives the plunge and real HOME assembly. */
+#intro.tt-intro{display:none}
+body.tt-intro-running{overflow:hidden}
+body.tt-intro-running #intro.tt-intro{display:block;pointer-events:auto}
+body.tt-intro-running #content{pointer-events:none}
+#intro-scene,#intro-skyw,#intro-sea,#intro-overlight{backface-visibility:hidden}
+@media (max-width:760px){#intro.tt-intro{contain:strict}#intro-overlight>div{mix-blend-mode:normal!important;filter:blur(8px)!important}}
+@media (prefers-reduced-motion:reduce){#intro.tt-intro{display:none!important}}
+
+image-slot#tone-art{background:#fff !important}
+image-slot#tone-art::part(frame){background:#fff !important;border:0 !important;outline:0 !important}
+image-slot#tone-art::part(empty),
+image-slot#tone-art::part(ring){display:none !important}
+#c-contact [data-reveal],
+#email-link{position:relative !important;z-index:8 !important}
+#c-contact .tt-book-light-stage{z-index:0 !important;opacity:.72 !important}
+#deep-book-svg{position:relative !important;z-index:2 !important}
+@media (max-width:760px){
+  body.tt-works-modal-open .tt-lang-switcher{display:none !important}
+  #chapnav.tt-nav-peek,
+  #chapnav:focus-within{
+    width:132px !important;
+    right:8px !important;
+    gap:8px !important;
+    padding:8px !important;
+    border-radius:22px !important;
+    background:rgba(7,25,36,.76) !important;
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    box-shadow:0 14px 34px rgba(2,14,24,.24) !important;
+    align-items:stretch !important;
+  }
+  #chapnav.tt-nav-peek .nav-label,
+  #chapnav:focus-within .nav-label{
+    display:block !important;
+    max-width:84px !important;
+    overflow:visible !important;
+    color:rgba(244,250,255,.96) !important;
+    text-shadow:0 1px 8px rgba(0,0,0,.36) !important;
+    text-overflow:ellipsis !important;
+    color:inherit !important;
+    background:transparent !important;
+  }
+  #chapnav.tt-nav-peek .navbtn,
+  #chapnav:focus-within .navbtn{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) 12px !important;
+    width:100% !important;
+    height:36px !important;
+    min-height:44px !important;
+    justify-content:stretch !important;
+    justify-items:end !important;
+    column-gap:8px !important;
+    padding:0 2px !important;
+  }
+}
+@media (min-width:1800px) and (max-height:1200px){
+  #chapnav{
+    right:24px !important;
+    padding:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    box-shadow:none !important;
+    z-index:96 !important;
+  }
+  #chapnav .navbtn{
+    min-height:38px !important;
+    width:132px !important;
+    justify-content:flex-end !important;
+  }
+  #chapnav .nav-label{
+    color:rgba(238,252,255,.92) !important;
+    text-shadow:0 1px 10px rgba(0,18,30,.52) !important;
+    background:transparent !important;
+  }
+}
+
+body[data-active-chapter="home"] #chapnav .navbtn,
+body[data-active-chapter="translation"] #chapnav .navbtn,
+body[data-active-chapter="projects"] #chapnav .navbtn,
+body[data-active-chapter="members"] #chapnav .navbtn,
+body[data-active-chapter="home"] #chapnav .nav-label,
+body[data-active-chapter="translation"] #chapnav .nav-label,
+body[data-active-chapter="projects"] #chapnav .nav-label,
+body[data-active-chapter="members"] #chapnav .nav-label{
+  color:rgba(15,57,70,.88) !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.72),0 0 12px rgba(255,255,255,.86) !important;
+}
+body[data-active-chapter="home"] #chapnav .nav-dot,
+body[data-active-chapter="translation"] #chapnav .nav-dot,
+body[data-active-chapter="projects"] #chapnav .nav-dot,
+body[data-active-chapter="members"] #chapnav .nav-dot{
+  background:rgba(255,255,255,.18) !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.62),0 2px 10px rgba(15,57,70,.20) !important;
+}
+body[data-active-chapter="works"] #chapnav .navbtn,
+body[data-active-chapter="news"] #chapnav .navbtn,
+body[data-active-chapter="contact"] #chapnav .navbtn,
+body[data-active-chapter="works"] #chapnav .nav-label,
+body[data-active-chapter="news"] #chapnav .nav-label,
+body[data-active-chapter="contact"] #chapnav .nav-label{
+  color:rgba(239,250,255,.92) !important;
+  text-shadow:0 1px 8px rgba(0,0,0,.50),0 0 2px rgba(4,18,30,.86) !important;
+}
+body[data-active-chapter="works"] #chapnav .nav-dot,
+body[data-active-chapter="news"] #chapnav .nav-dot,
+body[data-active-chapter="contact"] #chapnav .nav-dot{
+  background:rgba(255,255,255,.10) !important;
+  box-shadow:0 0 0 1px rgba(3,18,30,.48),0 2px 10px rgba(0,0,0,.26) !important;
+}
+
+body[data-active-chapter] #chapnav .navbtn{
+  opacity:.62 !important;
+}
+
+body[data-active-chapter] #chapnav .navbtn[style*="opacity: 1"],
+body[data-active-chapter] #chapnav .navbtn[style*="opacity:1"],
+body[data-active-chapter="home"] #chapnav #nav-0.navbtn,
+body[data-active-chapter="projects"] #chapnav #nav-2.navbtn,
+body[data-active-chapter="members"] #chapnav #nav-3.navbtn,
+body[data-active-chapter="works"] #chapnav #nav-4.navbtn,
+body[data-active-chapter="news"] #chapnav #nav-5.navbtn,
+body[data-active-chapter="contact"] #chapnav #nav-6.navbtn{
+  opacity:1 !important;
+}
+body[data-active-chapter="home"] #nav-0,
+body[data-active-chapter="projects"] #nav-2,
+body[data-active-chapter="members"] #nav-3,
+body[data-active-chapter="works"] #nav-4,
+body[data-active-chapter="news"] #nav-5,
+body[data-active-chapter="contact"] #nav-6{
+  opacity:1 !important;
+}
+@media (min-width:2400px) and (max-height:1200px){
+  #chapnav{right:34px !important}
+  #chapnav .navbtn{width:142px !important}
+}
+
+@media (max-width:760px){
+  html{background-color:#071a2e!important;color-scheme:light only!important;forced-color-adjust:none!important}
+  body{
+    background-color:#071a2e!important;
+    background-image:
+      radial-gradient(circle at 78% 18%,rgba(235,252,255,.24) 0 2px,transparent 4px),
+      radial-gradient(circle at 24% 30%,rgba(235,252,255,.16) 0 2px,transparent 5px),
+      linear-gradient(180deg,#eef8f7 0%,#c8e9ed 20%,#75bdce 42%,#225c7d 64%,#071a2e 100%)!important;
+    background-repeat:repeat,repeat,no-repeat!important;
+    background-size:240px 380px,280px 440px,100% 100%!important;
+    background-position:center top,center top,center top!important;
+    color-scheme:light only!important;
+    forced-color-adjust:none!important;
+    overscroll-behavior-y:none!important;
+  }
+  #sky{display:block!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:0!important;pointer-events:none!important}
+  #content,x-dc{background:none!important;background-color:transparent!important;background-image:none!important;overscroll-behavior-y:none!important}
+  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="translation"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="news"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
+  #lang-switcher.tt-lang-switcher{right:max(12px,env(safe-area-inset-right))!important;top:max(14px,env(safe-area-inset-top))!important;max-width:calc(100vw - 132px)!important;z-index:340!important}
+  #lang-switcher.tt-lang-switcher>div{width:clamp(168px,46vw,196px)!important;max-width:100%!important;justify-content:space-between!important;gap:0!important;padding:3px!important;overflow:hidden!important;border-radius:999px!important;background-clip:padding-box!important}
+  #lang-switcher.tt-lang-switcher button{appearance:none!important;-webkit-appearance:none!important;border:0!important;outline:0!important;box-shadow:none!important;-webkit-tap-highlight-color:transparent!important;flex:1 1 0!important;min-width:44px!important;min-height:44px!important;padding:0 5px!important;font-size:12px!important;line-height:1!important;display:inline-grid!important;place-items:center!important;border-radius:999px!important;overflow:hidden!important;background-clip:padding-box!important}
+  #lang-switcher.tt-lang-switcher button:focus,#lang-switcher.tt-lang-switcher button:focus-visible,#lang-switcher.tt-lang-switcher button:active{border:0!important;outline:0!important;box-shadow:none!important;border-radius:999px!important}
+}
+
+
+
+
+
+/* Members readability lock: keep this chapter from inheriting scroll blur or low-contrast nav states. */
+#c-members > [data-reveal]:first-child,
+#c-members > [data-reveal]:first-child * {
+  filter: none !important;
+}
+
+#c-members > [data-reveal]:first-child {
+  opacity: 1 !important;
+  will-change: auto !important;
+}
+
+#c-members > [data-reveal]:first-child h2,
+#c-members > [data-reveal]:first-child h2 * {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
+
+#c-members > [data-reveal]:first-child p:first-of-type {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child p:last-of-type {
+  color: #44505F !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child .tt-section-chapter,
+#c-members > [data-reveal]:first-child > div:not(.tt-section-chapter-block) {
+  color: #0E6E7D !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+#c-members > [data-reveal]:first-child .tt-section-note {
+  color: #44505F !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+
+#c-members > [data-reveal]:first-child h2 {
+  color: #0E6E7D !important;
+  -webkit-text-fill-color: #0E6E7D !important;
+  background: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
+body[data-active-chapter="members"] #chapnav,
+body[data-active-chapter="members"] #chapnav * {
+  filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body[data-active-chapter="members"] #chapnav .navbtn,
+body[data-active-chapter="members"] #chapnav .nav-label {
+  color: rgba(20, 28, 48, .76) !important;
+  text-shadow: none !important;
+}
+
+body[data-active-chapter="members"] #chapnav #nav-3.navbtn,
+body[data-active-chapter="members"] #chapnav #nav-3 .nav-label {
+  color: #141C30 !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .24) !important;
+}
+
+body[data-active-chapter="members"] #chapnav .nav-dot {
+  background: rgba(255, 255, 255, .12) !important;
+  box-shadow:
+    0 0 0 1px rgba(20, 28, 48, .42),
+    0 2px 8px rgba(255, 255, 255, .18) !important;
+}
+
+body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
+  background: #0E6E7D !important;
+  box-shadow:
+    0 0 0 1px rgba(14, 110, 125, .76),
+    0 2px 10px rgba(255, 255, 255, .22) !important;
+}
+
+</style>
+<script defer="" src="assets/js/works.js?v=20261018-permalink"></script>
+</helmet>
+<div id="intro" class="tt-intro" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:100svh;z-index:1000;overflow:hidden;contain:layout paint size;isolation:isolate;background:#cfe9e6;cursor:pointer;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif">
+  <div id="intro-scene" style="position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;transform-origin:50% 50%">
+  <!-- 수면 위 세계: 하늘 + 수평선 + 원근 바다 (낙하하며 위로 밀려 올라감) -->
+  <div id="intro-skyw" style="position:absolute;left:-18%;top:-12%;width:136%;height:250%;will-change:transform;transform-origin:50% 44%">
+    <div style="position:absolute;left:0;top:0;width:100%;height:90%;background:linear-gradient(180deg,#b9d9e8 0%,#d6ebee 46%,#eef7f2 78%,#fbfdf9 100%)"></div>
+    <div style="position:absolute;left:50%;top:6%;width:70%;height:40%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,254,240,.9),rgba(255,254,240,0) 70%);filter:blur(8px)"></div>
+    <div id="intro-clouds" style="position:absolute;left:0;top:0;width:100%;height:90%"></div>
+    <div id="intro-ocean" style="position:absolute;left:0;top:90%;width:100%;height:130%;overflow:hidden;background:linear-gradient(180deg,#e2f1ed 0%,#b7dedd 9%,#94ccce 28%,#78b9c0 60%,#68adb7 100%)">
+      <div id="intro-waves" style="position:absolute;inset:0;transform-origin:50% 0;will-change:transform"></div>
+    </div>
+    <div style="position:absolute;left:0;top:89.4%;width:100%;height:1.4%;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.85) 55%,rgba(130,190,200,.35));filter:blur(1px)"></div>
+  </div>
+  <!-- 수면 아래 세계: 워터라인 와이프로 드러남 -->
+  <div id="intro-sea" style="position:absolute;left:-8vw;right:-8vw;top:-7vh;bottom:-7vh;will-change:transform;transform-origin:50% 50%;clip-path:polygon(0 3%,8% 1.3%,16% 2.6%,24% .8%,32% 2.2%,40% 1%,48% 2.8%,56% 1.2%,64% 2.4%,72% .9%,80% 2.6%,88% 1.1%,96% 2.2%,100% 1.4%,100% 100%,0 100%)">
+    <div id="intro-seabg" style="position:absolute;inset:0;background:linear-gradient(180deg,#c9ecee 0%,#8fc6cd 36%,#5b9fb0 100%)"></div>
+    <div id="intro-under" style="position:absolute;inset:0;opacity:0;pointer-events:none">
+      <div id="intro-overlight" style="position:absolute;inset:-7vh -8vw;will-change:transform">
+        <div style="position:absolute;left:-10%;right:-10%;top:-4%;height:34%;background:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.92),rgba(224,246,246,.4) 46%,rgba(224,246,246,0) 100%)"></div>
+        <div style="position:absolute;left:10%;top:-8%;width:18%;height:82%;transform:rotate(7deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.42),rgba(255,255,255,.16) 36%,rgba(255,255,255,0) 74%);filter:blur(12px);mix-blend-mode:screen"></div>
+        <div style="position:absolute;left:34%;top:-8%;width:22%;height:96%;transform:rotate(3deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.38),rgba(255,255,255,.14) 38%,rgba(255,255,255,0) 76%);filter:blur(14px);mix-blend-mode:screen"></div>
+        <div style="position:absolute;left:59%;top:-8%;width:17%;height:74%;transform:rotate(-5deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.4),rgba(255,255,255,.13) 34%,rgba(255,255,255,0) 73%);filter:blur(12px);mix-blend-mode:screen"></div>
+        <div style="position:absolute;left:76%;top:-8%;width:20%;height:90%;transform:rotate(-8deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.34),rgba(255,255,255,.12) 36%,rgba(255,255,255,0) 75%);filter:blur(14px);mix-blend-mode:screen"></div>
+      </div>
+      <div id="intro-depthshade" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(8,42,64,.45),rgba(8,42,64,0));opacity:0"></div>
+    </div>
+    <div id="intro-bubbles" style="position:absolute;inset:0;pointer-events:none"></div>
+  </div>
+  <div id="intro-streaks" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
+  <div id="intro-foamline" style="position:absolute;left:-10%;width:120%;height:18%;top:0;background:radial-gradient(50% 100% at 50% 50%,rgba(255,255,255,.98),rgba(255,255,255,.7) 52%,rgba(255,255,255,0));filter:blur(3px);opacity:0;will-change:transform,opacity;pointer-events:none"></div>
+  <div id="intro-drops" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
+  </div>
+  <div id="intro-flash" style="position:absolute;inset:-14vh -14vw;background:radial-gradient(82% 72% at 50% 48%,rgba(255,255,255,1) 0%,rgba(247,252,250,.98) 42%,rgba(229,245,245,.94) 70%,rgba(218,239,240,.84) 100%);opacity:0;transform:scale(.82);transform-origin:50% 48%;will-change:transform,opacity;pointer-events:none"></div>
+
+  <!-- (선택) 안착하며 떠오르는 워드마크. 사이트 히어로로 대체하려면 이 블록 삭제. -->
+<div id="intro-skip" style="position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:70;font-weight:700;font-size:10px;letter-spacing:.3em;color:rgba(18,48,58,.45);text-transform:uppercase;pointer-events:none;opacity:0">Skip</div>
+</div>                                        
+<div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
+<div id="glow" aria-hidden="true" style="position:fixed;left:50%;bottom:-26vh;width:150vw;height:96vh;transform:translateX(-50%);z-index:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side, rgba(255,224,168,.85), rgba(120,196,200,.22) 46%, rgba(120,196,200,0) 72%);filter:blur(10px)"></div>
+<canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:0;z-index:2;pointer-events:none;mix-blend-mode:normal;opacity:.82"></canvas>
+<!-- BRAND -->
+<div id="brand" style="position:fixed;left:32px;top:26px;z-index:60;display:flex;align-items:center;gap:11px">
+  <img id="brand-mark" src="assets/logo/mark-ink.png" alt="TALETONE" style="width:40px;height:40px;object-fit:contain;display:block;filter:drop-shadow(0 8px 22px rgba(20,28,60,.18))">
+  <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:600;font-size:13px;line-height:1.05;letter-spacing:.12em;color:var(--ink,#141C30);white-space:pre-wrap">{{ UI_LABELS.brandLine1 }}<br><span style="font-size:10px;letter-spacing:.3em;opacity:.62">{{ UI_LABELS.brandLine2 }}</span></div>
+</div>
+
+<!-- TOP RIGHT CONTROLS -->
+<div id="lang-switcher" class="tt-lang-switcher" style="position:fixed;right:30px;top:26px;z-index:60;display:flex;gap:10px;align-items:center">
+  <div role="group" aria-label="Language" style="display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:var(--card,rgba(255,255,255,.6));border:1px solid var(--cardBorder,rgba(24,32,52,.12));backdrop-filter:blur(10px)">
+    <button id="lang-kr" onclick="{{ langKR }}" aria-label="한국어" style="border:0;cursor:pointer;background:none;font-family:'Quicksand',sans-serif;font-weight:800;font-size:11px;letter-spacing:.08em;padding:6px 11px;border-radius:999px;color:var(--ink,#141C30);transition:.25s">{{ UI_LABELS.langKr }}</button>
+    <button id="lang-en" onclick="{{ langEN }}" aria-label="English" style="border:0;cursor:pointer;background:none;font-family:'Quicksand',sans-serif;font-weight:800;font-size:11px;letter-spacing:.08em;padding:6px 11px;border-radius:999px;color:var(--ink,#141C30);transition:.25s">{{ UI_LABELS.langEn }}</button>
+    <button id="lang-jp" onclick="{{ langJP }}" aria-label="日本語" style="border:0;cursor:pointer;background:none;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;padding:6px 11px;border-radius:999px;color:var(--ink,#141C30);transition:.25s">{{ UI_LABELS.langJp }}</button>
+  </div>
+</div>
+
+<!-- RIGHT CHAPTER NAV -->
+<div id="chapnav" style="position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
+  <a id="nav-0" href="/" onclick="{{ nav0 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navHome }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-1" href="/" onclick="{{ nav1 }}" style="display:none"></a>
+  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TALE · </span>{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TONE · </span>{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">MUSIC · </span>{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">ECHO · </span>{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">EPILOGUE · </span>{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+</div>
+
+<!-- PROGRESS -->
+<div id="progress" style="position:fixed;left:32px;bottom:28px;z-index:60;display:flex;align-items:center;gap:14px;color:var(--ink,#141C30)">
+  <span id="pnum" style="font-weight:800;font-size:12px;letter-spacing:.1em">{{ UI_LABELS.progressInitial }}</span>
+  <div style="width:150px;height:2px;background:var(--line,rgba(24,32,52,.16));border-radius:2px;position:relative;overflow:hidden"><div id="pbar" style="position:absolute;left:0;top:0;height:100%;width:14%;background:var(--accent,#0E6E7D);border-radius:2px"></div></div>
+  <span style="font-weight:800;font-size:12px;letter-spacing:.1em;opacity:.5">{{ UI_LABELS.progressTotal }}</span>
+  <span id="pdepth" class="tt-depth-chip" aria-hidden="true"></span>
+</div>
+<div id="tt-bridge-progress" aria-hidden="true"><i><b></b></i><span></span>
+</div>
+
+
+
+<!-- ===== MEMBER DETAIL MODAL ===== -->
+<sc-if value="{{ mOpen }}" hint-placeholder-val="{{ false }}">
+<div class="tt-member-modal" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
+  <div class="tt-member-panel" onclick="{{ stop }}" style="position:relative;width:min(1060px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.94);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5);padding:clamp(22px,3vw,40px)">
+    <button class="tt-member-close" onclick="{{ closeModal }}" style="position:absolute;right:22px;top:22px;z-index:2;background:#141c30;color:#fffdf8;border:0;border-radius:999px;padding:12px 24px;font-weight:800;font-size:14px;cursor:pointer">{{ UI_LABELS.close }}</button>
+    <div class="tt-member-grid" style="display:grid;grid-template-columns:clamp(264px,33%,344px) 1fr;gap:clamp(24px,3vw,40px);align-items:stretch">
+      <!-- LEFT RAIL: photo + quick facts -->
+      <div class="tt-member-rail" style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div class="tt-member-photo-wrap" style="border-radius:22px;overflow:hidden;background:linear-gradient(160deg,{{ m.tint }},#ffffff);aspect-ratio:4/5;box-shadow:0 14px 38px rgba(8,22,38,.12)">
+          <img id="m-photo" src="{{ m.photo }}" alt="{{ m.name }}" style="width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(120% 120% at 50% 38%,#000 64%,transparent 100%);mask-image:radial-gradient(120% 120% at 50% 38%,#000 64%,transparent 100%)">
+        </div>
+        <!-- Basic Info -->
+        <div class="tt-member-basic" style="border-radius:18px;background:rgba(236,242,255,.6);border:1px solid rgba(24,32,52,.06);padding:20px 22px 22px">
+          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em;color:#16202e;margin-bottom:15px;display:flex;align-items:center;gap:9px"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.accent }}"></span>{{ UI_LABELS.basicInfo }}</div>
+          <div style="font-weight:800;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:{{ m.accent }};margin-bottom:5px">{{ UI_LABELS.education }}</div>
+          
+          <div style="font-weight:500;font-size:14px;line-height:1.55;color:#5a6678;white-space:pre-wrap;margin-bottom:16px">{{ m.education }}</div>
+          
+          
+          <div style="font-weight:800;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:{{ m.accent }};margin-bottom:5px">{{ UI_LABELS.mbti }}</div>
+          
+          <div style="font-weight:600;font-size:14px;color:#5a6678">{{ m.mbti }}</div>
+          
+          
+        </div>
+        <!-- Traits -->
+        <div class="tt-member-traits" style="border-radius:18px;background:rgba(236,242,255,.6);border:1px solid rgba(24,32,52,.06);padding:20px 22px 22px">
+          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em;color:#16202e;margin-bottom:14px;display:flex;align-items:center;gap:9px"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.accent }}"></span>{{ UI_LABELS.traits }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+            
+            <sc-for list="{{ m.traits }}" as="t" hint-placeholder-count="4">
+            <span style="padding:8px 14px;border-radius:999px;background:#e7ecf6;font-weight:700;font-size:12.5px;color:#3a4254">{{ t }}</span>
+            </sc-for>
+            
+            
+          </div>
+          
+          <a href="{{ m.iglink }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:999px;background:#141c30;color:#fffdf8;font-weight:700;font-size:13px;text-decoration:none">{{ UI_LABELS.sns }}</a>
+          
+          
+        </div>
+      </div>
+      <!-- RIGHT MAIN: identity + credit -->
+      <div class="tt-member-main" style="display:flex;flex-direction:column;min-width:0">
+        <div class="tt-member-identity">
+        
+        <div style="font-weight:800;font-size:clamp(12px,1.3vw,15px);letter-spacing:.04em;color:{{ m.accent }};margin-bottom:10px">{{ m.role }}</div>
+        <div class="tt-member-brand" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(46px,6vw,90px);letter-spacing:-.01em;line-height:.88;color:#16202e">{{ m.brand }}</div>
+        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(22px,2.6vw,34px);letter-spacing:-.02em;color:#16202e;margin-top:16px">{{ m.tagline }}</div>
+        <div style="font-weight:500;font-size:clamp(14px,1.4vw,18px);color:#6b7488;margin-top:7px">{{ m.taglineKo }}</div>
+        
+        
+        </div>
+        <div class="tt-member-credit-section">
+        <div style="height:1px;background:linear-gradient(90deg,rgba(24,32,52,.16),rgba(24,32,52,0));margin:26px 0 20px"></div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:20px;letter-spacing:-.01em;color:#16202e">{{ UI_LABELS.credit }}</div>
+          <div style="flex:1;height:1px;background:rgba(24,32,52,.08)"></div>
+        </div>
+        <div class="tt-member-credit-box" style="max-height:clamp(300px,46vh,520px);overflow-y:auto;scrollbar-width:thin;border-radius:14px;background:rgba(236,242,255,.45);border:1px solid rgba(24,32,52,.05);padding:18px 16px 18px 20px">
+          
+          <div style="white-space:pre-wrap;font-weight:500;font-size:14px;line-height:1.66;color:#5a6678">{{ m.creditsText }}</div>
+          
+          
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<!-- ===== NEWS DETAIL MODAL ===== -->
+<sc-if value="{{ nOpen }}" hint-placeholder-val="{{ false }}">
+<div class="tt-news-modal" role="dialog" aria-modal="true" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
+  <div onclick="{{ stop }}" style="position:relative;width:min(760px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.96);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5)">
+    <button onclick="{{ closeModal }}" style="position:absolute;right:20px;top:20px;z-index:2;background:#141c30;color:#fffdf8;border:0;border-radius:999px;padding:11px 22px;font-weight:800;font-size:14px;cursor:pointer">{{ UI_LABELS.close }}</button>
+    <image-slot id="{{ nk.slotId }}" src="{{ nk.image }}" fit="{{ nk.fit }}" position="{{ nk.position }}" style="width:100%;height:clamp(220px,34vh,320px);filter:{{ nk.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
+    <div style="padding:clamp(26px,3.4vw,44px)">
+      <div style="font-weight:800;font-size:13px;letter-spacing:.05em;                  ">{{ nk.tag }} &middot; {{ nk.date }}</div>
+      <h3 style="margin:10px 0 18px;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,46px);letter-spacing:-.02em;line-height:1.04;color:#16202e">{{ nk.title }}</h3>
+      <div style="white-space:pre-wrap;font-weight:500;font-size:16px;line-height:1.72;color:#46505f">{{ nk.body }}</div>
+      <sc-if value="{{ nk.pageUrl }}"><a href="{{ nk.pageUrl }}" style="display:inline-flex;align-items:center;gap:8px;margin-top:26px;padding:12px 20px;border-radius:999px;background:#141c30;color:#fffdf8;font-weight:800;font-size:14px;text-decoration:none">{{ nk.pageLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<div id="content" role="main" style="position:fixed;inset:0;z-index:3;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch">
+
+
+
+
+<!-- ================= 01 HOME ================= -->
+<section id="c-home" data-screen-label="01 Home" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:150px 6vw 130px;text-align:center">
+  <div data-px="0.05" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(80px,15vw,260px);letter-spacing:-.02em;line-height:.82;color:var(--ink,#141C30);opacity:.05;white-space:nowrap;pointer-events:none">{{ HOME.backgroundLine1 }}<br>{{ HOME.backgroundLine2 }}</div>
+  <div data-reveal="" style="font-weight:800;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
+  <h1 data-reveal="" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.84;color:var(--ink,#141C30);font-size:clamp(58px,11.5vw,188px);opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1.1s cubic-bezier(.2,.8,.2,1) .08s">{{ HOME.titleLine1 }}<br>{{ HOME.titleLine2 }}</h1>
+  <sc-if value="{{ HOME.tagline }}"><p data-reveal="" class="tt-home-tagline" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .2s,transform 1s cubic-bezier(.2,.8,.2,1) .2s">{{ HOME.tagline }}</p></sc-if>
+  <div data-reveal="" class="tt-home-quick-actions">
+    <a class="is-primary" href="/works/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
+    <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
+  </div>
+  <div data-px="-0.04" style="position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:min(880px,82vw);opacity:.55;pointer-events:none">
+    <svg data-drift="" viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
+      <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.6">
+        <path d="M0 40 C 240 22,480 58,720 40 S 1080 22,1200 40"></path>
+        <path d="M0 72 C 240 54,480 90,720 72 S 1080 54,1200 72"></path>
+        <path d="M0 104 C 240 86,480 122,720 104 S 1080 86,1200 104"></path>
+        <path d="M0 136 C 240 118,480 154,720 136 S 1080 118,1200 136"></path>
+        <path d="M0 168 C 240 150,480 186,720 168 S 1080 150,1200 168"></path>
+      </g>
+      <g fill="var(--accent,#0E6E7D)">
+        <circle cx="180" cy="59" r="7"></circle><circle cx="520" cy="108" r="7"></circle><circle cx="820" cy="49" r="7"></circle><circle cx="1010" cy="129" r="7"></circle>
+      </g>
+    </svg>
+  </div>
+  <div data-bob="" style="position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--soft,#44505F)">
+    <span style="font-weight:700;font-size:10px;letter-spacing:.22em;text-transform:uppercase">{{ HOME.scrollHint }}<br></span>
+    <span class="tt-prologue-hint" title="{{ CHAPTER_PROLOGUE.hint }}">{{ CHAPTER_PROLOGUE.hint }}</span>
+    <div style="width:1px;height:30px;background:currentColor"></div>
+  </div>
+</section>
+
+
+<!-- ================= 01B TRACK RECORD ================= -->
+<section id="c-track-record" data-screen-label="Track Record" aria-label="TALETONE MUSIC Track Record" style="min-height:52vh;display:flex;align-items:center;justify-content:center;position:relative;padding:76px 6vw 92px;text-align:center">
+  <div data-reveal="" style="width:min(1040px,92vw);opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_PROLOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_PROLOGUE.note }}</div></div>
+    <div style="font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:20px">TRACK RECORD</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;align-items:stretch">
+      <sc-for list="{{ TRACK_RECORD }}" as="record" hint-placeholder-count="2">
+      <article class="lift" style="border-radius:18px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.08);padding:28px 24px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:180px">
+        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:clamp(44px,6.6vw,86px);letter-spacing:-.03em;line-height:.9;color:var(--ink,#141C30)">{{ record.value }}</div>
+        <div style="font-weight:800;font-size:clamp(15px,1.5vw,19px);line-height:1.35;color:var(--ink,#141C30)">{{ record.label }}</div>
+        <div style="font-weight:600;font-size:13px;line-height:1.5;color:var(--soft,#44505F);max-width:26em">{{ record.note }}</div>
+      </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= 02 TRANSLATION (tale ??tone ??music) ================= -->
+<section id="c-translation" data-translate-bridge="" data-screen-label="02 Translate" style="position:relative;height:100vh">
+  <div class="tt-translation-stage" style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 6vw;text-align:center">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_METHOD.label }}</div><div class="tt-section-note">{{ CHAPTER_METHOD.note }}</div></div>
+    <div style="position:relative;height:24px;margin-bottom:clamp(34px,5vh,60px)">
+      <div id="tcap-0" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D)">{{ TRANSLATION.caption1 }}</div>
+      <div id="tcap-1" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:0">{{ TRANSLATION.caption2 }}</div>
+      <div id="tcap-2" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:0">{{ TRANSLATION.caption3 }}</div>
+    </div>
+    <div style="position:relative;width:min(1080px,92vw);height:clamp(150px,26vw,320px);display:flex;align-items:center;justify-content:center">
+      <div id="tale-line" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30);font-size:clamp(32px,6.2vw,88px)"></div>
+      <div id="wave-row" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:clamp(3px,0.8vw,9px);pointer-events:none"></div>
+    </div>
+    <div id="trans-foot" style="margin-top:clamp(36px,6vh,64px);font-weight:600;font-size:clamp(14px,1.5vw,19px);color:var(--soft,#44505F);opacity:0">{{ TRANSLATION.footer }}</div>
+  </div>
+</section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_0.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_0.text }}</span>
+  <div data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+<!-- ================= 03 STORY TYPES (soraniwa + TALETONES) ================= -->
+<section id="c-projects" data-screen-label="03 Story Types" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
+    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(54px,8vw,128px);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
+    <p style="margin:22px 0 2px;font-weight:800;font-size:clamp(18px,2vw,28px);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
+    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,18px);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+  </div>
+  <div data-public-audience="" data-reveal="" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
+    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
+      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceGameKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceGameService1 }}<br>{{ PROJECTS_META.audienceGameService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameHook }}</p>
+    </article>
+    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
+      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceCreatorKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceCreatorService1 }}<br>{{ PROJECTS_META.audienceCreatorService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorHook }}</p>
+    </article>
+    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
+      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceAnimationKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceAnimationService1 }}<br>{{ PROJECTS_META.audienceAnimationService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationHook }}</p>
+    </article>
+  </div>
+  <div data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
+    <sc-for list="{{ PROJECTS }}" as="p" hint-placeholder-count="2">
+    <article class="lift" style="position:relative;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.1);padding:34px 32px 32px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-weight:800;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:10px">{{ p.label }}</div>
+          <div class="tt-project-title" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(28px,3.2vw,44px);letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30)">{{ p.title }}</div>
+        </div>
+        <div style="position:relative;width:74px;height:74px;flex:none;display:grid;place-items:center">
+          <div data-spin="16" style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--accent,#0E6E7D);opacity:.5"></div>
+          <div data-spin="-26" style="position:absolute;inset:11px;border-radius:50%;border:1px solid var(--accent2,#3d8a98);opacity:.6"></div>
+          <div data-float="" style="width:11px;height:11px;border-radius:50%;background:var(--accent,#0E6E7D)"></div>
+        </div>
+      </div>
+      <div data-float="" style="border-radius:20px;overflow:hidden">
+        <image-slot id="{{ p.slotId }}" src="{{ p.image }}" fit="{{ p.fit }}" position="{{ p.position }}" style="width:100%;height:230px;filter:{{ p.filter }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot>
+      </div>
+      <p style="margin:0;font-weight:600;font-size:15px;line-height:1.6;color:var(--soft,#44505F)">{{ p.description }}</p>
+      <sc-if value="{{ p.hasLink }}"><a href="{{ p.link }}" target="{{ p.linkTarget }}" rel="{{ p.linkRel }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:{{ p.buttonColor }};color:{{ p.buttonTextColor }};padding:14px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.14)"><span>{{ p.buttonLabel }}</span> <span>&#8594;</span></a></sc-if><sc-if value="{{ p.isPending }}"><span aria-disabled="true" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:rgba(14,110,125,.12);color:var(--accent,#0E6E7D);padding:12px 22px;border-radius:999px;border:1px solid rgba(14,110,125,.18);font-weight:800;font-size:14px;text-decoration:none;box-shadow:none"><span>{{ p.buttonLabel }}</span></span></sc-if>
+    </article>
+    </sc-for>
+  </div>
+</section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_1.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
+  <div data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+<!-- ================= 04 MEMBERS ================= -->
+<section id="c-members" data-screen-label="04 Members" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
+    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(54px,8vw,128px);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }}</h2>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><p style="margin:22px 0 4px;font-weight:800;font-size:clamp(18px,2vw,28px);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,18px);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
+  </div>
+  <div data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
+    <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="4">
+    <div onclick="{{ member.open }}" class="lift tt-member-card" style="cursor:pointer;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 22px 50px rgba(20,28,60,.13);display:flex;flex-direction:column;justify-content:flex-end">
+      <img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy" decoding="async"         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div class="tt-member-card-index" data-member-number="{{ member.number }}" aria-label="{{ member.number }}"><span class="tt-member-card-number">{{ member.number }}</span><span class="tt-member-card-dot" style="background:{{ member.dotAccent }}"></span></div>
+      <div style="position:relative;padding:20px 18px 18px;background:linear-gradient(to top,rgba(255,253,248,.96) 30%,transparent)">
+        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:36px;letter-spacing:0;color:#141C30;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.name }}</div>
+        <div style="margin-top:9px;display:inline-block;max-width:100%;padding:6px 12px;border-radius:999px;background:rgba(24,32,52,.07);font-weight:700;font-size:11px;line-height:1.25;color:#3a4252;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.role }}</div>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  <div class="tt-network-directory" data-reveal="">
+    <button type="button" class="tt-network-summary" onclick="{{ togglePartner }}" aria-expanded="{{ partnerOpen }}" aria-controls="tt-network-panel">
+      <span class="tt-network-summary-copy">
+        <span class="tt-network-eyebrow">{{ PARTNERS_META.eyebrow }}</span>
+        <span class="tt-network-title">{{ PARTNERS_META.title }}</span>
+      </span>
+      <span class="tt-network-summary-meta" aria-hidden="true">
+        <span class="tt-network-count">{{ PARTNERS.length }}</span>
+        <span class="tt-network-rail"></span>
+        <span class="tt-network-arrow">&#8594;</span>
+      </span>
+    </button>
+  </div>
+  <sc-if value="{{ partnerOpen }}" hint-placeholder-val="{{ false }}">
+    <div class="tt-network-overlay" onclick="{{ closeModal }}">
+      <div id="tt-network-panel" class="tt-network-panel" role="dialog" aria-modal="true" aria-label="{{ PARTNERS_META.title }}" onclick="{{ stop }}">
+        <header class="tt-network-panel-head">
+          <div>
+            <div class="tt-network-eyebrow">{{ PARTNERS_META.eyebrow }}</div>
+            <h3 class="tt-network-panel-title">{{ PARTNERS_META.title }}</h3>
+          </div>
+          <div class="tt-network-panel-actions">
+            <span class="tt-network-panel-count">{{ PARTNERS.length }}</span>
+            <button type="button" class="tt-network-close" onclick="{{ closeModal }}" aria-label="{{ PARTNERS_META.closeLabel }}" title="{{ PARTNERS_META.closeLabel }}" autofocus>&#215;</button>
+          </div>
+        </header>
+        <div class="tt-network-scroll">
+          <div class="tt-network-grid">
+            <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1">
+              <a class="tt-network-card" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
+                <image-slot id="{{ 'partner-' + p.id }}" class="tt-network-card-image" style="filter:brightness({{ p.brightness }}%) saturate({{ p.saturation }}%) contrast({{ p.lightness }}%)" shape="rounded" radius="8" placeholder="{{ UI_LABELS.photoPlaceholder }}" src="{{ p.image }}"></image-slot>
+                <span class="tt-network-card-shade"></span>
+                <span class="tt-network-card-copy"><span class="tt-network-card-role">{{ p.role }}</span><strong class="tt-network-card-name">{{ p.name }}</strong></span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+                                                                                                                                                                                                                                                                                                                                                                                                       </section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_2.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_2.text }}</span>
+  <div data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+
+<!-- ================= 05 WORKS ================= -->
+<section id="c-works" class="tt-gh-works" data-screen-label="05 Works">
+  <div id="tt-gh-works-app" aria-live="polite"></div>
+  
+</section>
+<div class="tt-gh-story-bridge" data-story-bridge-wrap="">
+  <div class="tt-gh-bridge-line" data-bridge-line=""></div>
+  <div class="tt-gh-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_3.text }}</span>
+  <div class="tt-gh-bridge-copy" data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
+  <div class="tt-gh-bridge-line is-bottom" data-bridge-line=""></div>
+</div>
+
+<!-- ================= 06 NEWS ================= -->
+<section id="c-news" data-screen-label="06 News" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 6vw">
+  <div data-reveal="" style="width:min(1060px,94vw);opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div style="text-align:center;margin-bottom:38px">
+      <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_RESURFACE.label }}</div><div class="tt-section-note">{{ CHAPTER_RESURFACE.note }}</div></div>
+      <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(48px,6.6vw,104px);line-height:.84;color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.title }} <span style="color:var(--accent,#0E6E7D);font-style:italic">{{ NEWS_META.titleAccent }}</span></h2>
+      <sc-if value="{{ NEWS_META.subtitle }}"><p style="margin:18px 0 2px;font-weight:700;font-size:clamp(16px,1.8vw,24px);color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.subtitle }}</p></sc-if>
+      <sc-if value="{{ NEWS_META.description }}"><p style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,17px);color:var(--soft,#44505F);white-space:pre-wrap">{{ NEWS_META.description }}</p></sc-if>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
+      <sc-for list="{{ NEWS }}" as="n" hint-placeholder-count="2">
+      <div onclick="{{ n.open }}" class="lift" style="cursor:pointer;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 12px 32px rgba(8,22,38,.12)">
+        <image-slot id="{{ n.slotId }}" src="{{ n.image }}" fit="{{ n.fit }}" position="{{ n.position }}" style="width:100%;height:188px;filter:{{ n.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
+        <div style="padding:22px 24px 24px">
+          <div style="font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ n.tag }} &middot; {{ n.date }}</div>
+          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
+          <p style="margin:0;font-weight:500;font-size:14px;line-height:1.55;color:var(--soft,#44505F)">{{ n.summary }}</p>
+          <div style="margin-top:14px;font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ NEWS_META.readMoreLabel }}</div>
+        </div>
+      </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_4.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_4.text }}</span>
+  <div data-bridge="" aria-label="{{ BRIDGE_4.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:clamp(22px,3.4vw,42px);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_4.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.0.indent }}">{{ BRIDGE_4.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.1.indent }}">{{ BRIDGE_4.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.2.indent }}">{{ BRIDGE_4.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+<!-- ================= 07 CONTACT ================= -->
+<section id="c-contact" data-screen-label="07 Contact" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:150px 6vw 0;text-align:center">
+  <div data-px="-0.04" style="position:absolute;left:50%;top:14vh;transform:translateX(-50%);width:min(820px,80vw);opacity:.5;pointer-events:none">
+    <svg viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
+      <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.4">
+        <path d="M0 50 C 240 30,480 70,720 50 S 1080 30,1200 50"></path>
+        <path d="M0 100 C 240 80,480 120,720 100 S 1080 80,1200 100"></path>
+        <path d="M0 150 C 240 130,480 170,720 150 S 1080 130,1200 150"></path>
+      </g>
+      <g fill="var(--accent,#0E6E7D)"><circle cx="300" cy="63" r="6"></circle><circle cx="640" cy="112" r="6"></circle><circle cx="900" cy="58" r="6"></circle></g>
+    </svg>
+  </div>
+  <div data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
+    <h2 class="tt-chapter-title tt-contact-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:clamp(52px,9vw,150px);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span style="color:var(--accent,#0E6E7D);font-style:italic">{{ CONTACT.titleAccent }}</span></h2>
+    <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:clamp(15px,1.5vw,20px);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
+    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:clamp(15px,1.5vw,19px);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
+
+    <div style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
+      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:16px;text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:18px">&#8594;</span></a>
+      <button id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:16px;text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
+    </div>
+    <div id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:13px;letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
+    <sc-if value="{{ CONTACT.guideTitle }}">
+    <div class="tt-contact-guide" style="margin:22px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
+      <p style="margin:0 0 10px;font-weight:800;font-size:14px;color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
+      <ul style="margin:0;padding-left:18px;font-weight:600;font-size:14px;line-height:1.75;color:var(--soft,#44505F)">
+        <sc-for list="{{ CONTACT.guideItems }}" as="g" hint-placeholder-count="5"><li>{{ g }}</li></sc-for>
+      </ul>
+    </div>
+    </sc-if>
+  </div>
+
+    <!-- the book rests on the sea floor at the very bottom of the page, in the water -->
+    <div style="margin-top:clamp(40px,8vh,120px);position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center">
+<div data-float="" style="position:relative;z-index:2;width:min(800px,92vw);overflow:visible">
+        <div class="tt-book-light-stage" aria-hidden="true">
+          <div class="beam-wide"></div><div class="beam-core"></div><i class="beam-spark s1"></i><i class="beam-spark s2"></i><i class="beam-spark s3"></i>
+          <span class="tt-book-particle" style="--s:18px;--c:#f2cf84;--x0:-6px;--x1:-72px;--y1:-420px;--r:-20deg;--d:-.4s;--dur:6.8s;--o:.66">&#9834;</span>
+          <span class="tt-book-particle" style="--s:21px;--c:#ffd98e;--x0:8px;--x1:88px;--y1:-350px;--r:18deg;--d:-1.1s;--dur:6.2s;--o:.78">&#9835;</span>
+          <span class="tt-book-particle" style="--s:14px;--c:#f2cf84;--x0:0px;--x1:-24px;--y1:-610px;--r:-12deg;--d:-2.6s;--dur:7.2s;--o:.42">&#9834;</span>
+          <span class="tt-book-particle drop" style="--s:15px;--x0:2px;--x1:42px;--y1:-510px;--r:10deg;--d:-.9s;--dur:7s;--o:.72"></span>
+          <span class="tt-book-particle drop" style="--s:11px;--x0:-4px;--x1:-112px;--y1:-300px;--r:-10deg;--d:-2.1s;--dur:5.8s;--o:.58"></span>
+          <span class="tt-book-particle drop" style="--s:10px;--x0:6px;--x1:126px;--y1:-260px;--r:16deg;--d:-3.2s;--dur:6.5s;--o:.52"></span>
+          <span class="tt-book-particle paper" style="--s:22px;--x0:-8px;--x1:-145px;--y1:-390px;--r:-18deg;--d:-.7s;--dur:7.4s;--o:.58"></span>
+          <span class="tt-book-particle paper" style="--s:19px;--x0:10px;--x1:146px;--y1:-430px;--r:20deg;--d:-2.8s;--dur:7s;--o:.52"></span>
+          <span class="tt-book-particle" style="--s:12px;--c:#fff3c7;--x0:0px;--x1:-8px;--y1:-260px;--r:22deg;--d:-1.8s;--dur:5.6s;--o:.62">&#9834;</span>
+          <span class="tt-book-particle" style="--s:10px;--c:#fff3c7;--x0:0px;--x1:38px;--y1:-200px;--r:-18deg;--d:-3.4s;--dur:5.2s;--o:.48">&#9835;</span>
+        </div>
+
+        <svg id="deep-book-svg" viewBox="0 0 900 560" style="width:100%;height:auto;display:block;overflow:visible;position:relative;z-index:2" aria-label="underwater magical book illustration">
+          <defs>
+            <filter id="ttBlur18" x="-40%" y="-80%" width="180%" height="240%"><feGaussianBlur stdDeviation="18"></feGaussianBlur></filter>
+            <filter id="ttBlur8" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
+            <filter id="ttSoftShadow" x="-20%" y="-20%" width="140%" height="160%">
+              <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#01070d" flood-opacity="0.34"></feDropShadow>
+            </filter>
+            <linearGradient id="ttBeamWide" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#ffe6b5" stop-opacity="0.72"></stop>
+              <stop offset="42%" stop-color="#f2d8a3" stop-opacity="0.24"></stop>
+              <stop offset="100%" stop-color="#9fc8d0" stop-opacity="0"></stop>
+            </linearGradient>
+            <linearGradient id="ttBeamCore" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.9"></stop>
+              <stop offset="48%" stop-color="#f5d99b" stop-opacity="0.38"></stop>
+              <stop offset="100%" stop-color="#c9e4e7" stop-opacity="0"></stop>
+            </linearGradient>
+            <radialGradient id="ttFoldGlow" cx="50%" cy="58%" r="55%">
+              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.92"></stop>
+              <stop offset="36%" stop-color="#f3cf8a" stop-opacity="0.38"></stop>
+              <stop offset="100%" stop-color="#7ca9b2" stop-opacity="0"></stop>
+            </radialGradient>
+            <radialGradient id="ttGround" cx="50%" cy="48%" r="58%">
+              <stop offset="0%" stop-color="#2a5362" stop-opacity="0.42"></stop>
+              <stop offset="68%" stop-color="#173545" stop-opacity="0.18"></stop>
+              <stop offset="100%" stop-color="#06131f" stop-opacity="0"></stop>
+            </radialGradient>
+            <linearGradient id="ttCover" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#315666"></stop>
+              <stop offset="48%" stop-color="#1d3948"></stop>
+              <stop offset="100%" stop-color="#102836"></stop>
+            </linearGradient>
+            <linearGradient id="ttCoverEdge" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#4f7680" stop-opacity="0.75"></stop>
+              <stop offset="45%" stop-color="#172c39"></stop>
+              <stop offset="100%" stop-color="#4f7680" stop-opacity="0.75"></stop>
+            </linearGradient>
+            <linearGradient id="ttPageL" x1="1" y1="0.05" x2="0" y2="0.72">
+              <stop offset="0%" stop-color="#efe7cf"></stop>
+              <stop offset="52%" stop-color="#c6d4d2"></stop>
+              <stop offset="100%" stop-color="#7894a0"></stop>
+            </linearGradient>
+            <linearGradient id="ttPageR" x1="0" y1="0.05" x2="1" y2="0.72">
+              <stop offset="0%" stop-color="#efe7cf"></stop>
+              <stop offset="52%" stop-color="#c6d4d2"></stop>
+              <stop offset="100%" stop-color="#7894a0"></stop>
+            </linearGradient>
+            <linearGradient id="ttPageStack" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9eb3b6"></stop>
+              <stop offset="45%" stop-color="#637d86"></stop>
+              <stop offset="100%" stop-color="#263e4b"></stop>
+            </linearGradient>
+            <linearGradient id="ttMetal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#c5a76d"></stop>
+              <stop offset="52%" stop-color="#66513a"></stop>
+              <stop offset="100%" stop-color="#e8cb88"></stop>
+            </linearGradient>
+            <clipPath id="ttClipL"><path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z"></path></clipPath>
+            <clipPath id="ttClipR"><path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z"></path></clipPath>
+          </defs>
+
+          <!-- underwater contact haze and soft grounding -->
+          <ellipse cx="450" cy="444" rx="385" ry="92" fill="url(#ttGround)"></ellipse>
+          <ellipse cx="450" cy="438" rx="305" ry="38" fill="#0a1f2c" opacity="0.22" filter="url(#ttBlur18)"></ellipse>
+
+          <!-- conceptual magic column: a bright page-origin beam diffused by deep water -->
+          <g class="tt-svg-page-beam" opacity="1" style="mix-blend-mode:screen" pointer-events="none">
+            <path d="M450 330 C386 218 360 62 374 -390 C418 -430 482 -430 526 -390 C540 62 514 218 450 330 Z" fill="url(#ttBeamWide)" filter="url(#ttBlur18)" opacity="0.92"></path>
+            <path d="M450 332 C426 224 426 42 436 -360 C445 -380 455 -380 464 -360 C474 42 474 224 450 332 Z" fill="url(#ttBeamCore)" filter="url(#ttBlur8)" opacity="0.96"></path>
+            <path d="M450 332 C443 214 444 70 450 -315" fill="none" stroke="#fff8df" stroke-width="6" stroke-linecap="round" opacity="0.42" filter="url(#ttBlur8)"></path>
+            <path d="M450 338 C442 285 443 244 450 194 C457 244 458 285 450 338 Z" fill="#fff5d4" opacity="0.82" filter="url(#ttBlur8)"></path>
+            <circle cx="450" cy="322" r="54" fill="#fff0bd" opacity="0.72" filter="url(#ttBlur8)"></circle>
+          </g>
+
+          <!-- visible particles born from the light: music / water / story fragments -->
+          <g class="tt-svg-book-particles" opacity="0.9" font-family="Quicksand, Nanum Gothic, sans-serif" font-weight="800" pointer-events="none">
+            <g style="mix-blend-mode:screen">
+              <text x="382" y="78" font-size="18" fill="#f0cc82" opacity="0.50" transform="rotate(-14 382 78)">&#9834;</text>
+              <text x="516" y="88" font-size="16" fill="#f0cc82" opacity="0.48" transform="rotate(13 516 88)">&#9835;</text>
+              <text x="338" y="152" font-size="21" fill="#f0cc82" opacity="0.64" transform="rotate(-11 338 152)">&#9834;</text>
+              <text x="558" y="162" font-size="20" fill="#f0cc82" opacity="0.62" transform="rotate(10 558 162)">&#9835;</text>
+              <text x="404" y="238" font-size="26" fill="#ffd98f" opacity="0.82" transform="rotate(-7 404 238)">&#9834;</text>
+              <text x="548" y="250" font-size="24" fill="#ffd98f" opacity="0.78" transform="rotate(8 548 250)">&#9835;</text>
+            </g>
+            <g fill="#dfe6dc" stroke="#f5ecd6" stroke-width="1.1" opacity="0.72">
+              <path d="M304 122 l34 -8 l8 27 l-34 9 z" transform="rotate(-13 321 136)"></path>
+              <path d="M582 116 l36 8 l-8 28 l-36 -8 z" transform="rotate(12 600 130)"></path>
+              <path d="M312 244 l30 -7 l6 24 l-30 7 z" opacity="0.62" transform="rotate(-10 327 256)"></path>
+              <path d="M606 256 l31 7 l-6 25 l-31 -7 z" opacity="0.56" transform="rotate(11 622 269)"></path>
+            </g>
+            <g fill="#86d5ea" stroke="#ddfbff" stroke-width="1.3" opacity="0.88">
+              <path d="M450 54 C440 72 441 83 450 88 C461 83 461 72 450 54 Z"></path>
+              <path d="M505 134 C496 151 497 161 506 165 C516 160 516 150 505 134 Z" opacity="0.82"></path>
+              <path d="M388 166 C379 181 380 191 389 195 C398 190 398 181 388 166 Z" opacity="0.78"></path>
+              <path d="M485 230 C477 244 477 253 486 257 C494 253 494 244 485 230 Z" opacity="0.76"></path>
+              <path d="M610 294 C602 308 602 318 611 321 C620 317 620 307 610 294 Z" opacity="0.74"></path>
+              <path d="M332 288 C325 301 325 310 333 314 C341 310 341 301 332 288 Z" opacity="0.68"></path>
+            </g>
+            <g fill="#fff4cf" opacity="0.72" style="mix-blend-mode:screen">
+              <circle cx="450" cy="135" r="2.4"></circle><circle cx="432" cy="176" r="1.8"></circle><circle cx="470" cy="197" r="1.7"></circle>
+              <circle cx="446" cy="232" r="1.8"></circle><circle cx="515" cy="254" r="1.4"></circle><circle cx="396" cy="305" r="1.3"></circle>
+              <circle cx="506" cy="315" r="1.5"></circle><circle cx="366" cy="230" r="1.2"></circle><circle cx="575" cy="214" r="1.2"></circle>
+            </g>
+          </g>
+
+          <g filter="url(#ttSoftShadow)">
+            <!-- damp cover base -->
+            <path d="M450 196 C344 168 242 176 169 207 L112 416 C202 450 334 456 450 433 C566 456 698 450 788 416 L731 207 C658 176 556 168 450 196 Z" fill="url(#ttCover)" stroke="#1b3240" stroke-width="3"></path>
+            <path d="M139 395 C232 428 348 433 450 414 C552 433 668 428 761 395 L788 416 C698 450 566 456 450 433 C334 456 202 450 112 416 Z" fill="url(#ttCoverEdge)" opacity="0.72"></path>
+
+            <!-- page stacks: thickness restored, not emoji-flat -->
+            <path d="M450 391 C350 420 242 416 146 386 L132 420 C235 458 354 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
+            <path d="M450 391 C550 420 658 416 754 386 L768 420 C665 458 546 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
+            <g fill="none" stroke="#c8d4d1" stroke-width="1.7" stroke-linecap="round" opacity="0.32">
+              <path d="M148 398 C246 425 354 429 449 408"></path>
+              <path d="M143 412 C244 441 354 444 450 421"></path>
+              <path d="M753 398 C654 425 546 429 451 408"></path>
+              <path d="M758 412 C656 441 546 444 450 421"></path>
+            </g>
+
+            <!-- open wet pages -->
+            <path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z" fill="url(#ttPageL)" stroke="#526f78" stroke-width="2.1"></path>
+            <path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z" fill="url(#ttPageR)" stroke="#526f78" stroke-width="2.1"></path>
+
+            <!-- damp blue page-edge tint -->
+            <path d="M450 194 C365 176 268 184 199 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
+            <path d="M450 194 C535 176 632 184 701 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
+            <path d="M151 389 C250 418 355 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
+            <path d="M749 389 C650 418 545 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
+
+            <!-- faint score/story lines -->
+            <g clip-path="url(#ttClipL)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
+              <path d="M220 244 C278 236 338 236 426 229"></path><path d="M211 271 C282 264 346 265 425 258"></path>
+              <path d="M203 299 C278 292 345 293 425 286"></path><path d="M195 327 C272 321 344 321 425 314"></path>
+              <path d="M188 354 C265 350 337 350 425 342"></path>
+              <path d="M242 236 q8 -9 16 0 q8 9 16 0" opacity="0.42"></path><path d="M300 290 q10 -8 20 0 q10 8 20 0" opacity="0.38"></path>
+            </g>
+            <g clip-path="url(#ttClipR)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
+              <path d="M474 229 C562 236 622 236 680 244"></path><path d="M475 258 C554 265 618 264 689 271"></path>
+              <path d="M475 286 C555 293 622 292 697 299"></path><path d="M475 314 C556 321 628 321 705 327"></path>
+              <path d="M475 342 C563 350 635 350 712 354"></path>
+              <path d="M535 268 q9 -8 18 0 q9 8 18 0" opacity="0.4"></path><path d="M596 324 q9 -7 18 0 q9 7 18 0" opacity="0.36"></path>
+            </g>
+
+            <!-- minimal grimoire ornamentation, subdued -->
+            <g fill="none" stroke="url(#ttMetal)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.58">
+              <path d="M151 229 q32 -30 78 -28"></path><path d="M749 229 q-32 -30 -78 -28"></path>
+              <path d="M145 386 q30 24 72 25"></path><path d="M755 386 q-30 24 -72 25"></path>
+              <path d="M132 408 l42 -12"></path><path d="M768 408 l-42 -12"></path>
+            </g>
+            <g fill="#7ecfe0" stroke="#e5fbff" stroke-width="1" opacity="0.38">
+              <circle cx="183" cy="221" r="4"></circle><circle cx="716" cy="221" r="4"></circle>
+              <circle cx="170" cy="397" r="3.6"></circle><circle cx="730" cy="397" r="3.6"></circle>
+            </g>
+
+            <!-- wet glints / tiny beads on pages and cover -->
+            <g fill="#dff8fb" opacity="0.33">
+              <ellipse cx="255" cy="262" rx="8" ry="2" transform="rotate(-8 255 262)"></ellipse>
+              <ellipse cx="330" cy="344" rx="6" ry="1.8" transform="rotate(-6 330 344)"></ellipse>
+              <ellipse cx="613" cy="265" rx="8" ry="2" transform="rotate(8 613 265)"></ellipse>
+              <ellipse cx="685" cy="350" rx="6" ry="1.8" transform="rotate(7 685 350)"></ellipse>
+              <circle cx="210" cy="391" r="2"></circle><circle cx="696" cy="390" r="2"></circle>
+            </g>
+
+            <!-- central binding and warm origin glow from the page gutter -->
+            <ellipse cx="450" cy="314" rx="235" ry="178" fill="url(#ttFoldGlow)" opacity="0.92"></ellipse>
+            <path d="M450 194 C443 259 444 352 450 430 C456 352 457 259 450 194 Z" fill="#fff3d2" opacity="0.5"></path>
+            <line x1="450" y1="198" x2="450" y2="430" stroke="#fff5dc" stroke-width="4.2" stroke-linecap="round" opacity="0.88"></line>
+            <circle cx="450" cy="326" r="7" fill="#fff7df" opacity="0.9"></circle>
+
+            <!-- small central jewel/clasp, kept subtle -->
+            <path d="M407 420 C420 398 433 388 450 388 C467 388 480 398 493 420 C480 435 421 435 407 420 Z" fill="#142d3c" stroke="url(#ttMetal)" stroke-width="2"></path>
+            <path d="M450 399 C438 416 441 426 450 431 C459 426 462 416 450 399 Z" fill="#2f9cbd" stroke="#d9fbff" stroke-width="1.2" opacity="0.8"></path>
+          </g>
+        </svg>
+        <!-- The Book (redesign, preview): a closed hardcover asleep on the sea floor; it wakes and opens when you arrive -->
+        <div class="tt-book2" aria-hidden="true">
+          <div class="tb-floor"><i class="tb-rock r1"></i><i class="tb-rock r2"></i><i class="tb-rock r3"></i></div>
+          <div class="tb-scene">
+            <div class="tb-book">
+              <div class="tb-base"></div>
+              <div class="tb-pages">
+                <div class="tb-page-glow"></div>
+                <div class="tb-ink"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="tb-leaf lf1"></div><div class="tb-leaf lf2"></div><div class="tb-leaf lf3"></div>
+              </div>
+              <div class="tb-cover">
+                <div class="tb-cover-front">
+                  <div class="tb-frame"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+                  <div class="tb-emblem"></div>
+                  <div class="tb-title">TALETONE</div>
+                </div>
+                <div class="tb-cover-back"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;z-index:3;text-align:center;margin-top:clamp(8px,2vh,28px)">
+      </div>
+    </div>
+    
+    </section></div>
+  <footer style="margin-top:auto;width:100%;padding:34px 2vw 30px;border-top:1px solid var(--line,rgba(24,32,52,.12));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:11px">
+      <img src="assets/logo/mark-paper.png" alt="TALETONE" style="width:30px;height:30px;object-fit:contain;display:block">
+      <span style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:600;font-size:13px;letter-spacing:.12em;color:var(--ink,#141C30);white-space:pre-wrap">{{ FOOTER_META.title }}</span>
+    </div>
+    <span style="font-weight:600;font-size:12px;color:var(--soft,#44505F);white-space:pre-wrap">{{ FOOTER_META.tagline }}</span>
+    <span style="font-weight:600;font-size:12px;color:var(--soft,#44505F);white-space:pre-wrap">{{ FOOTER_META.copyright }}</span>
+  </footer>

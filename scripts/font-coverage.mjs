@@ -13,9 +13,16 @@ const SOURCES = [
 // ASCII is drawn by the Latin fonts; kana/kanji by Noto Sans JP.
 const skip = (cp) => cp < 0x80 || (cp >= 0x3040 && cp <= 0x30ff) || (cp >= 0x3400 && cp <= 0x9fff) || (cp >= 0xff65 && cp <= 0xff9f) || (cp >= 0xf900 && cp <= 0xfaff);
 
-export async function nanumCharacters(root) {
+// The /preview/ page draws from its own copies in preview-src/.
+export const PREVIEW_SOURCES = [
+  'preview-src/app/template.html', 'preview-src/app/component.js', 'src/page.html',
+  'preview-src/data/site-content.json', 'assets/data/seo-content.json', 'preview-src/data/works-data.json',
+  'preview-src/js/works.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
+];
+
+export async function nanumCharacters(root, sources = SOURCES) {
   const chars = new Set();
-  for (const file of SOURCES) {
+  for (const file of sources) {
     for (const ch of await readFile(path.join(root, file), 'utf8')) {
       if (!skip(ch.codePointAt(0))) chars.add(ch);
     }
