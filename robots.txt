@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /qa/
+Disallow: /src/
+Disallow: /scripts/
 
 Sitemap: https://taletone.net/sitemap.xml

@@ -21,6 +21,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 24
+      - name: Check generated files are up to date
+        run: node scripts/build.mjs --check
       - name: Validate production files
         run: node .github/scripts/validate-site.mjs
       - name: Validate runtime performance budgets
