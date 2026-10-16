@@ -1,39 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://taletone.net/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/"/>
   </url>
   <url>
     <loc>https://taletone.net/story-types/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/story-types/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/story-types/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/story-types/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/story-types/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/story-types/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/story-types/"/>
   </url>
   <url>
     <loc>https://taletone.net/members/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/members/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/members/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/members/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/members/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/members/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/members/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/members/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/members/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/members/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/members/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/members/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/members/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/members/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/members/"/>
   </url>
   <url>
     <loc>https://taletone.net/works/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/works/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/works/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/works/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/works/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/works/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/works/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/works/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/works/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/works/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/works/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/works/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/works/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/works/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/works/"/>
   </url>
   <url>
     <loc>https://taletone.net/news/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/news/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/news/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/news/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/news/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/news/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/news/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/news/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/news/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/news/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/news/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/news/"/>
   </url>
   <url>
     <loc>https://taletone.net/contact/</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/contact/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/contact/"/>
+  </url>
+  <url>
+    <loc>https://taletone.net/ja/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://taletone.net/contact/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://taletone.net/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://taletone.net/ja/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://taletone.net/contact/"/>
   </url>
 </urlset>

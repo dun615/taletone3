@@ -45,19 +45,19 @@ const rawEditorMarkers = [
   'onclick="' + '{' + '{', 'value="' + '{' + '{',
 ];
 const expectedCacheKeys = {
-  'assets/js/image-slot.js': '20260907-bridge-preload',
+  'assets/js/image-slot.js': '20261017-lang-routes',
   'assets/css/works.css': '20260717-bridge-clock-hold-v001',
-  'assets/js/works.js': '20260907-bridge-preload',
+  'assets/js/works.js': '20261017-lang-routes',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
   /assets\/data\/site-content\.js\?v=([^"']+)/i,
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
-const routeDocumentBudgetBytes = 370_000;
+const routeDocumentBudgetBytes = 390_000;
 const decodedTemplateBudgetBytes = 112_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 158_000;
+const decodedScriptBudgetBytes = 162_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;family=Noto+Sans+KR:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
@@ -68,7 +68,7 @@ const imageSlotJs = await text('assets/js/image-slot.js');
 assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
 assert(imageSlotJs.includes("if (!slot.closest('#c-news')) return true;"), 'image-slot: hidden NEWS cards are not scoped for deferred loading');
 assert(imageSlotJs.includes("if (activeChapter) return activeChapter === 'news';"), 'image-slot: hidden NEWS cards are no longer gated by the active chapter');
-assert(imageSlotJs.includes("return /^\\/news(?:\\/index\\.html)?\\/?$/i.test(location.pathname);"), 'image-slot: direct NEWS route fallback is missing');
+assert(imageSlotJs.includes("return /^(?:\\/(?:en|ja))?\\/news(?:\\/index\\.html)?\\/?$/i.test(location.pathname);"),'image-slot: direct NEWS route fallback is missing');
 assert(imageSlotJs.includes("const url = shouldLoadNewsImage(this) ? (this._userUrl || srcAttr) : '';"), 'image-slot: NEWS image URL is assigned before the chapter is active');
 assert(imageSlotJs.includes("document.querySelectorAll('#c-news image-slot').forEach((slot) => slot._render());"), 'image-slot: NEWS cards do not refresh on chapter entry');
 assert(imageSlotJs.includes("window.addEventListener('TALETONE_CHAPTER_CHANGE', refreshNewsImages);"), 'image-slot: chapter-change refresh hook is missing');
@@ -357,6 +357,24 @@ const robots = await text('robots.txt');
 const sitemap = await text('sitemap.xml');
 assert(/Sitemap:\s*https:\/\/taletone\.net\/sitemap\.xml/i.test(robots), 'robots.txt: sitemap declaration missing');
 for (const [, , route] of routes) assert(sitemap.includes(`<loc>https://taletone.net${route}</loc>`), `sitemap.xml: missing ${route}`);
+
+// Localized routes: same app, own URL, language-specific head and fallback content.
+for (const [prefix, htmlLang] of [['', 'ko'], ['/en', 'en'], ['/ja', 'ja']]) {
+  for (const [, file, route] of routes) {
+    const localFile = `${prefix.slice(1)}${prefix ? '/' : ''}${file}`;
+    const url = `https://taletone.net${prefix}${route}`;
+    if (!(await exists(localFile))) { errors.push(`${localFile}: localized route missing`); continue; }
+    const html = await text(localFile);
+    assert(Buffer.byteLength(html) <= routeDocumentBudgetBytes, `${localFile}: route document exceeds ${routeDocumentBudgetBytes} byte budget`);
+    assert(new RegExp(`<html lang="${htmlLang}">`).test(html), `${localFile}: html lang is not ${htmlLang}`);
+    assert(attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i) === url, `${localFile}: canonical is not self-referencing`);
+    for (const [lang, langPrefix] of [['ko', ''], ['en', '/en'], ['ja', '/ja'], ['x-default', '']]) {
+      assert(html.includes(`<link rel="alternate" hreflang="${lang}" href="https://taletone.net${langPrefix}${route}">`), `${localFile}: hreflang ${lang} does not point at its language URL`);
+    }
+    assert(sitemap.includes(`<loc>${url}</loc>`), `sitemap.xml: missing ${prefix}${route}`);
+    assert(cleanText(attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
+  }
+}
 const manifest = JSON.parse(await text('site.webmanifest'));
 for (const icon of manifest.icons || []) assert(await exists(cleanRef(icon.src || '')), `site.webmanifest: missing icon ${icon.src}`);
 
@@ -621,7 +639,7 @@ assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"),
 assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
 const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
-assert(worksChapterGateSource.includes("return /^\\/works(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
+assert(worksChapterGateSource.includes("return /^(?:\\/(?:en|ja))?\\/works(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
 assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME chapter can trigger hidden WORKS cover requests');
 for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
 assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');

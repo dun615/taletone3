@@ -79,7 +79,7 @@
     if (!slot.closest('#c-news')) return true;
     const activeChapter = document.body && document.body.getAttribute('data-active-chapter');
     if (activeChapter) return activeChapter === 'news';
-    return /^\/news(?:\/index\.html)?\/?$/i.test(location.pathname);
+    return /^(?:\/(?:en|ja))?\/news(?:\/index\.html)?\/?$/i.test(location.pathname);
   }
 
   function refreshNewsImages() {

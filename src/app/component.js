@@ -193,8 +193,9 @@ class Component extends DCLogic {
       window.addEventListener('click', this._spawnInkFromEvent, { passive:true });
       this._inkEvents.push('touchstart','click');
     }
-    // language: restore saved choice (KR default) and apply after first paint
-    try{ var langParam = new URLSearchParams(window.location.search || '').get('lang'); this.lang = (langParam === 'kr' || langParam === 'en' || langParam === 'jp') ? langParam : (localStorage.getItem('tt_lang') || 'kr'); }catch(e){ this.lang='kr'; }
+    // language: legacy ?lang= wins, then the URL prefix; an unprefixed URL restores the saved choice (KR default)
+    try{ var langParam = new URLSearchParams(window.location.search || '').get('lang'), pathLang = this._routeLang(); this.lang = (langParam === 'kr' || langParam === 'en' || langParam === 'jp') ? langParam : (pathLang !== 'kr' ? pathLang : (localStorage.getItem('tt_lang') || 'kr')); }catch(e){ this.lang='kr'; }
+    this._syncLangUrl();
     document.documentElement.lang=this.lang==='kr'?'ko':(this.lang==='jp'?'ja':'en');
     this._langInitTimer=setTimeout(()=>{ try{ this.setLang(this.lang); }catch(_){} }, 60);
     this.chapnav = document.getElementById('chapnav');
@@ -216,7 +217,7 @@ class Component extends DCLogic {
         if(!a || !document.getElementById('chapnav') || !document.getElementById('chapnav').contains(a)) return;
         if(e.preventDefault) e.preventDefault();
         if(e.stopPropagation) e.stopPropagation();
-        var href = a.getAttribute('href') || '/';
+        var href = this._routePath(a.getAttribute('href') || '/');
         var map = {'/':'c-home','/story-types/':'c-projects','/projects/':'c-projects','/members/':'c-members','/works/':'c-works','/news/':'c-news','/contact/':'c-contact'};
         this.navigateChapter(e, map[href] || 'c-home', href);
       };
@@ -663,7 +664,7 @@ class Component extends DCLogic {
     if(canonical){
       try{ routePath=new URL(canonical.href,location.href).pathname; }catch(e){}
     }
-    routePath=(routePath||'/').replace(/\/index\.html$/,'/') || '/';
+    routePath=this._routePath(routePath||'/');
     var isHomeRoute=routePath==='/';
     var forceIntro=new URLSearchParams(location.search).get('intro')==='1',seen=false;
     try{ seen=sessionStorage.getItem('tt_intro_home_v5')==='1'; }catch(e){}
@@ -1845,7 +1846,7 @@ class Component extends DCLogic {
     var langs=['kr','en','jp'];
     for(var k=0;k<langs.length;k++){ var btn=document.getElementById('lang-'+langs[k]); if(btn){ var on=langs[k]===l; btn.style.background=on?'var(--ink,#141C30)':'none'; btn.style.color=on?'var(--paper,#fffdf8)':'var(--ink,#141C30)'; btn.style.border='0'; btn.style.outline='0'; btn.style.boxShadow='none'; btn.style.borderRadius='999px'; btn.style.overflow='hidden'; btn.style.backgroundClip='padding-box'; btn.style.appearance='none'; btn.style.webkitAppearance='none'; btn.style.webkitTapHighlightColor='transparent'; btn.style.minWidth='44px'; btn.style.minHeight='44px'; } }
     try{ localStorage.setItem('tt_lang', l); }catch(e){}
-    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this.rebuildTranslationLine(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
+    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this.rebuildTranslationLine(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
     clearTimeout(this._langRebuildTimer);
     this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this.tcaps = [0,1,2].map(i=>document.getElementById('tcap-'+i)); this.transFoot=document.getElementById('trans-foot'); this.taleLine=document.getElementById('tale-line'); this.rebuildTranslationLine(); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
   }
@@ -2285,7 +2286,7 @@ class Component extends DCLogic {
       try{sessionStorage.setItem('tt_bridge_seen_v2',JSON.stringify(Object.keys(this._bridgeSeen).map(Number)));}catch(_){}
       if(route){
         this._chapterTarget=route[0];
-        if(window.history&&window.history.pushState){ try{ window.history.pushState(null,'',route[1]); }catch(_){} }
+        if(window.history&&window.history.pushState){ try{ window.history.pushState(null,'',this._langPath(route[1])); }catch(_){} }
         this._applySeoForCurrentPage();
         if(route[0]!=='c-works') this.pauseWorksAudio();
       }
@@ -2697,18 +2698,25 @@ class Component extends DCLogic {
     if(el) el.setAttribute('content', value || '');
   }
 
+  // Static <head> tags (including JSON-LD) are written per page and language by scripts/build.mjs;
+  // this only keeps them in step when the route or language changes in place.
   _applySeoForCurrentPage(){
     this._loadSeo();
     var page = this._seoPageForKey(this._seoPageKeyFromLocation());
     if(!page) return;
-    var url = this._seoAbsoluteUrl(page.path);
-    document.title = page.title;
-    this._setMetaAttr('name', 'description', page.description);
-    this._setMetaAttr('property', 'og:title', page.title);
-    this._setMetaAttr('property', 'og:description', page.description);
+    var lang = this.lang || this._routeLang();
+    var copy = Object.assign({ title: page.title, description: page.description }, (page.translations && page.translations[lang]) || {});
+    var url = this._seoAbsoluteUrl(this._langPath(page.path, lang));
+    document.title = copy.title;
+    this._setMetaAttr('name', 'description', copy.description);
+    this._setMetaAttr('property', 'og:title', copy.title);
+    this._setMetaAttr('property', 'og:description', copy.description);
     this._setMetaAttr('property', 'og:url', url);
-    this._setMetaAttr('name', 'twitter:title', page.title);
-    this._setMetaAttr('name', 'twitter:description', page.description);
+    this._setMetaAttr('property', 'og:image:alt', copy.title);
+    this._setMetaAttr('property', 'og:locale', lang === 'en' ? 'en_US' : (lang === 'jp' ? 'ja_JP' : 'ko_KR'));
+    this._setMetaAttr('name', 'twitter:title', copy.title);
+    this._setMetaAttr('name', 'twitter:description', copy.description);
+    this._setMetaAttr('name', 'twitter:image:alt', copy.title);
     var canonical = document.head && document.head.querySelector('link[rel="canonical"]');
     if(!canonical && document.head){
       canonical = document.createElement('link');
@@ -2716,18 +2724,46 @@ class Component extends DCLogic {
       document.head.appendChild(canonical);
     }
     if(canonical) canonical.setAttribute('href', url);
-    var ld = document.head && document.head.querySelector('script[type="application/ld+json"]');
-    if(ld){
-      var schemaType = page.key === 'home' ? 'Organization' : 'WebPage';
-      ld.textContent = JSON.stringify({
-        '@context':'https://schema.org',
-        '@type': schemaType,
-        name: page.key === 'home' ? ((this.SEO_CONFIG && this.SEO_CONFIG.siteName) || 'TALETONE MUSIC') : page.title,
-        url: url,
-        description: page.description,
-        isPartOf: page.key === 'home' ? undefined : { '@type':'WebSite', name: (this.SEO_CONFIG && this.SEO_CONFIG.siteName) || 'TALETONE MUSIC', url: this._seoAbsoluteUrl('/') },
-        sameAs: page.key === 'home' ? [] : undefined
-      });
+    var alternates = { ko:'kr', en:'en', ja:'jp', 'x-default':'kr' };
+    for(var hreflang in alternates){
+      var alt = document.head && document.head.querySelector('link[rel="alternate"][hreflang="' + hreflang + '"]');
+      if(alt) alt.setAttribute('href', this._seoAbsoluteUrl(this._langPath(page.path, alternates[hreflang])));
+    }
+  }
+
+  // Language lives in the URL: KR at the root, EN under /en/, JP under /ja/.
+  _routeLang(){
+    var m = /^\/(en|ja)(?:\/|$)/.exec(location.pathname || '/');
+    return m ? (m[1] === 'ja' ? 'jp' : 'en') : 'kr';
+  }
+
+  _routePath(pathname){
+    var p = String(pathname == null ? location.pathname : pathname).replace(/^\/(?:en|ja)(?=\/|$)/, '').replace(/\/index\.html$/, '/');
+    return p || '/';
+  }
+
+  _langPath(path, lang){
+    var l = lang || this.lang || 'kr';
+    return (l === 'en' ? '/en' : (l === 'jp' ? '/ja' : '')) + (path || '/');
+  }
+
+  // Point the address bar at the current language's URL (also drops the legacy ?lang= parameter).
+  _syncLangUrl(){
+    try{
+      var url = new URL(location.href);
+      url.searchParams.delete('lang');
+      url.pathname = this._langPath(this._routePath(url.pathname));
+      if(url.href !== location.href) window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
+    }catch(_e){}
+  }
+
+  _localizeRouteLinks(){
+    var links = document.querySelectorAll('a[href^="/"]');
+    for(var i = 0; i < links.length; i++){
+      var href = links[i].getAttribute('href');
+      if(!/^\/(?:(?:en|ja)(?:\/|$))?(?:(?:story-types|members|works|news|contact)\/)?$/.test(href)) continue;
+      var next = this._langPath(this._routePath(href));
+      if(next !== href) links[i].setAttribute('href', next);
     }
   }
 
@@ -2809,7 +2845,7 @@ class Component extends DCLogic {
     // Track target chapter.
     this._chapterTarget=id;
     if(path && window.history && window.history.pushState){
-      try{ window.history.pushState(null, '', path); }catch(_e){}
+      try{ window.history.pushState(null, '', this._langPath(path)); }catch(_e){}
     }
     this.scrollToId(id);
     clearTimeout(this._chapterNavCorrect1);

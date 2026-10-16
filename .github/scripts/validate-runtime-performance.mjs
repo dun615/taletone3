@@ -691,6 +691,8 @@ async function runBridgeSmoke(chrome, origin) {
       await client.send('Emulation.setEmulatedMedia', { features: [{name:'prefers-reduced-motion',value:viewport.reduced?'reduce':'no-preference'}] });
       await client.send('Page.addScriptToEvaluateOnNewDocument', { source: "sessionStorage.setItem('tt_intro_home_v5','1');" });
       const capture = capturePhase(client, origin);
+      // Legacy ?lang= links land on the language's own URL prefix.
+      const langPrefix=['','/en','/ja'][caseIndex%3];
       await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
       for (let index=-1; index<5; index++) {
         const label = `bridge/${viewport.key}/${index===-1?'translate':index+1}`;
@@ -784,7 +786,7 @@ async function runBridgeSmoke(chrome, origin) {
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
         assert((index===-1||result.holding) && result.duration>=(viewport.reduced?2350:index===-1?7100:2850) && result.duration<=(index===-1?9500:6200), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
         assert(result.historyDelta===(index===-1?0:1), `${label}: handoff must navigate exactly once`);
-        assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
+        assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===langPrefix+(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
         console.log(label, JSON.stringify(result));
         passed.push(label);
         if(index===3) await evaluate(client, `document.getElementById('bridge-test-late-layout')?.remove()`);
@@ -832,7 +834,8 @@ async function runBridgeSmoke(chrome, origin) {
       await evaluate(client, `document.getElementById('nav-6').click()`);
       await sleep(1800);
       const canceled=await evaluate(client,`({path:location.pathname,phase:document.getElementById('content').dataset.bridgePhase||'',seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]')})`);
-      assert(canceled.path==='/contact/'&&!canceled.phase&&canceled.seen.length===0,`bridge/${viewport.key}: navigation falsely completed an unwatched animation`);
+      // The unprefixed URL restores the JP choice saved above.
+      assert(canceled.path==='/ja/contact/'&&!canceled.phase&&canceled.seen.length===0,`bridge/${viewport.key}: navigation falsely completed an unwatched animation`);
       passed.push(`bridge/${viewport.key}/navigation-cancel`);
       const network=capture.finish();
       assert(network.audioRequests===0, `bridge/${viewport.key}: audio loaded without playback`);
