@@ -3,5 +3,6 @@ Allow: /
 Disallow: /qa/
 Disallow: /src/
 Disallow: /scripts/
+Disallow: /preview/
 
 Sitemap: https://taletone.net/sitemap.xml

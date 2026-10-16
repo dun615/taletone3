@@ -469,6 +469,8 @@ const outputs = [
   ...seo.pages.flatMap((page) => languages.map((lang) => [fileFor(lang, page.path), renderPage(page, lang)])),
   ...detailPages,
   ['assets/app/app.js', appBundle],
+  // Preview of work in progress (not indexed): the KR home with the redesigned intro.
+  ['preview/index.html', renderPage(seo.pages.find((p) => p.key === 'home'), languages[0]).replace('<html lang="ko">', '<html lang="ko" data-intro-v2>').replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')],
   ['assets/data/site-content.js', siteScript],
   ['assets/data/seo-content.js', seoScript],
   ['sitemap.xml', sitemap()],

@@ -687,6 +687,8 @@ class Component extends DCLogic {
     var isHomeRoute=routePath==='/';
     var forceIntro=new URLSearchParams(location.search).get('intro')==='1',seen=false;
     try{ seen=sessionStorage.getItem('tt_intro_home_v5')==='1'; }catch(e){}
+    // preview page: the redesigned intro, every visit
+    if(document.documentElement.hasAttribute('data-intro-v2')&&isHomeRoute&&!reduce&&this.introEl){ this._introV2=true; this.initIntroV2(); return; }
     if(!this.introEl || !isHomeRoute || (seen&&!forceIntro) || reduce){
       if(this.introEl) this.introEl.style.display='none';
       document.body.classList.remove('tt-intro-running');
@@ -1053,6 +1055,214 @@ class Component extends DCLogic {
     this._introTimer=setTimeout(this._finishIntro,this.INTRO_MS+240);
   }
 
+  // ===== Intro v2 (preview): a drop of story falls, the camera breaks the surface,
+  // and the light gathers into the real wordmark, turning into ink as it lands. =====
+  initIntroV2(){
+    var self=this;
+    if(this.introEl) this.introEl.style.display='none';
+    var cv=document.createElement('canvas');
+    cv.id='intro-v2'; cv.setAttribute('aria-hidden','true');
+    cv.style.cssText='position:fixed;left:0;top:0;width:100vw;height:100lvh;z-index:1000;pointer-events:auto;cursor:pointer';
+    document.body.appendChild(cv);
+    var W=window.innerWidth, H=window.innerHeight, mobile=W<=760;
+    var dpr=Math.min(window.devicePixelRatio||1, mobile?1.5:2);
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    var c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0);
+    var T={drop:950, impact:1350, plunge:2350, gather:3750, handoff:3900, end:mobile?4400:4750};
+    var horizon=H*0.6, cx=W*0.5;
+    var homeSky=this.skyColors(this.P[this.mood].stops,0.2);
+    var N=mobile?520:1100, P=[];
+    for(var i=0;i<N;i++){
+      var a=-Math.PI*(0.1+Math.random()*0.8), sp=(Math.random()*0.9+0.25)*(mobile?7:10);
+      P.push({x:cx,y:horizon,vx:(Math.random()*2-1)*(mobile?9:14),vy:-(Math.random()*(mobile?10:15)+3),tx:cx,ty:H*0.45,sx:0,sy:0,s:Math.random()*1.4+0.8,d:Math.random()*0.45,tw:Math.random()*6.28,a0:Math.random()*6.283,r0:Math.pow(Math.random(),0.7),dir:Math.random()<0.8?1:-1});
+    }
+    var bub=[]; for(var b=0;b<(mobile?26:56);b++) bub.push({x:Math.random()*W,y:H+Math.random()*H*1.4,r:Math.random()*4+1.2,sp:Math.random()*1.1+0.7,ph:Math.random()*6.28});
+    var glow=document.createElement('canvas'); glow.width=glow.height=128;
+    (function(){ var g=glow.getContext('2d'), gr=g.createRadialGradient(64,64,0,64,64,64); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(0.3,'rgba(255,255,255,.5)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,128,128); })();
+    var targeted=false, released=false, finished=false, skipShift=0;
+    var ease=function(x){ x=Math.max(0,Math.min(1,x)); return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; };
+    var lerp=function(a,b,t){ return a+(b-a)*t; };
+    var mixRGB=function(a,b,t){ return 'rgb('+Math.round(lerp(a[0],b[0],t))+','+Math.round(lerp(a[1],b[1],t))+','+Math.round(lerp(a[2],b[2],t))+')'; };
+    var hexRGB=function(h){ var m=String(h).match(/\d+/g); if(m&&m.length>=3) return m.slice(0,3).map(Number); h=String(h).replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; };
+    var homeTop=hexRGB(homeSky[0]), homeBot=hexRGB(homeSky[1]);
+    function sampleTargets(){
+      var h1=document.querySelector('#c-home h1'), pts=[];
+      if(h1){
+        var r=h1.getBoundingClientRect(), cs=getComputedStyle(h1);
+        var lines=String(h1.innerText||'TALETONE\nMUSIC').split(/\n+/).map(function(s){return s.trim();}).filter(Boolean);
+        var ow=Math.max(1,Math.round(r.width)), oh=Math.max(1,Math.round(r.height));
+        var oc=document.createElement('canvas'); oc.width=ow; oc.height=oh;
+        var g=oc.getContext('2d'); g.fillStyle='#000'; g.textAlign='center'; g.textBaseline='middle';
+        g.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;
+        var lh=oh/lines.length, shift=parseFloat((cs.transform.match(/matrix\([^)]*,\s*([-\d.]+)\)$/)||[])[1])||0;
+        lines.forEach(function(l,li){ g.fillText(l,ow/2,lh*(li+0.5)); });
+        var data=g.getImageData(0,0,ow,oh).data, step=Math.max(3,Math.round(Math.sqrt(ow*oh/(N*2.2))));
+        for(var y=0;y<oh;y+=step) for(var x=0;x<ow;x+=step) if(data[(y*ow+x)*4+3]>140) pts.push([r.left+x,r.top+y-shift]);
+      }
+      if(!pts.length) pts=[[cx,H*0.45]];
+      for(var k=pts.length-1;k>0;k--){ var j=(Math.random()*(k+1))|0, tmp=pts[k]; pts[k]=pts[j]; pts[j]=tmp; }
+      for(var q=0;q<P.length;q++){ var pt=pts[q%pts.length]; P[q].tx=pt[0]+(Math.random()-0.5)*1.5; P[q].ty=pt[1]+(Math.random()-0.5)*1.5; }
+    }
+    function waterline(y,t,amp){
+      c.beginPath();
+      for(var x=0;x<=W+16;x+=16){ var yy=y+Math.sin(x*0.016+t*2.2)*amp+Math.sin(x*0.043-t*1.6)*amp*0.45; if(x===0)c.moveTo(x,yy); else c.lineTo(x,yy); }
+    }
+    function frame(now){
+      if(finished) return;
+      var t=now-self._introV2Start+skipShift, ts=t/1000;
+      // camera: before the plunge we look at the horizon; the plunge carries us below the surface
+      var plunge=ease((t-T.impact)/(T.plunge-T.impact));
+      var hy=horizon-plunge*(horizon+H*0.35);           // where the surface sits on screen
+      var under=Math.max(0,Math.min(1,(t-T.impact)/(T.plunge-T.impact)*1.3));
+      var settle=ease((t-T.plunge)/(T.gather-T.plunge));
+      c.setTransform(dpr,0,0,dpr,0,0);
+      // --- water body (below the surface line), shifting toward the Home sea as we settle
+      var wTop=[lerp(201,homeTop[0],settle),lerp(236,homeTop[1],settle),lerp(238,homeTop[2],settle)];
+      var wBot=[lerp(70,homeBot[0],settle),lerp(140,homeBot[1],settle),lerp(165,homeBot[2],settle)];
+      var wg=c.createLinearGradient(0,Math.min(hy,0),0,H);
+      wg.addColorStop(0,mixRGB(wTop,wTop,0)); wg.addColorStop(1,mixRGB(wBot,wBot,0));
+      c.fillStyle=wg; c.fillRect(0,0,W,H);
+      // --- sky above the surface (only while it is still on screen)
+      if(hy>-40){
+        var sg=c.createLinearGradient(0,hy-H*0.75,0,hy);
+        sg.addColorStop(0,'#7fb9d2'); sg.addColorStop(0.62,'#cfe9ee'); sg.addColorStop(1,'#f4fbf8');
+        c.fillStyle=sg; c.fillRect(0,0,W,Math.max(0,hy));
+        var sun=c.createRadialGradient(cx,hy,0,cx,hy,W*0.45);
+        sun.addColorStop(0,'rgba(255,246,220,.95)'); sun.addColorStop(0.3,'rgba(255,240,205,.35)'); sun.addColorStop(1,'rgba(255,240,205,0)');
+        c.fillStyle=sun; c.fillRect(0,hy-W*0.45,W,W*0.9);
+        // sea seen from above: perspective glints that run toward the horizon
+        if(plunge<0.6){
+          c.strokeStyle='rgba(255,255,255,'+(0.55*(1-plunge/0.6)).toFixed(3)+')'; c.lineWidth=1.2;
+          for(var gl=0;gl<14;gl++){
+            var gy=hy+Math.pow(gl/14,1.8)*(H-hy)+4, gw=W*(0.08+gl*0.04);
+            var gx=cx+Math.sin(ts*0.8+gl*1.9)*W*0.12;
+            c.globalAlpha=0.6*(1-gl/16); c.beginPath(); c.moveTo(gx-gw/2,gy); c.lineTo(gx+gw/2,gy); c.stroke();
+          }
+          c.globalAlpha=1;
+        }
+      }
+      // --- the surface line itself: from above a calm horizon, from below a bright, rippling ceiling
+      if(hy>-60&&hy<H+40){
+        var below=plunge>0.35;
+        c.lineWidth=below?3:1.6;
+        c.strokeStyle=below?'rgba(255,255,255,.95)':'rgba(255,255,255,.85)';
+        waterline(hy,ts,below?9:1.5); c.stroke();
+        if(below){
+          var ceil=c.createLinearGradient(0,hy,0,hy+H*0.35);
+          ceil.addColorStop(0,'rgba(255,255,255,.55)'); ceil.addColorStop(1,'rgba(255,255,255,0)');
+          c.fillStyle=ceil; c.fillRect(0,hy,W,H*0.35);
+        }
+      }
+      // --- god rays once we are under
+      if(under>0.05){
+        c.save(); c.globalCompositeOperation='screen';
+        for(var rr=0;rr<6;rr++){
+          var rx=(0.1+rr*0.16)*W+Math.sin(ts*0.4+rr)*W*0.02;
+          var rg=c.createLinearGradient(0,Math.max(hy,0),0,H);
+          rg.addColorStop(0,'rgba(255,255,255,'+(0.32*under*(1-settle*0.55)).toFixed(3)+')'); rg.addColorStop(1,'rgba(255,255,255,0)');
+          c.fillStyle=rg; c.save(); c.translate(rx,Math.max(hy,0)); c.rotate(0.22); c.fillRect(-W*0.025,0,W*0.055,H*1.2); c.restore();
+        }
+        c.restore();
+      }
+      // --- the drop of story: a warm spark with a trail, falling to the surface
+      if(t<T.drop+60){
+        var dp=ease(Math.max(0,(t-120)/(T.drop-120)));
+        var dy=lerp(-60,horizon,dp*dp);
+        c.save(); c.globalCompositeOperation='lighter';
+        for(var tr=0;tr<10;tr++){ var ty=dy-tr*18*(0.4+dp); c.globalAlpha=0.5*(1-tr/10); c.drawImage(glow,cx-10+tr*0.3,ty-10,20,20); }
+        c.globalAlpha=1; c.drawImage(glow,cx-28,dy-28,56,56);
+        c.fillStyle='#fff8e6'; c.beginPath(); c.ellipse(cx,dy,4.5,7,0,0,6.283); c.fill();
+        c.restore();
+      }
+      // --- impact: rings across the water (seen from above), then a flash
+      if(t>T.drop-40&&t<T.plunge){
+        var k=(t-T.drop)/(T.plunge-T.drop);
+        for(var ri=0;ri<4;ri++){
+          var rk=Math.max(0,k-ri*0.12); if(rk<=0) continue;
+          var rw=W*0.55*Math.sqrt(rk);
+          c.strokeStyle='rgba(255,255,255,'+(0.75*(1-rk)).toFixed(3)+')'; c.lineWidth=2.2*(1-rk)+0.4;
+          c.beginPath(); c.ellipse(cx,hy,rw,rw*0.1,0,0,6.283); c.stroke();
+        }
+        var fl=Math.max(0,1-Math.abs(t-T.drop)/260);
+        if(fl>0){ c.save(); c.globalCompositeOperation='lighter'; c.globalAlpha=fl; c.drawImage(glow,cx-W*0.24,hy-W*0.24,W*0.48,W*0.48); c.restore(); }
+      }
+      // --- bubbles streaming up past the camera
+      if(under>0.05){
+        c.lineWidth=1.1;
+        for(var bb=0;bb<bub.length;bb++){
+          var q=bub[bb];
+          var qy=q.y-(t-T.impact)*0.32*q.sp-plunge*H*0.6;
+          qy=((qy%(H*1.6))+H*1.6)%(H*1.6)-H*0.2;
+          var qx=q.x+Math.sin(ts*2+q.ph)*7;
+          c.strokeStyle='rgba(255,255,255,'+(0.7*under*(1-settle*0.6)).toFixed(3)+')';
+          c.beginPath(); c.arc(qx,qy,q.r,0,6.283); c.stroke();
+        }
+      }
+      // --- the light of story: bursts up, sinks with us, then gathers into the wordmark and becomes ink
+      if(t>=T.drop){
+        if(!targeted&&t>T.impact){ targeted=true; sampleTargets(); }
+        var gather=ease((t-T.plunge+200)/(T.gather-T.plunge));
+        var ink=ease((t-T.gather+500)/700);
+        c.save();
+        for(var pi=0;pi<P.length;pi++){
+          var p=P[pi];
+          if(t<T.plunge){
+            if(t<T.drop+260){
+              // a fountain of light from the impact
+              p.vy+=0.32; p.x+=p.vx; p.y+=p.vy;
+            } else {
+              // then every mote finds its own orbit: a wide, slow galaxy of light around us
+              var ang=p.a0+ts*(0.45+p.d*1.1)*p.dir, rad=Math.min(W,H)*(0.08+0.4*p.r0);
+              var ox=cx+Math.cos(ang)*rad*1.6, oy=H*0.5+Math.sin(ang)*rad*0.62;
+              p.x+=(ox-p.x)*0.045; p.y+=(oy-p.y)*0.045;
+            }
+            p.y+=(hy-(p._hy==null?hy:p._hy));
+            p.sx=p.x; p.sy=p.y;
+          }
+          var gk=ease((gather-p.d*0.5)/(1-p.d*0.5));
+          var px=lerp(p.sx,p.tx,gk)+Math.sin(ts*3+p.tw)*(1-gk)*14, py=lerp(p.sy,p.ty,gk)+Math.cos(ts*2.4+p.tw)*(1-gk)*10;
+          var size=p.s*(1+(1-gk)*0.8);
+          if(ink<0.98){
+            c.globalCompositeOperation='lighter';
+            c.globalAlpha=(0.55+0.45*Math.sin(ts*5+p.tw))*(1-ink);
+            c.drawImage(glow,px-size*3,py-size*3,size*6,size*6);
+          }
+          if(ink>0.02){
+            c.globalCompositeOperation='source-over';
+            c.globalAlpha=ink; c.fillStyle='#141C30';
+            c.fillRect(px-size*0.75,py-size*0.75,size*1.5,size*1.5);
+          }
+        }
+        P._hy=hy; for(var ph=0;ph<P.length;ph++) P[ph]._hy=hy;
+        c.restore();
+      }
+      // --- far below, the book answers once
+      var call=Math.max(0,1-Math.abs(t-(T.gather-150))/500);
+      if(call>0){ c.save(); c.globalCompositeOperation='lighter'; c.globalAlpha=0.55*call; c.drawImage(glow,cx-W*0.5,H-W*0.12,W,W*0.5); c.restore(); }
+      // --- handoff: the site takes over underneath, the scene fades away on top
+      if(!released&&t>=T.handoff){
+        released=true;
+        self.sky.style.background='linear-gradient(180deg,'+homeSky[0]+' 0%,'+homeSky[1]+' 100%)';
+        self._layoutGeometryDirty=true; self._sceneDirty=true; self.introDone=true;
+        cv.style.pointerEvents='none';
+      }
+      if(released){ cv.style.opacity=String(Math.max(0,1-(t-T.handoff)/(T.end-T.handoff))); }
+      if(t>=T.end){
+        finished=true; cv.remove();
+        window.removeEventListener('wheel',skip); window.removeEventListener('touchstart',skip); window.removeEventListener('keydown',skip); cv.removeEventListener('pointerdown',skip);
+        try{ sessionStorage.setItem('tt_intro_home_v5','1'); }catch(e){}
+        return;
+      }
+      requestAnimationFrame(frame);
+    }
+    // any input jumps to the moment the light gathers
+    var skip=function(){ var t=performance.now()-self._introV2Start+skipShift; if(t<T.plunge){ skipShift+=T.plunge-t; } };
+    window.addEventListener('wheel',skip,{passive:true}); window.addEventListener('touchstart',skip,{passive:true}); window.addEventListener('keydown',skip); cv.addEventListener('pointerdown',skip);
+    this.introDone=false;
+    this._introV2Start=performance.now();
+    requestAnimationFrame(frame);
+  }
+
   skipIntro(){
     if(this.introDone||!this.introStart) return;
     var elapsed=performance.now()-this.introStart;
@@ -1061,6 +1271,7 @@ class Component extends DCLogic {
   }
 
   updateIntro(now){
+    if(this._introV2) return;
     if(!this.introEl){ this.introDone=true; return; }
     var elapsed=now-this.introStart;
     var diveP=this.cl(elapsed/this.INTRO_PLUNGE_MS,0,1);
