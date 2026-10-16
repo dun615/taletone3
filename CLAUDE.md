@@ -6,3 +6,4 @@ See README.md for which file to edit for each kind of change.
 - Many assertions in `.github/scripts/validate-site.mjs` match exact code strings; if a deliberate change trips one, update the assertion in the same commit.
 - Every work (`assets/data/works-data.json`) and news item (`site-content.json` → `news`) needs a stable lowercase `slug`; the build fails without one.
 - Korean text uses Nanum Gothic via the `--tt-noto-primary` CSS variable (JP pages swap in Noto Sans JP); don't add other Korean font names to font stacks.
+- `npm install` is only needed for the optional tools in `scripts/optimize-assets.mjs` (sharp); build and checks have no dependencies.

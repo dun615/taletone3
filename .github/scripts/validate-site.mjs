@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261017-nanum',
-  'assets/js/works.js': '20261017-lang-routes',
+  'assets/css/works.css': '20261018-prune',
+  'assets/js/works.js': '20261018-permalink',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -58,7 +58,7 @@ const routeDocumentBudgetBytes = 40_000;
 const decodedTemplateBudgetBytes = 112_000;
 // Bridge control now lives here instead of a second controller in support.js.
 const decodedScriptBudgetBytes = 162_000;
-const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&amp;family=Noto+Sans+JP:wght@400..800&amp;display=swap';
+const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
   'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
@@ -495,7 +495,7 @@ assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.
 const normalizedWorksSource = JSON.stringify(worksJson).replace(/\\/g, '/');
 const normalizedDecodedApp = decodedApp.replace(/\\/g, '/');
 const removedDuplicateWorkImage = 'assets/works/images/asset-mq6aimxx-2c2o-.jpg-a9bb3c69bc18.jpg';
-const canonicalDuplicateWorkImage = 'assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.jpg';
+const canonicalDuplicateWorkImage = 'assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.webp';
 assert(!(await exists(removedDuplicateWorkImage)), 'removed byte-identical WORKS image returned');
 assert(!normalizedWorksSource.includes(removedDuplicateWorkImage) && !normalizedDecodedApp.includes(removedDuplicateWorkImage), 'removed byte-identical WORKS image is still referenced');
 assert(normalizedWorksSource.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected works-data reference count');

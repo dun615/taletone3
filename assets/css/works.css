@@ -182,24 +182,6 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 }
 
-@media (min-width: 761px) and (max-width: 1180px) {
-  #c-projects,
-  #c-members,
-  #c-news,
-  #c-contact {
-    padding-left: 110px !important;
-    padding-right: 84px !important;
-  }
-
-  #c-projects > [data-reveal],
-  #c-members > [data-reveal],
-  #c-news > [data-reveal],
-  #c-contact > [data-reveal] {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-}
-
 @media (min-width: 1181px) and (max-width: 1440px) {
   #c-members {
     padding-left: 108px !important;
@@ -211,26 +193,6 @@ body[data-active-chapter="contact"] #nav-6 {
 }
 
 @media (max-width: 760px) {
-  #chapnav {
-    right: 6px !important;
-    top: 72% !important;
-  }
-
-  #c-projects,
-  #c-members,
-  #c-news,
-  #c-contact {
-    padding-left: 18px !important;
-    padding-right: 70px !important;
-  }
-
-  #c-projects > [data-reveal],
-  #c-members > [data-reveal],
-  #c-news > [data-reveal],
-  #c-contact > [data-reveal] {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
 
   #c-projects > [data-reveal]:last-child,
   #c-members > [data-reveal]:not(:first-child),
@@ -238,11 +200,6 @@ body[data-active-chapter="contact"] #nav-6 {
     min-width: 0 !important;
   }
 
-  #c-projects [data-reveal][style*="grid-template-columns"],
-  #c-members [data-reveal][style*="grid-template-columns"],
-  #c-news [style*="grid-template-columns"] {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
 }
 
 .tt-gh-shell {
@@ -1308,12 +1265,7 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 
   #c-works.tt-gh-works {
-    min-height: auto;
-    width: 100vw;
-    max-width: 100vw;
-    padding: 54px 16px 34px;
-    overflow: visible;
-    justify-content: flex-start;
+    min-height: auto;padding: 54px 16px 34px;    justify-content: flex-start;
   }
   .tt-gh-shell {
     width: calc(100vw - 32px);
@@ -1392,10 +1344,7 @@ body[data-active-chapter="contact"] #nav-6 {
     vertical-align: top;
     animation-duration: 7.4s;
   }
-  .tt-gh-card-play {
-    width: 48px;
-    height: 48px;
-    padding-left: 2px;
+  .tt-gh-card-play {padding-left: 2px;
   }
   .tt-gh-card-play-icon {
     width: 20px;
@@ -1483,20 +1432,9 @@ body[data-active-chapter="contact"] #nav-6 {
     bottom: 7px;
     transform: translateX(-50%) scale(.88);
   }
-  .tt-gh-modal {
-    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  }
-  .tt-gh-modal-panel {
-    width: calc(100vw - 32px);
-    max-height: calc(100vh - 32px);
-    border-radius: 18px;
-    padding: 16px;
-    overflow: auto;
-  }
-  .tt-gh-modal-close {
-    right: 10px;
-    top: 10px;
-    min-height: 44px;
+  .tt-gh-modal-panel {    max-height: calc(100vh - 32px);
+    border-radius: 18px;}
+  .tt-gh-modal-close {min-height: 44px;
     height: 44px;
   }
 }
@@ -2556,11 +2494,7 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 
   #content,
-  x-dc {
-    background: transparent !important;
-    min-height: 100dvh;
-    overscroll-behavior-y: contain;
-  }
+  x-dc {    min-height: 100dvh;  }
 
   #chapnav {
     contain: layout paint;
@@ -2642,15 +2576,10 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 
   .tt-bridge-mobile-text {
-    display: flex !important;
-    width: min(620px, calc(100vw - 52px)) !important;
-    max-width: min(620px, calc(100vw - 52px)) !important;
-    margin: 0 auto !important;
+    display: flex !important;margin: 0 auto !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: .08em !important;
-    font-size: clamp(26px, 7vw, 31px) !important;
-    line-height: 1.16 !important;
+    gap: .08em !important;    line-height: 1.16 !important;
     letter-spacing: 0 !important;
   }
 
@@ -2702,20 +2631,7 @@ body[data-active-chapter="contact"] #nav-6 {
   }
 
   #content,
-  x-dc {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(239, 248, 247, .82) 0%,
-        rgba(217, 239, 241, .68) 18%,
-        rgba(156, 207, 216, .46) 42%,
-        rgba(37, 95, 127, .30) 66%,
-        rgba(7, 26, 46, .20) 100%
-      ) !important;
-    background-repeat: no-repeat !important;
-    background-size: 100% 720svh !important;
-    overscroll-behavior-y: contain !important;
-  }
+  x-dc {background-size: 100% 720svh !important;  }
 
   #progress,
   body[data-active-chapter] #progress,
@@ -2865,33 +2781,14 @@ body[data-active-chapter="contact"] #nav-6 {
 /* ===== Mobile depth/FX/card readability repair ===== */
 @media (max-width: 760px) {
   html {
-    background: #071a2e !important;
-    color-scheme: light !important;
-  }
+    background: #071a2e !important;  }
 
-  body {
-    background-color: #071a2e !important;
-    background-image:
-      radial-gradient(circle at 72% 18%, rgba(255, 255, 255, .56) 0 2px, transparent 3px),
-      radial-gradient(circle at 26% 34%, rgba(255, 255, 255, .30) 0 2px, transparent 4px),
-      radial-gradient(ellipse at 50% 6%, rgba(244, 254, 251, .98) 0%, rgba(221, 246, 246, .92) 18%, rgba(129, 200, 213, .82) 40%, rgba(36, 95, 128, .90) 64%, rgba(7, 26, 46, 1) 100%),
-      linear-gradient(180deg, #eef8f7 0%, #c7e8ee 22%, #6fb8cc 43%, #245f80 64%, #071a2e 100%) !important;
-    background-repeat: repeat, repeat, no-repeat, no-repeat !important;
-    background-size: 220px 360px, 260px 420px, 100% 100%, 100% 100% !important;
-    background-position: center top, center top, center top, center top !important;
-    background-attachment: scroll !important;
-    overscroll-behavior-y: contain !important;
-  }
+  body {background-attachment: scroll !important;  }
 
   #content,
-  x-dc {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, .06) 0%, rgba(255, 255, 255, 0) 28%, rgba(2, 15, 28, .10) 100%) !important;
-    background-repeat: no-repeat !important;
+  x-dc {    background-repeat: no-repeat !important;
     background-size: 100% 720svh !important;
-    background-position: top center !important;
-    overscroll-behavior-y: contain !important;
-  }
+    background-position: top center !important;  }
 
   #c-projects [data-reveal][style*="grid-template-columns"],
   #c-projects > div[style*="grid-template-columns"] {
@@ -2904,19 +2801,13 @@ body[data-active-chapter="contact"] #nav-6 {
     justify-items: stretch !important;
   }
 
-  #c-projects article.lift {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) clamp(92px, 28vw, 124px) !important;
+  #c-projects article.lift {    grid-template-columns: minmax(0, 1fr) clamp(92px, 28vw, 124px) !important;
     grid-template-areas:
       "head media"
       "copy copy"
       "button button" !important;
     column-gap: 14px !important;
-    row-gap: 12px !important;
-    min-height: 0 !important;
-    padding: 18px !important;
-    border-radius: 22px !important;
-  }
+    row-gap: 12px !important;}
 
   #c-projects article.lift > :nth-child(1) { grid-area: head !important; min-width: 0 !important; }
   #c-projects article.lift > :nth-child(2) { grid-area: media !important; min-width: 0 !important; align-self: start !important; }
@@ -2973,15 +2864,9 @@ body[data-active-chapter="contact"] #nav-6 {
     justify-items: stretch !important;
   }
 
-  #c-news .lift {
-    display: grid !important;
-    grid-template-columns: clamp(96px, 30vw, 132px) minmax(0, 1fr) !important;
+  #c-news .lift {    grid-template-columns: clamp(96px, 30vw, 132px) minmax(0, 1fr) !important;
     gap: 14px !important;
-    align-items: stretch !important;
-    min-height: 0 !important;
-    padding: 14px !important;
-    border-radius: 18px !important;
-  }
+    align-items: stretch !important;}
 
   #c-news .lift > :first-child {
     min-width: 0 !important;
@@ -3093,41 +2978,16 @@ body[data-active-chapter="contact"] #nav-6 {
     transform: translateZ(0) !important;
   }
 
-  #lang-switcher.tt-lang-switcher {
-    right: max(14px, env(safe-area-inset-right)) !important;
-    top: max(18px, env(safe-area-inset-top)) !important;
-    max-width: calc(100vw - 150px) !important;
-    z-index: 340 !important;
+  #lang-switcher.tt-lang-switcher {z-index: 340 !important;
   }
 
-  #lang-switcher.tt-lang-switcher > div {
-    width: clamp(210px, 54vw, 236px) !important;
-    max-width: 100% !important;
-    justify-content: space-between !important;
-    gap: 0 !important;
-    padding: 4px !important;
-    overflow: hidden !important;
-    border-radius: 999px !important;
-    background-clip: padding-box !important;
-    -webkit-backdrop-filter: none !important;
+  #lang-switcher.tt-lang-switcher > div {    max-width: 100% !important;
+    justify-content: space-between !important;-webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
 
-  #lang-switcher.tt-lang-switcher button {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-    flex: 1 1 0 !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    padding: 0 8px !important;
-    border-radius: 999px !important;
-    overflow: hidden !important;
-    background-clip: padding-box !important;
-    display: inline-grid !important;
+  #lang-switcher.tt-lang-switcher button {    -webkit-appearance: none !important;-webkit-tap-highlight-color: transparent !important;
+    flex: 1 1 0 !important;display: inline-grid !important;
     place-items: center !important;
   }
 
@@ -3862,10 +3722,7 @@ body.tt-network-open #content {
    fixed mobile progress rail without changing the existing project cards. */
 @media (max-width: 760px) {
   #c-projects [data-public-audience][data-reveal] {
-    grid-template-columns: minmax(0, 1fr) !important;
-    width: min(320px, calc(100vw - 116px)) !important;
-    max-width: calc(100vw - 116px) !important;
-    margin-left: auto !important;
+    grid-template-columns: minmax(0, 1fr) !important;margin-left: auto !important;
     margin-right: max(18px, env(safe-area-inset-right)) !important;
   }
 
@@ -3874,16 +3731,10 @@ body.tt-network-open #content {
     max-width: none !important;
   }
 
-  #c-projects [data-public-audience] article {
-    padding: 16px !important;
-  }
-
   #c-projects [data-public-audience] article p {
     display: block !important;
     -webkit-line-clamp: unset !important;
-    -webkit-box-orient: initial !important;
-    overflow: visible !important;
-  }
+    -webkit-box-orient: initial !important;  }
 }
 
 @media (min-width: 901px) {
@@ -4374,7 +4225,6 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child * {
   opacity: 1 !important;
   text-shadow: none !important;
 }
-
 
 #c-members > [data-reveal]:first-child h2 {
   color: #0E6E7D !important;
@@ -5048,9 +4898,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
   --tt-news-preview-lines: 3;
   display: -webkit-box !important;
   -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: var(--tt-news-preview-lines) !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  -webkit-line-clamp: var(--tt-news-preview-lines) !important;  text-overflow: ellipsis !important;
   overflow-wrap: anywhere !important;
 }
 

@@ -561,7 +561,7 @@ window.TALETONE_CONTENT = {
       "title": "STELLIVE Universe ‘마음악보’ 발매",
       "summary": "TALETONE이 음악 제작으로 함께한 STELLIVE Universe의 단체 오리지널 싱글 ‘마음악보’가 발매되었습니다.",
       "body": "TALETONE이 음악 제작으로 함께한 STELLIVE Universe의 단체 오리지널 싱글 ‘마음악보’가 발매되었습니다.\n\n‘마음악보’는 스텔라이브 2기생 유닛 'Universe' 소속 아티스트\n'시라유키 히나', '네네코 마시로', '아카네 리제', '아라하시 타비'가 함께한 곡으로, ‘청춘’이라는 테마 아래 시간과 추억이 노래 안에 새겨지는 순간을 그려냅니다.\n\nTALETONE은 이번 곡에서 작곡, 편곡, 연주, 보컬 가이드 및 보컬 에디팅 등 음악 제작 전반에 참여했습니다.\n청량한 멜로디와 록 밴드 사운드 위에, 서툴지만 눈부셨던 순간들이 하나의 악보처럼 남을 수 있도록 마음을 담았습니다.\n\n소중한 프로젝트에 함께할 수 있어 진심으로 감사드립니다.\n‘마음악보’가 많은 분들의 마음속에도 오래 남는 노래가 되기를 바랍니다.\n\nA tale becomes a tone.\nA tone becomes music.\n\nTALETONE MUSIC",
-      "image": "assets\\pictures\\asset-mq5x4pqt-a1nz-.png-dbd67de3c381.jpg",
+      "image": "assets\\pictures\\asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
       "fit": "cover",
       "posX": 50,
       "posY": 50,
@@ -708,7 +708,7 @@ window.TALETONE_CONTENT = {
         "link": "/works/",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
-        "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.jpg",
+        "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.webp",
         "fit": "cover",
         "posX": 50,
         "posY": 0,
@@ -751,7 +751,7 @@ window.TALETONE_CONTENT = {
         "link": "/works/",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
-        "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.jpg",
+        "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
         "fit": "cover",
         "posX": 50,
         "posY": 0,
@@ -934,7 +934,17 @@ window.TALETONE_CONTENT = {
         "buttonLabel": "프로젝트 문의하기",
         "copyLabel": "이메일 주소 복사",
         "copyDone": "복사됨",
-        "copyFail": "복사 실패"
+        "copyFail": "복사 실패",
+        "guideTitle": "이런 내용을 함께 보내 주시면 더 빠르게 답변드려요",
+        "guideItems": [
+          "프로젝트·IP 소개 (게임, 버추얼 아티스트, 애니메이션 등)",
+          "필요한 음악 (오리지널송·OST·캐릭터송·BGM)과 곡 수",
+          "희망 일정과 공개 시점",
+          "예산 범위",
+          "참고 레퍼런스 링크"
+        ],
+        "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
+        "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:"
       },
       "en": {
         "eyebrow": "Contact",
@@ -945,7 +955,17 @@ window.TALETONE_CONTENT = {
         "buttonLabel": "Project Inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
-        "copyFail": "Copy failed"
+        "copyFail": "Copy failed",
+        "guideTitle": "Including these details helps us reply faster",
+        "guideItems": [
+          "Your project or IP (game, virtual artist, animation, etc.)",
+          "What you need (original song, OST, character song, BGM) and how many tracks",
+          "Preferred timeline and release date",
+          "Budget range",
+          "Reference links"
+        ],
+        "mailSubject": "[TALETONE MUSIC] Project Inquiry",
+        "mailTemplate": "Hello TALETONE MUSIC, we would like to discuss a project.\n\n1. Project / IP:\n2. Music needed (original song / OST / character song / BGM) and number of tracks:\n3. Preferred timeline / release date:\n4. Budget range:\n5. Reference links:\n\nName / Company:\nContact:"
       },
       "jp": {
         "eyebrow": "Contact",
@@ -956,13 +976,33 @@ window.TALETONE_CONTENT = {
         "buttonLabel": "プロジェクトについて相談する",
         "copyLabel": "メールアドレスをコピー",
         "copyDone": "コピーしました",
-        "copyFail": "コピーに失敗しました"
+        "copyFail": "コピーに失敗しました",
+        "guideTitle": "以下の内容をお送りいただくと、よりスムーズにご案内できます",
+        "guideItems": [
+          "プロジェクト・IPのご紹介（ゲーム、バーチャルアーティスト、アニメなど）",
+          "必要な音楽（オリジナルソング・OST・キャラクターソング・BGM）と曲数",
+          "ご希望のスケジュールと公開時期",
+          "ご予算の目安",
+          "参考リファレンスのリンク"
+        ],
+        "mailSubject": "[TALETONE MUSIC] プロジェクトのご相談",
+        "mailTemplate": "TALETONE MUSIC御中\nプロジェクトについてご相談させてください。\n\n1. プロジェクト・IPのご紹介：\n2. 必要な音楽（オリジナルソング / OST / キャラクターソング / BGMなど）と曲数：\n3. ご希望のスケジュール / 公開時期：\n4. ご予算の目安：\n5. 参考リファレンスのリンク：\n\nお名前 / ご所属：\nご連絡先："
       }
     },
     "email": "contact@taletone.net",
     "copyLabel": "이메일 주소 복사",
     "copyDone": "복사됨",
-    "copyFail": "복사 실패"
+    "copyFail": "복사 실패",
+    "guideTitle": "이런 내용을 함께 보내 주시면 더 빠르게 답변드려요",
+    "guideItems": [
+      "프로젝트·IP 소개 (게임, 버추얼 아티스트, 애니메이션 등)",
+      "필요한 음악 (오리지널송·OST·캐릭터송·BGM)과 곡 수",
+      "희망 일정과 공개 시점",
+      "예산 범위",
+      "참고 레퍼런스 링크"
+    ],
+    "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
+    "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:"
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",

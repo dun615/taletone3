@@ -1827,6 +1827,10 @@ class Component extends DCLogic {
     if(!em) return;
     var contact = this.CONTACT || {};
     var link = contact.link || ('mailto:' + ['contact','taletone.net'].join(String.fromCharCode(64)));
+    // Prefill the inquiry template in the visitor's language.
+    if(contact.email && contact.mailSubject){
+      link = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(contact.mailSubject) + (contact.mailTemplate ? '&body=' + encodeURIComponent(contact.mailTemplate) : '');
+    }
     em.href = link;
     var label = contact.buttonLabel || 'Start a Project';
     var emLabel = em.querySelector('[data-email-label]');

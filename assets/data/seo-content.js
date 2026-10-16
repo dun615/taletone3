@@ -6,6 +6,9 @@ window.TALETONE_SEO_CONTENT = {
     "TALETONE"
   ],
   "baseUrl": "https://taletone.net",
+  "analytics": {
+    "cloudflareToken": ""
+  },
   "pages": [
     {
       "key": "home",

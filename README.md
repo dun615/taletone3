@@ -41,7 +41,24 @@ https://taletone.net — GitHub Pages로 배포되는 정적 사이트입니다.
 
 작업물이나 소식을 추가할 때는 `slug`(주소에 쓰일 영문 소문자·숫자·하이픈, 예: `bubble-sweet`)를 꼭 넣어 주세요. 한 번 정한 slug는 바꾸지 않는 것이 좋습니다(주소가 바뀝니다).
 
-한국어 폰트는 나눔고딕(Google Fonts, 400/700)입니다.
+한국어 폰트는 나눔고딕(400/700)입니다. 빌드가 사이트에 쓰인 한글만 모아 Google Fonts에 `text=`로 요청하므로, 글을 추가하고 빌드만 하면 폰트도 자동으로 맞춰집니다.
+
+## 문의 메일 양식
+
+`assets/data/site-content.json` → `contact`의 `mailSubject`·`mailTemplate`(언어별 `translations`)이 "프로젝트 문의하기" 메일에 미리 채워지고, `guideTitle`·`guideItems`가 문의 섹션의 안내 카드에 나옵니다.
+
+## 방문 분석 (Cloudflare Web Analytics)
+
+Cloudflare 대시보드 → Web Analytics에서 사이트(taletone.net)를 추가하고 받은 토큰을 `assets/data/seo-content.json` → `analytics.cloudflareToken`에 넣은 뒤 `npm run build` 하면 모든 페이지에 켜집니다. 비워 두면 꺼져 있습니다.
+
+## 이미지·CSS 도구 (선택)
+
+```bash
+npm install
+```
+
+- `node scripts/optimize-assets.mjs webp --max=1024 <이미지...>`: JPEG/PNG 옆에 WebP를 만듭니다. 데이터 파일의 경로를 `.webp`로 바꾸고 원본은 지우면 됩니다.
+- `node scripts/prune-css.mjs assets/css/works.css`: 뒤의 규칙에 덮여 적용되지 않는 선언을 찾습니다(`--write`로 정리).
 
 `support.js`는 Claude Design에서 내보낸 런타임(dc-runtime)이며 역시 직접 고치지 않습니다.
 

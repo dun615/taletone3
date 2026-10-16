@@ -213,7 +213,7 @@
       var item = localizedNewsItem(content.news[index]);
       var preview = card.querySelector('p');
       if (!preview) return;
-      var text = plainNewsPreviewText(item.body || item.summary || '');
+      var text = plainNewsPreviewText(item.summary || item.body || '');
       preview.classList.add('tt-news-card-preview');
       if (text && preview.textContent !== text) preview.textContent = text;
     });

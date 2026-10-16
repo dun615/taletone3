@@ -14,6 +14,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { nanumCharacters } from './font-coverage.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -51,6 +52,14 @@ const paragraphs = (value) => String(value ?? '').trim().split(/\n{2,}/).filter(
 const localized = (item, lang) => ({ ...item, ...((item && item.translations && item.translations[lang]) || {}) });
 const urlFor = (lang, pagePath) => `${baseUrl}${lang.prefix}${pagePath}`;
 const fileFor = (lang, pagePath) => `${lang.prefix.slice(1)}${pagePath}index.html`.replace(/^\//, '');
+// Nanum Gothic via Google Fonts `text=`: one small file per weight holding only the characters the site uses.
+const nanumFontUrl = `https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&amp;display=swap&amp;text=${encodeURIComponent(await nanumCharacters(root))}`;
+
+// Cloudflare Web Analytics: set seo-content.json → analytics.cloudflareToken to switch it on.
+const analyticsToken = String(seo.analytics?.cloudflareToken || '').trim();
+const analyticsTag = analyticsToken
+  ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: analyticsToken })}'></script>`
+  : '';
 const version = (text) => createHash('sha256').update(text).digest('hex').slice(0, 12);
 
 // The dc-runtime in support.js boots on DOMContentLoaded from two base64 <script> blocks.
@@ -177,7 +186,7 @@ ${nav}
 <nav aria-label="${esc(t.languages)}">
 ${switcher}
 </nav>
-<p><a href="${esc(site.contact.link)}">contact@taletone.net</a></p>
+<p><a href="${esc(inquiryMailto(lang))}">${esc(site.contact.email)}</a></p>
 </main>`;
 }
 
@@ -203,6 +212,8 @@ function renderPage(page, lang) {
     JSON_LD: jsonLd(page, lang),
     NOSCRIPT: noscriptBody(page, lang),
     APP_VERSION: version(appBundle),
+    ANALYTICS: analyticsTag,
+    NANUM_FONT_URL: nanumFontUrl,
   };
   return shell.replace(/%%([A-Z_]+)%%/g, (match, key) => {
     if (!(key in values)) throw new Error(`src/page.html: unknown placeholder ${match}`);
@@ -231,7 +242,6 @@ function detailPage({ lang, pathFor, title, description, ogType, image, schema, 
   const d = detailLabels[lang.key];
   const url = `${baseUrl}${pathFor(lang)}`;
   const fullTitle = `${title} | TALETONE MUSIC`;
-  const fonts = `https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700${lang.key === 'jp' ? '&amp;family=Noto+Sans+JP:wght@400..800' : ''}&amp;display=swap`;
   const ld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
     schema,
     { '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, href], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${baseUrl}${href}` })) },
@@ -267,7 +277,7 @@ ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseU
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="${fonts}" rel="stylesheet">
+<link href="${nanumFontUrl}" rel="stylesheet">${lang.key === 'jp' ? '\n<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">' : ''}
 <link rel="stylesheet" href="/assets/css/detail.css?v=${version(detailCss)}">
 <script type="application/ld+json">${ld}</script>
 </head>
@@ -287,9 +297,16 @@ ${body}
 ${contactCta(lang)}
 </main>
 <footer class="tt-d-foot">${esc(localized(site.footerMeta, lang.key).copyright)}</footer>
+${analyticsTag}
 </body>
 </html>
 `;
+}
+
+// Inquiry mail prefilled with the visitor's language template.
+function inquiryMailto(lang) {
+  const contact = localized(site.contact, lang.key);
+  return `mailto:${site.contact.email}?subject=${encodeURIComponent(contact.mailSubject)}&body=${encodeURIComponent(contact.mailTemplate)}`;
 }
 
 function contactCta(lang) {
@@ -297,7 +314,9 @@ function contactCta(lang) {
   return `<section class="tt-d-cta">
 <h2>${esc(contact.titleLine1)} ${esc(contact.titleAccent)}</h2>
 <p>${esc(contact.subtitle)} ${esc(contact.caption)}</p>
-<a class="tt-d-button" href="${esc(site.contact.link)}">${esc(contact.buttonLabel)} <span aria-hidden="true">&#8594;</span></a>
+<a class="tt-d-button" href="${esc(inquiryMailto(lang))}">${esc(contact.buttonLabel)} <span aria-hidden="true">&#8594;</span></a>
+<p class="tt-d-guide-title">${esc(contact.guideTitle)}</p>
+<ul class="tt-d-guide">${contact.guideItems.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>
 </section>`;
 }
 

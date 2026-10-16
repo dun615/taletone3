@@ -5,5 +5,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs --check && node .github/scripts/validate-site.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
   }
 }

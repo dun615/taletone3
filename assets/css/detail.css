@@ -120,3 +120,6 @@ h1 { margin: 0 0 14px; font-family: var(--display); font-weight: 700; font-size:
   .tt-d-pager a.next { grid-column: 1; }
   .tt-d-foot { padding: 0 16px 32px; }
 }
+
+.tt-d-guide-title { margin: 28px auto 8px; font-weight: 800; font-size: 14px; color: var(--paper); }
+.tt-d-guide { display: inline-block; margin: 0 auto; padding-left: 18px; text-align: left; font-size: 14px; line-height: 1.75; color: rgba(255, 253, 248, .76); }
