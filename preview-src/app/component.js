@@ -1412,6 +1412,9 @@ class Component extends DCLogic {
   // The score playhead: the whole page is one staff scrolling past a fixed reading head.
   // Each chapter's note ignites exactly as it reaches the head -> the reason the chapter "plays".
   drawRail(n, pal, time){
+    // the decorative depth rail would cross reading and touch targets on compact screens; the chapter
+    // menu shows progress there (this guard used to be patched in from support.js)
+    if(window.innerWidth <= 1180) return;
     var c=this.ctx, vh=this.H;
     if(!this.sections||!this.sections.length||this.scrollCenter==null) return;
     var centers=this._railCenters;
