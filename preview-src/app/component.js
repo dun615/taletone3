@@ -1310,9 +1310,14 @@ class Component extends DCLogic {
       if(keys.length&&top<=keys[keys.length-1][0]) top=keys[keys.length-1][0]+1;
       keys.push([top,layers[i][1],layers[i][2]]);
       if(next&&next.offsetTop>top+2){
-        var hold=top+el.offsetHeight*0.5;
-        bridgeTops.forEach(function(b){ if(b>top&&b<next.offsetTop) hold=Math.max(hold,b); });
-        keys.push([Math.min(hold,next.offsetTop-1),layers[i][1],layers[i][2]]);
+        var hold=top+el.offsetHeight*0.5, bridge=null;
+        bridgeTops.forEach(function(b){ if(b>top&&b<next.offsetTop) bridge=b; });
+        // a bridge is the descent between two chapters: it sits halfway down in colour and depth,
+        // so its words already belong to the deeper water (light text once the sea has darkened)
+        if(bridge!=null){
+          keys.push([Math.min(hold,bridge-1),layers[i][1],layers[i][2]]);
+          keys.push([Math.min(bridge,next.offsetTop-1),(layers[i][1]+layers[i+1][1])/2,(layers[i][2]+layers[i+1][2])/2]);
+        } else keys.push([Math.min(hold,next.offsetTop-1),layers[i][1],layers[i][2]]);
       }
     }
     var maxScroll=Math.max(0,(layoutHeight||(scEl?scEl.scrollHeight:0))-(scEl?scEl.clientHeight:0));
@@ -1513,6 +1518,7 @@ class Component extends DCLogic {
         ? '0 1px 2px rgba(255,255,255,'+(0.25+0.5*hs).toFixed(2)+'),0 0 18px rgba(255,255,255,'+(0.18+0.4*hs).toFixed(2)+')'
         : '0 1px 2px rgba(3,11,22,'+(0.35+0.45*hs).toFixed(2)+'),0 0 20px rgba(3,11,22,'+(0.25+0.45*hs).toFixed(2)+')';
       this.setCssVar(r,'--halo',halo);
+      this.setCssVar(r,'--deep-glow',tn.toFixed(3));
       // brand mark follows the same ink<->paper flip as the text
       if(!this._brandMark) this._brandMark=document.getElementById('brand-mark');
       if(this._brandMark){ var want = tn<0.5 ? 'assets/logo/mark-ink.png' : 'assets/logo/mark-paper.png'; if(this._brandMarkSrc!==want){ this._brandMark.src=want; this._brandMarkSrc=want; } }

@@ -70,7 +70,7 @@ image-slot{display:block}
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
 /* narrative chapter labels */
-.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-shadow:var(--halo,none);white-space:pre-wrap}
+.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,var(--ink,#141C30) calc(var(--deep-glow,0)*72%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
 .tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
 
 .tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
@@ -160,6 +160,17 @@ body.tt-book-awake .tb-emblem{filter:drop-shadow(0 0 14px rgba(255,220,150,.9)) 
 .tb-title{position:absolute;left:0;right:0;bottom:17%;text-align:center;font-family:'Quicksand',sans-serif;font-weight:700;font-size:calc(var(--bw)*.072);letter-spacing:.42em;padding-left:.42em;color:#e8cb88;opacity:.9}
 @media (max-width:760px){.tt-book2{--bw:42vw}}
 @media (prefers-reduced-motion: reduce){.tb-book,.tb-cover,.tb-leaf,.tb-ink i,.tb-page-glow{transition-duration:.01s!important;transition-delay:0s!important}.tb-emblem{animation:none}}
+/* bridge sentences: a deeper halo once the text is light */
+.tt-bridge-pin-stage [data-bridge]{text-shadow:var(--halo,none),0 0 calc(var(--deep-glow,0)*30px) rgba(3,11,22,calc(var(--deep-glow,0)*.55))}
+/* ===== Line breaks (revision 2) ===== */
+/* Korean never breaks inside a word; outranks the older word-break:normal resets in responsive.css */
+html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important;overflow-wrap:break-word}
+/* running text never ends on a lone word; headings and short notes are balanced */
+#content{text-wrap:pretty}
+#content :is(h2,h3,h4,.tt-news-title,.tt-section-note,.tt-prologue-hint,.tt-chapter-lead){text-wrap:balance}
+/* short titles stay on one line */
+.tt-project-title{white-space:nowrap;font-size:clamp(26px,2.6vw,38px)!important}
+.tb-title{white-space:nowrap}
 /* accessibility: keyboard focus + reduced motion */
 a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent,#0E6E7D);outline-offset:3px;border-radius:6px}
 @media (prefers-reduced-motion: reduce){
@@ -249,7 +260,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 .tt-bloom-stage{position:absolute;left:50%;top:50%;width:360px;height:360px;margin:-180px 0 0 -180px;}
 .tt-bloom-petal{position:absolute;left:50%;top:50%;width:42px;height:154px;margin:-154px 0 0 -21px;transform-origin:50% 100%;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:linear-gradient(0deg,rgba(255,255,255,.95),rgba(200,244,252,.62) 28%,rgba(150,228,248,.3) 58%,rgba(150,228,248,.06) 82%,transparent);filter:blur(4px);mix-blend-mode:screen;opacity:0}           
 .tt-bloom-ray{position:absolute;left:50%;top:50%;width:2px;height:184px;margin:-184px 0 0 -1px;transform-origin:50% 184px;background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(119,229,239,.22),transparent);filter:blur(.3px);}
-.tt-bloom-core{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:radial-gradient(circle at 42% 36%,rgba(255,252,240,.98),rgba(255,238,190,.92) 55%,rgba(255,214,140,.75));box-shadow:0 0 26px rgba(255,240,200,.85),0 0 70px rgba(255,224,150,.4),0 0 120px rgba(118,229,239,.3)}                                  
+.tt-bloom-core{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:radial-gradient(circle at 42% 36%,rgba(255,252,240,.98),rgba(255,238,190,.92) 55%,rgba(255,214,140,.75));box-shadow:0 0 18px rgba(255,240,200,.6),0 0 46px rgba(255,224,150,.22),0 0 90px rgba(118,229,239,.16)}                                  
 
 /* 05 ??怨뺥닡?띠룆理???*/
 .tt-ripple-ring{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px;border-radius:50%;border:1px solid rgba(229,253,255,.78);box-shadow:0 0 26px rgba(112,224,238,.32),inset 0 0 18px rgba(112,224,238,.12);}
@@ -765,7 +776,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_0.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_0.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_0.text }}</span>
   <div data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
@@ -827,7 +838,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_1.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
   <div data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
@@ -899,7 +910,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_2.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_2.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_2.text }}</span>
   <div data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
@@ -911,12 +922,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div id="tt-gh-works-app" aria-live="polite"></div>
   
 </section>
-<div class="tt-gh-story-bridge" data-story-bridge-wrap="">
-  <div class="tt-gh-bridge-line" data-bridge-line=""></div>
-  <div class="tt-gh-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_3.text }}</span>
-  <div class="tt-gh-bridge-copy" data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
-  <div class="tt-gh-bridge-line is-bottom" data-bridge-line=""></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
 </div>
 
 <!-- ================= 06 NEWS ================= -->
@@ -934,7 +944,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
         <image-slot id="{{ n.slotId }}" src="{{ n.image }}" fit="{{ n.fit }}" position="{{ n.position }}" style="width:100%;height:188px;filter:{{ n.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
         <div style="padding:22px 24px 24px">
           <div style="font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ n.tag }} &middot; {{ n.date }}</div>
-          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
+          <div class="tt-news-title" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
           <p style="margin:0;font-weight:500;font-size:14px;line-height:1.55;color:var(--soft,#44505F)">{{ n.summary }}</p>
           <div style="margin-top:14px;font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ NEWS_META.readMoreLabel }}</div>
         </div>
@@ -948,7 +958,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_4.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_4.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_4.text }}</span>
   <div data-bridge="" aria-label="{{ BRIDGE_4.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:clamp(22px,3.4vw,42px);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_4.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.0.indent }}">{{ BRIDGE_4.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.1.indent }}">{{ BRIDGE_4.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.2.indent }}">{{ BRIDGE_4.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
