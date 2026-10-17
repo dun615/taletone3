@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261017-vol2',
-  'assets/js/works.js': '20261017-vol2',
+  'assets/css/works.css': '20261017-review',
+  'assets/js/works.js': '20261017-review',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -247,7 +247,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
     assert(decodedScript.includes('if(sceneDirty||bridgePlaying||this._bridgeRun) this.updateBridges(vhR);'), `${file}: bridge clock does not cover playback, hold and handoff`);
     assert(!decodedScript.includes('updateTranslation') && !decodedScript.includes('c-translation') && !decodedScript.includes('index===-1'), `${file}: retired TRANSLATE bridge code returned`);
-    assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
+    assert(decodedScript.includes('((atRest || this.isMobileMotion()) ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
     assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);
@@ -474,10 +474,8 @@ for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
 }
-for (const [name, value] of Object.entries({ fontStack: siteJson.typography?.fontStack, fontStackJP: siteJson.typography?.fontStackJP })) {
-  assert(value?.includes('var(--tt-noto-primary)') && value?.includes('var(--tt-noto-secondary)'), `site typography ${name} is not language-aware`);
-  assert(!/Noto Sans (?:KR|JP)/.test(value || ''), `site typography ${name} contains a fixed CJK order`);
-}
+// site-content.json has no typography block any more (nothing read it); fonts come from the template's CSS variables
+assert(!('typography' in siteJson), 'site-content.json typography returned: nothing reads it');
 const optimizedNewsImagePath = 'assets/works/images/bubblesweet-news-1920.webp';
 const legacyNewsImagePath = 'assets/works/images/4K.mp4_20260711_020133.397.png';
 const optimizedNewsEntry = (siteJson.news || []).find((item) => item.slotId === 'news-3');
@@ -591,7 +589,7 @@ assert(worksCss.includes('.tt-rack-grid {list-style:none;') && worksCss.includes
 assert(worksJs.includes("(eager === false ? 'data-src' : 'src')") && worksJs.includes('sleeveHtml(work, order < 8)') && worksJs.includes('(work.thumb || work.image') && worksJs.includes("if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }"), 'WORKS sleeves are not lazy thumbnails');
 assert(worksJs.includes("audio.preload = 'none';") && (worksJs.match(/new Audio\(\)/g) || []).length === 1, 'WORKS playback must use one on-demand audio element');
 assert(worksJs.includes("function workHref(work)") && worksJs.includes("'/works/' + encodeURIComponent(work.slug) + '/'"), 'WORKS books do not open their permalink pages');
-assert(!worksJs.includes('function playerHtml(') && worksJs.includes("if (state.playing && !isWorksChapterActive()) pauseAll();"), 'WORKS music does not stop when leaving the chapter');
+assert(!worksJs.includes('function playerHtml(') && worksJs.includes("if (chapter !== 'works') { pauseAll(); return; }"), 'WORKS music does not stop when leaving the chapter');
 for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');

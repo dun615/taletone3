@@ -1,153 +1,5 @@
 window.TALETONE_CONTENT = {
   "version": "public-site-pass-20260709",
-  "lastUpdated": "2026-07-16T06:52:43.184Z",
-  "colorSchemes": {
-    "abyss": {
-      "stops": [
-        [
-          0,
-          "#eef6f4",
-          "#dceef0"
-        ],
-        [
-          0.22,
-          "#cfe7ea",
-          "#a9d6dc"
-        ],
-        [
-          0.42,
-          "#8fc3cf",
-          "#5b9fb4"
-        ],
-        [
-          0.6,
-          "#3f7d9a",
-          "#2a5f80"
-        ],
-        [
-          0.76,
-          "#1c4a68",
-          "#143a5a"
-        ],
-        [
-          0.88,
-          "#0c2a44",
-          "#08203a"
-        ],
-        [
-          1,
-          "#04101f",
-          "#020812"
-        ]
-      ],
-      "accent": "#0E6E7D",
-      "accent2": "#3d8a98",
-      "soft": "#364454",
-      "ink": "#141C30",
-      "paper": "#fffdf8",
-      "star": [
-        255,
-        224,
-        168
-      ],
-      "name": "Abyss (Deep Sea)"
-    },
-    "twilight": {
-      "stops": [
-        [
-          0,
-          "#f6eef6",
-          "#efe0ee"
-        ],
-        [
-          0.22,
-          "#e6cfe6",
-          "#d6a9d2"
-        ],
-        [
-          0.42,
-          "#b88fcf",
-          "#8a5bb4"
-        ],
-        [
-          0.6,
-          "#6f4f9a",
-          "#4a2f80"
-        ],
-        [
-          0.76,
-          "#3a2868",
-          "#2a1c5a"
-        ],
-        [
-          0.88,
-          "#1c123a",
-          "#140c2e"
-        ],
-        [
-          1,
-          "#0c0820",
-          "#060312"
-        ]
-      ],
-      "accent": "#b06ad0",
-      "accent2": "#7f6ad6",
-      "star": [
-        255,
-        206,
-        230
-      ],
-      "name": "Twilight (Purple)"
-    },
-    "lumen": {
-      "stops": [
-        [
-          0,
-          "#eef6f1",
-          "#dcefe6"
-        ],
-        [
-          0.22,
-          "#cfeae0",
-          "#a9dcc8"
-        ],
-        [
-          0.42,
-          "#7fc7b0",
-          "#4ba98e"
-        ],
-        [
-          0.6,
-          "#2f8a7a",
-          "#1f6a60"
-        ],
-        [
-          0.76,
-          "#124a48",
-          "#0c3a3c"
-        ],
-        [
-          0.88,
-          "#082a2c",
-          "#062024"
-        ],
-        [
-          1,
-          "#02100f",
-          "#010806"
-        ]
-      ],
-      "accent": "#36c2a0",
-      "accent2": "#5fd0c0",
-      "star": [
-        180,
-        255,
-        224
-      ],
-      "name": "Lumen (Forest Green)"
-    }
-  },
-  "defaultMood": "abyss",
   "members": [
     {
       "name": "N4ML",
@@ -462,15 +314,6 @@ window.TALETONE_CONTENT = {
       }
     }
   ],
-  "memberCardLayout": {
-    "gap": "26px",
-    "partnerGap": "16px",
-    "containerPadding": "20px",
-    "borderRadius": "18px",
-    "boxShadow": "0 22px 50px rgba(20,28,60,.13)",
-    "cardBorder": "rgba(24,32,52,.08)",
-    "cardBg": "rgba(255,255,255,.5)"
-  },
   "news": [
     {
       "slotId": "news-3",
@@ -626,16 +469,6 @@ window.TALETONE_CONTENT = {
       }
     }
   ],
-  "typography": {
-    "sectionTitleSize": "clamp(32px, 4.2vw, 64px)",
-    "sectionTitleWeight": 800,
-    "memberNameSize": "36px",
-    "memberNameWeight": 700,
-    "memberRoleSize": "11px",
-    "memberRoleWeight": 700,
-    "fontStack": "'Hanken Grotesk',var(--tt-noto-primary),var(--tt-noto-secondary),system-ui,sans-serif",
-    "fontStackJP": "'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"
-  },
   "spacing": {
     "memberCardGap": "26px",
     "partnerCardGap": "16px",
