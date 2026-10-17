@@ -336,9 +336,9 @@
     return languageLabel(kr || variants[0], variants.indexOf(kr || variants[0]));
   }
   // ===================================================================
-  // WORKS · the bookshelf
-  // Every work is a record sleeve on a shelf. Covers tilt toward the pointer; the play button in the
-  // middle slides the record out and spins it; the detail button opens the story in a popup.
+  // WORKS · the record shop
+  // Every work is a picture disc in a display rack. Pick one and it flies onto the turntable, the tonearm
+  // drops and it spins; the deck under it plays, seeks, switches tracks and opens the story in a popup.
   // ===================================================================
   var state = {
     filter: 'all',
@@ -348,15 +348,16 @@
     track: 0,
     language: 'KR',
     modal: -1,        // index of the work open in the popup
-    settled: false    // the shelf has made its entrance once
+    settled: false,   // the rack has made its entrance once
+    engaged: false    // the reader has played something (the bottom player may appear)
   };
   var audio = null;
   var progressFrame = 0;
 
   var shelfLabels = {
-    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생' },
-    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video' },
-    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生' }
+    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -433,33 +434,73 @@
     }).join('') + '</div>';
   }
 
-  function bookHtml(entry, order) {
+  // ---- a record: the cover art pressed into a picture disc; it spins while it plays ----
+  function discHtml(work, extraClass, eager) {
+    var unit = localizedUnit(work);
+    var image = unit.image || work.image || '';
+    return '<span class="tt-disc' + (extraClass ? ' ' + extraClass : '') + '" aria-hidden="true">' +
+      '<span class="tt-disc-spin"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"></span>' +
+      '<span class="tt-disc-sheen"></span><span class="tt-disc-hole"></span></span>';
+  }
+
+  function rackItemHtml(entry, order) {
     var work = entry.work, index = entry.index, labels = L();
     var unit = localizedUnit(work);
     var title = plainRichText(unit.title || work.title || '');
     var artist = plainRichText(unit.artist || work.artist || '');
-    var story = plainRichText(unit.description || '');
-    var format = [work.format || (isAlbum(work) ? 'Album' : 'Single'), yearOf(work)].filter(Boolean).join(' · ');
     var current = state.current === index;
-    var eager = order < shelfStep();
-    var image = unit.image || work.image || '';
-    return '<li class="tt-shelf-book' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
-      '<div class="tt-shelf-cover">' +
-        '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
-        '<a class="tt-shelf-cover-link" href="' + esc(workHref(work)) + '" data-works-action="open" data-index="' + index + '" tabindex="-1" aria-hidden="true">' +
-          '<img ' + (eager ? 'src' : 'data-src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '">' +
-          '<span class="tt-shelf-glare"></span>' +
-        '</a>' +
-        (hasAudio(work) ? playButton(index, title) : '') +
-        '<button type="button" class="tt-shelf-detail" data-works-action="open" data-index="' + index + '" aria-label="' + esc(labels.detail + ': ' + title) + '">' + esc(labels.detail) + '<span aria-hidden="true">+</span></button>' +
-      '</div>' +
-      '<div class="tt-shelf-meta">' +
-        '<p class="tt-shelf-format">' + esc(format) + '</p>' +
-        '<h3 class="tt-shelf-name"><a href="' + esc(workHref(work)) + '" data-works-action="open" data-index="' + index + '" aria-label="' + esc(title + ' — ' + labels.open) + '">' + esc(title) + '</a></h3>' +
-        (artist ? '<p class="tt-shelf-artist">' + esc(artist) + '</p>' : '') +
-        (story ? '<p class="tt-shelf-story">' + esc(story) + '</p>' : '') +
-      '</div>' +
+    return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
+      '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
+        discHtml(work, '', order < 8) +
+        '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
+      '</button>' +
+      '<button type="button" class="tt-shelf-detail tt-rack-detail" data-works-action="open" data-index="' + index + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><span aria-hidden="true">+</span></button>' +
+      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + '</div>' +
     '</li>';
+  }
+
+  // ---- the turntable: the chosen record on the platter, the tonearm, and everything to play it ----
+  function deckHtml() {
+    var labels = L();
+    var work = works[state.current];
+    if (!work) return '';
+    var unit = localizedUnit(work);
+    var title = plainRichText(unit.title || work.title || '');
+    var trackTitle = work.tracks && work.tracks.length > 1 ? plainRichText(localizedUnit(work.tracks[state.track]).title || '') : '';
+    var variants = variantsFor(work, state.track);
+    var tracks = work.tracks && work.tracks.length > 1
+      ? '<div class="tt-deck-chips" role="group" aria-label="' + esc(labels.tracks) + '">' + work.tracks.map(function (track, i) {
+          return '<button type="button" class="' + (i === state.track ? 'is-on' : '') + '" aria-pressed="' + (i === state.track) + '" data-works-action="track" data-track="' + i + '" title="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + pad(i + 1) + '</button>';
+        }).join('') + '</div>' : '';
+    var langs = variants.length > 1
+      ? '<div class="tt-deck-chips" role="group">' + variants.map(function (version, i) {
+          var label = languageLabel(version, i);
+          return '<button type="button" class="' + (label === state.language ? 'is-on' : '') + '" aria-pressed="' + (label === state.language) + '" data-works-action="language" data-language="' + esc(label) + '">' + esc(label) + '</button>';
+        }).join('') + '</div>' : '';
+    return '<section class="tt-deck' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
+      '<div class="tt-deck-table">' +
+        '<div class="tt-deck-platter">' + discHtml(work, 'tt-disc--platter') + '<span class="tt-deck-spindle"></span></div>' +
+        '<div class="tt-deck-arm" aria-hidden="true"><i class="tt-deck-arm-bar"></i><i class="tt-deck-arm-head"></i></div>' +
+        '<span class="tt-deck-arm-base" aria-hidden="true"></span>' +
+        '<span class="tt-deck-led" aria-hidden="true"></span>' +
+      '</div>' +
+      '<div class="tt-deck-info">' +
+        '<p class="tt-shelf-format">' + esc([work.format || (isAlbum(work) ? 'Album' : 'Single'), yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
+        '<h3 class="tt-deck-title">' + esc(title) + '</h3>' +
+        '<p class="tt-deck-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackTitle ? ' · <span>' + esc(trackTitle) + '</span>' : '') + '</p>' +
+        (unit.description ? '<p class="tt-deck-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
+        tracks + langs +
+        '<div class="tt-deck-controls">' +
+          (hasAudio(work) ? '<button type="button" class="tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
+          '<div class="tt-shelf-player-bar tt-deck-bar" data-works-action="seek" role="slider" aria-label="' + esc(title) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i></i></div>' +
+          '<span class="tt-shelf-player-time tt-deck-time">0:00</span>' +
+        '</div>' +
+        '<div class="tt-deck-links">' +
+          '<button type="button" class="tt-deck-link" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' +
+          '<a class="tt-deck-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
   }
 
   function trackRowsHtml(work, index) {
@@ -512,7 +553,7 @@
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
           '</div>' +
           '<div class="tt-shelf-modal-side">' +
-            '<div class="tt-shelf-modal-record"><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '"><dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
+            '<div class="tt-shelf-modal-record' + (state.current === index && state.playing ? ' is-playing' : '') + '">' + discHtml(work, 'tt-disc--mini') + '<dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
             trackRowsHtml(work, index) +
             (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
           '</div>' +
@@ -542,7 +583,7 @@
         }).join('') + '</div>'
       : '';
     return '<div class="tt-shelf-player is-open" role="region" aria-label="' + esc(labels.nowPlaying) + '">' +
-      '<button type="button" class="tt-shelf-player-cover" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><img src="' + esc(playUnit.image || unit.image || work.image || '') + '" alt=""></button>' +
+      '<button type="button" class="tt-shelf-player-cover' + (state.playing ? ' is-playing' : '') + '" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '">' + discHtml(work, 'tt-disc--mini') + '</button>' +
       '<div class="tt-shelf-player-text"><span class="tt-shelf-player-kicker">' + esc(labels.nowPlaying) + '</span>' +
         '<strong>' + esc(trackTitle || title) + '</strong><span>' + esc(plainRichText(unit.artist || work.artist || '')) + '</span></div>' +
       tracks + langs +
@@ -604,21 +645,69 @@
   function render(before) {
     if (!root) root = ensureRoot();
     if (!root) return;
-    var labels = L();
     var list = visibleWorks();
-    var limit = state.expanded ? list.length : Math.min(list.length, shelfStep());
-    var more = list.length > shelfStep()
-      ? '<button type="button" class="tt-shelf-more" data-works-action="more" aria-expanded="' + state.expanded + '">' + esc(state.expanded ? labels.less : labels.more) + (state.expanded ? '' : '<span>' + (list.length - limit) + '</span>') + '</button>'
-      : '';
-    root.innerHTML = '<div class="tt-shelf' + (state.settled ? ' is-settled' : '') + '">' + headHtml() + filtersHtml() +
-      '<ul class="tt-shelf-grid">' + list.slice(0, limit).map(bookHtml).join('') + '</ul>' + more + clientsHtml() + playerHtml() +
+    root.innerHTML = '<div class="tt-shelf tt-crate' + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() +
+      '<div class="tt-crate-stage">' +
+        '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
+        '<div class="tt-crate-rack">' + filtersHtml() + '<ul class="tt-rack-grid">' + list.map(rackItemHtml).join('') + '</ul></div>' +
+      '</div>' + clientsHtml() + playerHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
+    watchDeck();
     updateProgress();
     if (before) shuffleFrom(before);
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
+  }
+
+  // the bottom player only appears once something has played and the turntable is out of view
+  var deckObserver = null;
+  function watchDeck() {
+    var deck = root && root.querySelector('.tt-crate-deck');
+    if (!deck || !('IntersectionObserver' in window)) return;
+    if (deckObserver) deckObserver.disconnect();
+    deckObserver = new IntersectionObserver(function (entries) {
+      var shelf = root && root.querySelector('.tt-shelf');
+      if (shelf) shelf.classList.toggle('is-deck-away', !entries[0].isIntersecting);
+    }, { root: document.getElementById('content'), threshold: 0.15 });
+    deckObserver.observe(deck);
+  }
+
+  // the chosen record flies from the rack onto the platter
+  function flyToDeck(index, done) {
+    var from = root && root.querySelector('[data-works-book="' + index + '"] .tt-disc');
+    var deckDisc = root && root.querySelector('.tt-deck-platter .tt-disc');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!from || !deckDisc || reduce || !from.animate) { done(); return; }
+    var a = from.getBoundingClientRect();
+    done();
+    var target = root.querySelector('.tt-deck-platter .tt-disc');
+    var b = target.getBoundingClientRect();
+    if (b.bottom < 0 || b.top > window.innerHeight) return; // the turntable is off screen: the player takes over
+    var ghost = from.cloneNode(true);
+    ghost.classList.add('tt-disc--flying');
+    ghost.style.cssText = 'position:fixed;left:' + a.left + 'px;top:' + a.top + 'px;width:' + a.width + 'px;height:' + a.height + 'px;margin:0;z-index:90;pointer-events:none';
+    document.body.appendChild(ghost);
+    target.style.opacity = '0';
+    var dx = b.left - a.left, dy = b.top - a.top, sc = b.width / a.width;
+    var anim = ghost.animate([
+      { transform: 'translate(0,0) scale(1) rotate(0deg)' },
+      { transform: 'translate(' + (dx * 0.55) + 'px,' + (dy * 0.55 - 70) + 'px) scale(' + (1 + (sc - 1) * 0.6) + ') rotate(160deg)', offset: 0.55 },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ') rotate(360deg)' }
+    ], { duration: 720, easing: 'cubic-bezier(.3,.7,.2,1)' });
+    anim.onfinish = function () { ghost.remove(); target.style.opacity = ''; };
+  }
+  function pick(index) {
+    if (index === state.current) { if (state.playing) pauseAll(); else resume(); return; }
+    var work = works[index]; if (!work) return;
+    flyToDeck(index, function () {
+      state.current = index;
+      state.track = titleTrackIndex(work);
+      state.language = defaultLanguage(work, state.track);
+      refreshPlaying(true);
+    });
+    if (hasAudio(work)) { loadCurrent(false); resume(); }
   }
 
   var coverObserver = null;
@@ -688,6 +777,8 @@
     resume();
   }
   function resume() {
+    state.engaged = true;
+    var engagedShelf = root && root.querySelector('.tt-shelf'); if (engagedShelf) engagedShelf.classList.add('is-engaged');
     var video = root && root.querySelector('.tt-shelf-yt.is-playing');
     if (video) { video.closest('.tt-shelf-modal-stage') && closeVideo(video); }
     var el = ensureAudioEl();
@@ -711,41 +802,45 @@
   function stopAll() {
     pauseAll();
     if (audio) { audio.removeAttribute('src'); audio.load(); }
-    state.current = -1;
+    state.engaged = false;
+    var stoppedShelf = root && root.querySelector('.tt-shelf'); if (stoppedShelf) stoppedShelf.classList.remove('is-engaged');
     refreshPlaying(true);
   }
   // Light update: play states, the record sleeves and the player, without rebuilding the shelf
-  function refreshPlaying(rebuildPlayer) {
+  function refreshPlaying(rebuild) {
     if (!root) return;
     var labels = L();
-    root.querySelectorAll('[data-works-book]').forEach(function (book) {
-      var on = Number(book.getAttribute('data-works-book')) === state.current;
-      book.classList.toggle('is-current', on);
-      book.classList.toggle('is-playing', on && state.playing);
+    root.querySelectorAll('[data-works-book]').forEach(function (item) {
+      var on = Number(item.getAttribute('data-works-book')) === state.current;
+      item.classList.toggle('is-current', on);
+      item.classList.toggle('is-playing', on && state.playing);
     });
-    root.querySelectorAll('.tt-shelf-play').forEach(function (button) {
-      var on = Number(button.getAttribute('data-index')) === state.current && state.playing;
-      button.classList.toggle('is-playing', on);
-      var label = String(button.getAttribute('aria-label') || '').replace(/^[^:]*:\s*/, '');
-      button.setAttribute('aria-label', (on ? labels.pause : labels.play) + ': ' + label);
-    });
+    var deckHost = root.querySelector('.tt-crate-deck');
+    if (deckHost && rebuild) deckHost.innerHTML = deckHtml();
+    var deck = root.querySelector('.tt-deck');
+    if (deck) {
+      deck.classList.toggle('is-playing', state.playing);
+      var toggle = deck.querySelector('.tt-deck-toggle');
+      if (toggle) { toggle.classList.toggle('is-playing', state.playing); toggle.setAttribute('aria-label', (state.playing ? labels.pause : labels.play) + ': ' + ((deck.querySelector('.tt-deck-title') || {}).textContent || '')); }
+    }
     root.querySelectorAll('.tt-shelf-listen').forEach(function (button) {
       var on = Number(button.getAttribute('data-index')) === state.current && state.playing;
       button.classList.toggle('is-playing', on);
       var text = button.querySelector('.tt-shelf-listen-label'); if (text) text.textContent = on ? labels.pause : labels.listen;
     });
-    var art = root.querySelector('.tt-shelf-modal-art');
-    if (art) art.classList.toggle('is-playing', state.modal === state.current && state.playing);
+    var card = root.querySelector('.tt-shelf-modal-record');
+    if (card) card.classList.toggle('is-playing', state.modal === state.current && state.playing);
     root.querySelectorAll('[data-works-action="modal-track"]').forEach(function (button) {
       button.classList.toggle('is-on', Number(button.getAttribute('data-index')) === state.current && Number(button.getAttribute('data-track')) === state.track);
     });
     var player = root.querySelector('.tt-shelf-player');
-    if (player && (rebuildPlayer || !player.classList.contains('is-open'))) {
+    if (player && (rebuild || !player.classList.contains('is-open'))) {
       var holder = document.createElement('div'); holder.innerHTML = playerHtml();
       player.replaceWith(holder.firstChild);
     } else if (player) {
-      var toggle = player.querySelector('.tt-shelf-player-toggle');
-      if (toggle) { toggle.classList.toggle('is-playing', state.playing); toggle.setAttribute('aria-label', state.playing ? labels.pause : labels.play); }
+      var pt = player.querySelector('.tt-shelf-player-toggle');
+      if (pt) { pt.classList.toggle('is-playing', state.playing); pt.setAttribute('aria-label', state.playing ? labels.pause : labels.play); }
+      var pc = player.querySelector('.tt-shelf-player-cover'); if (pc) pc.classList.toggle('is-playing', state.playing);
     }
     updateProgress();
   }
@@ -755,11 +850,10 @@
   }
   function updateProgress() {
     if (!root || !audio) return;
-    var bar = root.querySelector('.tt-shelf-player-bar');
-    var time = root.querySelector('.tt-shelf-player-time');
     var p = audio.duration ? audio.currentTime / audio.duration : 0;
-    if (bar) { bar.style.setProperty('--p', p.toFixed(4)); bar.setAttribute('aria-valuenow', String(Math.round(p * 100))); }
-    if (time) time.textContent = fmt(audio.currentTime) + (audio.duration ? ' / ' + fmt(audio.duration) : '');
+    var text = fmt(audio.currentTime) + (audio.duration ? ' / ' + fmt(audio.duration) : '');
+    root.querySelectorAll('.tt-shelf-player-bar').forEach(function (bar) { bar.style.setProperty('--p', p.toFixed(4)); bar.setAttribute('aria-valuenow', String(Math.round(p * 100))); });
+    root.querySelectorAll('.tt-shelf-player-time').forEach(function (time) { time.textContent = text; });
   }
   function tickProgress() {
     cancelAnimationFrame(progressFrame);
@@ -771,37 +865,6 @@
     var rect = bar.getBoundingClientRect();
     audio.currentTime = clamp((clientX - rect.left) / rect.width, 0, 1) * audio.duration;
     updateProgress();
-  }
-
-  // ---- the sleeves lean toward the pointer, with a glint of light across the cover ----
-  var tiltFrame = 0, tiltTarget = null, tiltX = 0, tiltY = 0;
-  function onShelfPointerMove(event) {
-    if (event.pointerType && event.pointerType !== 'mouse') return;
-    var cover = event.target && event.target.closest ? event.target.closest('.tt-shelf-cover') : null;
-    if (tiltTarget && tiltTarget !== cover) resetTilt(tiltTarget);
-    tiltTarget = cover; if (!cover) return;
-    tiltX = event.clientX; tiltY = event.clientY;
-    if (tiltFrame) return;
-    tiltFrame = requestAnimationFrame(function () {
-      tiltFrame = 0;
-      if (!tiltTarget) return;
-      var r = tiltTarget.getBoundingClientRect();
-      var px = clamp((tiltX - r.left) / r.width, 0, 1), py = clamp((tiltY - r.top) / r.height, 0, 1);
-      tiltTarget.style.setProperty('--ry', ((px - 0.5) * 14).toFixed(2) + 'deg');
-      tiltTarget.style.setProperty('--rx', ((0.5 - py) * 12).toFixed(2) + 'deg');
-      tiltTarget.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
-      tiltTarget.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
-    });
-  }
-  function resetTilt(cover) {
-    if (!cover) return;
-    cover.style.removeProperty('--rx'); cover.style.removeProperty('--ry');
-    cover.style.removeProperty('--gx'); cover.style.removeProperty('--gy');
-  }
-  function onShelfPointerOut(event) {
-    var cover = event.target && event.target.closest ? event.target.closest('.tt-shelf-cover') : null;
-    if (!cover || (event.relatedTarget && cover.contains(event.relatedTarget))) return;
-    resetTilt(cover); if (tiltTarget === cover) tiltTarget = null;
   }
 
   function isWorksChapterActive() {
@@ -821,6 +884,8 @@
       state.expanded = false;
       render(before);
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
+    } else if (action === 'pick') {
+      pick(Number(button.getAttribute('data-index')));
     } else if (action === 'more') {
       var beforeMore = bookRects();
       state.expanded = !state.expanded;
@@ -848,17 +913,17 @@
     } else if (action === 'play') {
       event.preventDefault();
       var index = Number(button.getAttribute('data-index'));
-      if (index === state.current && state.playing) pauseAll(); else if (index === state.current) resume(); else playIndex(index);
+      if (index === state.current && state.playing) pauseAll(); else if (index === state.current) resume(); else { playIndex(index); refreshPlaying(true); }
     } else if (action === 'modal-track') {
       playIndex(Number(button.getAttribute('data-index')), Number(button.getAttribute('data-track')) || 0);
     } else if (action === 'toggle') {
-      if (state.playing) pauseAll(); else resume();
+      if (state.playing) pauseAll(); else { if (!audio || !audio.getAttribute('src')) loadCurrent(false); resume(); }
     } else if (action === 'stop') {
       stopAll();
     } else if (action === 'track') {
       state.track = Number(button.getAttribute('data-track')) || 0;
       state.language = defaultLanguage(works[state.current], state.track);
-      loadCurrent(false); resume();
+      loadCurrent(false); resume(); refreshPlaying(true);
     } else if (action === 'language') {
       state.language = button.getAttribute('data-language') || state.language;
       var wasPlaying = state.playing;
@@ -909,6 +974,7 @@
     bindWorksInteractions();
     works = json.works || [];
     logos = json.clientLogos || [];
+    if (works.length) { state.current = 0; state.track = titleTrackIndex(works[0]); state.language = defaultLanguage(works[0], state.track); }
     setTimeout(function () { waitForHost(0); }, 120);
   }
   function setEditorData(json) {
@@ -921,6 +987,7 @@
     render();
   }
   function selectEditorWork(payload) {
+    // (the editor scrolls the rack to the chosen record)
     var index = payload && typeof payload === 'object' ? payload.index : payload;
     var book = root && root.querySelector('[data-works-book="' + Number(index) + '"]');
     if (book) book.scrollIntoView({ block: 'center' });
@@ -1409,8 +1476,6 @@
     document.addEventListener('keydown', onKey, true);
     window.addEventListener('hashchange', scrollToWorksFromHash);
     window.addEventListener('resize', onResize, { passive: true });
-    document.addEventListener('pointermove', onShelfPointerMove, { passive: true });
-    document.addEventListener('pointerout', onShelfPointerOut, true);
     bindVisibilityPause();
   }
   function start() {

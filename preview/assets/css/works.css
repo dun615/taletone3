@@ -3916,3 +3916,116 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
   .tt-shelf-modal-close {top:12px;right:12px;width:40px;height:40px}
   .tt-shelf-modal-body {grid-template-columns:1fr;gap:24px;padding:22px 20px 28px}
 }
+
+/* =====================================================================
+   WORKS · the record shop (revision 2.3): a turntable beside a display rack of picture discs.
+   Brand: teal #0e6e7d, sky #8decfc, white #fbffff.
+   ===================================================================== */
+/* a record: the cover pressed into a picture disc with a black rim, faint grooves, a sheen and a centre hole */
+.tt-disc{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#141b23 0 60%,#05080c 100%);box-shadow:0 14px 28px -10px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.08)}
+.tt-disc-spin{position:absolute;inset:4.5%;border-radius:50%;overflow:hidden;animation:ttDiscSpin 1.8s linear infinite;animation-play-state:paused}
+.tt-disc-spin img{display:block;width:100%;height:100%;object-fit:cover}
+.tt-disc-spin::after{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.28) 13.5% 14.5%,transparent 15%),repeating-radial-gradient(circle,rgba(0,0,0,.12) 0 .6px,rgba(255,255,255,.04) .6px 2.2px);mix-blend-mode:multiply}
+.tt-disc-sheen{position:absolute;inset:4.5%;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+  background:conic-gradient(from 35deg,rgba(255,255,255,0) 0deg,rgba(255,255,255,.22) 18deg,rgba(255,255,255,0) 44deg,rgba(255,255,255,0) 180deg,rgba(255,255,255,.16) 200deg,rgba(255,255,255,0) 228deg)}
+.tt-disc-hole{position:absolute;left:50%;top:50%;width:7%;height:7%;transform:translate(-50%,-50%);border-radius:50%;background:#05080c;box-shadow:0 0 0 2px rgba(255,255,255,.22),0 0 0 6px rgba(0,0,0,.25)}
+.is-playing .tt-disc-spin,.tt-deck.is-playing .tt-disc-spin{animation-play-state:running}
+@keyframes ttDiscSpin{from{rotate:0deg}to{rotate:360deg}}
+
+/* the stage: turntable on the left (it stays in view), the rack on the right */
+.tt-crate-stage{display:grid;grid-template-columns:minmax(340px,.95fr) minmax(0,1.25fr);gap:clamp(36px,5vw,72px);align-items:start}
+.tt-crate-deck{position:sticky;top:clamp(84px,11vh,120px)}
+.tt-crate-rack .tt-shelf-filters{justify-content:flex-start;margin-bottom:26px}
+
+/* the turntable */
+.tt-deck-table{position:relative;aspect-ratio:1.18;border-radius:26px;overflow:hidden;
+  background:radial-gradient(120% 90% at 20% 0%,rgba(141,236,252,.14),rgba(141,236,252,0) 55%),linear-gradient(160deg,#1c2c35 0%,#101b22 60%,#0b141a 100%);
+  box-shadow:0 34px 70px -24px rgba(1,8,18,.85),inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.06)}
+.tt-deck-platter{position:absolute;left:7%;top:50%;width:76%;aspect-ratio:1;transform:translateY(-50%);border-radius:50%;
+  background:radial-gradient(circle,#1a1f24 0 66%,#2a3238 67% 68%,#0e1317 69% 100%);box-shadow:0 0 0 3px rgba(190,205,212,.18),0 18px 36px rgba(0,0,0,.55)}
+.tt-deck-platter .tt-disc{position:absolute;inset:4%;width:auto;box-shadow:0 6px 16px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.08);transition:opacity .25s}
+.tt-deck-spindle{position:absolute;left:50%;top:50%;width:3.2%;height:3.2%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4f8fa,#9aa7ad 60%,#4b565c);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+/* the tonearm: rests off the record, swings onto it while a record plays */
+.tt-deck-arm-base{position:absolute;right:6%;top:8%;width:12%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#dfe7ea,#8b979d 55%,#3d474d);box-shadow:0 6px 14px rgba(0,0,0,.5),0 0 0 4px rgba(0,0,0,.25);z-index:3}
+.tt-deck-arm{position:absolute;right:12%;top:15%;width:0;height:0;transform:rotate(14deg);transform-origin:0 0;transition:transform .9s cubic-bezier(.45,.05,.2,1);z-index:2}
+.tt-deck.is-playing .tt-deck-arm{transform:rotate(33deg)}
+.tt-deck-arm-bar{position:absolute;left:-3px;top:0;width:6px;height:var(--arm,60cqw);border-radius:4px;background:linear-gradient(90deg,#9aa7ad,#e6eef1 45%,#7c878d);box-shadow:2px 6px 10px rgba(0,0,0,.45)}
+.tt-deck-arm-head{position:absolute;left:-11px;top:calc(var(--arm,60cqw) - 4px);width:22px;height:32px;border-radius:5px;background:linear-gradient(180deg,#d7e0e4,#7c878d);box-shadow:2px 6px 10px rgba(0,0,0,.45);transform:rotate(-18deg)}
+.tt-deck-table{container-type:inline-size;--arm:58cqw}
+.tt-deck-led{position:absolute;left:5%;bottom:7%;width:9px;height:9px;border-radius:50%;background:#2b3a42;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);transition:background .3s,box-shadow .3s}
+.tt-deck.is-playing .tt-deck-led{background:#8decfc;box-shadow:0 0 12px rgba(141,236,252,.9)}
+
+/* what is on the deck, and how to play it */
+.tt-deck-info{padding:22px 4px 0}
+.tt-deck-info .tt-shelf-format{color:var(--brand-sky,#8decfc)}
+.tt-deck-title{margin:6px 0 4px;font:700 var(--fs-2xl,34px)/1.12 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+.tt-deck-artist{margin:0;font:600 var(--fs-m,15px)/1.4 var(--tt-noto-primary),sans-serif;color:var(--soft)}
+.tt-deck-artist span{color:var(--brand-sky,#8decfc)}
+.tt-deck-story{margin:12px 0 0;font:500 var(--fs-s,13px)/1.65 var(--tt-noto-primary),sans-serif;color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tt-deck-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tt-deck-chips button{min-width:40px;min-height:32px;padding:0 10px;border-radius:9px;border:1px solid rgba(251,255,255,.25);background:transparent;color:var(--ink);font:700 12px/1 'Quicksand',sans-serif;cursor:pointer}
+.tt-deck-chips button.is-on{background:#fbffff;border-color:#fbffff;color:#0e6e7d}
+.tt-deck-controls{display:flex;align-items:center;gap:14px;margin-top:18px}
+.tt-deck-toggle{flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;border:0;background:#fbffff;color:#0e6e7d;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.35),0 0 0 6px rgba(251,255,255,.12);transition:transform .2s}
+.tt-deck-toggle:hover{transform:scale(1.06)}
+.tt-deck-toggle .tt-shelf-play-icon{border-left:16px solid currentColor;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.tt-deck-toggle.is-playing .tt-shelf-play-icon{width:14px;height:18px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
+.tt-deck-bar{flex:1 1 auto}
+.tt-deck-bar::before{background:rgba(251,255,255,.22)!important}
+.tt-deck-bar i{background:#8decfc!important}
+.tt-deck-time{color:var(--soft)!important}
+.tt-deck-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tt-deck-link{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(251,255,255,.3);background:transparent;color:var(--ink);font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
+.tt-deck-link:hover{background:rgba(251,255,255,.08)}
+
+/* the rack: discs standing on display ledges */
+.tt-rack-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px}
+.tt-rack-item{position:relative;min-width:0;text-align:center;transition:transform .55s cubic-bezier(.2,.75,.2,1),opacity .45s ease;animation:ttShelfIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(min(var(--i,0),15) * 35ms)}
+.tt-shelf.is-settled .tt-rack-item{animation:none}
+.tt-rack-pick{position:relative;display:block;width:100%;padding:0;border:0;background:none;cursor:pointer;border-radius:50%}
+.tt-rack-pick::after{content:'';position:absolute;left:-14%;right:-14%;bottom:-9px;height:8px;border-radius:2px;background:linear-gradient(180deg,rgba(214,236,244,.24),rgba(214,236,244,.04));border-top:1px solid rgba(232,246,250,.3);box-shadow:0 12px 20px -10px rgba(1,8,18,.7);pointer-events:none}
+.tt-rack-pick .tt-disc{transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s}
+.tt-rack-pick:hover .tt-disc,.tt-rack-pick:focus-visible .tt-disc{transform:translateY(-8px) rotate(14deg);box-shadow:0 22px 34px -12px rgba(0,0,0,.7)}
+/* the record now on the turntable: its place glows, and plays an equaliser while it spins */
+.tt-rack-item.is-current .tt-disc{box-shadow:0 0 0 2px #8decfc,0 0 24px rgba(141,236,252,.35),0 14px 28px -10px rgba(0,0,0,.6)}
+.tt-rack-badge{position:absolute;right:4%;top:4%;display:none;align-items:flex-end;gap:2px;height:22px;padding:5px 7px;border-radius:999px;background:#fbffff;color:#0e6e7d;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.tt-rack-badge i{width:3px;height:6px;border-radius:1px;background:currentColor;animation:ttShelfEq .9s ease-in-out infinite}
+.tt-rack-badge i:nth-child(2){animation-delay:-.3s}.tt-rack-badge i:nth-child(3){animation-delay:-.6s}
+.tt-rack-item.is-playing .tt-rack-badge{display:flex}
+.tt-rack-detail{right:-2px!important;bottom:auto!important;top:62%!important;width:34px;height:34px;padding:0!important;justify-content:center;border-radius:50%!important}
+.tt-rack-detail span{font-size:17px!important}
+.tt-rack-meta{padding-top:20px}
+.tt-rack-name{margin:0;font:700 var(--fs-s,13px)/1.35 'Quicksand',var(--tt-noto-primary),sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-rack-artist{margin:3px 0 0;font:600 11.5px/1.35 var(--tt-noto-primary),sans-serif;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-disc--flying .tt-disc-spin{animation:none}
+
+/* the popup's record card and the bottom player show the disc too */
+.tt-shelf-modal-record .tt-disc--mini{width:96px}
+.tt-shelf-player-cover{border-radius:50%!important;overflow:visible!important}
+.tt-shelf-player-cover .tt-disc{width:48px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+/* the bottom player appears only once something has played and the turntable is out of view */
+.tt-crate .tt-shelf-player.is-open{display:none}
+.tt-crate.is-engaged.is-deck-away .tt-shelf-player.is-open{display:flex}
+body:not([data-active-chapter="works"]) .tt-crate .tt-shelf-player.is-open{display:none}
+
+@media (max-width:1100px){.tt-rack-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tt-crate-stage{grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
+@media (max-width:860px){
+  .tt-crate-stage{grid-template-columns:1fr;gap:40px}
+  .tt-crate-deck{position:relative;top:0;max-width:520px;margin:0 auto;width:100%}
+}
+@media (max-width:760px){
+  .tt-rack-grid{gap:26px 14px}
+  .tt-deck-title{font-size:var(--fs-xl,24px)}
+  .tt-rack-detail{width:30px;height:30px}
+}
+@media (prefers-reduced-motion: reduce){.tt-disc-spin{animation:none}.tt-deck-arm{transition:none}.tt-rack-item{animation:none}}
+
+/* crate fixes: the deck can stay in view (sticky needs no hidden overflow above it); grooves only on the
+   turntable and barely there; the rack's detail button shows on hover; the tonearm rests off the record */
+html body #c-works.tt-gh-works{overflow:visible!important;overflow-x:clip!important}
+.tt-disc-spin::after{background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.22) 13.5% 14.5%,transparent 15%)}
+.tt-disc--platter .tt-disc-spin::after{background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.22) 13.5% 14.5%,transparent 15%),repeating-radial-gradient(circle,rgba(0,0,0,.05) 0 .6px,rgba(255,255,255,.015) .6px 2.4px)}
+.tt-rack-item:hover .tt-rack-detail,.tt-rack-detail:focus-visible{opacity:1;transform:none}
+.tt-deck-arm{transform:rotate(6deg)}
+.tt-deck.is-playing .tt-deck-arm{transform:rotate(30deg)}
