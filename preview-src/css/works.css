@@ -3293,9 +3293,11 @@ body.tt-network-open #tt-mobile-chapter-menu {
     padding-top: clamp(76px, 9vh, 104px) !important;
   }
 
-  /* 진행 표시가 왼쪽 수심 레일과 겹치지 않게 */
-  #progress {
-    left: calc(max(40px, 5vw) + 34px) !important;
+  /* 데스크톱에는 오른쪽 챕터 내비가 있으므로 왼쪽 아래 01–06 진행 표시는 숨긴다
+     (1180px 이하에서는 챕터 메뉴 버튼으로 쓰인다) */
+  #progress,
+  body[data-active-chapter] #progress {
+    display: none !important;
   }
 }
 
@@ -3439,16 +3441,9 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-modal-tracks button span {font:700 11px/1 'Quicksand',sans-serif;color:#8decfc}
 .tt-shelf-modal-tracks button:hover {background:rgba(255,255,255,.1)}
 .tt-shelf-modal-tracks button.is-on {background:rgba(141,236,252,.18);box-shadow:inset 0 0 0 1px rgba(141,236,252,.45)}
-.tt-shelf-modal-facts {display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:22px 0 0;font:500 var(--fs-s,13px)/1.5 var(--tt-noto-primary),sans-serif}
-.tt-shelf-modal-facts div {display:contents}
-.tt-shelf-modal-facts dt {color:#8fa6b4}
-.tt-shelf-modal-facts dd {margin:0;color:#eef7fb}
 .tt-shelf-modal-links {display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .tt-shelf-modal-link {display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(220,240,248,.3);color:#eef7fb;text-decoration:none;font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif}
 .tt-shelf-modal-link:hover {background:rgba(255,255,255,.08)}
-.tt-shelf-modal-credits {margin-top:22px;border-top:1px solid rgba(220,240,248,.14);padding-top:14px}
-.tt-shelf-modal-credits summary {cursor:pointer;font:800 var(--fs-xs,11px)/1 'Quicksand',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8decfc}
-.tt-shelf-modal-credits div {margin-top:12px;white-space:pre-wrap;font:500 12.5px/1.7 var(--tt-noto-primary),sans-serif;color:#b7cad6}
 @media (max-width:760px){
   .tt-shelf-modal {padding:0;align-items:end}
   .tt-shelf-modal-panel {grid-template-columns:1fr;gap:22px;padding:56px 20px 28px;max-height:92vh;border-radius:22px 22px 0 0}
@@ -3485,13 +3480,9 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-listen:hover {transform:translateY(-1px)}
 .tt-shelf-listen .tt-shelf-play-icon {border-left:11px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent;margin:0}
 .tt-shelf-listen.is-playing .tt-shelf-play-icon {width:11px;height:13px;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
-.tt-shelf-modal-record {display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;padding:14px;border-radius:16px;background:rgba(251,255,255,.07);border:1px solid rgba(251,255,255,.12)}
-.tt-shelf-modal-record img {width:96px;height:96px;border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-.tt-shelf-modal-record .tt-shelf-modal-facts {margin:0;grid-template-columns:auto 1fr;gap:4px 14px}
 .tt-shelf-modal-side .tt-shelf-modal-tracks .tt-shelf-modal-label {margin-top:22px}
 .tt-shelf-modal-tracks button span {color:#8decfc}
 .tt-shelf-modal-tracks button.is-on {background:rgba(141,236,252,.16);box-shadow:inset 0 0 0 1px rgba(141,236,252,.5)}
-.tt-shelf-modal-credits summary {color:#8decfc}
 @media (max-width:760px){
   .tt-shelf-modal-panel {max-height:94vh;border-radius:22px 22px 0 0}
   .tt-shelf-yt {border-radius:22px 22px 0 0}
@@ -3614,7 +3605,6 @@ html body #c-works.tt-gh-works {overflow:visible!important;overflow-x:clip!impor
 /* the sleeve whose record is on the turntable: its edge shows the record is out */
 .tt-rack-item.is-current .tt-sleeve::after {content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,40,48,0) 55%,rgba(7,40,48,.55));pointer-events:none}
 
-.tt-shelf-modal-record img {width:96px;height:96px;border-radius:10px;object-fit:cover;box-shadow:0 10px 24px rgba(0,0,0,.35)}
 
 /* the rack scrolls inside its own frame instead of a "show all" button; it fades at the edges */
 .tt-crate-rack .tt-rack-grid {max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:auto;padding:14px 14px 28px;margin:0 -14px;
@@ -3687,3 +3677,37 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 .tt-deck-volume input::-moz-range-progress{height:3px;border-radius:3px;background:#8decfc}
 .tt-deck-volume input::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6.5px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
 .tt-deck-volume input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
+
+/* =====================================================================
+   WORKS popup facts and credits (revision 2.4): no cover thumbnail, three facts read as a strip,
+   credits as their own scrolling block under the story.
+   ===================================================================== */
+.tt-shelf-modal-facts {display:grid;grid-template-columns:max-content max-content minmax(0,1fr);margin:0;padding:0;
+  border-top:1px solid rgba(251,255,255,.16);border-bottom:1px solid rgba(251,255,255,.16)}
+.tt-shelf-modal-facts > div {min-width:0;padding:14px 18px 15px}
+.tt-shelf-modal-facts > div:first-child {padding-left:0}
+.tt-shelf-modal-facts > div + div {border-left:1px solid rgba(251,255,255,.12)}
+.tt-shelf-modal-facts dt {margin:0 0 7px;font:700 var(--fs-xs,11px)/1.2 var(--tt-noto-primary),sans-serif;letter-spacing:.04em;color:#8decfc}
+.tt-shelf-modal-facts dd {margin:0;font:700 var(--fs-m,15px)/1.4 var(--tt-noto-primary),sans-serif;color:#fbffff;overflow-wrap:anywhere;text-wrap:balance}
+.tt-shelf-modal-side .tt-shelf-modal-tracks .tt-shelf-modal-label {margin-top:24px}
+.tt-shelf-modal-credits {grid-column:1/-1;padding-top:22px;border-top:1px solid rgba(251,255,255,.14)}
+.tt-shelf-modal-credits .tt-shelf-modal-label {margin:0 0 12px}
+.tt-shelf-modal-credits-list {max-height:min(240px,34vh);overflow:auto;overscroll-behavior:contain;padding:16px 20px;border-radius:14px;
+  background:rgba(2,24,30,.32);box-shadow:inset 0 0 0 1px rgba(251,255,255,.1);
+  scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.45) transparent}
+/* the columns live inside the scroller, so a long list grows downward instead of sideways */
+.tt-shelf-modal-credits-list > div {columns:2 260px;column-gap:36px}
+.tt-shelf-modal-credits-list:focus-visible {outline:2px solid #8decfc;outline-offset:3px}
+.tt-shelf-modal-credits-list p {margin:0 0 14px;break-inside:avoid}
+.tt-shelf-modal-credits-list p:last-child {margin-bottom:0}
+.tt-shelf-modal-credits-list span,
+.tt-shelf-modal-credits-list strong {display:block;font:500 var(--fs-s,13px)/1.65 var(--tt-noto-primary),sans-serif;color:#c9dbe4;overflow-wrap:anywhere}
+.tt-shelf-modal-credits-list strong {font-weight:800;color:#fbffff}
+@media (max-width:760px){
+  .tt-shelf-modal-facts {grid-template-columns:1fr}
+  .tt-shelf-modal-facts > div {display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:baseline;padding:11px 0}
+  .tt-shelf-modal-facts > div + div {border-left:0;border-top:1px solid rgba(251,255,255,.1)}
+  .tt-shelf-modal-facts dt {margin:0}
+  .tt-shelf-modal-credits {padding-top:20px}
+  .tt-shelf-modal-credits-list {max-height:min(260px,42vh);padding:14px 16px}
+}
