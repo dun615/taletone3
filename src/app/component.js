@@ -254,6 +254,19 @@ class Component extends DCLogic {
       };
       document.addEventListener('click', this._chapterLinkClick, true);
     }
+    // "Listen in Works" links (/works/?work=<slug>) stay on the page: Works gets the request inside the click
+    // (so its audio may start) and the page travels to the Works chapter.
+    this._workLinkClick = (e)=>{
+      var a = e && e.target && e.target.closest ? e.target.closest('a[href*="work="]') : null;
+      if(!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var url; try{ url = new URL(a.getAttribute('href'), location.href); }catch(_e){ return; }
+      var slug = url.searchParams.get('work');
+      if(!slug || url.origin !== location.origin || this._routePath(url.pathname) !== '/works/') return;
+      var api = window.TALETONE_WORKS_API;
+      if(api && api.queue) api.queue(slug);
+      this.navigateChapter(e, 'c-works', '/works/');
+    };
+    document.addEventListener('click', this._workLinkClick, true);
   }
   // Pause the loop while the tab is hidden; resume (and shift a playing bridge clock) when it returns.
   _mountVisibility(){
