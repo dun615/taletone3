@@ -79,6 +79,8 @@ class Component extends DCLogic {
       e.stopImmediatePropagation();
     };
     ['wheel','touchmove','keydown'].forEach(type=>window.addEventListener(type,this._bridgeInputHandler,{capture:true,passive:false}));
+    // a bridge already played in this visit takes half the height (set once, at load, so nothing jumps)
+    this.bridges.forEach((bg,i)=>{ var outer=bg.closest?bg.closest('[data-story-bridge-wrap]'):null; if(outer&&this._bridgeSeen[i]) outer.setAttribute('data-bridge-short',''); });
     this._bridgeOffsets = this.bridges.map(bg=>{ var outer=bg.closest?bg.closest('[data-story-bridge-wrap]'):null; return outer?outer.offsetTop:NaN; });
     this._bridgeKR = this.bridges.map(b=>b.textContent.replace(/\s+/g,' ').trim());
     this.bridges.forEach(el=>{ el.style.transition='none'; el.style.willChange='opacity,transform,letter-spacing'; });

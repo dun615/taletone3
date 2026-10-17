@@ -450,6 +450,29 @@
     return '<span class="tt-sleeve" aria-hidden="true"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"><span class="tt-sleeve-sheen"></span></span>';
   }
 
+  // the sleeve that holds the rack's single Tab stop: the record on the deck, or the first one
+  function rackFocusOrder() {
+    var list = visibleWorks();
+    for (var i = 0; i < list.length; i++) if (list[i].index === state.current) return i;
+    return 0;
+  }
+  function onRackKey(event) {
+    var pick = event.target && event.target.closest ? event.target.closest('.tt-rack-pick') : null;
+    if (!pick || !root || !root.contains(pick)) return;
+    var picks = Array.prototype.slice.call(root.querySelectorAll('.tt-rack-pick'));
+    var at = picks.indexOf(pick);
+    var grid = root.querySelector('.tt-rack-grid');
+    var cols = grid ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 4;
+    var next = { ArrowRight: at + 1, ArrowLeft: at - 1, ArrowDown: at + cols, ArrowUp: at - cols, Home: 0, End: picks.length - 1 }[event.key];
+    if (next == null) return;
+    event.preventDefault();
+    next = Math.max(0, Math.min(picks.length - 1, next));
+    pick.setAttribute('tabindex', '-1');
+    picks[next].setAttribute('tabindex', '0');
+    picks[next].focus();
+    picks[next].scrollIntoView({ block: 'nearest' });
+  }
+
   function rackItemHtml(entry, order) {
     var work = entry.work, index = entry.index, labels = L();
     var unit = localizedUnit(work);
@@ -457,7 +480,7 @@
     var artist = plainRichText(unit.artist || work.artist || '');
     var current = state.current === index;
     return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
-      '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
+      '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + (artist ? ' — ' + artist : '')) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
         sleeveHtml(work, order < 8) +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
@@ -1430,6 +1453,7 @@
     if (worksInteractionsBound) return;
     worksInteractionsBound = true;
     document.addEventListener('click', onClick, true);
+    document.addEventListener('keydown', onRackKey);
     window.addEventListener('hashchange', scrollToWorksFromHash);
     window.addEventListener('resize', onResize, { passive: true });
     bindVisibilityPause();

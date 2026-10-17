@@ -4013,3 +4013,13 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 /* U6: the record shop's small labels at full strength */
 .tt-shelf-clients-label {color:color-mix(in srgb,var(--ink,#141C30) 86%,transparent)}
 .tt-shelf-chip-count {opacity:.85}
+
+/* U10: names wrap to two lines instead of being cut (the full name is the sleeve's tooltip) */
+.tt-rack-name,.tt-rack-artist{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere}
+/* U8: 44px touch areas on phones without changing how the chips look */
+@media (max-width:760px){
+  .tt-shelf-chip,.tt-deck-more{position:relative}
+  .tt-shelf-chip::after{content:'';position:absolute;left:-3px;right:-3px;top:-6px;bottom:-6px}
+  .tt-deck-more::after{content:'';position:absolute;inset:-3px}
+  .tt-shelf-filters{row-gap:12px}
+}
