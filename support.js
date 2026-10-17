@@ -1,4 +1,6 @@
-// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
+// Template runtime for the site. It was generated from dc-runtime/src/*.ts, but that source is not part of
+// this repository, so this file is maintained here directly. Keep it free of site-specific code:
+// site behaviour belongs in src/app/component.js, stylesheets in src/app/template.html.
 "use strict";
 (() => {
   var __defProp = Object.defineProperty;
@@ -38,12 +40,11 @@
     return decodeDcPayload(fromAttr || el.textContent || "");
   }
   function readDcTemplate(doc, dc, fallback) {
+    const plainEl = doc.querySelector("script[data-dc-template]");
+    if (plainEl) return plainEl.textContent || "";
     const templateEl = doc.querySelector("script[data-dc-template-b64]");
     const source = templateEl ? readEncodedPayload(templateEl, "data-dc-template-b64") : dc?.hasAttribute("data-dc-template-b64") ? readEncodedPayload(dc, "data-dc-template-b64") : fallback;
-    return source
-      .replace("assets/css/works.css?v=20260717-bridge-clock-hold-v001", "assets/css/works.css?v=20260907-responsive-v1")
-      .replace("assets/js/works.js?v=20260716-card-credit-layout-v1", "assets/js/works.js?v=20260907-responsive-v1")
-      .replace('</style>', '</style><link rel="stylesheet" href="assets/css/responsive.css?v=20260907-bridge-lock-v1">');
+    return source;
   }
   function readDcScript(scriptEl) {
     if (!scriptEl) return "";
@@ -808,17 +809,6 @@
       src + '\n;return (typeof Component!=="undefined"&&Component)||undefined;'
     );
     const Logic = fn(StreamableLogic, StreamableLogic, getReact());
-    if (Logic?.prototype) {
-      // The decorative depth rail intersects reading/touch targets on compact screens.
-      // Keep the background motion; the accessible chapter menu provides progress.
-      const originalDrawRail = Logic.prototype.drawRail;
-      if (typeof originalDrawRail === "function") {
-        Logic.prototype.drawRail = function(...args) {
-          if (window.innerWidth <= 1180) return;
-          return originalDrawRail.apply(this, args);
-        };
-      }
-    }
     return Logic;
   }
 

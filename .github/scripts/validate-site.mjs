@@ -44,10 +44,13 @@ const rawEditorMarkers = [
   'seo' + 'EditMode', 'members' + 'EditMode', '<sc-' + 'if', '<sc-' + 'for',
   'onclick="' + '{' + '{', 'value="' + '{' + '{',
 ];
+// works and responsive keys are content hashes set by the build (see scripts/build.mjs)
+const contentKey = async (...files) => createHash('sha256').update((await Promise.all(files.map((f) => readFile(path.join(root, f), 'utf8')))).join('')).digest('hex').slice(0, 12);
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261017-review',
-  'assets/js/works.js': '20261017-review',
+  'assets/css/works.css': await contentKey('assets/css/works.css'),
+  'assets/js/works.js': await contentKey('assets/js/works.js', 'assets/data/works-data.json'),
+  'assets/css/responsive.css': await contentKey('assets/css/responsive.css'),
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -569,8 +572,9 @@ assert(support.includes('assets/vendor/react-18.3.1.min.js'), 'React is not self
 assert(support.includes('assets/vendor/react-dom-18.3.1.min.js'), 'ReactDOM is not self-hosted');
 assert(support.includes('window.parent !== window'), 'public duplicate document fetch guard missing');
 for (const obsolete of ['applyBridgeSnap', 'scrollSnapType', '_bridgeAutoTimer', '_bridgeAutoAdvanced', 'Logic.prototype.bypassBridges = function', 'Logic.prototype.updateBridges = function']) assert(!support.includes(obsolete), `conflicting support bridge controller returned: ${obsolete}`);
-assert(support.includes('assets/css/works.css?v=20260907-responsive-v1') && support.includes('assets/js/works.js?v=20260907-responsive-v1'), 'WORKS runtime cache keys are stale');
-assert(support.includes('assets/css/responsive.css?v=20260907-bridge-lock-v1'), 'compact layout stylesheet is not loaded');
+assert(!/\.replace\(\s*['"]<\/style>/.test(support) && !support.includes('assets/css/works.css?v='), 'support.js rewrites the template again (stylesheets belong in src/app/template.html)');
+assert(!support.includes('Logic.prototype.drawRail'), 'site behaviour patched into support.js again (it belongs in component.js)');
+assert((await text('index.html')).includes(`./support.js?v=${await contentKey('support.js')}`), 'support.js cache key is not its content hash');
 assert(Buffer.byteLength(await text('assets/css/responsive.css')) <= 18_000, 'compact stylesheet exceeds its 18 KB budget');
 const sri = {
   'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
