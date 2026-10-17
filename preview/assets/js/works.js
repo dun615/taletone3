@@ -1244,7 +1244,7 @@
     }
     var panel = dialog.querySelector('.tt-member-panel, .tt-shelf-modal-panel') || dialog.firstElementChild;
     if (panel) panel.setAttribute('role', 'document');
-    var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, :scope > div > button');
+    var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-news-close, .tt-x-close, :scope > div > button');
     if (close) {
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
@@ -1307,7 +1307,7 @@
     var dialog = globalUxState.dialog;
     if (!dialog) return;
     if (event.key === 'Escape') {
-      var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, :scope > div > button');
+      var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-news-close, .tt-x-close, :scope > div > button');
       if (close) {
         event.preventDefault();
         close.click();
