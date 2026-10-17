@@ -3685,8 +3685,6 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-chip.is-on {background:var(--ink,#141C30);border-color:var(--ink,#141C30);color:var(--paper,#fffdf8)}
 .tt-shelf-chip-count {font:700 11px/1 'Quicksand',sans-serif;opacity:.6}
 
-.tt-shelf-grid {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gap);row-gap:clamp(44px,6vh,68px)}
-
 @keyframes ttShelfIn{from{opacity:0;transform:translateY(16px)}}
 
 /* the ledge each row of books stands on: the covers' ledges meet across the gaps */
@@ -3741,10 +3739,10 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 .tt-shelf-player :focus-visible {outline:2px solid var(--accent2,#8decfc);outline-offset:3px}
 
 @media (min-width:1101px){.tt-shelf {width:min(1120px,calc(100vw - 280px))}}
-@media (max-width:1100px){.tt-shelf-grid {grid-template-columns:repeat(3,minmax(0,1fr))}}
+
 @media (max-width:760px){
   .tt-shelf {--gap:14px}
-  .tt-shelf-grid {grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}
+  
   .tt-shelf-chip {padding:9px 12px 9px 13px;font-size:12px}
   
   
@@ -3785,15 +3783,11 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 .tt-shelf-play .tt-shelf-play-icon {border-left-width:16px;border-top-width:9px;border-bottom-width:9px;margin-left:4px}
 .tt-shelf-play.is-playing .tt-shelf-eq {height:18px}
 /* details where the play button used to be */
-.tt-shelf-detail {position:absolute;right:10px;bottom:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:7px 10px 7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.5);
-  background:rgba(8,20,36,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#f2f9fc;font:700 12px/1 var(--tt-noto-primary),sans-serif;cursor:pointer;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s,background .25s}
-.tt-shelf-detail span {font:700 15px/1 'Quicksand',sans-serif}
-.tt-shelf-detail:focus-visible {opacity:1;transform:none}
-.tt-shelf-detail:hover {background:rgba(8,20,36,.85)}
+
 @media (hover:none){
   .tt-shelf-play {opacity:.92;width:46px;height:46px;transform:translate(-50%,-50%) scale(1)}
   .tt-shelf-play .tt-shelf-play-icon {border-left-width:13px;border-top-width:8px;border-bottom-width:8px}
-  .tt-shelf-detail {opacity:1;transform:none;padding:6px 9px 6px 10px;font-size:11px;right:7px;bottom:7px}
+  
 }
 .tt-shelf-player-cover {flex:none;width:48px;height:48px;padding:0;border:0;border-radius:8px;overflow:hidden;background:none;cursor:pointer}
 .tt-shelf-player-cover img {display:block;width:100%;height:100%;object-fit:cover}
@@ -3892,7 +3886,7 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
    ===================================================================== */
 /* a record: the cover pressed into a picture disc with a black rim, faint grooves, a sheen and a centre hole */
 .tt-disc {position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#141b23 0 60%,#05080c 100%);box-shadow:0 14px 28px -10px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.08)}
-.tt-disc-spin {position:absolute;inset:4.5%;border-radius:50%;overflow:hidden;animation:ttDiscSpin 1.8s linear infinite;animation-play-state:paused}
+.tt-disc-spin {position:absolute;inset:4.5%;border-radius:50%;overflow:hidden;animation:ttDiscSpin 3.6s linear infinite;animation-play-state:paused}
 .tt-disc-spin img {display:block;width:100%;height:100%;object-fit:cover}
 .tt-disc-spin::after {content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;
   background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.28) 13.5% 14.5%,transparent 15%),repeating-radial-gradient(circle,rgba(0,0,0,.12) 0 .6px,rgba(255,255,255,.04) .6px 2.2px);mix-blend-mode:multiply}
@@ -3936,18 +3930,11 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 .tt-deck-chips {display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .tt-deck-chips button {min-width:40px;min-height:32px;padding:0 10px;border-radius:9px;border:1px solid rgba(251,255,255,.25);background:transparent;color:var(--ink);font:700 12px/1 'Quicksand',sans-serif;cursor:pointer}
 .tt-deck-chips button.is-on {background:#fbffff;border-color:#fbffff;color:#0e6e7d}
-.tt-deck-controls {display:flex;align-items:center;gap:14px;margin-top:18px}
+
 .tt-deck-toggle {flex:none;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;border:0;background:#fbffff;color:#0e6e7d;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.35),0 0 0 6px rgba(251,255,255,.12);transition:transform .2s}
 .tt-deck-toggle:hover {transform:scale(1.06)}
 .tt-deck-toggle .tt-shelf-play-icon {border-left:16px solid currentColor;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
 .tt-deck-toggle.is-playing .tt-shelf-play-icon {width:14px;height:18px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
-.tt-deck-bar {flex:1 1 auto}
-.tt-deck-bar::before {background:rgba(251,255,255,.22)!important}
-.tt-deck-bar i {background:#8decfc!important}
-.tt-deck-time {color:var(--soft)!important}
-.tt-deck-links {display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.tt-deck-link {display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(251,255,255,.3);background:transparent;color:var(--ink);font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
-.tt-deck-link:hover {background:rgba(251,255,255,.08)}
 
 /* the rack: discs standing on display ledges */
 .tt-rack-grid {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px}
@@ -3964,15 +3951,13 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 .tt-rack-badge i {width:3px;height:6px;border-radius:1px;background:currentColor;animation:ttShelfEq .9s ease-in-out infinite}
 .tt-rack-badge i:nth-child(2) {animation-delay:-.3s}.tt-rack-badge i:nth-child(3) {animation-delay:-.6s}
 .tt-rack-item.is-playing .tt-rack-badge {display:flex}
-.tt-rack-detail {right:-2px!important;bottom:auto!important;top:62%!important;width:34px;height:34px;padding:0!important;justify-content:center;border-radius:50%!important}
-.tt-rack-detail span {font-size:17px!important}
+
 .tt-rack-meta {padding-top:20px}
 .tt-rack-name {margin:0;font:700 var(--fs-s,13px)/1.35 'Quicksand',var(--tt-noto-primary),sans-serif;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tt-rack-artist {margin:3px 0 0;font:600 11.5px/1.35 var(--tt-noto-primary),sans-serif;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-disc--flying .tt-disc-spin {animation:none}
 
 /* the popup's record card and the bottom player show the disc too */
-.tt-shelf-modal-record .tt-disc--mini {width:96px}
+
 .tt-shelf-player-cover {border-radius:50%!important;overflow:visible!important}
 .tt-shelf-player-cover .tt-disc {width:48px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
 /* the bottom player appears only once something has played and the turntable is out of view */
@@ -3988,7 +3973,7 @@ body:not([data-active-chapter="works"]) .tt-crate .tt-shelf-player.is-open {disp
 @media (max-width:760px){
   .tt-rack-grid {gap:26px 14px}
   .tt-deck-title {font-size:var(--fs-xl,24px)}
-  .tt-rack-detail {width:30px;height:30px}
+  
 }
 @media (prefers-reduced-motion: reduce){.tt-disc-spin {animation:none}.tt-deck-arm {transition:none}.tt-rack-item {animation:none}}
 
@@ -3997,30 +3982,55 @@ body:not([data-active-chapter="works"]) .tt-crate .tt-shelf-player.is-open {disp
 html body #c-works.tt-gh-works {overflow:visible!important;overflow-x:clip!important}
 .tt-disc-spin::after {background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.22) 13.5% 14.5%,transparent 15%)}
 .tt-disc--platter .tt-disc-spin::after {background:radial-gradient(circle,transparent 0 13%,rgba(0,0,0,.22) 13.5% 14.5%,transparent 15%),repeating-radial-gradient(circle,rgba(0,0,0,.05) 0 .6px,rgba(255,255,255,.015) .6px 2.4px)}
-.tt-rack-item:hover .tt-rack-detail,
-.tt-rack-detail:focus-visible {opacity:1;transform:none}
+
 .tt-deck-arm {transform:rotate(6deg)}
 .tt-deck.is-playing .tt-deck-arm {transform:rotate(30deg)}
 
 /* records live in square sleeves on the rack; only the turntable shows the record itself */
-.tt-sleeve{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:6px;overflow:hidden;background:rgba(8,24,40,.45);
+.tt-sleeve {position:relative;display:block;width:100%;aspect-ratio:1;border-radius:6px;overflow:hidden;background:rgba(8,24,40,.45);
   box-shadow:0 18px 30px -16px rgba(2,10,22,.8),inset 0 0 0 1px rgba(255,255,255,.08);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s}
-.tt-sleeve img{display:block;width:100%;height:100%;object-fit:cover}
-.tt-sleeve-sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(0,0,0,.18) 100%)}
-.tt-rack-pick{border-radius:6px}
-.tt-rack-pick:hover .tt-sleeve,.tt-rack-pick:focus-visible .tt-sleeve{transform:translateY(-8px) rotate(-1.5deg);box-shadow:0 28px 38px -16px rgba(2,10,22,.9)}
-.tt-rack-item.is-current .tt-sleeve{box-shadow:0 0 0 2px #8decfc,0 0 24px rgba(141,236,252,.35),0 18px 30px -16px rgba(2,10,22,.8)}
+.tt-sleeve img {display:block;width:100%;height:100%;object-fit:cover}
+.tt-sleeve-sheen {position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(0,0,0,.18) 100%)}
+.tt-rack-pick {border-radius:6px}
+.tt-rack-pick:hover .tt-sleeve,
+.tt-rack-pick:focus-visible .tt-sleeve {transform:translateY(-8px) rotate(-1.5deg);box-shadow:0 28px 38px -16px rgba(2,10,22,.9)}
+.tt-rack-item.is-current .tt-sleeve {box-shadow:0 0 0 2px #8decfc,0 0 24px rgba(141,236,252,.35),0 18px 30px -16px rgba(2,10,22,.8)}
 /* the sleeve whose record is on the turntable: its edge shows the record is out */
-.tt-rack-item.is-current .tt-sleeve::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,40,48,0) 55%,rgba(7,40,48,.55));pointer-events:none}
-.tt-rack-detail{top:auto!important;bottom:6px!important;right:6px!important}
-.tt-shelf-modal-record img{width:96px;height:96px;border-radius:10px;object-fit:cover;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-.tt-shelf-player-cover{border-radius:8px!important;overflow:hidden!important}
-.tt-shelf-player-cover img{display:block;width:48px;height:48px;object-fit:cover}
+.tt-rack-item.is-current .tt-sleeve::after {content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,40,48,0) 55%,rgba(7,40,48,.55));pointer-events:none}
+
+.tt-shelf-modal-record img {width:96px;height:96px;border-radius:10px;object-fit:cover;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.tt-shelf-player-cover {border-radius:8px!important;overflow:hidden!important}
+.tt-shelf-player-cover img {display:block;width:48px;height:48px;object-fit:cover}
 
 /* the rack scrolls inside its own frame instead of a "show all" button; it fades at the edges */
-.tt-crate-rack .tt-rack-grid{max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 28px;margin:0 -14px;
+.tt-crate-rack .tt-rack-grid {max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 28px;margin:0 -14px;
   scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.45) transparent;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,transparent 0,#000 14px,#000 calc(100% - 36px),transparent)}
-.tt-crate-rack .tt-rack-grid::-webkit-scrollbar{width:6px}
-.tt-crate-rack .tt-rack-grid::-webkit-scrollbar-thumb{background:rgba(141,236,252,.45);border-radius:6px}
-@media (max-width:860px){.tt-crate-rack .tt-rack-grid{max-height:min(68vh,620px)}}
+.tt-crate-rack .tt-rack-grid::-webkit-scrollbar {width:6px}
+.tt-crate-rack .tt-rack-grid::-webkit-scrollbar-thumb {background:rgba(141,236,252,.45);border-radius:6px}
+@media (max-width:860px){.tt-crate-rack .tt-rack-grid {max-height:min(68vh,620px)}}
+
+/* turntable, second pass: a deep brand-teal plinth; the tonearm's base is the play button; details at the lower right */
+.tt-deck-table {background:radial-gradient(110% 80% at 18% 0%,rgba(141,236,252,.2),rgba(141,236,252,0) 58%),linear-gradient(155deg,#0f5e6b 0%,#0a4652 52%,#073640 100%);
+  box-shadow:0 34px 70px -24px rgba(1,14,22,.85),inset 0 1px 0 rgba(141,236,252,.22),inset 0 0 0 1px rgba(141,236,252,.12)}
+.tt-deck-platter {background:radial-gradient(circle,#06232a 0 66%,#2c5a63 67% 68%,#04191f 69% 100%);box-shadow:0 0 0 3px rgba(141,236,252,.16),0 18px 36px rgba(0,16,22,.6)}
+.tt-deck-led {background:#0b3d47}
+button.tt-deck-arm-base {display:grid;place-items:center;width:15%;right:4.5%;top:6%;padding:0;border:0;cursor:pointer;color:#0a4f5b;
+  background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);
+  box-shadow:0 8px 18px rgba(0,16,22,.55),0 0 0 4px rgba(4,30,38,.45),0 0 0 7px rgba(141,236,252,.0);transition:transform .2s,box-shadow .3s}
+button.tt-deck-arm-base::after {content:'';position:absolute;inset:-7px;border-radius:50%;border:1.5px solid rgba(141,236,252,.7);animation:ttDeckCall 2.4s ease-out infinite;pointer-events:none}
+button.tt-deck-arm-base.is-playing::after {animation:none;opacity:0}
+button.tt-deck-arm-base:hover {transform:scale(1.07);box-shadow:0 10px 22px rgba(0,16,22,.6),0 0 0 4px rgba(4,30,38,.45),0 0 22px rgba(141,236,252,.55)}
+button.tt-deck-arm-base:focus-visible {outline:2px solid #8decfc;outline-offset:6px}
+button.tt-deck-arm-base .tt-shelf-play-icon {width:0;height:0;border-left:clamp(11px,1.5vw,16px) solid currentColor;border-top:clamp(7px,.95vw,10px) solid transparent;border-bottom:clamp(7px,.95vw,10px) solid transparent;margin-left:12%}
+button.tt-deck-arm-base.is-playing .tt-shelf-play-icon {width:clamp(10px,1.3vw,14px);height:clamp(13px,1.7vw,18px);margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
+@keyframes ttDeckCall{0%{transform:scale(.92);opacity:.9}80%,100%{transform:scale(1.35);opacity:0}}
+.tt-deck-more {position:absolute;right:4.5%;bottom:6%;z-index:3;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 16px;border-radius:999px;border:1px solid rgba(141,236,252,.4);
+  background:rgba(4,30,38,.55);color:#fbffff;font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif;cursor:pointer;transition:background .2s,border-color .2s}
+.tt-deck-more:hover {background:rgba(141,236,252,.18);border-color:#8decfc}
+.tt-deck-more span {color:#8decfc;font-size:16px}
+@media (prefers-reduced-motion: reduce){button.tt-deck-arm-base::after {animation:none}}
+/* a shorter arm that rests clear of the details button and still lands on the record */
+.tt-deck-table{--arm:47cqw}
+.tt-deck-arm{transform:rotate(2deg)}
+.tt-deck.is-playing .tt-deck-arm{transform:rotate(36deg)}
