@@ -5,9 +5,9 @@ import path from 'node:path';
 
 // Everything that can put Korean text on a page.
 const SOURCES = [
-  'src/app/template.html', 'src/app/component.js', 'src/page.html',
+  'src/app/template.html', 'src/app/component.js', 'src/app/parts/content.js', 'src/app/parts/intro.js', 'src/app/parts/scene.js', 'src/app/parts/bridges.js', 'src/app/parts/routing.js', 'src/page.html',
   'assets/data/site-content.json', 'assets/data/seo-content.json', 'assets/data/works-data.json',
-  'assets/js/works.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
+  'assets/js/works.js', 'assets/js/site-ux.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
 ];
 
 // ASCII is drawn by the Latin fonts; kana/kanji by Noto Sans JP.
@@ -15,9 +15,9 @@ const skip = (cp) => cp < 0x80 || (cp >= 0x3040 && cp <= 0x30ff) || (cp >= 0x340
 
 // The /preview/ page draws from its own copies in preview-src/.
 export const PREVIEW_SOURCES = [
-  'preview-src/app/template.html', 'preview-src/app/component.js', 'src/page.html',
+  'preview-src/app/template.html', 'preview-src/app/component.js', 'preview-src/app/parts/content.js', 'preview-src/app/parts/intro.js', 'preview-src/app/parts/scene.js', 'preview-src/app/parts/bridges.js', 'preview-src/app/parts/routing.js', 'src/page.html',
   'preview-src/data/site-content.json', 'assets/data/seo-content.json', 'preview-src/data/works-data.json',
-  'preview-src/js/works.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
+  'preview-src/js/works.js', 'preview-src/js/site-ux.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
 ];
 
 export async function nanumCharacters(root, sources = SOURCES) {

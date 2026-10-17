@@ -311,7 +311,10 @@
   function sleeveHtml(work, eager) {
     var unit = localizedUnit(work);
     var image = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
-    return '<span class="tt-sleeve" aria-hidden="true"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"><span class="tt-sleeve-sheen"></span></span>';
+    // the first rows load at once (Works mounts on demand, often after the chapter preload already ran, so
+    // native lazy loading would leave them unfetched while the sleeve is still off screen); the rest wait for
+    // the rack's own observer
+    return '<span class="tt-sleeve" aria-hidden="true"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="' + (eager === false ? 'lazy' : 'eager') + '" decoding="async" style="' + coverStyle(unit) + '"><span class="tt-sleeve-sheen"></span></span>';
   }
 
   // the sleeve that holds the rack's single Tab stop: the record on the deck, or the first one
@@ -593,11 +596,13 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '400px 0px' });
+    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '160px 0px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {
     if (!img.dataset.src) return;
+    // the rack's own observer already decided this cover is needed; do not let native lazy loading defer it again
+    img.loading = 'eager';
     img.src = img.dataset.src;
     img.removeAttribute('data-src');
   }

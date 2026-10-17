@@ -59,7 +59,8 @@ const expectedSiteContentCacheKey = attr(
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 40_000;
 // 102 KB at revision 2; the type scale, chapter review, brand palette and shared close button bring it to ~112 KB.
-const decodedTemplateBudgetBytes = 116_000;
+// 118 KB: inline-style attribute selectors became tt-s-* classes on the template elements (+~0.7 KB)
+const decodedTemplateBudgetBytes = 118_000;
 // Bridge control now lives here instead of a second controller in support.js.
 const decodedScriptBudgetBytes = 150_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
@@ -177,7 +178,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
     assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
-    assert(decoded.includes('class="tt-news-modal" role="dialog" aria-modal="true"'), `${file}: NEWS dialog lacks a direct selector`);
+    assert(/class="tt-news-modal(?: [\w-]+)*" role="dialog" aria-modal="true"/.test(decoded), `${file}: NEWS dialog lacks a direct selector`);
     assert(decoded.includes('class="tt-home-tagline"') && decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline lockup is missing`);
     for (const binding of ['HOME.tagline', 'MEMBERS_META.subtitle', 'MEMBERS_META.description', 'NEWS_META.subtitle', 'NEWS_META.description', 'CONTACT.subtitle', 'CONTACT.caption']) {
       assert(decoded.includes(`<sc-if value="{{ ${binding} }}">`), `${file}: empty chapter copy is not conditionally removed: ${binding}`);
@@ -649,7 +650,10 @@ const removedAudioPreloadSymbols = [
   'scheduleLayeredAudioPreload',
 ];
 for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
-assert(worksJs.includes("if (state.playing && !dialog.classList.contains('tt-shelf-modal')) pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
+// site-wide dialog handling lives in site-ux.js; it asks the Works module to pause through its API
+const siteUxJs = await text('assets/js/site-ux.js');
+assert(siteUxJs.includes("if (!dialog.classList.contains('tt-shelf-modal') && window.TALETONE_WORKS_API) window.TALETONE_WORKS_API.pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
+assert(!worksJs.includes('globalUxState'), 'site-wide UX code returned to works.js (it belongs in site-ux.js)');
 assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("data-works-action=\"video\"") && worksJs.includes("['all', 'ost', 'artist', 'original'].map("), 'WORKS popup or filters are missing');
 assert(worksCss.includes('.tt-disc-spin {') && worksCss.includes('animation-play-state:paused') && worksJs.includes('class="tt-deck-arm-base tt-deck-toggle') && worksJs.includes('function sizeRack()'), 'WORKS turntable play button or rack sizing is missing');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
@@ -662,8 +666,8 @@ for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-
 }
 assert((worksCss.match(/\.tt-mobile-bridge-line\[data-indent=/g) || []).length === 4, 'duplicate mobile bridge indent rules returned');
 assert((worksCss.match(/#lang-switcher\.tt-lang-switcher button:focus,\s*#lang-switcher\.tt-lang-switcher button:focus-visible,\s*#lang-switcher\.tt-lang-switcher button:active\s*\{\s*border: 0 !important;\s*outline: 0 !important;\s*box-shadow: none !important;\s*border-radius: 999px !important;\s*\}/g) || []).length === 1, 'duplicate mobile language focus rule returned');
-assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="news"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px !important;\s*top: auto !important;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\) !important;\s*transform: none !important;\s*transform-origin: left bottom !important;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
-assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
+assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="news"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px(?: !important)?;\s*top: auto(?: !important)?;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\)(?: !important)?;\s*transform: none(?: !important)?;\s*transform-origin: left bottom(?: !important)?;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
+assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*(?:!important)?;[\s\S]*?min-height:\s*0\s*(?:!important)?;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
 assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');
 assert(!worksCss.includes('ttIntroOverlayHandoff'), 'obsolete CSS-only intro handoff is still present');
