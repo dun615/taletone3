@@ -13,6 +13,24 @@ class Component extends DCLogic {
     this.ensureDataReady();
     this._loadSeo();
     this._applySeoForCurrentPage();
+    this._mountSiteMessages();
+    this._mountScene();
+    this._mountBridges();
+    this._mountPalettes();
+    this._mountViewport();
+    this._mountScrollWatch();
+    this._mountContactLink();
+    this._mountPointerInput();
+    this._mountLanguage();
+    this._mountChapterNav();
+    this._initialRouteTimer1=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 120);
+    this._initialRouteTimer2=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 520);
+    this.initIntro();
+    this._mountVisibility();
+    this.raf = requestAnimationFrame(this.loop);
+  }
+  // Content and language messages from this site itself (see S1 in the code review).
+  _mountSiteMessages(){
     // Content and language messages are accepted only from this site's own origin: a page that frames
     // taletone.net must not be able to swap its content (e.g. the contact address) inside the frame.
     this._siteDataListener = (event)=>{
@@ -28,6 +46,9 @@ class Component extends DCLogic {
       this.forceUpdate();
     };
     window.addEventListener('message', this._siteDataListener);
+  }
+  // Canvas, sky and the elements the scroll scene animates.
+  _mountScene(){
     this.root = document.documentElement;
     this.scroller = document.getElementById('content');
     this.sky = document.getElementById('sky');
@@ -63,6 +84,9 @@ class Component extends DCLogic {
     this.pxEls.forEach(el=>{ el._base = el.style.transform || ''; });
     this.revEls = Array.from(document.querySelectorAll('[data-reveal]'));
     this.revEls.forEach(el=>{ el.style.transition='none'; el.style.willChange='opacity,transform'; });
+  }
+  // Bridge state, the input lock used while a bridge plays, and its cached geometry.
+  _mountBridges(){
     this.bridges = Array.from(document.querySelectorAll('[data-bridge]'));
     this._bridgeSeen = {};
     this._bridgeBypassed = {};
@@ -92,7 +116,9 @@ class Component extends DCLogic {
     this._sceneDirty = true;
     this.lastActive = -1;
     this.t0 = performance.now();
-
+  }
+  // The water's colour palettes.
+  _mountPalettes(){
     // palettes    // palettes ??the water's mood
     this.P = {
       abyss: {
@@ -109,7 +135,9 @@ class Component extends DCLogic {
       },
     };
     this.mood = (this.P[this.props.mood] ? this.props.mood : 'abyss');
-
+  }
+  // Stars, canvas size and viewport resize handling.
+  _mountViewport(){
     this.initStars();
     this.onResize = ()=>{
       cancelAnimationFrame(this._resizeRaf);
@@ -119,6 +147,9 @@ class Component extends DCLogic {
     window.addEventListener('resize', this.onResize, {passive:true});
     this._visualViewport=window.visualViewport||null;
     if(this._visualViewport) this._visualViewport.addEventListener('resize',this.onResize,{passive:true});
+  }
+  // Scroll watching: bridge entry, menu-jump release and the fast mobile scroll state.
+  _mountScrollWatch(){
     this._mobileScrollHandler=()=>{
       this._sceneDirty=true;
       var current=this.scroller?this.scroller.scrollTop:0;
@@ -150,17 +181,21 @@ class Component extends DCLogic {
       },190);
     };
     if(this.scroller) this.scroller.addEventListener('scroll',this._mobileScrollHandler,{passive:true});
-
+  }
+  // The contact button link and label.
+  _mountContactLink(){
     var em=document.getElementById('email-link');
     if(em){
       var contact = this.CONTACT || {};
-      var link = contact.link || ('mailto:' + ['n4ml','taletone.net'].join(String.fromCharCode(64)));
+      var link = contact.link || 'mailto:contact@taletone.net';
       em.href = link;
       var emLabel = em.querySelector('[data-email-label]');
       if(emLabel) emLabel.textContent = contact.buttonLabel || 'Tell us your story';
       else em.textContent = contact.buttonLabel || 'Tell us your story';
     }
-
+  }
+  // Escape closes dialogs; taps and clicks spawn ink in the water.
+  _mountPointerInput(){
     this.newsSec = document.getElementById('c-news');
 
     this._escapeHandler=(e)=>{ if(e.key==='Escape') this.closeAll(); };
@@ -183,11 +218,17 @@ class Component extends DCLogic {
       window.addEventListener('click', this._spawnInkFromEvent, { passive:true });
       this._inkEvents.push('touchstart','click');
     }
+  }
+  // Initial language: ?lang=, then the URL prefix, then the saved choice.
+  _mountLanguage(){
     // language: legacy ?lang= wins, then the URL prefix; an unprefixed URL restores the saved choice (KR default)
     try{ var langParam = new URLSearchParams(window.location.search || '').get('lang'), pathLang = this._routeLang(); this.lang = (langParam === 'kr' || langParam === 'en' || langParam === 'jp') ? langParam : (pathLang !== 'kr' ? pathLang : (localStorage.getItem('tt_lang') || 'kr')); }catch(e){ this.lang='kr'; }
     this._syncLangUrl();
     document.documentElement.lang=this.lang==='kr'?'ko':(this.lang==='jp'?'ja':'en');
     this._langInitTimer=setTimeout(()=>{ try{ this.setLang(this.lang); }catch(_){} }, 60);
+  }
+  // Chapter menu: peek on touch/focus, and client-side chapter navigation.
+  _mountChapterNav(){
     this.chapnav = document.getElementById('chapnav');
     this._showNavPeek = ()=>{
       if(!this.chapnav) return;
@@ -213,9 +254,9 @@ class Component extends DCLogic {
       };
       document.addEventListener('click', this._chapterLinkClick, true);
     }
-    this._initialRouteTimer1=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 120);
-    this._initialRouteTimer2=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 520);
-    this.initIntro();
+  }
+  // Pause the loop while the tab is hidden; resume (and shift a playing bridge clock) when it returns.
+  _mountVisibility(){
     this._visibilityHandler=()=>{
       if(document.hidden){
         cancelAnimationFrame(this.raf);
@@ -238,7 +279,6 @@ class Component extends DCLogic {
       }
     };
     document.addEventListener('visibilitychange',this._visibilityHandler);
-    this.raf = requestAnimationFrame(this.loop);
   }
   componentWillUnmount(){                                   
     this.releaseBridge();
