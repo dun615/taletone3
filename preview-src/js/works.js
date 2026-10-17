@@ -448,8 +448,9 @@
     return '<div class="tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
       '<div class="tt-shelf-modal-panel">' +
         '<button type="button" class="tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
-        '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
-        '<div class="tt-shelf-modal-body">' +
+        // two panes: the video and the story on the left, the record's facts, tracks and credits on the right
+        '<div class="tt-shelf-modal-media">' +
+          '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
           '<div class="tt-shelf-modal-main">' +
             '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
             '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
@@ -457,10 +458,10 @@
             (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
           '</div>' +
-          '<div class="tt-shelf-modal-side">' +
-            (facts ? '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' : '') +
-            trackRowsHtml(work, index) +
-          '</div>' +
+        '</div>' +
+        '<div class="tt-shelf-modal-info">' +
+          (facts ? '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' : '') +
+          trackRowsHtml(work, index) +
           (credits ? creditsHtml(credits, labels.credits) : '') +
         '</div>' +
       '</div>' +
