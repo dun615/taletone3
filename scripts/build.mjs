@@ -241,7 +241,7 @@ const detailCss = await read('assets/css/detail.css');
 const missingSlug = [...works.works, ...site.news].find((item) => !/^[a-z0-9-]+$/.test(item.slug || ''));
 if (missingSlug) throw new Error(`Every work and news item needs a lowercase "slug": ${missingSlug.id || missingSlug.slotId}`);
 
-function detailPage({ lang, pathFor, title, description, ogType, image, schema, crumbs, body }) {
+function detailPage({ lang, pathFor, title, description, ogType, image, schema, crumbs, body, preview = false }) {
   const d = detailLabels[lang.key];
   const url = `${baseUrl}${pathFor(lang)}`;
   const fullTitle = `${title} | TALETONE MUSIC`;
@@ -258,8 +258,8 @@ function detailPage({ lang, pathFor, title, description, ogType, image, schema, 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="light only">
-<meta name="theme-color" content="#eef6f4">
-<meta name="robots" content="index, follow">
+<meta name="theme-color" content="${preview ? '#0e6e7d' : '#eef6f4'}">
+<meta name="robots" content="${preview ? 'noindex, nofollow' : 'index, follow'}">
 <link rel="canonical" href="${url}">
 ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseUrl}${pathFor(l)}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${baseUrl}${pathFor(languages[0])}">
@@ -281,15 +281,17 @@ ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseU
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="${nanumFontUrl}" rel="stylesheet">${lang.key === 'jp' ? '\n<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">' : ''}
-<link rel="stylesheet" href="/assets/css/detail.css?v=${version(detailCss)}">
+<link rel="stylesheet" href="${preview ? `/preview/assets/css/detail.css?v=${version(previewDetailCss)}` : `/assets/css/detail.css?v=${version(detailCss)}`}">
 <script type="application/ld+json">${ld}</script>
 </head>
 <body>
 <a class="tt-d-skip" href="#main">${esc(d.skip)}</a>
 <header class="tt-d-top">
-<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-ink.png" alt="" width="34" height="40"><span>TALETONE<br>MUSIC</span></a>
+${preview
+  ? `<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-paper.png" alt="" width="34" height="40"><span class="tt-d-word">TALETONE<small>MUSIC</small></span></a>`
+  : `<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-ink.png" alt="" width="34" height="40"><span>TALETONE<br>MUSIC</span></a>`}
 <nav class="tt-d-langs" aria-label="${esc(labels[lang.key].languages)}">
-${languages.map((l) => `<a href="${pathFor(l)}" hreflang="${l.html}" lang="${l.html}"${l === lang ? ' aria-current="true"' : ''}>${l.key.toUpperCase()}</a>`).join('\n')}
+${languages.map((l) => `<a href="${preview ? '/preview' : ''}${pathFor(l)}" hreflang="${l.html}" lang="${l.html}"${l === lang ? ' aria-current="true"' : ''}>${l.key.toUpperCase()}</a>`).join('\n')}
 </nav>
 </header>
 <main id="main">
@@ -300,7 +302,7 @@ ${body}
 ${contactCta(lang)}
 </main>
 <footer class="tt-d-foot">${esc(localized(site.footerMeta, lang.key).copyright)}</footer>
-${analyticsTag}
+${preview ? youtubeScript : analyticsTag}
 </body>
 </html>
 `;
@@ -402,6 +404,69 @@ ${pager(lang, worksByDate[index - 1], worksByDate[index + 1], workPath, titleOf)
   });
 }
 
+// YouTube id from any watch / share / shorts / embed URL
+const youtubeId = (url) => (String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/) || [])[1] || '';
+// A light YouTube embed: the video's own thumbnail and a play button; the player loads on click.
+const liteYouTube = (id, title, label) => `<div class="tt-yt" data-yt="${id}"><img src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" width="1280" height="720" onload="if(this.naturalWidth<200)this.src='https://i.ytimg.com/vi/${id}/hqdefault.jpg'"><button type="button" class="tt-yt-play" aria-label="${esc(title)} — ${esc(label)}"><span aria-hidden="true"></span></button></div>`;
+const youtubeScript = `<script>document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.tt-yt-play');if(!b)return;var w=b.closest('.tt-yt'),f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+w.getAttribute('data-yt')+'?autoplay=1&rel=0&playsinline=1';f.title=b.getAttribute('aria-label');f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';f.allowFullscreen=true;w.replaceChildren(f);w.classList.add('is-playing');document.querySelectorAll('audio').forEach(function(a){a.pause();});});</script>`;
+const watchLabel = { kr: '영상 재생', en: 'Play video', jp: '動画を再生' };
+
+function workPageV2(work, index, lang, list) {
+  const d = detailLabels[lang.key];
+  const w = localized(work, lang.key);
+  const titleOf = (item) => localized(item, lang.key).title;
+  const isAlbum = Array.isArray(work.tracks) && work.tracks.length > 0;
+  const facts = [[d.release, work.date], [d.format, work.format], [d.type, w.type]].filter(([, v]) => v);
+  const id = youtubeId(work.youtube);
+  const previewPath = (l, item) => `/preview${workPath(l, item)}`;
+  const trackList = (items, numberOf, titleFor, extra) => `<ol class="tt-d-tracks">
+${items.map((item, i) => `<li><span class="no">${esc(numberOf(item, i))}</span><span class="title">${esc(titleFor(item))}${extra(item)}</span>${item.audio ? `<audio controls preload="none" src="${esc(assetPath(item.audio))}" aria-label="${esc(d.listen)}: ${esc(titleFor(item))}"></audio>` : ''}</li>`).join('\n')}
+</ol>`;
+  const tracks = isAlbum ? `<section class="tt-d-section"><h2>${esc(d.tracks)}</h2><div class="tt-d-card">${trackList(work.tracks, (t, i) => String(t.trackNo || i + 1).padStart(2, '0'), (t) => localized(t, lang.key).title, (t) => { const desc = localized(t, lang.key).description; return desc ? `<small>${esc(String(desc).trim())}</small>` : ''; })}</div></section>` : '';
+  const versions = Array.isArray(work.versions) && work.versions.length ? `<section class="tt-d-section"><h2>${esc(d.versions)}</h2><div class="tt-d-card">${trackList(work.versions, (v) => v.language || '', (v) => localized(v, lang.key).title, (v) => v.youtube ? ` <small><a href="${esc(v.youtube)}" rel="noopener">${esc(d.youtube)} &#8599;</a></small>` : '')}</div></section>` : '';
+  const credits = isAlbum ? work.tracks.map((t) => t.credits).filter(Boolean).join('\n\n') || work.credits : work.credits;
+  const description = String(w.description || '').trim() || `${w.title} — ${w.artist}`;
+  const body = `<article class="tt-d-work">
+<div class="tt-d-stage">${id ? liteYouTube(id, w.title, watchLabel[lang.key]) : `<figure class="tt-d-cover"><img src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024"></figure>`}</div>
+<div class="tt-d-body">
+<div class="tt-d-main">
+<p class="tt-d-kicker">${esc(work.format || '')} · ${esc(work.date)}</p>
+<h1>${esc(w.title)}</h1>
+<p class="tt-d-artist">${esc(w.artist)}</p>
+${description ? `<p class="tt-d-lead">${esc(description)}</p>` : ''}
+<div class="tt-d-actions">
+${work.youtube ? `<a class="tt-d-button" href="${esc(work.youtube)}" rel="noopener">${esc(d.youtube)} <span aria-hidden="true">&#8599;</span></a>` : ''}
+<a class="tt-d-button is-ghost" href="${lang.prefix}/works/">${esc(d.allWorks)}</a>
+</div>
+</div>
+<aside class="tt-d-record">
+<img class="tt-d-record-cover" src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024">
+<dl class="tt-d-facts">
+${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n')}
+</dl>
+${isAlbum ? '' : listenBlock(d.listen, work.audio)}
+</aside>
+</div>
+${tracks}
+${versions}
+${credits ? `<section class="tt-d-section"><h2>${esc(d.credits)}</h2><div class="tt-d-card"><pre class="tt-d-credits">${esc(String(credits).trim())}</pre></div></section>` : ''}
+</article>
+${pager(lang, list[index - 1], list[index + 1], previewPath, titleOf)}`;
+  const schema = { '@type': isAlbum ? 'MusicAlbum' : 'MusicRecording', name: w.title, url: `${baseUrl}${workPath(lang, work)}` };
+  return detailPage({
+    lang,
+    pathFor: (l) => workPath(l, work),
+    title: `${w.title} — ${w.artist}`,
+    description: description.length > 160 ? `${description.slice(0, 157)}…` : description,
+    ogType: isAlbum ? 'music.album' : 'music.song',
+    image: assetPath(work.image),
+    schema,
+    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/works/`], [w.title, previewPath(lang, work)]],
+    body,
+    preview: true,
+  });
+}
+
 function newsPage(item, index, lang) {
   const d = detailLabels[lang.key];
   const n = localized(item, lang.key);
@@ -476,6 +541,8 @@ const [pTemplate, pComponent, pSiteText, pWorksText, pWorksJs, pWorksCss] = awai
   read('preview-src/data/site-content.json'), read('preview-src/data/works-data.json'),
   read('preview-src/js/works.js'), read('preview-src/css/works.css'),
 ]);
+const previewDetailCss = await read('preview-src/css/detail.css');
+const previewWorksByDate = [...JSON.parse(pWorksText).works].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 const previewTemplate = pTemplate
   .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(pWorksCss)}`)
   .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(pWorksJs + pWorksText)}`);
@@ -495,6 +562,8 @@ const previewOutputs = [
   ['preview/assets/data/works-data.json', pWorksText],
   ['preview/assets/js/works.js', pWorksJs],
   ['preview/assets/css/works.css', pWorksCss],
+  ['preview/assets/css/detail.css', previewDetailCss],
+  ...previewWorksByDate.flatMap((work, i) => languages.map((lang) => [`preview${workPath(lang, work)}index.html`, workPageV2(work, i, lang, previewWorksByDate)])),
 ];
 
 const outputs = [

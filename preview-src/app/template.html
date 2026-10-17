@@ -249,6 +249,12 @@ body.tt-book-opened .tb-sparks i{animation:tbSpark var(--d) ease-out calc(2.6s +
 .tt-bridge-visual .tb-page{position:absolute;left:50%;top:50%;width:min(380px,74vw);height:min(220px,42vw);margin:calc(min(220px,42vw) / -2) 0 0 calc(min(380px,74vw) / -2);border-radius:16px;opacity:0;
   background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(255,240,206,.42),rgba(255,226,170,.12) 62%,rgba(255,226,170,.03));box-shadow:0 0 70px rgba(255,220,150,.22);filter:blur(1.5px)}
 @media (max-width:760px){.tt-bridge-visual .tb-glow{filter:blur(18px)}}
+/* ===== Brand colours, from the logo: teal #0e6e7d, sky #8decfc, white #fbffff ===== */
+:root{--brand:#0e6e7d;--brand-deep:#0a4f5b;--brand-night:#073640;--brand-sky:#8decfc;--brand-white:#fbffff}
+/* the header lockup reads like the logo: MUSIC in the brand teal near the surface, in sky blue in deep water */
+#brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--depth,0) * 100%),var(--brand))!important;opacity:1!important}
+/* primary buttons wear the brand: teal with white words near the surface, white with teal words in the deep */
+#content#content :is(.tt-home-quick-actions .is-primary,#email-link,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
 :root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}

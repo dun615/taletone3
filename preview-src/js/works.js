@@ -354,9 +354,9 @@
   var progressFrame = 0;
 
   var shelfLabels = {
-    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧' },
-    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits' },
-    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット' }
+    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생' },
+    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video' },
+    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -385,7 +385,8 @@
     return key === 'en' ? '/en' : key === 'jp' ? '/ja' : '';
   }
   function workHref(work) {
-    return work && work.slug ? langPrefix() + '/works/' + encodeURIComponent(work.slug) + '/' : '#c-works';
+    var base = /^\/preview(\/|$)/.test(location.pathname) ? '/preview' : '';
+    return work && work.slug ? base + langPrefix() + '/works/' + encodeURIComponent(work.slug) + '/' : '#c-works';
   }
   function yearOf(work) {
     var match = String((work && work.date) || '').match(/(\d{4})/);
@@ -470,6 +471,16 @@
     }).join('') + '</ol></div>';
   }
 
+  function youtubeId(url) {
+    var m = String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
+    return m ? m[1] : '';
+  }
+  var closeIcon = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+  function listenButton(index) {
+    var labels = L(), on = state.current === index && state.playing;
+    return '<button type="button" class="tt-shelf-listen' + (on ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-listen-label">' + esc(on ? labels.pause : labels.listen) + '</span></button>';
+  }
+
   function modalHtml(index) {
     var work = works[index]; if (!work) return '';
     var labels = L(), meta = localizedMeta();
@@ -477,28 +488,34 @@
     var title = plainRichText(unit.title || work.title || '');
     var image = unit.image || work.image || '';
     var credits = String(unit.credits || work.credits || '').trim();
+    var id = youtubeId(work.youtube);
     var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
       .filter(function (row) { return row[1]; })
       .map(function (row) { return '<div><dt>' + esc(plainRichText(row[0] || '')) + '</dt><dd>' + esc(row[1]) + '</dd></div>'; }).join('');
-    var links = (work.youtube ? '<a class="tt-shelf-modal-link" href="' + esc(work.youtube) + '" target="_blank" rel="noopener">' + esc(labels.mv) + ' <span aria-hidden="true">↗</span></a>' : '') +
+    var stage = id
+      ? '<div class="tt-shelf-yt" data-yt="' + id + '"><img src="https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg" alt="" onload="if(this.naturalWidth<200)this.src=\'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg\'">' +
+        '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + labels.video) + '"><span aria-hidden="true"></span></button></div>'
+      : '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '"><span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' + (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') + '</div>';
+    var links = (hasAudio(work) ? listenButton(index) : '') +
+      (work.youtube ? '<a class="tt-shelf-modal-link" href="' + esc(work.youtube) + '" target="_blank" rel="noopener">' + esc(labels.youtube) + ' <span aria-hidden="true">↗</span></a>' : '') +
       '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>';
-    return '<div class="tt-gh-modal tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
-      '<div class="tt-gh-modal-panel tt-shelf-modal-panel">' +
-        '<button type="button" class="tt-gh-modal-close tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">×</button>' +
-        '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '">' +
-          '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
-          '<img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' +
-          (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') +
-        '</div>' +
+    return '<div class="tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
+      '<div class="tt-shelf-modal-panel">' +
+        '<button type="button" class="tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
+        '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
         '<div class="tt-shelf-modal-body">' +
-          '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
-          '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
-          '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
-          (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
-          trackRowsHtml(work, index) +
-          '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' +
-          '<div class="tt-shelf-modal-links">' + links + '</div>' +
-          (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
+          '<div class="tt-shelf-modal-main">' +
+            '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
+            '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
+            '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
+            (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
+            '<div class="tt-shelf-modal-links">' + links + '</div>' +
+          '</div>' +
+          '<div class="tt-shelf-modal-side">' +
+            '<div class="tt-shelf-modal-record"><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '"><dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
+            trackRowsHtml(work, index) +
+            (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
+          '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -532,7 +549,7 @@
       '<button type="button" class="tt-shelf-player-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc(state.playing ? labels.pause : labels.play) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' +
       '<div class="tt-shelf-player-bar" data-works-action="seek" role="slider" aria-label="' + esc(title) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i></i></div>' +
       '<span class="tt-shelf-player-time">0:00</span>' +
-      '<button type="button" class="tt-shelf-player-close" data-works-action="stop" aria-label="' + esc(labels.close) + '">×</button>' +
+      '<button type="button" class="tt-shelf-player-close" data-works-action="stop" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
     '</div>';
   }
 
@@ -671,6 +688,8 @@
     resume();
   }
   function resume() {
+    var video = root && root.querySelector('.tt-shelf-yt.is-playing');
+    if (video) { video.closest('.tt-shelf-modal-stage') && closeVideo(video); }
     var el = ensureAudioEl();
     var attempt = el.play();
     state.playing = true;
@@ -678,6 +697,12 @@
     if (attempt && attempt.catch) attempt.catch(function () { state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying(); });
     refreshPlaying(true);
     tickProgress();
+  }
+  function closeVideo(wrap) {
+    var id = wrap.getAttribute('data-yt');
+    var title = (wrap.querySelector('iframe') || {}).title || '';
+    wrap.classList.remove('is-playing');
+    wrap.innerHTML = '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt=""><button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title) + '"><span aria-hidden="true"></span></button>';
   }
   function pauseAll() {
     if (audio && !audio.paused) audio.pause();
@@ -703,6 +728,11 @@
       button.classList.toggle('is-playing', on);
       var label = String(button.getAttribute('aria-label') || '').replace(/^[^:]*:\s*/, '');
       button.setAttribute('aria-label', (on ? labels.pause : labels.play) + ': ' + label);
+    });
+    root.querySelectorAll('.tt-shelf-listen').forEach(function (button) {
+      var on = Number(button.getAttribute('data-index')) === state.current && state.playing;
+      button.classList.toggle('is-playing', on);
+      var text = button.querySelector('.tt-shelf-listen-label'); if (text) text.textContent = on ? labels.pause : labels.listen;
     });
     var art = root.querySelector('.tt-shelf-modal-art');
     if (art) art.classList.toggle('is-playing', state.modal === state.current && state.playing);
@@ -801,6 +831,18 @@
       openModal(Number(button.getAttribute('data-index')), button);
     } else if (action === 'close') {
       closeModal();
+    } else if (action === 'video') {
+      var wrap = button.closest('.tt-shelf-yt');
+      if (wrap) {
+        pauseAll();
+        var frame = document.createElement('iframe');
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + wrap.getAttribute('data-yt') + '?autoplay=1&rel=0&playsinline=1';
+        frame.title = button.getAttribute('aria-label') || 'YouTube';
+        frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        frame.allowFullscreen = true;
+        wrap.replaceChildren(frame);
+        wrap.classList.add('is-playing');
+      }
     } else if (action === 'close-backdrop') {
       if (event.target === button) closeModal();
     } else if (action === 'play') {
@@ -1085,7 +1127,7 @@
   }
 
   function findSiteDialog() {
-    return document.querySelector('.tt-gh-modal[role="dialog"], .tt-member-modal, .tt-news-modal');
+    return document.querySelector('.tt-shelf-modal[role="dialog"], .tt-member-modal, .tt-news-modal');
   }
 
   function setSiblingsInert(dialog) {
@@ -1200,9 +1242,9 @@
       if (!heading.id) heading.id = 'tt-dialog-title-' + Date.now();
       dialog.setAttribute('aria-labelledby', heading.id);
     }
-    var panel = dialog.querySelector('.tt-member-panel, .tt-gh-modal-panel') || dialog.firstElementChild;
+    var panel = dialog.querySelector('.tt-member-panel, .tt-shelf-modal-panel') || dialog.firstElementChild;
     if (panel) panel.setAttribute('role', 'document');
-    var close = dialog.querySelector('.tt-member-close, .tt-gh-modal-close, :scope > div > button');
+    var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, :scope > div > button');
     if (close) {
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
@@ -1265,7 +1307,7 @@
     var dialog = globalUxState.dialog;
     if (!dialog) return;
     if (event.key === 'Escape') {
-      var close = dialog.querySelector('.tt-member-close, .tt-gh-modal-close, :scope > div > button');
+      var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, :scope > div > button');
       if (close) {
         event.preventDefault();
         close.click();
