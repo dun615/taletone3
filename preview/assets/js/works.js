@@ -354,25 +354,22 @@
   var progressFrame = 0;
 
   var shelfLabels = {
-    kr: { all: '전체', ost: '게임 · 애니 OST', solo: '솔로', group: '그룹', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧' },
-    en: { all: 'All', ost: 'Game & anime OST', solo: 'Solo', group: 'Groups', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits' },
-    jp: { all: 'すべて', ost: 'ゲーム・アニメOST', solo: 'ソロ', group: 'グループ', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット' }
+    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧' },
+    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits' },
+    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
-  // Category: an explicit `category` in works-data wins; otherwise game / animation work is OST.
-  // Artist releases are split by `lineup` (solo / group) in works-data.
+  // Category: an explicit `category` in works-data wins; otherwise game / animation work is OST
+  // and everything else is an artist release.
   function categoryOf(work) {
     if (work && work.category) return String(work.category);
     var text = [work && work.type, work && work.translations && work.translations.en && work.translations.en.type].join(' ');
     return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'artist';
   }
   function isAlbum(work) { var k = itemKind(work); return k === 'album' || k === 'ep'; }
-  function lineupOf(work) { return work && work.lineup === 'group' ? 'group' : 'solo'; }
   function matchesFilter(work, filter) {
-    if (filter === 'all') return true;
-    if (filter === 'ost') return categoryOf(work) === 'ost';
-    return categoryOf(work) !== 'ost' && lineupOf(work) === filter;
+    return filter === 'all' || categoryOf(work) === filter;
   }
   function visibleWorks() {
     return works.map(function (work, index) { return { work: work, index: index }; })
@@ -421,7 +418,7 @@
 
   function filtersHtml() {
     var labels = L();
-    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + ['all', 'ost', 'solo', 'group'].map(function (key) {
+    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + ['all', 'ost', 'artist'].map(function (key) {
       var count = works.filter(function (work) { return matchesFilter(work, key); }).length;
       if (!count) return '';
       var on = state.filter === key;

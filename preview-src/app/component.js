@@ -799,7 +799,7 @@ class Component extends DCLogic {
       if(bookRect.width){
         var bookFloat=bookEl.closest?bookEl.closest('[data-float]'):null;
         var currentFloatY=bookFloat&&Number.isFinite(bookFloat._floatY)?bookFloat._floatY:0;
-        this._deepBookGeometry={x:bookRect.left+bookRect.width/2,docY:bookRect.top+scrollTop+bookRect.height*0.30-currentFloatY,floatEl:bookFloat};
+        this._deepBookGeometry={x:bookRect.left+bookRect.width/2,docY:bookRect.top+scrollTop+bookRect.height*0.68-currentFloatY,floatEl:bookFloat};
       }
     }
     this._layoutGeometryHeight=layoutHeight==null?(scEl?scEl.scrollHeight:document.documentElement.scrollHeight):layoutHeight;
@@ -1327,9 +1327,7 @@ class Component extends DCLogic {
       bloom.addColorStop(0,'rgba(255,226,160,'+(0.55*awake).toFixed(3)+')'); bloom.addColorStop(0.3,'rgba(255,214,140,'+(0.2*awake).toFixed(3)+')'); bloom.addColorStop(1,'rgba(255,214,140,0)');
       c.globalCompositeOperation='screen';
       c.fillStyle=bloom; c.fillRect(0,0,W,H);
-      var colW=W*(0.06+0.06*awake)*(0.9+0.1*Math.sin(tw*1.3));
-      if(!this._columnSprite){ var cs=document.createElement('canvas'); cs.width=64; cs.height=256; var cx=cs.getContext('2d'); var hg=cx.createLinearGradient(0,0,64,0); hg.addColorStop(0,'rgba(255,236,190,0)'); hg.addColorStop(0.5,'rgba(255,236,190,1)'); hg.addColorStop(1,'rgba(255,236,190,0)'); cx.fillStyle=hg; cx.fillRect(0,0,64,256); cx.globalCompositeOperation='destination-in'; var vg=cx.createLinearGradient(0,256,0,0); vg.addColorStop(0,'rgba(0,0,0,1)'); vg.addColorStop(1,'rgba(0,0,0,0)'); cx.fillStyle=vg; cx.fillRect(0,0,64,256); this._columnSprite=cs; }
-      if(aby>0){ c.globalAlpha=0.45*awake; c.drawImage(this._columnSprite,abx-colW/2,0,colW,aby); c.globalAlpha=1; }
+
       c.globalCompositeOperation='source-over';
     }
     var awakeNow=near>0.6;
