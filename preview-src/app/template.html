@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/works.css?v=20261017-ux">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261017-ux2">
 <script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
 <style>
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
@@ -260,15 +260,32 @@ body[data-active-chapter] #chapnav a.navbtn{opacity:.8!important}
 /* titles and Story Types labels: deeper on the light side, lighter on the dark side */
 .tt-chapter-title > span[style*="--accent"]{color:color-mix(in srgb,var(--ink,#141C30) 40%,var(--accent,#0E6E7D))!important}
 
-#content#content .tt-audience > div{color:color-mix(in srgb,var(--ink,#141C30) 70%,var(--accent,#0E6E7D))!important}
+#content#content .tt-audience > div{color:var(--ink,#141C30)!important}
 #content#content .tt-audience p:first-of-type{color:var(--ink,#141C30)!important;font-weight:600}
-.tt-audiences-heading{color:color-mix(in srgb,var(--ink,#141C30) 70%,var(--accent,#0E6E7D))}
+.tt-audiences-heading{color:var(--ink,#141C30)!important;width:max-content;margin-left:auto!important;margin-right:auto!important;padding:6px 16px;border-radius:999px;background:color-mix(in srgb,var(--paper,#fffdf8) 70%,transparent);border:1px solid color-mix(in srgb,var(--ink,#141C30) 12%,transparent)}
 /* U7: on phones the header floats over a soft scrim so text scrolling under it stays out of the way */
 .tt-top-scrim{display:none}
 @media (max-width:760px){.tt-top-scrim{display:block;position:fixed;left:0;right:0;top:0;height:128px;z-index:59;pointer-events:none;
   background:linear-gradient(180deg,color-mix(in srgb,var(--paper,#fffdf8) 72%,transparent) 0%,color-mix(in srgb,var(--paper,#fffdf8) 46%,transparent) 62%,transparent 100%);
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
   body.tt-site-dialog-open .tt-top-scrim{display:none}}
+/* Contrast: the fixed brand, chapter nav and counter ride on pills in the current water's paper colour
+   (they cross every depth, so a pill keeps them readable); chapter labels get a soft shadow on the dark side only */
+@media (min-width:761px){
+  #brand,#progress{background:color-mix(in srgb,var(--paper,#fffdf8) 74%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border:1px solid color-mix(in srgb,var(--ink,#141C30) 12%,transparent);box-shadow:0 8px 24px rgba(4,16,28,.12)}
+  #brand{padding:6px 16px 6px 7px;border-radius:999px;left:22px!important;top:22px!important}
+  #progress{padding:9px 16px;border-radius:999px;left:22px!important;bottom:22px!important}
+  #progress *{opacity:1!important}
+}
+/* chapter nav: solid ink labels with the depth-aware halo (no pill: it collapses to dots on some chapters) */
+html body #chapnav .nav-label{color:var(--ink,#141C30)!important;text-shadow:var(--halo,none)!important}
+html body[data-active-chapter] #chapnav a.navbtn{opacity:.9!important}
+.tt-section-chapter-block{position:relative;isolation:isolate}
+.tt-section-chapter-block::before{content:'';position:absolute;inset:-16px -56px;z-index:-1;pointer-events:none;border-radius:999px;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--paper,#0b1330) calc(var(--deep-glow,0) * 88%),transparent) 0%,color-mix(in srgb,var(--paper,#0b1330) calc(var(--deep-glow,0) * 60%),transparent) 60%,transparent)}
+/* the partner's role on the light summary bar */
+.tt-network-person small{color:#3a4656!important;opacity:1!important}
 /* ===== One close button for every popup: a round X, the same as the Works popup =====
    (the :is(#…) boosts outrank older per-popup rules that use ID selectors) */
 html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close){display:grid!important;place-items:center!important;width:44px!important;height:44px!important;min-width:0!important;min-height:0!important;padding:0!important;border:0!important;border-radius:50%!important;
@@ -280,7 +297,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* ===== Brand colours, from the logo: teal #0e6e7d, sky #8decfc, white #fbffff ===== */
 :root{--brand:#0e6e7d;--brand-deep:#0a4f5b;--brand-night:#073640;--brand-sky:#8decfc;--brand-white:#fbffff}
 /* the header lockup reads like the logo: MUSIC in the brand teal near the surface, in sky blue in deep water */
-#brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--depth,0) * 100%),var(--brand))!important;opacity:1!important}
+#brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--deep-glow,0) * 100%),var(--brand))!important;opacity:1!important}
 /* primary buttons wear the brand: teal with white words near the surface, white with teal words in the deep */
 #content#content :is(.tt-home-quick-actions .is-primary,#email-link,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
@@ -672,7 +689,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 </style>
-<script defer="" src="assets/js/works.js?v=20261017-ux"></script>
+<script defer="" src="assets/js/works.js?v=20261017-ux2"></script>
 </helmet>
                                         
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
