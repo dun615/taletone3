@@ -581,19 +581,29 @@ async function runInteractionSmoke(chrome, origin) {
     assert(playing.button && playing.player, 'interaction: playing book or player bar did not show its state');
     passed.push('works-play');
 
+    await clickSelector(client, '[data-works-book="0"] .tt-shelf-detail');
+    await sleep(200);
+    const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback})`);
+    assert(popup.open && popup.dialog && popup.playback === 'playing', `interaction: WORKS popup did not open over playing music: ${JSON.stringify(popup)}`);
+    await clickSelector(client, '.tt-shelf-modal-close');
+    await sleep(200);
+    const closedPopup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal'),dialog:document.body.classList.contains('tt-site-dialog-open')})`);
+    assert(!closedPopup.open && !closedPopup.dialog, 'interaction: WORKS popup did not close cleanly');
+    passed.push('works-popup');
+
     await clickSelector(client, '.tt-shelf-player-toggle');
     await sleep(120);
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: player toggle did not pause');
     passed.push('works-pause');
 
-    await clickSelector(client, '[data-works-action="filter"][data-filter="album"]');
-    await sleep(120);
-    const albums = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(albums === 2, `interaction: album filter expected 2 books, found ${albums}`);
+    await clickSelector(client, '[data-works-action="filter"][data-filter="ost"]');
+    await sleep(700);
+    const osts = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
+    assert(osts === 4, `interaction: OST filter expected 4 books, found ${osts}`);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
-    await sleep(120);
+    await sleep(700);
     await clickSelector(client, '[data-works-action="more"]');
-    await sleep(160);
+    await sleep(700);
     const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
     assert(all === 21, `interaction: whole shelf expected 21 books, found ${all}`);
     passed.push('works-filter-shelf');

@@ -406,6 +406,12 @@
     return (work.versions || []).some(function (v) { return v.audio; });
   }
 
+  // CSS resolves url() inside a custom property against the stylesheet that uses it, so pass a root path
+  function rootUrl(value) {
+    var v = String(value || '').replace(/\\/g, '/');
+    return /^(?:[a-z]+:|\/)/i.test(v) ? v : '/' + v;
+  }
+
   function coverStyle(unit) {
     var fit = unit.fit === 'contain' ? 'contain' : 'cover';
     var pos = (unit.posX || '50%') + ' ' + (unit.posY || '50%');
@@ -438,7 +444,7 @@
     var image = unit.image || work.image || '';
     return '<li class="tt-shelf-book' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<div class="tt-shelf-cover">' +
-        '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(image) + '\')"><i></i></span>' +
+        '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
         '<a class="tt-shelf-cover-link" href="' + esc(workHref(work)) + '" data-works-action="open" data-index="' + index + '" tabindex="-1" aria-hidden="true">' +
           '<img ' + (eager ? 'src' : 'data-src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '">' +
           '<span class="tt-shelf-glare"></span>' +
@@ -480,7 +486,7 @@
       '<div class="tt-gh-modal-panel tt-shelf-modal-panel">' +
         '<button type="button" class="tt-gh-modal-close tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">×</button>' +
         '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '">' +
-          '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(image) + '\')"><i></i></span>' +
+          '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
           '<img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' +
           (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') +
         '</div>' +

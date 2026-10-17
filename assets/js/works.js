@@ -337,45 +337,45 @@
   }
   // ===================================================================
   // WORKS · the bookshelf
-  // Every work is one book on a shelf: a square cover resting on a ledge, its title, who it was
-  // made with and a one-line story. Covers play a preview; the book opens on its own page.
+  // Every work is a record sleeve on a shelf. Covers tilt toward the pointer; the play button in the
+  // middle slides the record out and spins it; the detail button opens the story in a popup.
   // ===================================================================
   var state = {
     filter: 'all',
     expanded: false,
     playing: false,
-    current: -1,      // index into works of the book being played
+    current: -1,      // index into works of the record being played
     track: 0,
-    language: 'KR'
+    language: 'KR',
+    modal: -1,        // index of the work open in the popup
+    settled: false    // the shelf has made its entrance once
   };
   var audio = null;
   var progressFrame = 0;
 
   var shelfLabels = {
-    kr: { all: '전체', original: '오리지널 송', ost: '게임 · 애니 OST', album: '앨범 · EP', more: '서가 전체 보기', less: '접기', play: '미리 듣기', pause: '일시정지', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', count: '곡' },
-    en: { all: 'All', original: 'Original songs', ost: 'Game & anime OST', album: 'Albums & EPs', more: 'Show the whole shelf', less: 'Show less', play: 'Preview', pause: 'Pause', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', count: '' },
-    jp: { all: 'すべて', original: 'オリジナルソング', ost: 'ゲーム・アニメOST', album: 'アルバム・EP', more: '本棚をすべて見る', less: '閉じる', play: '試聴する', pause: '一時停止', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', count: '曲' }
+    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧' },
+    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits' },
+    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
-  // Category: an explicit `category` in works-data wins; otherwise game / animation work is OST.
+  // Category: an explicit `category` in works-data wins; otherwise game / animation work is OST
+  // and everything else is an artist release.
   function categoryOf(work) {
     if (work && work.category) return String(work.category);
     var text = [work && work.type, work && work.translations && work.translations.en && work.translations.en.type].join(' ');
-    return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'original';
+    return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'artist';
   }
   function isAlbum(work) { var k = itemKind(work); return k === 'album' || k === 'ep'; }
   function matchesFilter(work, filter) {
-    if (filter === 'all') return true;
-    if (filter === 'album') return isAlbum(work);
-    return categoryOf(work) === filter;
+    return filter === 'all' || categoryOf(work) === filter;
   }
   function visibleWorks() {
     return works.map(function (work, index) { return { work: work, index: index }; })
       .filter(function (entry) { return matchesFilter(entry.work, state.filter); });
   }
   function shelfStep() {
-    if (window.innerWidth <= 760) return 6;
     if (window.innerWidth <= 1100) return 6;
     return 8;
   }
@@ -406,16 +406,25 @@
     return (work.versions || []).some(function (v) { return v.audio; });
   }
 
+  // CSS resolves url() inside a custom property against the stylesheet that uses it, so pass a root path
+  function rootUrl(value) {
+    var v = String(value || '').replace(/\\/g, '/');
+    return /^(?:[a-z]+:|\/)/i.test(v) ? v : '/' + v;
+  }
+
   function coverStyle(unit) {
     var fit = unit.fit === 'contain' ? 'contain' : 'cover';
     var pos = (unit.posX || '50%') + ' ' + (unit.posY || '50%');
     return 'object-fit:' + fit + ';object-position:' + esc(pos);
   }
+  function playButton(index, title, extraClass) {
+    var labels = L(), on = state.current === index && state.playing;
+    return '<button type="button" class="tt-shelf-play' + (extraClass ? ' ' + extraClass : '') + (on ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '" aria-label="' + esc((on ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-eq" aria-hidden="true"><i></i><i></i><i></i></span></button>';
+  }
 
   function filtersHtml() {
     var labels = L();
-    var keys = ['all', 'original', 'ost', 'album'];
-    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + keys.map(function (key) {
+    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + ['all', 'ost', 'artist'].map(function (key) {
       var count = works.filter(function (work) { return matchesFilter(work, key); }).length;
       if (!count) return '';
       var on = state.filter === key;
@@ -430,25 +439,69 @@
     var artist = plainRichText(unit.artist || work.artist || '');
     var story = plainRichText(unit.description || '');
     var format = [work.format || (isAlbum(work) ? 'Album' : 'Single'), yearOf(work)].filter(Boolean).join(' · ');
-    var playingThis = state.current === index;
+    var current = state.current === index;
     var eager = order < shelfStep();
-    var href = workHref(work);
-    var play = hasAudio(work)
-      ? '<button type="button" class="tt-shelf-play' + (playingThis && state.playing ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '" aria-label="' + esc((playingThis && state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-eq" aria-hidden="true"><i></i><i></i><i></i></span></button>'
-      : '';
-    return '<li class="tt-shelf-book' + (playingThis ? ' is-current' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
+    var image = unit.image || work.image || '';
+    return '<li class="tt-shelf-book' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<div class="tt-shelf-cover">' +
-        '<a class="tt-shelf-cover-link" href="' + esc(href) + '" tabindex="-1" aria-hidden="true">' +
-          '<img ' + (eager ? 'src' : 'data-src') + '="' + esc(unit.image || work.image || '') + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '">' +
-        '</a>' + play +
+        '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
+        '<a class="tt-shelf-cover-link" href="' + esc(workHref(work)) + '" data-works-action="open" data-index="' + index + '" tabindex="-1" aria-hidden="true">' +
+          '<img ' + (eager ? 'src' : 'data-src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '">' +
+          '<span class="tt-shelf-glare"></span>' +
+        '</a>' +
+        (hasAudio(work) ? playButton(index, title) : '') +
+        '<button type="button" class="tt-shelf-detail" data-works-action="open" data-index="' + index + '" aria-label="' + esc(labels.detail + ': ' + title) + '">' + esc(labels.detail) + '<span aria-hidden="true">+</span></button>' +
       '</div>' +
       '<div class="tt-shelf-meta">' +
         '<p class="tt-shelf-format">' + esc(format) + '</p>' +
-        '<h3 class="tt-shelf-name"><a href="' + esc(href) + '" aria-label="' + esc(title + ' — ' + labels.open) + '">' + esc(title) + '</a></h3>' +
+        '<h3 class="tt-shelf-name"><a href="' + esc(workHref(work)) + '" data-works-action="open" data-index="' + index + '" aria-label="' + esc(title + ' — ' + labels.open) + '">' + esc(title) + '</a></h3>' +
         (artist ? '<p class="tt-shelf-artist">' + esc(artist) + '</p>' : '') +
         (story ? '<p class="tt-shelf-story">' + esc(story) + '</p>' : '') +
       '</div>' +
     '</li>';
+  }
+
+  function trackRowsHtml(work, index) {
+    if (!work.tracks || work.tracks.length < 2) return '';
+    var labels = L();
+    return '<div class="tt-shelf-modal-tracks"><p class="tt-shelf-modal-label">' + esc(labels.tracks) + '</p><ol>' + work.tracks.map(function (track, i) {
+      var t = localizedUnit(track), on = state.current === index && state.track === i;
+      return '<li><button type="button" class="' + (on ? 'is-on' : '') + '" data-works-action="modal-track" data-index="' + index + '" data-track="' + i + '"><span>' + pad(i + 1) + '</span>' + esc(plainRichText(t.title || '')) + '</button></li>';
+    }).join('') + '</ol></div>';
+  }
+
+  function modalHtml(index) {
+    var work = works[index]; if (!work) return '';
+    var labels = L(), meta = localizedMeta();
+    var unit = localizedUnit(work);
+    var title = plainRichText(unit.title || work.title || '');
+    var image = unit.image || work.image || '';
+    var credits = String(unit.credits || work.credits || '').trim();
+    var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
+      .filter(function (row) { return row[1]; })
+      .map(function (row) { return '<div><dt>' + esc(plainRichText(row[0] || '')) + '</dt><dd>' + esc(row[1]) + '</dd></div>'; }).join('');
+    var links = (work.youtube ? '<a class="tt-shelf-modal-link" href="' + esc(work.youtube) + '" target="_blank" rel="noopener">' + esc(labels.mv) + ' <span aria-hidden="true">↗</span></a>' : '') +
+      '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>';
+    return '<div class="tt-gh-modal tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
+      '<div class="tt-gh-modal-panel tt-shelf-modal-panel">' +
+        '<button type="button" class="tt-gh-modal-close tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">×</button>' +
+        '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '">' +
+          '<span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span>' +
+          '<img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' +
+          (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') +
+        '</div>' +
+        '<div class="tt-shelf-modal-body">' +
+          '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
+          '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
+          '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
+          (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
+          trackRowsHtml(work, index) +
+          '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' +
+          '<div class="tt-shelf-modal-links">' + links + '</div>' +
+          (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   function playerHtml() {
@@ -472,7 +525,7 @@
         }).join('') + '</div>'
       : '';
     return '<div class="tt-shelf-player is-open" role="region" aria-label="' + esc(labels.nowPlaying) + '">' +
-      '<img class="tt-shelf-player-cover" src="' + esc(playUnit.image || unit.image || work.image || '') + '" alt="">' +
+      '<button type="button" class="tt-shelf-player-cover" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><img src="' + esc(playUnit.image || unit.image || work.image || '') + '" alt=""></button>' +
       '<div class="tt-shelf-player-text"><span class="tt-shelf-player-kicker">' + esc(labels.nowPlaying) + '</span>' +
         '<strong>' + esc(trackTitle || title) + '</strong><span>' + esc(plainRichText(unit.artist || work.artist || '')) + '</span></div>' +
       tracks + langs +
@@ -502,7 +555,36 @@
       logos.map(function (logo) { return '<img src="' + esc(logo.src) + '" alt="' + esc(logo.alt) + '" loading="lazy">'; }).join('') + '</div></div>';
   }
 
-  function render() {
+  function bookRects() {
+    var rects = {};
+    if (!root) return rects;
+    root.querySelectorAll('[data-works-book]').forEach(function (book) { rects[book.getAttribute('data-works-book')] = book.getBoundingClientRect(); });
+    return rects;
+  }
+  // books that stay glide to their new places; books that arrive grow in (FLIP)
+  function shuffleFrom(before) {
+    if (!root || !before) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    root.querySelectorAll('[data-works-book]').forEach(function (book, i) {
+      var was = before[book.getAttribute('data-works-book')], now = book.getBoundingClientRect();
+      book.style.transition = 'none';
+      if (was) book.style.transform = 'translate(' + (was.left - now.left).toFixed(1) + 'px,' + (was.top - now.top).toFixed(1) + 'px)';
+      else { book.style.transform = 'scale(.86)'; book.style.opacity = '0'; }
+      book.style.transitionDelay = (was ? 0 : Math.min(i, 10) * 30) + 'ms';
+    });
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        root.querySelectorAll('[data-works-book]').forEach(function (book) {
+          book.style.transition = 'transform .55s cubic-bezier(.2,.75,.2,1), opacity .45s ease';
+          book.style.transform = '';
+          book.style.opacity = '';
+        });
+      });
+    });
+  }
+
+  function render(before) {
     if (!root) root = ensureRoot();
     if (!root) return;
     var labels = L();
@@ -511,11 +593,14 @@
     var more = list.length > shelfStep()
       ? '<button type="button" class="tt-shelf-more" data-works-action="more" aria-expanded="' + state.expanded + '">' + esc(state.expanded ? labels.less : labels.more) + (state.expanded ? '' : '<span>' + (list.length - limit) + '</span>') + '</button>'
       : '';
-    root.innerHTML = '<div class="tt-shelf">' + headHtml() + filtersHtml() +
-      '<ul class="tt-shelf-grid">' + list.slice(0, limit).map(bookHtml).join('') + '</ul>' + more + clientsHtml() + playerHtml() + '</div>';
+    root.innerHTML = '<div class="tt-shelf' + (state.settled ? ' is-settled' : '') + '">' + headHtml() + filtersHtml() +
+      '<ul class="tt-shelf-grid">' + list.slice(0, limit).map(bookHtml).join('') + '</ul>' + more + clientsHtml() + playerHtml() +
+      (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
+    if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
     updateProgress();
+    if (before) shuffleFrom(before);
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
@@ -533,6 +618,25 @@
     if (!img.dataset.src) return;
     img.src = img.dataset.src;
     img.removeAttribute('data-src');
+  }
+
+  // ---- the popup: opened and closed in place, the shelf behind it is not rebuilt ----
+  function openModal(index, trigger) {
+    if (!root || !works[index]) return;
+    closeModal(false);
+    state.modal = index;
+    if (trigger) rememberDialogTrigger(trigger);
+    var shelf = root.querySelector('.tt-shelf');
+    var holder = document.createElement('div'); holder.innerHTML = modalHtml(index);
+    shelf.appendChild(holder.firstChild);
+    window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
+  }
+  function closeModal(notify) {
+    var modal = root && root.querySelector('.tt-shelf-modal');
+    state.modal = -1;
+    if (!modal) return;
+    modal.remove();
+    if (notify !== false) window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
   // ---- playback: one audio element; tracks and language versions switch in place ----
@@ -556,11 +660,11 @@
       if (time) el.addEventListener('loadedmetadata', function () { try { el.currentTime = Math.min(time, (el.duration || time) - 0.2); } catch (_e) {} }, { once: true });
     }
   }
-  function playIndex(index) {
+  function playIndex(index, track) {
     var work = works[index]; if (!work) return;
-    if (state.current !== index) {
+    if (state.current !== index || track != null) {
       state.current = index;
-      state.track = titleTrackIndex(work);
+      state.track = track != null ? track : titleTrackIndex(work);
       state.language = defaultLanguage(work, state.track);
     }
     loadCurrent(false);
@@ -583,22 +687,27 @@
     pauseAll();
     if (audio) { audio.removeAttribute('src'); audio.load(); }
     state.current = -1;
-    render();
+    refreshPlaying(true);
   }
-  // Light update: swap the player and play-button states without rebuilding the shelf
+  // Light update: play states, the record sleeves and the player, without rebuilding the shelf
   function refreshPlaying(rebuildPlayer) {
     if (!root) return;
     var labels = L();
     root.querySelectorAll('[data-works-book]').forEach(function (book) {
-      var index = Number(book.getAttribute('data-works-book'));
-      var on = index === state.current;
+      var on = Number(book.getAttribute('data-works-book')) === state.current;
       book.classList.toggle('is-current', on);
-      var button = book.querySelector('.tt-shelf-play');
-      if (button) {
-        button.classList.toggle('is-playing', on && state.playing);
-        var name = book.querySelector('.tt-shelf-name a');
-        button.setAttribute('aria-label', (on && state.playing ? labels.pause : labels.play) + ': ' + (name ? name.textContent : ''));
-      }
+      book.classList.toggle('is-playing', on && state.playing);
+    });
+    root.querySelectorAll('.tt-shelf-play').forEach(function (button) {
+      var on = Number(button.getAttribute('data-index')) === state.current && state.playing;
+      button.classList.toggle('is-playing', on);
+      var label = String(button.getAttribute('aria-label') || '').replace(/^[^:]*:\s*/, '');
+      button.setAttribute('aria-label', (on ? labels.pause : labels.play) + ': ' + label);
+    });
+    var art = root.querySelector('.tt-shelf-modal-art');
+    if (art) art.classList.toggle('is-playing', state.modal === state.current && state.playing);
+    root.querySelectorAll('[data-works-action="modal-track"]').forEach(function (button) {
+      button.classList.toggle('is-on', Number(button.getAttribute('data-index')) === state.current && Number(button.getAttribute('data-track')) === state.track);
     });
     var player = root.querySelector('.tt-shelf-player');
     if (player && (rebuildPlayer || !player.classList.contains('is-open'))) {
@@ -634,6 +743,37 @@
     updateProgress();
   }
 
+  // ---- the sleeves lean toward the pointer, with a glint of light across the cover ----
+  var tiltFrame = 0, tiltTarget = null, tiltX = 0, tiltY = 0;
+  function onShelfPointerMove(event) {
+    if (event.pointerType && event.pointerType !== 'mouse') return;
+    var cover = event.target && event.target.closest ? event.target.closest('.tt-shelf-cover') : null;
+    if (tiltTarget && tiltTarget !== cover) resetTilt(tiltTarget);
+    tiltTarget = cover; if (!cover) return;
+    tiltX = event.clientX; tiltY = event.clientY;
+    if (tiltFrame) return;
+    tiltFrame = requestAnimationFrame(function () {
+      tiltFrame = 0;
+      if (!tiltTarget) return;
+      var r = tiltTarget.getBoundingClientRect();
+      var px = clamp((tiltX - r.left) / r.width, 0, 1), py = clamp((tiltY - r.top) / r.height, 0, 1);
+      tiltTarget.style.setProperty('--ry', ((px - 0.5) * 14).toFixed(2) + 'deg');
+      tiltTarget.style.setProperty('--rx', ((0.5 - py) * 12).toFixed(2) + 'deg');
+      tiltTarget.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+      tiltTarget.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+    });
+  }
+  function resetTilt(cover) {
+    if (!cover) return;
+    cover.style.removeProperty('--rx'); cover.style.removeProperty('--ry');
+    cover.style.removeProperty('--gx'); cover.style.removeProperty('--gy');
+  }
+  function onShelfPointerOut(event) {
+    var cover = event.target && event.target.closest ? event.target.closest('.tt-shelf-cover') : null;
+    if (!cover || (event.relatedTarget && cover.contains(event.relatedTarget))) return;
+    resetTilt(cover); if (tiltTarget === cover) tiltTarget = null;
+  }
+
   function isWorksChapterActive() {
     var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
     if (activeChapter) return activeChapter === 'works';
@@ -646,18 +786,29 @@
     if (!button || !section || !section.contains(button)) return;
     var action = button.getAttribute('data-works-action');
     if (action === 'filter') {
+      var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
       state.expanded = false;
-      render();
+      render(before);
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
     } else if (action === 'more') {
+      var beforeMore = bookRects();
       state.expanded = !state.expanded;
-      render();
+      render(beforeMore);
       if (!state.expanded) { var grid = root && root.querySelector('.tt-shelf-grid'); if (grid) grid.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+    } else if (action === 'open') {
+      event.preventDefault();
+      openModal(Number(button.getAttribute('data-index')), button);
+    } else if (action === 'close') {
+      closeModal();
+    } else if (action === 'close-backdrop') {
+      if (event.target === button) closeModal();
     } else if (action === 'play') {
       event.preventDefault();
       var index = Number(button.getAttribute('data-index'));
       if (index === state.current && state.playing) pauseAll(); else if (index === state.current) resume(); else playIndex(index);
+    } else if (action === 'modal-track') {
+      playIndex(Number(button.getAttribute('data-index')), Number(button.getAttribute('data-track')) || 0);
     } else if (action === 'toggle') {
       if (state.playing) pauseAll(); else resume();
     } else if (action === 'stop') {
@@ -724,6 +875,7 @@
     stopAll();
     works = json.works || [];
     logos = json.clientLogos || [];
+    state.modal = -1;
     render();
   }
   function selectEditorWork(payload) {
@@ -1036,7 +1188,8 @@
     if (!dialog || dialog === globalUxState.dialog) return;
     if (globalUxState.dialog) deactivateSiteDialog(false);
     closeMobileChapterMenu(false);
-    if (state.playing) pauseAll();
+    // the WORKS popup keeps the music going; every other dialog pauses it
+    if (state.playing && !dialog.classList.contains('tt-shelf-modal')) pauseAll();
     globalUxState.dialog = dialog;
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-modal', 'true');
@@ -1214,6 +1367,8 @@
     document.addEventListener('keydown', onKey, true);
     window.addEventListener('hashchange', scrollToWorksFromHash);
     window.addEventListener('resize', onResize, { passive: true });
+    document.addEventListener('pointermove', onShelfPointerMove, { passive: true });
+    document.addEventListener('pointerout', onShelfPointerOut, true);
     bindVisibilityPause();
   }
   function start() {

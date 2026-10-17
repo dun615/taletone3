@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261020-shelf',
-  'assets/js/works.js': '20261020-shelf',
+  'assets/css/works.css': '20261021-records',
+  'assets/js/works.js': '20261021-records',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -215,7 +215,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     const drawRailBody = (decodedScript.match(/\n  drawRail\(n, pal, time\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
     assert(decodedScript.includes('refreshLayoutGeometry(layoutHeight){') && decodedScript.includes('el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};'), `${file}: shared layout geometry cache is missing`);
     assert(decodedScript.includes('this._railCenters.push(section.offsetTop+section.clientHeight*0.5);'), `${file}: rail centers are not cached with layout geometry`);
-    assert(decodedScript.includes('docY:bookRect.top+scrollTop+bookRect.height*0.30-currentFloatY') && decodedScript.includes('bookGeometry.docY+bookFloatY'), `${file}: deep-book float compensation is missing`);
+    assert(decodedScript.includes('docY:bookRect.top+scrollTop+bookRect.height*0.68-currentFloatY') && decodedScript.includes('bookGeometry.docY+bookFloatY'), `${file}: deep-book float compensation is missing`);
     assert(decodedScript.includes('fl._floatY=Number(floatY);'), `${file}: live deep-book float offset is not retained`);
     assert(decodedScript.includes('var geometryDirty=this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight;') && decodedScript.includes('if(geometryDirty) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
     assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
@@ -646,7 +646,9 @@ const removedAudioPreloadSymbols = [
   'scheduleLayeredAudioPreload',
 ];
 for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
-assert(worksJs.includes('if (state.playing) pauseAll();\n    globalUxState.dialog = dialog;'), 'site detail dialogs do not pause WORKS audio');
+assert(worksJs.includes("if (state.playing && !dialog.classList.contains('tt-shelf-modal')) pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
+assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-gh-modal tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("['all', 'ost', 'artist'].map("), 'WORKS popup or filters are missing');
+assert(worksCss.includes('.tt-shelf-book.is-playing .tt-shelf-disc') && worksCss.includes('translate:36% 0'), 'WORKS record slide-out is missing');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
 const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
 assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');
