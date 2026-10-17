@@ -25,6 +25,8 @@ jobs:
         run: node scripts/build.mjs
       - name: Validate production files
         run: node .github/scripts/validate-site.mjs
+      - name: Unit tests
+        run: node --test "tests/*.test.mjs"
       - name: Validate runtime performance budgets
         env:
           SKIP_BRIDGES: '1'

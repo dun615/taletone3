@@ -25,12 +25,6 @@
       "youtube": "https://www.youtube.com/watch?v=P6fUuhq3XSQ",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "DOLONGCHA",
-          "title": "Bubble Sweet",
-          "type": "DOLONGCHA 2nd Single",
-          "description": "한여름 햇살 아래, 버블처럼 톡톡 터지는 달콤한 설렘을 시원한 한 잔에 담아낸 이야기."
-        },
         "en": {
           "artist": "DOLONGCHA",
           "title": "Bubble Sweet",
@@ -70,12 +64,6 @@
       "youtube": "https://www.youtube.com/watch?v=yiprl7-dU04",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "STELLIVE Universe",
-          "title": "마음악보",
-          "type": "STELLIVE 'Universe' 2nd Single",
-          "description": "서로 다른 색을 가진 네 소녀가 하나의 밴드가 되어, 자신들만의 이야기를 써 내려가는 이야기."
-        },
         "en": {
           "artist": "STELLIVE Universe",
           "title": "Heart Score",
@@ -115,12 +103,6 @@
       "youtube": "https://www.youtube.com/watch?v=aTNiy1ZRbSo",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "젠레스 존 제로",
-          "title": "여름을 그리다",
-          "type": "게임 Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
-          "description": "여름 바캉스를 가게 된 '교활한 토끼굴'의 이야기"
-        },
         "en": {
           "artist": "Zenless Zone Zero",
           "title": "Drawing Summer",
@@ -160,12 +142,6 @@
       "youtube": "https://www.youtube.com/watch?v=Atgold7UdnY",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "해봄",
-          "title": "Love Dopamine",
-          "type": "'해봄' 3rd Single",
-          "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기"
-        },
         "en": {
           "artist": "Haebom",
           "title": "Love Dopamine",
@@ -205,12 +181,6 @@
       "youtube": "https://www.youtube.com/watch?v=eNK5ERAl6BA",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "Arune",
-          "title": "Love Novel",
-          "type": "'Arune' 1st Single",
-          "description": "슬픔과 그리움을 지나 다시 사랑을 시작하게 되는 두 사람의 이야기."
-        },
         "en": {
           "artist": "Arune",
           "title": "Love Novel",
@@ -250,12 +220,6 @@
       "youtube": "https://www.youtube.com/watch?v=jyQiYCZCv-w",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "쿠로가미 사샤",
-          "title": "Fallen Leaves",
-          "type": "V-llage '쿠로가미 사샤' 1st Single",
-          "description": "'그때의 나'를 끝내기 위해 러시안 룰렛을 시작한 한 소녀의 이야기"
-        },
         "en": {
           "artist": "Kurogami Sasha",
           "title": "Fallen Leaves",
@@ -295,12 +259,6 @@
       "youtube": "https://www.youtube.com/watch?v=uYh0Ts9BicU",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "SEION",
-          "title": "강치 아일랜드(OP)",
-          "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
-          "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기"
-        },
         "en": {
           "artist": "SEION",
           "title": "Gangchi Island (OP)",
@@ -340,12 +298,6 @@
       "youtube": "https://www.youtube.com/watch?v=ASWrJXCcqtM",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "DOLONGCHA",
-          "title": "The Run Catch",
-          "type": "DOLONGCHA(도롱챠) 1st Single",
-          "description": "좋아하는 사람을 향해 망설임 없이 달려가는 한 소녀(?) 이야기"
-        },
         "en": {
           "artist": "DOLONGCHA",
           "title": "The Run Catch",
@@ -385,12 +337,6 @@
       "youtube": "https://www.youtube.com/watch?v=ZminQN7-cZ0",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "플로리스 로에 (V-llage)",
-          "title": "Floris Waltz",
-          "type": "V-llage '플로리스 로에' 1st Single",
-          "description": "우리 둘만의 이야기를 써 내려가는, 작은 꽃의 요정의 이야기"
-        },
         "en": {
           "artist": "Floweress Loe (V-llage)",
           "title": "Floris Waltz",
@@ -443,9 +389,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=fUo3rFXmvU0",
           "translations": {
-            "kr": {
-              "description": "끝을 앞둔 계절 속에서 사랑을 만나고, 그리움과 원망 사이에 남겨진 한 사람의 이야기"
-            },
             "en": {
               "description": "A story of meeting love at the edge of a season, left between longing and resentment."
             },
@@ -472,9 +415,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
           "translations": {
-            "kr": {
-              "description": "봄이 찾아왔지만 아직 겨울에 머문 마음으로, 떠나간 사랑을 미워하고 그리워하는 이야기"
-            },
             "en": {
               "description": "A story of hating and missing a love that has left, with a heart still in winter even after spring arrives."
             },
@@ -501,9 +441,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=GwKXPt9Kkqc",
           "translations": {
-            "kr": {
-              "description": "모든 모험이 끝난 뒤의 오후, 무덤덤한 풍경 속에 조용히 남아 있는 마음의 이야기"
-            },
             "en": {
               "description": "A quiet story of feelings left in an ordinary afternoon after every adventure has ended."
             },
@@ -530,9 +467,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=hgRS_eGvyII",
           "translations": {
-            "kr": {
-              "description": "잠들지 못하는 슬픔의 밤에, 남겨진 마음을 조용히 안아주는 이야기"
-            },
             "en": {
               "description": "A story that quietly embraces the feelings left behind on a sleepless night of sorrow."
             },
@@ -547,12 +481,6 @@
       "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
       "format": "Album (EP)",
       "translations": {
-        "kr": {
-          "artist": "Dear my heroes",
-          "title": "Early Spring [ALBUM]",
-          "type": "Dear my heroes 1st EP",
-          "description": "죽음과 이별 이후, 남겨진 마음들이 시간과 계절의 순환 속에서 슬픔을 지나 다시 살아가는 이야기"
-        },
         "en": {
           "artist": "Dear my heroes",
           "title": "Early Spring [ALBUM]",
@@ -592,12 +520,6 @@
       "youtube": "https://www.youtube.com/watch?v=CRWN3Ro8hFg",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "벨디르 미스틸테인 (V-LUP)",
-          "title": "Pompous",
-          "type": "V-LUP 'Beldir' 1st Single",
-          "description": "SNS 속 허영과 인정욕구를 향해 거침없이 외치는 이야기"
-        },
         "en": {
           "artist": "Beldir (V-LUP)",
           "title": "Pompous",
@@ -637,12 +559,6 @@
       "youtube": "https://www.youtube.com/watch?v=Fu362KCf_Pk",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "MAIMATSU",
-          "title": "새해결심 작심삼일",
-          "type": "MAIMATSU 2nd Single",
-          "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기"
-        },
         "en": {
           "artist": "MAIMATSU",
           "type": "MAIMATSU 2nd Single",
@@ -682,12 +598,6 @@
       "youtube": "https://www.youtube.com/watch?v=w9nvZhBc4O0",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "RoA",
-          "title": "Wrap Up",
-          "type": "RoA 4th Single",
-          "description": "끝난 관계를 깔끔하게 정리하고 앞으로 나아가는 한 소녀의 이야기"
-        },
         "en": {
           "artist": "RoA",
           "type": "RoA 4th Single",
@@ -740,10 +650,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
           "translations": {
-            "kr": {
-              "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기",
-              "title": "SilverLine"
-            },
             "en": {
               "description": "A story of seven girls bringing light back to a city hidden by dark clouds.",
               "title": "SilverLine"
@@ -772,10 +678,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc",
           "translations": {
-            "kr": {
-              "description": "서로 다른 음악을 사랑하는 두 소녀가 함께 밴드를 시작하는 이야기\n",
-              "title": "RATATA"
-            },
             "en": {
               "description": "A story of two girls who love different kinds of music starting a band together.",
               "title": "RATATA"
@@ -804,10 +706,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs",
           "translations": {
-            "kr": {
-              "description": "각자의 고민을 안고 아이돌부에 모인 소녀들의 변화와 성장 이야기",
-              "title": "Cloudnine"
-            },
             "en": {
               "description": "A story of change and growth for girls who gather in an idol club, each carrying her own worries.",
               "title": "Cloudnine"
@@ -836,10 +734,6 @@
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y",
           "translations": {
-            "kr": {
-              "description": "음악을 통해 연결된 두 소녀가 함께 꿈을 그려 나가는 이야기",
-              "title": "Over the Night Sky"
-            },
             "en": {
               "description": "A story of two girls connected through music, drawing their dream together.",
               "title": "Over the Night Sky"
@@ -856,12 +750,6 @@
       "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
       "format": "Album (EP)",
       "translations": {
-        "kr": {
-          "artist": "V-llage",
-          "title": "SilverLine [ALBUM]",
-          "type": "SilverLine [ALBUM]",
-          "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기"
-        },
         "en": {
           "artist": "V-llage",
           "title": "SilverLine [ALBUM]",
@@ -901,12 +789,6 @@
       "youtube": "https://www.youtube.com/watch?v=oSWivTQjve4",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "V-llage",
-          "title": "My Village",
-          "type": "게임 '브이리지에 어서오세요!' 주제곡",
-          "description": "브이리지라는 작은 마을에 모인 모두가 함께 만들어가는 따뜻한 이야기"
-        },
         "en": {
           "artist": "V-llage",
           "title": "My Village",
@@ -956,11 +838,6 @@
           "language": "KR",
           "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
           "translations": {
-            "kr": {
-              "title": "카니즘☆홀릭",
-              "type": "V-llage '티그리스 카닌' 1st Single",
-              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
-            },
             "jp": {
               "title": "かにずむ☆ほりっく",
               "type": "V-llage『ティグリス・カニン』1st Single",
@@ -989,11 +866,6 @@
           "language": "JP",
           "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8",
           "translations": {
-            "kr": {
-              "title": "카니즘☆홀릭",
-              "type": "V-llage '티그리스 카닌' 1st Single",
-              "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
-            },
             "jp": {
               "title": "かにずむ☆ほりっく",
               "type": "V-llage『ティグリス・カニン』1st Single",
@@ -1013,12 +885,6 @@
       "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "티그리스 카닌",
-          "title": "카니즘☆홀릭",
-          "type": "V-llage '티그리스 카닌' 1st Single",
-          "description": "술집 '티그리스'에 모인 모두가 함께 웃고 떠들며 추억을 만들어가는 이야기"
-        },
         "en": {
           "artist": "Tigris Kanin",
           "type": "V-llage 'Tigris Kanin' 1st Single",
@@ -1058,12 +924,6 @@
       "youtube": "https://www.youtube.com/watch?v=eqiU5stt1jY",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "Mafhills",
-          "title": "BACKSTAGE",
-          "type": "Mafhills 1st Single",
-          "description": "라이브를 앞두고 팬들과 만날 그 날만을 기다리는 아티스트들의 두근거리는 마음을 담은 이야기"
-        },
         "en": {
           "artist": "Mafhills",
           "title": "BACKSTAGE",
@@ -1122,11 +982,6 @@
             }
           },
           "translations": {
-            "kr": {
-              "title": "수채화 (Watercolour)",
-              "type": "soraniwa Project 1st Single",
-              "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
-            },
             "en": {
               "title": "Watercolour",
               "type": "soraniwa Project 1st Single",
@@ -1163,11 +1018,6 @@
             }
           },
           "translations": {
-            "kr": {
-              "title": "수채화 (Watercolour)",
-              "type": "soraniwa Project 1st Single",
-              "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
-            },
             "en": {
               "title": "Watercolour",
               "type": "soraniwa Project 1st Single",
@@ -1187,12 +1037,6 @@
       "youtube": "https://www.youtube.com/watch?v=d_MhBXpQGCI",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "soraniwa",
-          "title": "수채화 (Watercolour)",
-          "type": "soraniwa Project 1st Single",
-          "description": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
-        },
         "en": {
           "artist": "soraniwa",
           "title": "Watercolour",
@@ -1233,12 +1077,6 @@
       "youtube": "https://www.youtube.com/watch?v=yuCRITM72pU",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "Shabel Tonya",
-          "title": "STAR to STAR",
-          "type": "붕괴 스타레일 '2023 Multiverse Vistas' 인기, 우수상 수상작",
-          "description": "별과 별을 잇는 여정 속에서 운명에 맞서 개척을 이어가는 이야기"
-        },
         "en": {
           "artist": "Shabel Tonya",
           "title": "STAR to STAR",
@@ -1278,12 +1116,6 @@
       "youtube": "https://www.youtube.com/watch?v=HMxAsGo_ldA",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "침대점령",
-          "title": "밤하늘",
-          "type": "침대점령(Bed Taker) 1st Single",
-          "description": "아무에게도 말하지 못한 아픔을 밤하늘에 털어놓는 이야기"
-        },
         "en": {
           "artist": "Bed Taker",
           "title": "Night Sky",
@@ -1324,12 +1156,6 @@
       "youtube": "https://www.youtube.com/watch?v=UFTBZFP6LMY",
       "format": "Single",
       "translations": {
-        "kr": {
-          "artist": "N4ML",
-          "title": "Sailing StarS!",
-          "type": "우타이테 8인 합창 프로젝트",
-          "description": "서로의 손을 잡고 빛나는 내일을 향해 나아가는 이야기"
-        },
         "en": {
           "artist": "N4ML",
           "title": "Sailing StarS!",

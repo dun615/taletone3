@@ -413,6 +413,21 @@
     return '<button type="button" class="tt-shelf-listen' + (on ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-listen-label">' + esc(on ? labels.pause : labels.listen) + '</span></button>';
   }
 
+  // Credits keep their own wording; blank lines split them into groups, and "[Music Credits]" or
+  // "1. Song" lines head a group. The block scrolls inside the popup when it is long.
+  function creditsHtml(text, label) {
+    var groups = text.replace(/\r/g, '').split(/\n\s*\n/).map(function (group) {
+      return group.split('\n').map(function (line) { return line.trim(); }).filter(Boolean).map(function (line) {
+        var head = /^\[.+\]$/.test(line) || /^\d+\.\s/.test(line);
+        return head ? '<strong>' + esc(line.replace(/^\[|\]$/g, '')) + '</strong>' : '<span>' + esc(line) + '</span>';
+      }).join('');
+    }).filter(Boolean);
+    return '<section class="tt-shelf-modal-credits" aria-label="' + esc(label) + '">' +
+      '<p class="tt-shelf-modal-label">' + esc(label) + '</p>' +
+      '<div class="tt-shelf-modal-credits-list" tabindex="0"><div>' + groups.map(function (g) { return '<p>' + g + '</p>'; }).join('') + '</div></div>' +
+    '</section>';
+  }
+
   function modalHtml(index) {
     var work = works[index]; if (!work) return '';
     var labels = L(), meta = localizedMeta();
@@ -429,13 +444,13 @@
         '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + labels.video) + '"><span aria-hidden="true"></span></button></div>'
       : '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '"><span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' + (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') + '</div>';
     var links = (hasAudio(work) ? listenButton(index) : '') +
-      (work.youtube ? '<a class="tt-shelf-modal-link" href="' + esc(work.youtube) + '" target="_blank" rel="noopener">' + esc(labels.youtube) + ' <span aria-hidden="true">↗</span></a>' : '') +
       '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>';
     return '<div class="tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
       '<div class="tt-shelf-modal-panel">' +
         '<button type="button" class="tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
-        '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
-        '<div class="tt-shelf-modal-body">' +
+        // two panes: the video and the story on the left, the record's facts, tracks and credits on the right
+        '<div class="tt-shelf-modal-media">' +
+          '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
           '<div class="tt-shelf-modal-main">' +
             '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
             '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
@@ -443,11 +458,11 @@
             (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
           '</div>' +
-          '<div class="tt-shelf-modal-side">' +
-            '<div class="tt-shelf-modal-record"><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '"><dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
-            trackRowsHtml(work, index) +
-            (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
-          '</div>' +
+        '</div>' +
+        '<div class="tt-shelf-modal-info">' +
+          (facts ? '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' : '') +
+          trackRowsHtml(work, index) +
+          (credits ? creditsHtml(credits, labels.credits) : '') +
         '</div>' +
       '</div>' +
     '</div>';
@@ -666,6 +681,8 @@
     audio.volume = state.volume;
     audio.addEventListener('ended', function () { state.playing = false; setMediaStatus('playback', 'ended'); refreshPlaying(); });
     audio.addEventListener('pause', function () { if (state.playing && audio.paused) { state.playing = false; refreshPlaying(); } });
+    // the element is the truth: if it plays, the deck shows it playing
+    audio.addEventListener('playing', function () { if (!state.playing) { state.playing = true; setMediaStatus('playback', 'playing'); refreshPlaying(); } });
     return audio;
   }
   function loadCurrent(keepTime) {
@@ -689,6 +706,7 @@
     loadCurrent(false);
     resume();
   }
+  var playAttempt = 0;
   function resume() {
     state.engaged = true;
     var engagedShelf = root && root.querySelector('.tt-shelf'); if (engagedShelf) engagedShelf.classList.add('is-engaged');
@@ -698,9 +716,15 @@
     ensureGain();
     if (gainCtx && gainCtx.state === 'suspended') gainCtx.resume();
     var attempt = el.play();
+    var token = ++playAttempt;
     state.playing = true;
     setMediaStatus('playback', 'playing');
-    if (attempt && attempt.catch) attempt.catch(function () { state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying(); });
+    // Switching records quickly aborts the previous play() (AbortError) after the new one has started;
+    // only a refusal of the latest attempt means playback really was blocked.
+    if (attempt && attempt.catch) attempt.catch(function (error) {
+      if (token !== playAttempt || (error && error.name === 'AbortError') || !el.paused) return;
+      state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying();
+    });
     refreshPlaying(true);
     announce(L().nowPlaying + ': ' + currentTitle());
   }

@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node scripts/build.mjs && node .github/scripts/validate-site.mjs"
+    "check": "node scripts/build.mjs && node .github/scripts/validate-site.mjs && node --test \"tests/*.test.mjs\"",
+    "test": "node --test \"tests/*.test.mjs\""
   },
   "devDependencies": {
     "sharp": "^0.33.5"

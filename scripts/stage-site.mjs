@@ -14,7 +14,7 @@ const sha = process.argv[3] || '';
 
 // not part of the site
 const EXCLUDE = new Set([
-  '.git', '.github', '.claude', 'node_modules', 'src', 'scripts', 'preview-src', 'archive', 'qa',
+  '.git', '.github', '.claude', 'node_modules', 'src', 'scripts', 'preview-src', 'archive', 'qa', 'tests',
   'package.json', 'package-lock.json', '.gitignore', path.basename(out),
 ]);
 const skip = (name) => EXCLUDE.has(name) || /\.md$/i.test(name) || (name.startsWith('.') && name !== '.well-known');

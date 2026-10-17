@@ -265,7 +265,6 @@ body[data-active-chapter] #chapnav a.navbtn{opacity:.8!important}
 
 #content#content .tt-audience > div{color:var(--ink,#141C30)!important}
 #content#content .tt-audience p:first-of-type{color:var(--ink,#141C30)!important;font-weight:600}
-.tt-audiences-heading{color:var(--ink,#141C30)!important;width:max-content;margin-left:auto!important;margin-right:auto!important;padding:6px 16px;border-radius:999px;background:color-mix(in srgb,var(--paper,#fffdf8) 70%,transparent);border:1px solid color-mix(in srgb,var(--ink,#141C30) 12%,transparent)}
 /* U7: on phones the header floats over a soft scrim so text scrolling under it stays out of the way */
 .tt-top-scrim{display:none}
 @media (max-width:760px){.tt-top-scrim{display:block;position:fixed;left:0;right:0;top:0;height:128px;z-index:59;pointer-events:none;
@@ -318,7 +317,6 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 #content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
 .tt-project-title{font-size:var(--fs-2xl)!important}
 /* R4: who we write for, as a quiet list; the two stories stay the only cards */
-.tt-audiences-heading{margin:-6px 0 18px;font-weight:800;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-align:center}
 #content#content .tt-audiences{background:none;box-shadow:none;border-radius:0;padding:0!important;backdrop-filter:none;gap:0!important;margin:0 0 48px!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
 #content#content .tt-audience{background:none;border:0;box-shadow:none;border-radius:0;padding:24px 26px!important;text-align:left}
 #content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
@@ -893,7 +891,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <p class="tt-audiences-heading">{{ PROJECTS_META.audienceHeading }}</p>
   <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <article class="tt-audience">
       <div class="tt-s-color-var-accent-9aa3" style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceGameKicker }}</div>
