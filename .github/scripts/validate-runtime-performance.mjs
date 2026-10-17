@@ -584,7 +584,8 @@ async function runInteractionSmoke(chrome, origin) {
 
     await clickSelector(client, '.tt-deck-more');
     await sleep(200);
-    const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback})`);
+    const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback,permalink:!!document.querySelector('.tt-shelf-modal a[href*="/works/"]')})`);
+    assert(popup.permalink, 'interaction: WORKS popup has no permalink to the work page');
     assert(popup.open && popup.dialog && popup.playback === 'playing', `interaction: WORKS popup did not open over playing music: ${JSON.stringify(popup)}`);
     await clickSelector(client, '.tt-shelf-modal-close');
     await sleep(200);
@@ -610,6 +611,17 @@ async function runInteractionSmoke(chrome, origin) {
     const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
     assert(all === 21, `interaction: whole rack expected 21 sleeves, found ${all}`);
     passed.push('works-filter-shelf');
+
+    // leaving the WORKS chapter stops the music
+    await clickSelector(client, '.tt-deck-toggle');
+    await sleep(800);
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'playing'`), 'interaction: turntable play button did not resume');
+    await clickSelector(client, '#nav-5');
+    let leftWorks = false;
+    for (let n = 0; n < 40 && !leftWorks; n++) { await sleep(100); leftWorks = await evaluate(client, `document.body.getAttribute('data-active-chapter') === 'news'`); }
+    assert(leftWorks, 'interaction: chapter menu did not move from WORKS to NEWS');
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback !== 'playing'`), 'interaction: WORKS music kept playing after leaving the chapter');
+    passed.push('works-leave-pause');
 
     await navigateForInteraction(client, `${origin}/members/?lang=kr&runtime-interaction=1`);
     const memberFocused = await evaluate(client, `(() => {

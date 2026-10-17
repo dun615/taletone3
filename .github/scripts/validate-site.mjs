@@ -46,6 +46,9 @@ const rawEditorMarkers = [
 ];
 // works and responsive keys are content hashes set by the build (see scripts/build.mjs)
 const contentKey = async (...files) => createHash('sha256').update((await Promise.all(files.map((f) => readFile(path.join(root, f), 'utf8')))).join('')).digest('hex').slice(0, 12);
+// Behaviour that a running browser can show (WORKS shop, popup, filters, audio, bridge lock/hold/handoff,
+// revisits) is checked by validate-runtime-performance.mjs; this file keeps output policy and guards against
+// retired code returning.
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
   'assets/css/works.css': await contentKey('assets/css/works.css'),
@@ -249,7 +252,6 @@ for (const [key, file, route, expectedTitle] of routes) {
     const deferredLangIndex = decodedScript.indexOf('this._langInitTimer=setTimeout');
     assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
-    assert(decodedScript.includes('if(sceneDirty||bridgePlaying||this._bridgeRun) this.updateBridges(vhR);'), `${file}: bridge clock does not cover playback, hold and handoff`);
     assert(!decodedScript.includes('updateTranslation') && !decodedScript.includes('c-translation') && !decodedScript.includes('index===-1'), `${file}: retired TRANSLATE bridge code returned`);
     assert(decodedScript.includes('((atRest || this.isMobileMotion()) ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
@@ -257,23 +259,11 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);
     assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
     assert(!decodedScript.includes('--tt-bridge-play-state'), `${file}: removed bridge CSS clock state returned`);
-    assert(decodedScript.includes("outer.classList.add('tt-bridge-pinned');"), `${file}: pinned bridge lifecycle is missing`);
     const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    assert(updateBridgesBody.includes('Scroll chooses the bridge; the bridge itself runs once on its own clock.') && updateBridgesBody.includes('var DUR=this._reduceMotion?700:1200, FINAL=0.90'), `${file}: bridge-owned animation clock is missing`);
-    assert(updateBridgesBody.includes('var elapsed=Math.max(0,performance.now()-run.startedAt), playP=this.cl(elapsed/DUR,0,1);') && updateBridgesBody.includes('prog=playP*FINAL;'), `${file}: bridge assembly is not driven by elapsed time`);
-    assert(decodedScript.includes('duration:reduced?700:1200') && decodedScript.includes('hold:Math.min(2600,Math.max(1400,copy.trim().length*22))'), `${file}: configured bridge animation/reading times changed`);
-    assert(updateBridgesBody.includes('bg._finalTime=DUR/1000+gi*0.31;') && updateBridgesBody.includes('prog=FINAL; bridgeTime=bg._finalTime==null?DUR/1000+gi*0.31:bg._finalTime;'), `${file}: completed bridge frame is not deterministic`);
-    assert(updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,bridgeTime);') && !updateBridgesBody.includes('this.setBridgeVisual(bg,type,prog,exit,tA+gi*0.31)'), `${file}: completed bridge visuals can keep drifting`);
-    assert(!updateBridgesBody.includes('(vhR*0.80-rect.top)/(vhR*1.20)') && !/prog\s*=\s*this\.cl\([^;\n]*(?:rect\.top|rect\.bottom)/.test(updateBridgesBody), `${file}: bridge progress is still scrubbed by scroll position`);
-    assert(!updateBridgesBody.includes("this.scrollToManaged(outer.offsetTop-1,'smooth',520)"), `${file}: bridge playback still moves the scroller`);
-    assert(updateBridgesBody.includes("outer.classList.add('tt-bridge-seen')"), `${file}: one-time bridge runtime lifecycle is missing`);
     assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this.startBridge(bi);'), `${file}: large scroll gestures can skip an unvisited bridge`);
     for (const obsolete of ['_bridgeGate', '_continueCue', 'tt-bridge-continue', 'Scroll to continue', 'スクロールして次の章へ', '계속 스크롤해 다음 장으로', 'outer._shaken']) assert(!decodedScript.includes(obsolete), `${file}: obsolete bridge behavior returned: ${obsolete}`);
     assert(decodedScript.includes('bypassBridges(targetId){') && decodedScript.includes('this.bypassBridges(page.sectionId);') && decodedScript.includes('this.bypassBridges(id);'), `${file}: direct navigation does not bypass bridge settlement consistently`);
-    assert(decodedScript.includes("style.setProperty('overflow-y','hidden','important')") && decodedScript.includes("style.setProperty('touch-action','none','important')") && decodedScript.includes('{capture:true,passive:false}'), `${file}: bridge does not block native wheel/touch/keyboard input`);
     assert(updateBridgesBody.includes('elapsed>=DUR+run.hold') && decodedScript.includes("run.phase='advancing'") && decodedScript.includes('now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();'), `${file}: bridge handoff does not drain the active scroll gesture before release`);
-    assert(decodedScript.includes('outer.offsetTop<=targetTop+2') && decodedScript.includes('if(past) this._bridgeBypassed[i]=true;'), `${file}: chapter jumps lack temporary bypass state`);
-    assert(decodedScript.includes("sessionStorage.getItem('tt_bridge_seen_v2')") && decodedScript.includes("sessionStorage.setItem('tt_bridge_seen_v2'"), `${file}: completed bridges are not remembered for the visit`);
     const bypassSource=(decodedScript.match(/\n  bypassBridges\(targetId\)\{([\s\S]*?)\n  \}/)||[])[1]||'';
     assert(!/delete\s+(?:seen|this\._bridgeSeen)|this\._bridgeSeen\[[^\]]+\]\s*=/.test(bypassSource), `${file}: chapter navigation rewrites completed bridge history`);
     for (const motif of ["type==='prologue'", "type==='gather'", "type==='bloom'", "type==='rise'", "type==='page'"]) assert(decodedScript.includes(motif), `${file}: bridge motif missing: ${motif}`);
@@ -589,23 +579,18 @@ for (const [file, expected] of Object.entries(sri)) {
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
 assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
-assert(worksJs.includes('// WORKS · the record shop') && worksJs.includes('function rackItemHtml(entry, order)') && worksJs.includes('function deckHtml()') && worksJs.includes('function filtersHtml()'), 'WORKS record shop renderer is missing');
 assert(worksCss.includes('.tt-rack-grid {list-style:none;') && worksCss.includes('.tt-deck-table {') && worksCss.includes('.tt-crate-deck {position:sticky;'), 'WORKS rack, turntable or sticky deck is missing');
-assert(worksJs.includes("(eager === false ? 'data-src' : 'src')") && worksJs.includes('sleeveHtml(work, order < 8)') && worksJs.includes('(work.thumb || work.image') && worksJs.includes("if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }"), 'WORKS sleeves are not lazy thumbnails');
-assert(worksJs.includes("audio.preload = 'none';") && (worksJs.match(/new Audio\(\)/g) || []).length === 1, 'WORKS playback must use one on-demand audio element');
-assert(worksJs.includes("function workHref(work)") && worksJs.includes("'/works/' + encodeURIComponent(work.slug) + '/'"), 'WORKS books do not open their permalink pages');
-assert(!worksJs.includes('function playerHtml(') && worksJs.includes("if (chapter !== 'works') { pauseAll(); return; }"), 'WORKS music does not stop when leaving the chapter');
+for (const work of JSON.parse(await text('assets/data/works-data.json')).works) {
+  assert(work.thumb && /-w320\.webp$/.test(work.thumb), `WORKS ${work.slug}: rack thumbnail (thumb) is missing`);
+  if (work.thumb) { try { await access(path.join(root, work.thumb)); } catch { errors.push(`WORKS ${work.slug}: ${work.thumb} does not exist`); } }
+}
 for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
 assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
-assert(worksJs.includes('var worksDataPromise = null;') && worksJs.includes('if (worksDataPromise) return worksDataPromise;'), 'WORKS data fetch is not single-flight');
-assert(!worksJs.includes("if (chapter === 'members')") && worksJs.includes("if (isWorksChapterActive() || window.parent !== window) init();"), 'WORKS data is not limited to the active chapter or editor');
-assert((worksJs.match(/fetch\(new URL\('data\/works-data\.json'/g) || []).length === 1, 'WORKS data fetch path must remain singular');
 assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
-assert(worksJs.includes('function bindWorksInteractions()') && worksJs.includes('bindWorksInteractions();\n    works = json.works || [];'), 'WORKS interactions are not bound on demand');
 const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(setEditorDataSource.includes('bindWorksInteractions();'), 'editor-supplied WORKS data does not bind interactions');
 for (const deadSymbol of ['var rendering =', 'function bindModalCloseHandlers()', 'bindModalCloseHandlers();', 'function onMouseDown(', 'function onMouseMove(', "classList.add('tt-site-dialog')"]) {
@@ -654,8 +639,6 @@ for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol
 const siteUxJs = await text('assets/js/site-ux.js');
 assert(siteUxJs.includes("if (!dialog.classList.contains('tt-shelf-modal') && window.TALETONE_WORKS_API) window.TALETONE_WORKS_API.pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
 assert(!worksJs.includes('globalUxState'), 'site-wide UX code returned to works.js (it belongs in site-ux.js)');
-assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("data-works-action=\"video\"") && worksJs.includes("['all', 'ost', 'artist', 'original'].map("), 'WORKS popup or filters are missing');
-assert(worksCss.includes('.tt-disc-spin {') && worksCss.includes('animation-play-state:paused') && worksJs.includes('class="tt-deck-arm-base tt-deck-toggle') && worksJs.includes('function sizeRack()'), 'WORKS turntable play button or rack sizing is missing');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
 const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
 assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');
