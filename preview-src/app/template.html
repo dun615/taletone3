@@ -263,8 +263,6 @@ body[data-active-chapter] #chapnav a.navbtn{opacity:.8!important}
 /* titles and Story Types labels: deeper on the light side, lighter on the dark side */
 .tt-chapter-title > span[style*="--accent"]{color:color-mix(in srgb,var(--ink,#141C30) 40%,var(--accent,#0E6E7D))!important}
 
-#content#content .tt-audience > div{color:var(--ink,#141C30)!important}
-#content#content .tt-audience p:first-of-type{color:var(--ink,#141C30)!important;font-weight:600}
 /* U7: on phones the header floats over a soft scrim so text scrolling under it stays out of the way */
 .tt-top-scrim{display:none}
 @media (max-width:760px){.tt-top-scrim{display:block;position:fixed;left:0;right:0;top:0;height:128px;z-index:59;pointer-events:none;
@@ -319,10 +317,20 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* R4: who we write for, as a quiet list; the two stories stay the only cards */
 #content#content .tt-audiences{background:none;box-shadow:none;border-radius:0;padding:0!important;backdrop-filter:none;gap:0!important;margin:0 0 48px!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
 #content#content .tt-audience{background:none;border:0;box-shadow:none;border-radius:0;padding:24px 26px!important;text-align:left}
+/* audience row: number + kicker, title, services as chips, the question as a quote pinned to the bottom */
+#content#content .tt-audience{display:flex;flex-direction:column;gap:0}
+.tt-audience-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.tt-audience-num{font:700 clamp(30px,2.6vw,40px)/.9 'Quicksand',sans-serif;letter-spacing:-.02em;color:var(--accent,#0E6E7D)}
+.tt-audience-kicker{font:800 var(--fs-xs)/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--ink,#141C30);opacity:.72}
+.tt-audience-title{margin:0 0 16px;font:800 var(--fs-l)/1.3 var(--tt-noto-primary),sans-serif;letter-spacing:-.02em;color:var(--ink,#141C30);text-wrap:balance;word-break:keep-all}
+.tt-audience-services{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 22px;padding:0;list-style:none}
+.tt-audience-services li{padding:7px 12px;border-radius:999px;background:color-mix(in srgb,var(--paper,#fffdf8) 62%,transparent);
+  border:1px solid color-mix(in srgb,var(--ink,#141C30) 10%,transparent);font:700 var(--fs-s)/1.2 var(--tt-noto-primary),sans-serif;color:var(--ink,#141C30);white-space:nowrap}
+.tt-audience-hook{position:relative;margin:auto 0 0;padding:14px 0 0 30px;border-top:1px dashed color-mix(in srgb,var(--ink,#141C30) 18%,transparent);
+  font:700 var(--fs-m)/1.55 var(--tt-noto-primary),sans-serif;color:var(--accent,#0E6E7D);word-break:keep-all;text-wrap:pretty}
+@media (max-width:760px){.tt-audience-head{margin-bottom:8px}.tt-audience-title{margin-bottom:12px}.tt-audience-services{margin-bottom:16px;gap:6px}.tt-audience-services li{padding:6px 11px}.tt-audience-hook{padding-top:12px;font-size:var(--fs-s)}}
+.tt-audience-hook::before{content:'\201C';position:absolute;left:0;top:8px;font:700 38px/1 'Quicksand',Georgia,serif;color:var(--accent,#0E6E7D);opacity:.55}
 #content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
-#content#content .tt-audience > div{font-size:var(--fs-xs)!important;letter-spacing:.16em!important}
-#content#content .tt-audience h3{font-size:var(--fs-l)!important}
-#content#content .tt-audience p{font-size:var(--fs-s)!important}
 @media (max-width:760px){#content#content .tt-member-card{aspect-ratio:9/16!important}#content#content .tt-member-card-copy{padding-top:40px!important}.tt-member-card-role{letter-spacing:.08em}#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
 /* R5 */
 #c-projects article.lift a{min-height:44px;box-sizing:border-box}
@@ -892,24 +900,16 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
   <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
+    <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
     <article class="tt-audience">
-      <div class="tt-s-color-var-accent-9aa3" style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceGameKicker }}</div>
-      <h3 class="tt-s-color-var-ink-f97e" style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceGameService1 }}<br>{{ PROJECTS_META.audienceGameService2 }}</p>
-      <p class="tt-s-color-var-ink-f97e" style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameHook }}</p>
+      <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
+      <h3 class="tt-audience-title">{{ a.title }}</h3>
+      <ul class="tt-audience-services">
+        <sc-for list="{{ a.services }}" as="service" hint-placeholder-count="5"><li>{{ service }}</li></sc-for>
+      </ul>
+      <p class="tt-audience-hook">{{ a.hook }}</p>
     </article>
-    <article class="tt-audience">
-      <div class="tt-s-color-var-accent-9aa3" style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceCreatorKicker }}</div>
-      <h3 class="tt-s-color-var-ink-f97e" style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceCreatorService1 }}<br>{{ PROJECTS_META.audienceCreatorService2 }}</p>
-      <p class="tt-s-color-var-ink-f97e" style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorHook }}</p>
-    </article>
-    <article class="tt-audience">
-      <div class="tt-s-color-var-accent-9aa3" style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceAnimationKicker }}</div>
-      <h3 class="tt-s-color-var-ink-f97e" style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceAnimationService1 }}<br>{{ PROJECTS_META.audienceAnimationService2 }}</p>
-      <p class="tt-s-color-var-ink-f97e" style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationHook }}</p>
-    </article>
+    </sc-for>
   </div>
   <div class="tt-s-grid-template-columns-0466" data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
     <sc-for list="{{ PROJECTS }}" as="p" hint-placeholder-count="2">

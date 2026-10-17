@@ -2040,25 +2040,6 @@ body.tt-network-open #content {
   }
 }
 
-/* Public audience cards added for the production site. Keep them clear of the
-   fixed mobile progress rail without changing the existing project cards. */
-@media (max-width: 760px) {
-  #c-projects [data-public-audience][data-reveal] {
-    grid-template-columns: minmax(0, 1fr) !important;margin-left: auto !important;
-    margin-right: max(18px, env(safe-area-inset-right)) !important;
-  }
-
-  #c-projects [data-public-audience][data-reveal] > * {
-    width: 100%;
-    max-width: none;
-  }
-
-  #c-projects [data-public-audience] article p {
-    display: block !important;
-    -webkit-line-clamp: unset !important;
-    -webkit-box-orient: initial !important;  }
-}
-
 @media (min-width: 901px) {
   #c-projects > div[data-reveal]:last-child {
     width:min(1080px,78vw)!important;
@@ -2101,96 +2082,6 @@ body.tt-network-open #content {
 
   #c-projects article.lift a {
     padding: 11px 18px !important;
-    font-size: 13px !important;
-  }
-}
-
-@media (max-width: 760px) {
-  #c-projects [data-public-audience][data-reveal] {
-    display: block !important;
-    width: min(292px, calc(100vw - 88px)) !important;
-    max-width: calc(100vw - 88px);
-    gap: 0 !important;
-    margin-top: -4px !important;
-    margin-bottom: 18px !important;
-    padding: 5px 0;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, .24);
-    border: 1px solid rgba(24, 32, 52, .07) !important;
-    box-shadow: 0 12px 28px rgba(8, 22, 38, .05);
-    overflow: hidden;
-  }
-
-  #c-projects [data-public-audience] article {
-    position: relative;
-    display: block;
-    min-height: 0;
-    padding: 9px 14px 9px 28px;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  #c-projects [data-public-audience] article + article {
-    border-top: 1px solid rgba(20, 28, 48, .075);
-  }
-
-  #c-projects [data-public-audience] article::before {
-    content: "";
-    position: absolute;
-    left: 14px;
-    top: 18px;
-    width: 5px;
-    height: 5px;
-    border-radius: 999px;
-    background: var(--accent, #0E6E7D) !important;
-    box-shadow: 0 0 0 4px rgba(14, 110, 125, .08);
-  }
-
-  #c-projects [data-public-audience] article > div:first-child {
-    margin-bottom: 3px !important;
-    font-size: 7.5px !important;
-    line-height: 1;
-    letter-spacing: .16em !important;
-    opacity: .78;
-  }
-
-  #c-projects [data-public-audience] article h3 {
-    margin: 0 0 3px !important;
-    font-size: 13.5px !important;
-    line-height: 1.18 !important;
-    word-break: keep-all;
-  }
-
-  #c-projects [data-public-audience] article p {
-    margin: 0 !important;
-    font-size: 9.4px !important;
-    line-height: 1.28 !important;
-    font-weight: 600 !important;
-    max-height: 1.28em;
-    white-space: normal;
-    overflow: hidden;
-    color: rgba(68, 80, 95, .82) !important;
-  }
-
-  #c-projects [data-public-audience] article p:last-child {
-    display: none !important;
-  }
-}
-
-@media (max-width: 380px) {
-  #c-projects [data-public-audience][data-reveal] {
-    width: min(282px, calc(100vw - 82px)) !important;
-    max-width: calc(100vw - 82px) !important;
-  }
-
-  #c-projects [data-public-audience] article {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-  }
-
-  #c-projects [data-public-audience] article h3 {
     font-size: 13px !important;
   }
 }

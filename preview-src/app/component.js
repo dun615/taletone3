@@ -580,6 +580,17 @@ class Component extends DCLogic {
     this.raf = requestAnimationFrame(this.loop);
   }
 
+  // Story Types: the three kinds of stories, with each service line split into separate chips
+  _audiences(){
+    var meta = this.PROJECTS_META || {};
+    return ['Game', 'Creator', 'Animation'].map((key, i)=>({
+      number: String(i + 1).padStart(2, '0'),
+      kicker: meta['audience' + key + 'Kicker'] || '',
+      title: meta['audience' + key + 'Title'] || '',
+      services: [meta['audience' + key + 'Service1'], meta['audience' + key + 'Service2']].join(' · ').split(/\s*[·・]\s*/).filter(Boolean),
+      hook: meta['audience' + key + 'Hook'] || ''
+    })).filter((item)=>item.title);
+  }
   renderVals(){
     this.ensureDataReady();
     return {
@@ -600,6 +611,7 @@ class Component extends DCLogic {
       CHAPTER_EPILOGUE: (this.CHAPTER_LABELS||{}).epilogue || {},
       PROJECTS_META: this.PROJECTS_META || {},
       PROJECTS: this.PROJECTS || [],
+      AUDIENCES: this._audiences(),
       CONTACT: this.CONTACT || {},
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
