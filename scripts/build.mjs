@@ -7,6 +7,7 @@
 //
 //   node scripts/build.mjs          rewrite generated files
 //   node scripts/build.mjs --check  fail if any generated file is out of date
+//   node scripts/build.mjs --list   print the generated files (they are built in CI, not committed)
 //
 // Pages load the app from assets/app/app.js and the data as window globals
 // from the .js files. Edit the sources, never the generated output.
@@ -18,6 +19,7 @@ import { nanumCharacters, PREVIEW_SOURCES } from './font-coverage.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
+const listOnly = process.argv.includes('--list');
 const read = (file) => readFile(path.join(root, file), 'utf8');
 const readJson = async (file) => JSON.parse(await read(file));
 
@@ -541,6 +543,8 @@ const outputs = [
   ['assets/data/seo-content.js', seoScript],
   ['sitemap.xml', sitemap()],
 ];
+
+if (listOnly) { console.log(outputs.map(([relative]) => relative).join('\n')); process.exit(0); }
 
 const stale = [];
 for (const [relative, content] of outputs) {

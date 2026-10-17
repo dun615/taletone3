@@ -19,7 +19,9 @@ https://taletone.net — GitHub Pages로 배포되는 정적 사이트입니다.
 | 바꾸고 싶은 것 | 편집할 파일 |
 | --- | --- |
 | 화면 구조·섹션 마크업·인라인 스타일 | `src/app/template.html` |
-| 화면 동작(스크롤, 챕터 전환, 언어 전환 등) | `src/app/component.js` |
+| 화면 동작: 상태·생명주기·메인 루프 | `src/app/component.js` |
+| 화면 동작: 콘텐츠·인트로·배경·브릿지·경로/언어 | `src/app/parts/content.js`, `intro.js`, `scene.js`, `bridges.js`, `routing.js` |
+| 사이트 공통 접근성(다이얼로그 포커스, 건너뛰기 링크, 모바일 챕터 메뉴) | `assets/js/site-ux.js` |
 | 문구·멤버·뉴스·파트너 등 콘텐츠 | `assets/data/site-content.json` |
 | 페이지별 SEO 제목·설명(언어별) | `assets/data/seo-content.json` |
 | Works 목록 | `assets/data/works-data.json` |
@@ -29,7 +31,7 @@ https://taletone.net — GitHub Pages로 배포되는 정적 사이트입니다.
 | Works·News 개별 페이지 구성 | `scripts/build.mjs`의 `workPage`·`newsPage` |
 | Works·News 개별 페이지 스타일 | `assets/css/detail.css` |
 
-다음 파일은 **빌드가 만들어내는 결과물**이라 직접 고치지 않습니다.
+다음 파일은 **빌드가 만들어내는 결과물**입니다. 저장소에 커밋하지 않고(`.gitignore`), GitHub Actions가 push마다 빌드해서 배포합니다.
 
 - 18개 페이지: `index.html`, `story-types/` 등 6개와 `en/`, `ja/` 아래 같은 6개씩
 - `works/<slug>/`, `news/<slug>/` 개별 페이지(언어별)
@@ -60,7 +62,7 @@ npm install
 - `node scripts/optimize-assets.mjs webp --max=1024 <이미지...>`: JPEG/PNG 옆에 WebP를 만듭니다. 데이터 파일의 경로를 `.webp`로 바꾸고 원본은 지우면 됩니다.
 - `node scripts/prune-css.mjs assets/css/works.css`: 뒤의 규칙에 덮여 적용되지 않는 선언을 찾습니다(`--write`로 정리).
 
-`support.js`는 Claude Design에서 내보낸 런타임(dc-runtime)이며 역시 직접 고치지 않습니다.
+`support.js`는 템플릿 런타임입니다. 원래 Claude Design(dc-runtime)에서 생성됐지만 그 소스가 저장소에 없어서 여기서 직접 관리합니다. 사이트 전용 코드는 넣지 말고 `src/app/`에 두세요.
 
 ## 작업 순서
 
@@ -70,13 +72,13 @@ npm install
 npm run build
 ```
 
-소스를 고친 뒤 위 명령으로 결과물을 다시 만들고, 소스와 결과물을 함께 커밋합니다.
+소스를 고친 뒤 위 명령으로 로컬에서 결과물을 만들어 확인합니다. 커밋은 소스만 하면 되고, `main`에 push하면 `.github/workflows/deploy.yml`이 빌드·검사 후 GitHub Pages에 배포합니다. 배포된 커밋은 https://taletone.net/version.txt 에서 볼 수 있습니다.
 
 ```bash
 npm run check
 ```
 
-결과물이 소스와 맞는지, 사이트 검증 규칙을 통과하는지 확인합니다. GitHub Actions도 push마다 같은 검사와 브라우저 동작 검사를 합니다.
+빌드한 뒤 사이트 검증 규칙을 통과하는지 확인합니다. GitHub Actions도 push마다 같은 검사와 브라우저 동작 검사를 합니다.
 
 로컬에서 보려면 저장소 루트를 정적 서버로 띄웁니다(페이지가 `<base href="/">`를 쓰므로 파일을 바로 열면 안 됩니다).
 

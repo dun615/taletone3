@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 24
-      - name: Check generated files are up to date
-        run: node scripts/build.mjs --check
+      - name: Build
+        run: node scripts/build.mjs
       - name: Validate production files
         run: node .github/scripts/validate-site.mjs
       - name: Validate runtime performance budgets
@@ -40,6 +40,8 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 24
+      - name: Build
+        run: node scripts/build.mjs
       - name: Validate bridge playback and scroll isolation
         env:
           BRIDGE_ONLY: '1'
