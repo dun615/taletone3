@@ -534,6 +534,7 @@
     handOffRackScroll();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
+    playPending();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
@@ -682,7 +683,7 @@
     audio.addEventListener('ended', function () { state.playing = false; setMediaStatus('playback', 'ended'); refreshPlaying(); });
     audio.addEventListener('pause', function () { if (state.playing && audio.paused) { state.playing = false; refreshPlaying(); } });
     // the element is the truth: if it plays, the deck shows it playing
-    audio.addEventListener('playing', function () { if (!state.playing) { state.playing = true; setMediaStatus('playback', 'playing'); refreshPlaying(); } });
+    audio.addEventListener('playing', function () { if (!priming && !state.playing) { state.playing = true; setMediaStatus('playback', 'playing'); refreshPlaying(); } });
     return audio;
   }
   function loadCurrent(keepTime) {
@@ -707,8 +708,64 @@
     resume();
   }
   var playAttempt = 0;
+  // A "listen in Works" link (/works/?work=<slug>) asks for a record before Works is on screen. Browsers
+  // only allow sound that starts from a click, so the click starts the audio element silently and stops it;
+  // the real play() follows once the Works chapter is reached.
+  var pendingSlug = '', priming = false;
+  function indexOfSlug(slug) {
+    for (var i = 0; i < works.length; i++) if (works[i].slug === slug) return i;
+    return -1;
+  }
+  function primeAudio() {
+    var el = ensureAudioEl();
+    ensureGain();
+    if (gainCtx && gainCtx.state === 'suspended') gainCtx.resume();
+    if (!el.paused) return;
+    priming = true;
+    el.muted = true;
+    var finish = function () { if (!priming) return; priming = false; el.pause(); el.muted = false; };
+    var attempt = el.play();
+    if (attempt && attempt.then) attempt.then(finish, finish); else finish();
+  }
+  function queueWork(slug) {
+    pendingSlug = String(slug || '');
+    var index = indexOfSlug(pendingSlug);
+    if (index >= 0) {
+      state.current = index;
+      state.track = titleTrackIndex(works[index]);
+      state.language = defaultLanguage(works[index], state.track);
+      loadCurrent(false);
+    }
+    primeAudio();
+    if (!mounted) init();
+  }
+  function playPending(force) {
+    if (!pendingSlug || !works.length || !root || !mounted || !(force || isWorksChapterActive())) return;
+    var index = indexOfSlug(pendingSlug);
+    pendingSlug = '';
+    if (index < 0) return;
+    if (!matchesFilter(works[index], state.filter)) { state.filter = 'all'; render(); }
+    closeModal(false);
+    state.current = index;
+    state.track = titleTrackIndex(works[index]);
+    state.language = defaultLanguage(works[index], state.track);
+    refreshPlaying(true);
+    revealInRack(index);
+    if (hasAudio(works[index])) { loadCurrent(false); resume(); }
+  }
+  // scroll only the rack (not the page) so the chosen sleeve is in view
+  function revealInRack(index) {
+    var grid = root && root.querySelector('.tt-rack-grid');
+    var book = root && root.querySelector('[data-works-book="' + index + '"]');
+    if (!grid || !book) return;
+    var g = grid.getBoundingClientRect(), b = book.getBoundingClientRect();
+    grid.scrollTop += (b.top - g.top) - (grid.clientHeight - b.height) / 2;
+    grid.scrollLeft += (b.left - g.left) - (grid.clientWidth - b.width) / 2;
+  }
   function resume() {
     state.engaged = true;
+    priming = false;
+    if (audio) audio.muted = false;
     var engagedShelf = root && root.querySelector('.tt-shelf'); if (engagedShelf) engagedShelf.classList.add('is-engaged');
     var video = root && root.querySelector('.tt-shelf-yt.is-playing');
     if (video) { video.closest('.tt-shelf-modal-stage') && closeVideo(video); }
@@ -880,6 +937,9 @@
     works = json.works || [];
     logos = json.clientLogos || [];
     if (works.length) { state.current = 0; state.track = titleTrackIndex(works[0]); state.language = defaultLanguage(works[0], state.track); }
+    // a link opened in a new tab (/works/?work=<slug>) selects that record; it plays if the browser allows
+    var asked = pendingSlug || new URLSearchParams(location.search).get('work') || '';
+    if (asked) queueWork(asked);
     setTimeout(function () { waitForHost(0); }, 120);
   }
   function setEditorData(json) {
@@ -909,7 +969,8 @@
     setData: setEditorData,
     setMeta: setMeta,
     select: selectEditorWork,
-    pauseAll: function () { pauseAll(); }
+    pauseAll: function () { pauseAll(); },
+    queue: queueWork
   };
 
   window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
@@ -917,6 +978,7 @@
     if (!chapter) return;
     if (chapter !== 'works') { pauseAll(); return; }
     if (!mounted) init();
+    else playPending(true);
   });
 
   window.addEventListener('TALETONE_CHAPTER_PRELOAD', function (event) {

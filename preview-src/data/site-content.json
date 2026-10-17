@@ -492,7 +492,7 @@
         "backgroundLine2": "TONE",
         "prologueCopy": "",
         "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다.",
-        "worksCtaLabel": "우리의 노래 들어 보기",
+        "worksCtaLabel": "Works 바로가기",
         "contactCtaLabel": "프로젝트 문의"
       },
       "en": {
@@ -505,7 +505,7 @@
         "backgroundLine2": "TONE",
         "prologueCopy": "",
         "prologueHint": "Below the surface, an unwritten book is waiting.",
-        "worksCtaLabel": "Hear our songs",
+        "worksCtaLabel": "Go to Works",
         "contactCtaLabel": "Project Inquiry"
       },
       "jp": {
@@ -518,13 +518,13 @@
         "backgroundLine2": "TONE",
         "prologueCopy": "",
         "prologueHint": "水面の下で、まだ書かれていない本が待っています。",
-        "worksCtaLabel": "私たちの歌を聴く",
+        "worksCtaLabel": "Worksへ",
         "contactCtaLabel": "プロジェクトのご相談"
       }
     },
     "prologueCopy": "",
     "prologueHint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다.",
-    "worksCtaLabel": "우리의 노래 들어 보기",
+    "worksCtaLabel": "Works 바로가기",
     "contactCtaLabel": "프로젝트 문의",
     "backgroundLine1": "TALE",
     "backgroundLine2": "TONE"
@@ -543,8 +543,8 @@
         "title": "여름을 그리다",
         "placeholder": "여름을 그리다 앨범 아트",
         "description": "'⁠교활한 토끼굴'⁠이 떠난 여름 바캉스를, 햇살처럼 청량한 밴드 사운드로 그려 냈습니다.",
-        "buttonLabel": "이 노래 들어 보기",
-        "link": "/works/",
+        "buttonLabel": "Works에서 들어보기",
+        "link": "/works/?work=drawing-summer",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
         "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.webp",
@@ -560,21 +560,21 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 앨범 아트",
             "description": "'⁠교활한 토끼굴'⁠이 떠난 여름 바캉스를, 햇살처럼 청량한 밴드 사운드로 그려 냈습니다.",
-            "buttonLabel": "이 노래 들어 보기"
+            "buttonLabel": "Works에서 들어보기"
           },
           "en": {
             "label": "GAME IP",
             "title": "Drawing Summer",
             "placeholder": "Drawing Summer album artwork",
             "description": "The summer getaway of the Cunning Hares, painted in a band sound as bright as sunlight.",
-            "buttonLabel": "Hear this song"
+            "buttonLabel": "Listen in Works"
           },
           "jp": {
             "label": "GAME IP",
             "title": "Drawing Summer",
             "placeholder": "Drawing Summer アルバムアート",
             "description": "「邪兎屋」の夏のバカンスを、陽ざしのように爽やかなバンドサウンドで描きました。",
-            "buttonLabel": "この歌を聴く"
+            "buttonLabel": "Worksで聴く"
           }
         },
         "openInNewTab": false
@@ -586,8 +586,8 @@
         "title": "마음악보",
         "placeholder": "마음악보 앨범 아트",
         "description": "서로 다른 색의 네 소녀가 하나의 밴드가 되기까지. 그 짧고 눈부신 청춘을 한 곡 안에 담았습니다.",
-        "buttonLabel": "이 노래 들어 보기",
-        "link": "/works/",
+        "buttonLabel": "Works에서 들어보기",
+        "link": "/works/?work=heart-score",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
         "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
@@ -603,21 +603,21 @@
             "title": "마음악보",
             "placeholder": "마음악보 앨범 아트",
             "description": "서로 다른 색의 네 소녀가 하나의 밴드가 되기까지. 그 짧고 눈부신 청춘을 한 곡 안에 담았습니다.",
-            "buttonLabel": "이 노래 들어 보기"
+            "buttonLabel": "Works에서 들어보기"
           },
           "en": {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score album artwork",
             "description": "Four girls of different colors, becoming one band. That short, dazzling youth, held in a single song.",
-            "buttonLabel": "Hear this song"
+            "buttonLabel": "Listen in Works"
           },
           "jp": {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score アルバムアート",
             "description": "違う色を持つ4人の少女が、ひとつのバンドになるまで。その短くまぶしい青春を、一曲に込めました。",
-            "buttonLabel": "この歌を聴く"
+            "buttonLabel": "Worksで聴く"
           }
         },
         "openInNewTab": false
@@ -636,14 +636,14 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 앨범 아트",
             "description": "'⁠교활한 토끼굴'⁠이 떠난 여름 바캉스를, 햇살처럼 청량한 밴드 사운드로 그려 냈습니다.",
-            "buttonLabel": "이 노래 들어 보기"
+            "buttonLabel": "Works에서 들어보기"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "마음악보",
             "placeholder": "마음악보 앨범 아트",
             "description": "서로 다른 색의 네 소녀가 하나의 밴드가 되기까지. 그 짧고 눈부신 청춘을 한 곡 안에 담았습니다.",
-            "buttonLabel": "이 노래 들어 보기"
+            "buttonLabel": "Works에서 들어보기"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAME",
@@ -674,14 +674,14 @@
             "title": "Drawing Summer",
             "placeholder": "Drawing Summer album artwork",
             "description": "The summer getaway of the Cunning Hares, painted in a band sound as bright as sunlight.",
-            "buttonLabel": "Hear this song"
+            "buttonLabel": "Listen in Works"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score album artwork",
             "description": "Four girls of different colors, becoming one band. That short, dazzling youth, held in a single song.",
-            "buttonLabel": "Hear this song"
+            "buttonLabel": "Listen in Works"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
@@ -712,14 +712,14 @@
             "title": "Drawing Summer",
             "placeholder": "Drawing Summer アルバムアート",
             "description": "「邪兎屋」の夏のバカンスを、陽ざしのように爽やかなバンドサウンドで描きました。",
-            "buttonLabel": "この歌を聴く"
+            "buttonLabel": "Worksで聴く"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score アルバムアート",
             "description": "違う色を持つ4人の少女が、ひとつのバンドになるまで。その短くまぶしい青春を、一曲に込めました。",
-            "buttonLabel": "この歌を聴く"
+            "buttonLabel": "Worksで聴く"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
@@ -1364,25 +1364,25 @@
   },
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
-    "title": "함께하는 파트너",
+    "title": "Partnership",
     "openLabel": "열기",
     "closeLabel": "닫기",
     "translations": {
       "kr": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "함께하는 파트너",
+        "title": "Partnership",
         "openLabel": "열기",
         "closeLabel": "닫기"
       },
       "en": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "Partners",
+        "title": "Partnership",
         "openLabel": "Open",
         "closeLabel": "Close"
       },
       "jp": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "パートナー",
+        "title": "Partnership",
         "openLabel": "開く",
         "closeLabel": "閉じる"
       }
