@@ -1025,6 +1025,8 @@ class Component extends DCLogic {
         : '0 1px 2px rgba(3,11,22,'+(0.35+0.45*hs).toFixed(2)+'),0 0 20px rgba(3,11,22,'+(0.25+0.45*hs).toFixed(2)+')';
       this.setCssVar(r,'--halo',halo);
       this.setCssVar(r,'--deep-glow',tn.toFixed(3));
+      // continuous depth 0 (surface) .. 1 (sea floor): bridge words glow more the deeper they are
+      this.setCssVar(r,'--depth',this.cl((colorP-0.2)/0.72,0,1).toFixed(3));
       // brand mark follows the same ink<->paper flip as the text
       if(!this._brandMark) this._brandMark=document.getElementById('brand-mark');
       if(this._brandMark){ var want = tn<0.5 ? 'assets/logo/mark-ink.png' : 'assets/logo/mark-paper.png'; if(this._brandMarkSrc!==want){ this._brandMark.src=want; this._brandMarkSrc=want; } }

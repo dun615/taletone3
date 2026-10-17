@@ -70,7 +70,7 @@ image-slot{display:block}
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
 /* narrative chapter labels */
-.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,var(--ink,#141C30) calc(var(--deep-glow,0)*72%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
+.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,#e6f7fb calc(var(--depth,0)*95%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
 .tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
 
 .tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
@@ -193,7 +193,9 @@ body.tt-book-opened .tb-silt i{animation:tbSilt 3.2s cubic-bezier(.2,.7,.3,1) ca
 @media (prefers-reduced-motion: reduce){.tb-caustics,.tb-motes i{animation:none}.tb-motes i{opacity:.35}body.tt-book-opened .tb-silt i{animation:none}}
 @media (prefers-reduced-motion: reduce){.tb-book,.tb-cover,.tb-leaf,.tb-ink i,.tb-page-glow{transition-duration:.01s!important;transition-delay:0s!important}.tb-emblem{animation:none}}
 /* bridge sentences: a deeper halo once the text is light */
-.tt-bridge-pin-stage [data-bridge]{text-shadow:var(--halo,none),0 0 calc(var(--deep-glow,0)*30px) rgba(3,11,22,calc(var(--deep-glow,0)*.55))}
+/* bridge sentences: always white; a soft shadow keeps them readable near the surface, and the glow grows with depth */
+[data-story-bridge-wrap] [data-bridge],[data-story-bridge-wrap] [data-bridge] span{color:#fff!important}
+[data-story-bridge-wrap] [data-bridge]{text-shadow:0 1px 2px rgba(6,34,52,calc(.55 - var(--depth,0) * .3)),0 2px 20px rgba(6,40,62,calc(.42 - var(--depth,0) * .4)),0 0 calc(6px + var(--depth,0) * 30px) rgba(196,240,255,calc(.16 + var(--depth,0) * .62)),0 0 calc(var(--depth,0) * 70px) rgba(150,220,255,calc(var(--depth,0) * .38))!important}
 /* ===== Bridge motifs (revision 2): soft light only ===== */
 .tt-bridge-visual .tb-orb{position:absolute;left:50%;top:50%;width:var(--s,12px);height:var(--s,12px);margin:calc(var(--s,12px) / -2) 0 0 calc(var(--s,12px) / -2);border-radius:50%;opacity:0;
   background:radial-gradient(circle,rgba(var(--c,255,240,210),.95) 0%,rgba(var(--c,255,240,210),.45) 40%,rgba(var(--c,255,240,210),0) 70%)}
