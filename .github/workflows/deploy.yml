@@ -1,0 +1,49 @@
+name: Deploy site
+
+# Builds the site from sources and publishes it to GitHub Pages.
+# Requires Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: Build
+        run: node scripts/build.mjs
+      - name: Validate production files
+        run: node .github/scripts/validate-site.mjs
+      - name: Stage the public files
+        run: node scripts/stage-site.mjs _site "${{ github.sha }}"
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
