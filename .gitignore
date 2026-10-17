@@ -8,3 +8,8 @@ qa/
 /assets/logo/lockup-paper.png
 /assets/logo/mark-teal.png
 node_modules/
+
+# local planning notes (kept out of the repo; the repo root is served by GitHub Pages)
+/PLAN-*.md
+/COPY-*.md
+/REVIEW-*.md
