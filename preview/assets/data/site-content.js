@@ -641,14 +641,14 @@ window.TALETONE_CONTENT = {
     "titleLine1": "TALETONE",
     "titleLine2": "MUSIC",
     "tagline": "당신의 이야기가 음악이 되는 곳",
-    "scrollHint": "Scroll to dive in",
+    "scrollHint": "아래로 내려가 보세요",
     "translations": {
       "kr": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "당신의 이야기가 음악이 되는 곳",
-        "scrollHint": "Scroll to dive in",
+        "scrollHint": "아래로 내려가 보세요",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "prologueCopy": "",
@@ -674,7 +674,7 @@ window.TALETONE_CONTENT = {
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "あなたの物語が、音楽になる場所。",
-        "scrollHint": "Scroll to dive in",
+        "scrollHint": "スクロールして潜る",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "prologueCopy": "",
@@ -821,7 +821,8 @@ window.TALETONE_CONTENT = {
         "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
         "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
         "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
-        "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?"
+        "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
+        "audienceHeading": "이런 이야기와 함께합니다"
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
@@ -859,7 +860,8 @@ window.TALETONE_CONTENT = {
         "audienceAnimationTitle": "Animation · Webtoon · Web Novel IP",
         "audienceAnimationService1": "Opening · Ending · Insert songs · BGM",
         "audienceAnimationService2": "Character songs · Promotional music",
-        "audienceAnimationHook": "What sound will keep this scene alive in memory?"
+        "audienceAnimationHook": "What sound will keep this scene alive in memory?",
+        "audienceHeading": "Stories we work with"
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
@@ -897,7 +899,8 @@ window.TALETONE_CONTENT = {
         "audienceAnimationTitle": "アニメ・ウェブトゥーン・ウェブ小説IP",
         "audienceAnimationService1": "オープニング・エンディング・挿入歌・BGM",
         "audienceAnimationService2": "キャラクターソング・プロモーション音楽",
-        "audienceAnimationHook": "このシーンをいつまでも覚えていてもらえる音は？"
+        "audienceAnimationHook": "このシーンをいつまでも覚えていてもらえる音は？",
+        "audienceHeading": "私たちが向き合う物語"
       }
     },
     "audienceGameKicker": "SUBCULTURE GAME",
@@ -914,7 +917,8 @@ window.TALETONE_CONTENT = {
     "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
     "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
     "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
-    "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?"
+    "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
+    "audienceHeading": "이런 이야기와 함께합니다"
   },
   "contact": {
     "eyebrow": "Contact",
@@ -1525,25 +1529,25 @@ window.TALETONE_CONTENT = {
   },
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
-    "title": "Partnership / MOU",
+    "title": "함께하는 파트너",
     "openLabel": "열기",
     "closeLabel": "닫기",
     "translations": {
       "kr": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "Partnership / MOU",
+        "title": "함께하는 파트너",
         "openLabel": "열기",
         "closeLabel": "닫기"
       },
       "en": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "Partnership / MOU",
+        "title": "Partners",
         "openLabel": "Open",
         "closeLabel": "Close"
       },
       "jp": {
         "eyebrow": "EXTENDED NETWORK",
-        "title": "Partnership / MOU",
+        "title": "パートナー",
         "openLabel": "開く",
         "closeLabel": "閉じる"
       }
