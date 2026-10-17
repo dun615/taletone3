@@ -348,10 +348,9 @@
     language: 'KR',
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
-    engaged: false    // the reader has played something (the bottom player may appear)
+    engaged: false    // the reader has played something
   };
   var audio = null;
-  var progressFrame = 0;
 
   var shelfLabels = {
     kr: { all: '전체', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
@@ -561,38 +560,6 @@
     '</div>';
   }
 
-  function playerHtml() {
-    var labels = L();
-    var work = works[state.current];
-    if (!work) return '<div class="tt-shelf-player" aria-hidden="true"></div>';
-    var unit = localizedUnit(work);
-    var variants = variantsFor(work, state.track);
-    var playUnit = playableUnit(work, state.track, state.language);
-    var trackTitle = work.tracks && work.tracks.length ? plainRichText(localizedUnit(work.tracks[state.track]).title || '') : '';
-    var title = plainRichText(unit.title || work.title || '');
-    var tracks = work.tracks && work.tracks.length > 1
-      ? '<div class="tt-shelf-player-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + work.tracks.map(function (track, i) {
-          return '<button type="button" class="' + (i === state.track ? 'is-on' : '') + '" aria-pressed="' + (i === state.track) + '" data-works-action="track" data-track="' + i + '" title="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + pad(i + 1) + '</button>';
-        }).join('') + '</div>'
-      : '';
-    var langs = variants.length > 1
-      ? '<div class="tt-shelf-player-langs" role="group">' + variants.map(function (version, i) {
-          var label = languageLabel(version, i);
-          return '<button type="button" class="' + (label === state.language ? 'is-on' : '') + '" aria-pressed="' + (label === state.language) + '" data-works-action="language" data-language="' + esc(label) + '">' + esc(label) + '</button>';
-        }).join('') + '</div>'
-      : '';
-    return '<div class="tt-shelf-player is-open" role="region" aria-label="' + esc(labels.nowPlaying) + '">' +
-      '<button type="button" class="tt-shelf-player-cover" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><img src="' + esc(playUnit.image || unit.image || work.image || '') + '" alt=""></button>' +
-      '<div class="tt-shelf-player-text"><span class="tt-shelf-player-kicker">' + esc(labels.nowPlaying) + '</span>' +
-        '<strong>' + esc(trackTitle || title) + '</strong><span>' + esc(plainRichText(unit.artist || work.artist || '')) + '</span></div>' +
-      tracks + langs +
-      '<button type="button" class="tt-shelf-player-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc(state.playing ? labels.pause : labels.play) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' +
-      '<div class="tt-shelf-player-bar" data-works-action="seek" role="slider" aria-label="' + esc(title) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i></i></div>' +
-      '<span class="tt-shelf-player-time">0:00</span>' +
-      '<button type="button" class="tt-shelf-player-close" data-works-action="stop" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
-    '</div>';
-  }
-
   function headHtml() {
     var meta = localizedMeta();
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
@@ -649,13 +616,12 @@
       '<div class="tt-crate-stage">' +
         '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
         '<div class="tt-crate-rack">' + filtersHtml() + '<ul class="tt-rack-grid">' + list.map(rackItemHtml).join('') + '</ul></div>' +
-      '</div>' + clientsHtml() + playerHtml() +
+      '</div>' + clientsHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
     watchDeck();
-    updateProgress();
     if (before) shuffleFrom(before);
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
@@ -761,7 +727,6 @@
     setMediaStatus('playback', 'playing');
     if (attempt && attempt.catch) attempt.catch(function () { state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying(); });
     refreshPlaying(true);
-    tickProgress();
   }
   function closeVideo(wrap) {
     var id = wrap.getAttribute('data-yt');
@@ -805,37 +770,6 @@
     root.querySelectorAll('[data-works-action="modal-track"]').forEach(function (button) {
       button.classList.toggle('is-on', Number(button.getAttribute('data-index')) === state.current && Number(button.getAttribute('data-track')) === state.track);
     });
-    var player = root.querySelector('.tt-shelf-player');
-    if (player && (rebuild || !player.classList.contains('is-open'))) {
-      var holder = document.createElement('div'); holder.innerHTML = playerHtml();
-      player.replaceWith(holder.firstChild);
-    } else if (player) {
-      var pt = player.querySelector('.tt-shelf-player-toggle');
-      if (pt) { pt.classList.toggle('is-playing', state.playing); pt.setAttribute('aria-label', state.playing ? labels.pause : labels.play); }
-    }
-    updateProgress();
-  }
-  function fmt(seconds) {
-    seconds = Math.max(0, Math.floor(seconds || 0));
-    return Math.floor(seconds / 60) + ':' + pad(seconds % 60);
-  }
-  function updateProgress() {
-    if (!root || !audio) return;
-    var p = audio.duration ? audio.currentTime / audio.duration : 0;
-    var text = fmt(audio.currentTime) + (audio.duration ? ' / ' + fmt(audio.duration) : '');
-    root.querySelectorAll('.tt-shelf-player-bar').forEach(function (bar) { bar.style.setProperty('--p', p.toFixed(4)); bar.setAttribute('aria-valuenow', String(Math.round(p * 100))); });
-    root.querySelectorAll('.tt-shelf-player-time').forEach(function (time) { time.textContent = text; });
-  }
-  function tickProgress() {
-    cancelAnimationFrame(progressFrame);
-    var step = function () { updateProgress(); if (state.playing) progressFrame = requestAnimationFrame(step); };
-    progressFrame = requestAnimationFrame(step);
-  }
-  function seekTo(clientX, bar) {
-    if (!audio || !audio.duration) return;
-    var rect = bar.getBoundingClientRect();
-    audio.currentTime = clamp((clientX - rect.left) / rect.width, 0, 1) * audio.duration;
-    updateProgress();
   }
 
   function isWorksChapterActive() {
@@ -883,8 +817,6 @@
       playIndex(Number(button.getAttribute('data-index')), Number(button.getAttribute('data-track')) || 0);
     } else if (action === 'toggle') {
       if (state.playing) pauseAll(); else { if (!audio || !audio.getAttribute('src')) loadCurrent(false); resume(); }
-    } else if (action === 'stop') {
-      stopAll();
     } else if (action === 'track') {
       state.track = Number(button.getAttribute('data-track')) || 0;
       state.language = defaultLanguage(works[state.current], state.track);
@@ -894,23 +826,13 @@
       var wasPlaying = state.playing;
       loadCurrent(true);
       if (wasPlaying) resume(); else refreshPlaying(true);
-    } else if (action === 'seek') {
-      seekTo(event.clientX, button);
     }
   }
-  function onKey(event) {
-    var bar = event.target && event.target.closest ? event.target.closest('.tt-shelf-player-bar') : null;
-    if (!bar || !audio || !audio.duration) return;
-    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-      event.preventDefault();
-      audio.currentTime = clamp(audio.currentTime + (event.key === 'ArrowRight' ? 5 : -5), 0, audio.duration);
-      updateProgress();
-    }
-  }
-
   // stop the music once the reader leaves the Works chapter
   function bindVisibilityPause() {
     document.addEventListener('visibilitychange', function () { if (document.hidden) pauseAll(); });
+    new MutationObserver(function () { if (state.playing && !isWorksChapterActive()) pauseAll(); })
+      .observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
   }
 
   function ensureRoot() {
@@ -1438,7 +1360,6 @@
     if (worksInteractionsBound) return;
     worksInteractionsBound = true;
     document.addEventListener('click', onClick, true);
-    document.addEventListener('keydown', onKey, true);
     window.addEventListener('hashchange', scrollToWorksFromHash);
     window.addEventListener('resize', onResize, { passive: true });
     bindVisibilityPause();

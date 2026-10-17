@@ -3710,33 +3710,10 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-clients-row img {height:clamp(20px,2.2vw,28px);width:auto;opacity:.72;filter:brightness(0) invert(1)}
 
 /* the player: appears while a book plays, only inside the Works chapter */
-.tt-shelf-player {display:none}
-.tt-shelf-player.is-open {position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:60;transform:translateX(-50%);display:flex;align-items:center;gap:14px;width:min(760px,calc(100vw - 24px));padding:10px 12px 10px 10px;border-radius:18px;background:rgba(8,20,36,.8);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(220,240,248,.16);box-shadow:0 18px 40px rgba(1,6,14,.5);color:#eef7fb;animation:ttShelfPlayerIn .45s cubic-bezier(.2,.7,.2,1)}
-body:not([data-active-chapter="works"]) .tt-shelf-player.is-open {display:none}
+
 @keyframes ttShelfPlayerIn{from{opacity:0;transform:translate(-50%,16px)}}
-.tt-shelf-player-cover {width:48px;height:48px;flex:none;border-radius:8px;object-fit:cover}
-.tt-shelf-player-text {flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px}
-.tt-shelf-player-kicker {font:800 9.5px/1 'Quicksand',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8decfc}
-html:lang(ko) .tt-shelf-player-kicker,
-html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
-.tt-shelf-player-text strong {font:700 14px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-shelf-player-text span:last-child {font:500 12px/1.2 var(--tt-noto-primary),sans-serif;color:#b7cad6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-shelf-player-tracks,
-.tt-shelf-player-langs {display:flex;flex:none;gap:4px}
-.tt-shelf-player-tracks button,
-.tt-shelf-player-langs button {appearance:none;padding:6px 7px;border-radius:8px;border:1px solid rgba(220,240,248,.25);background:transparent;color:#d8e8ef;font:700 11px/1 'Quicksand',sans-serif;cursor:pointer}
-.tt-shelf-player-tracks button.is-on,
-.tt-shelf-player-langs button.is-on {background:#eef7fb;border-color:#eef7fb;color:#0b1a2a}
-.tt-shelf-player-toggle {flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:0;background:#eef7fb;color:#0b1a2a;cursor:pointer}
-.tt-shelf-player-bar {position:relative;flex:0 1 170px;height:22px;cursor:pointer}
-.tt-shelf-player-bar::before,
-.tt-shelf-player-bar i {content:'';position:absolute;left:0;top:10px;height:2px;border-radius:2px}
-.tt-shelf-player-bar::before {right:0;background:rgba(220,240,248,.22)}
-.tt-shelf-player-bar i {width:calc(var(--p,0) * 100%);background:#8decfc}
-.tt-shelf-player-time {flex:none;min-width:74px;font:600 11px/1 'Quicksand',sans-serif;font-variant-numeric:tabular-nums;color:#b7cad6}
-.tt-shelf-player-close {flex:none;width:32px;height:32px;border:0;background:transparent;color:#b7cad6;font-size:22px;line-height:1;cursor:pointer}
-.tt-shelf :focus-visible,
-.tt-shelf-player :focus-visible {outline:2px solid var(--accent2,#8decfc);outline-offset:3px}
+
+.tt-shelf :focus-visible {outline:2px solid var(--accent2,#8decfc);outline-offset:3px}
 
 @media (min-width:1101px){.tt-shelf {width:min(1120px,calc(100vw - 280px))}}
 
@@ -3747,16 +3724,14 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
   
   
   
-  .tt-shelf-player.is-open {flex-wrap:wrap;gap:10px;row-gap:8px}
-  .tt-shelf-player-text {flex-basis:calc(100% - 150px)}
-  .tt-shelf-player-tracks,
-.tt-shelf-player-langs {order:8}
-  .tt-shelf-player-bar {order:9;flex:1 1 100%;height:14px}
-  .tt-shelf-player-bar::before,
-.tt-shelf-player-bar i {top:6px}
-  .tt-shelf-player-time {display:none}
+  
+  
+  
+  
+  
+  
 }
-@media (prefers-reduced-motion: reduce){.tt-shelf-player.is-open {animation:none}.tt-shelf-eq i {animation:none;height:10px}}
+@media (prefers-reduced-motion: reduce){.tt-shelf-eq i {animation:none;height:10px}}
 
 /* =====================================================================
    WORKS · record sleeves (revision 2.1): tilt, a record that slides out and spins,
@@ -3789,8 +3764,6 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
   .tt-shelf-play .tt-shelf-play-icon {border-left-width:13px;border-top-width:8px;border-bottom-width:8px}
   
 }
-.tt-shelf-player-cover {flex:none;width:48px;height:48px;padding:0;border:0;border-radius:8px;overflow:hidden;background:none;cursor:pointer}
-.tt-shelf-player-cover img {display:block;width:100%;height:100%;object-fit:cover}
 
 /* the popup */
 .tt-shelf-modal {position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:rgba(3,10,20,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overscroll-behavior:contain;animation:ttShelfModalIn .35s ease}
@@ -3843,9 +3816,8 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 .tt-shelf-modal-panel {display:block;width:min(1080px,100%);max-height:min(860px,calc(100vh - 48px));padding:0;border-radius:24px;
   background:linear-gradient(180deg,#0e6e7d 0%,#0a4f5b 34%,#073640 100%);border:1px solid rgba(141,236,252,.22)}
 .tt-shelf-modal-close {display:grid;place-items:center;right:16px;top:16px;width:44px;height:44px;padding:0;background:rgba(7,40,48,.72);box-shadow:0 0 0 1px rgba(251,255,255,.18);color:#fbffff;font-size:0;line-height:0}
-.tt-shelf-modal-close svg,
-.tt-shelf-player-close svg {display:block}
-.tt-shelf-player-close {display:grid;place-items:center;padding:0;font-size:0;line-height:0}
+.tt-shelf-modal-close svg {display:block}
+
 .tt-shelf-modal-stage {position:relative}
 .tt-shelf-yt {position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:24px 24px 0 0;background:#04252c}
 .tt-shelf-yt img {display:block;width:100%;height:100%;object-fit:cover}
@@ -3958,12 +3930,7 @@ html:lang(ja) .tt-shelf-player-kicker {letter-spacing:.08em}
 
 /* the popup's record card and the bottom player show the disc too */
 
-.tt-shelf-player-cover {border-radius:50%!important;overflow:visible!important}
-.tt-shelf-player-cover .tt-disc {width:48px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
 /* the bottom player appears only once something has played and the turntable is out of view */
-.tt-crate .tt-shelf-player.is-open {display:none}
-.tt-crate.is-engaged.is-deck-away .tt-shelf-player.is-open {display:flex}
-body:not([data-active-chapter="works"]) .tt-crate .tt-shelf-player.is-open {display:none}
 
 @media (max-width:1100px){.tt-rack-grid {grid-template-columns:repeat(3,minmax(0,1fr))}.tt-crate-stage {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
 @media (max-width:860px){
@@ -3999,8 +3966,6 @@ html body #c-works.tt-gh-works {overflow:visible!important;overflow-x:clip!impor
 .tt-rack-item.is-current .tt-sleeve::after {content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,40,48,0) 55%,rgba(7,40,48,.55));pointer-events:none}
 
 .tt-shelf-modal-record img {width:96px;height:96px;border-radius:10px;object-fit:cover;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-.tt-shelf-player-cover {border-radius:8px!important;overflow:hidden!important}
-.tt-shelf-player-cover img {display:block;width:48px;height:48px;object-fit:cover}
 
 /* the rack scrolls inside its own frame instead of a "show all" button; it fades at the edges */
 .tt-crate-rack .tt-rack-grid {max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 28px;margin:0 -14px;
@@ -4031,6 +3996,12 @@ button.tt-deck-arm-base.is-playing .tt-shelf-play-icon {width:clamp(10px,1.3vw,1
 .tt-deck-more span {color:#8decfc;font-size:16px}
 @media (prefers-reduced-motion: reduce){button.tt-deck-arm-base::after {animation:none}}
 /* a shorter arm that rests clear of the details button and still lands on the record */
-.tt-deck-table{--arm:47cqw}
-.tt-deck-arm{transform:rotate(2deg)}
-.tt-deck.is-playing .tt-deck-arm{transform:rotate(36deg)}
+.tt-deck-table {--arm:47cqw}
+.tt-deck-arm {transform:rotate(2deg)}
+.tt-deck.is-playing .tt-deck-arm {transform:rotate(36deg)}
+
+/* the play button on the tonearm base is a true circle (the old 56px toggle height no longer applies) */
+button.tt-deck-arm-base {height:auto;aspect-ratio:1}
+/* the rack shows only what fits the screen, so the collaborations below stay in sight */
+.tt-crate-rack .tt-rack-grid {max-height:clamp(300px,calc(100vh - 400px),600px)}
+@media (max-width:860px){.tt-crate-rack .tt-rack-grid {max-height:clamp(300px,calc(100svh - 420px),520px)}}

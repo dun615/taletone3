@@ -1622,8 +1622,7 @@ class Component extends DCLogic {
       }
       for(var ni=0, nN=lightVisual?5:8; ni<nN; ni++){ var bn=note(ni%2?'♪':'♫',18+Math.random()*14); bn._kind='note'; bn._x=(Math.random()*2-1)*0.75; bn._d=Math.random()*0.2; bn._ph=Math.random()*6.283; }
     } else if(type==='rise'){
-      // THE SONG RISES: bubbles, little lights and notes ride the current up to a brightening surface
-      var surf=document.createElement('i'); surf.className='tb-surface'; surf._kind='surface'; v.appendChild(surf); items.push(surf);
+      // THE SONG RISES: bubbles, little lights and notes ride the current up
       for(var ri=0, rN=lightVisual?22:40; ri<rN; ri++){ var bub=orb('tb-bub',6+Math.pow(Math.random(),2)*26); bub._kind='up'; bub._size=parseFloat(bub.style.getPropertyValue('--s')); }
       for(var li=0, lN=lightVisual?10:20; li<lN; li++){ var lo=orb('tb-orb',8+Math.random()*12,li%2?PAL[0]:PAL[2]); lo._kind='up'; lo._size=12; }
       for(var rn=0, rnN=lightVisual?3:6; rn<rnN; rn++){ var rnote=note(rn%2?'♪':'♫',16+Math.random()*10); rnote._kind='up'; rnote._size=20; }
@@ -1709,7 +1708,6 @@ class Component extends DCLogic {
       var current=Math.sin(prog*3.1)*W2*0.05;
       for(var r=0; r<items.length; r++){
         var u=items[r];
-        if(u._kind==='surface'){ u.style.opacity=(sm(0.25,0.8,prog)*(0.85+0.15*Math.sin(time*2))*live).toFixed(3); u.style.transform='translateY('+(-H2*0.98).toFixed(1)+'px)'; continue; }
         var rk=cl((prog-0.03-u._d)/0.72,0,1);
         var ry=H2*1.08-H2*2.25*Math.pow(rk,1.12)*u._sp;
         var rx=u._x*W2+Math.sin(time*(0.9+u._sp)+u._ph)*(8+u._size/3)+current*rk;
