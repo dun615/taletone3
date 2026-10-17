@@ -247,6 +247,22 @@ body.tt-book-opened .tb-sparks i{animation:tbSpark var(--d) ease-out calc(2.6s +
 .tt-bridge-visual .tb-page{position:absolute;left:50%;top:50%;width:min(380px,74vw);height:min(220px,42vw);margin:calc(min(220px,42vw) / -2) 0 0 calc(min(380px,74vw) / -2);border-radius:16px;opacity:0;
   background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(255,240,206,.42),rgba(255,226,170,.12) 62%,rgba(255,226,170,.03));box-shadow:0 0 70px rgba(255,220,150,.22);filter:blur(1.5px)}
 @media (max-width:760px){.tt-bridge-visual .tb-glow{filter:blur(18px)}}
+/* ===== Readability pass (U3, U5, U6) ===== */
+/* the JP contact title fits a phone */
+@media (max-width:760px){html:lang(ja) #content#content .tt-contact-title{font-size:min(var(--fs-4xl),9.2vw)!important}}
+/* the contact address as text */
+.tt-contact-address{margin:18px 0 0;font-weight:700;font-size:var(--fs-m);letter-spacing:.02em}
+.tt-contact-address a{color:var(--ink,#141C30);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--ink,#141C30) 40%,transparent);text-underline-offset:4px;user-select:all}
+/* labels follow the text colour flip instead of fading into the mid-depth water */
+.tt-section-chapter{color:color-mix(in srgb,var(--ink,#141C30) 72%,var(--accent,#0E6E7D))!important}
+.tt-section-note,.tt-prologue-hint,.tt-contact-caption{opacity:1!important}
+body[data-active-chapter] #chapnav a.navbtn{opacity:.8!important}
+/* titles and Story Types labels: deeper on the light side, lighter on the dark side */
+.tt-chapter-title > span[style*="--accent"]{color:color-mix(in srgb,var(--ink,#141C30) 40%,var(--accent,#0E6E7D))!important}
+
+#content#content .tt-audience > div{color:color-mix(in srgb,var(--ink,#141C30) 70%,var(--accent,#0E6E7D))!important}
+#content#content .tt-audience p:first-of-type{color:var(--ink,#141C30)!important;font-weight:600}
+.tt-audiences-heading{color:color-mix(in srgb,var(--ink,#141C30) 70%,var(--accent,#0E6E7D))}
 /* ===== One close button for every popup: a round X, the same as the Works popup =====
    (the :is(#…) boosts outrank older per-popup rules that use ID selectors) */
 html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close){display:grid!important;place-items:center!important;width:44px!important;height:44px!important;min-width:0!important;min-height:0!important;padding:0!important;border:0!important;border-radius:50%!important;
@@ -592,7 +608,7 @@ body[data-active-chapter="contact"] #nav-6{
 
 #c-members > [data-reveal]:first-child .tt-section-chapter,
 #c-members > [data-reveal]:first-child > div:not(.tt-section-chapter-block) {
-  color: #0E6E7D !important;
+  color: #073640 !important;
   opacity: 1 !important;
   text-shadow: none !important;
 }
@@ -605,8 +621,9 @@ body[data-active-chapter="contact"] #nav-6{
 
 
 #c-members > [data-reveal]:first-child h2 {
-  color: #0E6E7D !important;
-  -webkit-text-fill-color: #0E6E7D !important;
+  /* the brand's deepest teal: Members sits at the light/dark crossover, where #0E6E7D reads at 2:1 */
+  color: #073640 !important;
+  -webkit-text-fill-color: #073640 !important;
   background: none !important;
   opacity: 1 !important;
   filter: none !important;
@@ -981,7 +998,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 
 <!-- ================= 05 WORKS ================= -->
 <section id="c-works" class="tt-gh-works" data-screen-label="05 Works">
-  <div id="tt-gh-works-app" aria-live="polite"></div>
+  <div id="tt-gh-works-app"></div>
   
 </section>
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
@@ -1048,6 +1065,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
       <button id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
     </div>
+    <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
     <div id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
     <sc-if value="{{ CONTACT.guideTitle }}">
     <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">

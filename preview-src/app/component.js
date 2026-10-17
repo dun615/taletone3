@@ -1017,7 +1017,7 @@ class Component extends DCLogic {
       // every chapter stays legible against the sky at any depth
       var tn = this.smooth(0.487, 0.513, colorP);
       this.setCssVar(r,'--ink',this.mix('#141C30','#f4f9ff',tn));
-      this.setCssVar(r,'--soft',this.mix('#44505F','#c4d4ee',tn));
+      this.setCssVar(r,'--soft',this.mix('#2c3846','#e2ebf7',tn));
       this.setCssVar(r,'--paper',this.mix('#fffdf8','#0b1330',tn));
       var hs=(1-Math.abs(tn-0.5)*2);                    // 0 at extremes, 1 at the crossover
       var halo = tn<0.5
@@ -2305,7 +2305,11 @@ class Component extends DCLogic {
     }
     clearTimeout(this._contactCopyTimer);
     this.setState({ contactCopyMessage: ok ? (contact.copyDone || 'Copied') : (contact.copyFail || 'Copy failed') });
-    this._contactCopyTimer = setTimeout(()=>this.setState({ contactCopyMessage:'' }), 1800);
+    if(!ok){
+      // the copy was blocked: select the visible address so it can be copied by hand
+      try{ var addr=document.querySelector('.tt-contact-address a'); if(addr){ var range=document.createRange(); range.selectNodeContents(addr); var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range); } }catch(_e3){}
+    }
+    this._contactCopyTimer = setTimeout(()=>this.setState({ contactCopyMessage:'' }), ok ? 1800 : 6000);
   }
 
   // Opening: the tale line rises, scatters into light, and resolves into the wordmark.

@@ -2308,7 +2308,7 @@ body.tt-network-open #content {
     z-index: 1 !important;
     pointer-events: none !important;
     background:
-      linear-gradient(180deg, rgba(8, 18, 35, .18) 0%, rgba(8, 18, 35, .46) 48%, rgba(8, 18, 35, .84) 100%),
+      linear-gradient(180deg, rgba(8, 18, 35, .58) 0%, rgba(8, 18, 35, .7) 48%, rgba(8, 18, 35, .9) 100%),
       radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 46%) !important;
   }
 
@@ -2848,8 +2848,8 @@ div[style*="width:min(760px,96vw)"] > div:last-child > div {
 }
 
 #c-members > [data-reveal]:first-child h2 {
-  color: #0E6E7D !important;
-  -webkit-text-fill-color: #0E6E7D !important;
+  color: #073640 !important;
+  -webkit-text-fill-color: #073640 !important;
   background: none !important;
   opacity: 1 !important;
   filter: none !important;
@@ -2858,8 +2858,8 @@ div[style*="width:min(760px,96vw)"] > div:last-child > div {
 }
 
 #c-members > [data-reveal]:first-child h2 .sc-interp {
-  color: #0E6E7D !important;
-  -webkit-text-fill-color: #0E6E7D !important;
+  color: #073640 !important;
+  -webkit-text-fill-color: #073640 !important;
 }
 
 body[data-active-chapter="members"] #chapnav,
@@ -3968,7 +3968,7 @@ html body #c-works.tt-gh-works {overflow:visible!important;overflow-x:clip!impor
 .tt-shelf-modal-record img {width:96px;height:96px;border-radius:10px;object-fit:cover;box-shadow:0 10px 24px rgba(0,0,0,.35)}
 
 /* the rack scrolls inside its own frame instead of a "show all" button; it fades at the edges */
-.tt-crate-rack .tt-rack-grid {max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 28px;margin:0 -14px;
+.tt-crate-rack .tt-rack-grid {max-height:min(74vh,760px);overflow-y:auto;overscroll-behavior:auto;padding:14px 14px 28px;margin:0 -14px;
   scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.45) transparent;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,transparent 0,#000 14px,#000 calc(100% - 36px),transparent)}
 .tt-crate-rack .tt-rack-grid::-webkit-scrollbar {width:6px}
@@ -4007,3 +4007,9 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 @media (max-width:860px){.tt-crate-rack .tt-rack-grid {max-height:clamp(300px,calc(100svh - 420px),520px)}}
 /* desktop: the rack's height is set from the turntable column (sizeRack); padding counts inside it */
 .tt-crate-rack .tt-rack-grid{box-sizing:border-box}
+
+/* screen-reader-only status line for the record shop */
+.tt-sr-only{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important}
+/* U6: the record shop's small labels at full strength */
+.tt-shelf-clients-label {color:color-mix(in srgb,var(--ink,#141C30) 86%,transparent)}
+.tt-shelf-chip-count {opacity:.85}

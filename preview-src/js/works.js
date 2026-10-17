@@ -625,6 +625,7 @@
     bindLazyCovers();
     watchDeck();
     sizeRack();
+    handOffRackScroll();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
@@ -655,6 +656,23 @@
     probe.remove();
     var offset = grid.getBoundingClientRect().top - rack.getBoundingClientRect().top;
     grid.style.maxHeight = Math.max(240, Math.round(height - offset)) + 'px';
+  }
+
+  // At either end of the rack the wheel moves the page on, even within one continuous gesture
+  // (browsers keep a gesture latched to the inner scroller, which would hold the page in place)
+  function handOffRackScroll() {
+    var grid = root && root.querySelector('.tt-rack-grid');
+    var page = document.getElementById('content');
+    if (!grid || !page || grid.__ttHandOff) return;
+    grid.__ttHandOff = true;
+    grid.addEventListener('wheel', function (event) {
+      if (event.ctrlKey || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return;
+      var atTop = grid.scrollTop <= 0, atEnd = grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
+      if ((event.deltaY > 0 && atEnd) || (event.deltaY < 0 && atTop)) {
+        event.preventDefault();
+        page.scrollBy({ top: event.deltaMode === 1 ? event.deltaY * 40 : event.deltaY, behavior: 'instant' });
+      }
+    }, { passive: false });
   }
 
   var deckObserver = null;
@@ -757,6 +775,7 @@
     setMediaStatus('playback', 'playing');
     if (attempt && attempt.catch) attempt.catch(function () { state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying(); });
     refreshPlaying(true);
+    announce(L().nowPlaying + ': ' + currentTitle());
   }
   function closeVideo(wrap) {
     var id = wrap.getAttribute('data-yt');
@@ -766,7 +785,26 @@
   }
   function pauseAll() {
     if (audio && !audio.paused) audio.pause();
-    if (state.playing) { state.playing = false; setMediaStatus('playback', 'paused'); refreshPlaying(); }
+    if (state.playing) { state.playing = false; setMediaStatus('playback', 'paused'); refreshPlaying(); announce(L().pause); }
+  }
+  // one short line for screen readers (the rack itself is not a live region)
+  function announce(text) {
+    var section = document.getElementById('c-works');
+    if (!section) return;
+    var status = document.getElementById('tt-works-status');
+    if (!status) {
+      status = document.createElement('p');
+      status.id = 'tt-works-status';
+      status.className = 'tt-sr-only';
+      status.setAttribute('role', 'status');
+      section.appendChild(status);
+    }
+    status.textContent = '';
+    setTimeout(function () { status.textContent = text; }, 60);
+  }
+  function currentTitle() {
+    var work = works[state.current];
+    return work ? plainRichText(localizedUnit(work).title || work.title || '') : '';
   }
   function stopAll() {
     pauseAll();
@@ -817,6 +855,7 @@
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
       render(before);
+      announce((L()[state.filter] || state.filter) + ' · ' + visibleWorks().length);
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
     } else if (action === 'pick') {
       pick(Number(button.getAttribute('data-index')));
@@ -1395,9 +1434,18 @@
     window.addEventListener('resize', onResize, { passive: true });
     bindVisibilityPause();
   }
+  // Works is built when its chapter comes near; a keyboard user's first key press or focus builds it too,
+  // so Tab can reach the rack instead of skipping a chapter that is not there yet
+  function initForKeyboard() {
+    document.removeEventListener('keydown', initForKeyboard, true);
+    document.removeEventListener('focusin', initForKeyboard, true);
+    if (!mounted) init();
+  }
   function start() {
     initGlobalUx();
     if (isWorksChapterActive() || window.parent !== window) init();
+    document.addEventListener('keydown', initForKeyboard, true);
+    document.addEventListener('focusin', initForKeyboard, true);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
