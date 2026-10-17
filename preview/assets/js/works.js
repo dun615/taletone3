@@ -622,11 +622,39 @@
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
     watchDeck();
+    sizeRack();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
-  // the bottom player only appears once something has played and the turntable is out of view
+  // The rack is as tall as the turntable column with Early Spring on it (turntable, its details and the
+  // track buttons), so the rack and the deck end on the same line whatever is playing
+  var RACK_REFERENCE = 'early-spring';
+  function sizeRack() {
+    var deckHost = root && root.querySelector('.tt-crate-deck');
+    var rack = root && root.querySelector('.tt-crate-rack');
+    var grid = rack && rack.querySelector('.tt-rack-grid');
+    if (!deckHost || !grid) return;
+    if (window.innerWidth <= 860) { grid.style.maxHeight = ''; return; } // stacked: the screen sets it (CSS)
+    var ref = works.findIndex(function (work) { return work.slug === RACK_REFERENCE; });
+    if (ref < 0) ref = state.current;
+    var keep = { current: state.current, track: state.track, language: state.language };
+    state.current = ref;
+    state.track = titleTrackIndex(works[ref]);
+    state.language = defaultLanguage(works[ref], state.track);
+    var probe = document.createElement('div');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:absolute;left:0;top:0;width:' + deckHost.clientWidth + 'px;visibility:hidden;pointer-events:none';
+    probe.innerHTML = deckHtml();
+    state.current = keep.current; state.track = keep.track; state.language = keep.language;
+    deckHost.appendChild(probe);
+    var height = probe.offsetHeight;
+    probe.remove();
+    var offset = grid.getBoundingClientRect().top - rack.getBoundingClientRect().top;
+    grid.style.maxHeight = Math.max(240, Math.round(height - offset)) + 'px';
+  }
+
   var deckObserver = null;
   function watchDeck() {
     var deck = root && root.querySelector('.tt-crate-deck');
@@ -882,6 +910,7 @@
 
   var lastWidthStep = 0;
   function onResize() {
+    sizeRack();
     var step = shelfStep();
     if (mounted && step !== lastWidthStep) { lastWidthStep = step; render(); }
   }

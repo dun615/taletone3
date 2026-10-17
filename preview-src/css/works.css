@@ -4005,3 +4005,5 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 /* the rack shows only what fits the screen, so the collaborations below stay in sight */
 .tt-crate-rack .tt-rack-grid {max-height:clamp(300px,calc(100vh - 400px),600px)}
 @media (max-width:860px){.tt-crate-rack .tt-rack-grid {max-height:clamp(300px,calc(100svh - 420px),520px)}}
+/* desktop: the rack's height is set from the turntable column (sizeRack); padding counts inside it */
+.tt-crate-rack .tt-rack-grid{box-sizing:border-box}
