@@ -940,6 +940,8 @@ try {
   })));
   if (errors.length) {
     console.error(`Runtime performance validation failed:\n- ${errors.join('\n- ')}`);
+    // on GitHub Actions each failure also becomes an annotation, readable from the public checks API
+    if (process.env.GITHUB_ACTIONS) for (const error of errors) console.log(`::error title=Runtime check::${String(error).replace(/\r?\n/g, ' ')}`);
     process.exitCode = 1;
   } else {
     console.log(`Runtime performance validation passed: ${results.length} cold/warm performance cases, ${functionalChecks.length} route/language/viewport checks, ${interactionChecks.length} interaction checks, and ${bridgeChecks.length} bridge checks.`);

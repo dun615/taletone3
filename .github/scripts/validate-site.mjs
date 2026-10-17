@@ -684,6 +684,8 @@ for (const term of memberPortfolioOnly) {
 if (errors.length) {
   console.error(`Site validation failed (${errors.length})`);
   for (const error of errors) console.error(`- ${error}`);
+  // on GitHub Actions each failure also becomes an annotation, readable from the public checks API
+  if (process.env.GITHUB_ACTIONS) for (const error of errors) console.log(`::error title=Site check::${String(error).replace(/\r?\n/g, ' ')}`);
   process.exit(1);
 }
 console.log(`Site validation passed: ${routes.length} routes, ${assetRefs.size} referenced assets, ${worksJson.works.length} works.`);
