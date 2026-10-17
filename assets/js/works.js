@@ -348,14 +348,15 @@
     language: 'KR',
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
+    volume: 0.5,      // linear amplitude: 0.5 = 20·log10(0.5) = -6.02 dB (the default)
     engaged: false    // the reader has played something
   };
   var audio = null;
 
   var shelfLabels = {
-    kr: { all: '전체', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { all: 'All', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -513,6 +514,7 @@
         (hasAudio(work)
           ? '<button type="button" class="tt-deck-arm-base tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>'
           : '<span class="tt-deck-arm-base" aria-hidden="true"></span>') +
+        '<label class="tt-deck-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
         '<button type="button" class="tt-deck-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' +
         '<span class="tt-deck-led" aria-hidden="true"></span>' +
       '</div>' +
@@ -757,11 +759,43 @@
   }
 
   // ---- playback: one audio element; tracks and language versions switch in place ----
+  // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
+  // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
+  var gainCtx = null, gainNode = null;
+  function volumeText(v) {
+    return Math.round(v * 100) + '% (' + (v > 0 ? (20 * Math.log10(v)).toFixed(1) + ' dB' : '-∞ dB') + ')';
+  }
+  function applyVolume() {
+    if (gainNode) gainNode.gain.value = state.volume;
+    else if (audio) audio.volume = state.volume;
+  }
+  function ensureGain() {
+    if (gainNode || !audio) return;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      gainCtx = new AC();
+      var source = gainCtx.createMediaElementSource(audio);
+      gainNode = gainCtx.createGain();
+      source.connect(gainNode);
+      gainNode.connect(gainCtx.destination);
+      audio.volume = 1;
+    } catch (_e) { gainNode = null; }
+    applyVolume();
+  }
+  function onVolumeInput(event) {
+    var input = event.target;
+    if (!input || !input.matches || !input.matches('[data-works-volume]')) return;
+    state.volume = Math.max(0, Math.min(1, Number(input.value) / 100));
+    input.style.setProperty('--v', state.volume);
+    input.setAttribute('aria-valuetext', volumeText(state.volume));
+    applyVolume();
+  }
   function ensureAudioEl() {
     if (audio) return audio;
     audio = new Audio();
     audio.preload = 'none';
-    audio.volume = 0.6;
+    audio.volume = state.volume;
     audio.addEventListener('ended', function () { state.playing = false; setMediaStatus('playback', 'ended'); refreshPlaying(); });
     audio.addEventListener('pause', function () { if (state.playing && audio.paused) { state.playing = false; refreshPlaying(); } });
     return audio;
@@ -793,6 +827,8 @@
     var video = root && root.querySelector('.tt-shelf-yt.is-playing');
     if (video) { video.closest('.tt-shelf-modal-stage') && closeVideo(video); }
     var el = ensureAudioEl();
+    ensureGain();
+    if (gainCtx && gainCtx.state === 'suspended') gainCtx.resume();
     var attempt = el.play();
     state.playing = true;
     setMediaStatus('playback', 'playing');
@@ -1454,6 +1490,7 @@
     worksInteractionsBound = true;
     document.addEventListener('click', onClick, true);
     document.addEventListener('keydown', onRackKey);
+    document.addEventListener('input', onVolumeInput);
     window.addEventListener('hashchange', scrollToWorksFromHash);
     window.addEventListener('resize', onResize, { passive: true });
     bindVisibilityPause();

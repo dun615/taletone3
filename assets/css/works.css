@@ -2308,7 +2308,7 @@ body.tt-network-open #content {
     z-index: 1 !important;
     pointer-events: none !important;
     background:
-      linear-gradient(180deg, rgba(8, 18, 35, .58) 0%, rgba(8, 18, 35, .7) 48%, rgba(8, 18, 35, .9) 100%),
+      linear-gradient(180deg, rgba(8, 18, 35, .74) 0%, rgba(8, 18, 35, .78) 48%, rgba(8, 18, 35, .92) 100%),
       radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 46%) !important;
   }
 
@@ -4023,3 +4023,19 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
   .tt-deck-more::after{content:'';position:absolute;inset:-3px}
   .tt-shelf-filters{row-gap:12px}
 }
+/* the Works header label and note sit on a soft shadow of the deep water */
+.tt-shelf-head .tt-section-chapter{position:relative;isolation:isolate}
+.tt-shelf-head .tt-section-chapter::before{content:'';position:absolute;left:50%;top:50%;width:min(640px,96vw);height:120px;transform:translate(-50%,-38%);z-index:-1;pointer-events:none;filter:blur(10px);
+  background:radial-gradient(closest-side,rgba(4,26,38,.5),rgba(4,26,38,.28) 55%,transparent)}
+
+/* volume fader on the plinth, right of the record, like a turntable's pitch fader; the notch marks 50% (-6 dB) */
+.tt-deck-volume{position:absolute;right:3.4%;top:31%;height:36%;width:26px;z-index:3;display:block;cursor:pointer}
+.tt-deck-volume::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:12px;transform:translateX(-50%);border-radius:8px;background:rgba(4,30,38,.38);box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+.tt-deck-volume::after{content:'';position:absolute;left:50%;top:50%;width:16px;height:1px;transform:translateX(-50%);background:rgba(141,236,252,.45);pointer-events:none}
+.tt-deck-volume input{position:absolute;left:50%;top:50%;width:calc(36cqw / 1.18);height:26px;margin:0;transform:translate(-50%,-50%) rotate(-90deg);-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer;--v:.5}
+.tt-deck-volume input:focus-visible{outline:2px solid #8decfc;outline-offset:4px;border-radius:8px}
+.tt-deck-volume input::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,#8decfc calc(var(--v) * 100%),rgba(251,255,255,.2) calc(var(--v) * 100%))}
+.tt-deck-volume input::-moz-range-track{height:3px;border-radius:3px;background:rgba(251,255,255,.2)}
+.tt-deck-volume input::-moz-range-progress{height:3px;border-radius:3px;background:#8decfc}
+.tt-deck-volume input::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6.5px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
+.tt-deck-volume input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
