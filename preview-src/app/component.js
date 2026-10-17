@@ -122,7 +122,8 @@ class Component extends DCLogic {
       if(this._bridgeRun){ this._pinBridgeAnchor(); return; }
       if(this._bridgeNavTarget){
         var destination=document.getElementById(this._bridgeNavTarget);
-        if(!destination||Math.abs(current-destination.offsetTop)<=3) this._bridgeNavTarget=null;
+        // released on arrival, or once the jump has had time to land (a scrollbar drag sends no input events)
+        if(!destination||Math.abs(current-destination.offsetTop)<=3||performance.now()-(this._bridgeNavAt||0)>1500) this._bridgeNavTarget=null;
         return;
       }
       if(current>previous+2&&this._bridgeOffsets){
@@ -2016,10 +2017,10 @@ class Component extends DCLogic {
       'home-projects': 'prologue',
       'projects-members': 'gather',
       'members-works': 'bloom',
-      'works-news': 'ripple',
+      'works-news': 'rise',
       'news-contact': 'page'
     };
-    return byId[id] || ['prologue','gather','bloom','ripple','page'][i] || 'gather';
+    return byId[id] || ['prologue','gather','bloom','rise','page'][i] || 'gather';
   }
 
   bridgePhraseForIndex(i){
@@ -2124,34 +2125,11 @@ class Component extends DCLogic {
     stage.insertBefore(v, firstLine || bg);
     var items=[];
     var lightVisual = window.innerWidth <= 760;
-    function dot(vv, sx, sy, tx, ty, size, delay){
-      var d=document.createElement('span'); d.className='tt-bridge-dot';
-      d.style.setProperty('--dot', (size||7)+'px');
-      d._sx=sx; d._sy=sy; d._tx=tx; d._ty=ty; d._delay=delay||0; d._ph=Math.random()*6.283;
-      vv.appendChild(d); items.push(d); return d;
-    }
-    function spark(vv, sx, sy, tx, ty, size, delay){
-      var s=document.createElement('i'); s.className='tt-bridge-spark';
-      s.style.width=(size||3)+'px'; s.style.height=(size||3)+'px';
-      s._sx=sx; s._sy=sy; s._tx=tx; s._ty=ty; s._delay=delay||0; s._ph=Math.random()*6.283;
-      vv.appendChild(s); items.push(s); return s;
-    }
-    function thread(vv, x, y, rot, w){
-      var th=document.createElement('i'); th.className='tt-bridge-thread';
-      th._x=x; th._y=y; th._rot=rot; th.style.setProperty('--w',(w||160)+'px');
-      vv.appendChild(th); items.push(th); return th;
-    }
-
-    if(type==='line'){
-      v.innerHTML='<div class="tt-line-ritual"><i class="tt-line-echo e1"></i><i class="tt-one-line"></i><i class="tt-line-echo e2"></i><i class="tt-line-trail"></i><b class="tt-line-note">??/b></div>';
-      var ritual=v.querySelector('.tt-line-ritual');
-      for(var li=0, lineGlyphs=lightVisual?10:18; li<lineGlyphs; li++){
-        var gx=-410+Math.random()*820, gy=(Math.random()*2-1)*92;
-        var gl=document.createElement('i'); gl.className='tt-line-glyph';
-        gl._gx=gx; gl._gy=gy; gl._delay=Math.random()*0.22; ritual.appendChild(gl); items.push(gl);
-      }
-      items=items.concat(Array.from(v.querySelectorAll('.tt-one-line,.tt-line-echo,.tt-line-trail,.tt-line-note')));
-    } else if(type==='prologue'){
+    // Five motifs, one per crossing. Soft light only: no rings, rays or hairlines.
+    var PAL=['127,227,238','255,159,184','255,214,140','185,166,255','157,240,200'];
+    function orb(cls, size, rgb){ var o=document.createElement('i'); o.className=cls; if(size) o.style.setProperty('--s',size+'px'); if(rgb) o.style.setProperty('--c',rgb); v.appendChild(o); items.push(o); return o; }
+    function note(glyph, size){ var n=document.createElement('b'); n.className='tb-note'; n.textContent=glyph; n.style.setProperty('--s',size+'px'); v.appendChild(n); items.push(n); return n; }
+    if(type==='prologue'){
       // HOW WE DIVE: the three steps of the journey light up one after another, joined by a thread of light
       var steps=document.createElement('div'); steps.className='tt-prologue-steps'; v.appendChild(steps);
       ['TALE','TONE','MUSIC'].forEach(function(word, si){
@@ -2159,52 +2137,42 @@ class Component extends DCLogic {
         var st=document.createElement('span'); st.className='tt-prologue-step'; st.textContent=word; st._step=si; steps.appendChild(st); items.push(st);
       });
     } else if(type==='gather'){
-      // KINDLE v2 - trembling build-up, then IGNITION: shockwave, spark burst, light wave rolling outward
-      var field2=document.createElement('div'); field2.className='tt-orb-stage'; v.appendChild(field2);
-      var halo=document.createElement('i'); halo.className='tt-kindle-halo'; v.appendChild(halo); items.push(halo);
-      var kcore=document.createElement('i'); kcore.className='tt-kindle-core'; v.appendChild(kcore); items.push(kcore);
-      var ksh=document.createElement('i'); ksh.className='tt-shock-ring'; ksh._kshock=1; v.appendChild(ksh); items.push(ksh);
-      for(var bs=0, burstN=lightVisual?8:14; bs<burstN; bs++){ var ba=Math.random()*6.283, br2=110+Math.random()*190; var s2=spark(v,0,0,Math.cos(ba)*br2,Math.sin(ba)*br2*0.6,2.5+Math.random()*3,Math.random()*0.35); s2._burst=1; }
-      for(var gi=0, moteCount=lightVisual?24:62; gi<moteCount; gi++){
-        var ma=Math.random()*6.283, mr=64+Math.random()*300;
-        var mx=Math.cos(ma)*mr, my=Math.sin(ma)*mr*.5;
-        var md=dot(field2,mx,my,mx,my,2+Math.random()*4,Math.random()*0.3);
-        md._mote=1; md._dist=Math.sqrt(mx*mx+my*my)||1;
+      // LISTEN -> COLOUR: pale story-lights drift in from every side and gather close;
+      // at the moment of listening each takes a colour of its own, then they settle around the words
+      var iris=orb('tb-glow tb-iris',lightVisual?300:520); iris._kind='iris';
+      for(var gi=0, gN=lightVisual?22:40; gi<gN; gi++){
+        var go=orb('tb-orb',(lightVisual?10:14)+Math.random()*(lightVisual?12:20),'255,255,255');
+        go._kind='g'; go._a=Math.random()*6.283; go._r=0.55+Math.random()*0.5; go._d=Math.random()*0.16; go._ph=Math.random()*6.283; go._col=PAL[gi%PAL.length];
+        if(lightVisual){ go._fx=(Math.random()*2-1)*0.9; go._fy=(Math.random()<0.5?-1:1)*(0.62+Math.random()*0.34); }
+        else { go._fx=(Math.random()<0.5?-1:1)*(0.62+Math.random()*0.34); go._fy=(Math.random()*2-1)*0.8; }
       }
     } else if(type==='bloom'){
-      // TOUCH -> SOUND -> BLOOM v2: hard contact flash + shockwave, beating waveform, petals spring open
-      var st=document.createElement('div'); st.className='tt-bloom-stage'; v.appendChild(st);
-      var tfl=document.createElement('i'); tfl.className='tt-flash-core'; tfl._tflash=1; v.appendChild(tfl); items.push(tfl);
-      var bsh=document.createElement('i'); bsh.className='tt-shock-ring'; bsh._bshock=1; v.appendChild(bsh); items.push(bsh);
-      var tr1=document.createElement('i'); tr1.className='tt-touch-ring'; tr1._delay=0; v.appendChild(tr1); items.push(tr1);
-      var tr2=document.createElement('i'); tr2.className='tt-touch-ring'; tr2._delay=0.05; v.appendChild(tr2); items.push(tr2);
-      for(var tk=0, tickCount=lightVisual?14:22; tk<tickCount; tk++){ var tick=document.createElement('i'); tick.className='tt-sound-tick'; tick._rot=tk*(360/tickCount); tick._ph=Math.random()*6.283; st.appendChild(tick); items.push(tick); }
-      for(var p=0, pOut=lightVisual?9:12;p<pOut;p++){ var pe=document.createElement('i'); pe.className='tt-bloom-petal'; pe._rot=p*(360/pOut); pe._st=Math.random()*0.04; pe._layer=0; st.appendChild(pe); items.push(pe); }
-      for(var p2=0, pIn=lightVisual?6:8;p2<pIn;p2++){ var pi2=document.createElement('i'); pi2.className='tt-bloom-petal tt-petal-in'; pi2._rot=p2*(360/pIn)+(180/pIn); pi2._st=0.03+Math.random()*0.04; pi2._layer=1; st.appendChild(pi2); items.push(pi2); }
-      for(var sm=0; sm<8; sm++){ var sd=document.createElement('i'); sd.className='tt-stamen'; sd._rot=sm*45; sd._st=Math.random()*0.08; sd._ph=Math.random()*6.283; st.appendChild(sd); items.push(sd); }
-      for(var gg=0, gOut=lightVisual?9:12; gg<gOut; gg++){ var gt2=document.createElement('i'); gt2.className='tt-petal-glint'; gt2._rot=gg*(360/gOut); gt2._st=Math.random()*0.04; gt2._layer=0; gt2._len=138; st.appendChild(gt2); items.push(gt2); }
-      for(var br=0, rayCount=lightVisual?12:24;br<rayCount;br++){ var ray=document.createElement('i'); ray.className='tt-bloom-ray'; ray._rot=br*(360/rayCount); st.appendChild(ray); items.push(ray); }
-      var core=document.createElement('i'); core.className='tt-bloom-core'; v.appendChild(core); items.push(core);
-      for(var sp=0, sparkCount=lightVisual?18:40; sp<sparkCount; sp++){ var ax0=(Math.random()*2-1)*26; var s3=spark(v,ax0,12+Math.random()*14,ax0*(2.4+Math.random()*2.6),-(130+Math.random()*210),2+Math.random()*3,Math.random()); s3._rise=1; }
-    } else if(type==='ripple'){
-      // RESURFACE v2 - rings race outward, droplets launch in ballistic arcs and glint at the surface
-      var current=document.createElement('i'); current.className='tt-ripple-current'; v.appendChild(current); items.push(current);
-      var surf=document.createElement('i'); surf.className='tt-surface-line'; v.appendChild(surf); items.push(surf);
-      for(var r=0, rippleRings=lightVisual?4:6;r<rippleRings;r++){ var ring2=document.createElement('i'); ring2.className='tt-ripple-ring'; ring2._delay=r*0.09; v.appendChild(ring2); items.push(ring2); }
-      var field3=document.createElement('div'); field3.className='tt-orb-stage'; v.appendChild(field3);
-      for(var rd=0, rippleDots=lightVisual?20:46;rd<rippleDots;rd++){
-        var dr0=dot(field3,(Math.random()*2-1)*46,14+Math.random()*18,0,0,2.5+Math.random()*5,Math.random()*0.45);
-        dr0._drop=1; dr0._dxv=(Math.random()*2-1)*(140+Math.random()*320); dr0._vyv=240+Math.random()*260; dr0._st0=Math.random();
+      // TOUCH -> SOUND -> SONG: a warm light comes down to the fingertips, opens into a line of sound,
+      // and the sound lifts away as notes
+      var warm=orb('tb-glow tb-warm',lightVisual?220:320); warm._kind='warm';
+      var touch=orb('tb-orb tb-touch',lightVisual?22:28,'255,236,190'); touch._kind='touch';
+      for(var bi=0, bN=lightVisual?15:23; bi<bN; bi++){
+        var t2=bi/(bN-1), from=t2<0.5?PAL[0]:PAL[2], to=t2<0.5?PAL[2]:PAL[1], tt=t2<0.5?t2*2:(t2-0.5)*2;
+        var fa=from.split(','), ta=to.split(','), col=[0,1,2].map(function(c){ return Math.round(+fa[c]+(+ta[c]-fa[c])*tt); }).join(',');
+        var bo=orb('tb-orb',12,col); bo._kind='bar'; bo._i=bi; bo._n=bN; bo._ph=Math.random()*0.8; bo._lift=0.5+Math.random()*0.6;
       }
+      for(var ni=0, nN=lightVisual?5:8; ni<nN; ni++){ var bn=note(ni%2?'♪':'♫',18+Math.random()*14); bn._kind='note'; bn._x=(Math.random()*2-1)*0.75; bn._d=Math.random()*0.2; bn._ph=Math.random()*6.283; }
+    } else if(type==='rise'){
+      // THE SONG RISES: bubbles, little lights and notes ride the current up to a brightening surface
+      var surf=document.createElement('i'); surf.className='tb-surface'; surf._kind='surface'; v.appendChild(surf); items.push(surf);
+      for(var ri=0, rN=lightVisual?22:40; ri<rN; ri++){ var bub=orb('tb-bub',6+Math.pow(Math.random(),2)*26); bub._kind='up'; bub._size=parseFloat(bub.style.getPropertyValue('--s')); }
+      for(var li=0, lN=lightVisual?10:20; li<lN; li++){ var lo=orb('tb-orb',8+Math.random()*12,li%2?PAL[0]:PAL[2]); lo._kind='up'; lo._size=12; }
+      for(var rn=0, rnN=lightVisual?3:6; rn<rnN; rn++){ var rnote=note(rn%2?'♪':'♫',16+Math.random()*10); rnote._kind='up'; rnote._size=20; }
+      items.forEach(function(it){ if(it._kind!=='up') return; it._x=(Math.random()*2-1)*0.95; it._d=Math.random()*0.3; it._sp=0.85+Math.random()*0.5; it._ph=Math.random()*6.283; });
     } else if(type==='page'){
-      // YOUR TURN v2 - the first note FALLS with gravity, bounces, and the staff rings like plucked strings
-      var sst=document.createElement('div'); sst.className='tt-staff-stage'; v.appendChild(sst);
-      for(var sl=0; sl<5; sl++){ var ln=document.createElement('i'); ln.className='tt-staff-line'; ln._idx=sl; ln.style.top=((sl-2)*24)+'px'; sst.appendChild(ln); items.push(ln); }
-      var nsh=document.createElement('i'); nsh.className='tt-shock-ring tt-note-shock'; nsh._noteShock=1; sst.appendChild(nsh); items.push(nsh);
-      var npulse=document.createElement('i'); npulse.className='tt-note-pulse'; sst.appendChild(npulse); items.push(npulse);
-      var note=document.createElement('i'); note.className='tt-staff-note'; sst.appendChild(note); items.push(note);
-      for(var pg=0, pageSparks=lightVisual?10:18; pg<pageSparks; pg++){ var ax=(Math.random()*2-1)*160; spark(v,(Math.random()*2-1)*10,24,ax,-40-Math.random()*130,2+Math.random()*2.5,Math.random()*0.12); }
+      // YOUR TURN: a blank page of light opens; the first note falls onto it, the page wakes,
+      // and the music begins to rise from it
+      var page=document.createElement('i'); page.className='tb-page'; page._kind='page'; v.appendChild(page); items.push(page);
+      var first=note('♪',lightVisual?30:40); first._kind='main'; first.classList.add('tb-note-main');
+      for(var pi=0, pN=lightVisual?10:16; pi<pN; pi++){ var pm=orb('tb-orb',6+Math.random()*8,'255,226,170'); pm._kind='burst'; pm._a=-Math.PI*(0.05+0.9*Math.random()); pm._dist=(lightVisual?60:90)+Math.random()*(lightVisual?90:150); pm._d=Math.random()*0.06; }
+      for(var ei=0, eN=lightVisual?3:5; ei<eN; ei++){ var em=note(ei%2?'♪':'♫',14+Math.random()*8); em._kind='ember'; em._x=(Math.random()*2-1); em._ph=Math.random(); }
     }
+    bg._vW2=(v.clientWidth||1000)/2; bg._vH2=(v.clientHeight||420)/2;
     bg._visual=v; bg._visualItems=items;
     return v;
   }                               
@@ -2213,10 +2181,10 @@ class Component extends DCLogic {
     var v=bg._visual; if(!v) return;
     // #1 impact envelope: a sharp gaussian at each motif's physical hit, drives camera + text kick
     var impEnv=0;
-    if(type==='gather') impEnv=Math.exp(-Math.pow((prog-0.475)/0.018,2));
+    if(type==='gather') impEnv=0.8*Math.exp(-Math.pow((prog-0.5)/0.02,2));
     else if(type==='page') impEnv=Math.exp(-Math.pow((prog-0.50)/0.014,2))+0.5*Math.exp(-Math.pow((prog-0.56)/0.011,2));
-    else if(type==='bloom') impEnv=0.7*Math.exp(-Math.pow((prog-0.06)/0.015,2))+Math.exp(-Math.pow((prog-0.50)/0.022,2));
-    else if(type==='ripple') impEnv=0.6*Math.exp(-Math.pow((prog-0.30)/0.025,2));
+    else if(type==='bloom') impEnv=0.5*Math.exp(-Math.pow((prog-0.30)/0.02,2))+0.8*Math.exp(-Math.pow((prog-0.50)/0.025,2));
+    else if(type==='rise') impEnv=0.25*Math.exp(-Math.pow((prog-0.6)/0.04,2));
     bg._imp=impEnv;
     var show=this.smooth(0.00,0.055,prog)*(1-this.smooth(0.965,1.0,prog));
     v.style.opacity=(show*(1-exit)).toFixed(3);
@@ -2224,214 +2192,86 @@ class Component extends DCLogic {
     var bridgeScale=(0.985+0.025*this.smooth(0.12,0.72,prog))*(window.innerWidth<=760?0.86:1);
     v.style.transform='translate(-50%,-50%) translate3d(0,'+(-10*exit).toFixed(1)+'px,0) scale('+bridgeScale.toFixed(3)+')';
     var items=bg._visualItems||[];
-    if(type==='line'){
-      var draw=v.querySelector('.tt-one-line'), echoes=v.querySelectorAll('.tt-line-echo'), note=v.querySelector('.tt-line-note'), trail=v.querySelector('.tt-line-trail');
-      var line=this.smooth(0.05,0.30,prog);
-      var move=this.smooth(0.27,0.60,prog);
-      var flare=Math.sin(this.cl((prog-0.52)/0.18,0,1)*Math.PI);
-      if(draw){ draw.style.transform='translate(-50%,-50%) scaleX('+line.toFixed(3)+')'; draw.style.opacity=(line*(1-exit)).toFixed(3); }
-      for(var ei=0;ei<echoes.length;ei++){
-        var ep=this.smooth(0.20+ei*0.04,0.54+ei*0.05,prog);
-        echoes[ei].style.transform='translate(-50%,-50%) scaleX('+ep.toFixed(3)+')';
-        echoes[ei].style.opacity=(ep*(1-exit)*0.44).toFixed(3);
-      }
-      if(note){
-        var x=-420+840*move, y=-Math.sin(move*Math.PI)*42;
-        var nOp=this.smooth(0.20,0.35,prog)*(1-this.smooth(0.72,0.88,prog))*(1-exit);
-        note.style.opacity=nOp.toFixed(3);
-        note.style.transform='translate('+x.toFixed(1)+'px,calc(-50% + '+y.toFixed(1)+'px)) rotate('+(-22+44*move+14*Math.sin(time*4)).toFixed(1)+'deg) scale('+(0.86+0.34*flare).toFixed(3)+')';
-      }
-      if(trail){ trail.style.opacity=(move*(1-move)*3.4*(1-exit)).toFixed(3); trail.style.transform='translate('+(-470+840*move).toFixed(1)+'px,calc(-50% - '+(18*Math.sin(move*Math.PI)).toFixed(1)+'px)) rotate('+(6*Math.sin(move*Math.PI)).toFixed(1)+'deg)'; }
-      for(var g=0; g<items.length; g++){
-        var glyph=items[g];
-        if(glyph.className && String(glyph.className).indexOf('tt-line-glyph')>-1){
-          var gp=this.cl((prog-(glyph._delay||0)-0.34)/0.35,0,1);
-          var go=Math.sin(gp*Math.PI)*(1-exit);
-          glyph.style.opacity=(go*.75).toFixed(3);
-          glyph.style.transform='translate('+glyph._gx.toFixed(1)+'px,'+glyph._gy.toFixed(1)+'px) scale('+(0.45+1.2*gp).toFixed(3)+')';
-        }
-      }
-    } else if(type==='prologue'){
+    var sm=this.smooth.bind(this), cl=this.cl.bind(this);
+    var ease=function(k){ return 1-Math.pow(1-k,3); };
+    var bump=function(at,w){ return Math.exp(-Math.pow((prog-at)/w,2)); };
+    var mixc=function(a,b,t){ var A=a.split(','),B=b.split(','); return Math.round(+A[0]+(B[0]-A[0])*t)+','+Math.round(+A[1]+(B[1]-A[1])*t)+','+Math.round(+A[2]+(B[2]-A[2])*t); };
+    var W2=bg._vW2||500, H2=bg._vH2||210, live=1-exit;
+    var put=function(el,x,y,s,a,rot){ el.style.opacity=Math.max(0,a).toFixed(3); el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'+(rot?' rotate('+rot.toFixed(1)+'deg)':'')+' scale('+s.toFixed(3)+')'; };
+    if(type==='prologue'){
       for(var pi=0;pi<items.length;pi++){
         var ps=items[pi], isLink=String(ps.className).indexOf('link')>-1, at=0.1+ps._step*0.17;
-        var pon=this.smooth(at,at+0.12,prog)*(1-exit);
+        var pon=sm(at,at+0.12,prog)*live;
         ps.style.opacity=(pon*(isLink?0.7:1)).toFixed(3);
         ps.style.transform=isLink?'scaleX('+pon.toFixed(3)+')':'translateY('+((1-pon)*12).toFixed(1)+'px)';
       }
     } else if(type==='gather'){
-      // KINDLE v2
-      var eo2=function(k){return 1-Math.pow(1-k,3);};
-      var pre=this.smooth(0.18,0.44,prog);
-      var ign=this.smooth(0.46,0.50,prog);
-      var after=this.cl((prog-0.5)/0.16,0,1);
-      var glowT=Math.max(ign*0.7, after);
-      var dip=this.smooth(0.38,0.455,prog)*(1-this.smooth(0.455,0.475,prog)); // held breath before ignition
-      var flick=this.cl(0.35+0.5*Math.sin(time*13)+0.35*Math.sin(time*29+1.7),0,1);
-      var wave=(prog-0.5)*2600;
-      for(var j=0;j<items.length;j++){
-        var gt=items[j], gc=String(gt.className||'');
-        if(gc.indexOf('tt-kindle-core')>-1){
-          var jx=Math.sin(time*42)*2.6*pre*(1-ign), jy=Math.cos(time*37)*2.2*pre*(1-ign);
-          var co=(pre*0.4*flick*(1-ign)*(1-dip*0.55)+glowT*(0.88+0.12*Math.sin(time*2.6)))*(1-exit);
-          gt.style.opacity=this.cl(co,0,1).toFixed(3);
-          gt.style.transform='translate('+jx.toFixed(1)+'px,'+jy.toFixed(1)+'px) scale('+(0.3+pre*0.34*flick+glowT*(1.05+0.1*Math.sin(time*2.2))).toFixed(3)+')';
-        } else if(gc.indexOf('tt-kindle-halo')>-1){
-          gt.style.opacity=(glowT*0.78*(1-exit)).toFixed(3);
-          gt.style.transform='scale('+(0.3+1.05*after+0.06*Math.sin(time*1.8)).toFixed(3)+')';
-        } else if(gt._kshock){
-          var ks=this.cl((prog-0.47)/0.13,0,1);
-          gt.style.opacity=(Math.sin(ks*Math.PI)*0.9*(1-exit)).toFixed(3);
-          gt.style.transform='scale('+(0.1+eo2(ks)*4.2).toFixed(2)+')';
-        } else if(gt._burst){
-          var kb=this.cl((prog-0.49-gt._delay*0.06)/0.17,0,1); var ke=eo2(kb);
-          var xb2=gt._tx*ke, yb2=gt._ty*ke+46*kb*kb;
-          gt.style.opacity=(kb<=0?0:(1-kb)*0.95*(1-exit)).toFixed(3);
-          gt.style.transform='translate('+xb2.toFixed(1)+'px,'+yb2.toFixed(1)+'px) scale('+(1.2-0.6*kb).toFixed(2)+')';
-        } else if(gt._mote){
-          var pull=pre*(1-ign)*0.16 + dip*0.11;
-          var lit=this.smooth(-90,50,wave-gt._dist)*this.cl(after*3,0,1);
-          var push=lit*20/gt._dist;
-          var fx=gt._sx*(1-pull)+gt._sx*push, fy=gt._sy*(1-pull)+gt._sy*push;
-          var mdx=Math.sin(time*0.5+gt._ph)*7, mdy=Math.cos(time*0.4+gt._ph)*5;
-          gt.style.opacity=((this.smooth(0.03,0.16,prog)*0.3*(1-dip*0.75)+lit*0.6)*(1-exit)).toFixed(3);
-          gt.style.transform='translate('+(fx+mdx).toFixed(1)+'px,'+(fy+mdy).toFixed(1)+'px) scale('+(0.55+0.6*lit).toFixed(3)+')';
+      var tint=sm(0.46,0.54,prog), spread=ease(cl((prog-0.5)/0.34,0,1));
+      for(var g=0; g<items.length; g++){
+        var it=items[g];
+        if(it._kind==='iris'){
+          it.style.opacity=(sm(0.4,0.5,prog)*(0.55+0.45*bump(0.5,0.08))*live).toFixed(3);
+          it.style.setProperty('--r',((time*20)%360).toFixed(1)+'deg');
+          it.style.transform='scale('+(0.55+0.55*sm(0.4,0.58,prog)).toFixed(3)+')';
+          continue;
         }
+        var k1=ease(cl((prog-0.06-it._d)/0.42,0,1));
+        var ang=it._a+(1-k1)*1.6+time*0.1;
+        var x=Math.cos(ang)*W2*it._r*(1-k1)+Math.cos(it._a*3)*W2*0.07*k1;
+        var y=Math.sin(ang)*H2*it._r*1.1*(1-k1)+Math.sin(it._a*2)*H2*0.12*k1;
+        x=x*(1-spread)+(it._fx*W2+Math.sin(time*0.6+it._ph)*14)*spread;
+        y=y*(1-spread)+(it._fy*H2+Math.cos(time*0.5+it._ph)*12)*spread;
+        it.style.setProperty('--c',mixc('235,248,252',it._col,tint));
+        put(it,x,y,0.7+0.5*tint,sm(0.06,0.2,prog)*(0.4+0.6*tint)*live);
       }
     } else if(type==='bloom'){
-      // TOUCH -> SOUND -> BLOOM v2
-      var eo3=function(k){return 1-Math.pow(1-k,3);};
-      var elx=function(k){return k<=0?0:k>=1?1:Math.pow(2,-10*k)*Math.sin((k*10-0.75)*2.0944)+1;};
-      var soundWin=this.smooth(0.15,0.2,prog)*(1-this.smooth(0.4,0.48,prog));
-      var beat2=Math.pow(Math.abs(Math.sin(time*4.4)),3);
-      var bm=this.smooth(0.44,0.62,prog);
-      var glowP=Math.sin(this.cl((prog-0.58)/0.2,0,1)*Math.PI);
-      for(var b=0;b<items.length;b++){
-        var pe=items[b], pc=String(pe.className||'');
-        if(pe._tflash){
-          var tf=this.cl((prog-0.055)/0.075,0,1);
-          pe.style.opacity=(Math.sin(tf*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.3+tf*1.5).toFixed(2)+')';
-        } else if(pe._bshock){
-          var bsK=this.cl((prog-0.06)/0.12,0,1);
-          pe.style.opacity=(Math.sin(bsK*Math.PI)*0.85*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.1+eo3(bsK)*3.6).toFixed(2)+')';
-        } else if(pc.indexOf('tt-touch-ring')>-1){
-          var tp=this.cl((prog-0.05-pe._delay)/0.12,0,1);
-          pe.style.opacity=(Math.sin(tp*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.1+eo3(tp)*3.1).toFixed(2)+')';
-        } else if(pc.indexOf('tt-sound-tick')>-1){
-          var len=0.18+1.05*Math.pow(Math.abs(Math.sin(time*4.4+pe._ph)),2);
-          pe.style.opacity=(soundWin*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+pe._rot+'deg) translateY('+(-(50+12*beat2)).toFixed(1)+'px) scaleY('+(soundWin*len).toFixed(3)+')';
-        } else if(pc.indexOf('tt-stamen')>-1){
-          var stK=this.smooth(0.60+pe._st,0.72+pe._st,prog);
-          pe.style.opacity=(stK*(0.65+0.35*Math.sin(time*3+pe._ph))*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+pe._rot+'deg) translateY('+(-24*stK).toFixed(1)+'px) scale('+(0.3+0.7*stK).toFixed(2)+')';
-        } else if(pc.indexOf('tt-petal-glint')>-1){
-          var rg=pe._rot||0; var rgs=rg>180?rg-360:rg;
-          var gk=this.cl((prog-0.46-pe._st)/0.26,0,1);
-          var ge2=eo3(gk);
-          pe.style.opacity=(gk<=0||gk>=1?0:Math.sin(gk*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+(rgs*ge2).toFixed(1)+'deg) translateY('+(-(16+ge2*(pe._len||130))).toFixed(1)+'px) scale('+(1.1-0.4*gk).toFixed(2)+')';
-        } else if(pc.indexOf('tt-bloom-petal')>-1){
-          var r=pe._rot||0; var rs=r>180?r-360:r;
-          var lay=pe._layer||0;
-          var pk0=this.cl((prog-0.46-pe._st-lay*0.05)/0.26,0,1);
-          var grow=eo3(pk0);
-          var sway=3*Math.sin(time*.9+r*0.11)*pk0;
-          var shimmer=0.8+0.2*Math.sin(time*2.8+r*0.7);
-          pe.style.opacity=(this.cl(pk0*2.2,0,1)*(1-exit)*shimmer*(lay?0.95:0.8)).toFixed(3);
-          pe.style.transform='rotate('+(rs*grow+sway).toFixed(1)+'deg) scaleY('+(0.08+0.92*grow+0.06*glowP).toFixed(3)+') scaleX('+(0.45+0.55*grow).toFixed(3)+')';
-        } else if(pc.indexOf('tt-bloom-ray')>-1){
-          var ro=pe._rot||0, rayp=this.smooth(0.54,0.8,prog);
-          pe.style.opacity=(rayp*(1-exit)*0.62).toFixed(3); pe.style.transform='rotate('+ro+'deg) scaleY('+(0.15+1.1*eo3(rayp)).toFixed(3)+')';
-        } else if(pc.indexOf('tt-bloom-core')>-1){
-          pe.style.opacity=(Math.max(bm,soundWin*0.55)*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.5+1.5*bm+0.35*glowP+0.5*soundWin*beat2).toFixed(3)+')';
-        } else if(pe._sx!=null){
-          // light keeps rising from the core while the flower takes shape
-          var pk=((time*0.5)+(pe._delay||0))%1;
-          var vis=this.smooth(0.24,0.34,prog)*(1-this.smooth(0.78,0.9,prog));
-          var xb=pe._sx+(pe._tx-pe._sx)*pk;
-          var yb=pe._sy+(pe._ty-pe._sy)*eo3(pk);
-          pe.style.opacity=(vis*Math.sin(pk*Math.PI)*0.8*(1-exit)).toFixed(3);
-          pe.style.transform='translate('+xb.toFixed(1)+'px,'+yb.toFixed(1)+'px) scale('+(1.1-0.55*pk).toFixed(2)+')';
+      var fall=ease(cl((prog-0.06)/0.24,0,1)), barsIn=ease(cl((prog-0.28)/0.16,0,1));
+      var amp=sm(0.3,0.44,prog)*(1-0.6*sm(0.56,0.78,prog)), lift=ease(cl((prog-0.5)/0.42,0,1));
+      for(var b=0; b<items.length; b++){
+        var e=items[b];
+        if(e._kind==='warm'){ e.style.opacity=((sm(0.1,0.3,prog)*0.45+0.4*bump(0.5,0.06))*(1-sm(0.72,0.96,prog))*live).toFixed(3); e.style.transform='scale('+(0.7+0.5*sm(0.1,0.5,prog)).toFixed(3)+')'; }
+        else if(e._kind==='touch'){ var hit=bump(0.3,0.025); put(e,0,-H2*1.05*(1-fall)+Math.sin(time*2.6)*3*fall,1+0.9*hit,sm(0.06,0.14,prog)*(1-sm(0.48,0.6,prog))*live); }
+        else if(e._kind==='bar'){
+          var wave=Math.sin(time*5.5+e._i*0.62+e._ph), env=0.45+0.55*Math.sin(e._i/(e._n-1)*Math.PI);
+          var bx=(e._i-(e._n-1)/2)*(W2*1.35/(e._n-1))*barsIn;
+          var by=wave*H2*0.34*amp*env-lift*H2*e._lift;
+          put(e,bx,by,0.8+0.9*Math.abs(wave)*amp*env,sm(0.28,0.36,prog)*(1-sm(0.7,0.94,prog))*0.75*live);
+        } else if(e._kind==='note'){
+          var nk=cl((prog-0.5-e._d)/0.45,0,1);
+          put(e,e._x*W2+Math.sin(time*1.6+e._ph)*16,H2*0.25-nk*H2*1.45,0.9+0.2*nk,Math.sin(nk*Math.PI)*0.9*live,Math.sin(time*1.4+e._ph)*12);
         }
       }
-    } else if(type==='ripple'){
-      // RESURFACE v3 - the story keeps spreading: rings & droplets loop on time,
-      // so the motion lives on through the text HOLD (prog freezes, time does not)
-      var eo4=function(k){return 1-Math.pow(1-k,3);};
-      var alive=this.smooth(0.06,0.28,prog)*(1-this.smooth(0.90,1.0,prog))*(1-exit); // present once risen, gone on exit
-      var swell=this.smooth(0.06,0.42,prog); // ramps the spread strength up, then holds
-      for(var rr=0;rr<items.length;rr++){
-        var ri=items[rr], rc=String(ri.className||'');
-        if(rc.indexOf('tt-ripple-current')>-1){
-          ri.style.opacity=(alive*.85).toFixed(3);
-          ri.style.transform='scale('+(0.8+0.28*Math.sin(time*1.5)).toFixed(3)+')';
-        } else if(rc.indexOf('tt-surface-line')>-1){
-          ri.style.opacity=(alive*(0.5+0.32*Math.sin(time*3.2))).toFixed(3);
-          ri.style.transform='translate(-50%,-140px) scaleX('+(0.2+0.8*swell).toFixed(3)+') scaleY('+(1+0.9*Math.pow(Math.max(0,Math.sin(time*2.2)),6)).toFixed(2)+')';
-        } else if(rc.indexOf('tt-ripple-ring')>-1){
-          // continuous concentric rings racing outward to the surface, staggered per ring
-          var rk=((time*0.42)+(ri._delay||0)*1.1)%1;
-          ri.style.opacity=(Math.sin(rk*Math.PI)*0.85*alive).toFixed(3);
-          ri.style.transform='scale('+(0.3+6.4*eo4(rk)).toFixed(3)+') scaleY(0.44)';
-        } else if(ri._drop){
-          // droplets launch in a repeating ballistic cycle and glint at the surface line
-          var kd=((time*0.5)+(ri._delay||0)+ri._st0)%1;
-          var xd=ri._sx+ri._dxv*eo4(kd);
-          var yd=ri._sy-ri._vyv*kd*1.6+470*kd*kd;
-          var glint=Math.exp(-Math.pow((yd+140)/26,2));
-          ri.style.opacity=(alive*(0.4+0.6*glint)*Math.sin(kd*Math.PI)).toFixed(3);
-          ri.style.transform='translate('+xd.toFixed(1)+'px,'+yd.toFixed(1)+'px) scale('+(0.7+glint*1.7).toFixed(2)+')';
-        }
+    } else if(type==='rise'){
+      var current=Math.sin(prog*3.1)*W2*0.05;
+      for(var r=0; r<items.length; r++){
+        var u=items[r];
+        if(u._kind==='surface'){ u.style.opacity=(sm(0.25,0.8,prog)*(0.85+0.15*Math.sin(time*2))*live).toFixed(3); u.style.transform='translateY('+(-H2*0.98).toFixed(1)+'px)'; continue; }
+        var rk=cl((prog-0.03-u._d)/0.72,0,1);
+        var ry=H2*1.08-H2*2.25*Math.pow(rk,1.12)*u._sp;
+        var rx=u._x*W2+Math.sin(time*(0.9+u._sp)+u._ph)*(8+u._size/3)+current*rk;
+        var height=(H2*1.08-ry)/(H2*2.1);
+        put(u,rx,ry,1+0.35*sm(0.82,1,height),sm(0,0.08,rk)*(1-sm(0.84,1,height))*0.85*live);
       }
     } else if(type==='page'){
-      // FIRST NOTE v2: gravity fall, double bounce with squash&stretch, staff strings ring on impact
-      var eo5=function(k){return 1-Math.pow(1-k,3);};
-      var fallK=this.cl((prog-0.26)/0.24,0,1);
-      var b1=this.cl((prog-0.50)/0.06,0,1);
-      var b2=this.cl((prog-0.56)/0.05,0,1);
-      var land=this.smooth(0.50,0.52,prog);
-      var imp=Math.exp(-Math.pow((prog-0.50)/0.014,2))+0.55*Math.exp(-Math.pow((prog-0.56)/0.011,2));
-      var vib=this.smooth(0.50,0.52,prog)*(1-this.smooth(0.62,0.82,prog));
-      for(var pp=0; pp<items.length; pp++){
-        var el=items[pp], cc=String(el.className||'');
-        if(cc.indexOf('tt-staff-line')>-1){
-          var draw=this.smooth(0.05+el._idx*0.035,0.2+el._idx*0.035,prog);
-          var yoff=Math.sin(time*34+el._idx*1.9)*3.6*vib*(1-el._idx*0.14);
-          el.style.opacity=((draw*0.42+land*0.24+imp*0.3)*(1-exit)).toFixed(3);
-          el.style.transform='translateY('+yoff.toFixed(1)+'px) scaleX('+eo5(draw).toFixed(3)+')';
-        } else if(el._noteShock){
-          var ns=this.cl((prog-0.50)/0.13,0,1);
-          el.style.opacity=(Math.sin(ns*Math.PI)*0.9*(1-exit)).toFixed(3);
-          el.style.transform='scale('+(0.1+eo5(ns)*3.4).toFixed(2)+')';
-        } else if(cc.indexOf('tt-staff-note')>-1){
-          var ny;
-          if(fallK<1) ny=-190+214*fallK*fallK;
-          else if(b1<1) ny=24-32*Math.sin(b1*Math.PI);
-          else if(b2<1) ny=24-11*Math.sin(b2*Math.PI);
-          else ny=24;
-          var vel=fallK<1?fallK:0;
-          var sxN=(1+0.55*imp)*(1-0.22*vel);
-          var syN=(1-0.42*imp)*(1+0.3*vel);
-          var swayN=Math.sin(fallK*8)*9*(1-fallK);
-          el.style.opacity=(this.smooth(0.24,0.3,prog)*(1-exit)).toFixed(3);
-          el.style.transform='translate('+swayN.toFixed(1)+'px,'+ny.toFixed(1)+'px) scale('+(sxN*(0.85+0.15*land+land*0.05*Math.sin(time*2.6))).toFixed(3)+','+(syN*(0.85+0.15*land)).toFixed(3)+')';
-        } else if(cc.indexOf('tt-note-pulse')>-1){
-          var pk3=(time*0.6)%1;
-          el.style.opacity=(Math.sin(pk3*Math.PI)*0.55*land*(1-exit)).toFixed(3);
-          el.style.transform='scale('+(0.2+pk3*2.8).toFixed(2)+')';
-        } else if(el._sx!=null){
-          var sk=this.cl((prog-el._delay-0.50)/0.26,0,1); var ske=eo5(sk);
-          var xs=el._sx*(1-ske)+el._tx*ske, ys=(el._sy*(1-ske)+el._ty*ske)+85*sk*sk;
-          el.style.opacity=(this.smooth(0.50,0.56,prog)*(1-sk*0.9)*(1-exit)).toFixed(3);
-          el.style.transform='translate('+xs.toFixed(1)+'px,'+ys.toFixed(1)+'px) scale('+(1.1-0.55*sk).toFixed(3)+')';
+      var land=sm(0.5,0.53,prog), impact=bump(0.5,0.018);
+      for(var q=0; q<items.length; q++){
+        var p2=items[q];
+        if(p2._kind==='page'){ p2.style.opacity=((sm(0.08,0.36,prog)*0.7+0.45*bump(0.51,0.05))*live).toFixed(3); p2.style.transform='scale('+(0.92+0.08*sm(0.08,0.4,prog)+0.03*impact).toFixed(3)+')'; }
+        else if(p2._kind==='main'){
+          var fk=cl((prog-0.22)/0.28,0,1);
+          var bounce=prog>0.5?Math.exp(-(prog-0.5)*26)*Math.abs(Math.sin((prog-0.5)*64))*18:0;
+          var ny=-H2*0.95*(1-fk*fk)-bounce+Math.sin(time*2.4)*3*land;
+          put(p2,Math.sin(fk*6)*10*(1-fk),ny,(1+0.12*land)*(1+0.25*impact),sm(0.2,0.28,prog)*live,-14*(1-fk)+4*Math.sin(time*1.8)*land);
+        } else if(p2._kind==='burst'){
+          var bk=ease(cl((prog-0.5-p2._d)/0.34,0,1));
+          put(p2,Math.cos(p2._a)*p2._dist*bk,Math.sin(p2._a)*p2._dist*0.7*bk,1-0.4*bk,sm(0.5,0.52,prog)*(1-bk)*live);
+        } else if(p2._kind==='ember'){
+          var ek=(time*0.18+p2._ph)%1;
+          put(p2,p2._x*W2*0.3+Math.sin(time+p2._ph*6)*12,-ek*H2*0.85,0.9,Math.sin(ek*Math.PI)*0.7*land*live,Math.sin(time+p2._ph*6)*10);
         }
       }
     }
-  }        
+  }
 
   startBridge(index){
     if(this._bridgeRun || this._bridgeSeen[index] || this._bridgeBypassed[index] || this._bridgeNavTarget || !this.scroller) return;
@@ -2540,6 +2380,7 @@ class Component extends DCLogic {
     this._bridgeBypassed={};
     var target=targetId&&document.getElementById(targetId), targetTop=target?target.offsetTop:(this.scroller?this.scroller.scrollTop:0);
     this._bridgeNavTarget=target&&Math.abs(this.scroller.scrollTop-targetTop)>3?targetId:null;
+    this._bridgeNavAt=performance.now();
     (this.bridges||[]).forEach((bg,i)=>{
       var outer=bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null);
       var past=!!outer&&outer.offsetTop<=targetTop+2;
