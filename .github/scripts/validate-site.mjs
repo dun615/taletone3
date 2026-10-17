@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261019-type',
-  'assets/js/works.js': '20261018-permalink',
+  'assets/css/works.css': '20261020-shelf',
+  'assets/js/works.js': '20261020-shelf',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -55,9 +55,9 @@ const expectedSiteContentCacheKey = attr(
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 40_000;
-const decodedTemplateBudgetBytes = 128_000;
+const decodedTemplateBudgetBytes = 110_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 196_000;
+const decodedScriptBudgetBytes = 150_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
@@ -165,8 +165,11 @@ for (const [key, file, route, expectedTitle] of routes) {
     const decodedFontDeclarations = [...decoded.matchAll(/font-family\s*:\s*([^;}\r\n]+)/gi)].map((match) => match[1]);
     assert(!decodedFontDeclarations.some((value) => /Noto Sans (?:KR|JP)/.test(value)), `${file}: literal CJK family order remains in a template font declaration`);
     assert(decoded.includes("font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"), `${file}: Japanese language button does not preserve Quicksand before the CJK fallbacks`);
-    assert(decoded.includes('id="intro-skyw"') && decoded.includes('id="intro-ocean"'), `${file}: original above-water intro is missing`);
-    assert(decoded.includes('id="intro-sea"') && decoded.includes('id="intro-bubbles"'), `${file}: original underwater intro is missing`);
+    assert(!decoded.includes('id="intro"') && !decoded.includes('id="deep-book-svg"') && !decoded.includes('data-intro-v2'), `${file}: retired intro DOM, SVG book or preview gate returned`);
+    assert(decoded.includes('<div class="tt-book2" aria-hidden="true">') && decoded.includes('class="tb-cover-front"') && decoded.includes('class="tb-veil"'), `${file}: the Book (cover, pages, water veil) is missing`);
+    assert(!decoded.includes('id="c-translation"') && !decoded.includes('id="tale-line"') && !decoded.includes('class="nav-chapter"'), `${file}: retired TRANSLATE chapter or menu chapter words returned`);
+    assert(decoded.includes(':root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}'), `${file}: site type scale is missing`);
+    assert(decoded.includes('html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important'), `${file}: Korean keep-all override is missing`);
     assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
     assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
@@ -183,7 +186,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     for (const deadKeyframe of ['bob', 'haloSpin', 'haloSpinR', 'eq', 'floaty']) {
       assert(!decoded.includes(`@keyframes ${deadKeyframe}`), `${file}: dead keyframe returned: ${deadKeyframe}`);
     }
-    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: generic story bridges do not reserve their final height`);
+    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 5, `${file}: story bridges do not reserve their final height`);
     assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
     assert(!decoded.includes('scroll-snap-type') && !decoded.includes('scroll-snap-stop'), `${file}: native bridge snapping can jump after a content re-render`);
     assert(!decoded.includes('.tt-bridge-continue'), `${file}: obsolete bridge continuation cue CSS returned`);
@@ -197,18 +200,12 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(Buffer.byteLength(decodedScript) <= decodedScriptBudgetBytes, `${file}: decoded app script exceeds ${decodedScriptBudgetBytes} byte budget`);
     decodedScriptApp ||= decodedScript;
     scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
-    assert(decodedScript.includes('Preserve the original plunge, then resolve the underwater frame into the real HOME DOM'), `${file}: continuous HOME handoff is missing`);
-    assert(decodedScript.includes("#c-home > [data-px],#c-home > [data-reveal],#c-home > [data-bob]"), `${file}: intro does not assemble the real HOME elements`);
+    assert(decodedScript.includes('initIntroV2(){') && decodedScript.includes('    this.initIntroV2();'), `${file}: the dive intro is not the site intro`);
     assert(decodedScript.includes("forceIntro=new URLSearchParams(location.search).get('intro')==='1'"), `${file}: forced intro replay query is missing`);
     assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v5','1')"), `${file}: restored intro session key is stale`);
-    assert(decodedScript.includes("this.introEl.style.zIndex='4'") && decodedScript.includes("this.iContent.style.zIndex='5'"), `${file}: real HOME layer is not raised safely into the underwater frame`);
-    assert(decodedScript.includes("this.iScene.style.opacity='1'") && decodedScript.includes('clipPath=sceneClip'), `${file}: underwater scene is not using the structural surface mask`);
-    assert(decodedScript.includes('strokeDashoffset') && decodedScript.includes('targetBubble._targetX'), `${file}: HOME path/particle assembly is missing`);
-    assert(decodedScript.includes('this.draw(0,this.P[this.mood],this._introMobile)'), `${file}: live HOME FX does not continue through the handoff`);
-    assert(decodedScript.includes('this.iContent.scrollTop=0;'), `${file}: intro does not begin at the canonical HOME sky position`);
-    assert(decodedScript.includes('var introSky=[introPalette.stops[0][1],introPalette.stops[0][2]];'), `${file}: intro HOME gradient is not using valid raw palette colors`);
-    assert(decodedScript.includes('var backgroundBlend=this.smooth(0.04,0.72,handoff);') && decodedScript.includes('var lightSettle=this.smooth(0.38,0.78,handoff);'), `${file}: intro background settling phase is missing`);
-    assert(decodedScript.includes('backgroundBlend>=0.999&&this._introHomeBackground'), `${file}: intro background does not lock to the exact HOME gradient`);
+    assert(decodedScript.includes('if(!isHomeRoute || (seen&&!forceIntro) || reduce){'), `${file}: intro is not limited to one home visit without reduced motion`);
+    assert(decodedScript.includes('function clipAbove(') && decodedScript.includes('function clipBelow(') && decodedScript.includes('function drawBubbles('), `${file}: continuous surface crossing is missing`);
+    assert(!decodedScript.includes("c.fillStyle='rgba(255,255,255,'+(0.6*hit)") && !decodedScript.includes('updateIntro('), `${file}: white flash or old intro driver returned`);
     assert(!decodedScript.includes('this.iScene.style.opacity=(1-sceneExit)'), `${file}: whole-scene opacity crossfade returned`);
     assert(!decodedScript.includes('assembly.finalOpacity*ae'), `${file}: HOME opacity crossfade returned`);
     assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
@@ -222,7 +219,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('fl._floatY=Number(floatY);'), `${file}: live deep-book float offset is not retained`);
     assert(decodedScript.includes('var geometryDirty=this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight;') && decodedScript.includes('if(geometryDirty) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
     assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
-    assert(decodedScript.includes('this._layoutGeometryDirty=true;\n      this._sceneDirty=true;\n      this.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
+    assert(decodedScript.includes('self._layoutGeometryDirty=true; self._sceneDirty=true; self.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
     assert(decodedScript.includes('isNearViewport(el, margin, bounds, scrollTop, viewportHeight){'), `${file}: viewport helper does not accept cached loop geometry`);
     assert(decodedScript.includes('var vh=viewportHeight==null?(window.innerHeight||800):viewportHeight') && decodedScript.includes('scrollTop==null?(this.scroller?this.scroller.scrollTop:window.scrollY):scrollTop'), `${file}: viewport helper no longer falls back safely outside the main loop`);
     assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds,sc,vhR\)/g) || []).length === 6, `${file}: decorative motion still rereads viewport geometry between style writes`);
@@ -248,7 +245,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
     assert(decodedScript.includes('if(sceneDirty||bridgePlaying||this._bridgeRun) this.updateBridges(vhR);'), `${file}: bridge clock does not cover playback, hold and handoff`);
-    assert(decodedScript.includes('if((sceneDirty||this._bridgeRun?.index===-1)') && decodedScript.includes('this.updateTranslation(scEl,tA);'), `${file}: translation work is not lifecycle-gated`);
+    assert(!decodedScript.includes('updateTranslation') && !decodedScript.includes('c-translation') && !decodedScript.includes('index===-1'), `${file}: retired TRANSLATE bridge code returned`);
     assert(decodedScript.includes('(this.isMobileMotion() ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
@@ -274,7 +271,9 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("sessionStorage.getItem('tt_bridge_seen_v2')") && decodedScript.includes("sessionStorage.setItem('tt_bridge_seen_v2'"), `${file}: completed bridges are not remembered for the visit`);
     const bypassSource=(decodedScript.match(/\n  bypassBridges\(targetId\)\{([\s\S]*?)\n  \}/)||[])[1]||'';
     assert(!/delete\s+(?:seen|this\._bridgeSeen)|this\._bridgeSeen\[[^\]]+\]\s*=/.test(bypassSource), `${file}: chapter navigation rewrites completed bridge history`);
-    assert(decodedScript.includes('this._bridgeRun.duration=reduced?700:5600') && decodedScript.includes('this.startBridge(-1);') && decodedScript.includes('Math.sin(motionTime*3.2'), `${file}: TRANSLATE is not a timed bridge with a frozen final frame`);
+    for (const motif of ["type==='prologue'", "type==='gather'", "type==='bloom'", "type==='rise'", "type==='page'"]) assert(decodedScript.includes(motif), `${file}: bridge motif missing: ${motif}`);
+    for (const retired of ['tt-shock-ring', 'tt-ripple-ring', 'tt-bloom-ray', 'tt-staff-line', 'tt-listen-']) assert(!decodedScript.includes(retired), `${file}: retired bridge motif returned: ${retired}`);
+    assert(decodedScript.includes('performance.now()-(this._bridgeNavAt||0)>1500'), `${file}: menu jumps can leave later bridges locked`);
     for(const obsolete of ['_transPlaying','_transDone','_transCool','_transAdv','_transT0']) assert(!decodedScript.includes(obsolete), `${file}: obsolete TRANSLATE state returned: ${obsolete}`);
     assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
     assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: obsolete scroll-managed bridge handoff returned`);
@@ -292,12 +291,9 @@ assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synch
 assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
-assert(decodedScriptApp.includes('this.INTRO_PLUNGE_MS=2000') && decodedScriptApp.includes('var diveP=this.cl(elapsed/this.INTRO_PLUNGE_MS,0,1);'), 'original plunge clock changed');
-assert(decodedScriptApp.includes('var skyY=-22-76*plunge;') && decodedScriptApp.includes('var seaY=104-110*plunge;'), 'original plunge trajectory changed');
-assert(decodedScriptApp.includes('var entryHit=this.smooth(0.13,0.21,diveP)*(1-this.smooth(0.29,0.38,diveP));'), 'original water-impact timing changed');
-assert(decodedScriptApp.includes('var handoff=this.smooth(this.INTRO_PLUNGE_MS*0.56,this.INTRO_MS*0.82,elapsed);'), 'structural underwater handoff timing changed');
+assert(decodedScriptApp.includes('var T={cross0:900, cross1:1380, reveal:1800, settled:mobile?3400:3700};'), 'dive intro timeline changed');
 assert((decodedApp.match(/\.tt-book-light-stage\{position:absolute/g) || []).length === 1, 'duplicate deep-book CSS returned');
-assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length === 3, 'deep-book CSS animations are not fully tied to viewport lifecycle');
+assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length >= 6, 'deep-book CSS animations are not fully tied to viewport lifecycle');
 assert(!decodedApp.includes('WORK DETAIL MODAL') && !decodedApp.includes('{{ wOpen }}'), 'removed legacy WORK detail modal returned');
 for (const symbol of [
   'drawBridgeMotifs', 'drawBook(', 'updateYouWave', 'bridgePhraseForIndexOld', 'playStory',
@@ -437,15 +433,15 @@ for (const [section, fields] of Object.entries(clearedChapterCopy)) {
 const expectedContactCopy = {
   kr: {
     subtitle: '아직 정리되지 않은 이야기라도 괜찮습니다.',
-    caption: '그 이야기가 어떤 음악이 될 수 있을지,\n첫 질문부터 함께 설계하겠습니다.',
+    caption: '그 이야기가 어떤 노래가 될지,\n첫 마디부터 함께 찾아가겠습니다.',
   },
   en: {
     subtitle: "It's okay if your story is not fully formed yet.",
-    caption: "Together, we'll shape what kind of music your story can become, starting with the very first question.",
+    caption: "Let's find, from the very first bar, what song your story could become.",
   },
   jp: {
     subtitle: 'まだ整理されていない物語でも大丈夫です。',
-    caption: 'その物語がどんな音楽になれるか、最初の問いから一緒に設計します。',
+    caption: 'その物語がどんな歌になるのか、\n最初の一小節から一緒に探していきます。',
   },
 };
 assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
@@ -464,14 +460,15 @@ for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1
     assert(!Object.hasOwn(siteJson.home?.translations?.[language] || {}, obsoleteField), `HOME ${language} obsolete field returned: ${obsoleteField}`);
   }
 }
-for (const key of ['home', 'translation', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
+assert(!Object.hasOwn(siteJson, 'translation'), 'retired TRANSLATE content returned');
+for (const key of ['home', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
   assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
 }
 for (const [key, minimum] of Object.entries({ members: 4, news: 1, partners: 1, bridges: 5, trackRecord: 2 })) {
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
-const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'translation-projects');
-assert(firstBridge?.translations?.jp?.text === '私たちは曲をつくる前に、\nまず物語に耳を傾けます。', 'first bridge Japanese desktop line break is missing');
+const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
+assert(firstBridge?.eyebrow === 'PROLOGUE · HOW WE DIVE' && firstBridge?.translations?.jp?.text === '物語は色になり、\nその色は音楽となって花開きます。', 'prologue bridge copy or Japanese line break changed');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
@@ -587,24 +584,17 @@ for (const [file, expected] of Object.entries(sri)) {
 
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
-assert(!worksJs.includes('tt-gh-card-play-label') && !worksCss.includes('.tt-gh-card-play-label'), 'WORKS card audio button still renders a visible label');
-assert((worksJs.match(/var (?:label|videoLabel) = 'MV';/g) || []).length === 2, 'WORKS video controls are not labeled MV in every language');
-assert(!worksJs.includes('class="tt-gh-action is-primary"'), 'WORKS detail still renders the redundant play/pause button');
-assert(worksCss.includes('grid-template-columns: auto minmax(100px,1fr) auto;') && worksCss.includes('.tt-gh-volume-label {'), 'WORKS volume control layout is incomplete');
-assert(worksJs.includes("var copy = subtitle || description") && worksJs.includes("+ copy + '</div>'"), 'WORKS empty section copy still renders a placeholder paragraph');
-assert(!/compactRichLabel\([^\n]+,\s*18\)/.test(worksJs), 'WORKS card title still has an 18-character JavaScript truncation');
-assert((worksJs.match(/tt-gh-card-title[^\n]+preserve\(/g) || []).length >= 2 && worksJs.includes("title.innerHTML = preserve("), 'WORKS card titles do not preserve the full title');
-assert(worksCss.includes('height: min(780px, calc(100vh - 48px));'), 'desktop WORKS detail modal lacks a definite scroll height');
-assert(worksCss.includes('.tt-gh-modal:not(.tt-gh-video-modal) .tt-gh-modal-main {') && worksCss.includes('overflow-y: auto;'), 'desktop WORKS detail body is not scrollable');
-assert(/\.tt-gh-modal:not\(\.tt-gh-video-modal\) \.tt-gh-modal-credits\s*\{[^}]*height:\s*100%;/s.test(worksCss), 'desktop WORKS credits do not fill the constrained modal height');
 assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
-assert((worksCss.match(/var\(--tt-noto-primary\)/g) || []).length === 11 && (worksCss.match(/var\(--tt-noto-secondary\)/g) || []).length === 11, 'WORKS CSS language-aware CJK fallbacks changed');
+assert(worksJs.includes('// WORKS · the bookshelf') && worksJs.includes('function bookHtml(entry, order)') && worksJs.includes('function filtersHtml()'), 'WORKS bookshelf renderer is missing');
+assert(worksCss.includes('.tt-shelf-cover::after {') && worksCss.includes('.tt-shelf-grid {list-style:none;'), 'WORKS shelf ledge or grid is missing');
+assert(worksJs.includes("(eager ? 'src' : 'data-src')") && worksJs.includes("if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }"), 'WORKS covers beyond the first shelf are not lazy');
+assert(worksJs.includes("audio.preload = 'none';") && (worksJs.match(/new Audio\(\)/g) || []).length === 1, 'WORKS playback must use one on-demand audio element');
+assert(worksJs.includes("function workHref(work)") && worksJs.includes("'/works/' + encodeURIComponent(work.slug) + '/'"), 'WORKS books do not open their permalink pages');
+assert(worksCss.includes('body:not([data-active-chapter="works"]) .tt-shelf-player.is-open {display:none}'), 'WORKS player can show outside the chapter');
+for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-const storyBridgeRule = worksCss.match(/\.tt-gh-story-bridge \{[\s\S]*?\n\}/)?.[0] || '';
-assert(/height:\s*100vh;/.test(storyBridgeRule) && /min-height:\s*100vh;/.test(storyBridgeRule), 'WORKS story bridge does not reserve its final height');
-assert(!/height:\s*64vh;/.test(storyBridgeRule), 'WORKS story bridge can still expand after first paint');
 assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
 assert(worksJs.includes('var worksDataPromise = null;') && worksJs.includes('if (worksDataPromise) return worksDataPromise;'), 'WORKS data fetch is not single-flight');
@@ -620,20 +610,13 @@ for (const deadSymbol of ['var rendering =', 'function bindModalCloseHandlers()'
 const worksBindingIndex = worksJs.indexOf('function bindWorksInteractions()');
 const worksClickListenerIndex = worksJs.indexOf("document.addEventListener('click', onClick, true);");
 assert(worksBindingIndex >= 0 && worksClickListenerIndex > worksBindingIndex, 'WORKS listeners returned to unconditional startup');
-const resetAudioForContentChangeSource = worksJs.match(/function resetAudioForContentChange\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
-assert(resetAudioForContentChangeSource.includes("audio.removeAttribute('src');") && resetAudioForContentChangeSource.includes('audio.load();'), 'WORKS content changes retain native audio media resources');
-assert(resetAudioForContentChangeSource.includes('audioPool.clear();') && resetAudioForContentChangeSource.includes('layeredBufferPool.clear();'), 'WORKS content changes retain audio pools in memory');
-const audioReleaseOrder = ['audio.pause();', "audio.removeAttribute('src');", 'audio.load();', 'audioPool.clear();', 'layeredBufferPool.clear();'].map((step) => resetAudioForContentChangeSource.indexOf(step));
-assert(audioReleaseOrder.every((index, position) => index >= 0 && (!position || index > audioReleaseOrder[position - 1])), 'WORKS audio resources are not released in pause/src/load/pool order');
 for (const symbol of [
-  'visibleWorks', 'onWheel', 'onMouseUp', 'cardPreview', 'function segments()',
+  'onWheel', 'onMouseUp', 'cardPreview', 'function segments()',
   'state.start', 'dragState.lastX', 'videoBlock', 'scheduleRouteLandingCorrections',
   'patchContactControls', 'fallbackCopyText', 'globalUxState.observer',
 ]) {
   assert(!worksJs.includes(symbol), `removed WORKS dead code returned: ${symbol}`);
 }
-assert((worksJs.match(/window\.addEventListener\('mouseup', onPointerUp, true\);/g) || []).length === 1, 'WORKS mouseup lifecycle must use one onPointerUp listener');
-assert((worksJs.match(/window\.addEventListener\('mouseup'/g) || []).length === 1, 'duplicate WORKS mouseup listener returned');
 const removedImagePreloadSymbols = [
   '_allImagePreloadStarted',
   'collectWorkImageUrls',
@@ -647,13 +630,6 @@ const removedImagePreloadSymbols = [
   'preloadNearbyImages',
 ];
 for (const symbol of removedImagePreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager image preload returned: ${symbol}`);
-const imgTagSource = worksJs.match(/function imgTag\(unit, className, defer\) \{[\s\S]*?\n  \}\n\n  function numeric/)?.[0] || '';
-assert(imgTagSource.includes("var loading = defer ? 'lazy' : 'eager';"), 'WORKS deferred images are not marked lazy');
-assert(imgTagSource.includes("var priority = defer ? 'low' : 'high';"), 'WORKS image priority does not follow visibility');
-assert(imgTagSource.includes("var sourceAttribute = defer ? 'data-works-src' : 'src';"), 'WORKS deferred images still receive an eager src');
-assert(worksJs.includes("imgTag(unit, '', !loadImages || !layout.visible)"), 'hidden Showcase cards can load images eagerly');
-assert(worksJs.includes("imgTag(unit, '', !loadImages || index >= eagerCount)"), 'offscreen Gallery cards can load images eagerly');
-assert(worksJs.includes("querySelectorAll('.tt-gh-gallery img[data-works-src]')") && worksJs.includes("if (!('IntersectionObserver' in window))"), 'WORKS Gallery lazy-loading path or fallback is missing');
 const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
 assert(worksChapterGateSource.includes("return /^(?:\\/(?:en|ja))?\\/works(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
@@ -661,14 +637,7 @@ assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME ch
 for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
 assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
 assert(!/if\s*\(detail\.chapter\)\s*render\(\)/.test(worksJs), 'WORKS unconditional chapter-change render returned');
-assert(/pauseAll:\s*function\s*\(\)\s*\{\s*pauseAll\(state\.mode\s*!==\s*'showcase'\s*\|\|\s*!isWorksChapterActive\(\)\);\s*\}/.test(worksJs), 'WORKS external pause API no longer separates visible UI sync from hidden chapters');
-assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(true\);\s*return;/.test(worksJs), 'WORKS non-active chapters do not return before rendering');
-assert(worksJs.includes("if (!mounted || !app || app !== root || !app.querySelector('.tt-gh-shell')) {"), 'WORKS live host integrity guard is missing');
-assert(/if\s*\(state\.mode\s*===\s*'showcase'\)\s*updateShowcaseDom\(\);\s*else\s*bindLazyGalleryImages\(\);/.test(worksJs), 'WORKS chapter entry no longer uses incremental hydration');
-const updateShowcaseDomSource = worksJs.match(/function updateShowcaseDom\(layoutOnly\) \{[\s\S]*?\n  \}\n\n  function onClick/)?.[0] || '';
-const dragImageHydrationIndex = updateShowcaseDomSource.indexOf("if (img && layout.visible && img.hasAttribute('data-works-src')) loadDeferredImage(img);");
-const layoutOnlyReturnIndex = updateShowcaseDomSource.indexOf('if (layoutOnly) return;');
-assert(dragImageHydrationIndex >= 0 && layoutOnlyReturnIndex >= 0 && dragImageHydrationIndex < layoutOnlyReturnIndex, 'WORKS drag can reveal a deferred card before its image is loaded');
+assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(\);\s*return;\s*\}/.test(worksJs), 'WORKS audio keeps playing outside the chapter');
 const removedAudioPreloadSymbols = [
   'allLayeredAudioWarmStarted',
   'warmAudioEntries',
@@ -677,22 +646,7 @@ const removedAudioPreloadSymbols = [
   'scheduleLayeredAudioPreload',
 ];
 for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
-const syncAudioStateSource = worksJs.match(/function syncAudioState\(\) \{[\s\S]*?\n  \}\n\n  function playCurrent\(\)/)?.[0] || '';
-assert(/if \(!state\.playing\) \{\s*if \(layeredPlayback\) stopLayeredPlayback\(true\);\s*audioPool\.forEach\(function \(audio\) \{ audio\.pause\(\); \}\);\s*layeredFallbackActive = false;\s*return;\s*\}/.test(syncAudioStateSource), 'WORKS paused state can create or preload audio');
-assert(syncAudioStateSource.indexOf('if (!state.playing)') < syncAudioStateSource.indexOf('currentAudioEntries()'), 'WORKS paused guard must run before audio entries are created');
-assert(worksJs.includes('function isShowcasePlaybackView()'), 'WORKS playback view guard is missing');
-assert(worksJs.includes("state.mode === 'showcase'") && worksJs.includes('!state.modalOpen') && worksJs.includes('!state.videoOpen'), 'WORKS playback guard does not require an uncovered Showcase');
-assert(worksJs.includes("if (nextMode !== 'showcase') pauseAll(true);"), 'Gallery entry does not force Pause state');
-assert(worksJs.includes('function pauseAll(skipRender)') && worksJs.includes('if (!skipRender && !updateShowcaseDom()) render();'), 'WORKS transition-safe pause path is missing');
-assert(worksJs.includes('var playbackSessionToken = 0;') && worksJs.includes('sessionToken !== playbackSessionToken || signature !== audioEntriesSignature(currentAudioEntries())'), 'native WORKS playback is missing stale-session protection');
-assert(!worksJs.includes('galleryWasPlaying'), 'Gallery detail still restores Showcase audio');
-assert(worksJs.includes("if (!isShowcasePlaybackView()) {\n      if (state.playing) pauseAll();"), 'WORKS play action bypasses the Showcase guard');
 assert(worksJs.includes('if (state.playing) pauseAll();\n    globalUxState.dialog = dialog;'), 'site detail dialogs do not pause WORKS audio');
-const baseWorksCardRule = worksCss.match(/\.tt-gh-card \{[\s\S]*?\n\}/)?.[0] || '';
-assert(!baseWorksCardRule.includes('animation:') && !baseWorksCardRule.includes('will-change:'), 'inactive WORKS cards still allocate animation or compositor state');
-assert(/:where\(body\[data-active-chapter="works"\] #c-works \.tt-gh-card\.is-visible\)\s*\{[\s\S]*?animation:\s*tt-card-float 6\.2s ease-in-out infinite;[\s\S]*?animation-delay:\s*var\(--float-delay, 0s\);[\s\S]*?will-change:\s*transform, opacity;[\s\S]*?\}/.test(worksCss), 'WORKS card animation is not limited to visible cards in the active chapter');
-assert(/:where\(body\[data-active-chapter="works"\] #c-works\) \.tt-gh-stage\.is-dragging \.tt-gh-card\.is-visible,\s*:where\(body\[data-active-chapter="works"\]\.tt-site-dialog-open #c-works\) \.tt-gh-card\.is-visible\s*\{\s*animation-play-state:\s*paused;\s*\}/.test(worksCss), 'WORKS interaction pause states are missing');
-assert(!worksCss.includes('body:not([data-active-chapter="works"]) #c-works .tt-gh-line'), 'dead WORKS line animation pause selector returned');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
 const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
 assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');

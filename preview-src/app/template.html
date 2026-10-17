@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/works.css?v=20261019-type">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261020-shelf">
 <script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
 <style>
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
@@ -92,8 +92,6 @@ html:lang(ja) body *{word-break:auto-phrase!important}
 h1,h2,h3,.tt-gh-card-title,.tt-project-title{text-wrap:balance}
 .tt-project-title{overflow-wrap:anywhere}
 p,li{text-wrap:pretty}
-#deep-book-svg{transition:filter 1.4s ease}
-body.tt-book-awake #deep-book-svg{filter:drop-shadow(0 0 36px rgba(255,214,140,.5)) drop-shadow(0 0 90px rgba(255,214,140,.25))}
 #tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
 #tt-bridge-progress i{display:block;width:132px;height:2px;border-radius:2px;background:var(--line,rgba(24,32,52,.18));overflow:hidden}
 #tt-bridge-progress b{display:block;height:100%;width:calc(var(--bridge-p,0)*100%);background:var(--accent,#0E6E7D)}
@@ -111,10 +109,8 @@ html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(40px,5.6vw,88px)!
 .tt-chapter-lead{max-width:min(720px,88vw);margin-left:auto!important;margin-right:auto!important;font-weight:500!important;line-height:1.6!important;color:var(--soft,#44505F)!important;text-shadow:var(--halo,none)}
 @media (max-width:760px){.tt-section-note{font-size:11px}.tt-chapter-title{font-size:clamp(40px,12vw,64px)!important}html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(34px,10vw,52px)!important}}
 /* ===== The Book (redesign, preview only) ===== */
-html:not([data-intro-v2]) .tt-book2{display:none}
-html[data-intro-v2] #deep-book-svg{display:none!important}
-html[data-intro-v2] #c-contact .tt-book-light-stage{opacity:0!important;transition:opacity 1.6s ease .5s}
-html[data-intro-v2] body.tt-book-opened #c-contact .tt-book-light-stage{opacity:.8!important}
+#c-contact .tt-book-light-stage{opacity:0!important;transition:opacity 1.6s ease .5s}
+body.tt-book-opened #c-contact .tt-book-light-stage{opacity:.8!important}
 .tt-book2{--bw:min(300px,56vw);--bh:calc(var(--bw)*1.34);position:relative;z-index:2;width:100%;height:calc(var(--bh)*.92);display:flex;align-items:flex-end;justify-content:center}
 .tb-floor{position:absolute;left:50%;bottom:0;width:calc(var(--bw)*3.4);height:calc(var(--bw)*.62);transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at 50% 42%,rgba(214,196,150,.34) 0%,rgba(150,160,140,.18) 38%,rgba(40,70,90,0) 70%)}
 .tb-scene{position:relative;width:calc(var(--bw)*2.2);height:var(--bh);perspective:1300px;perspective-origin:50% 0%;margin-bottom:calc(var(--bw)*.06)}
@@ -148,11 +144,16 @@ body.tt-book-opened .tb-cover{transform:translateZ(1px) rotateY(-180deg)}
 .tb-cover-front{background:radial-gradient(ellipse at 50% 38%,#24485a 0%,#163447 46%,#0d2232 100%);box-shadow:inset 6px 0 0 #0a1a27,inset 9px 0 0 rgba(232,203,136,.35),inset 0 0 0 1px rgba(232,203,136,.4),0 18px 40px rgba(1,7,15,.6)}
 .tb-cover-back{transform:rotateY(180deg);background:radial-gradient(ellipse at 50% 40%,#24485a,#0f2635);box-shadow:inset 0 0 0 1px rgba(232,203,136,.45)}
 .tb-cover-back::before{content:'';position:absolute;inset:3% 1% 3% 3%;border-radius:8px 2px 2px 8px;background:linear-gradient(270deg,#cdbf98 0%,#efe5c8 7%,#f7f0db 30%,#f3ead1 100%);box-shadow:inset -22px 0 26px rgba(110,86,40,.22),0 0 0 1px rgba(120,100,60,.25),-3px 3px 0 #e2d6b6,-6px 6px 0 #d6c9a6,-9px 9px 0 #c9bb96,-12px 12px 22px rgba(2,10,20,.55)}
-.tb-cover-back::after{content:'';position:absolute;left:50%;top:46%;width:44%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#e9cf8f,#c79a4e);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;opacity:.28}
+.tb-cover-back::after{content:'';position:absolute;left:50%;top:46%;width:44%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#e9cf8f,#c79a4e);-webkit-mask:var(--tb-mark) center/contain no-repeat;mask:var(--tb-mark) center/contain no-repeat;opacity:.28}
 .tb-frame{position:absolute;inset:7%;border:1.5px solid rgba(232,203,136,.7);border-radius:6px;box-shadow:inset 0 0 0 5px rgba(232,203,136,.08),inset 0 0 0 6px rgba(232,203,136,.35)}
 .tb-frame i{position:absolute;width:14px;height:14px;border:1.5px solid rgba(232,203,136,.85);transform:rotate(45deg);background:#163447}
 .tb-frame .c1{left:-8px;top:-8px}.tb-frame .c2{right:-8px;top:-8px}.tb-frame .c3{left:-8px;bottom:-8px}.tb-frame .c4{right:-8px;bottom:-8px}
-.tb-emblem{position:absolute;left:50%;top:40%;width:42%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#f6e3ae,#d6aa5c 55%,#f2d690);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(255,214,140,.35));animation:tbEmblem 4.5s ease-in-out infinite}
+/* the gold mark loads only when the reader reaches the Book */
+.tt-book2{--tb-mark:linear-gradient(transparent,transparent)}
+body[data-active-chapter="contact"] .tt-book2{--tb-mark:url('assets/logo/mark-paper.png')}
+.tt-footer-mark{display:block;width:30px;height:30px;background:center/contain no-repeat}
+body[data-active-chapter="contact"] .tt-footer-mark{background-image:url('assets/logo/mark-paper.png')}
+.tb-emblem{position:absolute;left:50%;top:40%;width:42%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#f6e3ae,#d6aa5c 55%,#f2d690);-webkit-mask:var(--tb-mark) center/contain no-repeat;mask:var(--tb-mark) center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(255,214,140,.35));animation:tbEmblem 4.5s ease-in-out infinite;animation-play-state:var(--tt-motion-play-state,running)}
 @keyframes tbEmblem{0%,100%{opacity:.78}50%{opacity:1}}
 body.tt-book-awake .tb-emblem{filter:drop-shadow(0 0 14px rgba(255,220,150,.9)) drop-shadow(0 0 34px rgba(255,214,140,.55))}
 .tb-title{position:absolute;left:0;right:0;bottom:17%;text-align:center;font-family:'Quicksand',sans-serif;font-weight:700;font-size:calc(var(--bw)*.072);letter-spacing:.42em;padding-left:.42em;color:#e8cb88;opacity:.9}
@@ -173,10 +174,10 @@ body.tt-book-awake .tb-emblem{filter:drop-shadow(0 0 14px rgba(255,220,150,.9)) 
     radial-gradient(ellipse 16% 11% at 20% 70%,rgba(190,236,244,.35),transparent 70%);
   background-size:100% 100%;filter:blur(6px);
   -webkit-mask:radial-gradient(ellipse 50% 50% at 50% 55%,#000 40%,transparent 75%);mask:radial-gradient(ellipse 50% 50% at 50% 55%,#000 40%,transparent 75%);
-  animation:tbCaustics 11s ease-in-out infinite alternate}
+  animation:tbCaustics 11s ease-in-out infinite alternate;animation-play-state:var(--tt-motion-play-state,running)}
 @keyframes tbCaustics{0%{transform:translateX(-52%) translateY(0) scale(1)}50%{transform:translateX(-48%) translateY(-3%) scale(1.06)}100%{transform:translateX(-50%) translateY(2%) scale(.97)}}
 .tb-motes{position:absolute;left:-30%;right:-30%;top:-30%;bottom:0;z-index:7;pointer-events:none}
-.tb-motes i{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:rgba(214,240,246,.75);filter:blur(1px);opacity:0;animation:tbMote var(--d) linear var(--o) infinite}
+.tb-motes i{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:rgba(214,240,246,.75);filter:blur(1px);opacity:0;animation:tbMote var(--d) linear var(--o) infinite;animation-play-state:var(--tt-motion-play-state,running)}
 @keyframes tbMote{0%{opacity:0;transform:translate(0,0)}15%{opacity:.6}85%{opacity:.5}100%{opacity:0;transform:translate(14px,-90px)}}
 /* the seabed: wide soft sand and a contact shadow, no outline */
 .tb-floor{width:calc(var(--bw)*5)!important;height:calc(var(--bw)*.9)!important;background:none!important}
@@ -352,13 +353,6 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 
 /* Original water-entry sequence; JS drives the plunge and real HOME assembly. */
-#intro.tt-intro{display:none}
-body.tt-intro-running{overflow:hidden}
-body.tt-intro-running #intro.tt-intro{display:block;pointer-events:auto}
-body.tt-intro-running #content{pointer-events:none}
-#intro-scene,#intro-skyw,#intro-sea,#intro-overlight{backface-visibility:hidden}
-@media (max-width:760px){#intro.tt-intro{contain:strict}#intro-overlight>div{mix-blend-mode:normal!important;filter:blur(8px)!important}}
-@media (prefers-reduced-motion:reduce){#intro.tt-intro{display:none!important}}
 
 image-slot#tone-art{background:#fff !important}
 image-slot#tone-art::part(frame){background:#fff !important;border:0 !important;outline:0 !important}
@@ -367,7 +361,6 @@ image-slot#tone-art::part(ring){display:none !important}
 #c-contact [data-reveal],
 #email-link{position:relative !important;z-index:8 !important}
 #c-contact .tt-book-light-stage{z-index:0 !important;opacity:.72 !important}
-#deep-book-svg{position:relative !important;z-index:2 !important}
 @media (max-width:760px){
   body.tt-works-modal-open .tt-lang-switcher{display:none !important}
   #chapnav.tt-nav-peek,
@@ -606,44 +599,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 </style>
-<script defer="" src="assets/js/works.js?v=20261018-permalink"></script>
+<script defer="" src="assets/js/works.js?v=20261020-shelf"></script>
 </helmet>
-<div id="intro" class="tt-intro" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:100svh;z-index:1000;overflow:hidden;contain:layout paint size;isolation:isolate;background:#cfe9e6;cursor:pointer;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif">
-  <div id="intro-scene" style="position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;transform-origin:50% 50%">
-  <!-- 수면 위 세계: 하늘 + 수평선 + 원근 바다 (낙하하며 위로 밀려 올라감) -->
-  <div id="intro-skyw" style="position:absolute;left:-18%;top:-12%;width:136%;height:250%;will-change:transform;transform-origin:50% 44%">
-    <div style="position:absolute;left:0;top:0;width:100%;height:90%;background:linear-gradient(180deg,#b9d9e8 0%,#d6ebee 46%,#eef7f2 78%,#fbfdf9 100%)"></div>
-    <div style="position:absolute;left:50%;top:6%;width:70%;height:40%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,254,240,.9),rgba(255,254,240,0) 70%);filter:blur(8px)"></div>
-    <div id="intro-clouds" style="position:absolute;left:0;top:0;width:100%;height:90%"></div>
-    <div id="intro-ocean" style="position:absolute;left:0;top:90%;width:100%;height:130%;overflow:hidden;background:linear-gradient(180deg,#e2f1ed 0%,#b7dedd 9%,#94ccce 28%,#78b9c0 60%,#68adb7 100%)">
-      <div id="intro-waves" style="position:absolute;inset:0;transform-origin:50% 0;will-change:transform"></div>
-    </div>
-    <div style="position:absolute;left:0;top:89.4%;width:100%;height:1.4%;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.85) 55%,rgba(130,190,200,.35));filter:blur(1px)"></div>
-  </div>
-  <!-- 수면 아래 세계: 워터라인 와이프로 드러남 -->
-  <div id="intro-sea" style="position:absolute;left:-8vw;right:-8vw;top:-7vh;bottom:-7vh;will-change:transform;transform-origin:50% 50%;clip-path:polygon(0 3%,8% 1.3%,16% 2.6%,24% .8%,32% 2.2%,40% 1%,48% 2.8%,56% 1.2%,64% 2.4%,72% .9%,80% 2.6%,88% 1.1%,96% 2.2%,100% 1.4%,100% 100%,0 100%)">
-    <div id="intro-seabg" style="position:absolute;inset:0;background:linear-gradient(180deg,#c9ecee 0%,#8fc6cd 36%,#5b9fb0 100%)"></div>
-    <div id="intro-under" style="position:absolute;inset:0;opacity:0;pointer-events:none">
-      <div id="intro-overlight" style="position:absolute;inset:-7vh -8vw;will-change:transform">
-        <div style="position:absolute;left:-10%;right:-10%;top:-4%;height:34%;background:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.92),rgba(224,246,246,.4) 46%,rgba(224,246,246,0) 100%)"></div>
-        <div style="position:absolute;left:10%;top:-8%;width:18%;height:82%;transform:rotate(7deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.42),rgba(255,255,255,.16) 36%,rgba(255,255,255,0) 74%);filter:blur(12px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:34%;top:-8%;width:22%;height:96%;transform:rotate(3deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.38),rgba(255,255,255,.14) 38%,rgba(255,255,255,0) 76%);filter:blur(14px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:59%;top:-8%;width:17%;height:74%;transform:rotate(-5deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.4),rgba(255,255,255,.13) 34%,rgba(255,255,255,0) 73%);filter:blur(12px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:76%;top:-8%;width:20%;height:90%;transform:rotate(-8deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.34),rgba(255,255,255,.12) 36%,rgba(255,255,255,0) 75%);filter:blur(14px);mix-blend-mode:screen"></div>
-      </div>
-      <div id="intro-depthshade" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(8,42,64,.45),rgba(8,42,64,0));opacity:0"></div>
-    </div>
-    <div id="intro-bubbles" style="position:absolute;inset:0;pointer-events:none"></div>
-  </div>
-  <div id="intro-streaks" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
-  <div id="intro-foamline" style="position:absolute;left:-10%;width:120%;height:18%;top:0;background:radial-gradient(50% 100% at 50% 50%,rgba(255,255,255,.98),rgba(255,255,255,.7) 52%,rgba(255,255,255,0));filter:blur(3px);opacity:0;will-change:transform,opacity;pointer-events:none"></div>
-  <div id="intro-drops" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
-  </div>
-  <div id="intro-flash" style="position:absolute;inset:-14vh -14vw;background:radial-gradient(82% 72% at 50% 48%,rgba(255,255,255,1) 0%,rgba(247,252,250,.98) 42%,rgba(229,245,245,.94) 70%,rgba(218,239,240,.84) 100%);opacity:0;transform:scale(.82);transform-origin:50% 48%;will-change:transform,opacity;pointer-events:none"></div>
-
-  <!-- (선택) 안착하며 떠오르는 워드마크. 사이트 히어로로 대체하려면 이 블록 삭제. -->
-<div id="intro-skip" style="position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:70;font-weight:700;font-size:10px;letter-spacing:.3em;color:rgba(18,48,58,.45);text-transform:uppercase;pointer-events:none;opacity:0">Skip</div>
-</div>                                        
+                                        
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
 <div id="glow" aria-hidden="true" style="position:fixed;left:50%;bottom:-26vh;width:150vw;height:96vh;transform:translateX(-50%);z-index:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side, rgba(255,224,168,.85), rgba(120,196,200,.22) 46%, rgba(120,196,200,0) 72%);filter:blur(10px)"></div>
 <canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:0;z-index:2;pointer-events:none;mix-blend-mode:normal;opacity:.82"></canvas>
@@ -926,7 +884,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
         <span class="tt-network-title">{{ PARTNERS_META.title }}</span>
       </span>
       <span class="tt-network-people">
-        <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><span class="tt-network-person"><img src="{{ p.image }}" alt="" loading="lazy"><span><strong>{{ p.name }}</strong><small>{{ p.role }}</small></span></span></sc-for>
+        <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><span class="tt-network-person"><img data-member-src="{{ p.image }}" alt="" loading="lazy"><span><strong>{{ p.name }}</strong><small>{{ p.role }}</small></span></span></sc-for>
       </span>
       <span class="tt-network-arrow" aria-hidden="true">&#8594;</span>
     </button>
@@ -1068,181 +1026,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
           <span class="tt-book-particle" style="--s:10px;--c:#fff3c7;--x0:0px;--x1:38px;--y1:-200px;--r:-18deg;--d:-3.4s;--dur:5.2s;--o:.48">&#9835;</span>
         </div>
 
-        <svg id="deep-book-svg" viewBox="0 0 900 560" style="width:100%;height:auto;display:block;overflow:visible;position:relative;z-index:2" aria-label="underwater magical book illustration">
-          <defs>
-            <filter id="ttBlur18" x="-40%" y="-80%" width="180%" height="240%"><feGaussianBlur stdDeviation="18"></feGaussianBlur></filter>
-            <filter id="ttBlur8" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
-            <filter id="ttSoftShadow" x="-20%" y="-20%" width="140%" height="160%">
-              <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#01070d" flood-opacity="0.34"></feDropShadow>
-            </filter>
-            <linearGradient id="ttBeamWide" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#ffe6b5" stop-opacity="0.72"></stop>
-              <stop offset="42%" stop-color="#f2d8a3" stop-opacity="0.24"></stop>
-              <stop offset="100%" stop-color="#9fc8d0" stop-opacity="0"></stop>
-            </linearGradient>
-            <linearGradient id="ttBeamCore" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.9"></stop>
-              <stop offset="48%" stop-color="#f5d99b" stop-opacity="0.38"></stop>
-              <stop offset="100%" stop-color="#c9e4e7" stop-opacity="0"></stop>
-            </linearGradient>
-            <radialGradient id="ttFoldGlow" cx="50%" cy="58%" r="55%">
-              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.92"></stop>
-              <stop offset="36%" stop-color="#f3cf8a" stop-opacity="0.38"></stop>
-              <stop offset="100%" stop-color="#7ca9b2" stop-opacity="0"></stop>
-            </radialGradient>
-            <radialGradient id="ttGround" cx="50%" cy="48%" r="58%">
-              <stop offset="0%" stop-color="#2a5362" stop-opacity="0.42"></stop>
-              <stop offset="68%" stop-color="#173545" stop-opacity="0.18"></stop>
-              <stop offset="100%" stop-color="#06131f" stop-opacity="0"></stop>
-            </radialGradient>
-            <linearGradient id="ttCover" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#315666"></stop>
-              <stop offset="48%" stop-color="#1d3948"></stop>
-              <stop offset="100%" stop-color="#102836"></stop>
-            </linearGradient>
-            <linearGradient id="ttCoverEdge" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#4f7680" stop-opacity="0.75"></stop>
-              <stop offset="45%" stop-color="#172c39"></stop>
-              <stop offset="100%" stop-color="#4f7680" stop-opacity="0.75"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageL" x1="1" y1="0.05" x2="0" y2="0.72">
-              <stop offset="0%" stop-color="#efe7cf"></stop>
-              <stop offset="52%" stop-color="#c6d4d2"></stop>
-              <stop offset="100%" stop-color="#7894a0"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageR" x1="0" y1="0.05" x2="1" y2="0.72">
-              <stop offset="0%" stop-color="#efe7cf"></stop>
-              <stop offset="52%" stop-color="#c6d4d2"></stop>
-              <stop offset="100%" stop-color="#7894a0"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageStack" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#9eb3b6"></stop>
-              <stop offset="45%" stop-color="#637d86"></stop>
-              <stop offset="100%" stop-color="#263e4b"></stop>
-            </linearGradient>
-            <linearGradient id="ttMetal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#c5a76d"></stop>
-              <stop offset="52%" stop-color="#66513a"></stop>
-              <stop offset="100%" stop-color="#e8cb88"></stop>
-            </linearGradient>
-            <clipPath id="ttClipL"><path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z"></path></clipPath>
-            <clipPath id="ttClipR"><path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z"></path></clipPath>
-          </defs>
-
-          <!-- underwater contact haze and soft grounding -->
-          <ellipse cx="450" cy="444" rx="385" ry="92" fill="url(#ttGround)"></ellipse>
-          <ellipse cx="450" cy="438" rx="305" ry="38" fill="#0a1f2c" opacity="0.22" filter="url(#ttBlur18)"></ellipse>
-
-          <!-- conceptual magic column: a bright page-origin beam diffused by deep water -->
-          <g class="tt-svg-page-beam" opacity="1" style="mix-blend-mode:screen" pointer-events="none">
-            <path d="M450 330 C386 218 360 62 374 -390 C418 -430 482 -430 526 -390 C540 62 514 218 450 330 Z" fill="url(#ttBeamWide)" filter="url(#ttBlur18)" opacity="0.92"></path>
-            <path d="M450 332 C426 224 426 42 436 -360 C445 -380 455 -380 464 -360 C474 42 474 224 450 332 Z" fill="url(#ttBeamCore)" filter="url(#ttBlur8)" opacity="0.96"></path>
-            <path d="M450 332 C443 214 444 70 450 -315" fill="none" stroke="#fff8df" stroke-width="6" stroke-linecap="round" opacity="0.42" filter="url(#ttBlur8)"></path>
-            <path d="M450 338 C442 285 443 244 450 194 C457 244 458 285 450 338 Z" fill="#fff5d4" opacity="0.82" filter="url(#ttBlur8)"></path>
-            <circle cx="450" cy="322" r="54" fill="#fff0bd" opacity="0.72" filter="url(#ttBlur8)"></circle>
-          </g>
-
-          <!-- visible particles born from the light: music / water / story fragments -->
-          <g class="tt-svg-book-particles" opacity="0.9" font-family="Quicksand, Nanum Gothic, sans-serif" font-weight="800" pointer-events="none">
-            <g style="mix-blend-mode:screen">
-              <text x="382" y="78" font-size="18" fill="#f0cc82" opacity="0.50" transform="rotate(-14 382 78)">&#9834;</text>
-              <text x="516" y="88" font-size="16" fill="#f0cc82" opacity="0.48" transform="rotate(13 516 88)">&#9835;</text>
-              <text x="338" y="152" font-size="21" fill="#f0cc82" opacity="0.64" transform="rotate(-11 338 152)">&#9834;</text>
-              <text x="558" y="162" font-size="20" fill="#f0cc82" opacity="0.62" transform="rotate(10 558 162)">&#9835;</text>
-              <text x="404" y="238" font-size="26" fill="#ffd98f" opacity="0.82" transform="rotate(-7 404 238)">&#9834;</text>
-              <text x="548" y="250" font-size="24" fill="#ffd98f" opacity="0.78" transform="rotate(8 548 250)">&#9835;</text>
-            </g>
-            <g fill="#dfe6dc" stroke="#f5ecd6" stroke-width="1.1" opacity="0.72">
-              <path d="M304 122 l34 -8 l8 27 l-34 9 z" transform="rotate(-13 321 136)"></path>
-              <path d="M582 116 l36 8 l-8 28 l-36 -8 z" transform="rotate(12 600 130)"></path>
-              <path d="M312 244 l30 -7 l6 24 l-30 7 z" opacity="0.62" transform="rotate(-10 327 256)"></path>
-              <path d="M606 256 l31 7 l-6 25 l-31 -7 z" opacity="0.56" transform="rotate(11 622 269)"></path>
-            </g>
-            <g fill="#86d5ea" stroke="#ddfbff" stroke-width="1.3" opacity="0.88">
-              <path d="M450 54 C440 72 441 83 450 88 C461 83 461 72 450 54 Z"></path>
-              <path d="M505 134 C496 151 497 161 506 165 C516 160 516 150 505 134 Z" opacity="0.82"></path>
-              <path d="M388 166 C379 181 380 191 389 195 C398 190 398 181 388 166 Z" opacity="0.78"></path>
-              <path d="M485 230 C477 244 477 253 486 257 C494 253 494 244 485 230 Z" opacity="0.76"></path>
-              <path d="M610 294 C602 308 602 318 611 321 C620 317 620 307 610 294 Z" opacity="0.74"></path>
-              <path d="M332 288 C325 301 325 310 333 314 C341 310 341 301 332 288 Z" opacity="0.68"></path>
-            </g>
-            <g fill="#fff4cf" opacity="0.72" style="mix-blend-mode:screen">
-              <circle cx="450" cy="135" r="2.4"></circle><circle cx="432" cy="176" r="1.8"></circle><circle cx="470" cy="197" r="1.7"></circle>
-              <circle cx="446" cy="232" r="1.8"></circle><circle cx="515" cy="254" r="1.4"></circle><circle cx="396" cy="305" r="1.3"></circle>
-              <circle cx="506" cy="315" r="1.5"></circle><circle cx="366" cy="230" r="1.2"></circle><circle cx="575" cy="214" r="1.2"></circle>
-            </g>
-          </g>
-
-          <g filter="url(#ttSoftShadow)">
-            <!-- damp cover base -->
-            <path d="M450 196 C344 168 242 176 169 207 L112 416 C202 450 334 456 450 433 C566 456 698 450 788 416 L731 207 C658 176 556 168 450 196 Z" fill="url(#ttCover)" stroke="#1b3240" stroke-width="3"></path>
-            <path d="M139 395 C232 428 348 433 450 414 C552 433 668 428 761 395 L788 416 C698 450 566 456 450 433 C334 456 202 450 112 416 Z" fill="url(#ttCoverEdge)" opacity="0.72"></path>
-
-            <!-- page stacks: thickness restored, not emoji-flat -->
-            <path d="M450 391 C350 420 242 416 146 386 L132 420 C235 458 354 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
-            <path d="M450 391 C550 420 658 416 754 386 L768 420 C665 458 546 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
-            <g fill="none" stroke="#c8d4d1" stroke-width="1.7" stroke-linecap="round" opacity="0.32">
-              <path d="M148 398 C246 425 354 429 449 408"></path>
-              <path d="M143 412 C244 441 354 444 450 421"></path>
-              <path d="M753 398 C654 425 546 429 451 408"></path>
-              <path d="M758 412 C656 441 546 444 450 421"></path>
-            </g>
-
-            <!-- open wet pages -->
-            <path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z" fill="url(#ttPageL)" stroke="#526f78" stroke-width="2.1"></path>
-            <path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z" fill="url(#ttPageR)" stroke="#526f78" stroke-width="2.1"></path>
-
-            <!-- damp blue page-edge tint -->
-            <path d="M450 194 C365 176 268 184 199 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
-            <path d="M450 194 C535 176 632 184 701 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
-            <path d="M151 389 C250 418 355 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
-            <path d="M749 389 C650 418 545 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
-
-            <!-- faint score/story lines -->
-            <g clip-path="url(#ttClipL)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
-              <path d="M220 244 C278 236 338 236 426 229"></path><path d="M211 271 C282 264 346 265 425 258"></path>
-              <path d="M203 299 C278 292 345 293 425 286"></path><path d="M195 327 C272 321 344 321 425 314"></path>
-              <path d="M188 354 C265 350 337 350 425 342"></path>
-              <path d="M242 236 q8 -9 16 0 q8 9 16 0" opacity="0.42"></path><path d="M300 290 q10 -8 20 0 q10 8 20 0" opacity="0.38"></path>
-            </g>
-            <g clip-path="url(#ttClipR)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
-              <path d="M474 229 C562 236 622 236 680 244"></path><path d="M475 258 C554 265 618 264 689 271"></path>
-              <path d="M475 286 C555 293 622 292 697 299"></path><path d="M475 314 C556 321 628 321 705 327"></path>
-              <path d="M475 342 C563 350 635 350 712 354"></path>
-              <path d="M535 268 q9 -8 18 0 q9 8 18 0" opacity="0.4"></path><path d="M596 324 q9 -7 18 0 q9 7 18 0" opacity="0.36"></path>
-            </g>
-
-            <!-- minimal grimoire ornamentation, subdued -->
-            <g fill="none" stroke="url(#ttMetal)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.58">
-              <path d="M151 229 q32 -30 78 -28"></path><path d="M749 229 q-32 -30 -78 -28"></path>
-              <path d="M145 386 q30 24 72 25"></path><path d="M755 386 q-30 24 -72 25"></path>
-              <path d="M132 408 l42 -12"></path><path d="M768 408 l-42 -12"></path>
-            </g>
-            <g fill="#7ecfe0" stroke="#e5fbff" stroke-width="1" opacity="0.38">
-              <circle cx="183" cy="221" r="4"></circle><circle cx="716" cy="221" r="4"></circle>
-              <circle cx="170" cy="397" r="3.6"></circle><circle cx="730" cy="397" r="3.6"></circle>
-            </g>
-
-            <!-- wet glints / tiny beads on pages and cover -->
-            <g fill="#dff8fb" opacity="0.33">
-              <ellipse cx="255" cy="262" rx="8" ry="2" transform="rotate(-8 255 262)"></ellipse>
-              <ellipse cx="330" cy="344" rx="6" ry="1.8" transform="rotate(-6 330 344)"></ellipse>
-              <ellipse cx="613" cy="265" rx="8" ry="2" transform="rotate(8 613 265)"></ellipse>
-              <ellipse cx="685" cy="350" rx="6" ry="1.8" transform="rotate(7 685 350)"></ellipse>
-              <circle cx="210" cy="391" r="2"></circle><circle cx="696" cy="390" r="2"></circle>
-            </g>
-
-            <!-- central binding and warm origin glow from the page gutter -->
-            <ellipse cx="450" cy="314" rx="235" ry="178" fill="url(#ttFoldGlow)" opacity="0.92"></ellipse>
-            <path d="M450 194 C443 259 444 352 450 430 C456 352 457 259 450 194 Z" fill="#fff3d2" opacity="0.5"></path>
-            <line x1="450" y1="198" x2="450" y2="430" stroke="#fff5dc" stroke-width="4.2" stroke-linecap="round" opacity="0.88"></line>
-            <circle cx="450" cy="326" r="7" fill="#fff7df" opacity="0.9"></circle>
-
-            <!-- small central jewel/clasp, kept subtle -->
-            <path d="M407 420 C420 398 433 388 450 388 C467 388 480 398 493 420 C480 435 421 435 407 420 Z" fill="#142d3c" stroke="url(#ttMetal)" stroke-width="2"></path>
-            <path d="M450 399 C438 416 441 426 450 431 C459 426 462 416 450 399 Z" fill="#2f9cbd" stroke="#d9fbff" stroke-width="1.2" opacity="0.8"></path>
-          </g>
-        </svg>
         <!-- The Book (redesign, preview): a closed hardcover asleep on the sea floor; it wakes and opens when you arrive -->
         <div class="tt-book2" aria-hidden="true">
           <div class="tb-veil"></div>
@@ -1278,7 +1061,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </section></div>
   <footer style="margin-top:auto;width:100%;padding:34px 2vw 30px;border-top:1px solid var(--line,rgba(24,32,52,.12));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:11px">
-      <img src="assets/logo/mark-paper.png" alt="TALETONE" style="width:30px;height:30px;object-fit:contain;display:block">
+      <span class="tt-footer-mark" role="img" aria-label="TALETONE"></span>
       <span style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:600;font-size:13px;letter-spacing:.12em;color:var(--ink,#141C30);white-space:pre-wrap">{{ FOOTER_META.title }}</span>
     </div>
     <span style="font-weight:600;font-size:12px;color:var(--soft,#44505F);white-space:pre-wrap">{{ FOOTER_META.tagline }}</span>

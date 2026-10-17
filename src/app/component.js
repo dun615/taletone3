@@ -52,7 +52,7 @@ class Component extends DCLogic {
       }
     };
     this.enforceMobileFxLayer();
-    this.sections = ['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact']
+    this.sections = ['c-home','c-projects','c-members','c-works','c-news','c-contact']
       .map(id=>document.getElementById(id)).filter(Boolean);
     this.pxEls = Array.from(document.querySelectorAll('[data-px]'));
     this.pxEls.forEach(el=>{ el._base = el.style.transform || ''; });
@@ -122,12 +122,13 @@ class Component extends DCLogic {
       if(this._bridgeRun){ this._pinBridgeAnchor(); return; }
       if(this._bridgeNavTarget){
         var destination=document.getElementById(this._bridgeNavTarget);
-        if(!destination||Math.abs(current-destination.offsetTop)<=3) this._bridgeNavTarget=null;
+        // released on arrival, or once the jump has had time to land (a scrollbar drag sends no input events)
+        if(!destination||Math.abs(current-destination.offsetTop)<=3||performance.now()-(this._bridgeNavAt||0)>1500) this._bridgeNavTarget=null;
         return;
       }
       if(current>previous+2&&this._bridgeOffsets){
-        for(var bi=-1;bi<this._bridgeOffsets.length;bi++){
-          var bridgeTop=bi===-1?(this.transSec?this.transSec.offsetTop:NaN):this._bridgeOffsets[bi];
+        for(var bi=0;bi<this._bridgeOffsets.length;bi++){
+          var bridgeTop=this._bridgeOffsets[bi];
           if(!this._bridgeSeen[bi]&&!this._bridgeBypassed[bi]&&isFinite(bridgeTop)&&bridgeTop>previous+2&&bridgeTop<=current+2){
             this.startBridge(bi);
             return;
@@ -155,27 +156,7 @@ class Component extends DCLogic {
       else em.textContent = contact.buttonLabel || 'Tell us your story';
     }
 
-    // --- TRANSLATION centerpiece: build the tale line (letters) + the waveform bars ---
-    this.transSec = document.getElementById('c-translation');
     this.newsSec = document.getElementById('c-news');
-    this.taleLine = document.getElementById('tale-line');
-    this.waveRow  = document.getElementById('wave-row');
-    this.transFoot= document.getElementById('trans-foot');
-    this.tcaps = [0,1,2].map(i=>document.getElementById('tcap-'+i));
-    this.rebuildTranslationLine();
-    if(this.waveRow){
-      this.NBAR=56; this.bars=[];
-      for(var bi=0; bi<this.NBAR; bi++){
-        var bar=document.createElement('div');
-        var bw='clamp(2px,0.5vw,5px)';
-        bar.style.cssText='width:'+bw+';height:6px;border-radius:6px;background:var(--accent,#0E6E7D);opacity:0;transform-origin:center;will-change:height,opacity';
-        this.waveRow.appendChild(bar);
-        // a stable pseudo-random amplitude profile (bell-ish, music-like)
-        var t=bi/(this.NBAR-1), env=Math.sin(t*Math.PI);
-        var amp=env*(0.35+0.65*Math.abs(Math.sin(bi*1.7)+0.5*Math.sin(bi*0.6)));
-        this.bars.push({el:bar, amp:Math.max(0.12,Math.min(1,amp))});
-      }
-    }
 
     this._escapeHandler=(e)=>{ if(e.key==='Escape') this.closeAll(); };
     window.addEventListener('keydown', this._escapeHandler);
@@ -410,8 +391,6 @@ class Component extends DCLogic {
     var cfg = window.TALETONE_CONTENT || {};
     var homeData = cfg.home || {};
     this.HOME = this._localizedObject(homeData, homeData.translations);
-    var translationData = cfg.translation || {};
-    this.TRANSLATION = this._localizedObject(translationData, translationData.translations);
     var projectData = cfg.projects || {};
     this.PROJECTS_META = this._localizedObject(projectData, projectData.translations);
     this.PROJECTS = (Array.isArray(projectData.cards) ? projectData.cards : []).map((p,i)=>this._normalizeVisualEntry(this._localizedListItem(p, projectData.translations, i), 'project-' + (i + 1)));
@@ -483,131 +462,7 @@ class Component extends DCLogic {
     return src;
   }
 
-  translationMobileLinesFor(kind, fallbackText){
-    var data = this.TRANSLATION || {};
-    var key = kind === 'footer' ? 'footerMobileLines' : 'mobileLines';
-    var source = Array.isArray(data[key]) ? data[key] : null;
-    if(!source || !source.length) source = [{ text:String(fallbackText || ''), indent:0 }];
-    var out=[];
-    for(var i=0; i<source.length; i++){
-      var item=source[i] || {};
-      var text = item.text == null ? '' : String(item.text);
-      if(!text.trim()) continue;
-      var indent = parseInt(item.indent, 10);
-      if(!isFinite(indent)) indent = 0;
-      indent = Math.max(-2, Math.min(2, indent));
-      out.push({ text:text, indent:indent });
-    }
-    return out.length ? out : [{ text:String(fallbackText || ''), indent:0 }];
-  }
 
-  rebuildTranslationFooter(){
-    if(!this.transFoot) this.transFoot = document.getElementById('trans-foot');
-    if(!this.transFoot) return;
-    var footer = (this.TRANSLATION && this.TRANSLATION.footer) || '';
-    var mobileMode = window.innerWidth <= 760;
-    var lines = mobileMode ? this.translationMobileLinesFor('footer', footer) : [];
-    var sig = footer + '|' + mobileMode + '|' + (mobileMode ? JSON.stringify(lines) : '');
-    if(this._translationFooterSig === sig) return;
-    this._translationFooterSig = sig;
-    this.transFoot.innerHTML = '';
-    if(mobileMode){
-      this.transFoot.classList.add('tt-translation-mobile-foot');
-      this.transFoot.setAttribute('aria-label', footer.replace(/\s+/g,' ').trim());
-      for(var fi=0; fi<lines.length; fi++){
-        var line=document.createElement('span');
-        line.className='tt-translation-mobile-line';
-        line.setAttribute('data-indent', String(lines[fi].indent || 0));
-        var inner=document.createElement('span');
-        inner.className='tt-translation-mobile-line-inner';
-        inner.textContent=lines[fi].text || '';
-        line.appendChild(inner);
-        this.transFoot.appendChild(line);
-      }
-      return;
-    }
-    this.transFoot.classList.remove('tt-translation-mobile-foot');
-    this.transFoot.removeAttribute('aria-label');
-    this.transFoot.textContent = footer;
-  }
-  rebuildTranslationLine(){
-    if(!this.taleLine) this.taleLine = document.getElementById('tale-line');
-    if(!this.taleLine) return;
-    var sentence = (this.TRANSLATION && this.TRANSLATION.sentence) || 'Once, a quiet story wished to be heard.';
-    var mobileMode = window.innerWidth <= 760;
-    var mobileLines = mobileMode ? this.translationMobileLinesFor('sentence', sentence) : [];
-    var lineSig = mobileMode ? JSON.stringify(mobileLines) : '';
-    if(this._translationSentence === sentence && this._translationMobileMode === mobileMode && this._translationLineSig === lineSig && this.letters && this.letters.length){ this.rebuildTranslationFooter(); return; }
-    this._translationSentence = sentence;
-    this._translationMobileMode = mobileMode;
-    this._translationLineSig = lineSig;
-    this.taleLine.innerHTML = '';
-    this.taleLine.setAttribute('aria-label', String(sentence).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim());
-    this.letters = [];
-    this._translationRich = !mobileMode && (this.looksLikeRichText(sentence) || /[\r\n\t]| {2,}/.test(String(sentence)));
-    if(mobileMode){
-      this.taleLine.classList.add('tt-translation-mobile-mode');
-      this.taleLine.style.whiteSpace = 'normal';
-      this.taleLine.style.display = 'flex';
-      this.taleLine.style.wordBreak = 'keep-all';
-      this.taleLine.style.overflowWrap = 'normal';
-      this.taleLine.style.textWrap = 'balance';
-      this.taleLine.style.flexDirection = 'column';
-      for(var li=0; li<mobileLines.length; li++){
-        var line=document.createElement('span');
-        line.className='tt-translation-mobile-line';
-        line.setAttribute('data-indent', String(mobileLines[li].indent || 0));
-        for(var ci=0; ci<String(mobileLines[li].text || '').length; ci++){
-          var ch=String(mobileLines[li].text || '')[ci];
-          var sp=document.createElement('span');
-          sp.className='tt-translation-mobile-line-inner';
-          sp.textContent = ch===' ' ? '\u00A0' : ch;
-          sp.style.display='inline-block';
-          sp.style.willChange='transform,opacity';
-          line.appendChild(sp);
-          this.letters.push(sp);
-        }
-        this.taleLine.appendChild(line);
-      }
-      this.rebuildTranslationFooter();
-      return;
-    }
-    this.taleLine.classList.remove('tt-translation-mobile-mode');
-    if(this._translationRich){
-      this.taleLine.style.whiteSpace = 'pre-wrap';
-      this.taleLine.style.display = 'block';
-      this.taleLine.style.wordBreak = 'keep-all';
-      this.taleLine.style.overflowWrap = 'anywhere';
-      this.taleLine.innerHTML = this.looksLikeRichText(sentence) ? this.sanitizeRichHtml(sentence) : this.plainTextHtml(sentence);
-      this.letters = [this.taleLine];
-      this.rebuildTranslationFooter();
-      return;
-    }
-    this.taleLine.style.whiteSpace = '';
-    this.taleLine.style.display = '';
-    this.taleLine.style.wordBreak = '';
-    this.taleLine.style.overflowWrap = '';
-    this.taleLine.style.textWrap = '';
-    this.taleLine.style.flexDirection = '';
-    // Letters animate one by one, but lines may only break between words (never "\uB429\uB2C8 / \uB2E4."),
-    // and the lines are balanced inside one centred block.
-    var block=document.createElement('span');
-    block.className='tt-tale-block';
-    var word=null;
-    for(var ci=0; ci<sentence.length; ci++){
-      var ch=sentence[ci];
-      if(!word){ word=document.createElement('span'); word.className='tt-tale-word'; block.appendChild(word); }
-      var sp=document.createElement('span');
-      sp.textContent = ch===' ' ? '\u00A0' : ch;
-      sp.style.display='inline-block';
-      sp.style.willChange='transform,opacity';
-      word.appendChild(sp);
-      this.letters.push(sp);
-      if(ch===' '){ word=null; block.appendChild(document.createTextNode(' ')); }
-    }
-    this.taleLine.appendChild(block);
-    this.rebuildTranslationFooter();
-  }
   loadMemberImages(){
     if(document.body.getAttribute('data-active-chapter')!=='members'||(this._chapterTarget&&this._chapterTarget!=='c-members'))return;
     var section = document.getElementById('c-members');
@@ -687,376 +542,18 @@ class Component extends DCLogic {
     var isHomeRoute=routePath==='/';
     var forceIntro=new URLSearchParams(location.search).get('intro')==='1',seen=false;
     try{ seen=sessionStorage.getItem('tt_intro_home_v5')==='1'; }catch(e){}
-    // preview page: the redesigned intro, every visit
-    if(document.documentElement.hasAttribute('data-intro-v2')&&isHomeRoute&&!reduce&&this.introEl){ this._introV2=true; this.initIntroV2(); return; }
-    if(!this.introEl || !isHomeRoute || (seen&&!forceIntro) || reduce){
+    // the dive: on the home page, once per visit (never with reduced motion)
+    if(!isHomeRoute || (seen&&!forceIntro) || reduce){
       if(this.introEl) this.introEl.style.display='none';
-      document.body.classList.remove('tt-intro-running');
       this.introDone=true;
       return;
     }
-
-    this.iScene=document.getElementById('intro-scene');
-    this.iSky=document.getElementById('intro-skyw');
-    this.iWaves=document.getElementById('intro-waves');
-    this.iSea=document.getElementById('intro-sea');
-    this.iSeaBg=document.getElementById('intro-seabg');
-    this.iFlash=document.getElementById('intro-flash');
-    this.iUnder=document.getElementById('intro-under');
-    this.iOverlight=document.getElementById('intro-overlight');
-    this.iShade=document.getElementById('intro-depthshade');
-    this.iFoamL=document.getElementById('intro-foamline');
-    this.iSkip=document.getElementById('intro-skip');
-
-    this.introEl.style.opacity='1';
-    this.introEl.style.transform='none';
-    this.introEl.style.backgroundColor='transparent';
-    this.introEl.style.pointerEvents='auto';
-    this._introLayerZ=this.introEl.style.zIndex;
-    this.introEl.style.zIndex='4';
-    if(this.iSea){
-      this.iSea.style.clipPath='polygon(0 3%,8% 1.3%,16% 2.6%,24% .8%,32% 2.2%,40% 1%,48% 2.8%,56% 1.2%,64% 2.4%,72% .9%,80% 2.6%,88% 1.1%,96% 2.2%,100% 1.4%,100% 100%,0 100%)';
-      this.iSea.style.transform='translate3d(0,104%,0)';
-    }
-
-    // Lift the real HOME above the underwater plate. Nothing is cloned.
-    this.iContent=document.getElementById('content');
-    if(this.iContent){
-      this._introContentState={
-        zIndex:this.iContent.style.zIndex,
-        pointerEvents:this.iContent.style.pointerEvents
-      };
-      this.iContent.scrollTop=0;
-      this.iContent.style.zIndex='5';
-      this.iContent.style.pointerEvents='none';
-    }
-
-    // Each real HOME piece is constructed by a geometric mask, not opacity crossfade.
-    this._introHomeAssembly=[];
-    var homeTargets=Array.from(document.querySelectorAll('#c-home > [data-px],#c-home > [data-reveal],#c-home > [data-bob]'));
-    var homeParagraphIndex=0;
-    for(var hi=0;hi<homeTargets.length;hi++){
-      var homeEl=homeTargets[hi];
-      var isReveal=homeEl.hasAttribute('data-reveal');
-      var parsedOpacity=parseFloat(homeEl.style.opacity);
-      var finalOpacity=isReveal?1:(Number.isFinite(parsedOpacity)?parsedOpacity:1);
-      var kind='eyebrow';
-      if(homeEl.hasAttribute('data-bob')) kind='hint';
-      else if(homeEl.querySelector('svg')) kind='wave';
-      else if(homeEl.hasAttribute('data-px')) kind='ghost';
-      else if(homeEl.tagName==='H1') kind='title';
-      else if(homeEl.classList.contains('tt-home-quick-actions')) kind='actions';
-      else if(homeEl.tagName==='P') kind=homeParagraphIndex++===0?'subtitle':'description';
-      var targetTransform=isReveal?'translateY(0px) scale(1)':homeEl.style.transform;
-      var beforeMeasureTransform=homeEl.style.transform;
-      homeEl.style.transform=targetTransform;
-      var targetRect=homeEl.getBoundingClientRect();
-      homeEl.style.transform=beforeMeasureTransform;
-      var homeItem={
-        el:homeEl,
-        kind:kind,
-        finalOpacity:finalOpacity,
-        opacity:homeEl.style.opacity,
-        transform:homeEl.style.transform,
-        targetTransform:targetTransform,
-        transition:homeEl.style.transition,
-        filter:homeEl.style.filter,
-        willChange:homeEl.style.willChange,
-        clipPath:homeEl.style.clipPath,
-        webkitClipPath:homeEl.style.webkitClipPath,
-        transformOrigin:homeEl.style.transformOrigin,
-        letterSpacing:homeEl.style.letterSpacing,
-        targetX:targetRect.left+targetRect.width/2,
-        targetY:targetRect.top+targetRect.height/2,
-        wavePaths:[],
-        waveDots:[]
-      };
-      this._introHomeAssembly.push(homeItem);
-      homeEl.style.transition='none';
-      homeEl.style.willChange='transform,clip-path';
-      homeEl.style.opacity=String(finalOpacity);
-      homeEl.style.filter='none';
-      homeEl.style.transformOrigin='50% 50%';
-      var initialClip=(kind==='ghost')?'circle(0% at 50% 50%)':
-        (kind==='title'||kind==='eyebrow'||kind==='actions'||kind==='wave')?'inset(0 50% 0 50%)':
-        (kind==='hint')?'inset(0 0 100% 0)':'inset(100% 0 0 0)';
-      homeEl.style.clipPath=initialClip;
-      homeEl.style.webkitClipPath=initialClip;
-      var initialTransform=targetTransform||'';
-      if(kind==='ghost') initialTransform+=' scale(.72)';
-      else if(kind==='title') initialTransform+=' translate3d(0,12px,0) scaleX(.72) scaleY(.92)';
-      else if(kind==='eyebrow') initialTransform+=' translate3d(0,8px,0) scaleX(.78)';
-      else if(kind==='subtitle'||kind==='description') initialTransform+=' translate3d(0,18px,0)';
-      else if(kind==='actions') initialTransform+=' scaleX(.76)';
-      else if(kind==='wave') initialTransform+=' translate3d(0,16px,0)';
-      else initialTransform+=' translate3d(0,14px,0)';
-      homeEl.style.transform=initialTransform.trim();
-      if(kind==='wave'){
-        var wavePaths=Array.from(homeEl.querySelectorAll('path'));
-        for(var wpi=0;wpi<wavePaths.length;wpi++){
-          var wavePath=wavePaths[wpi], waveLength=0;
-          try{ waveLength=wavePath.getTotalLength(); }catch(e){}
-          var wavePathState={
-            el:wavePath,
-            length:waveLength,
-            dasharray:wavePath.style.strokeDasharray,
-            dashoffset:wavePath.style.strokeDashoffset,
-            willChange:wavePath.style.willChange
-          };
-          homeItem.wavePaths.push(wavePathState);
-          if(waveLength>0){
-            wavePath.style.strokeDasharray=waveLength.toFixed(2);
-            wavePath.style.strokeDashoffset=waveLength.toFixed(2);
-            wavePath.style.willChange='stroke-dashoffset';
-          }
-        }
-        var waveDots=Array.from(homeEl.querySelectorAll('circle'));
-        for(var wdi=0;wdi<waveDots.length;wdi++){
-          var waveDot=waveDots[wdi];
-          homeItem.waveDots.push({
-            el:waveDot,
-            transform:waveDot.style.transform,
-            transformOrigin:waveDot.style.transformOrigin,
-            transformBox:waveDot.style.transformBox
-          });
-          waveDot.style.transformBox='fill-box';
-          waveDot.style.transformOrigin='center';
-          waveDot.style.transform='scale(0)';
-        }
-      }
-      if(kind==='hint'){
-        var hintLine=homeEl.querySelector('div');
-        if(hintLine){
-          homeItem.hintLine={el:hintLine,transform:hintLine.style.transform,transformOrigin:hintLine.style.transformOrigin};
-          hintLine.style.transformOrigin='50% 100%';
-          hintLine.style.transform='scaleY(0)';
-        }
-      }
-    }
-
-    this._introChromeTargets=[];
-    var chromeIds=['brand','lang-switcher','chapnav','progress'];
-    for(var ci=0;ci<chromeIds.length;ci++){
-      var chromeEl=document.getElementById(chromeIds[ci]);
-      if(!chromeEl) continue;
-      var chromeItem={
-        el:chromeEl,
-        index:ci,
-        opacity:chromeEl.style.opacity,
-        transform:chromeEl.style.transform,
-        willChange:chromeEl.style.willChange,
-        clipPath:chromeEl.style.clipPath,
-        webkitClipPath:chromeEl.style.webkitClipPath,
-        zIndex:chromeEl.style.zIndex,
-        pointerEvents:chromeEl.style.pointerEvents,
-        transition:chromeEl.style.transition
-      };
-      this._introChromeTargets.push(chromeItem);
-      chromeEl.style.opacity='1';
-      chromeEl.style.zIndex='6';
-      chromeEl.style.pointerEvents='none';
-      chromeEl.style.transition='none';
-      chromeEl.style.willChange='transform,clip-path';
-      var fromLeft=ci===0||ci===3;
-      var chromeClip=fromLeft?'inset(0 100% 0 0)':'inset(0 0 0 100%)';
-      chromeEl.style.clipPath=chromeClip;
-      chromeEl.style.webkitClipPath=chromeClip;
-      chromeEl.style.transform=(chromeItem.transform?chromeItem.transform+' ':'')+'translate3d('+(fromLeft?-42:42)+'px,0,0)';
-    }
-
-    var introPalette=this.P&&this.P[this.mood];
-    if(introPalette&&this.root){
-      var introRootStyle=this.root.style;
-      this.setCssVar(introRootStyle,'--ink','#141C30');
-      this.setCssVar(introRootStyle,'--soft','#44505F');
-      this.setCssVar(introRootStyle,'--paper','#fffdf8');
-      this.setCssVar(introRootStyle,'--accent',introPalette.accent);
-      this.setCssVar(introRootStyle,'--accent2',introPalette.accent2);
-      this.setCssVar(introRootStyle,'--card','rgba(255,255,255,.78)');
-      this.setCssVar(introRootStyle,'--cardBorder','rgba(24,32,52,.1)');
-      this.setCssVar(introRootStyle,'--line','rgba(24,32,52,.18)');
-      this.setCssVar(introRootStyle,'--halo','0 1px 2px rgba(255,255,255,.25),0 0 18px rgba(255,255,255,.18)');
-      if(this.sky){
-        // Keep the raw HOME hex stops: mix() interpolates hex values during the handoff.
-        var introSky=[introPalette.stops[0][1],introPalette.stops[0][2]];
-        this._introHomeSky=introSky;
-        this._introHomeBackground='linear-gradient(180deg,'+introSky[0]+' 0%,'+introSky[1]+' 100%)';
-        this._introWaterTop='#c9ecee';
-        this._introWaterBottom='#5b9fb0';
-        this._skyBackground='linear-gradient(180deg,'+this._introWaterTop+' 0%,'+this._introWaterBottom+' 100%)';
-        this.sky.style.background=this._skyBackground;
-      }
-    }
-    document.body.classList.add('tt-intro-running');
-    this._finishIntro=()=>{
-      if(this.introDone) return;
-      clearTimeout(this._introTimer);
-      if(this._introSkip){
-        window.removeEventListener('wheel',this._introSkip);
-        window.removeEventListener('touchmove',this._introSkip);
-        window.removeEventListener('pointerdown',this._introSkip);
-      }
-      for(var fi=0;fi<this._introHomeAssembly.length;fi++){
-        var item=this._introHomeAssembly[fi], el=item.el;
-        el.style.opacity=String(item.finalOpacity);
-        el.style.transform=item.targetTransform;
-        el.style.transition=item.transition;
-        el.style.filter=item.filter||'none';
-        el.style.willChange=item.willChange;
-        el.style.clipPath=item.clipPath;
-        el.style.webkitClipPath=item.webkitClipPath;
-        el.style.transformOrigin=item.transformOrigin;
-        el.style.letterSpacing=item.letterSpacing;
-        for(var fpi=0;fpi<item.wavePaths.length;fpi++){
-          var finalPath=item.wavePaths[fpi];
-          finalPath.el.style.strokeDasharray=finalPath.dasharray;
-          finalPath.el.style.strokeDashoffset=finalPath.dashoffset;
-          finalPath.el.style.willChange=finalPath.willChange;
-        }
-        for(var fdi=0;fdi<item.waveDots.length;fdi++){
-          var finalDot=item.waveDots[fdi];
-          finalDot.el.style.transform=finalDot.transform;
-          finalDot.el.style.transformOrigin=finalDot.transformOrigin;
-          finalDot.el.style.transformBox=finalDot.transformBox;
-        }
-        if(item.hintLine){
-          item.hintLine.el.style.transform=item.hintLine.transform;
-          item.hintLine.el.style.transformOrigin=item.hintLine.transformOrigin;
-        }
-      }
-      if(this.iContent&&this._introContentState){
-        this.iContent.style.zIndex=this._introContentState.zIndex;
-        this.iContent.style.pointerEvents=this._introContentState.pointerEvents;
-      }
-      for(var ci=0;ci<this._introChromeTargets.length;ci++){
-        var chrome=this._introChromeTargets[ci], chromeEl=chrome.el;
-        chromeEl.style.opacity=chrome.opacity;
-        chromeEl.style.transform=chrome.transform;
-        chromeEl.style.willChange=chrome.willChange;
-        chromeEl.style.clipPath=chrome.clipPath;
-        chromeEl.style.webkitClipPath=chrome.webkitClipPath;
-        chromeEl.style.zIndex=chrome.zIndex;
-        chromeEl.style.pointerEvents=chrome.pointerEvents;
-        chromeEl.style.transition=chrome.transition;
-      }
-      document.body.classList.remove('tt-intro-running');
-      this.introEl.style.display='none';
-      this.introEl.style.backgroundColor='';
-      this.introEl.style.pointerEvents='';
-      this.introEl.style.zIndex=this._introLayerZ;
-      if(this.iScene){
-        this.iScene.style.opacity='';
-        this.iScene.style.transform='';
-        this.iScene.style.clipPath='';
-        this.iScene.style.webkitClipPath='';
-      }
-      if(this.sky&&this._introHomeSky){
-        this._skyBackground=this._introHomeBackground||('linear-gradient(180deg,'+this._introHomeSky[0]+' 0%,'+this._introHomeSky[1]+' 100%)');
-        this.sky.style.background=this._skyBackground;
-        if(this.iSeaBg) this.iSeaBg.style.background=this._skyBackground;
-      }
-      this._layoutGeometryDirty=true;
-      this._sceneDirty=true;
-      this.introDone=true;
-      try{ sessionStorage.setItem('tt_intro_home_v5','1'); }catch(e){}
-    };
-
-    var clw=document.getElementById('intro-clouds');
-    this.iCloudWrap=clw;
-    if(clw){
-      clw.textContent='';
-      var cloudCount=this._introMobile?2:4;
-      for(var cw=0;cw<cloudCount;cw++){
-        var cd=document.createElement('div'), far=0.4+Math.random()*0.6;
-        cd.style.cssText='position:absolute;left:'+(-8+Math.random()*88).toFixed(1)+'%;top:'+(4+Math.random()*58).toFixed(1)+'%;width:'+((14+Math.random()*26)*far+12).toFixed(0)+'vw;height:'+((3.5+Math.random()*4)*far+2).toFixed(1)+'%;border-radius:50%;background:rgba(255,255,255,'+(0.46+far*0.28).toFixed(2)+');filter:blur('+(this._introMobile?8:12+far*6).toFixed(0)+'px)';
-        clw.appendChild(cd);
-      }
-    }
-
-    if(this.iWaves){
-      this.iWaves.textContent='';
-      var stripeCount=this._introMobile?5:8;
-      for(var ws=0;ws<stripeCount;ws++){
-        var sl=document.createElement('div');
-        sl.style.cssText='position:absolute;left:-6%;width:112%;top:'+(Math.pow(ws/(stripeCount-1),1.55)*96).toFixed(1)+'%;height:'+(1+ws*0.55).toFixed(1)+'px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,'+(0.16+ws*0.018).toFixed(2)+') 18%,rgba(255,255,255,'+(0.2+ws*0.022).toFixed(2)+') 50%,rgba(255,255,255,'+(0.16+ws*0.018).toFixed(2)+') 82%,rgba(255,255,255,0));border-radius:99px';
-        this.iWaves.appendChild(sl);
-      }
-      var glintCount=this._introMobile?6:14;
-      for(var g=0;g<glintCount;g++){
-        var gl=document.createElement('div'), gr=Math.random();
-        gl.style.cssText='position:absolute;left:'+(2+Math.random()*96).toFixed(1)+'%;top:'+(Math.pow(Math.random(),1.6)*62+2).toFixed(1)+'%;width:'+(2+gr*4).toFixed(1)+'px;height:'+(1+gr*1.5).toFixed(1)+'px;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 0 6px rgba(255,255,255,.72);opacity:'+(0.18+Math.random()*0.48).toFixed(2);
-        this.iWaves.appendChild(gl);
-      }
-    }
-
-    var stw=document.getElementById('intro-streaks');
-    this.iStreaks=[];
-    if(stw){
-      stw.textContent='';
-      var streakCount=this._introMobile?4:7;
-      for(var s=0;s<streakCount;s++){
-        var st=document.createElement('div');
-        st.style.cssText='position:absolute;left:'+(5+Math.random()*90).toFixed(1)+'%;top:0;width:'+(1+Math.random()*2).toFixed(1)+'px;height:'+(14+Math.random()*22).toFixed(0)+'vh;border-radius:3px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.75),rgba(255,255,255,0));opacity:0;will-change:transform,opacity';
-        st._st=Math.random(); st._sp2=0.6+Math.random()*0.8;
-        stw.appendChild(st); this.iStreaks.push(st);
-      }
-    }
-
-    var bwrap=document.getElementById('intro-bubbles');
-    this.iBubs=[];
-    if(bwrap){
-      bwrap.textContent='';
-      var bubbleCount=this._introMobile?10:18;
-      for(var b=0;b<bubbleCount;b++){
-        var bu=document.createElement('div'), bs=5+Math.random()*(this._introMobile?12:18);
-        bu.style.cssText='position:absolute;left:'+(4+Math.random()*92).toFixed(1)+'%;top:0;width:'+bs.toFixed(0)+'px;height:'+bs.toFixed(0)+'px;border-radius:50%;border:1.5px solid rgba(255,255,255,.82);background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.52),rgba(255,255,255,.04) 62%);opacity:0;will-change:transform,opacity';
-        bu._st=Math.random(); bu._wob=Math.random()*6.28; bu._spd=0.7+Math.random()*0.6;
-        bwrap.appendChild(bu); this.iBubs.push(bu);
-      }
-    }
-
-    var dwrap=document.getElementById('intro-drops');
-    this.iDrops=[];
-    if(dwrap){
-      dwrap.textContent='';
-      var dropCount=this._introMobile?6:10;
-      for(var dp=0;dp<dropCount;dp++){
-        var dr=document.createElement('div'), ds2=3+Math.random()*7;
-        dr.style.cssText='position:absolute;left:'+(4+Math.random()*92).toFixed(1)+'%;top:0;width:'+ds2.toFixed(0)+'px;height:'+ds2.toFixed(0)+'px;border-radius:50%;background:rgba(255,255,255,.96);box-shadow:0 0 8px rgba(255,255,255,.72);opacity:0;will-change:transform,opacity';
-        dr._dx=Math.random()*2-1; dr._vy=0.7+Math.random()*0.5; dr._st=Math.random();
-        dwrap.appendChild(dr); this.iDrops.push(dr);
-      }
-    }
-
-    // Give every descending particle a real HOME coordinate to settle into.
-    var assemblyTargets=this._introHomeAssembly.filter(function(item){ return item.kind!=='ghost'; });
-    var vw=window.innerWidth||1, vh=window.innerHeight||1;
-    if(assemblyTargets.length){
-      for(var bt=0;bt<this.iBubs.length;bt++){
-        var bubbleTarget=assemblyTargets[bt%assemblyTargets.length], targetBubble=this.iBubs[bt];
-        targetBubble._targetX=bubbleTarget.targetX+vw*0.08-targetBubble.offsetLeft;
-        targetBubble._targetY=bubbleTarget.targetY+vh*0.1384;
-      }
-      for(var stt=0;stt<this.iStreaks.length;stt++){
-        var streakTarget=assemblyTargets[(stt+1)%assemblyTargets.length], targetStreak=this.iStreaks[stt];
-        targetStreak._targetX=streakTarget.targetX+vw*0.08-targetStreak.offsetLeft;
-        targetStreak._targetY=streakTarget.targetY+vh*0.07;
-      }
-    }
-
-    this.introStart=performance.now();
-    this.introDone=false;
-    document.body.classList.add('tt-intro-running');
-    this.introEl.style.display='block';
-    this._introSkip=()=>this.skipIntro();
-    window.addEventListener('wheel',this._introSkip,{passive:true});
-    window.addEventListener('touchmove',this._introSkip,{passive:true});
-    window.addEventListener('pointerdown',this._introSkip,{passive:true});
-    this._introTimer=setTimeout(this._finishIntro,this.INTRO_MS+240);
+    this.initIntroV2();
   }
 
-  // ===== Intro v2 (preview): we dive. From just above the sea we plunge through the surface,
-  // a rush of bubbles passes, and as we sink the real Home settles into place under the water. =====
+  // ===== Intro (preview): we dive. From just above the sea we lean in and go under in one continuous move:
+  // the waterline sweeps up the frame (half above, half below), our own trail of bubbles streams up past us,
+  // and the light from the surface above becomes the colour of the site, where Home settles into focus. =====
   initIntroV2(){
     var self=this;
     if(this.introEl) this.introEl.style.display='none';
@@ -1068,23 +565,34 @@ class Component extends DCLogic {
     var dpr=Math.min(window.devicePixelRatio||1, mobile?1.5:2);
     cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
     var c=cv.getContext('2d');
-    // timeline (ms): look at the sea, plunge, the rush under water, sink and settle
-    var T={look:650, hit:1050, under:1150, reveal:1350, settled:mobile?3100:3400};
+    // timeline (ms): lean toward the sea, the waterline sweeps up through the frame, look up from below, Home settles
+    var T={cross0:900, cross1:1380, reveal:1800, settled:mobile?3400:3700};
     var homeSky=this.skyColors(this.P[this.mood].stops,0.2);
     var hex=function(h){ h=String(h); var m=h.match(/\d+/g); if(h.indexOf('rgb')===0&&m) return m.slice(0,3).map(Number); h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; };
     var waterTop=hex(homeSky[0]), waterBot=hex(homeSky[1]);
-    var rgb=function(a,al){ return 'rgba('+a[0]+','+a[1]+','+a[2]+','+(al==null?1:al)+')'; };
-    var ease=function(x){ x=Math.max(0,Math.min(1,x)); return 1-Math.pow(1-x,3); };
-    var easeIn=function(x){ x=Math.max(0,Math.min(1,x)); return x*x*x; };
-    var smooth=function(a,b,x){ var k=Math.max(0,Math.min(1,(x-a)/(b-a))); return k*k*(3-2*k); };
-    // bubbles of the plunge: many, big near the start, rushing up past the camera
-    var B=[]; for(var i=0;i<(mobile?90:180);i++) B.push({x:Math.random(),y:Math.random()*1.6+0.2,r:Math.pow(Math.random(),2.2)*(mobile?20:30)+2,sp:Math.random()*0.8+0.6,wob:Math.random()*6.28,late:Math.random()});
+    var rgb=function(a,al){ return 'rgba('+Math.round(a[0])+','+Math.round(a[1])+','+Math.round(a[2])+','+(al==null?1:al)+')'; };
+    var shade=function(a,k,d){ return [a[0]-d[0]*k,a[1]-d[1]*k,a[2]-d[2]*k]; };
+    var cl=function(x){ return Math.max(0,Math.min(1,x)); };
+    var ease=function(x){ x=cl(x); return 1-Math.pow(1-x,3); };
+    var easeIn=function(x){ x=cl(x); return x*x*x; };
+    var inOut=function(x){ x=cl(x); return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; };
+    var smooth=function(a,b,x){ var k=cl((x-a)/(b-a)); return k*k*(3-2*k); };
+    var gauss=function(){ return (Math.random()+Math.random()+Math.random()-1.5)/1.5; };
     // sun sparkles on the sea: position along the sun road (u), distance (v), twinkle rate
     var S=[]; for(var si=0;si<(mobile?90:170);si++){ var u=(Math.random()+Math.random()+Math.random())/1.5-1; S.push({u:u,v:Math.random(),f:Math.random()*5+2,ph:Math.random()*6.28}); }
     var glint=document.createElement('canvas'); glint.width=64; glint.height=20;
     (function(){ var gc=glint.getContext('2d'), gg=gc.createRadialGradient(32,10,0,32,10,32); gg.addColorStop(0,'rgba(255,252,238,1)'); gg.addColorStop(0.25,'rgba(255,248,226,.6)'); gg.addColorStop(1,'rgba(255,248,226,0)'); gc.setTransform(1,0,0,0.31,0,6.9); gc.fillStyle=gg; gc.fillRect(0,0,64,64); })();
-    // droplets thrown up at the splash
-    var D=[]; for(var d=0;d<(mobile?40:80);d++) D.push({x:0.5+(Math.random()-0.5)*0.9,vx:(Math.random()-0.5)*0.9,vy:-(Math.random()*1.6+0.6),r:Math.random()*3+1});
+    // our trail: bubbles born where we went in (bottom centre), mostly in the first moments, big first then small
+    var B=[]; for(var i=0;i<(mobile?100:200);i++){
+      var bf=Math.pow(Math.random(),1.8);
+      B.push({birth:T.cross0+60+bf*1100, x0:0.5+gauss()*(0.24-0.12*bf), dir:gauss()*(1.4-bf), sp:(0.85+Math.random()*0.8-0.3*bf)*H, r:(3+Math.pow(Math.random(),2)*(mobile?26:38))*(1-0.6*bf), wob:Math.random()*6.28});
+    }
+    // spray thrown up off the waterline as it passes
+    var D=[]; for(var d=0;d<(mobile?36:70);d++) D.push({x:Math.random(), vy:-(0.35+Math.random()*0.9), vx:(Math.random()-0.5)*0.3, r:Math.random()*2.6+0.8, t0:T.cross0+Math.random()*(T.cross1-T.cross0)*0.7});
+    // light shafts from the surface, seen from below
+    var R=[]; for(var ri=0;ri<4;ri++) R.push({x:0.14+ri*0.24+Math.random()*0.06, w:0.12+Math.random()*0.08, ph:Math.random()*6.28});
+    var shaftSprite=document.createElement('canvas'); shaftSprite.width=64; shaftSprite.height=256;
+    (function(){ var sc=shaftSprite.getContext('2d'); var hg=sc.createLinearGradient(0,0,64,0); hg.addColorStop(0,'rgba(220,246,250,0)'); hg.addColorStop(0.5,'rgba(220,246,250,1)'); hg.addColorStop(1,'rgba(220,246,250,0)'); sc.fillStyle=hg; sc.fillRect(0,0,64,256); sc.globalCompositeOperation='destination-in'; var vg=sc.createLinearGradient(0,0,0,256); vg.addColorStop(0,'rgba(0,0,0,1)'); vg.addColorStop(1,'rgba(0,0,0,0)'); sc.fillStyle=vg; sc.fillRect(0,0,64,256); })();
     // the real Home starts below us, soft and out of focus, and the chrome waits
     var home=document.getElementById('c-home');
     var chrome=['brand','lang-switcher','chapnav','progress'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
@@ -1098,90 +606,119 @@ class Component extends DCLogic {
     };
     setHome(0);
     var released=false, finished=false, chromeShown=false, skipShift=0;
-    function waterline(y,ts,amp){
-      c.beginPath();
-      for(var x=0;x<=W+16;x+=16){ var yy=y+Math.sin(x*0.014+ts*2.4)*amp+Math.sin(x*0.039-ts*1.7)*amp*0.5; if(x===0)c.moveTo(x,yy); else c.lineTo(x,yy); }
+    // the waterline: a gently tilted, rippling edge; trace it left to right
+    function lineY(x,base,ts,amp){ return base+(x-W/2)*0.06+Math.sin(x*0.012+ts*3.1)*amp+Math.sin(x*0.031-ts*2.2)*amp*0.45; }
+    function traceLine(base,ts,amp){ for(var x=0;x<=W+20;x+=20){ var y=lineY(x,base,ts,amp); if(x===0) c.moveTo(x,y); else c.lineTo(x,y); } }
+    function clipAbove(base,ts,amp){ c.beginPath(); c.moveTo(0,-10); c.lineTo(W+20,-10); c.lineTo(W+20,lineY(W+20,base,ts,amp)); for(var x=W;x>=0;x-=20) c.lineTo(x,lineY(x,base,ts,amp)); c.closePath(); c.clip(); }
+    function clipBelow(base,ts,amp){ c.beginPath(); c.moveTo(0,H+10); c.lineTo(W+20,H+10); c.lineTo(W+20,lineY(W+20,base,ts,amp)); for(var x=W;x>=0;x-=20) c.lineTo(x,lineY(x,base,ts,amp)); c.closePath(); c.clip(); }
+
+    function drawAbove(t,ts){
+      var approach=easeIn(t/T.cross0);                       // slow lean, then the drop toward the water
+      var hy=H*0.3-approach*H*0.36-Math.max(0,(t-T.cross0)/1000)*H*0.3;
+      var sky=c.createLinearGradient(0,0,0,Math.max(1,hy));
+      sky.addColorStop(0,'#8cc3d8'); sky.addColorStop(1,'#eef8f5');
+      c.fillStyle=sky; c.fillRect(0,0,W,Math.max(0,hy));
+      var sea=c.createLinearGradient(0,hy,0,H);
+      sea.addColorStop(0,'#bfe4e6'); sea.addColorStop(0.25,'#6fb7c6'); sea.addColorStop(1,'#1f6a86');
+      c.fillStyle=sea; c.fillRect(0,Math.max(0,hy),W,H);
+      var near=1+approach*3;
+      for(var g=0;g<S.length;g++){
+        var sp=S[g], depthK=Math.pow(sp.v,1.6);
+        var gy=hy+depthK*(H-hy)*1.05, spread=W*(0.06+0.42*depthK);
+        var gx=W*0.5+sp.u*spread+Math.sin(ts*0.7+sp.ph)*8;
+        var tw=Math.max(0,Math.sin(ts*sp.f+sp.ph)); tw=tw*tw*tw;
+        var sz=(1.2+depthK*5)*near*(0.6+0.8*tw);
+        c.globalAlpha=0.25+0.75*tw;
+        c.drawImage(glint,gx-sz*2,gy-sz*0.6,sz*4,sz*1.2);
+      }
+      c.globalAlpha=1;
+      var sun=c.createRadialGradient(W*0.5,hy,0,W*0.5,hy,W*0.5);
+      sun.addColorStop(0,'rgba(255,244,214,.95)'); sun.addColorStop(1,'rgba(255,246,222,0)');
+      c.fillStyle=sun; c.fillRect(0,hy-W*0.5,W,W);
     }
+
+    // under the water: deep at first, brightening into exactly the colour of the site's sky
+    function drawUnder(t,ts,surfaceY,alpha){
+      var deepK=1-smooth(T.cross0,T.reveal+400,t);
+      var top=shade(waterTop,deepK,[95,62,45]), bot=shade(waterBot,deepK,[120,90,62]);
+      var wg=c.createLinearGradient(0,0,0,H);
+      wg.addColorStop(0,rgb(top,alpha)); wg.addColorStop(1,rgb(bot,alpha));
+      c.fillStyle=wg; c.fillRect(0,0,W,H);
+      // the bright underside of the surface just above us, and the light that falls from it
+      var glow=(1-smooth(T.cross1+200,T.reveal+700,t));
+      if(glow>0.01){
+        var gTop=Math.max(-H*0.2,surfaceY);
+        var ceil=c.createLinearGradient(0,gTop,0,gTop+H*0.55);
+        ceil.addColorStop(0,'rgba(240,252,255,'+(0.8*glow).toFixed(3)+')');
+        ceil.addColorStop(0.12,'rgba(220,246,250,'+(0.26*glow).toFixed(3)+')');
+        ceil.addColorStop(1,'rgba(220,246,250,0)');
+        c.fillStyle=ceil; c.fillRect(0,Math.max(0,gTop),W,H*0.6);
+        c.globalCompositeOperation='lighter';
+        for(var ri=0;ri<R.length;ri++){
+          var rr=R[ri], sway=Math.sin(ts*0.6+rr.ph)*W*0.02, x0=rr.x*W+sway, w=rr.w*Math.max(W,H*1.1), y0=Math.max(0,gTop);
+          c.save(); c.globalAlpha=(mobile?0.13:0.2)*glow*(0.7+0.3*Math.sin(ts*1.3+rr.ph));
+          c.setTransform(dpr*w/64,0,dpr*0.16,dpr*(H*0.9)/256,dpr*(x0-w/2),dpr*y0);
+          c.drawImage(shaftSprite,0,0); c.restore();
+        }
+        c.setTransform(dpr,0,0,dpr,0,0);
+        c.globalCompositeOperation='source-over';
+      }
+    }
+
+    function drawBubbles(t,ts,fade){
+      if(fade<=0.01) return;
+      c.lineWidth=1.3;
+      for(var bi=0;bi<B.length;bi++){
+        var b=B[bi], age=(t-b.birth)/1000; if(age<0) continue;
+        var dist=b.sp*age*(1-0.18*Math.min(age,2));
+        var by=H*1.08-dist; if(by<-60) continue;
+        var bx=b.x0*W+b.dir*W*0.16*age+Math.sin(ts*4+b.wob)*(3+b.r*0.15);
+        var a=fade*(age<0.12?age/0.12:1);
+        c.fillStyle='rgba(255,255,255,'+(0.14*a).toFixed(3)+')';
+        c.strokeStyle='rgba(255,255,255,'+(0.72*a).toFixed(3)+')';
+        c.beginPath(); c.arc(bx,by,b.r,0,6.283); c.fill(); c.stroke();
+        c.fillStyle='rgba(255,255,255,'+(0.8*a).toFixed(3)+')';
+        c.beginPath(); c.arc(bx-b.r*0.35,by-b.r*0.35,Math.max(0.8,b.r*0.22),0,6.283); c.fill();
+      }
+    }
+
     function frame(now){
       if(finished) return;
       var t=now-self._introV2Start+skipShift, ts=t/1000;
       c.setTransform(dpr,0,0,dpr,0,0);
       c.clearRect(0,0,W,H);
-      // ---- 1) above the water: we look down at the sea; the surface swells toward us, then rushes up
-      if(t<T.under){
-        var approach=easeIn(t/T.hit);                       // slow lean, then the drop
-        var hy=H*0.3-approach*H*0.42;                        // horizon climbs off the top as we fall
-        var sky=c.createLinearGradient(0,0,0,Math.max(1,hy));
-        sky.addColorStop(0,'#8cc3d8'); sky.addColorStop(1,'#eef8f5');
-        c.fillStyle=sky; c.fillRect(0,0,W,Math.max(0,hy));
-        var sea=c.createLinearGradient(0,hy,0,H);
-        sea.addColorStop(0,'#bfe4e6'); sea.addColorStop(0.25,'#6fb7c6'); sea.addColorStop(1,'#1f6a86');
-        c.fillStyle=sea; c.fillRect(0,Math.max(0,hy),W,H);
-        // sun sparkles on the water (a glittering road of light), growing as we come close
-        var near=1+approach*3;
-        for(var g=0;g<S.length;g++){
-          var sp=S[g], depthK=Math.pow(sp.v,1.6);
-          var gy=hy+depthK*(H-hy)*1.05, spread=W*(0.06+0.42*depthK);
-          var gx=W*0.5+sp.u*spread+Math.sin(ts*0.7+sp.ph)*8;
-          var tw=Math.max(0,Math.sin(ts*sp.f+sp.ph)); tw=tw*tw*tw;
-          var sz=(1.2+depthK*5)*near*(0.6+0.8*tw);
-          c.globalAlpha=0.25+0.75*tw;
-          c.drawImage(glint,gx-sz*2,gy-sz*0.6,sz*4,sz*1.2);
-        }
-        c.globalAlpha=1;
-        var sun=c.createRadialGradient(W*0.5,hy,0,W*0.5,hy,W*0.5);
-        sun.addColorStop(0,'rgba(255,244,214,.95)'); sun.addColorStop(1,'rgba(255,246,222,0)');
-        c.fillStyle=sun; c.fillRect(0,hy-W*0.5,W,W);
-      }
-      // ---- 2) the hit: a white burst of foam and droplets as we break the surface
-      var hit=Math.max(0,1-Math.abs(t-T.hit)/170);
-      if(t>T.hit-200&&t<T.reveal+300){
-        var fk=Math.max(0,(t-T.hit+200)/700);
+      var k=inOut((t-T.cross0)/(T.cross1-T.cross0));
+      var amp=(mobile?7:11)*(0.4+0.6*Math.sin(Math.PI*cl((t-T.cross0)/(T.cross1-T.cross0))));
+      var wl=H*1.12-k*H*1.34;                                // the waterline: below the frame -> above it
+      var bgA=1-smooth(T.reveal,T.reveal+900,t);             // the opaque water gives way to the real site
+      if(t<T.cross0){
+        drawAbove(t,ts);
+      } else if(t<T.cross1+60){
+        // ---- the crossing: above the line the sea we were looking at, below it the water we are entering
+        c.save(); clipAbove(wl,ts,amp); drawAbove(t,ts);
+        // spray thrown up off the line
         for(var di=0;di<D.length;di++){
-          var dr=D[di], dx=(dr.x+dr.vx*fk)*W, dy=H*0.55+(dr.vy*fk+fk*fk*1.4)*H*0.5;
-          c.fillStyle='rgba(255,255,255,'+(0.9*(1-fk)).toFixed(3)+')';
-          c.beginPath(); c.arc(dx,dy,dr.r*(1+fk*2),0,6.283); c.fill();
+          var dr=D[di], fk=(t-dr.t0)/700; if(fk<0||fk>1) continue;
+          var sx=dr.x*W+dr.vx*fk*W*0.2, sy=lineY(dr.x*W,wl,ts,amp)+dr.vy*fk*H*0.22+fk*fk*H*0.12;
+          c.fillStyle='rgba(255,255,255,'+(0.85*(1-fk)).toFixed(3)+')';
+          c.beginPath(); c.arc(sx,sy,dr.r,0,6.283); c.fill();
         }
+        c.restore();
+        c.save(); clipBelow(wl,ts,amp); drawUnder(t,ts,wl,1); drawBubbles(t,ts,1); c.restore();
+        // the meniscus: a bright rippling edge with a soft halo on both sides
+        c.save();
+        c.beginPath(); traceLine(wl,ts,amp);
+        c.strokeStyle='rgba(255,255,255,.35)'; c.lineWidth=26; c.filter='blur(8px)'; c.stroke(); c.filter='none';
+        c.beginPath(); traceLine(wl,ts,amp);
+        c.strokeStyle='rgba(255,255,255,.92)'; c.lineWidth=2.4; c.stroke();
+        c.restore();
+      } else {
+        // ---- below: look up at the bright surface drifting away; its light becomes the site's sky
+        var surfaceY=wl-ease((t-T.cross1)/1600)*H*0.25;
+        if(bgA>0) drawUnder(t,ts,surfaceY,bgA);
+        drawBubbles(t,ts,1-smooth(T.reveal+300,T.settled-200,t));
       }
-      // ---- 3) under the water: the sea fills the frame, the bright surface recedes above, bubbles rush past
-      if(t>=T.under-60){
-        var uk=(t-T.under)/(T.settled-T.under);
-        var bgA=1-smooth(T.reveal,T.reveal+900,t);           // the opaque water gives way to the real site
-        if(bgA>0){
-          var wg=c.createLinearGradient(0,0,0,H);
-          // first moments under: deeper teal, brightening toward the Home water
-          var deepK=1-smooth(T.under,T.reveal+500,t);
-          var top2=[waterTop[0]-70*deepK,waterTop[1]-45*deepK,waterTop[2]-35*deepK].map(Math.round), bot2=[waterBot[0]-95*deepK,waterBot[1]-70*deepK,waterBot[2]-50*deepK].map(Math.round);
-          wg.addColorStop(0,rgb(top2,bgA)); wg.addColorStop(1,rgb(bot2,bgA));
-          c.fillStyle=wg; c.fillRect(0,0,W,H);
-        }
-        // the surface we just broke, seen from below, drifting up and away
-        var cy=H*0.05-ease((t-T.under)/1500)*H*0.4;
-        if(cy>-H*0.3){
-          var ceil=c.createLinearGradient(0,cy-40,0,cy+H*0.45);
-          ceil.addColorStop(0,'rgba(255,255,255,.95)'); ceil.addColorStop(0.2,'rgba(255,255,255,.45)'); ceil.addColorStop(1,'rgba(255,255,255,0)');
-          c.fillStyle=ceil; c.fillRect(0,Math.max(0,cy-40),W,H*0.5);
-          c.strokeStyle='rgba(255,255,255,.95)'; c.lineWidth=3; waterline(cy,ts,10); c.stroke();
-        }
-        // the rush: bubbles fly up fast at first, then thin out and slow as we settle
-        var rush=1-smooth(0.15,0.85,uk);
-        c.lineWidth=1.4;
-        for(var bi=0;bi<B.length;bi++){
-          var b=B[bi]; if(b.late>0.35+0.65*rush) continue;
-          var travel=(t-T.under)/1000*(0.9*rush+0.18)*b.sp;
-          var by=(b.y-travel*1.4)*H, bx=b.x*W+Math.sin(ts*3+b.wob)*6*(1+b.r*0.08);
-          if(by<-60||by>H+60) continue;
-          var r=b.r*(0.6+0.4*rush);
-          c.fillStyle='rgba(255,255,255,'+(0.18*(0.4+rush)).toFixed(3)+')';
-          c.strokeStyle='rgba(255,255,255,'+(0.75*(0.35+rush*0.65)).toFixed(3)+')';
-          c.beginPath(); c.arc(bx,by,r,0,6.283); c.fill(); c.stroke();
-          c.fillStyle='rgba(255,255,255,'+(0.8*(0.35+rush*0.65)).toFixed(3)+')';
-          c.beginPath(); c.arc(bx-r*0.35,by-r*0.35,Math.max(0.8,r*0.22),0,6.283); c.fill();
-        }
-      }
-      // white-out at the moment of entry
-      if(hit>0){ c.fillStyle='rgba(255,255,255,'+(0.6*hit).toFixed(3)+')'; c.fillRect(0,0,W,H); }
-      // ---- 4) the site takes over underneath; Home rises out of the blue and settles
+      // ---- the site takes over underneath; Home rises out of the blue and settles
       if(!released&&t>=T.reveal){
         released=true;
         self.sky.style.background='linear-gradient(180deg,'+homeSky[0]+' 0%,'+homeSky[1]+' 100%)';
@@ -1199,8 +736,8 @@ class Component extends DCLogic {
       }
       requestAnimationFrame(frame);
     }
-    // any input: jump straight to the plunge
-    var skip=function(){ var t=performance.now()-self._introV2Start+skipShift; if(t<T.hit-150) skipShift+=T.hit-150-t; };
+    // any input: jump straight to the dive
+    var skip=function(){ var t=performance.now()-self._introV2Start+skipShift; if(t<T.cross0-150) skipShift+=T.cross0-150-t; };
     window.addEventListener('wheel',skip,{passive:true}); window.addEventListener('touchstart',skip,{passive:true}); window.addEventListener('keydown',skip); cv.addEventListener('pointerdown',skip);
     this.introDone=false;
     this._introV2Start=performance.now();
@@ -1214,182 +751,6 @@ class Component extends DCLogic {
     if(elapsed<handoffStart) this.introStart=performance.now()-handoffStart;
   }
 
-  updateIntro(now){
-    if(this._introV2) return;
-    if(!this.introEl){ this.introDone=true; return; }
-    var elapsed=now-this.introStart;
-    var diveP=this.cl(elapsed/this.INTRO_PLUNGE_MS,0,1);
-    var t=elapsed/1000;
-    var handoff=this.smooth(this.INTRO_PLUNGE_MS*0.56,this.INTRO_MS*0.82,elapsed);
-    var structure=this.smooth(0.02,0.98,handoff);
-    var backgroundBlend=this.smooth(0.04,0.72,handoff);
-    var lightSettle=this.smooth(0.38,0.78,handoff);
-    var curtain=this.smooth(0.52,0.90,handoff);
-    var plunge=this.smooth(0.04,0.36,diveP);
-    var deep=this.smooth(0.20,0.48,diveP);
-    var entryHit=this.smooth(0.13,0.21,diveP)*(1-this.smooth(0.29,0.38,diveP));
-    var impact=entryHit;
-    var shakeScale=this._introMobile?0.46:0.88;
-    var shx=(Math.sin(t*78)*10+Math.sin(t*31)*4)*impact*shakeScale;
-    var shy=(Math.cos(t*69)*7+Math.sin(t*27)*3)*impact*shakeScale;
-    var skyY=-22-76*plunge;
-    var seaY=104-110*plunge;
-
-    this.introEl.style.opacity='1';
-    this.introEl.style.transform='none';
-    this.introEl.style.backgroundColor='transparent';
-    this.introEl.style.pointerEvents=handoff>0.72?'none':'auto';
-
-    // The underwater plate and the live HOME sky share one continuously mixed gradient.
-    var homeSky=this._introHomeSky||['#eef6f4','#dceef0'];
-    var sharedTop=this.mix(this._introWaterTop||'#c9ecee',homeSky[0],backgroundBlend);
-    var sharedBottom=this.mix(this._introWaterBottom||'#5b9fb0',homeSky[1],backgroundBlend);
-    var sharedBackground=backgroundBlend>=0.999&&this._introHomeBackground?this._introHomeBackground:'linear-gradient(180deg,'+sharedTop+' 0%,'+sharedBottom+' 100%)';
-    if(this.iSeaBg){ this.iSeaBg.style.opacity='1'; this.iSeaBg.style.background=sharedBackground; }
-    if(this.sky&&this._skyBackground!==sharedBackground){ this.sky.style.background=sharedBackground; this._skyBackground=sharedBackground; }
-
-    // Keep the scene opaque. Its water texture withdraws as a moving surface mask.
-    if(this.iScene){
-      this.iScene.style.opacity='1';
-      this.iScene.style.transform='translate3d(0,0,0) scale(1)';
-      var sceneClip='none';
-      if(curtain>=0.999){
-        sceneClip='inset(0 0 100% 0)';
-      }else if(curtain>0.001){
-        var edge=108-118*curtain;
-        var edgeA=edge+Math.sin(t*2.4)*0.9;
-        var edgeB=edge+Math.sin(t*2.1+1.8)*1.1;
-        var edgeC=edge+Math.sin(t*2.7+3.2)*0.8;
-        sceneClip='polygon(0 0,100% 0,100% '+edge.toFixed(2)+'%,82% '+edgeA.toFixed(2)+'%,64% '+edgeB.toFixed(2)+'%,46% '+edgeC.toFixed(2)+'%,28% '+edgeA.toFixed(2)+'%,12% '+edgeB.toFixed(2)+'%,0 '+edge.toFixed(2)+'%)';
-      }
-      this.iScene.style.clipPath=sceneClip;
-      this.iScene.style.webkitClipPath=sceneClip;
-    }
-    if(this.iSky) this.iSky.style.transform='translate3d('+shx.toFixed(1)+'px,calc('+skyY.toFixed(2)+'% + '+shy.toFixed(1)+'px),0) scale('+(1+impact*0.025).toFixed(3)+')';
-    if(this.iCloudWrap) this.iCloudWrap.style.transform='translate3d(0,'+(-plunge*18).toFixed(1)+'vh,0)';
-    if(this.iWaves) this.iWaves.style.transform='scale('+(1+0.72*plunge).toFixed(3)+')';
-    if(this.iSea) this.iSea.style.transform='translate3d('+shx.toFixed(1)+'px,'+seaY.toFixed(2)+'%,0) scale('+(1+impact*0.025).toFixed(3)+')';
-
-    var underwater=plunge;
-    if(this.iUnder) this.iUnder.style.opacity=(underwater*(1-lightSettle)).toFixed(3);
-    if(this.iOverlight){
-      this.iOverlight.style.transformOrigin='50% 0%';
-      this.iOverlight.style.transform='translate3d(0,'+(-deep*18).toFixed(1)+'%,0) scale('+(0.96-deep*0.1).toFixed(3)+')';
-      this.iOverlight.style.opacity=(0.75-deep*0.28).toFixed(3);
-    }
-    if(this.iShade) this.iShade.style.opacity=(deep*0.92).toFixed(3);
-
-    var descentMotion=plunge*(1-deep*0.42);
-    for(var si=0;si<this.iStreaks.length;si++){
-      var streak=this.iStreaks[si];
-      if(descentMotion<0.01){ streak.style.opacity='0'; continue; }
-      var phase=((diveP*4.2/streak._sp2)+streak._st)%1;
-      var normalStreakY=(112-phase*142)*(window.innerHeight||1)/100;
-      var targetStreakX=Number.isFinite(streak._targetX)?streak._targetX:0;
-      var targetStreakY=Number.isFinite(streak._targetY)?streak._targetY:normalStreakY;
-      var streakX=targetStreakX*structure;
-      var streakY=normalStreakY*(1-structure)+targetStreakY*structure;
-      var streakScale=(1+descentMotion*0.75)*(1-structure*0.94);
-      streak.style.transform='translate3d('+streakX.toFixed(1)+'px,'+streakY.toFixed(1)+'px,0) scaleY('+streakScale.toFixed(3)+')';
-      streak.style.opacity=(Math.sin(Math.PI*phase)*descentMotion*0.82).toFixed(3);
-    }
-
-    for(var bi=0;bi<this.iBubs.length;bi++){
-      var bubble=this.iBubs[bi];
-      if(underwater<0.02){ bubble.style.opacity='0'; continue; }
-      var bp=((diveP*2.8/bubble._spd)+bubble._st)%1;
-      var normalBubbleX=Math.sin(bp*7+bubble._wob)*16;
-      var normalBubbleY=(112-bp*136)*(window.innerHeight||1)/100;
-      var targetBubbleX=Number.isFinite(bubble._targetX)?bubble._targetX:normalBubbleX;
-      var targetBubbleY=Number.isFinite(bubble._targetY)?bubble._targetY:normalBubbleY;
-      var bubbleX=normalBubbleX*(1-structure)+targetBubbleX*structure;
-      var bubbleY=normalBubbleY*(1-structure)+targetBubbleY*structure;
-      var bubbleScale=(0.65+bp*0.75)*(1-structure*0.95);
-      bubble.style.transform='translate3d('+bubbleX.toFixed(1)+'px,'+bubbleY.toFixed(1)+'px,0) scale('+bubbleScale.toFixed(3)+')';
-      bubble.style.opacity=(Math.sin(Math.PI*bp)*underwater*0.82).toFixed(3);
-    }
-
-    for(var di=0;di<this.iDrops.length;di++) this.iDrops[di].style.opacity='0';
-
-    if(this.iFoamL){
-      this.iFoamL.style.opacity=Math.min(1,entryHit*1.35).toFixed(3);
-      this.iFoamL.style.transform='translate3d(0,'+(seaY-3).toFixed(1)+'vh,0) scaleY('+(1+impact*0.9).toFixed(2)+')';
-    }
-    if(this.iFlash){
-      this.iFlash.style.opacity=Math.min(0.58,entryHit*0.52).toFixed(3);
-      this.iFlash.style.transform='scale('+(0.82+plunge*0.06).toFixed(3)+')';
-    }
-    if(this.iSkip){
-      this.iSkip.style.color=this.mix('#375a64','#e8f6fa',underwater);
-      this.iSkip.style.opacity=(this.smooth(0.01,0.05,diveP)*(1-this.smooth(0.18,0.28,diveP))*0.55).toFixed(3);
-    }
-
-    // Build the actual HOME in the underwater frame with masks, drawn paths and scale.
-    var assemblySchedule={
-      ghost:[0.00,0.34], eyebrow:[0.06,0.32], wave:[0.08,0.60], title:[0.16,0.52],
-      subtitle:[0.34,0.66], description:[0.46,0.76], actions:[0.58,0.88], hint:[0.70,0.97]
-    };
-    for(var ai=0;ai<this._introHomeAssembly.length;ai++){
-      var assembly=this._introHomeAssembly[ai];
-      var timing=assemblySchedule[assembly.kind]||[0.18,0.72];
-      var aq=this.smooth(timing[0],timing[1],handoff);
-      var ae=1-Math.pow(1-aq,3);
-      var clip='inset(0 0 0 0)', assemblyTransform=assembly.targetTransform||'';
-      assembly.el.style.opacity=String(assembly.finalOpacity);
-      if(assembly.kind==='ghost'){
-        clip='circle('+(ae*150).toFixed(2)+'% at 50% 50%)';
-        assemblyTransform+=' scale('+(0.72+ae*0.28).toFixed(4)+')';
-      }else if(assembly.kind==='title'){
-        clip='inset(0 '+((1-ae)*50).toFixed(2)+'% 0 '+((1-ae)*50).toFixed(2)+'%)';
-        assemblyTransform+=' translate3d(0,'+((1-ae)*12).toFixed(1)+'px,0) scaleX('+(0.72+ae*0.28).toFixed(4)+') scaleY('+(0.92+ae*0.08).toFixed(4)+')';
-      }else if(assembly.kind==='eyebrow'){
-        clip='inset(0 '+((1-ae)*50).toFixed(2)+'% 0 '+((1-ae)*50).toFixed(2)+'%)';
-        assemblyTransform+=' translate3d(0,'+((1-ae)*8).toFixed(1)+'px,0) scaleX('+(0.78+ae*0.22).toFixed(4)+')';
-        assembly.el.style.letterSpacing=(0.28+(1-ae)*0.18).toFixed(3)+'em';
-      }else if(assembly.kind==='subtitle'||assembly.kind==='description'){
-        clip='inset('+((1-ae)*100).toFixed(2)+'% 0 0 0)';
-        assemblyTransform+=' translate3d(0,'+((1-ae)*18).toFixed(1)+'px,0)';
-      }else if(assembly.kind==='actions'){
-        clip='inset(0 '+((1-ae)*50).toFixed(2)+'% 0 '+((1-ae)*50).toFixed(2)+'% round 999px)';
-        assemblyTransform+=' scaleX('+(0.76+ae*0.24).toFixed(4)+')';
-      }else if(assembly.kind==='wave'){
-        clip='inset(0 '+((1-ae)*50).toFixed(2)+'% 0 '+((1-ae)*50).toFixed(2)+'%)';
-        assemblyTransform+=' translate3d(0,'+((1-ae)*16).toFixed(1)+'px,0)';
-      }else{
-        clip='inset(0 0 '+((1-ae)*100).toFixed(2)+'% 0)';
-        assemblyTransform+=' translate3d(0,'+((1-ae)*14).toFixed(1)+'px,0)';
-      }
-      assembly.el.style.clipPath=clip;
-      assembly.el.style.webkitClipPath=clip;
-      assembly.el.style.transform=assemblyTransform.trim();
-      for(var api=0;api<assembly.wavePaths.length;api++){
-        var assemblyPath=assembly.wavePaths[api];
-        var pathQ=this.smooth(api*0.07,Math.min(1,0.72+api*0.06),aq);
-        if(assemblyPath.length>0) assemblyPath.el.style.strokeDashoffset=(assemblyPath.length*(1-pathQ)).toFixed(2);
-      }
-      for(var adi=0;adi<assembly.waveDots.length;adi++){
-        var dotQ=this.smooth(0.56+adi*0.07,0.78+adi*0.055,aq);
-        assembly.waveDots[adi].el.style.transform='scale('+dotQ.toFixed(3)+')';
-      }
-      if(assembly.hintLine) assembly.hintLine.el.style.transform='scaleY('+this.smooth(0.05,0.72,aq).toFixed(3)+')';
-    }
-    for(var li=0;li<this._introChromeTargets.length;li++){
-      var chromeItem=this._introChromeTargets[li];
-      var cq=this.smooth(0.62+li*0.045,0.84+li*0.035,handoff);
-      var chromeFromLeft=chromeItem.index===0||chromeItem.index===3;
-      var chromeInset=((1-cq)*100).toFixed(2);
-      var chromeClip=chromeFromLeft?'inset(0 '+chromeInset+'% 0 0)':'inset(0 0 0 '+chromeInset+'%)';
-      chromeItem.el.style.opacity='1';
-      chromeItem.el.style.clipPath=chromeClip;
-      chromeItem.el.style.webkitClipPath=chromeClip;
-      chromeItem.el.style.transform=(chromeItem.transform?chromeItem.transform+' ':'')+'translate3d('+((chromeFromLeft?-42:42)*(1-cq)).toFixed(1)+'px,0,0)';
-    }
-
-    // The live HOME FX starts under the same water mask and continues after the handoff.
-    if(handoff>0.02&&this.ctx&&this.P&&this.P[this.mood]) this.draw(0,this.P[this.mood],this._introMobile);
-
-    if(elapsed>=this.INTRO_MS && this._finishIntro) this._finishIntro();
-  }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
   // utilities
            cl(v,a,b){return v<a?a:v>b?b:v;}
@@ -1415,7 +776,7 @@ class Component extends DCLogic {
       var el=this.motionEls[i], rect=el.getBoundingClientRect();
       el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};
     }
-    this.sections=['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+    this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
     this._railCenters=[];
     for(var si=0;si<this.sections.length;si++){
       var section=this.sections[si];
@@ -1428,11 +789,11 @@ class Component extends DCLogic {
     }
     this._depthKeys=this._buildDepthKeys(layoutHeight);
     if(this._bridgeRun && this._bridgeRun.phase!=='advancing'){
-      var anchor=this._bridgeRun.index===-1?this.transSec.offsetTop:this._bridgeOffsets[this._bridgeRun.index];
+      var anchor=this._bridgeOffsets[this._bridgeRun.index];
       if(Number.isFinite(anchor)) this.scroller.scrollTo({top:anchor,behavior:'auto'});
     }
     this._deepBookGeometry=null;
-    var bookEl=document.querySelector('html[data-intro-v2] .tt-book2 .tb-book')||document.getElementById('deep-book-svg');
+    var bookEl=document.querySelector('.tt-book2 .tb-scene');
     if(bookEl){
       var bookRect=bookEl.getBoundingClientRect();
       if(bookRect.width){
@@ -1448,7 +809,7 @@ class Component extends DCLogic {
   // The descent to the next layer happens between a chapter's bridge and the next chapter,
   // so the sea visibly gets deeper at each handoff instead of drifting with page length.
   _buildDepthKeys(layoutHeight){
-    var layers=[['c-home',0.2,0],['c-translation',0.26,60],['c-projects',0.34,200],['c-members',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
+    var layers=[['c-home',0.2,0],['c-projects',0.34,200],['c-members',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
     var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
     for(var i=0;i<layers.length;i++){
       var el=document.getElementById(layers[i][0]); if(!el) continue;
@@ -1456,9 +817,14 @@ class Component extends DCLogic {
       if(keys.length&&top<=keys[keys.length-1][0]) top=keys[keys.length-1][0]+1;
       keys.push([top,layers[i][1],layers[i][2]]);
       if(next&&next.offsetTop>top+2){
-        var hold=top+el.offsetHeight*0.5;
-        bridgeTops.forEach(function(b){ if(b>top&&b<next.offsetTop) hold=Math.max(hold,b); });
-        keys.push([Math.min(hold,next.offsetTop-1),layers[i][1],layers[i][2]]);
+        var hold=top+el.offsetHeight*0.5, bridge=null;
+        bridgeTops.forEach(function(b){ if(b>top&&b<next.offsetTop) bridge=b; });
+        // a bridge is the descent between two chapters: it sits halfway down in colour and depth,
+        // so its words already belong to the deeper water (light text once the sea has darkened)
+        if(bridge!=null){
+          keys.push([Math.min(hold,bridge-1),layers[i][1],layers[i][2]]);
+          keys.push([Math.min(bridge,next.offsetTop-1),(layers[i][1]+layers[i+1][1])/2,(layers[i][2]+layers[i+1][2])/2]);
+        } else keys.push([Math.min(hold,next.offsetTop-1),layers[i][1],layers[i][2]]);
       }
     }
     var maxScroll=Math.max(0,(layoutHeight||(scEl?scEl.scrollHeight:0))-(scEl?scEl.clientHeight:0));
@@ -1592,7 +958,6 @@ class Component extends DCLogic {
     }
     if(!this.introDone){
       if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);
-      this.updateIntro(frameNow);
       if(!this.introDone){
         this.raf=requestAnimationFrame(this.loop);
         return;
@@ -1616,7 +981,6 @@ class Component extends DCLogic {
     var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;
     if(fastMobile&&sceneDirty&&Object.keys(this._bridgeSeen).length){
       this.updateBridges(scEl.clientHeight);
-      if(this._bridgeSeen[-1]&&this.isNearViewport(this.transSec,scEl.clientHeight*0.35)) this.updateTranslation(scEl,(nowLoop-this.t0)/1000);
     }
     if(fastMobile && this._mobilePaletteFrame && frameNow-this._mobilePaletteFrame<90){
       this.scrollCenter=sc+scEl.clientHeight/2;
@@ -1660,6 +1024,7 @@ class Component extends DCLogic {
         ? '0 1px 2px rgba(255,255,255,'+(0.25+0.5*hs).toFixed(2)+'),0 0 18px rgba(255,255,255,'+(0.18+0.4*hs).toFixed(2)+')'
         : '0 1px 2px rgba(3,11,22,'+(0.35+0.45*hs).toFixed(2)+'),0 0 20px rgba(3,11,22,'+(0.25+0.45*hs).toFixed(2)+')';
       this.setCssVar(r,'--halo',halo);
+      this.setCssVar(r,'--deep-glow',tn.toFixed(3));
       // brand mark follows the same ink<->paper flip as the text
       if(!this._brandMark) this._brandMark=document.getElementById('brand-mark');
       if(this._brandMark){ var want = tn<0.5 ? 'assets/logo/mark-ink.png' : 'assets/logo/mark-paper.png'; if(this._brandMarkSrc!==want){ this._brandMark.src=want; this._brandMarkSrc=want; } }
@@ -1774,16 +1139,17 @@ class Component extends DCLogic {
     if(sceneDirty){
       // active section and progress are scroll-derived; keep their last values while idle.
       if(!this.sections||!this.sections.length){
-        this.sections=['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+        this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
       var act=0, line=vh2;
       for(var k=0;k<this.sections.length;k++){
         if(this.sections[k].getBoundingClientRect().top <= line) act=k;
       }
       if(act!==this.lastActive){
+        var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-news':5,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
         for(var j=0;j<7;j++){
           var nb=document.getElementById('nav-'+j); if(!nb) continue;
-          var on=j===act;
+          var on=j===actNav;
           nb.style.opacity = on?'1':'0.38';
           nb.style.color = on?'var(--accent,#0E6E7D)':'var(--ink,#141C30)';
           var dot=nb.querySelector('.nav-dot') || nb.querySelector('span:last-child');
@@ -1807,7 +1173,6 @@ class Component extends DCLogic {
       this.scrollCenter = sc + vh2;
       this.scrollP = p;
     }
-    if((sceneDirty||this._bridgeRun?.index===-1) && this.transSec && this.isNearViewport(this.transSec,scEl.clientHeight*0.35)) this.updateTranslation(scEl,tA);
     this.draw(n, pal, fastMobile);
     this.raf = requestAnimationFrame(this.loop);
   }
@@ -1960,10 +1325,9 @@ class Component extends DCLogic {
       bloom.addColorStop(0,'rgba(255,226,160,'+(0.55*awake).toFixed(3)+')'); bloom.addColorStop(0.3,'rgba(255,214,140,'+(0.2*awake).toFixed(3)+')'); bloom.addColorStop(1,'rgba(255,214,140,0)');
       c.globalCompositeOperation='screen';
       c.fillStyle=bloom; c.fillRect(0,0,W,H);
-      var colW=W*(0.04+0.05*awake)*(0.9+0.1*Math.sin(tw*1.3));
-      var column=c.createLinearGradient(0,aby,0,0);
-      column.addColorStop(0,'rgba(255,236,190,'+(0.45*awake).toFixed(3)+')'); column.addColorStop(1,'rgba(255,236,190,0)');
-      c.fillStyle=column; c.fillRect(abx-colW/2,0,colW,Math.max(0,aby));
+      var colW=W*(0.06+0.06*awake)*(0.9+0.1*Math.sin(tw*1.3));
+      if(!this._columnSprite){ var cs=document.createElement('canvas'); cs.width=64; cs.height=256; var cx=cs.getContext('2d'); var hg=cx.createLinearGradient(0,0,64,0); hg.addColorStop(0,'rgba(255,236,190,0)'); hg.addColorStop(0.5,'rgba(255,236,190,1)'); hg.addColorStop(1,'rgba(255,236,190,0)'); cx.fillStyle=hg; cx.fillRect(0,0,64,256); cx.globalCompositeOperation='destination-in'; var vg=cx.createLinearGradient(0,256,0,0); vg.addColorStop(0,'rgba(0,0,0,1)'); vg.addColorStop(1,'rgba(0,0,0,0)'); cx.fillStyle=vg; cx.fillRect(0,0,64,256); this._columnSprite=cs; }
+      if(aby>0){ c.globalAlpha=0.45*awake; c.drawImage(this._columnSprite,abx-colW/2,0,colW,aby); c.globalAlpha=1; }
       c.globalCompositeOperation='source-over';
     }
     var awakeNow=near>0.6;
@@ -2014,10 +1378,8 @@ class Component extends DCLogic {
     c.globalAlpha=1;
     if(fastMobile){
       if(this.inks && this.inks.length>4) this.inks.splice(0,this.inks.length-4);
-      this.transGlint=null;
     } else {
       this.drawInk(time);
-      this.drawGlint(this.transGlint, pal.accent2, time, 70);
     }
     this.drawRail(n, pal, time);
   }
@@ -2056,26 +1418,6 @@ class Component extends DCLogic {
     if(this.inks.length>14) this.inks.shift();
   }
 
-  // Shinkai-ish light particles: dissolving letters rise as glints/stars
-  drawGlint(g, accent, time, rise){
-    if(!g) return;
-    var c=this.ctx, ar=this.hx(accent);
-    if(!this._glints){ this._glints=Array.from({length:46},(_,i)=>({rx:Math.random()-0.5, ry:Math.random()-0.5, sp:Math.random()*0.5+0.4, ph:Math.random()*6.28, r:Math.random()*1.8+0.7})); }
-    for(var i=0;i<this._glints.length;i++){
-      var p=this._glints[i];
-      var t=(time*p.sp + p.ph)%1;
-      var x=g.x + p.rx*g.w*0.96;
-      var y=g.y + p.ry*g.h - t*rise;          // drift upward
-      var tw=0.5+0.5*Math.sin(time*3+p.ph);
-      var a=g.k*tw*(1-t)*0.9;
-      if(a<=0.01) continue;
-      c.globalAlpha=a*0.3; c.fillStyle='rgb('+ar[0]+','+ar[1]+','+ar[2]+')';
-      c.beginPath(); c.arc(x,y,p.r*3.2,0,6.283); c.fill();
-      c.globalAlpha=a; c.fillStyle='rgb('+Math.min(255,ar[0]+90)+','+Math.min(255,ar[1]+90)+','+Math.min(255,ar[2]+90)+')';
-      c.beginPath(); c.arc(x,y,p.r,0,6.283); c.fill();
-    }
-    c.globalAlpha=1;
-  }
 
   // The score playhead: the whole page is one staff scrolling past a fixed reading head.
   // Each chapter's note ignites exactly as it reaches the head -> the reason the chapter "plays".
@@ -2136,13 +1478,13 @@ class Component extends DCLogic {
     var bridge = this.BRIDGES && this.BRIDGES[i];
     var id = String((bridge && bridge.id) || '').toLowerCase();
     var byId = {
-      'translation-projects': 'orbs',
+      'home-projects': 'prologue',
       'projects-members': 'gather',
       'members-works': 'bloom',
-      'works-news': 'ripple',
+      'works-news': 'rise',
       'news-contact': 'page'
     };
-    return byId[id] || ['orbs','gather','bloom','ripple','page'][i] || 'orbs';
+    return byId[id] || ['prologue','gather','bloom','rise','page'][i] || 'gather';
   }
 
   bridgePhraseForIndex(i){
@@ -2213,9 +1555,9 @@ class Component extends DCLogic {
     var langs=['kr','en','jp'];
     for(var k=0;k<langs.length;k++){ var btn=document.getElementById('lang-'+langs[k]); if(btn){ var on=langs[k]===l; btn.style.background=on?'var(--ink,#141C30)':'none'; btn.style.color=on?'var(--paper,#fffdf8)':'var(--ink,#141C30)'; btn.style.border='0'; btn.style.outline='0'; btn.style.boxShadow='none'; btn.style.borderRadius='999px'; btn.style.overflow='hidden'; btn.style.backgroundClip='padding-box'; btn.style.appearance='none'; btn.style.webkitAppearance='none'; btn.style.webkitTapHighlightColor='transparent'; btn.style.minWidth='44px'; btn.style.minHeight='44px'; } }
     try{ localStorage.setItem('tt_lang', l); }catch(e){}
-    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this.rebuildTranslationLine(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
+    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
     clearTimeout(this._langRebuildTimer);
-    this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this.tcaps = [0,1,2].map(i=>document.getElementById('tcap-'+i)); this.transFoot=document.getElementById('trans-foot'); this.taleLine=document.getElementById('tale-line'); this.rebuildTranslationLine(); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
+    this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
   }
 
   buildBridgeVisual(bg, type, idx){
@@ -2247,91 +1589,54 @@ class Component extends DCLogic {
     stage.insertBefore(v, firstLine || bg);
     var items=[];
     var lightVisual = window.innerWidth <= 760;
-    function dot(vv, sx, sy, tx, ty, size, delay){
-      var d=document.createElement('span'); d.className='tt-bridge-dot';
-      d.style.setProperty('--dot', (size||7)+'px');
-      d._sx=sx; d._sy=sy; d._tx=tx; d._ty=ty; d._delay=delay||0; d._ph=Math.random()*6.283;
-      vv.appendChild(d); items.push(d); return d;
-    }
-    function spark(vv, sx, sy, tx, ty, size, delay){
-      var s=document.createElement('i'); s.className='tt-bridge-spark';
-      s.style.width=(size||3)+'px'; s.style.height=(size||3)+'px';
-      s._sx=sx; s._sy=sy; s._tx=tx; s._ty=ty; s._delay=delay||0; s._ph=Math.random()*6.283;
-      vv.appendChild(s); items.push(s); return s;
-    }
-    function thread(vv, x, y, rot, w){
-      var th=document.createElement('i'); th.className='tt-bridge-thread';
-      th._x=x; th._y=y; th._rot=rot; th.style.setProperty('--w',(w||160)+'px');
-      vv.appendChild(th); items.push(th); return th;
-    }
-
-    if(type==='line'){
-      v.innerHTML='<div class="tt-line-ritual"><i class="tt-line-echo e1"></i><i class="tt-one-line"></i><i class="tt-line-echo e2"></i><i class="tt-line-trail"></i><b class="tt-line-note">??/b></div>';
-      var ritual=v.querySelector('.tt-line-ritual');
-      for(var li=0, lineGlyphs=lightVisual?10:18; li<lineGlyphs; li++){
-        var gx=-410+Math.random()*820, gy=(Math.random()*2-1)*92;
-        var gl=document.createElement('i'); gl.className='tt-line-glyph';
-        gl._gx=gx; gl._gy=gy; gl._delay=Math.random()*0.22; ritual.appendChild(gl); items.push(gl);
-      }
-      items=items.concat(Array.from(v.querySelectorAll('.tt-one-line,.tt-line-echo,.tt-line-trail,.tt-line-note')));
-    } else if(type==='orbs'){
-      // LISTEN v2 - the story RUSHES in as comet streams; the listener visibly thumps on each beat
-      var field=document.createElement('div'); field.className='tt-orb-stage'; v.appendChild(field);
-      var ear=document.createElement('i'); ear.className='tt-bridge-orb tt-listen-ear'; v.appendChild(ear); items.push(ear);
-      var lring=document.createElement('i'); lring.className='tt-listen-ring'; v.appendChild(lring); items.push(lring);
-      for(var la=0; la<3; la++){ var arc=document.createElement('i'); arc.className='tt-listen-arc'; arc._delay=la/3; v.appendChild(arc); items.push(arc); }
-      for(var hh=0; hh<2; hh++){ var hr=document.createElement('i'); hr.className='tt-shock-ring'; hr._hit=hh; v.appendChild(hr); items.push(hr); }
-      for(var oi=0, flowCount=lightVisual?16:40; oi<flowCount; oi++){
-        var fd=dot(field,0,0,0,0,2.4+Math.random()*5,Math.random());
-        fd._flow=1; fd._lane=(Math.random()*2-1); fd._amp=10+Math.random()*26; fd._spd=0.7+Math.random()*0.9;
-      }
+    // Five motifs, one per crossing. Soft light only: no rings, rays or hairlines.
+    var PAL=['127,227,238','255,159,184','255,214,140','185,166,255','157,240,200'];
+    function orb(cls, size, rgb){ var o=document.createElement('i'); o.className=cls; if(size) o.style.setProperty('--s',size+'px'); if(rgb) o.style.setProperty('--c',rgb); v.appendChild(o); items.push(o); return o; }
+    function note(glyph, size){ var n=document.createElement('b'); n.className='tb-note'; n.textContent=glyph; n.style.setProperty('--s',size+'px'); v.appendChild(n); items.push(n); return n; }
+    if(type==='prologue'){
+      // HOW WE DIVE: the three steps of the journey light up one after another, joined by a thread of light
+      var steps=document.createElement('div'); steps.className='tt-prologue-steps'; v.appendChild(steps);
+      ['TALE','TONE','MUSIC'].forEach(function(word, si){
+        if(si){ var link=document.createElement('i'); link.className='tt-prologue-link'; link._step=si-0.5; steps.appendChild(link); items.push(link); }
+        var st=document.createElement('span'); st.className='tt-prologue-step'; st.textContent=word; st._step=si; steps.appendChild(st); items.push(st);
+      });
     } else if(type==='gather'){
-      // KINDLE v2 - trembling build-up, then IGNITION: shockwave, spark burst, light wave rolling outward
-      var field2=document.createElement('div'); field2.className='tt-orb-stage'; v.appendChild(field2);
-      var halo=document.createElement('i'); halo.className='tt-kindle-halo'; v.appendChild(halo); items.push(halo);
-      var kcore=document.createElement('i'); kcore.className='tt-kindle-core'; v.appendChild(kcore); items.push(kcore);
-      var ksh=document.createElement('i'); ksh.className='tt-shock-ring'; ksh._kshock=1; v.appendChild(ksh); items.push(ksh);
-      for(var bs=0, burstN=lightVisual?8:14; bs<burstN; bs++){ var ba=Math.random()*6.283, br2=110+Math.random()*190; var s2=spark(v,0,0,Math.cos(ba)*br2,Math.sin(ba)*br2*0.6,2.5+Math.random()*3,Math.random()*0.35); s2._burst=1; }
-      for(var gi=0, moteCount=lightVisual?24:62; gi<moteCount; gi++){
-        var ma=Math.random()*6.283, mr=64+Math.random()*300;
-        var mx=Math.cos(ma)*mr, my=Math.sin(ma)*mr*.5;
-        var md=dot(field2,mx,my,mx,my,2+Math.random()*4,Math.random()*0.3);
-        md._mote=1; md._dist=Math.sqrt(mx*mx+my*my)||1;
+      // LISTEN -> COLOUR: pale story-lights drift in from every side and gather close;
+      // at the moment of listening each takes a colour of its own, then they settle around the words
+      var iris=orb('tb-glow tb-iris',lightVisual?300:520); iris._kind='iris';
+      for(var gi=0, gN=lightVisual?22:40; gi<gN; gi++){
+        var go=orb('tb-orb',(lightVisual?10:14)+Math.random()*(lightVisual?12:20),'255,255,255');
+        go._kind='g'; go._a=Math.random()*6.283; go._r=0.55+Math.random()*0.5; go._d=Math.random()*0.16; go._ph=Math.random()*6.283; go._col=PAL[gi%PAL.length];
+        if(lightVisual){ go._fx=(Math.random()*2-1)*0.9; go._fy=(Math.random()<0.5?-1:1)*(0.62+Math.random()*0.34); }
+        else { go._fx=(Math.random()<0.5?-1:1)*(0.62+Math.random()*0.34); go._fy=(Math.random()*2-1)*0.8; }
       }
     } else if(type==='bloom'){
-      // TOUCH -> SOUND -> BLOOM v2: hard contact flash + shockwave, beating waveform, petals spring open
-      var st=document.createElement('div'); st.className='tt-bloom-stage'; v.appendChild(st);
-      var tfl=document.createElement('i'); tfl.className='tt-flash-core'; tfl._tflash=1; v.appendChild(tfl); items.push(tfl);
-      var bsh=document.createElement('i'); bsh.className='tt-shock-ring'; bsh._bshock=1; v.appendChild(bsh); items.push(bsh);
-      var tr1=document.createElement('i'); tr1.className='tt-touch-ring'; tr1._delay=0; v.appendChild(tr1); items.push(tr1);
-      var tr2=document.createElement('i'); tr2.className='tt-touch-ring'; tr2._delay=0.05; v.appendChild(tr2); items.push(tr2);
-      for(var tk=0, tickCount=lightVisual?14:22; tk<tickCount; tk++){ var tick=document.createElement('i'); tick.className='tt-sound-tick'; tick._rot=tk*(360/tickCount); tick._ph=Math.random()*6.283; st.appendChild(tick); items.push(tick); }
-      for(var p=0, pOut=lightVisual?9:12;p<pOut;p++){ var pe=document.createElement('i'); pe.className='tt-bloom-petal'; pe._rot=p*(360/pOut); pe._st=Math.random()*0.04; pe._layer=0; st.appendChild(pe); items.push(pe); }
-      for(var p2=0, pIn=lightVisual?6:8;p2<pIn;p2++){ var pi2=document.createElement('i'); pi2.className='tt-bloom-petal tt-petal-in'; pi2._rot=p2*(360/pIn)+(180/pIn); pi2._st=0.03+Math.random()*0.04; pi2._layer=1; st.appendChild(pi2); items.push(pi2); }
-      for(var sm=0; sm<8; sm++){ var sd=document.createElement('i'); sd.className='tt-stamen'; sd._rot=sm*45; sd._st=Math.random()*0.08; sd._ph=Math.random()*6.283; st.appendChild(sd); items.push(sd); }
-      for(var gg=0, gOut=lightVisual?9:12; gg<gOut; gg++){ var gt2=document.createElement('i'); gt2.className='tt-petal-glint'; gt2._rot=gg*(360/gOut); gt2._st=Math.random()*0.04; gt2._layer=0; gt2._len=138; st.appendChild(gt2); items.push(gt2); }
-      for(var br=0, rayCount=lightVisual?12:24;br<rayCount;br++){ var ray=document.createElement('i'); ray.className='tt-bloom-ray'; ray._rot=br*(360/rayCount); st.appendChild(ray); items.push(ray); }
-      var core=document.createElement('i'); core.className='tt-bloom-core'; v.appendChild(core); items.push(core);
-      for(var sp=0, sparkCount=lightVisual?18:40; sp<sparkCount; sp++){ var ax0=(Math.random()*2-1)*26; var s3=spark(v,ax0,12+Math.random()*14,ax0*(2.4+Math.random()*2.6),-(130+Math.random()*210),2+Math.random()*3,Math.random()); s3._rise=1; }
-    } else if(type==='ripple'){
-      // RESURFACE v2 - rings race outward, droplets launch in ballistic arcs and glint at the surface
-      var current=document.createElement('i'); current.className='tt-ripple-current'; v.appendChild(current); items.push(current);
-      var surf=document.createElement('i'); surf.className='tt-surface-line'; v.appendChild(surf); items.push(surf);
-      for(var r=0, rippleRings=lightVisual?4:6;r<rippleRings;r++){ var ring2=document.createElement('i'); ring2.className='tt-ripple-ring'; ring2._delay=r*0.09; v.appendChild(ring2); items.push(ring2); }
-      var field3=document.createElement('div'); field3.className='tt-orb-stage'; v.appendChild(field3);
-      for(var rd=0, rippleDots=lightVisual?20:46;rd<rippleDots;rd++){
-        var dr0=dot(field3,(Math.random()*2-1)*46,14+Math.random()*18,0,0,2.5+Math.random()*5,Math.random()*0.45);
-        dr0._drop=1; dr0._dxv=(Math.random()*2-1)*(140+Math.random()*320); dr0._vyv=240+Math.random()*260; dr0._st0=Math.random();
+      // TOUCH -> SOUND -> SONG: a warm light comes down to the fingertips, opens into a line of sound,
+      // and the sound lifts away as notes
+      var warm=orb('tb-glow tb-warm',lightVisual?220:320); warm._kind='warm';
+      var touch=orb('tb-orb tb-touch',lightVisual?22:28,'255,236,190'); touch._kind='touch';
+      for(var bi=0, bN=lightVisual?15:23; bi<bN; bi++){
+        var t2=bi/(bN-1), from=t2<0.5?PAL[0]:PAL[2], to=t2<0.5?PAL[2]:PAL[1], tt=t2<0.5?t2*2:(t2-0.5)*2;
+        var fa=from.split(','), ta=to.split(','), col=[0,1,2].map(function(c){ return Math.round(+fa[c]+(+ta[c]-fa[c])*tt); }).join(',');
+        var bo=orb('tb-orb',12,col); bo._kind='bar'; bo._i=bi; bo._n=bN; bo._ph=Math.random()*0.8; bo._lift=0.5+Math.random()*0.6;
       }
+      for(var ni=0, nN=lightVisual?5:8; ni<nN; ni++){ var bn=note(ni%2?'♪':'♫',18+Math.random()*14); bn._kind='note'; bn._x=(Math.random()*2-1)*0.75; bn._d=Math.random()*0.2; bn._ph=Math.random()*6.283; }
+    } else if(type==='rise'){
+      // THE SONG RISES: bubbles, little lights and notes ride the current up to a brightening surface
+      var surf=document.createElement('i'); surf.className='tb-surface'; surf._kind='surface'; v.appendChild(surf); items.push(surf);
+      for(var ri=0, rN=lightVisual?22:40; ri<rN; ri++){ var bub=orb('tb-bub',6+Math.pow(Math.random(),2)*26); bub._kind='up'; bub._size=parseFloat(bub.style.getPropertyValue('--s')); }
+      for(var li=0, lN=lightVisual?10:20; li<lN; li++){ var lo=orb('tb-orb',8+Math.random()*12,li%2?PAL[0]:PAL[2]); lo._kind='up'; lo._size=12; }
+      for(var rn=0, rnN=lightVisual?3:6; rn<rnN; rn++){ var rnote=note(rn%2?'♪':'♫',16+Math.random()*10); rnote._kind='up'; rnote._size=20; }
+      items.forEach(function(it){ if(it._kind!=='up') return; it._x=(Math.random()*2-1)*0.95; it._d=Math.random()*0.3; it._sp=0.85+Math.random()*0.5; it._ph=Math.random()*6.283; });
     } else if(type==='page'){
-      // YOUR TURN v2 - the first note FALLS with gravity, bounces, and the staff rings like plucked strings
-      var sst=document.createElement('div'); sst.className='tt-staff-stage'; v.appendChild(sst);
-      for(var sl=0; sl<5; sl++){ var ln=document.createElement('i'); ln.className='tt-staff-line'; ln._idx=sl; ln.style.top=((sl-2)*24)+'px'; sst.appendChild(ln); items.push(ln); }
-      var nsh=document.createElement('i'); nsh.className='tt-shock-ring tt-note-shock'; nsh._noteShock=1; sst.appendChild(nsh); items.push(nsh);
-      var npulse=document.createElement('i'); npulse.className='tt-note-pulse'; sst.appendChild(npulse); items.push(npulse);
-      var note=document.createElement('i'); note.className='tt-staff-note'; sst.appendChild(note); items.push(note);
-      for(var pg=0, pageSparks=lightVisual?10:18; pg<pageSparks; pg++){ var ax=(Math.random()*2-1)*160; spark(v,(Math.random()*2-1)*10,24,ax,-40-Math.random()*130,2+Math.random()*2.5,Math.random()*0.12); }
+      // YOUR TURN: a blank page of light opens; the first note falls onto it, the page wakes,
+      // and the music begins to rise from it
+      var page=document.createElement('i'); page.className='tb-page'; page._kind='page'; v.appendChild(page); items.push(page);
+      var first=note('♪',lightVisual?30:40); first._kind='main'; first.classList.add('tb-note-main');
+      for(var pi=0, pN=lightVisual?10:16; pi<pN; pi++){ var pm=orb('tb-orb',6+Math.random()*8,'255,226,170'); pm._kind='burst'; pm._a=-Math.PI*(0.05+0.9*Math.random()); pm._dist=(lightVisual?60:90)+Math.random()*(lightVisual?90:150); pm._d=Math.random()*0.06; }
+      for(var ei=0, eN=lightVisual?3:5; ei<eN; ei++){ var em=note(ei%2?'♪':'♫',14+Math.random()*8); em._kind='ember'; em._x=(Math.random()*2-1); em._ph=Math.random(); }
     }
+    bg._vW2=(v.clientWidth||1000)/2; bg._vH2=(v.clientHeight||420)/2;
     bg._visual=v; bg._visualItems=items;
     return v;
   }                               
@@ -2340,10 +1645,10 @@ class Component extends DCLogic {
     var v=bg._visual; if(!v) return;
     // #1 impact envelope: a sharp gaussian at each motif's physical hit, drives camera + text kick
     var impEnv=0;
-    if(type==='gather') impEnv=Math.exp(-Math.pow((prog-0.475)/0.018,2));
+    if(type==='gather') impEnv=0.8*Math.exp(-Math.pow((prog-0.5)/0.02,2));
     else if(type==='page') impEnv=Math.exp(-Math.pow((prog-0.50)/0.014,2))+0.5*Math.exp(-Math.pow((prog-0.56)/0.011,2));
-    else if(type==='bloom') impEnv=0.7*Math.exp(-Math.pow((prog-0.06)/0.015,2))+Math.exp(-Math.pow((prog-0.50)/0.022,2));
-    else if(type==='ripple') impEnv=0.6*Math.exp(-Math.pow((prog-0.30)/0.025,2));
+    else if(type==='bloom') impEnv=0.5*Math.exp(-Math.pow((prog-0.30)/0.02,2))+0.8*Math.exp(-Math.pow((prog-0.50)/0.025,2));
+    else if(type==='rise') impEnv=0.25*Math.exp(-Math.pow((prog-0.6)/0.04,2));
     bg._imp=impEnv;
     var show=this.smooth(0.00,0.055,prog)*(1-this.smooth(0.965,1.0,prog));
     v.style.opacity=(show*(1-exit)).toFixed(3);
@@ -2351,251 +1656,93 @@ class Component extends DCLogic {
     var bridgeScale=(0.985+0.025*this.smooth(0.12,0.72,prog))*(window.innerWidth<=760?0.86:1);
     v.style.transform='translate(-50%,-50%) translate3d(0,'+(-10*exit).toFixed(1)+'px,0) scale('+bridgeScale.toFixed(3)+')';
     var items=bg._visualItems||[];
-    if(type==='line'){
-      var draw=v.querySelector('.tt-one-line'), echoes=v.querySelectorAll('.tt-line-echo'), note=v.querySelector('.tt-line-note'), trail=v.querySelector('.tt-line-trail');
-      var line=this.smooth(0.05,0.30,prog);
-      var move=this.smooth(0.27,0.60,prog);
-      var flare=Math.sin(this.cl((prog-0.52)/0.18,0,1)*Math.PI);
-      if(draw){ draw.style.transform='translate(-50%,-50%) scaleX('+line.toFixed(3)+')'; draw.style.opacity=(line*(1-exit)).toFixed(3); }
-      for(var ei=0;ei<echoes.length;ei++){
-        var ep=this.smooth(0.20+ei*0.04,0.54+ei*0.05,prog);
-        echoes[ei].style.transform='translate(-50%,-50%) scaleX('+ep.toFixed(3)+')';
-        echoes[ei].style.opacity=(ep*(1-exit)*0.44).toFixed(3);
-      }
-      if(note){
-        var x=-420+840*move, y=-Math.sin(move*Math.PI)*42;
-        var nOp=this.smooth(0.20,0.35,prog)*(1-this.smooth(0.72,0.88,prog))*(1-exit);
-        note.style.opacity=nOp.toFixed(3);
-        note.style.transform='translate('+x.toFixed(1)+'px,calc(-50% + '+y.toFixed(1)+'px)) rotate('+(-22+44*move+14*Math.sin(time*4)).toFixed(1)+'deg) scale('+(0.86+0.34*flare).toFixed(3)+')';
-      }
-      if(trail){ trail.style.opacity=(move*(1-move)*3.4*(1-exit)).toFixed(3); trail.style.transform='translate('+(-470+840*move).toFixed(1)+'px,calc(-50% - '+(18*Math.sin(move*Math.PI)).toFixed(1)+'px)) rotate('+(6*Math.sin(move*Math.PI)).toFixed(1)+'deg)'; }
-      for(var g=0; g<items.length; g++){
-        var glyph=items[g];
-        if(glyph.className && String(glyph.className).indexOf('tt-line-glyph')>-1){
-          var gp=this.cl((prog-(glyph._delay||0)-0.34)/0.35,0,1);
-          var go=Math.sin(gp*Math.PI)*(1-exit);
-          glyph.style.opacity=(go*.75).toFixed(3);
-          glyph.style.transform='translate('+glyph._gx.toFixed(1)+'px,'+glyph._gy.toFixed(1)+'px) scale('+(0.45+1.2*gp).toFixed(3)+')';
-        }
-      }
-    } else if(type==='orbs'){
-      // LISTEN v2
-      var eo1=function(k){return 1-Math.pow(1-k,3);};
-      var earOn=this.smooth(0.06,0.2,prog);
-      var attend=this.smooth(0.22,0.48,prog);
-      var beat=Math.pow(Math.max(0,Math.sin(time*3.1)),8);
-      bg._imp=0.22*beat*attend*(1-exit);
-      for(var i=0;i<items.length;i++){
-        var it=items[i]; var cn=String(it.className||'');
-        if(cn.indexOf('tt-listen-ear')>-1){
-          var eo=earOn*(1-exit);
-          it.style.opacity=(eo*.97).toFixed(3);
-          it.style.transform='translate(150px,'+(5*Math.sin(time*1.3)).toFixed(1)+'px) scale('+(0.34+0.6*eo+beat*0.26*attend).toFixed(3)+')';
-        } else if(cn.indexOf('tt-listen-ring')>-1){
-          var lr=attend*(1-exit);
-          it.style.opacity=(lr*.55).toFixed(3);
-          it.style.transform='translate(150px,0) rotate('+(time*10).toFixed(1)+'deg) scale('+(0.7+0.3*lr+beat*0.14).toFixed(3)+')';
-        } else if(cn.indexOf('tt-listen-arc')>-1){
-          var win=this.smooth(0.08,0.18,prog)*(1-this.smooth(0.82,0.95,prog))*(1-exit);
-          var k=(time*0.55+it._delay)%1;
-          it.style.opacity=(Math.sin(k*Math.PI)*0.65*win).toFixed(3);
-          it.style.transform='translate(-330px,0) scale('+(0.15+k*2.3).toFixed(2)+')';
-        } else if(it._hit!=null){
-          var kh=((time*3.1/6.283)+it._hit*0.5)%1;
-          it.style.opacity=((1-kh)*(1-kh)*0.7*attend*(1-exit)).toFixed(3);
-          it.style.transform='translate(150px,0) scale('+(0.12+eo1(kh)*1.9).toFixed(2)+')';
-        } else if(it._flow){
-          var appear=this.smooth(0.04,0.16,prog)*(1-exit);
-          var kf=(time*0.30*it._spd+it._delay)%1;
-          var x=-460+eo1(kf)*610;
-          var calm=1-this.cl((x+130)/270,0,1)*0.9;
-          var y=it._lane*32*calm+Math.sin(kf*14+it._ph)*it._amp*calm;
-          var sx=1+1.6*calm*it._spd, sy=Math.max(0.5,1-0.4*calm);
-          it.style.opacity=(appear*0.95*Math.sin(Math.min(kf*3,1)*Math.PI*0.5)*(kf>0.92?(1-kf)/0.08:1)).toFixed(3);
-          it.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) scale('+sx.toFixed(2)+','+sy.toFixed(2)+')';
-        }
+    var sm=this.smooth.bind(this), cl=this.cl.bind(this);
+    var ease=function(k){ return 1-Math.pow(1-k,3); };
+    var bump=function(at,w){ return Math.exp(-Math.pow((prog-at)/w,2)); };
+    var mixc=function(a,b,t){ var A=a.split(','),B=b.split(','); return Math.round(+A[0]+(B[0]-A[0])*t)+','+Math.round(+A[1]+(B[1]-A[1])*t)+','+Math.round(+A[2]+(B[2]-A[2])*t); };
+    var W2=bg._vW2||500, H2=bg._vH2||210, live=1-exit;
+    var put=function(el,x,y,s,a,rot){ el.style.opacity=Math.max(0,a).toFixed(3); el.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'+(rot?' rotate('+rot.toFixed(1)+'deg)':'')+' scale('+s.toFixed(3)+')'; };
+    if(type==='prologue'){
+      for(var pi=0;pi<items.length;pi++){
+        var ps=items[pi], isLink=String(ps.className).indexOf('link')>-1, at=0.1+ps._step*0.17;
+        var pon=sm(at,at+0.12,prog)*live;
+        ps.style.opacity=(pon*(isLink?0.7:1)).toFixed(3);
+        ps.style.transform=isLink?'scaleX('+pon.toFixed(3)+')':'translateY('+((1-pon)*12).toFixed(1)+'px)';
       }
     } else if(type==='gather'){
-      // KINDLE v2
-      var eo2=function(k){return 1-Math.pow(1-k,3);};
-      var pre=this.smooth(0.18,0.44,prog);
-      var ign=this.smooth(0.46,0.50,prog);
-      var after=this.cl((prog-0.5)/0.16,0,1);
-      var glowT=Math.max(ign*0.7, after);
-      var dip=this.smooth(0.38,0.455,prog)*(1-this.smooth(0.455,0.475,prog)); // held breath before ignition
-      var flick=this.cl(0.35+0.5*Math.sin(time*13)+0.35*Math.sin(time*29+1.7),0,1);
-      var wave=(prog-0.5)*2600;
-      for(var j=0;j<items.length;j++){
-        var gt=items[j], gc=String(gt.className||'');
-        if(gc.indexOf('tt-kindle-core')>-1){
-          var jx=Math.sin(time*42)*2.6*pre*(1-ign), jy=Math.cos(time*37)*2.2*pre*(1-ign);
-          var co=(pre*0.4*flick*(1-ign)*(1-dip*0.55)+glowT*(0.88+0.12*Math.sin(time*2.6)))*(1-exit);
-          gt.style.opacity=this.cl(co,0,1).toFixed(3);
-          gt.style.transform='translate('+jx.toFixed(1)+'px,'+jy.toFixed(1)+'px) scale('+(0.3+pre*0.34*flick+glowT*(1.05+0.1*Math.sin(time*2.2))).toFixed(3)+')';
-        } else if(gc.indexOf('tt-kindle-halo')>-1){
-          gt.style.opacity=(glowT*0.78*(1-exit)).toFixed(3);
-          gt.style.transform='scale('+(0.3+1.05*after+0.06*Math.sin(time*1.8)).toFixed(3)+')';
-        } else if(gt._kshock){
-          var ks=this.cl((prog-0.47)/0.13,0,1);
-          gt.style.opacity=(Math.sin(ks*Math.PI)*0.9*(1-exit)).toFixed(3);
-          gt.style.transform='scale('+(0.1+eo2(ks)*4.2).toFixed(2)+')';
-        } else if(gt._burst){
-          var kb=this.cl((prog-0.49-gt._delay*0.06)/0.17,0,1); var ke=eo2(kb);
-          var xb2=gt._tx*ke, yb2=gt._ty*ke+46*kb*kb;
-          gt.style.opacity=(kb<=0?0:(1-kb)*0.95*(1-exit)).toFixed(3);
-          gt.style.transform='translate('+xb2.toFixed(1)+'px,'+yb2.toFixed(1)+'px) scale('+(1.2-0.6*kb).toFixed(2)+')';
-        } else if(gt._mote){
-          var pull=pre*(1-ign)*0.16 + dip*0.11;
-          var lit=this.smooth(-90,50,wave-gt._dist)*this.cl(after*3,0,1);
-          var push=lit*20/gt._dist;
-          var fx=gt._sx*(1-pull)+gt._sx*push, fy=gt._sy*(1-pull)+gt._sy*push;
-          var mdx=Math.sin(time*0.5+gt._ph)*7, mdy=Math.cos(time*0.4+gt._ph)*5;
-          gt.style.opacity=((this.smooth(0.03,0.16,prog)*0.3*(1-dip*0.75)+lit*0.6)*(1-exit)).toFixed(3);
-          gt.style.transform='translate('+(fx+mdx).toFixed(1)+'px,'+(fy+mdy).toFixed(1)+'px) scale('+(0.55+0.6*lit).toFixed(3)+')';
+      var tint=sm(0.46,0.54,prog), spread=ease(cl((prog-0.5)/0.34,0,1));
+      for(var g=0; g<items.length; g++){
+        var it=items[g];
+        if(it._kind==='iris'){
+          it.style.opacity=(sm(0.4,0.5,prog)*(0.55+0.45*bump(0.5,0.08))*live).toFixed(3);
+          it.style.setProperty('--r',((time*20)%360).toFixed(1)+'deg');
+          it.style.transform='scale('+(0.55+0.55*sm(0.4,0.58,prog)).toFixed(3)+')';
+          continue;
         }
+        var k1=ease(cl((prog-0.06-it._d)/0.42,0,1));
+        var ang=it._a+(1-k1)*1.6+time*0.1;
+        var x=Math.cos(ang)*W2*it._r*(1-k1)+Math.cos(it._a*3)*W2*0.07*k1;
+        var y=Math.sin(ang)*H2*it._r*1.1*(1-k1)+Math.sin(it._a*2)*H2*0.12*k1;
+        x=x*(1-spread)+(it._fx*W2+Math.sin(time*0.6+it._ph)*14)*spread;
+        y=y*(1-spread)+(it._fy*H2+Math.cos(time*0.5+it._ph)*12)*spread;
+        it.style.setProperty('--c',mixc('235,248,252',it._col,tint));
+        put(it,x,y,0.7+0.5*tint,sm(0.06,0.2,prog)*(0.4+0.6*tint)*live);
       }
     } else if(type==='bloom'){
-      // TOUCH -> SOUND -> BLOOM v2
-      var eo3=function(k){return 1-Math.pow(1-k,3);};
-      var elx=function(k){return k<=0?0:k>=1?1:Math.pow(2,-10*k)*Math.sin((k*10-0.75)*2.0944)+1;};
-      var soundWin=this.smooth(0.15,0.2,prog)*(1-this.smooth(0.4,0.48,prog));
-      var beat2=Math.pow(Math.abs(Math.sin(time*4.4)),3);
-      var bm=this.smooth(0.44,0.62,prog);
-      var glowP=Math.sin(this.cl((prog-0.58)/0.2,0,1)*Math.PI);
-      for(var b=0;b<items.length;b++){
-        var pe=items[b], pc=String(pe.className||'');
-        if(pe._tflash){
-          var tf=this.cl((prog-0.055)/0.075,0,1);
-          pe.style.opacity=(Math.sin(tf*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.3+tf*1.5).toFixed(2)+')';
-        } else if(pe._bshock){
-          var bsK=this.cl((prog-0.06)/0.12,0,1);
-          pe.style.opacity=(Math.sin(bsK*Math.PI)*0.85*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.1+eo3(bsK)*3.6).toFixed(2)+')';
-        } else if(pc.indexOf('tt-touch-ring')>-1){
-          var tp=this.cl((prog-0.05-pe._delay)/0.12,0,1);
-          pe.style.opacity=(Math.sin(tp*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.1+eo3(tp)*3.1).toFixed(2)+')';
-        } else if(pc.indexOf('tt-sound-tick')>-1){
-          var len=0.18+1.05*Math.pow(Math.abs(Math.sin(time*4.4+pe._ph)),2);
-          pe.style.opacity=(soundWin*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+pe._rot+'deg) translateY('+(-(50+12*beat2)).toFixed(1)+'px) scaleY('+(soundWin*len).toFixed(3)+')';
-        } else if(pc.indexOf('tt-stamen')>-1){
-          var stK=this.smooth(0.60+pe._st,0.72+pe._st,prog);
-          pe.style.opacity=(stK*(0.65+0.35*Math.sin(time*3+pe._ph))*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+pe._rot+'deg) translateY('+(-24*stK).toFixed(1)+'px) scale('+(0.3+0.7*stK).toFixed(2)+')';
-        } else if(pc.indexOf('tt-petal-glint')>-1){
-          var rg=pe._rot||0; var rgs=rg>180?rg-360:rg;
-          var gk=this.cl((prog-0.46-pe._st)/0.26,0,1);
-          var ge2=eo3(gk);
-          pe.style.opacity=(gk<=0||gk>=1?0:Math.sin(gk*Math.PI)*0.95*(1-exit)).toFixed(3);
-          pe.style.transform='rotate('+(rgs*ge2).toFixed(1)+'deg) translateY('+(-(16+ge2*(pe._len||130))).toFixed(1)+'px) scale('+(1.1-0.4*gk).toFixed(2)+')';
-        } else if(pc.indexOf('tt-bloom-petal')>-1){
-          var r=pe._rot||0; var rs=r>180?r-360:r;
-          var lay=pe._layer||0;
-          var pk0=this.cl((prog-0.46-pe._st-lay*0.05)/0.26,0,1);
-          var grow=eo3(pk0);
-          var sway=3*Math.sin(time*.9+r*0.11)*pk0;
-          var shimmer=0.8+0.2*Math.sin(time*2.8+r*0.7);
-          pe.style.opacity=(this.cl(pk0*2.2,0,1)*(1-exit)*shimmer*(lay?0.95:0.8)).toFixed(3);
-          pe.style.transform='rotate('+(rs*grow+sway).toFixed(1)+'deg) scaleY('+(0.08+0.92*grow+0.06*glowP).toFixed(3)+') scaleX('+(0.45+0.55*grow).toFixed(3)+')';
-        } else if(pc.indexOf('tt-bloom-ray')>-1){
-          var ro=pe._rot||0, rayp=this.smooth(0.54,0.8,prog);
-          pe.style.opacity=(rayp*(1-exit)*0.62).toFixed(3); pe.style.transform='rotate('+ro+'deg) scaleY('+(0.15+1.1*eo3(rayp)).toFixed(3)+')';
-        } else if(pc.indexOf('tt-bloom-core')>-1){
-          pe.style.opacity=(Math.max(bm,soundWin*0.55)*(1-exit)).toFixed(3);
-          pe.style.transform='scale('+(0.5+1.5*bm+0.35*glowP+0.5*soundWin*beat2).toFixed(3)+')';
-        } else if(pe._sx!=null){
-          // light keeps rising from the core while the flower takes shape
-          var pk=((time*0.5)+(pe._delay||0))%1;
-          var vis=this.smooth(0.24,0.34,prog)*(1-this.smooth(0.78,0.9,prog));
-          var xb=pe._sx+(pe._tx-pe._sx)*pk;
-          var yb=pe._sy+(pe._ty-pe._sy)*eo3(pk);
-          pe.style.opacity=(vis*Math.sin(pk*Math.PI)*0.8*(1-exit)).toFixed(3);
-          pe.style.transform='translate('+xb.toFixed(1)+'px,'+yb.toFixed(1)+'px) scale('+(1.1-0.55*pk).toFixed(2)+')';
+      var fall=ease(cl((prog-0.06)/0.24,0,1)), barsIn=ease(cl((prog-0.28)/0.16,0,1));
+      var amp=sm(0.3,0.44,prog)*(1-0.6*sm(0.56,0.78,prog)), lift=ease(cl((prog-0.5)/0.42,0,1));
+      for(var b=0; b<items.length; b++){
+        var e=items[b];
+        if(e._kind==='warm'){ e.style.opacity=((sm(0.1,0.3,prog)*0.45+0.4*bump(0.5,0.06))*(1-sm(0.72,0.96,prog))*live).toFixed(3); e.style.transform='scale('+(0.7+0.5*sm(0.1,0.5,prog)).toFixed(3)+')'; }
+        else if(e._kind==='touch'){ var hit=bump(0.3,0.025); put(e,0,-H2*1.05*(1-fall)+Math.sin(time*2.6)*3*fall,1+0.9*hit,sm(0.06,0.14,prog)*(1-sm(0.48,0.6,prog))*live); }
+        else if(e._kind==='bar'){
+          var wave=Math.sin(time*5.5+e._i*0.62+e._ph), env=0.45+0.55*Math.sin(e._i/(e._n-1)*Math.PI);
+          var bx=(e._i-(e._n-1)/2)*(W2*1.35/(e._n-1))*barsIn;
+          var by=wave*H2*0.34*amp*env-lift*H2*e._lift;
+          put(e,bx,by,0.8+0.9*Math.abs(wave)*amp*env,sm(0.28,0.36,prog)*(1-sm(0.7,0.94,prog))*0.75*live);
+        } else if(e._kind==='note'){
+          var nk=cl((prog-0.5-e._d)/0.45,0,1);
+          put(e,e._x*W2+Math.sin(time*1.6+e._ph)*16,H2*0.25-nk*H2*1.45,0.9+0.2*nk,Math.sin(nk*Math.PI)*0.9*live,Math.sin(time*1.4+e._ph)*12);
         }
       }
-    } else if(type==='ripple'){
-      // RESURFACE v3 - the story keeps spreading: rings & droplets loop on time,
-      // so the motion lives on through the text HOLD (prog freezes, time does not)
-      var eo4=function(k){return 1-Math.pow(1-k,3);};
-      var alive=this.smooth(0.06,0.28,prog)*(1-this.smooth(0.90,1.0,prog))*(1-exit); // present once risen, gone on exit
-      var swell=this.smooth(0.06,0.42,prog); // ramps the spread strength up, then holds
-      for(var rr=0;rr<items.length;rr++){
-        var ri=items[rr], rc=String(ri.className||'');
-        if(rc.indexOf('tt-ripple-current')>-1){
-          ri.style.opacity=(alive*.85).toFixed(3);
-          ri.style.transform='scale('+(0.8+0.28*Math.sin(time*1.5)).toFixed(3)+')';
-        } else if(rc.indexOf('tt-surface-line')>-1){
-          ri.style.opacity=(alive*(0.5+0.32*Math.sin(time*3.2))).toFixed(3);
-          ri.style.transform='translate(-50%,-140px) scaleX('+(0.2+0.8*swell).toFixed(3)+') scaleY('+(1+0.9*Math.pow(Math.max(0,Math.sin(time*2.2)),6)).toFixed(2)+')';
-        } else if(rc.indexOf('tt-ripple-ring')>-1){
-          // continuous concentric rings racing outward to the surface, staggered per ring
-          var rk=((time*0.42)+(ri._delay||0)*1.1)%1;
-          ri.style.opacity=(Math.sin(rk*Math.PI)*0.85*alive).toFixed(3);
-          ri.style.transform='scale('+(0.3+6.4*eo4(rk)).toFixed(3)+') scaleY(0.44)';
-        } else if(ri._drop){
-          // droplets launch in a repeating ballistic cycle and glint at the surface line
-          var kd=((time*0.5)+(ri._delay||0)+ri._st0)%1;
-          var xd=ri._sx+ri._dxv*eo4(kd);
-          var yd=ri._sy-ri._vyv*kd*1.6+470*kd*kd;
-          var glint=Math.exp(-Math.pow((yd+140)/26,2));
-          ri.style.opacity=(alive*(0.4+0.6*glint)*Math.sin(kd*Math.PI)).toFixed(3);
-          ri.style.transform='translate('+xd.toFixed(1)+'px,'+yd.toFixed(1)+'px) scale('+(0.7+glint*1.7).toFixed(2)+')';
-        }
+    } else if(type==='rise'){
+      var current=Math.sin(prog*3.1)*W2*0.05;
+      for(var r=0; r<items.length; r++){
+        var u=items[r];
+        if(u._kind==='surface'){ u.style.opacity=(sm(0.25,0.8,prog)*(0.85+0.15*Math.sin(time*2))*live).toFixed(3); u.style.transform='translateY('+(-H2*0.98).toFixed(1)+'px)'; continue; }
+        var rk=cl((prog-0.03-u._d)/0.72,0,1);
+        var ry=H2*1.08-H2*2.25*Math.pow(rk,1.12)*u._sp;
+        var rx=u._x*W2+Math.sin(time*(0.9+u._sp)+u._ph)*(8+u._size/3)+current*rk;
+        var height=(H2*1.08-ry)/(H2*2.1);
+        put(u,rx,ry,1+0.35*sm(0.82,1,height),sm(0,0.08,rk)*(1-sm(0.84,1,height))*0.85*live);
       }
     } else if(type==='page'){
-      // FIRST NOTE v2: gravity fall, double bounce with squash&stretch, staff strings ring on impact
-      var eo5=function(k){return 1-Math.pow(1-k,3);};
-      var fallK=this.cl((prog-0.26)/0.24,0,1);
-      var b1=this.cl((prog-0.50)/0.06,0,1);
-      var b2=this.cl((prog-0.56)/0.05,0,1);
-      var land=this.smooth(0.50,0.52,prog);
-      var imp=Math.exp(-Math.pow((prog-0.50)/0.014,2))+0.55*Math.exp(-Math.pow((prog-0.56)/0.011,2));
-      var vib=this.smooth(0.50,0.52,prog)*(1-this.smooth(0.62,0.82,prog));
-      for(var pp=0; pp<items.length; pp++){
-        var el=items[pp], cc=String(el.className||'');
-        if(cc.indexOf('tt-staff-line')>-1){
-          var draw=this.smooth(0.05+el._idx*0.035,0.2+el._idx*0.035,prog);
-          var yoff=Math.sin(time*34+el._idx*1.9)*3.6*vib*(1-el._idx*0.14);
-          el.style.opacity=((draw*0.42+land*0.24+imp*0.3)*(1-exit)).toFixed(3);
-          el.style.transform='translateY('+yoff.toFixed(1)+'px) scaleX('+eo5(draw).toFixed(3)+')';
-        } else if(el._noteShock){
-          var ns=this.cl((prog-0.50)/0.13,0,1);
-          el.style.opacity=(Math.sin(ns*Math.PI)*0.9*(1-exit)).toFixed(3);
-          el.style.transform='scale('+(0.1+eo5(ns)*3.4).toFixed(2)+')';
-        } else if(cc.indexOf('tt-staff-note')>-1){
-          var ny;
-          if(fallK<1) ny=-190+214*fallK*fallK;
-          else if(b1<1) ny=24-32*Math.sin(b1*Math.PI);
-          else if(b2<1) ny=24-11*Math.sin(b2*Math.PI);
-          else ny=24;
-          var vel=fallK<1?fallK:0;
-          var sxN=(1+0.55*imp)*(1-0.22*vel);
-          var syN=(1-0.42*imp)*(1+0.3*vel);
-          var swayN=Math.sin(fallK*8)*9*(1-fallK);
-          el.style.opacity=(this.smooth(0.24,0.3,prog)*(1-exit)).toFixed(3);
-          el.style.transform='translate('+swayN.toFixed(1)+'px,'+ny.toFixed(1)+'px) scale('+(sxN*(0.85+0.15*land+land*0.05*Math.sin(time*2.6))).toFixed(3)+','+(syN*(0.85+0.15*land)).toFixed(3)+')';
-        } else if(cc.indexOf('tt-note-pulse')>-1){
-          var pk3=(time*0.6)%1;
-          el.style.opacity=(Math.sin(pk3*Math.PI)*0.55*land*(1-exit)).toFixed(3);
-          el.style.transform='scale('+(0.2+pk3*2.8).toFixed(2)+')';
-        } else if(el._sx!=null){
-          var sk=this.cl((prog-el._delay-0.50)/0.26,0,1); var ske=eo5(sk);
-          var xs=el._sx*(1-ske)+el._tx*ske, ys=(el._sy*(1-ske)+el._ty*ske)+85*sk*sk;
-          el.style.opacity=(this.smooth(0.50,0.56,prog)*(1-sk*0.9)*(1-exit)).toFixed(3);
-          el.style.transform='translate('+xs.toFixed(1)+'px,'+ys.toFixed(1)+'px) scale('+(1.1-0.55*sk).toFixed(3)+')';
+      var land=sm(0.5,0.53,prog), impact=bump(0.5,0.018);
+      for(var q=0; q<items.length; q++){
+        var p2=items[q];
+        if(p2._kind==='page'){ p2.style.opacity=((sm(0.08,0.36,prog)*0.7+0.45*bump(0.51,0.05))*live).toFixed(3); p2.style.transform='scale('+(0.92+0.08*sm(0.08,0.4,prog)+0.03*impact).toFixed(3)+')'; }
+        else if(p2._kind==='main'){
+          var fk=cl((prog-0.22)/0.28,0,1);
+          var bounce=prog>0.5?Math.exp(-(prog-0.5)*26)*Math.abs(Math.sin((prog-0.5)*64))*18:0;
+          var ny=-H2*0.95*(1-fk*fk)-bounce+Math.sin(time*2.4)*3*land;
+          put(p2,Math.sin(fk*6)*10*(1-fk),ny,(1+0.12*land)*(1+0.25*impact),sm(0.2,0.28,prog)*live,-14*(1-fk)+4*Math.sin(time*1.8)*land);
+        } else if(p2._kind==='burst'){
+          var bk=ease(cl((prog-0.5-p2._d)/0.34,0,1));
+          put(p2,Math.cos(p2._a)*p2._dist*bk,Math.sin(p2._a)*p2._dist*0.7*bk,1-0.4*bk,sm(0.5,0.52,prog)*(1-bk)*live);
+        } else if(p2._kind==='ember'){
+          var ek=(time*0.18+p2._ph)%1;
+          put(p2,p2._x*W2*0.3+Math.sin(time+p2._ph*6)*12,-ek*H2*0.85,0.9,Math.sin(ek*Math.PI)*0.7*land*live,Math.sin(time+p2._ph*6)*10);
         }
       }
     }
-  }        
+  }
 
   startBridge(index){
     if(this._bridgeRun || this._bridgeSeen[index] || this._bridgeBypassed[index] || this._bridgeNavTarget || !this.scroller) return;
-    var bg=this.bridges[index], outer=index===-1?this.transSec:bg&&(bg._bridgeOuter||bg.closest('[data-story-bridge-wrap]'));
+    var bg=this.bridges[index], outer=bg&&(bg._bridgeOuter||bg.closest('[data-story-bridge-wrap]'));
     if(!outer) return;
     // One owner: lock native scrolling BEFORE aligning, then run animation + reading hold.
-    var copy=index===-1?'':this.bridgeMobileLinesForIndex(index).map(line=>line.text||'').join('');
+    var copy=this.bridgeMobileLinesForIndex(index).map(line=>line.text||'').join('');
     var reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this._reduceMotion=reduced;
     var style=this.scroller.style, saved={};
@@ -2604,7 +1751,6 @@ class Component extends DCLogic {
     });
     this._bridgeRun={index:index,phase:'playing',startedAt:null,duration:reduced?700:1200,
       hold:Math.min(2600,Math.max(1400,copy.trim().length*22)),saved:saved};
-    if(index===-1){this._bridgeRun.duration=reduced?700:5600;this._bridgeRun.hold=reduced?1800:0;}
     outer.setAttribute('data-bridge-active','');
     style.setProperty('overflow-y','hidden','important');
     style.setProperty('touch-action','none','important');
@@ -2620,15 +1766,15 @@ class Component extends DCLogic {
     this.scroller.scrollTo({top:outer.offsetTop,behavior:'auto'});
     this._bridgeScrollTop=this.scroller.scrollTop;
     this._sceneDirty=true;
-    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][Math.max(0,index)]}}));
+    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][index]}}));
   }
   // Momentum (touch flicks, trackpad inertia, a wheel smooth-scroll already in flight) can keep
   // moving the scroller after the lock engages; hold it on the bridge until the handoff takes over.
   _pinBridgeAnchor(){
     var run=this._bridgeRun;
     if(!run||run.phase==='advancing'||!this.scroller) return;
-    var bg=run.index===-1?null:this.bridges[run.index];
-    var outer=run.index===-1?this.transSec:bg&&(bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null));
+    var bg=this.bridges[run.index];
+    var outer=bg&&(bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null));
     if(!outer) return;
     var anchor=outer.offsetTop;
     if(Math.abs(this.scroller.scrollTop-anchor)>1){
@@ -2672,7 +1818,7 @@ class Component extends DCLogic {
     var run=this._bridgeRun;
     if(!run) return;
     var targets=[['c-projects','/story-types/'],['c-members','/members/'],['c-works','/works/'],['c-news','/news/'],['c-contact','/contact/']];
-    var route=targets[run.index], target=run.index===-1?this.transSec.nextElementSibling:route&&document.getElementById(route[0]);
+    var route=targets[run.index], target=route&&document.getElementById(route[0]);
     if(!target){ this.releaseBridge(); return; }
     if(run.phase!=='advancing'){
       run.phase='advancing'; run.advanceAt=now; run.from=this.scroller.scrollTop;
@@ -2698,7 +1844,7 @@ class Component extends DCLogic {
     this._bridgeBypassed={};
     var target=targetId&&document.getElementById(targetId), targetTop=target?target.offsetTop:(this.scroller?this.scroller.scrollTop:0);
     this._bridgeNavTarget=target&&Math.abs(this.scroller.scrollTop-targetTop)>3?targetId:null;
-    if(this.transSec && this.transSec.offsetTop<targetTop) this._bridgeBypassed[-1]=true;
+    this._bridgeNavAt=performance.now();
     (this.bridges||[]).forEach((bg,i)=>{
       var outer=bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null);
       var past=!!outer&&outer.offsetTop<=targetTop+2;
@@ -2942,69 +2088,6 @@ class Component extends DCLogic {
     }
   }       
 
-  // TRANSLATE is bridge -1: the same lock, completion record and automatic handoff.
-  updateTranslation(scEl, tA){
-    if(!this.transSec||!this.letters) return;
-    var vh=scEl.clientHeight;
-    var rectT=this.transSec.getBoundingClientRect();
-    var seen=this._bridgeSeen[-1]||this._bridgeBypassed[-1], prog=seen?1:0;
-    if(!seen&&!this._bridgeRun&&rectT.top<=vh*0.5&&rectT.top>=-2&&rectT.bottom>vh*0.5) this.startBridge(-1);
-    var run=this._bridgeRun;
-    if(run&&run.index===-1){
-      this._pinBridgeAnchor();
-      this._setBridgeProgress(run);
-      this.transSec.setAttribute('data-bridge-active','');
-      if(run.startedAt==null) run.startedAt=performance.now();
-      var elapsed=performance.now()-run.startedAt;
-      prog=this.cl(elapsed/run.duration,0,1);
-      if(prog>=1 && run.phase==='playing'){run.phase='holding';scEl.dataset.bridgePhase='holding';}
-      if(run.phase==='holding'&&elapsed>=run.duration+run.hold) this.advanceBridge(performance.now());
-    }
-    var motionTime=prog*7.2;
-    // three acts: tale (0-.4 hold/dissolve), tone (.35-.75 bars rise), music (.62-1 full with a longer readable hold)
-    var dissolve=this.smooth(0.18,0.55,prog); // letters leave
-    var build=this.smooth(0.4,0.78,prog);      // bars arrive
-    var full=this.smooth(0.64,0.82,prog);        // music settles
-    // letters: scatter upward into particles as the tone takes over
-    for(var i=0;i<this.letters.length;i++){
-      var L=this.letters[i], q=this.letters.length>1?i/(this.letters.length-1):0;
-      var d=this.cl((dissolve-q*0.5)*2,0,1);
-      var compactTrans = window.innerWidth <= 900;
-      var scatterY = compactTrans ? 38 : 70;
-      var scatterWave = compactTrans ? 14 : 28;
-      var scatterX = compactTrans ? 14 : 44;
-      var dy=-d*scatterY - d*scatterWave*Math.sin(i*1.3);
-      var dx=d*scatterX*Math.sin(i*2.1);
-      L.style.opacity=(1-d).toFixed(3);
-      L.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(1-0.25*d).toFixed(3)+')';
-    }
-    // bars: fill in left??몄츗ght, height pulses like a live waveform once present
-    if(this.bars){
-      var maxH = Math.min(this.H*0.26, 300);
-      for(var b=0;b<this.bars.length;b++){
-        var B=this.bars[b], bq=b/(this.bars.length-1);
-        var on=this.cl((build-bq*0.6)*2.2,0,1);
-        var pulse=full>0.02 ? (0.55+0.45*Math.sin(motionTime*3.2 + b*0.5)) : 1;
-        var hh=6 + on*B.amp*maxH*(0.55+0.45*full)*pulse;
-        B.el.style.height=hh.toFixed(1)+'px';
-        B.el.style.opacity=(on*(0.5+0.5*full)).toFixed(3);
-        B.el.style.background = full>0.5 ? 'var(--accent2,#3d8a98)' : 'var(--accent,#0E6E7D)';
-      }
-    }
-    // captions cross-fade
-    if(this.tcaps&&this.tcaps[0]){
-      this.tcaps[0].style.opacity=(1-this.smooth(0.2,0.42,prog)).toFixed(3);
-      this.tcaps[1].style.opacity=(this.smooth(0.3,0.5,prog)*(1-this.smooth(0.62,0.78,prog))).toFixed(3);
-      this.tcaps[2].style.opacity=this.smooth(0.62,0.76,prog).toFixed(3);
-    }
-    if(this.transFoot) this.transFoot.style.opacity=full.toFixed(3);
-    // hand the canvas a glint burst: strongest mid-dissolve, around the tale line
-    var burst = dissolve*(1-full);
-    if(burst>0.02 && this.taleLine){
-      var rb=this.taleLine.getBoundingClientRect();
-      this.transGlint={x:rb.left+rb.width/2, y:rb.top+rb.height/2, w:rb.width, h:rb.height, k:burst};
-    } else { this.transGlint=null; }
-  }
 
   pauseWorksAudio(){
     try{
@@ -3264,19 +2347,17 @@ class Component extends DCLogic {
   renderVals(){
     this.ensureDataReady();
     return {
-      nav0:(e)=>this.navigateChapter(e, 'c-home', '/'), nav1:(e)=>this.navigateChapter(e, 'c-translation', '/'),
+      nav0:(e)=>this.navigateChapter(e, 'c-home', '/'),
       nav2:(e)=>this.navigateChapter(e, 'c-projects', '/story-types/'), nav3:(e)=>this.navigateChapter(e, 'c-members', '/members/'),
       nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav5:(e)=>this.navigateChapter(e, 'c-news', '/news/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
       langKR:()=>this.setLang('kr'), langEN:()=>this.setLang('en'), langJP:()=>this.setLang('jp'),
       HOME: this.HOME || {},
-      TRANSLATION: this.TRANSLATION || {},
       BRIDGE_0: (this.BRIDGES||[])[0] || {},
       BRIDGE_1: (this.BRIDGES||[])[1] || {},
       BRIDGE_2: (this.BRIDGES||[])[2] || {},
       BRIDGE_3: (this.BRIDGES||[])[3] || {},
       BRIDGE_4: (this.BRIDGES||[])[4] || {},
       CHAPTER_PROLOGUE: (this.CHAPTER_LABELS||{}).prologue || {},
-      CHAPTER_METHOD: (this.CHAPTER_LABELS||{}).method || { label:'PROLOGUE \u00B7 HOW WE DIVE', note:'TALE \u2192 TONE \u2192 MUSIC' },
       CHAPTER_TALE: (this.CHAPTER_LABELS||{}).tale || {},
       CHAPTER_TONE: (this.CHAPTER_LABELS||{}).tone || {},
       CHAPTER_RESURFACE: (this.CHAPTER_LABELS||{}).resurface || {},

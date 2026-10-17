@@ -31,8 +31,8 @@ const pages = [
   },
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
-    // Runs #54-#56 measured 28 first-party requests and up to 27 Google Fonts requests on Linux.
-    maxFirstPartyRequests: 30, maxGoogleFontRequests: 30,
+    // The bookshelf shows a full first shelf (8 covers on desktop, 6 on phones) instead of the carousel's 5 cards: measured 32-34.
+    maxFirstPartyRequests: 36, maxGoogleFontRequests: 30,
     maxTransferBytes: 2_800_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
   },
@@ -359,7 +359,7 @@ async function snapshot(client) {
       longTaskDuration: perf.longTaskDuration || 0,
       domNodes: document.getElementsByTagName('*').length,
       chapter: document.body.getAttribute('data-active-chapter') || '',
-      worksCards: document.querySelectorAll('[data-works-card]').length,
+      worksCards: document.querySelectorAll('[data-works-book]').length,
       memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
       overflow: document.documentElement.scrollWidth > innerWidth + 1,
       homeTop: document.querySelector('#c-home')?.getBoundingClientRect().top ?? null,
@@ -474,7 +474,7 @@ async function runFunctionalMatrix(chrome, origin) {
               chapter: document.body.getAttribute('data-active-chapter') || '',
               sectionTop: rect ? rect.top : null,
               textLength: section ? section.innerText.trim().length : 0,
-              worksCards: document.querySelectorAll('[data-works-card]').length,
+              worksCards: document.querySelectorAll('[data-works-book]').length,
               memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
               memberImagesDeferred: document.querySelectorAll('#c-members .tt-member-card img[data-member-src]').length,
               overflow: document.documentElement.scrollWidth > innerWidth + 1,
@@ -500,7 +500,7 @@ async function runFunctionalMatrix(chrome, origin) {
             assert(state.memberImagesAssigned === 0 && state.memberImagesDeferred === 4, `${key}: hidden member images were activated`);
           }
           if (route.key === 'works') {
-            assert(state.worksCards === 21, `${key}: expected 21 WORKS cards, found ${state.worksCards}`);
+            assert(state.worksCards >= 6, `${key}: expected the first WORKS shelf, found ${state.worksCards} books`);
             assert(network.worksDataRequests === 1, `${key}: expected one WORKS data request, found ${network.worksDataRequests}`);
           } else {
             assert(network.worksDataRequests === 0, `${key}: hidden WORKS data was requested`);
@@ -563,46 +563,40 @@ async function runInteractionSmoke(chrome, origin) {
     await navigateForInteraction(client, `${origin}/works/?lang=kr&runtime-interaction=1`, 1_300);
     const worksReady = await evaluate(client, `(() => ({
       chapter: document.body.getAttribute('data-active-chapter'),
-      cards: document.querySelectorAll('[data-works-card]').length,
-      showcase: document.querySelector('#tt-gh-tab-showcase')?.getAttribute('aria-selected'),
-      play: !!document.querySelector('#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]'),
+      books: document.querySelectorAll('[data-works-book]').length,
+      play: !!document.querySelector('[data-works-book="0"] .tt-shelf-play'),
       playback: document.body.dataset.ttMediaPlayback || 'paused'
     }))()`);
-    assert(worksReady.chapter === 'works' && worksReady.cards === 21 && worksReady.showcase === 'true' && worksReady.play, 'interaction: WORKS Showcase did not initialize');
+    assert(worksReady.chapter === 'works' && worksReady.books >= 6 && worksReady.play, `interaction: WORKS shelf did not initialize: ${JSON.stringify(worksReady)}`);
     assert(worksReady.playback !== 'playing', 'interaction: WORKS audio started without user playback');
 
-    await clickSelector(client, '#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]');
+    await clickSelector(client, '[data-works-book="0"] .tt-shelf-play');
     await sleep(1_000);
     const playing = await evaluate(client, `(() => ({
       playback: document.body.dataset.ttMediaPlayback,
-      engine: document.body.dataset.ttMediaAudioEngine,
-      button: document.querySelector('#tt-gh-panel-showcase .tt-gh-card.is-active [data-works-action="audio-toggle"]')?.getAttribute('aria-pressed')
+      button: document.querySelector('[data-works-book="0"] .tt-shelf-play')?.classList.contains('is-playing'),
+      player: !!document.querySelector('.tt-shelf-player.is-open')
     }))()`);
     assert(playing.playback === 'playing', `interaction: WORKS playback state is ${playing.playback || 'missing'}`);
-    assert(playing.button === 'true', 'interaction: active audio button did not expose its playing state');
+    assert(playing.button && playing.player, 'interaction: playing book or player bar did not show its state');
     passed.push('works-play');
 
-    await clickSelector(client, '#tt-gh-tab-gallery[data-works-action="mode"][data-mode="gallery"]');
-    await sleep(80);
-    const gallery = await evaluate(client, `(() => ({
-      playback: document.body.dataset.ttMediaPlayback,
-      selected: document.querySelector('#tt-gh-tab-gallery')?.getAttribute('aria-selected'),
-      cards: document.querySelectorAll('#tt-gh-panel-gallery [data-works-action="gallery-open"][data-index]').length,
-      play: !!document.querySelector('#tt-gh-panel-gallery [data-works-action="audio-toggle"]')
-    }))()`);
-    assert(gallery.playback === 'paused' && gallery.selected === 'true', 'interaction: Gallery did not synchronously pause Showcase audio');
-    assert(gallery.cards === 21 && !gallery.play, `interaction: Gallery expected 21 cards without a Play control, found ${gallery.cards}`);
-    passed.push('works-gallery-pause');
+    await clickSelector(client, '.tt-shelf-player-toggle');
+    await sleep(120);
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: player toggle did not pause');
+    passed.push('works-pause');
 
-    await clickSelector(client, '#tt-gh-panel-gallery [data-works-action="gallery-open"][data-index="0"]');
+    await clickSelector(client, '[data-works-action="filter"][data-filter="album"]');
     await sleep(120);
-    const worksDialogOpen = await evaluate(client, `!!document.querySelector('.tt-gh-modal[role="dialog"][aria-modal="true"]') && document.body.classList.contains('tt-site-dialog-open')`);
-    assert(worksDialogOpen, 'interaction: WORKS Gallery dialog did not open');
-    await clickSelector(client, '.tt-gh-modal .tt-gh-modal-close[data-works-action="modal-close"]');
+    const albums = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
+    assert(albums === 2, `interaction: album filter expected 2 books, found ${albums}`);
+    await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(120);
-    const worksDialogClosed = await evaluate(client, `!document.querySelector('.tt-gh-modal[role="dialog"]') && !document.body.classList.contains('tt-site-dialog-open') && document.body.dataset.ttMediaPlayback === 'paused'`);
-    assert(worksDialogClosed, 'interaction: WORKS Gallery dialog did not close cleanly');
-    passed.push('works-dialog');
+    await clickSelector(client, '[data-works-action="more"]');
+    await sleep(160);
+    const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
+    assert(all === 21, `interaction: whole shelf expected 21 books, found ${all}`);
+    passed.push('works-filter-shelf');
 
     await navigateForInteraction(client, `${origin}/members/?lang=kr&runtime-interaction=1`);
     const memberFocused = await evaluate(client, `(() => {
@@ -654,11 +648,11 @@ async function runInteractionSmoke(chrome, origin) {
     const chapterTransition = await evaluate(client, `(() => ({
       path: location.pathname,
       chapter: document.body.getAttribute('data-active-chapter'),
-      cards: document.querySelectorAll('[data-works-card]').length,
+      cards: document.querySelectorAll('[data-works-book]').length,
       memberImages: document.querySelectorAll('#c-members .tt-member-card img[src]').length
     }))()`);
     assert(beforeSkippedMembers === 0 && chapterTransition.memberImages === 0, 'interaction: skipped MEMBERS chapter loaded hidden member images');
-    assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards === 21, 'interaction: STORY TYPES to WORKS transition did not settle');
+    assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards >= 6, 'interaction: STORY TYPES to WORKS transition did not settle');
     passed.push('chapter-transition-preload');
 
     const network = capture.finish();
@@ -695,24 +689,24 @@ async function runBridgeSmoke(chrome, origin) {
       // Legacy ?lang= links land on the language's own URL prefix.
       const langPrefix=['','/en','/ja'][caseIndex%3];
       await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
-      for (let index=-1; index<5; index++) {
-        const label = `bridge/${viewport.key}/${index===-1?'translate':index+1}`;
+      for (let index=0; index<5; index++) {
+        const label = `bridge/${viewport.key}/${index+1}`;
         // WORKS mounts on demand after chapter entry. Do not aim at its stale placeholder boundary.
         if(index===3){
           for(let n=0;n<40;n++){
-            if(await evaluate(client, `document.querySelectorAll('[data-works-card]').length===21`)) break;
+            if(await evaluate(client, `document.querySelectorAll('[data-works-book]').length>=6`)) break;
             await sleep(100);
           }
           await sleep(300);
         }
         await evaluate(client, `(() => {
-          const sc=document.getElementById('content'), outer=${index===-1?"document.getElementById('c-translation')":`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`};
+          const sc=document.getElementById('content'), outer=document.querySelectorAll('[data-story-bridge-wrap]')[${index}];
           window.__bridgeFrames=[]; const token=window.__bridgeWatchToken=(window.__bridgeWatchToken||0)+1;
           window.__bridgeHistoryLength=history.length;
           window.__bridgeEntryRequestedAt=performance.now();
           const record=()=>{
             if(window.__bridgeWatchToken!==token) return;
-            const r=(outer.querySelector('.tt-bridge-pin-stage,.tt-translation-stage')||outer).getBoundingClientRect();
+            const r=(outer.querySelector('.tt-bridge-pin-stage')||outer).getBoundingClientRect();
             if(!window.__bridgeResizing) window.__bridgeFrames.push({time:performance.now(),phase:sc.dataset.bridgeIndex==='${index}'?(sc.dataset.bridgePhase||''):'',top:r.top,scroll:sc.scrollTop,anchor:outer.offsetTop});
             requestAnimationFrame(record);
           }; requestAnimationFrame(record);
@@ -725,12 +719,12 @@ async function runBridgeSmoke(chrome, origin) {
           await sleep(50);
         }
         assert(locked, `${label}: entry did not lock`);
-        const preloading = await evaluate(client, `!!document.querySelector('#${destinations[Math.max(0,index)]}[data-chapter-preloaded]')`);
+        const preloading = await evaluate(client, `!!document.querySelector('#${destinations[index]}[data-chapter-preloaded]')`);
         assert(preloading, `${label}: next chapter preload did not start at bridge entry`);
         const lock = await evaluate(client, `(() => {const s=document.getElementById('content');return {overflow:getComputedStyle(s).overflowY,touch:getComputedStyle(s).touchAction,snap:getComputedStyle(s).scrollSnapType,cue:!!document.querySelector('.tt-bridge-continue')};})()`);
         assert(lock.overflow==='hidden' && lock.touch==='none' && lock.snap==='none' && !lock.cue, `${label}: conflicting native scroll/cue still enabled: ${JSON.stringify(lock)}`);
         // Real browser input, including reverse direction, during playback AND reading hold.
-        for(let n=0;n<(index===-1?100:45);n++){
+        for(let n=0;n<45;n++){
           const phase=await evaluate(client, `(() => {const s=document.getElementById('content');return s.dataset.bridgeIndex==='${index}'?(s.dataset.bridgePhase||''):'';})()`);
           if(!phase || phase==='advancing') break;
           await client.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:viewport.width/2,y:viewport.height/2,deltaX:0,deltaY:n%2?900:-900});
@@ -758,16 +752,16 @@ async function runBridgeSmoke(chrome, origin) {
             // Simulate a late resource changing the height of an earlier chapter.
             await evaluate(client, `(() => {const spacer=document.createElement('div');spacer.id='bridge-test-late-layout';spacer.style.height='160px';document.getElementById('c-home').after(spacer);})()`);
           }
-          if(((index===0&&n===10)||(index===-1&&n===20)) && process.env.BRIDGE_SCREENSHOTS){
+          if(index===0&&n===10 && process.env.BRIDGE_SCREENSHOTS){
             await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
             const shot=await client.send('Page.captureScreenshot',{format:'png'});
-            await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-${index===-1?'translate':'bridge'}.png`),Buffer.from(shot.data,'base64'));
+            await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-bridge.png`),Buffer.from(shot.data,'base64'));
           }
           await sleep(100);
           if(n===10 && index>=1 && index<=3){
             const ready = await evaluate(client, `(() => {
               const section=document.getElementById('${destinations[index]}');
-              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.is-visible .tt-gh-card-cover img'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
+              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-shelf-cover img[src]'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
               return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
             })()`);
             assert(ready, `${label}: next chapter images were not ready during playback`);
@@ -783,7 +777,7 @@ async function runBridgeSmoke(chrome, origin) {
           const fixed=frames.filter(f=>f.phase==='playing'||f.phase==='holding');
           const advancing=frames.find(f=>f.phase==='advancing');
           return {phase:s.dataset.bridgeIndex==='${index}'?(s.dataset.bridgePhase||''):'',overflow:getComputedStyle(s).overflowY,path:location.pathname,
-            top:${index===-1?"document.querySelector('[data-story-bridge-wrap]')":`document.getElementById('${destinations[index]}')`}.getBoundingClientRect().top,
+            top:document.getElementById('${destinations[index]}').getBoundingClientRect().top,
             drift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.top))):999,
             anchorDrift:fixed.length?Math.max(...fixed.map(f=>Math.abs(f.scroll-f.anchor))):999,
             duration:fixed.length?(advancing?.time||fixed.at(-1).time)-window.__bridgeEntryRequestedAt:0,historyDelta:history.length-window.__bridgeHistoryLength,
@@ -792,9 +786,9 @@ async function runBridgeSmoke(chrome, origin) {
         // The test scrolls throughout: the animation must still play in full, then the hold shortens to a quick handoff.
         assert(result.drift<=1, `${label}: locked viewport drift ${result.drift}px`);
         assert(result.anchorDrift<=1.5, `${label}: locked scroll left its anchor by ${result.anchorDrift}px (momentum/late layout not re-pinned)`);
-        assert((index===-1||result.holding) && result.duration>=(viewport.reduced?1000:index===-1?5500:1150) && result.duration<=(index===-1?7600:3600), `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
-        assert(result.historyDelta===(index===-1?0:1), `${label}: handoff must navigate exactly once`);
-        assert(!result.phase && (index===-1||result.overflow==='auto') && result.path===langPrefix+(index===-1?'/':paths[index]) && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
+        assert(result.holding && result.duration>=(viewport.reduced?1000:1150) && result.duration<=3600, `${label}: configured playback/reading hold not preserved: ${JSON.stringify(result)}`);
+        assert(result.historyDelta===1, `${label}: handoff must navigate exactly once`);
+        assert(!result.phase && result.overflow==='auto' && result.path===langPrefix+paths[index] && Math.abs(result.top)<=2, `${label}: automatic handoff/release failed: ${JSON.stringify(result)}`);
         console.log(label, JSON.stringify(result));
         passed.push(label);
         if(index===3) await evaluate(client, `document.getElementById('bridge-test-late-layout')?.remove()`);
@@ -802,23 +796,18 @@ async function runBridgeSmoke(chrome, origin) {
       // Completed bridges stay final and scroll freely, including after chapter/language changes.
       await evaluate(client, `document.getElementById('nav-0').click()`);
       await sleep(1800);
-      for(let index=-1;index<5;index++){
-        const selector=index===-1?"document.getElementById('c-translation')":`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`;
+      for(let index=0;index<5;index++){
+        const selector=`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`;
         await evaluate(client, `(() => {const s=document.getElementById('content'),b=${selector};s.scrollTo({top:b.offsetTop,behavior:'instant'});})()`);
         await sleep(400);
         const before=await evaluate(client, `(() => {
           const s=document.getElementById('content'),b=${selector};
-          window.__finalBridgeSnapshot=()=>Array.from(b.querySelectorAll('#wave-row > div,#tcap-2,#trans-foot,[data-bridge] span,.tt-bridge-visual *')).map(el=>[el.style.height,el.style.opacity,el.style.transform].join('|')).join(';');
-          return {phase:s.dataset.bridgePhase||'',frame:window.__finalBridgeSnapshot(),top:s.scrollTop,history:history.length,footer:${index===-1?"document.getElementById('trans-foot').style.opacity":"'1.000'"}};
+          window.__finalBridgeSnapshot=()=>Array.from(b.querySelectorAll('[data-bridge] span,.tt-bridge-visual *')).map(el=>[el.style.height,el.style.opacity,el.style.transform].join('|')).join(';');
+          return {phase:s.dataset.bridgePhase||'',frame:window.__finalBridgeSnapshot(),top:s.scrollTop,history:history.length};
         })()`);
         await sleep(250);
         const after=await evaluate(client,`({phase:document.getElementById('content').dataset.bridgePhase||'',frame:window.__finalBridgeSnapshot(),history:history.length})`);
-        assert(!before.phase&&!after.phase&&before.frame===after.frame&&before.history===after.history&&Number(before.footer)===1,`bridge/${viewport.key}/revisit/${index}: completed frame restarted or moved`);
-        if(index===-1&&process.env.BRIDGE_SCREENSHOTS){
-          await mkdir(process.env.BRIDGE_SCREENSHOTS,{recursive:true});
-          const shot=await client.send('Page.captureScreenshot',{format:'png'});
-          await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-translate-final.png`),Buffer.from(shot.data,'base64'));
-        }
+        assert(!before.phase&&!after.phase&&before.frame===after.frame&&before.history===after.history,`bridge/${viewport.key}/revisit/${index}: completed frame restarted or moved`);
         await client.send('Input.dispatchMouseEvent',{type:'mouseWheel',x:viewport.width/2,y:viewport.height/2,deltaX:0,deltaY:140});
         await sleep(180);
         const free=await evaluate(client,`({top:document.getElementById('content').scrollTop,phase:document.getElementById('content').dataset.bridgePhase||''})`);
@@ -828,17 +817,17 @@ async function runBridgeSmoke(chrome, origin) {
       await evaluate(client, `window.postMessage({type:'TALETONE_SET_LANG',lang:'jp'},'*')`);
       await sleep(400);
       await navigateForInteraction(client, `${origin}/?lang=jp&bridge-reload=1`,1500);
-      await evaluate(client, `document.getElementById('content').scrollTo({top:document.getElementById('c-translation').offsetTop,behavior:'instant'})`);
+      await evaluate(client, `document.getElementById('content').scrollTo({top:document.querySelector('[data-story-bridge-wrap]').offsetTop,behavior:'instant'})`);
       await sleep(500);
-      const restored=await evaluate(client, `({seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]'),phase:document.getElementById('content').dataset.bridgePhase||'',footer:document.getElementById('trans-foot').style.opacity})`);
-      assert(restored.seen.length===6&&!restored.phase&&Number(restored.footer)===1,`bridge/${viewport.key}: reload forgot completion or TRANSLATE final frame`);
+      const restored=await evaluate(client, `({seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]'),phase:document.getElementById('content').dataset.bridgePhase||''})`);
+      assert(restored.seen.length===5&&!restored.phase,`bridge/${viewport.key}: reload forgot bridge completion`);
       passed.push(`bridge/${viewport.key}/session-reload`);
       // A skipped/cancelled animation must not be recorded as watched.
       await evaluate(client, `sessionStorage.removeItem('tt_bridge_seen_v2')`);
       await navigateForInteraction(client, `${origin}/?bridge-cancel=1`,1300);
-      await evaluate(client, `document.getElementById('content').scrollTo({top:document.getElementById('c-translation').offsetTop,behavior:'instant'})`);
+      await evaluate(client, `document.getElementById('content').scrollTo({top:document.querySelector('[data-story-bridge-wrap]').offsetTop,behavior:'instant'})`);
       await sleep(400);
-      assert(await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='-1'`),`bridge/${viewport.key}: fresh TRANSLATE did not lock`);
+      assert(await evaluate(client, `document.getElementById('content').dataset.bridgeIndex==='0'`),`bridge/${viewport.key}: fresh prologue bridge did not lock`);
       await evaluate(client, `document.getElementById('nav-6').click()`);
       await sleep(1800);
       const canceled=await evaluate(client,`({path:location.pathname,phase:document.getElementById('content').dataset.bridgePhase||'',seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]')})`);
@@ -882,7 +871,7 @@ function validateResult(result) {
   } else {
     assert(cold.worksDataRequests === 1, `${key}: WORKS cold data requests ${cold.worksDataRequests} != 1`);
     assert(warm.worksDataRequests <= 1, `${key}: WORKS warm data requested more than once`);
-    assert(cold.worksCards === 21 && warm.worksCards === 21, `${key}: expected 21 WORKS cards`);
+    assert(cold.worksCards >= 6 && warm.worksCards >= 6, `${key}: expected the first WORKS shelf`);
   }
   if (idle) {
     assert(idle.taskDuration <= 0.90, `${key}: idle TaskDuration ${idle.taskDuration.toFixed(3)}s / 3s > 0.90s`);

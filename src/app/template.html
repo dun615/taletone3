@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/works.css?v=20261019-type">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261020-shelf">
 <script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
 <style>
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
@@ -70,7 +70,7 @@ image-slot{display:block}
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
 /* narrative chapter labels */
-.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-shadow:var(--halo,none);white-space:pre-wrap}
+.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,var(--ink,#141C30) calc(var(--deep-glow,0)*72%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
 .tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
 
 .tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
@@ -92,21 +92,15 @@ html:lang(ja) body *{word-break:auto-phrase!important}
 h1,h2,h3,.tt-gh-card-title,.tt-project-title{text-wrap:balance}
 .tt-project-title{overflow-wrap:anywhere}
 p,li{text-wrap:pretty}
-#deep-book-svg{transition:filter 1.4s ease}
-body.tt-book-awake #deep-book-svg{filter:drop-shadow(0 0 36px rgba(255,214,140,.5)) drop-shadow(0 0 90px rgba(255,214,140,.25))}
 #tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
 #tt-bridge-progress i{display:block;width:132px;height:2px;border-radius:2px;background:var(--line,rgba(24,32,52,.18));overflow:hidden}
 #tt-bridge-progress b{display:block;height:100%;width:calc(var(--bridge-p,0)*100%);background:var(--accent,#0E6E7D)}
 #tt-bridge-progress span{font-weight:700;font-size:12px;letter-spacing:.04em;white-space:nowrap}
 /* 메뉴에도 본문과 같은 챕터 이름(TALE·TONE·MUSIC·ECHO·EPILOGUE)을 붙여 두 이름 체계를 하나로 */
-.nav-chapter{color:var(--accent,#0E6E7D);opacity:.9}
-#tale-line .tt-tale-block{display:block;max-width:min(1100px,82vw);margin:0 auto;text-align:center;text-wrap:balance;line-height:1.12}
-#tale-line .tt-tale-word{display:inline-block;white-space:nowrap}
 /* 한글·일본어에는 기울임 글꼴이 없어 브라우저가 억지로 눕힌다: 문장은 바로 세운다 */
-html:is(:lang(ko),:lang(ja)) :is(#tale-line,.tt-contact-caption,.tt-contact-title span,[data-bridge],[data-bridge] span,.tt-bridge-desktop-text){font-style:normal!important}
+html:is(:lang(ko),:lang(ja)) :is(.tt-contact-caption,.tt-contact-title span,[data-bridge],[data-bridge] span,.tt-bridge-desktop-text){font-style:normal!important}
 /* 자간: 영문 대문자 라벨용 넓은 자간이 한글·일본어에 걸리지 않게 */
 html:is(:lang(ko),:lang(ja)) .tt-section-note{letter-spacing:.02em;text-transform:none}
-html:is(:lang(ko),:lang(ja)) :is(#tcap-0,#tcap-1,#tcap-2){letter-spacing:.1em!important}
 .tt-section-chapter-block{margin:0 0 20px!important}
 .tt-section-note{margin-top:8px;font-size:13px;font-weight:600;opacity:.9}
 .tt-chapter-title{font-size:clamp(48px,6.6vw,108px)!important;line-height:.9!important;letter-spacing:-.02em!important;text-shadow:var(--halo,none)}
@@ -115,14 +109,10 @@ html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(40px,5.6vw,88px)!
 .tt-chapter-lead{max-width:min(720px,88vw);margin-left:auto!important;margin-right:auto!important;font-weight:500!important;line-height:1.6!important;color:var(--soft,#44505F)!important;text-shadow:var(--halo,none)}
 @media (max-width:760px){.tt-section-note{font-size:11px}.tt-chapter-title{font-size:clamp(40px,12vw,64px)!important}html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(34px,10vw,52px)!important}}
 /* ===== The Book (redesign, preview only) ===== */
-html:not([data-intro-v2]) .tt-book2{display:none}
-html[data-intro-v2] #deep-book-svg{display:none!important}
-html[data-intro-v2] #c-contact .tt-book-light-stage{opacity:0!important;transition:opacity 1.6s ease .5s}
-html[data-intro-v2] body.tt-book-opened #c-contact .tt-book-light-stage{opacity:.8!important}
+#c-contact .tt-book-light-stage{opacity:0!important;transition:opacity 1.6s ease .5s}
+body.tt-book-opened #c-contact .tt-book-light-stage{opacity:.8!important}
 .tt-book2{--bw:min(300px,56vw);--bh:calc(var(--bw)*1.34);position:relative;z-index:2;width:100%;height:calc(var(--bh)*.92);display:flex;align-items:flex-end;justify-content:center}
 .tb-floor{position:absolute;left:50%;bottom:0;width:calc(var(--bw)*3.4);height:calc(var(--bw)*.62);transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at 50% 42%,rgba(214,196,150,.34) 0%,rgba(150,160,140,.18) 38%,rgba(40,70,90,0) 70%)}
-.tb-rock{position:absolute;bottom:22%;border-radius:50% 50% 46% 46%;background:radial-gradient(ellipse at 40% 30%,#3b5867,#16293a 70%);opacity:.85}
-.tb-rock.r1{left:14%;width:7%;height:16%}.tb-rock.r2{left:20%;width:4%;height:9%;bottom:20%}.tb-rock.r3{right:16%;width:6%;height:13%}
 .tb-scene{position:relative;width:calc(var(--bw)*2.2);height:var(--bh);perspective:1300px;perspective-origin:50% 0%;margin-bottom:calc(var(--bw)*.06)}
 .tb-book{position:absolute;left:calc(50% - var(--bw)/2);bottom:0;width:var(--bw);height:var(--bh);transform-style:preserve-3d;transform-origin:50% 100%;transform:rotateX(58deg) rotateZ(-6deg);transition:transform 1.6s cubic-bezier(.6,0,.2,1)}
 body.tt-book-opened .tb-book{transform:rotateX(52deg) rotateZ(0deg) translateX(calc(var(--bw)*.5))}
@@ -154,16 +144,125 @@ body.tt-book-opened .tb-cover{transform:translateZ(1px) rotateY(-180deg)}
 .tb-cover-front{background:radial-gradient(ellipse at 50% 38%,#24485a 0%,#163447 46%,#0d2232 100%);box-shadow:inset 6px 0 0 #0a1a27,inset 9px 0 0 rgba(232,203,136,.35),inset 0 0 0 1px rgba(232,203,136,.4),0 18px 40px rgba(1,7,15,.6)}
 .tb-cover-back{transform:rotateY(180deg);background:radial-gradient(ellipse at 50% 40%,#24485a,#0f2635);box-shadow:inset 0 0 0 1px rgba(232,203,136,.45)}
 .tb-cover-back::before{content:'';position:absolute;inset:3% 1% 3% 3%;border-radius:8px 2px 2px 8px;background:linear-gradient(270deg,#cdbf98 0%,#efe5c8 7%,#f7f0db 30%,#f3ead1 100%);box-shadow:inset -22px 0 26px rgba(110,86,40,.22),0 0 0 1px rgba(120,100,60,.25),-3px 3px 0 #e2d6b6,-6px 6px 0 #d6c9a6,-9px 9px 0 #c9bb96,-12px 12px 22px rgba(2,10,20,.55)}
-.tb-cover-back::after{content:'';position:absolute;left:50%;top:46%;width:44%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#e9cf8f,#c79a4e);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;opacity:.28}
+.tb-cover-back::after{content:'';position:absolute;left:50%;top:46%;width:44%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#e9cf8f,#c79a4e);-webkit-mask:var(--tb-mark) center/contain no-repeat;mask:var(--tb-mark) center/contain no-repeat;opacity:.28}
 .tb-frame{position:absolute;inset:7%;border:1.5px solid rgba(232,203,136,.7);border-radius:6px;box-shadow:inset 0 0 0 5px rgba(232,203,136,.08),inset 0 0 0 6px rgba(232,203,136,.35)}
 .tb-frame i{position:absolute;width:14px;height:14px;border:1.5px solid rgba(232,203,136,.85);transform:rotate(45deg);background:#163447}
 .tb-frame .c1{left:-8px;top:-8px}.tb-frame .c2{right:-8px;top:-8px}.tb-frame .c3{left:-8px;bottom:-8px}.tb-frame .c4{right:-8px;bottom:-8px}
-.tb-emblem{position:absolute;left:50%;top:40%;width:42%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#f6e3ae,#d6aa5c 55%,#f2d690);-webkit-mask:url('assets/logo/mark-paper.png') center/contain no-repeat;mask:url('assets/logo/mark-paper.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(255,214,140,.35));animation:tbEmblem 4.5s ease-in-out infinite}
+/* the gold mark loads only when the reader reaches the Book */
+.tt-book2{--tb-mark:linear-gradient(transparent,transparent)}
+body[data-active-chapter="contact"] .tt-book2{--tb-mark:url('assets/logo/mark-paper.png')}
+.tt-footer-mark{display:block;width:30px;height:30px;background:center/contain no-repeat}
+body[data-active-chapter="contact"] .tt-footer-mark{background-image:url('assets/logo/mark-paper.png')}
+.tb-emblem{position:absolute;left:50%;top:40%;width:42%;aspect-ratio:1;transform:translate(-50%,-50%);background:linear-gradient(160deg,#f6e3ae,#d6aa5c 55%,#f2d690);-webkit-mask:var(--tb-mark) center/contain no-repeat;mask:var(--tb-mark) center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(255,214,140,.35));animation:tbEmblem 4.5s ease-in-out infinite;animation-play-state:var(--tt-motion-play-state,running)}
 @keyframes tbEmblem{0%,100%{opacity:.78}50%{opacity:1}}
 body.tt-book-awake .tb-emblem{filter:drop-shadow(0 0 14px rgba(255,220,150,.9)) drop-shadow(0 0 34px rgba(255,214,140,.55))}
 .tb-title{position:absolute;left:0;right:0;bottom:17%;text-align:center;font-family:'Quicksand',sans-serif;font-weight:700;font-size:calc(var(--bw)*.072);letter-spacing:.42em;padding-left:.42em;color:#e8cb88;opacity:.9}
 @media (max-width:760px){.tt-book2{--bw:42vw}}
+
+/* ===== The Book in the water (revision 2 #7) =====
+   A thing at 4,000m takes the colour of the water around it, is lit from far above through moving water,
+   sits on the seabed, and has the sea's specks drifting in front of it as well as behind. */
+.tt-book2{filter:saturate(.86) brightness(.96) contrast(.95)}
+.tb-veil{position:absolute;left:-40%;right:-40%;top:-20%;bottom:-12%;z-index:6;pointer-events:none;mix-blend-mode:multiply;
+  background:radial-gradient(ellipse 40% 46% at 50% 68%,rgba(96,150,166,.1) 0%,rgba(40,86,108,.3) 48%,rgba(20,50,70,.22) 72%,rgba(20,50,70,0) 100%)}
+.tb-caustics{position:absolute;left:50%;bottom:6%;width:calc(var(--bw)*2.6);height:calc(var(--bh)*1.05);transform:translateX(-50%);z-index:5;pointer-events:none;mix-blend-mode:screen;opacity:.42;
+  background:
+    radial-gradient(ellipse 18% 12% at 30% 40%,rgba(190,236,244,.55),transparent 70%),
+    radial-gradient(ellipse 14% 10% at 62% 30%,rgba(190,236,244,.45),transparent 70%),
+    radial-gradient(ellipse 20% 13% at 48% 62%,rgba(200,240,246,.5),transparent 70%),
+    radial-gradient(ellipse 12% 9% at 75% 58%,rgba(190,236,244,.4),transparent 70%),
+    radial-gradient(ellipse 16% 11% at 20% 70%,rgba(190,236,244,.35),transparent 70%);
+  background-size:100% 100%;filter:blur(6px);
+  -webkit-mask:radial-gradient(ellipse 50% 50% at 50% 55%,#000 40%,transparent 75%);mask:radial-gradient(ellipse 50% 50% at 50% 55%,#000 40%,transparent 75%);
+  animation:tbCaustics 11s ease-in-out infinite alternate;animation-play-state:var(--tt-motion-play-state,running)}
+@keyframes tbCaustics{0%{transform:translateX(-52%) translateY(0) scale(1)}50%{transform:translateX(-48%) translateY(-3%) scale(1.06)}100%{transform:translateX(-50%) translateY(2%) scale(.97)}}
+.tb-motes{position:absolute;left:-30%;right:-30%;top:-30%;bottom:0;z-index:7;pointer-events:none}
+.tb-motes i{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:rgba(214,240,246,.75);filter:blur(1px);opacity:0;animation:tbMote var(--d) linear var(--o) infinite;animation-play-state:var(--tt-motion-play-state,running)}
+@keyframes tbMote{0%{opacity:0;transform:translate(0,0)}15%{opacity:.6}85%{opacity:.5}100%{opacity:0;transform:translate(14px,-90px)}}
+/* the seabed: wide soft sand and a contact shadow, no outline */
+.tb-floor{width:calc(var(--bw)*5)!important;height:calc(var(--bw)*.9)!important;background:none!important}
+.tb-sand{position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse 50% 50% at 50% 55%,rgba(168,170,150,.30),rgba(96,120,124,.16) 45%,rgba(30,60,78,0) 75%);filter:blur(4px)}
+.tb-contact{position:absolute;left:50%;top:44%;width:calc(var(--bw)*2.3);height:calc(var(--bw)*.22);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(4,12,22,.55),rgba(4,12,22,0) 72%);filter:blur(5px)}
+/* silt stirred up when the cover lands */
+.tb-silt{position:absolute;left:50%;bottom:8%;width:calc(var(--bw)*2.2);height:calc(var(--bw)*.5);transform:translateX(-50%);z-index:7;pointer-events:none}
+.tb-silt i{position:absolute;left:50%;top:80%;width:var(--s);height:var(--s);border-radius:50%;background:rgba(200,214,206,.55);filter:blur(1.5px);opacity:0}
+body.tt-book-opened .tb-silt i{animation:tbSilt 3.2s cubic-bezier(.2,.7,.3,1) calc(1.75s + var(--w)) forwards}
+@keyframes tbSilt{0%{opacity:0;transform:translate(0,0) scale(.6)}18%{opacity:.75}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6)}}
+/* the beam above the book: soft light only, no hairlines */
+.tt-book-light-stage .beam-spark{display:none!important}
+@media (prefers-reduced-motion: reduce){.tb-caustics,.tb-motes i{animation:none}.tb-motes i{opacity:.35}body.tt-book-opened .tb-silt i{animation:none}}
 @media (prefers-reduced-motion: reduce){.tb-book,.tb-cover,.tb-leaf,.tb-ink i,.tb-page-glow{transition-duration:.01s!important;transition-delay:0s!important}.tb-emblem{animation:none}}
+/* bridge sentences: a deeper halo once the text is light */
+.tt-bridge-pin-stage [data-bridge]{text-shadow:var(--halo,none),0 0 calc(var(--deep-glow,0)*30px) rgba(3,11,22,calc(var(--deep-glow,0)*.55))}
+/* ===== Bridge motifs (revision 2): soft light only ===== */
+.tt-bridge-visual .tb-orb{position:absolute;left:50%;top:50%;width:var(--s,12px);height:var(--s,12px);margin:calc(var(--s,12px) / -2) 0 0 calc(var(--s,12px) / -2);border-radius:50%;opacity:0;
+  background:radial-gradient(circle,rgba(var(--c,255,240,210),.95) 0%,rgba(var(--c,255,240,210),.45) 40%,rgba(var(--c,255,240,210),0) 70%)}
+.tt-bridge-visual .tb-touch{box-shadow:0 0 30px rgba(255,226,170,.55)}
+.tt-bridge-visual .tb-bub{position:absolute;left:50%;top:50%;width:var(--s,12px);height:var(--s,12px);margin:calc(var(--s,12px) / -2) 0 0 calc(var(--s,12px) / -2);border-radius:50%;opacity:0;
+  border:1px solid rgba(235,250,255,.6);background:radial-gradient(circle at 32% 30%,rgba(255,255,255,.6),rgba(255,255,255,.08) 38%,rgba(255,255,255,.02) 70%)}
+.tt-bridge-visual .tb-note{position:absolute;left:50%;top:50%;font:700 var(--s,22px)/1 'Quicksand',sans-serif;color:rgba(255,232,178,.95);text-shadow:0 0 14px rgba(255,210,140,.75);margin:-.5em 0 0 -.35em;opacity:0}
+.tt-bridge-visual .tb-note-main{color:#ffe7b3;text-shadow:0 0 18px rgba(255,214,140,.95),0 0 40px rgba(255,200,120,.5)}
+.tt-bridge-visual .tb-glow{position:absolute;left:50%;top:50%;width:var(--s,320px);height:var(--s,320px);margin:calc(var(--s,320px) / -2) 0 0 calc(var(--s,320px) / -2);border-radius:50%;opacity:0;filter:blur(26px)}
+.tt-bridge-visual .tb-iris{background:conic-gradient(from var(--r,0deg),rgba(127,227,238,.75),rgba(255,159,184,.7),rgba(255,214,140,.75),rgba(185,166,255,.7),rgba(157,240,200,.7),rgba(127,227,238,.75));
+  -webkit-mask:radial-gradient(circle,#000 25%,transparent 68%);mask:radial-gradient(circle,#000 25%,transparent 68%)}
+.tt-bridge-visual .tb-warm{background:radial-gradient(circle,rgba(255,232,180,.85),rgba(255,214,140,.35) 40%,rgba(255,214,140,0) 70%)}
+.tt-bridge-visual .tb-surface{position:absolute;left:50%;top:50%;width:min(1000px,100vw);height:200px;margin:-100px 0 0 min(-500px,-50vw);opacity:0;filter:blur(8px);
+  background:radial-gradient(ellipse 50% 60% at 50% 0%,rgba(225,250,255,.75),rgba(225,250,255,.18) 50%,rgba(225,250,255,0) 75%)}
+.tt-bridge-visual .tb-page{position:absolute;left:50%;top:50%;width:min(380px,74vw);height:min(220px,42vw);margin:calc(min(220px,42vw) / -2) 0 0 calc(min(380px,74vw) / -2);border-radius:16px;opacity:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(255,240,206,.42),rgba(255,226,170,.12) 62%,rgba(255,226,170,.03));box-shadow:0 0 70px rgba(255,220,150,.22);filter:blur(1.5px)}
+@media (max-width:760px){.tt-bridge-visual .tb-glow{filter:blur(18px)}}
+/* ===== Type scale (revision 2): 8 steps for the whole site ===== */
+:root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
+@media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
+@media (max-width:760px){:root{--fs-m:14px;--fs-l:16px;--fs-xl:20px;--fs-2xl:26px;--fs-3xl:34px;--fs-4xl:48px}}
+/* ===== Chapter review R1-R9 (revision 2) ===== */
+#content#content .tt-section-chapter{font-size:var(--fs-xs)!important}
+#content#content .tt-section-note{font-size:var(--fs-s)!important;letter-spacing:.02em!important}
+#content#content .tt-chapter-title{font-size:var(--fs-4xl)!important}
+#content#content .tt-home-tagline{font-size:var(--fs-xl)!important}
+#content#content .tt-prologue-hint{font-size:var(--fs-s)!important}
+#content#content .tt-scroll-hint{font-size:var(--fs-s)!important;letter-spacing:.12em!important}
+#content#content #c-home :is(.is-primary,.is-secondary){font-size:var(--fs-s)!important;min-height:44px}
+#content#content .tt-news-card-preview{font-size:var(--fs-s)!important}
+#content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
+.tt-project-title{font-size:var(--fs-2xl)!important}
+/* R4: who we write for, as a quiet list; the two stories stay the only cards */
+.tt-audiences-heading{margin:-6px 0 18px;font-weight:800;font-size:var(--fs-xs);letter-spacing:.2em;text-transform:uppercase;color:var(--accent,#0E6E7D);text-align:center}
+#content#content .tt-audiences{background:none!important;box-shadow:none!important;border-radius:0!important;padding:0!important;backdrop-filter:none!important;gap:0!important;margin:0 0 48px!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
+#content#content .tt-audience{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:24px 26px!important;text-align:left}
+#content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
+#content#content .tt-audience > div{font-size:var(--fs-xs)!important;letter-spacing:.16em!important}
+#content#content .tt-audience h3{font-size:var(--fs-l)!important}
+#content#content .tt-audience p{font-size:var(--fs-s)!important}
+@media (max-width:760px){#content#content .tt-member-card{aspect-ratio:9/16!important}#content#content .tt-member-card-copy{padding-top:40px!important}.tt-member-card-role{-webkit-line-clamp:3}#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
+/* R5 */
+#c-projects article.lift a{min-height:44px;box-sizing:border-box}
+/* R6: role label, name, the member's line */
+.tt-member-card-role{margin-bottom:6px;font-weight:800;font-size:var(--fs-xs);line-height:1.35;letter-spacing:.12em;text-transform:uppercase;color:#4a5466;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tt-member-card-tagline{margin-top:8px;font-weight:600;font-size:var(--fs-s);line-height:1.5;color:#2c3546;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-wrap:pretty}
+#content#content .tt-member-card-copy{padding-top:54px!important;background:linear-gradient(to top,rgba(255,253,248,.97) 70%,rgba(255,253,248,.82) 84%,rgba(255,253,248,0))!important}
+/* R7: partners, named */
+#content#content .tt-network-summary{display:flex;align-items:center;gap:20px;min-height:64px}
+#content#content .tt-network-title{font-size:var(--fs-l)!important;white-space:nowrap}
+.tt-network-people{flex:1 1 auto;display:flex;flex-wrap:wrap;gap:10px 18px;min-width:0}
+.tt-network-person{display:inline-flex;align-items:center;gap:10px;text-align:left}
+.tt-network-person img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
+.tt-network-person strong{display:block;font-size:var(--fs-s);line-height:1.2}
+.tt-network-person small{display:block;font-size:var(--fs-xs);line-height:1.3;opacity:.7}
+#content#content .tt-network-arrow{font-size:var(--fs-l)!important}
+/* R8: news cards hold their edge on dark water; thumbnails share one tone */
+#content#content #c-news .lift{border:1px solid rgba(232,246,250,.14)!important;position:relative}
+#c-news .lift > image-slot{position:relative}
+#c-news .lift > image-slot::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,18,32,0) 45%,rgba(6,18,32,.38));pointer-events:none}
+/* ===== Line breaks (revision 2) ===== */
+/* Korean never breaks inside a word; outranks the older word-break:normal resets in responsive.css */
+html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important;overflow-wrap:break-word}
+/* running text never ends on a lone word; headings and short notes are balanced */
+#content{text-wrap:pretty}
+#content :is(h2,h3,h4,.tt-news-title,.tt-section-note,.tt-prologue-hint,.tt-chapter-lead){text-wrap:balance}
+/* short titles stay on one line */
+.tt-project-title{white-space:nowrap;font-size:var(--fs-2xl)!important}
+.tb-title{white-space:nowrap}
 /* accessibility: keyboard focus + reduced motion */
 a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent,#0E6E7D);outline-offset:3px;border-radius:6px}
 @media (prefers-reduced-motion: reduce){
@@ -186,26 +285,9 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 /* story-bridge visual system */
 /* bloom v4: flower of light */
-.tt-petal-glint{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:rgba(255,255,252,.98);box-shadow:0 0 14px rgba(255,255,250,.95),0 0 34px rgba(150,235,250,.7);mix-blend-mode:screen;opacity:0;}
 /* bloom v3: layered petals + stamens */
-.tt-petal-in{width:30px !important;height:100px !important;margin:-100px 0 0 -15px !important;background:linear-gradient(0deg,rgba(255,253,244,.98),rgba(226,250,254,.72) 32%,rgba(180,238,250,.34) 62%,transparent) !important;filter:blur(3px) !important;}
-.tt-stamen{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;transform-origin:50% 50%;background:rgba(255,244,214,.98);box-shadow:0 0 10px rgba(255,236,180,.9);opacity:0;}
 /* v2 impact vocabulary */
-.tt-shock-ring{position:absolute;left:50%;top:50%;width:90px;height:90px;margin:-45px;border-radius:50%;border:2px solid rgba(255,253,248,.9);box-shadow:0 0 30px rgba(125,226,238,.6),inset 0 0 16px rgba(255,253,248,.3);opacity:0;}
-.tt-flash-core{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,252,.96),rgba(170,240,255,.4) 40%,transparent 70%);filter:blur(2px);opacity:0;}
-.tt-note-shock{top:24px !important;}
 /* redesigned bridge motifs: listen / kindle / touch-sound / surface / first-note */
-.tt-listen-ring{position:absolute;left:50%;top:50%;width:118px;height:118px;margin:-59px;border-radius:50%;border:1px dashed rgba(226,252,255,.48);box-shadow:0 0 22px rgba(124,226,238,.28);}
-.tt-listen-arc{position:absolute;left:50%;top:50%;width:180px;height:180px;margin:-90px;border-radius:50%;border:1.5px solid rgba(226,252,255,.5);box-shadow:0 0 18px rgba(124,226,238,.25);}
-.tt-kindle-core{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px;border-radius:50%;background:rgba(255,249,231,.97);box-shadow:0 0 26px rgba(255,238,182,.9),0 0 80px rgba(255,224,138,.4),0 0 140px rgba(124,226,238,.25);}
-.tt-kindle-halo{position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,178,.30),rgba(255,236,178,.08) 46%,transparent 72%);filter:blur(7px);}
-.tt-touch-ring{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px;border-radius:50%;border:1.5px solid rgba(255,253,248,.85);box-shadow:0 0 18px rgba(124,226,238,.4);}
-.tt-sound-tick{position:absolute;left:50%;top:50%;width:2.5px;height:26px;margin:-13px 0 0 -1.25px;border-radius:3px;background:linear-gradient(180deg,rgba(255,253,248,.95),rgba(125,226,238,.4));box-shadow:0 0 12px rgba(125,226,238,.5);}
-.tt-surface-line{position:absolute;left:50%;top:50%;width:min(680px,72vw);height:1.5px;background:linear-gradient(90deg,transparent,rgba(255,253,248,.9) 30%,rgba(125,226,238,.75) 50%,rgba(255,253,248,.85) 70%,transparent);box-shadow:0 0 20px rgba(125,226,238,.45);}
-.tt-staff-stage{position:absolute;left:50%;top:50%;width:min(560px,72vw);height:0;transform:translateX(-50%);}
-.tt-staff-line{position:absolute;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(226,252,255,.62) 12%,rgba(226,252,255,.62) 88%,transparent);box-shadow:0 0 10px rgba(124,226,238,.25);}
-.tt-staff-note{position:absolute;left:50%;top:0;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border-radius:50%;background:rgba(255,253,248,.97);box-shadow:0 0 22px rgba(255,253,248,.8),0 0 60px rgba(124,226,238,.55);}
-.tt-note-pulse{position:absolute;left:50%;top:24px;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;border:1px solid rgba(255,253,248,.72);box-shadow:0 0 24px rgba(124,226,238,.4);}
 
 /* ===== Narrative bridges: fixed stage, timed playback and automatic handoff ===== */
 [data-story-bridge-wrap]{isolation:isolate;position:relative;}
@@ -216,30 +298,21 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 .tt-bridge-pin-stage::after{content:none;}
 /* The visible frame must not move when fonts/images shift an earlier chapter. */
 #content:is([data-bridge-phase="playing"],[data-bridge-phase="holding"]) [data-bridge-active] > .tt-bridge-pin-stage{position:fixed!important;inset:0 auto auto 0!important;width:100%!important;height:100%!important;}
-#content:is([data-bridge-phase="playing"],[data-bridge-phase="holding"]) #c-translation[data-bridge-active] > .tt-translation-stage{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;box-sizing:border-box;}
 .tt-bridge-pin-stage [data-bridge]{position:relative;z-index:4;display:block;width:min(1120px,74vw);max-width:min(1120px,74vw);margin-left:auto;margin-right:auto;text-align:center!important;text-wrap:balance!important;white-space:normal!important;word-break:keep-all!important;overflow-wrap:anywhere!important;text-shadow:0 0 28px rgba(183,246,255,.16);}
 .tt-bridge-pin-stage [data-bridge-line]{position:relative;z-index:4;box-shadow:0 0 18px rgba(124,226,238,.42);}
 .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){position:relative;z-index:4;text-shadow:0 0 16px rgba(125,226,238,.24);}
 .tt-bridge-visual{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1120px,90vw);height:clamp(260px,39vw,500px);pointer-events:none;display:grid;place-items:center;contain:layout style;will-change:opacity,transform;z-index:1;overflow:visible;}
+.tt-prologue-steps{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);display:flex;align-items:center;gap:clamp(10px,1.6vw,18px);white-space:nowrap}
+.tt-prologue-step{font-family:'Quicksand',var(--tt-noto-primary),sans-serif;font-weight:700;font-size:clamp(11px,1.1vw,13px);letter-spacing:.32em;padding-left:.32em;color:var(--accent,#0E6E7D);text-shadow:var(--halo,none);opacity:0}
+.tt-prologue-link{display:block;width:clamp(28px,5vw,64px);height:1px;background:linear-gradient(90deg,transparent,var(--accent,#0E6E7D),transparent);transform-origin:0 50%;transform:scaleX(0);opacity:0}
+@media (max-width:760px){.tt-prologue-steps{bottom:-30%;gap:10px}.tt-prologue-step{font-size:10px;letter-spacing:.26em;padding-left:.26em}.tt-prologue-link{width:22px}}
 .tt-bridge-visual *{box-sizing:border-box;will-change:transform,opacity;}
 .tt-bridge-visual::before{content:'';position:absolute;left:50%;top:50%;width:min(760px,76vw);height:min(760px,76vw);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),rgba(106,229,239,.08) 24%,rgba(112,87,255,.04) 46%,transparent 72%);filter:blur(10px);opacity:var(--aura,.8);}
-.tt-bridge-dot{position:absolute;left:50%;top:50%;width:var(--dot,7px);height:var(--dot,7px);margin-left:calc(var(--dot,7px)/-2);margin-top:calc(var(--dot,7px)/-2);border-radius:999px;background:rgba(240,254,255,.95);box-shadow:0 0 12px rgba(150,239,247,.86),0 0 34px rgba(123,226,238,.30),0 0 68px rgba(132,96,255,.12);}
-.tt-bridge-spark{position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;border-radius:999px;background:rgba(255,253,248,.98);box-shadow:0 0 12px rgba(255,253,248,.95),0 0 28px rgba(125,226,238,.52);}
-.tt-bridge-thread{position:absolute;left:50%;top:50%;height:1px;width:var(--w,160px);transform-origin:left center;background:linear-gradient(90deg,rgba(206,252,255,.78),rgba(206,252,255,0));box-shadow:0 0 10px rgba(125,226,238,.42);}
 
 /* 01 ??繞?*/
-.tt-line-ritual{position:relative;width:min(900px,86vw);height:260px;display:grid;place-items:center;}
-.tt-one-line,.tt-line-echo{position:absolute;left:50%;top:50%;width:100%;height:1.5px;transform:translate(-50%,-50%) scaleX(0);transform-origin:left center;background:linear-gradient(90deg,transparent,rgba(255,253,248,.92),rgba(108,226,239,.82),rgba(255,253,248,.76),transparent);box-shadow:0 0 22px rgba(105,218,232,.42),0 0 56px rgba(105,218,232,.18);}
-.tt-line-echo{height:1px;opacity:.34;filter:blur(.1px);}
 .tt-line-echo.e1{top:calc(50% - 38px)}.tt-line-echo.e2{top:calc(50% + 38px)}
-.tt-line-note{position:absolute;top:50%;left:50%;font-size:clamp(34px,6vw,72px);font-weight:800;line-height:1;color:rgba(255,253,248,.98);text-shadow:0 0 20px rgba(255,253,248,.82),0 0 54px rgba(111,226,239,.86),0 0 110px rgba(133,97,255,.28);}
-.tt-line-trail{position:absolute;top:50%;left:50%;height:82px;width:260px;border-radius:50%;background:radial-gradient(ellipse at 100% 50%,rgba(255,255,255,.38),rgba(118,229,239,.22) 36%,transparent 72%);filter:blur(9px);mix-blend-mode:screen;}
-.tt-line-glyph{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;border:1px solid rgba(226,252,255,.82);box-shadow:0 0 18px rgba(124,226,238,.44);}
 
 /* 02 ???筌롫챸??*/
-.tt-orb-stage{position:absolute;inset:0;}
-.tt-bridge-orb{position:absolute;left:50%;top:50%;width:clamp(106px,13vw,164px);height:clamp(106px,13vw,164px);margin:calc(clamp(106px,13vw,164px)/-2);border-radius:50%;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.98),rgba(170,248,255,.56) 26%,rgba(93,188,217,.20) 56%,rgba(120,99,255,.08) 72%,transparent 78%);box-shadow:0 0 38px rgba(170,248,255,.58),0 0 100px rgba(93,188,217,.23),inset -18px -24px 46px rgba(10,54,84,.22);filter:saturate(1.12);}
-.tt-bridge-orb::after{content:'';position:absolute;inset:14%;border-radius:inherit;border:1px solid rgba(255,255,255,.34);box-shadow:inset 0 0 22px rgba(255,255,255,.16);}
 
 
 
@@ -249,14 +322,8 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 
 /* 04 ??源낆꽑??????덈펲 */
-.tt-bloom-stage{position:absolute;left:50%;top:50%;width:360px;height:360px;margin:-180px 0 0 -180px;}
-.tt-bloom-petal{position:absolute;left:50%;top:50%;width:42px;height:154px;margin:-154px 0 0 -21px;transform-origin:50% 100%;border-radius:50% 50% 50% 50% / 62% 62% 38% 38%;background:linear-gradient(0deg,rgba(255,255,255,.95),rgba(200,244,252,.62) 28%,rgba(150,228,248,.3) 58%,rgba(150,228,248,.06) 82%,transparent);filter:blur(4px);mix-blend-mode:screen;opacity:0}           
-.tt-bloom-ray{position:absolute;left:50%;top:50%;width:2px;height:184px;margin:-184px 0 0 -1px;transform-origin:50% 184px;background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(119,229,239,.22),transparent);filter:blur(.3px);}
-.tt-bloom-core{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:radial-gradient(circle at 42% 36%,rgba(255,252,240,.98),rgba(255,238,190,.92) 55%,rgba(255,214,140,.75));box-shadow:0 0 26px rgba(255,240,200,.85),0 0 70px rgba(255,224,150,.4),0 0 120px rgba(118,229,239,.3)}                                  
 
 /* 05 ??怨뺥닡?띠룆理???*/
-.tt-ripple-ring{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px;border-radius:50%;border:1px solid rgba(229,253,255,.78);box-shadow:0 0 26px rgba(112,224,238,.32),inset 0 0 18px rgba(112,224,238,.12);}
-.tt-ripple-current{position:absolute;left:50%;top:50%;width:760px;height:180px;margin:-90px 0 0 -380px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(126,229,239,.14),rgba(126,229,239,.04) 42%,transparent 70%);filter:blur(10px);}
 
 /* 06 ????瑜곷턄嶺뚯솘? */
 
@@ -273,10 +340,6 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
   .tt-bridge-pin-stage::after{content:'';position:absolute;left:50%;top:50%;width:82vw;height:82vw;max-width:410px;max-height:410px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.24) 0%,rgba(116,210,220,.14) 42%,rgba(116,210,220,0) 72%);opacity:.58;pointer-events:none;z-index:1}
   .tt-bridge-visual{display:grid!important;width:92vw;height:clamp(190px,54vw,320px);filter:none!important}
   .tt-bridge-visual::before{width:74vw;height:74vw;filter:blur(7px);opacity:.52}
-  .tt-bridge-dot,.tt-bridge-spark,.tt-bridge-thread{box-shadow:0 0 10px rgba(150,239,247,.55)}
-  .tt-line-ritual{height:190px}
-  .tt-bloom-stage{transform:scale(.62)}
-  .tt-bridge-orb{width:78px;height:78px;margin:-39px}
 
   .tt-bridge-pin-stage [data-bridge]{max-width:none!important;font-size:clamp(18px,8.2vw,40px);line-height:1.18!important;text-align:center!important;white-space:pre!important;text-wrap:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important;color:var(--ink,#141C30)!important;filter:none!important;text-shadow:var(--halo,none)!important}
   .tt-bridge-pin-stage [data-bridge] span{max-width:none!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;filter:none!important}
@@ -290,13 +353,6 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 
 /* Original water-entry sequence; JS drives the plunge and real HOME assembly. */
-#intro.tt-intro{display:none}
-body.tt-intro-running{overflow:hidden}
-body.tt-intro-running #intro.tt-intro{display:block;pointer-events:auto}
-body.tt-intro-running #content{pointer-events:none}
-#intro-scene,#intro-skyw,#intro-sea,#intro-overlight{backface-visibility:hidden}
-@media (max-width:760px){#intro.tt-intro{contain:strict}#intro-overlight>div{mix-blend-mode:normal!important;filter:blur(8px)!important}}
-@media (prefers-reduced-motion:reduce){#intro.tt-intro{display:none!important}}
 
 image-slot#tone-art{background:#fff !important}
 image-slot#tone-art::part(frame){background:#fff !important;border:0 !important;outline:0 !important}
@@ -305,7 +361,6 @@ image-slot#tone-art::part(ring){display:none !important}
 #c-contact [data-reveal],
 #email-link{position:relative !important;z-index:8 !important}
 #c-contact .tt-book-light-stage{z-index:0 !important;opacity:.72 !important}
-#deep-book-svg{position:relative !important;z-index:2 !important}
 @media (max-width:760px){
   body.tt-works-modal-open .tt-lang-switcher{display:none !important}
   #chapnav.tt-nav-peek,
@@ -369,18 +424,15 @@ image-slot#tone-art::part(ring){display:none !important}
 }
 
 body[data-active-chapter="home"] #chapnav .navbtn,
-body[data-active-chapter="translation"] #chapnav .navbtn,
 body[data-active-chapter="projects"] #chapnav .navbtn,
 body[data-active-chapter="members"] #chapnav .navbtn,
 body[data-active-chapter="home"] #chapnav .nav-label,
-body[data-active-chapter="translation"] #chapnav .nav-label,
 body[data-active-chapter="projects"] #chapnav .nav-label,
 body[data-active-chapter="members"] #chapnav .nav-label{
   color:rgba(15,57,70,.88) !important;
   text-shadow:0 1px 0 rgba(255,255,255,.72),0 0 12px rgba(255,255,255,.86) !important;
 }
 body[data-active-chapter="home"] #chapnav .nav-dot,
-body[data-active-chapter="translation"] #chapnav .nav-dot,
 body[data-active-chapter="projects"] #chapnav .nav-dot,
 body[data-active-chapter="members"] #chapnav .nav-dot{
   background:rgba(255,255,255,.18) !important;
@@ -446,7 +498,7 @@ body[data-active-chapter="contact"] #nav-6{
   }
   #sky{display:block!important;visibility:visible!important;opacity:1!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:0!important;pointer-events:none!important}
   #content,x-dc{background:none!important;background-color:transparent!important;background-image:none!important;overscroll-behavior-y:none!important}
-  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="translation"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="news"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
+  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="news"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
   #lang-switcher.tt-lang-switcher{right:max(12px,env(safe-area-inset-right))!important;top:max(14px,env(safe-area-inset-top))!important;max-width:calc(100vw - 132px)!important;z-index:340!important}
   #lang-switcher.tt-lang-switcher>div{width:clamp(168px,46vw,196px)!important;max-width:100%!important;justify-content:space-between!important;gap:0!important;padding:3px!important;overflow:hidden!important;border-radius:999px!important;background-clip:padding-box!important}
   #lang-switcher.tt-lang-switcher button{appearance:none!important;-webkit-appearance:none!important;border:0!important;outline:0!important;box-shadow:none!important;-webkit-tap-highlight-color:transparent!important;flex:1 1 0!important;min-width:44px!important;min-height:44px!important;padding:0 5px!important;font-size:12px!important;line-height:1!important;display:inline-grid!important;place-items:center!important;border-radius:999px!important;overflow:hidden!important;background-clip:padding-box!important}
@@ -547,44 +599,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 </style>
-<script defer="" src="assets/js/works.js?v=20261018-permalink"></script>
+<script defer="" src="assets/js/works.js?v=20261020-shelf"></script>
 </helmet>
-<div id="intro" class="tt-intro" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:100svh;z-index:1000;overflow:hidden;contain:layout paint size;isolation:isolate;background:#cfe9e6;cursor:pointer;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif">
-  <div id="intro-scene" style="position:absolute;inset:0;overflow:hidden;will-change:transform,opacity;transform-origin:50% 50%">
-  <!-- 수면 위 세계: 하늘 + 수평선 + 원근 바다 (낙하하며 위로 밀려 올라감) -->
-  <div id="intro-skyw" style="position:absolute;left:-18%;top:-12%;width:136%;height:250%;will-change:transform;transform-origin:50% 44%">
-    <div style="position:absolute;left:0;top:0;width:100%;height:90%;background:linear-gradient(180deg,#b9d9e8 0%,#d6ebee 46%,#eef7f2 78%,#fbfdf9 100%)"></div>
-    <div style="position:absolute;left:50%;top:6%;width:70%;height:40%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,254,240,.9),rgba(255,254,240,0) 70%);filter:blur(8px)"></div>
-    <div id="intro-clouds" style="position:absolute;left:0;top:0;width:100%;height:90%"></div>
-    <div id="intro-ocean" style="position:absolute;left:0;top:90%;width:100%;height:130%;overflow:hidden;background:linear-gradient(180deg,#e2f1ed 0%,#b7dedd 9%,#94ccce 28%,#78b9c0 60%,#68adb7 100%)">
-      <div id="intro-waves" style="position:absolute;inset:0;transform-origin:50% 0;will-change:transform"></div>
-    </div>
-    <div style="position:absolute;left:0;top:89.4%;width:100%;height:1.4%;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.85) 55%,rgba(130,190,200,.35));filter:blur(1px)"></div>
-  </div>
-  <!-- 수면 아래 세계: 워터라인 와이프로 드러남 -->
-  <div id="intro-sea" style="position:absolute;left:-8vw;right:-8vw;top:-7vh;bottom:-7vh;will-change:transform;transform-origin:50% 50%;clip-path:polygon(0 3%,8% 1.3%,16% 2.6%,24% .8%,32% 2.2%,40% 1%,48% 2.8%,56% 1.2%,64% 2.4%,72% .9%,80% 2.6%,88% 1.1%,96% 2.2%,100% 1.4%,100% 100%,0 100%)">
-    <div id="intro-seabg" style="position:absolute;inset:0;background:linear-gradient(180deg,#c9ecee 0%,#8fc6cd 36%,#5b9fb0 100%)"></div>
-    <div id="intro-under" style="position:absolute;inset:0;opacity:0;pointer-events:none">
-      <div id="intro-overlight" style="position:absolute;inset:-7vh -8vw;will-change:transform">
-        <div style="position:absolute;left:-10%;right:-10%;top:-4%;height:34%;background:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.92),rgba(224,246,246,.4) 46%,rgba(224,246,246,0) 100%)"></div>
-        <div style="position:absolute;left:10%;top:-8%;width:18%;height:82%;transform:rotate(7deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.42),rgba(255,255,255,.16) 36%,rgba(255,255,255,0) 74%);filter:blur(12px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:34%;top:-8%;width:22%;height:96%;transform:rotate(3deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.38),rgba(255,255,255,.14) 38%,rgba(255,255,255,0) 76%);filter:blur(14px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:59%;top:-8%;width:17%;height:74%;transform:rotate(-5deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.4),rgba(255,255,255,.13) 34%,rgba(255,255,255,0) 73%);filter:blur(12px);mix-blend-mode:screen"></div>
-        <div style="position:absolute;left:76%;top:-8%;width:20%;height:90%;transform:rotate(-8deg);background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.34),rgba(255,255,255,.12) 36%,rgba(255,255,255,0) 75%);filter:blur(14px);mix-blend-mode:screen"></div>
-      </div>
-      <div id="intro-depthshade" style="position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(8,42,64,.45),rgba(8,42,64,0));opacity:0"></div>
-    </div>
-    <div id="intro-bubbles" style="position:absolute;inset:0;pointer-events:none"></div>
-  </div>
-  <div id="intro-streaks" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
-  <div id="intro-foamline" style="position:absolute;left:-10%;width:120%;height:18%;top:0;background:radial-gradient(50% 100% at 50% 50%,rgba(255,255,255,.98),rgba(255,255,255,.7) 52%,rgba(255,255,255,0));filter:blur(3px);opacity:0;will-change:transform,opacity;pointer-events:none"></div>
-  <div id="intro-drops" style="position:absolute;inset:-7vh -8vw;pointer-events:none"></div>
-  </div>
-  <div id="intro-flash" style="position:absolute;inset:-14vh -14vw;background:radial-gradient(82% 72% at 50% 48%,rgba(255,255,255,1) 0%,rgba(247,252,250,.98) 42%,rgba(229,245,245,.94) 70%,rgba(218,239,240,.84) 100%);opacity:0;transform:scale(.82);transform-origin:50% 48%;will-change:transform,opacity;pointer-events:none"></div>
-
-  <!-- (선택) 안착하며 떠오르는 워드마크. 사이트 히어로로 대체하려면 이 블록 삭제. -->
-<div id="intro-skip" style="position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:70;font-weight:700;font-size:10px;letter-spacing:.3em;color:rgba(18,48,58,.45);text-transform:uppercase;pointer-events:none;opacity:0">Skip</div>
-</div>                                        
+                                        
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
 <div id="glow" aria-hidden="true" style="position:fixed;left:50%;bottom:-26vh;width:150vw;height:96vh;transform:translateX(-50%);z-index:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side, rgba(255,224,168,.85), rgba(120,196,200,.22) 46%, rgba(120,196,200,0) 72%);filter:blur(10px)"></div>
 <canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:0;z-index:2;pointer-events:none;mix-blend-mode:normal;opacity:.82"></canvas>
@@ -606,12 +623,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- RIGHT CHAPTER NAV -->
 <div id="chapnav" style="position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
   <a id="nav-0" href="/" onclick="{{ nav0 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navHome }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-1" href="/" onclick="{{ nav1 }}" style="display:none"></a>
-  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TALE · </span>{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">TONE · </span>{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">MUSIC · </span>{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">ECHO · </span>{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label"><span class="nav-chapter">EPILOGUE · </span>{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn"><span class="nav-label">{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
 </div>
 
 <!-- PROGRESS -->
@@ -722,7 +738,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- ================= 01 HOME ================= -->
 <section id="c-home" data-screen-label="01 Home" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:150px 6vw 130px;text-align:center">
   <div data-px="0.05" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(80px,15vw,260px);letter-spacing:-.02em;line-height:.82;color:var(--ink,#141C30);opacity:.05;white-space:nowrap;pointer-events:none">{{ HOME.backgroundLine1 }}<br>{{ HOME.backgroundLine2 }}</div>
-  <div data-reveal="" style="font-weight:800;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
+  <div data-reveal="" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
   <h1 data-reveal="" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.84;color:var(--ink,#141C30);font-size:clamp(58px,11.5vw,188px);opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1.1s cubic-bezier(.2,.8,.2,1) .08s">{{ HOME.titleLine1 }}<br>{{ HOME.titleLine2 }}</h1>
   <sc-if value="{{ HOME.tagline }}"><p data-reveal="" class="tt-home-tagline" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .2s,transform 1s cubic-bezier(.2,.8,.2,1) .2s">{{ HOME.tagline }}</p></sc-if>
   <div data-reveal="" class="tt-home-quick-actions">
@@ -744,7 +760,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </svg>
   </div>
   <div data-bob="" style="position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--soft,#44505F)">
-    <span style="font-weight:700;font-size:10px;letter-spacing:.22em;text-transform:uppercase">{{ HOME.scrollHint }}<br></span>
+    <span class="tt-scroll-hint" style="font-weight:700;letter-spacing:.22em;text-transform:uppercase">{{ HOME.scrollHint }}<br></span>
     <span class="tt-prologue-hint" title="{{ CHAPTER_PROLOGUE.hint }}">{{ CHAPTER_PROLOGUE.hint }}</span>
     <div style="width:1px;height:30px;background:currentColor"></div>
   </div>
@@ -755,13 +771,13 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <section id="c-track-record" data-screen-label="Track Record" aria-label="TALETONE MUSIC Track Record" style="min-height:52vh;display:flex;align-items:center;justify-content:center;position:relative;padding:76px 6vw 92px;text-align:center">
   <div data-reveal="" style="width:min(1040px,92vw);opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_PROLOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_PROLOGUE.note }}</div></div>
-    <div style="font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:20px">TRACK RECORD</div>
+    <div style="font-weight:800;font-size:var(--fs-s);letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:20px">TRACK RECORD</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;align-items:stretch">
       <sc-for list="{{ TRACK_RECORD }}" as="record" hint-placeholder-count="2">
       <article class="lift" style="border-radius:18px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.08);padding:28px 24px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:180px">
-        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:clamp(44px,6.6vw,86px);letter-spacing:-.03em;line-height:.9;color:var(--ink,#141C30)">{{ record.value }}</div>
-        <div style="font-weight:800;font-size:clamp(15px,1.5vw,19px);line-height:1.35;color:var(--ink,#141C30)">{{ record.label }}</div>
-        <div style="font-weight:600;font-size:13px;line-height:1.5;color:var(--soft,#44505F);max-width:26em">{{ record.note }}</div>
+        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:var(--fs-4xl);letter-spacing:-.03em;line-height:.9;color:var(--ink,#141C30)">{{ record.value }}</div>
+        <div style="font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)">{{ record.label }}</div>
+        <div style="font-weight:600;font-size:var(--fs-s);line-height:1.5;color:var(--soft,#44505F);max-width:26em">{{ record.note }}</div>
       </article>
       </sc-for>
     </div>
@@ -769,30 +785,12 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 </section>
 
 
-<!-- ================= 02 TRANSLATION (tale ??tone ??music) ================= -->
-<section id="c-translation" data-translate-bridge="" data-screen-label="02 Translate" style="position:relative;height:100vh">
-  <div class="tt-translation-stage" style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 6vw;text-align:center">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_METHOD.label }}</div><div class="tt-section-note">{{ CHAPTER_METHOD.note }}</div></div>
-    <div style="position:relative;height:24px;margin-bottom:clamp(34px,5vh,60px)">
-      <div id="tcap-0" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D)">{{ TRANSLATION.caption1 }}</div>
-      <div id="tcap-1" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:0">{{ TRANSLATION.caption2 }}</div>
-      <div id="tcap-2" style="position:absolute;left:50%;top:0;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent,#0E6E7D);opacity:0">{{ TRANSLATION.caption3 }}</div>
-    </div>
-    <div style="position:relative;width:min(1080px,92vw);height:clamp(150px,26vw,320px);display:flex;align-items:center;justify-content:center">
-      <div id="tale-line" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30);font-size:clamp(32px,6.2vw,88px)"></div>
-      <div id="wave-row" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:clamp(3px,0.8vw,9px);pointer-events:none"></div>
-    </div>
-    <div id="trans-foot" style="margin-top:clamp(36px,6vh,64px);font-weight:600;font-size:clamp(14px,1.5vw,19px);color:var(--soft,#44505F);opacity:0">{{ TRANSLATION.footer }}</div>
-  </div>
-</section>
-
-
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_0.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_0.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_0.text }}</span>
-  <div data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -800,28 +798,29 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <section id="c-projects" data-screen-label="03 Story Types" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
   <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
-    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(54px,8vw,128px);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
-    <p style="margin:22px 0 2px;font-weight:800;font-size:clamp(18px,2vw,28px);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
-    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,18px);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
+    <p style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
+    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <div data-public-audience="" data-reveal="" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
-    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
-      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceGameKicker }}</div>
-      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceGameService1 }}<br>{{ PROJECTS_META.audienceGameService2 }}</p>
-      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameHook }}</p>
+  <p class="tt-audiences-heading">{{ PROJECTS_META.audienceHeading }}</p>
+  <div data-public-audience="" data-reveal="" class="tt-audiences" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
+    <article class="tt-audience">
+      <div style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceGameKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceGameService1 }}<br>{{ PROJECTS_META.audienceGameService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceGameHook }}</p>
     </article>
-    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
-      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceCreatorKicker }}</div>
-      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceCreatorService1 }}<br>{{ PROJECTS_META.audienceCreatorService2 }}</p>
-      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorHook }}</p>
+    <article class="tt-audience">
+      <div style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceCreatorKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceCreatorService1 }}<br>{{ PROJECTS_META.audienceCreatorService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceCreatorHook }}</p>
     </article>
-    <article style="border-radius:16px;background:rgba(255,255,255,.42);border:1px solid rgba(24,32,52,.08);padding:18px 18px 17px;text-align:left;box-shadow:0 10px 24px rgba(8,22,38,.06)">
-      <div style="font-weight:900;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceAnimationKicker }}</div>
-      <h3 style="margin:0 0 9px;font-size:19px;line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationTitle }}</h3>
-      <p style="margin:0;font-weight:600;font-size:13px;line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceAnimationService1 }}<br>{{ PROJECTS_META.audienceAnimationService2 }}</p>
-      <p style="margin:12px 0 0;font-weight:800;font-size:13px;line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationHook }}</p>
+    <article class="tt-audience">
+      <div style="font-weight:900;font-size:var(--fs-s);letter-spacing:.16em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:9px">{{ PROJECTS_META.audienceAnimationKicker }}</div>
+      <h3 style="margin:0 0 9px;font-size:var(--fs-l);line-height:1.25;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationTitle }}</h3>
+      <p style="margin:0;font-weight:600;font-size:var(--fs-s);line-height:1.55;color:var(--soft,#44505F)">{{ PROJECTS_META.audienceAnimationService1 }}<br>{{ PROJECTS_META.audienceAnimationService2 }}</p>
+      <p style="margin:12px 0 0;font-weight:800;font-size:var(--fs-s);line-height:1.45;color:var(--ink,#141C30)">{{ PROJECTS_META.audienceAnimationHook }}</p>
     </article>
   </div>
   <div data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
@@ -829,8 +828,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <article class="lift" style="position:relative;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.1);padding:34px 32px 32px;display:flex;flex-direction:column;gap:22px">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
         <div>
-          <div style="font-weight:800;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:10px">{{ p.label }}</div>
-          <div class="tt-project-title" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(28px,3.2vw,44px);letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30)">{{ p.title }}</div>
+          <div style="font-weight:800;font-size:var(--fs-s);letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:10px">{{ p.label }}</div>
+          <div class="tt-project-title" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-3xl);letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30)">{{ p.title }}</div>
         </div>
         <div style="position:relative;width:74px;height:74px;flex:none;display:grid;place-items:center">
           <div data-spin="16" style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--accent,#0E6E7D);opacity:.5"></div>
@@ -841,8 +840,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <div data-float="" style="border-radius:20px;overflow:hidden">
         <image-slot id="{{ p.slotId }}" src="{{ p.image }}" fit="{{ p.fit }}" position="{{ p.position }}" style="width:100%;height:230px;filter:{{ p.filter }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot>
       </div>
-      <p style="margin:0;font-weight:600;font-size:15px;line-height:1.6;color:var(--soft,#44505F)">{{ p.description }}</p>
-      <sc-if value="{{ p.hasLink }}"><a href="{{ p.link }}" target="{{ p.linkTarget }}" rel="{{ p.linkRel }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:{{ p.buttonColor }};color:{{ p.buttonTextColor }};padding:14px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.14)"><span>{{ p.buttonLabel }}</span> <span>&#8594;</span></a></sc-if><sc-if value="{{ p.isPending }}"><span aria-disabled="true" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:rgba(14,110,125,.12);color:var(--accent,#0E6E7D);padding:12px 22px;border-radius:999px;border:1px solid rgba(14,110,125,.18);font-weight:800;font-size:14px;text-decoration:none;box-shadow:none"><span>{{ p.buttonLabel }}</span></span></sc-if>
+      <p style="margin:0;font-weight:600;font-size:var(--fs-m);line-height:1.6;color:var(--soft,#44505F)">{{ p.description }}</p>
+      <sc-if value="{{ p.hasLink }}"><a href="{{ p.link }}" target="{{ p.linkTarget }}" rel="{{ p.linkRel }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:{{ p.buttonColor }};color:{{ p.buttonTextColor }};padding:14px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.14)"><span>{{ p.buttonLabel }}</span> <span>&#8594;</span></a></sc-if><sc-if value="{{ p.isPending }}"><span aria-disabled="true" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:rgba(14,110,125,.12);color:var(--accent,#0E6E7D);padding:12px 22px;border-radius:999px;border:1px solid rgba(14,110,125,.18);font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:none"><span>{{ p.buttonLabel }}</span></span></sc-if>
     </article>
     </sc-for>
   </div>
@@ -852,9 +851,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_1.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
-  <div data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -862,18 +861,19 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <section id="c-members" data-screen-label="04 Members" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
   <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
-    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(54px,8vw,128px);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }}</h2>
-    <sc-if value="{{ MEMBERS_META.subtitle }}"><p style="margin:22px 0 4px;font-weight:800;font-size:clamp(18px,2vw,28px);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
-    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,18px);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
+    <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }}</h2>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><p style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
   <div data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
     <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="4">
     <div onclick="{{ member.open }}" class="lift tt-member-card" style="cursor:pointer;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 22px 50px rgba(20,28,60,.13);display:flex;flex-direction:column;justify-content:flex-end">
       <img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy" decoding="async"         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
       <div class="tt-member-card-index" data-member-number="{{ member.number }}" aria-label="{{ member.number }}"><span class="tt-member-card-number">{{ member.number }}</span><span class="tt-member-card-dot" style="background:{{ member.dotAccent }}"></span></div>
-      <div style="position:relative;padding:20px 18px 18px;background:linear-gradient(to top,rgba(255,253,248,.96) 30%,transparent)">
-        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:36px;letter-spacing:0;color:#141C30;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.name }}</div>
-        <div style="margin-top:9px;display:inline-block;max-width:100%;padding:6px 12px;border-radius:999px;background:rgba(24,32,52,.07);font-weight:700;font-size:11px;line-height:1.25;color:#3a4252;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.role }}</div>
+      <div class="tt-member-card-copy" style="position:relative;padding:20px 18px 18px;background:linear-gradient(to top,rgba(255,253,248,.96) 30%,transparent)">
+        <div class="tt-member-card-role">{{ member.role }}</div>
+        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-2xl);letter-spacing:0;color:#141C30;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ member.name }}</div>
+        <div class="tt-member-card-tagline">{{ member.tagline }}</div>
       </div>
     </div>
     </sc-for>
@@ -881,14 +881,12 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div class="tt-network-directory" data-reveal="">
     <button type="button" class="tt-network-summary" onclick="{{ togglePartner }}" aria-expanded="{{ partnerOpen }}" aria-controls="tt-network-panel">
       <span class="tt-network-summary-copy">
-        <span class="tt-network-eyebrow">{{ PARTNERS_META.eyebrow }}</span>
         <span class="tt-network-title">{{ PARTNERS_META.title }}</span>
       </span>
-      <span class="tt-network-summary-meta" aria-hidden="true">
-        <span class="tt-network-count">{{ PARTNERS.length }}</span>
-        <span class="tt-network-rail"></span>
-        <span class="tt-network-arrow">&#8594;</span>
+      <span class="tt-network-people">
+        <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><span class="tt-network-person"><img data-member-src="{{ p.image }}" alt="" loading="lazy"><span><strong>{{ p.name }}</strong><small>{{ p.role }}</small></span></span></sc-for>
       </span>
+      <span class="tt-network-arrow" aria-hidden="true">&#8594;</span>
     </button>
   </div>
   <sc-if value="{{ partnerOpen }}" hint-placeholder-val="{{ false }}">
@@ -924,9 +922,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_2.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_2.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_2.text }}</span>
-  <div data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size: clamp(22px,3.4vw,42px); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -936,12 +934,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div id="tt-gh-works-app" aria-live="polite"></div>
   
 </section>
-<div class="tt-gh-story-bridge" data-story-bridge-wrap="">
-  <div class="tt-gh-bridge-line" data-bridge-line=""></div>
-  <div class="tt-gh-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_3.text }}</span>
-  <div class="tt-gh-bridge-copy" data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
-  <div class="tt-gh-bridge-line is-bottom" data-bridge-line=""></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
 </div>
 
 <!-- ================= 06 NEWS ================= -->
@@ -949,19 +946,19 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-reveal="" style="width:min(1060px,94vw);opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div style="text-align:center;margin-bottom:38px">
       <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_RESURFACE.label }}</div><div class="tt-section-note">{{ CHAPTER_RESURFACE.note }}</div></div>
-      <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:clamp(48px,6.6vw,104px);line-height:.84;color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.title }} <span style="color:var(--accent,#0E6E7D);font-style:italic">{{ NEWS_META.titleAccent }}</span></h2>
-      <sc-if value="{{ NEWS_META.subtitle }}"><p style="margin:18px 0 2px;font-weight:700;font-size:clamp(16px,1.8vw,24px);color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.subtitle }}</p></sc-if>
-      <sc-if value="{{ NEWS_META.description }}"><p style="margin:0;font-weight:500;font-size:clamp(14px,1.3vw,17px);color:var(--soft,#44505F);white-space:pre-wrap">{{ NEWS_META.description }}</p></sc-if>
+      <h2 class="tt-chapter-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.title }} <span style="color:var(--accent,#0E6E7D);font-style:italic">{{ NEWS_META.titleAccent }}</span></h2>
+      <sc-if value="{{ NEWS_META.subtitle }}"><p style="margin:18px 0 2px;font-weight:700;font-size:var(--fs-xl);color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.subtitle }}</p></sc-if>
+      <sc-if value="{{ NEWS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);white-space:pre-wrap">{{ NEWS_META.description }}</p></sc-if>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
       <sc-for list="{{ NEWS }}" as="n" hint-placeholder-count="2">
       <div onclick="{{ n.open }}" class="lift" style="cursor:pointer;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 12px 32px rgba(8,22,38,.12)">
         <image-slot id="{{ n.slotId }}" src="{{ n.image }}" fit="{{ n.fit }}" position="{{ n.position }}" style="width:100%;height:188px;filter:{{ n.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
         <div style="padding:22px 24px 24px">
-          <div style="font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ n.tag }} &middot; {{ n.date }}</div>
-          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:21px;letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
-          <p style="margin:0;font-weight:500;font-size:14px;line-height:1.55;color:var(--soft,#44505F)">{{ n.summary }}</p>
-          <div style="margin-top:14px;font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ NEWS_META.readMoreLabel }}</div>
+          <div style="font-weight:800;font-size:var(--fs-s);letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ n.tag }} &middot; {{ n.date }}</div>
+          <div class="tt-news-title" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-xl);letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
+          <p style="margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.55;color:var(--soft,#44505F)">{{ n.summary }}</p>
+          <div style="margin-top:14px;font-weight:800;font-size:var(--fs-s);letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ NEWS_META.readMoreLabel }}</div>
         </div>
       </div>
       </sc-for>
@@ -973,9 +970,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label" style="opacity:.78">{{ BRIDGE_4.eyebrow }}</div>
+  <div class="tt-bridge-label">{{ BRIDGE_4.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_4.text }}</span>
-  <div data-bridge="" aria-label="{{ BRIDGE_4.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:clamp(22px,3.4vw,42px);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_4.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.0.indent }}">{{ BRIDGE_4.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.1.indent }}">{{ BRIDGE_4.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.2.indent }}">{{ BRIDGE_4.mobileLines.2.text }}</span></span></div>
+  <div data-bridge="" aria-label="{{ BRIDGE_4.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:var(--fs-3xl);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_4.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.0.indent }}">{{ BRIDGE_4.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.1.indent }}">{{ BRIDGE_4.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.2.indent }}">{{ BRIDGE_4.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -993,19 +990,19 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   </div>
   <div data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-contact-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:clamp(52px,9vw,150px);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span style="color:var(--accent,#0E6E7D);font-style:italic">{{ CONTACT.titleAccent }}</span></h2>
-    <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:clamp(15px,1.5vw,20px);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
-    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:clamp(15px,1.5vw,19px);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
+    <h2 class="tt-chapter-title tt-contact-title" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span style="color:var(--accent,#0E6E7D);font-style:italic">{{ CONTACT.titleAccent }}</span></h2>
+    <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
+    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
 
     <div style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
-      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:16px;text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:18px">&#8594;</span></a>
-      <button id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:16px;text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
+      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
+      <button id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
     </div>
-    <div id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:13px;letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
+    <div id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
     <sc-if value="{{ CONTACT.guideTitle }}">
-    <div class="tt-contact-guide" style="margin:22px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
-      <p style="margin:0 0 10px;font-weight:800;font-size:14px;color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
-      <ul style="margin:0;padding-left:18px;font-weight:600;font-size:14px;line-height:1.75;color:var(--soft,#44505F)">
+    <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
+      <p style="margin:0 0 10px;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
+      <ul style="margin:0;padding-left:18px;font-weight:500;font-size:var(--fs-m);line-height:1.75;color:var(--soft,#44505F)">
         <sc-for list="{{ CONTACT.guideItems }}" as="g" hint-placeholder-count="5"><li>{{ g }}</li></sc-for>
       </ul>
     </div>
@@ -1029,184 +1026,13 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
           <span class="tt-book-particle" style="--s:10px;--c:#fff3c7;--x0:0px;--x1:38px;--y1:-200px;--r:-18deg;--d:-3.4s;--dur:5.2s;--o:.48">&#9835;</span>
         </div>
 
-        <svg id="deep-book-svg" viewBox="0 0 900 560" style="width:100%;height:auto;display:block;overflow:visible;position:relative;z-index:2" aria-label="underwater magical book illustration">
-          <defs>
-            <filter id="ttBlur18" x="-40%" y="-80%" width="180%" height="240%"><feGaussianBlur stdDeviation="18"></feGaussianBlur></filter>
-            <filter id="ttBlur8" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
-            <filter id="ttSoftShadow" x="-20%" y="-20%" width="140%" height="160%">
-              <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#01070d" flood-opacity="0.34"></feDropShadow>
-            </filter>
-            <linearGradient id="ttBeamWide" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#ffe6b5" stop-opacity="0.72"></stop>
-              <stop offset="42%" stop-color="#f2d8a3" stop-opacity="0.24"></stop>
-              <stop offset="100%" stop-color="#9fc8d0" stop-opacity="0"></stop>
-            </linearGradient>
-            <linearGradient id="ttBeamCore" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.9"></stop>
-              <stop offset="48%" stop-color="#f5d99b" stop-opacity="0.38"></stop>
-              <stop offset="100%" stop-color="#c9e4e7" stop-opacity="0"></stop>
-            </linearGradient>
-            <radialGradient id="ttFoldGlow" cx="50%" cy="58%" r="55%">
-              <stop offset="0%" stop-color="#fff6dc" stop-opacity="0.92"></stop>
-              <stop offset="36%" stop-color="#f3cf8a" stop-opacity="0.38"></stop>
-              <stop offset="100%" stop-color="#7ca9b2" stop-opacity="0"></stop>
-            </radialGradient>
-            <radialGradient id="ttGround" cx="50%" cy="48%" r="58%">
-              <stop offset="0%" stop-color="#2a5362" stop-opacity="0.42"></stop>
-              <stop offset="68%" stop-color="#173545" stop-opacity="0.18"></stop>
-              <stop offset="100%" stop-color="#06131f" stop-opacity="0"></stop>
-            </radialGradient>
-            <linearGradient id="ttCover" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#315666"></stop>
-              <stop offset="48%" stop-color="#1d3948"></stop>
-              <stop offset="100%" stop-color="#102836"></stop>
-            </linearGradient>
-            <linearGradient id="ttCoverEdge" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#4f7680" stop-opacity="0.75"></stop>
-              <stop offset="45%" stop-color="#172c39"></stop>
-              <stop offset="100%" stop-color="#4f7680" stop-opacity="0.75"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageL" x1="1" y1="0.05" x2="0" y2="0.72">
-              <stop offset="0%" stop-color="#efe7cf"></stop>
-              <stop offset="52%" stop-color="#c6d4d2"></stop>
-              <stop offset="100%" stop-color="#7894a0"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageR" x1="0" y1="0.05" x2="1" y2="0.72">
-              <stop offset="0%" stop-color="#efe7cf"></stop>
-              <stop offset="52%" stop-color="#c6d4d2"></stop>
-              <stop offset="100%" stop-color="#7894a0"></stop>
-            </linearGradient>
-            <linearGradient id="ttPageStack" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#9eb3b6"></stop>
-              <stop offset="45%" stop-color="#637d86"></stop>
-              <stop offset="100%" stop-color="#263e4b"></stop>
-            </linearGradient>
-            <linearGradient id="ttMetal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#c5a76d"></stop>
-              <stop offset="52%" stop-color="#66513a"></stop>
-              <stop offset="100%" stop-color="#e8cb88"></stop>
-            </linearGradient>
-            <clipPath id="ttClipL"><path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z"></path></clipPath>
-            <clipPath id="ttClipR"><path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z"></path></clipPath>
-          </defs>
-
-          <!-- underwater contact haze and soft grounding -->
-          <ellipse cx="450" cy="444" rx="385" ry="92" fill="url(#ttGround)"></ellipse>
-          <ellipse cx="450" cy="438" rx="305" ry="38" fill="#0a1f2c" opacity="0.22" filter="url(#ttBlur18)"></ellipse>
-
-          <!-- conceptual magic column: a bright page-origin beam diffused by deep water -->
-          <g class="tt-svg-page-beam" opacity="1" style="mix-blend-mode:screen" pointer-events="none">
-            <path d="M450 330 C386 218 360 62 374 -390 C418 -430 482 -430 526 -390 C540 62 514 218 450 330 Z" fill="url(#ttBeamWide)" filter="url(#ttBlur18)" opacity="0.92"></path>
-            <path d="M450 332 C426 224 426 42 436 -360 C445 -380 455 -380 464 -360 C474 42 474 224 450 332 Z" fill="url(#ttBeamCore)" filter="url(#ttBlur8)" opacity="0.96"></path>
-            <path d="M450 332 C443 214 444 70 450 -315" fill="none" stroke="#fff8df" stroke-width="6" stroke-linecap="round" opacity="0.42" filter="url(#ttBlur8)"></path>
-            <path d="M450 338 C442 285 443 244 450 194 C457 244 458 285 450 338 Z" fill="#fff5d4" opacity="0.82" filter="url(#ttBlur8)"></path>
-            <circle cx="450" cy="322" r="54" fill="#fff0bd" opacity="0.72" filter="url(#ttBlur8)"></circle>
-          </g>
-
-          <!-- visible particles born from the light: music / water / story fragments -->
-          <g class="tt-svg-book-particles" opacity="0.9" font-family="Quicksand, Nanum Gothic, sans-serif" font-weight="800" pointer-events="none">
-            <g style="mix-blend-mode:screen">
-              <text x="382" y="78" font-size="18" fill="#f0cc82" opacity="0.50" transform="rotate(-14 382 78)">&#9834;</text>
-              <text x="516" y="88" font-size="16" fill="#f0cc82" opacity="0.48" transform="rotate(13 516 88)">&#9835;</text>
-              <text x="338" y="152" font-size="21" fill="#f0cc82" opacity="0.64" transform="rotate(-11 338 152)">&#9834;</text>
-              <text x="558" y="162" font-size="20" fill="#f0cc82" opacity="0.62" transform="rotate(10 558 162)">&#9835;</text>
-              <text x="404" y="238" font-size="26" fill="#ffd98f" opacity="0.82" transform="rotate(-7 404 238)">&#9834;</text>
-              <text x="548" y="250" font-size="24" fill="#ffd98f" opacity="0.78" transform="rotate(8 548 250)">&#9835;</text>
-            </g>
-            <g fill="#dfe6dc" stroke="#f5ecd6" stroke-width="1.1" opacity="0.72">
-              <path d="M304 122 l34 -8 l8 27 l-34 9 z" transform="rotate(-13 321 136)"></path>
-              <path d="M582 116 l36 8 l-8 28 l-36 -8 z" transform="rotate(12 600 130)"></path>
-              <path d="M312 244 l30 -7 l6 24 l-30 7 z" opacity="0.62" transform="rotate(-10 327 256)"></path>
-              <path d="M606 256 l31 7 l-6 25 l-31 -7 z" opacity="0.56" transform="rotate(11 622 269)"></path>
-            </g>
-            <g fill="#86d5ea" stroke="#ddfbff" stroke-width="1.3" opacity="0.88">
-              <path d="M450 54 C440 72 441 83 450 88 C461 83 461 72 450 54 Z"></path>
-              <path d="M505 134 C496 151 497 161 506 165 C516 160 516 150 505 134 Z" opacity="0.82"></path>
-              <path d="M388 166 C379 181 380 191 389 195 C398 190 398 181 388 166 Z" opacity="0.78"></path>
-              <path d="M485 230 C477 244 477 253 486 257 C494 253 494 244 485 230 Z" opacity="0.76"></path>
-              <path d="M610 294 C602 308 602 318 611 321 C620 317 620 307 610 294 Z" opacity="0.74"></path>
-              <path d="M332 288 C325 301 325 310 333 314 C341 310 341 301 332 288 Z" opacity="0.68"></path>
-            </g>
-            <g fill="#fff4cf" opacity="0.72" style="mix-blend-mode:screen">
-              <circle cx="450" cy="135" r="2.4"></circle><circle cx="432" cy="176" r="1.8"></circle><circle cx="470" cy="197" r="1.7"></circle>
-              <circle cx="446" cy="232" r="1.8"></circle><circle cx="515" cy="254" r="1.4"></circle><circle cx="396" cy="305" r="1.3"></circle>
-              <circle cx="506" cy="315" r="1.5"></circle><circle cx="366" cy="230" r="1.2"></circle><circle cx="575" cy="214" r="1.2"></circle>
-            </g>
-          </g>
-
-          <g filter="url(#ttSoftShadow)">
-            <!-- damp cover base -->
-            <path d="M450 196 C344 168 242 176 169 207 L112 416 C202 450 334 456 450 433 C566 456 698 450 788 416 L731 207 C658 176 556 168 450 196 Z" fill="url(#ttCover)" stroke="#1b3240" stroke-width="3"></path>
-            <path d="M139 395 C232 428 348 433 450 414 C552 433 668 428 761 395 L788 416 C698 450 566 456 450 433 C334 456 202 450 112 416 Z" fill="url(#ttCoverEdge)" opacity="0.72"></path>
-
-            <!-- page stacks: thickness restored, not emoji-flat -->
-            <path d="M450 391 C350 420 242 416 146 386 L132 420 C235 458 354 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
-            <path d="M450 391 C550 420 658 416 754 386 L768 420 C665 458 546 459 450 432 Z" fill="url(#ttPageStack)" opacity="0.92"></path>
-            <g fill="none" stroke="#c8d4d1" stroke-width="1.7" stroke-linecap="round" opacity="0.32">
-              <path d="M148 398 C246 425 354 429 449 408"></path>
-              <path d="M143 412 C244 441 354 444 450 421"></path>
-              <path d="M753 398 C654 425 546 429 451 408"></path>
-              <path d="M758 412 C656 441 546 444 450 421"></path>
-            </g>
-
-            <!-- open wet pages -->
-            <path d="M450 194 C365 176 268 184 199 214 C181 270 161 338 146 393 C248 421 356 424 450 410 Z" fill="url(#ttPageL)" stroke="#526f78" stroke-width="2.1"></path>
-            <path d="M450 194 C535 176 632 184 701 214 C719 270 739 338 754 393 C652 421 544 424 450 410 Z" fill="url(#ttPageR)" stroke="#526f78" stroke-width="2.1"></path>
-
-            <!-- damp blue page-edge tint -->
-            <path d="M450 194 C365 176 268 184 199 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
-            <path d="M450 194 C535 176 632 184 701 214" fill="none" stroke="#d8f0f3" stroke-width="3" stroke-linecap="round" opacity="0.46"></path>
-            <path d="M151 389 C250 418 355 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
-            <path d="M749 389 C650 418 545 421 450 407" fill="none" stroke="#8fc2c8" stroke-width="2" opacity="0.34"></path>
-
-            <!-- faint score/story lines -->
-            <g clip-path="url(#ttClipL)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
-              <path d="M220 244 C278 236 338 236 426 229"></path><path d="M211 271 C282 264 346 265 425 258"></path>
-              <path d="M203 299 C278 292 345 293 425 286"></path><path d="M195 327 C272 321 344 321 425 314"></path>
-              <path d="M188 354 C265 350 337 350 425 342"></path>
-              <path d="M242 236 q8 -9 16 0 q8 9 16 0" opacity="0.42"></path><path d="M300 290 q10 -8 20 0 q10 8 20 0" opacity="0.38"></path>
-            </g>
-            <g clip-path="url(#ttClipR)" fill="none" stroke="#415d66" stroke-width="1.8" stroke-linecap="round" opacity="0.34">
-              <path d="M474 229 C562 236 622 236 680 244"></path><path d="M475 258 C554 265 618 264 689 271"></path>
-              <path d="M475 286 C555 293 622 292 697 299"></path><path d="M475 314 C556 321 628 321 705 327"></path>
-              <path d="M475 342 C563 350 635 350 712 354"></path>
-              <path d="M535 268 q9 -8 18 0 q9 8 18 0" opacity="0.4"></path><path d="M596 324 q9 -7 18 0 q9 7 18 0" opacity="0.36"></path>
-            </g>
-
-            <!-- minimal grimoire ornamentation, subdued -->
-            <g fill="none" stroke="url(#ttMetal)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.58">
-              <path d="M151 229 q32 -30 78 -28"></path><path d="M749 229 q-32 -30 -78 -28"></path>
-              <path d="M145 386 q30 24 72 25"></path><path d="M755 386 q-30 24 -72 25"></path>
-              <path d="M132 408 l42 -12"></path><path d="M768 408 l-42 -12"></path>
-            </g>
-            <g fill="#7ecfe0" stroke="#e5fbff" stroke-width="1" opacity="0.38">
-              <circle cx="183" cy="221" r="4"></circle><circle cx="716" cy="221" r="4"></circle>
-              <circle cx="170" cy="397" r="3.6"></circle><circle cx="730" cy="397" r="3.6"></circle>
-            </g>
-
-            <!-- wet glints / tiny beads on pages and cover -->
-            <g fill="#dff8fb" opacity="0.33">
-              <ellipse cx="255" cy="262" rx="8" ry="2" transform="rotate(-8 255 262)"></ellipse>
-              <ellipse cx="330" cy="344" rx="6" ry="1.8" transform="rotate(-6 330 344)"></ellipse>
-              <ellipse cx="613" cy="265" rx="8" ry="2" transform="rotate(8 613 265)"></ellipse>
-              <ellipse cx="685" cy="350" rx="6" ry="1.8" transform="rotate(7 685 350)"></ellipse>
-              <circle cx="210" cy="391" r="2"></circle><circle cx="696" cy="390" r="2"></circle>
-            </g>
-
-            <!-- central binding and warm origin glow from the page gutter -->
-            <ellipse cx="450" cy="314" rx="235" ry="178" fill="url(#ttFoldGlow)" opacity="0.92"></ellipse>
-            <path d="M450 194 C443 259 444 352 450 430 C456 352 457 259 450 194 Z" fill="#fff3d2" opacity="0.5"></path>
-            <line x1="450" y1="198" x2="450" y2="430" stroke="#fff5dc" stroke-width="4.2" stroke-linecap="round" opacity="0.88"></line>
-            <circle cx="450" cy="326" r="7" fill="#fff7df" opacity="0.9"></circle>
-
-            <!-- small central jewel/clasp, kept subtle -->
-            <path d="M407 420 C420 398 433 388 450 388 C467 388 480 398 493 420 C480 435 421 435 407 420 Z" fill="#142d3c" stroke="url(#ttMetal)" stroke-width="2"></path>
-            <path d="M450 399 C438 416 441 426 450 431 C459 426 462 416 450 399 Z" fill="#2f9cbd" stroke="#d9fbff" stroke-width="1.2" opacity="0.8"></path>
-          </g>
-        </svg>
         <!-- The Book (redesign, preview): a closed hardcover asleep on the sea floor; it wakes and opens when you arrive -->
         <div class="tt-book2" aria-hidden="true">
-          <div class="tb-floor"><i class="tb-rock r1"></i><i class="tb-rock r2"></i><i class="tb-rock r3"></i></div>
+          <div class="tb-veil"></div>
+          <div class="tb-caustics"></div>
+          <div class="tb-silt"><i style="--dx:140%;--dy:-28%;--s:5px;--w:274ms"></i><i style="--dx:121%;--dy:-33%;--s:4px;--w:362ms"></i><i style="--dx:70%;--dy:-32%;--s:8px;--w:300ms"></i><i style="--dx:0%;--dy:-78%;--s:3px;--w:2ms"></i><i style="--dx:-70%;--dy:-52%;--s:5px;--w:261ms"></i><i style="--dx:-121%;--dy:-66%;--s:5px;--w:358ms"></i><i style="--dx:-140%;--dy:-26%;--s:7px;--w:288ms"></i><i style="--dx:-121%;--dy:-34%;--s:5px;--w:436ms"></i><i style="--dx:-70%;--dy:-62%;--s:3px;--w:158ms"></i><i style="--dx:0%;--dy:-29%;--s:4px;--w:380ms"></i><i style="--dx:70%;--dy:-71%;--s:3px;--w:284ms"></i><i style="--dx:121%;--dy:-27%;--s:8px;--w:360ms"></i></div>
+          <div class="tb-motes"><i style="--x:46%;--y:58%;--s:4px;--d:13s;--o:-10s"></i><i style="--x:55%;--y:86%;--s:3px;--d:7s;--o:-7s"></i><i style="--x:69%;--y:55%;--s:5px;--d:14s;--o:-8s"></i><i style="--x:30%;--y:34%;--s:4px;--d:12s;--o:-3s"></i><i style="--x:49%;--y:30%;--s:3px;--d:12s;--o:-7s"></i><i style="--x:46%;--y:67%;--s:2px;--d:12s;--o:-10s"></i><i style="--x:61%;--y:77%;--s:3px;--d:13s;--o:-9s"></i><i style="--x:17%;--y:74%;--s:5px;--d:15s;--o:-6s"></i><i style="--x:24%;--y:31%;--s:3px;--d:14s;--o:-3s"></i><i style="--x:68%;--y:87%;--s:3px;--d:15s;--o:-9s"></i><i style="--x:37%;--y:82%;--s:2px;--d:10s;--o:-11s"></i><i style="--x:81%;--y:11%;--s:6px;--d:8s;--o:-8s"></i><i style="--x:27%;--y:55%;--s:6px;--d:10s;--o:-5s"></i><i style="--x:36%;--y:63%;--s:6px;--d:7s;--o:-1s"></i></div>
+          <div class="tb-floor"><i class="tb-sand"></i><i class="tb-contact"></i></div>
           <div class="tb-scene">
             <div class="tb-book">
               <div class="tb-base"></div>
@@ -1235,7 +1061,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </section></div>
   <footer style="margin-top:auto;width:100%;padding:34px 2vw 30px;border-top:1px solid var(--line,rgba(24,32,52,.12));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:11px">
-      <img src="assets/logo/mark-paper.png" alt="TALETONE" style="width:30px;height:30px;object-fit:contain;display:block">
+      <span class="tt-footer-mark" role="img" aria-label="TALETONE"></span>
       <span style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:600;font-size:13px;letter-spacing:.12em;color:var(--ink,#141C30);white-space:pre-wrap">{{ FOOTER_META.title }}</span>
     </div>
     <span style="font-weight:600;font-size:12px;color:var(--soft,#44505F);white-space:pre-wrap">{{ FOOTER_META.tagline }}</span>
