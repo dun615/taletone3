@@ -349,6 +349,8 @@ function workPage(work, index, lang, list = worksByDate, preview = false) {
   const isAlbum = Array.isArray(work.tracks) && work.tracks.length > 0;
   const facts = [[d.release, work.date], [d.format, work.format], [d.type, w.type]].filter(([, v]) => v);
   const id = youtubeId(work.youtube);
+  // the video already shows the art and plays the song: the side card keeps only the facts (preview first)
+  const factsOnly = preview && Boolean(id);
   const pageOf = (l, item) => `${preview ? '/preview' : ''}${workPath(l, item)}`;
   const trackList = (items, numberOf, titleFor, extra) => `<ol class="tt-d-tracks">
 ${items.map((item, i) => `<li><span class="no">${esc(numberOf(item, i))}</span><span class="title">${esc(titleFor(item))}${extra(item)}</span>${item.audio ? `<audio controls preload="none" src="${esc(assetPath(item.audio))}" aria-label="${esc(d.listen)}: ${esc(titleFor(item))}"></audio>` : ''}</li>`).join('\n')}
@@ -370,17 +372,17 @@ ${work.youtube ? `<a class="tt-d-button" href="${esc(work.youtube)}" rel="noopen
 <a class="tt-d-button is-ghost" href="${lang.prefix}/works/">${esc(d.allWorks)}</a>
 </div>
 </div>
-<aside class="tt-d-record">
-<img class="tt-d-record-cover" src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024">
+<aside class="tt-d-record${factsOnly ? ' is-facts' : ''}">
+${factsOnly ? '' : `<img class="tt-d-record-cover" src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024">`}
 <dl class="tt-d-facts">
 ${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n')}
 </dl>
-${isAlbum ? '' : listenBlock(d.listen, work.audio)}
+${isAlbum || factsOnly ? '' : listenBlock(d.listen, work.audio)}
 </aside>
 </div>
 ${tracks}
 ${versions}
-${credits ? `<section class="tt-d-section"><h2>${esc(d.credits)}</h2><div class="tt-d-card"><pre class="tt-d-credits">${esc(String(credits).trim())}</pre></div></section>` : ''}
+${credits ? `<section class="tt-d-section"><h2>${esc(d.credits)}</h2><div class="tt-d-card"><pre class="tt-d-credits"${preview ? ` tabindex="0" aria-label="${esc(d.credits)}"` : ''}>${esc(String(credits).trim())}</pre></div></section>` : ''}
 </article>
 ${pager(lang, list[index - 1], list[index + 1], pageOf, titleOf)}`;
   const schema = {

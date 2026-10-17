@@ -370,9 +370,11 @@
   function matchesFilter(work, filter) {
     return filter === 'all' || categoryOf(work) === filter;
   }
+  // newest first (dates are YYYY.MM.DD, so they sort as text); the data order breaks ties
   function visibleWorks() {
     return works.map(function (work, index) { return { work: work, index: index }; })
-      .filter(function (entry) { return matchesFilter(entry.work, state.filter); });
+      .filter(function (entry) { return matchesFilter(entry.work, state.filter); })
+      .sort(function (a, b) { return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index; });
   }
   function shelfStep() {
     if (window.innerWidth <= 1100) return 6;

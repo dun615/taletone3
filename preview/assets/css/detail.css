@@ -157,3 +157,15 @@ h1 { margin: 0 0 12px; font-family: var(--display); font-weight: 700; font-size:
   .tt-d-pager a.next { grid-column: 1; }
   .tt-d-foot { padding: 0 16px 32px; }
 }
+
+/* with a video on the page the side card holds only the facts */
+.tt-d-record.is-facts { gap: 0; padding: 20px 22px; }
+.tt-d-record.is-facts .tt-d-facts { gap: 14px; }
+@media (max-width: 860px) { .tt-d-record.is-facts { grid-template-columns: 1fr; } }
+/* long credits scroll inside their card */
+.tt-d-credits { max-height: min(360px, 55vh); overflow-y: auto; overscroll-behavior: contain; padding-right: 10px;
+  scrollbar-width: thin; scrollbar-color: rgba(141, 236, 252, .45) transparent; }
+.tt-d-credits::-webkit-scrollbar { width: 6px; }
+.tt-d-credits::-webkit-scrollbar-thumb { background: rgba(141, 236, 252, .45); border-radius: 6px; }
+.tt-d-credits:focus-visible { outline: 2px solid #8decfc; outline-offset: 6px; border-radius: 4px; }
+.tt-d-credits { padding-bottom: 28px; -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 40px), transparent); }
