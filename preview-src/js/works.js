@@ -441,10 +441,10 @@
       '<span class="tt-disc-sheen"></span><span class="tt-disc-hole"></span></span>';
   }
 
-  // a record sleeve: the square cover art
+  // a record sleeve: the square cover art, from its small `thumb` copy when there is one
   function sleeveHtml(work, eager) {
     var unit = localizedUnit(work);
-    var image = unit.image || work.image || '';
+    var image = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
     return '<span class="tt-sleeve" aria-hidden="true"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"><span class="tt-sleeve-sheen"></span></span>';
   }
 

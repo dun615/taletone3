@@ -2382,7 +2382,7 @@ class Component extends DCLogic {
       togglePartner:()=>this.togglePartner(),
       PARTNERS: this.PARTNERS || [],
       partnerClick: (e)=>{ var href=e.currentTarget.getAttribute('href'); if(!href || href==='#'){ if(e && e.preventDefault) e.preventDefault(); } },
-      NEWS: (this.NEWS||[]).map((n,i)=>Object.assign({}, n, { open:()=>this.openNews(i) })),
+      NEWS: (this.NEWS||[]).map((n,i)=>Object.assign({}, n, { cardImage:n.cardImage||n.image, open:()=>this.openNews(i) })),
       closeModal:()=>this.closeAll(),
       stop:(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); }
     };
