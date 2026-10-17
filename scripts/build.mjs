@@ -62,6 +62,15 @@ const analyticsTag = analyticsToken
   ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: analyticsToken })}'></script>`
   : '';
 const version = (text) => createHash('sha256').update(text).digest('hex').slice(0, 12);
+// The site component: the class core (component.js) plus its method groups (parts/*.js), attached to the
+// prototype. Each part defines `var Component<Name> = { ...methods }`.
+const COMPONENT_PARTS = ['content', 'intro', 'scene', 'bridges', 'routing'];
+const composeComponent = async (dir) => {
+  const core = await read(`${dir}/component.js`);
+  const parts = await Promise.all(COMPONENT_PARTS.map((p) => read(`${dir}/parts/${p}.js`)));
+  const names = COMPONENT_PARTS.map((p) => 'Component' + p[0].toUpperCase() + p.slice(1));
+  return `${core}\n${parts.join('\n')}\nObject.assign(Component.prototype, ${names.join(', ')});\n`;
+};
 
 // The runtime in support.js boots on DOMContentLoaded from two <script type="application/octet-stream">
 // blocks this bundle inserts: the template (data-dc-template) and the component script (data-dc-script), as plain text.
@@ -485,9 +494,9 @@ ${urls.join('\n')}
 // ---- Preview of work in progress (taletone.net/preview/, not indexed) ----
 // Built from preview-src/ only, into preview/ only: its own app, content, Works script/style/data,
 // so a redesign can change text and layout without touching the live site.
-const [pSupport, pResponsiveCss] = await Promise.all([read('preview-src/support.js'), read('assets/css/responsive.css')]);
+const [pSupport, pResponsiveCss, pSiteUx] = await Promise.all([read('preview-src/support.js'), read('assets/css/responsive.css'), read('preview-src/js/site-ux.js')]);
 const [pTemplate, pComponent, pSiteText, pWorksText, pWorksJs, pWorksCss] = await Promise.all([
-  read('preview-src/app/template.html'), read('preview-src/app/component.js'),
+  read('preview-src/app/template.html'), composeComponent('preview-src/app'),
   read('preview-src/data/site-content.json'), read('preview-src/data/works-data.json'),
   read('preview-src/js/works.js'), read('preview-src/css/works.css'),
 ]);
@@ -496,7 +505,8 @@ const previewWorksByDate = [...JSON.parse(pWorksText).works].sort((a, b) => Stri
 const previewTemplate = pTemplate
   .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(pWorksCss)}`)
   .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(pWorksJs + pWorksText)}`)
-  .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`);
+  .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`)
+  .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
 const previewApp = makeAppBundle(previewTemplate, pComponent);
 const previewSiteScript = dataScript(JSON.parse(pSiteText), 'TALETONE_CONTENT');
 const previewOutputs = [
@@ -514,6 +524,7 @@ const previewOutputs = [
   ['preview/assets/data/site-content.js', previewSiteScript],
   ['preview/assets/data/works-data.json', pWorksText],
   ['preview/assets/js/works.js', pWorksJs],
+  ['preview/assets/js/site-ux.js', pSiteUx],
   ['preview/assets/css/works.css', pWorksCss],
   ['preview/assets/css/detail.css', previewDetailCss],
   ...previewWorksByDate.flatMap((work, i) => languages.map((lang) => [`preview${workPath(lang, work)}index.html`, workPage(work, i, lang, previewWorksByDate, true)])),
