@@ -31,8 +31,9 @@ const pages = [
   },
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
-    // The bookshelf shows a full first shelf (8 covers on desktop, 6 on phones) instead of the carousel's 5 cards: measured 32-34.
-    maxFirstPartyRequests: 36, maxGoogleFontRequests: 30,
+    // The record rack shows two-plus rows of small 320px thumbnails (about 18 KB each) and preloads the next rows
+    // as the rack scrolls: measured 37 requests but only ~1 MB cold, well under the byte budget.
+    maxFirstPartyRequests: 42, maxGoogleFontRequests: 30,
     maxTransferBytes: 2_800_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
   },
@@ -564,24 +565,24 @@ async function runInteractionSmoke(chrome, origin) {
     const worksReady = await evaluate(client, `(() => ({
       chapter: document.body.getAttribute('data-active-chapter'),
       books: document.querySelectorAll('[data-works-book]').length,
-      play: !!document.querySelector('[data-works-book="0"] .tt-shelf-play'),
+      play: !!document.querySelector('[data-works-book="0"] .tt-rack-pick') && !!document.querySelector('.tt-deck-toggle'),
       playback: document.body.dataset.ttMediaPlayback || 'paused'
     }))()`);
-    assert(worksReady.chapter === 'works' && worksReady.books >= 6 && worksReady.play, `interaction: WORKS shelf did not initialize: ${JSON.stringify(worksReady)}`);
+    assert(worksReady.chapter === 'works' && worksReady.books >= 6 && worksReady.play, `interaction: WORKS record shop did not initialize: ${JSON.stringify(worksReady)}`);
     assert(worksReady.playback !== 'playing', 'interaction: WORKS audio started without user playback');
 
-    await clickSelector(client, '[data-works-book="0"] .tt-shelf-play');
+    await clickSelector(client, '[data-works-book="0"] .tt-rack-pick');
     await sleep(1_000);
     const playing = await evaluate(client, `(() => ({
       playback: document.body.dataset.ttMediaPlayback,
-      button: document.querySelector('[data-works-book="0"] .tt-shelf-play')?.classList.contains('is-playing'),
-      player: !!document.querySelector('.tt-shelf-player.is-open')
+      button: document.querySelector('[data-works-book="0"]')?.classList.contains('is-playing'),
+      player: !!document.querySelector('.tt-deck.is-playing .tt-deck-toggle.is-playing')
     }))()`);
     assert(playing.playback === 'playing', `interaction: WORKS playback state is ${playing.playback || 'missing'}`);
-    assert(playing.button && playing.player, 'interaction: playing book or player bar did not show its state');
+    assert(playing.button && playing.player, 'interaction: playing sleeve or turntable did not show its state');
     passed.push('works-play');
 
-    await clickSelector(client, '[data-works-book="0"] .tt-shelf-detail');
+    await clickSelector(client, '.tt-deck-more');
     await sleep(200);
     const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback})`);
     assert(popup.open && popup.dialog && popup.playback === 'playing', `interaction: WORKS popup did not open over playing music: ${JSON.stringify(popup)}`);
@@ -591,21 +592,23 @@ async function runInteractionSmoke(chrome, origin) {
     assert(!closedPopup.open && !closedPopup.dialog, 'interaction: WORKS popup did not close cleanly');
     passed.push('works-popup');
 
-    await clickSelector(client, '.tt-shelf-player-toggle');
+    await clickSelector(client, '.tt-deck-toggle');
     await sleep(120);
-    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: player toggle did not pause');
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: turntable play button did not pause');
     passed.push('works-pause');
 
     await clickSelector(client, '[data-works-action="filter"][data-filter="ost"]');
     await sleep(700);
     const osts = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(osts === 4, `interaction: OST filter expected 4 books, found ${osts}`);
+    assert(osts === 3, `interaction: OST filter expected 3 sleeves, found ${osts}`);
+    await clickSelector(client, '[data-works-action="filter"][data-filter="original"]');
+    await sleep(700);
+    const originals = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
+    assert(originals === 3, `interaction: Original filter expected 3 sleeves, found ${originals}`);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
-    await clickSelector(client, '[data-works-action="more"]');
-    await sleep(700);
     const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(all === 21, `interaction: whole shelf expected 21 books, found ${all}`);
+    assert(all === 21, `interaction: whole rack expected 21 sleeves, found ${all}`);
     passed.push('works-filter-shelf');
 
     await navigateForInteraction(client, `${origin}/members/?lang=kr&runtime-interaction=1`);
@@ -771,7 +774,7 @@ async function runBridgeSmoke(chrome, origin) {
           if(n===10 && index>=1 && index<=3){
             const ready = await evaluate(client, `(() => {
               const section=document.getElementById('${destinations[index]}');
-              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-shelf-cover img[src]'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
+              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-rack-item img[src]'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
               return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
             })()`);
             assert(ready, `${label}: next chapter images were not ready during playback`);

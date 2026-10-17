@@ -670,7 +670,7 @@
   }
 
   function pick(index) {
-    if (index === state.current) { if (state.playing) pauseAll(); else resume(); return; }
+    if (index === state.current) { if (state.playing) pauseAll(); else { if (!audio || !audio.getAttribute('src')) loadCurrent(false); resume(); } return; }
     var work = works[index]; if (!work) return;
     state.current = index;
     state.track = titleTrackIndex(work);

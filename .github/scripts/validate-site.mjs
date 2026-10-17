@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261022-video',
-  'assets/js/works.js': '20261022-video',
+  'assets/css/works.css': '20261017-records',
+  'assets/js/works.js': '20261017-records',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -586,12 +586,12 @@ for (const [file, expected] of Object.entries(sri)) {
 const worksCss = await text('assets/css/works.css');
 const worksJs = await text('assets/js/works.js');
 assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
-assert(worksJs.includes('// WORKS · the bookshelf') && worksJs.includes('function bookHtml(entry, order)') && worksJs.includes('function filtersHtml()'), 'WORKS bookshelf renderer is missing');
-assert(worksCss.includes('.tt-shelf-cover::after {') && worksCss.includes('.tt-shelf-grid {list-style:none;'), 'WORKS shelf ledge or grid is missing');
-assert(worksJs.includes("(eager ? 'src' : 'data-src')") && worksJs.includes("if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }"), 'WORKS covers beyond the first shelf are not lazy');
+assert(worksJs.includes('// WORKS · the record shop') && worksJs.includes('function rackItemHtml(entry, order)') && worksJs.includes('function deckHtml()') && worksJs.includes('function filtersHtml()'), 'WORKS record shop renderer is missing');
+assert(worksCss.includes('.tt-rack-grid {list-style:none;') && worksCss.includes('.tt-deck-table {') && worksCss.includes('.tt-crate-deck {position:sticky;'), 'WORKS rack, turntable or sticky deck is missing');
+assert(worksJs.includes("(eager === false ? 'data-src' : 'src')") && worksJs.includes('sleeveHtml(work, order < 8)') && worksJs.includes('(work.thumb || work.image') && worksJs.includes("if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }"), 'WORKS sleeves are not lazy thumbnails');
 assert(worksJs.includes("audio.preload = 'none';") && (worksJs.match(/new Audio\(\)/g) || []).length === 1, 'WORKS playback must use one on-demand audio element');
 assert(worksJs.includes("function workHref(work)") && worksJs.includes("'/works/' + encodeURIComponent(work.slug) + '/'"), 'WORKS books do not open their permalink pages');
-assert(worksCss.includes('body:not([data-active-chapter="works"]) .tt-shelf-player.is-open {display:none}'), 'WORKS player can show outside the chapter');
+assert(!worksJs.includes('function playerHtml(') && worksJs.includes("if (state.playing && !isWorksChapterActive()) pauseAll();"), 'WORKS music does not stop when leaving the chapter');
 for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
@@ -648,8 +648,8 @@ const removedAudioPreloadSymbols = [
 ];
 for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
 assert(worksJs.includes("if (state.playing && !dialog.classList.contains('tt-shelf-modal')) pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
-assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("data-works-action=\"video\"") && worksJs.includes("['all', 'ost', 'artist'].map("), 'WORKS popup or filters are missing');
-assert(worksCss.includes('.tt-shelf-book.is-playing .tt-shelf-disc') && worksCss.includes('translate:36% 0'), 'WORKS record slide-out is missing');
+assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("data-works-action=\"video\"") && worksJs.includes("['all', 'ost', 'artist', 'original'].map("), 'WORKS popup or filters are missing');
+assert(worksCss.includes('.tt-disc-spin {') && worksCss.includes('animation-play-state:paused') && worksJs.includes('class="tt-deck-arm-base tt-deck-toggle') && worksJs.includes('function sizeRack()'), 'WORKS turntable play button or rack sizing is missing');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
 const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
 assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');
