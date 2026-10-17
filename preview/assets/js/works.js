@@ -337,12 +337,11 @@
   }
   // ===================================================================
   // WORKS · the record shop
-  // Every work is a picture disc in a display rack. Pick one and it flies onto the turntable, the tonearm
-  // drops and it spins; the deck under it plays, seeks, switches tracks and opens the story in a popup.
+  // Every work is a record in its square sleeve, on a display rack. Pick one and the record slides out of
+  // its sleeve onto the turntable, the tonearm drops and it spins; the deck under it plays, seeks, switches tracks and opens the story in a popup.
   // ===================================================================
   var state = {
     filter: 'all',
-    expanded: false,
     playing: false,
     current: -1,      // index into works of the record being played
     track: 0,
@@ -355,9 +354,9 @@
   var progressFrame = 0;
 
   var shelfLabels = {
-    kr: { all: '전체', ost: 'OST', artist: '아티스트', more: '서가 전체 보기', less: '접기', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { all: 'All', ost: 'OST', artist: 'Artists', more: 'Show the whole shelf', less: 'Show less', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', more: '本棚をすべて見る', less: '閉じる', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { all: '전체', ost: 'OST', artist: '아티스트', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { all: 'All', ost: 'OST', artist: 'Artists', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { all: 'すべて', ost: 'OST', artist: 'アーティスト', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -443,6 +442,13 @@
       '<span class="tt-disc-sheen"></span><span class="tt-disc-hole"></span></span>';
   }
 
+  // a record sleeve: the square cover art
+  function sleeveHtml(work, eager) {
+    var unit = localizedUnit(work);
+    var image = unit.image || work.image || '';
+    return '<span class="tt-sleeve" aria-hidden="true"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"><span class="tt-sleeve-sheen"></span></span>';
+  }
+
   function rackItemHtml(entry, order) {
     var work = entry.work, index = entry.index, labels = L();
     var unit = localizedUnit(work);
@@ -451,7 +457,7 @@
     var current = state.current === index;
     return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
-        discHtml(work, '', order < 8) +
+        sleeveHtml(work, order < 8) +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
       '<button type="button" class="tt-shelf-detail tt-rack-detail" data-works-action="open" data-index="' + index + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><span aria-hidden="true">+</span></button>' +
@@ -553,7 +559,7 @@
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
           '</div>' +
           '<div class="tt-shelf-modal-side">' +
-            '<div class="tt-shelf-modal-record' + (state.current === index && state.playing ? ' is-playing' : '') + '">' + discHtml(work, 'tt-disc--mini') + '<dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
+            '<div class="tt-shelf-modal-record"><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '"><dl class="tt-shelf-modal-facts">' + facts + '</dl></div>' +
             trackRowsHtml(work, index) +
             (credits ? '<details class="tt-shelf-modal-credits"><summary>' + esc(labels.credits) + '</summary><div>' + esc(credits) + '</div></details>' : '') +
           '</div>' +
@@ -583,7 +589,7 @@
         }).join('') + '</div>'
       : '';
     return '<div class="tt-shelf-player is-open" role="region" aria-label="' + esc(labels.nowPlaying) + '">' +
-      '<button type="button" class="tt-shelf-player-cover' + (state.playing ? ' is-playing' : '') + '" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '">' + discHtml(work, 'tt-disc--mini') + '</button>' +
+      '<button type="button" class="tt-shelf-player-cover" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + title) + '"><img src="' + esc(playUnit.image || unit.image || work.image || '') + '" alt=""></button>' +
       '<div class="tt-shelf-player-text"><span class="tt-shelf-player-kicker">' + esc(labels.nowPlaying) + '</span>' +
         '<strong>' + esc(trackTitle || title) + '</strong><span>' + esc(plainRichText(unit.artist || work.artist || '')) + '</span></div>' +
       tracks + langs +
@@ -676,7 +682,7 @@
 
   // the chosen record flies from the rack onto the platter
   function flyToDeck(index, done) {
-    var from = root && root.querySelector('[data-works-book="' + index + '"] .tt-disc');
+    var from = root && root.querySelector('[data-works-book="' + index + '"] .tt-sleeve');
     var deckDisc = root && root.querySelector('.tt-deck-platter .tt-disc');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!from || !deckDisc || reduce || !from.animate) { done(); return; }
@@ -685,17 +691,19 @@
     var target = root.querySelector('.tt-deck-platter .tt-disc');
     var b = target.getBoundingClientRect();
     if (b.bottom < 0 || b.top > window.innerHeight) return; // the turntable is off screen: the player takes over
-    var ghost = from.cloneNode(true);
+    var ghost = target.cloneNode(true);
     ghost.classList.add('tt-disc--flying');
     ghost.style.cssText = 'position:fixed;left:' + a.left + 'px;top:' + a.top + 'px;width:' + a.width + 'px;height:' + a.height + 'px;margin:0;z-index:90;pointer-events:none';
     document.body.appendChild(ghost);
     target.style.opacity = '0';
     var dx = b.left - a.left, dy = b.top - a.top, sc = b.width / a.width;
+    var lift = -a.height * 0.62;
     var anim = ghost.animate([
-      { transform: 'translate(0,0) scale(1) rotate(0deg)' },
-      { transform: 'translate(' + (dx * 0.55) + 'px,' + (dy * 0.55 - 70) + 'px) scale(' + (1 + (sc - 1) * 0.6) + ') rotate(160deg)', offset: 0.55 },
+      { transform: 'translate(0,0) scale(.94) rotate(0deg)', opacity: 0 },
+      { transform: 'translate(0,' + lift + 'px) scale(.94) rotate(40deg)', opacity: 1, offset: 0.28 },
+      { transform: 'translate(' + (dx * 0.6) + 'px,' + (dy * 0.6 - 60) + 'px) scale(' + (1 + (sc - 1) * 0.6) + ') rotate(220deg)', offset: 0.68 },
       { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ') rotate(360deg)' }
-    ], { duration: 720, easing: 'cubic-bezier(.3,.7,.2,1)' });
+    ], { duration: 980, easing: 'cubic-bezier(.3,.7,.2,1)' });
     anim.onfinish = function () { ghost.remove(); target.style.opacity = ''; };
   }
   function pick(index) {
@@ -715,9 +723,10 @@
     var pending = root ? root.querySelectorAll('img[data-src]') : [];
     if (!pending.length) return;
     if (!('IntersectionObserver' in window)) { pending.forEach(loadCover); return; }
-    if (!coverObserver) coverObserver = new IntersectionObserver(function (entries) {
+    if (coverObserver) coverObserver.disconnect();
+    coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-    }, { root: document.getElementById('content'), rootMargin: '600px 0px' });
+    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '400px 0px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {
@@ -828,8 +837,6 @@
       button.classList.toggle('is-playing', on);
       var text = button.querySelector('.tt-shelf-listen-label'); if (text) text.textContent = on ? labels.pause : labels.listen;
     });
-    var card = root.querySelector('.tt-shelf-modal-record');
-    if (card) card.classList.toggle('is-playing', state.modal === state.current && state.playing);
     root.querySelectorAll('[data-works-action="modal-track"]').forEach(function (button) {
       button.classList.toggle('is-on', Number(button.getAttribute('data-index')) === state.current && Number(button.getAttribute('data-track')) === state.track);
     });
@@ -840,7 +847,6 @@
     } else if (player) {
       var pt = player.querySelector('.tt-shelf-player-toggle');
       if (pt) { pt.classList.toggle('is-playing', state.playing); pt.setAttribute('aria-label', state.playing ? labels.pause : labels.play); }
-      var pc = player.querySelector('.tt-shelf-player-cover'); if (pc) pc.classList.toggle('is-playing', state.playing);
     }
     updateProgress();
   }
@@ -881,16 +887,10 @@
     if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
-      state.expanded = false;
       render(before);
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
     } else if (action === 'pick') {
       pick(Number(button.getAttribute('data-index')));
-    } else if (action === 'more') {
-      var beforeMore = bookRects();
-      state.expanded = !state.expanded;
-      render(beforeMore);
-      if (!state.expanded) { var grid = root && root.querySelector('.tt-shelf-grid'); if (grid) grid.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
     } else if (action === 'open') {
       event.preventDefault();
       openModal(Number(button.getAttribute('data-index')), button);
