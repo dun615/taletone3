@@ -52,7 +52,7 @@ class Component extends DCLogic {
       }
     };
     this.enforceMobileFxLayer();
-    this.sections = ['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact']
+    this.sections = ['c-home','c-projects','c-members','c-works','c-news','c-contact']
       .map(id=>document.getElementById(id)).filter(Boolean);
     this.pxEls = Array.from(document.querySelectorAll('[data-px]'));
     this.pxEls.forEach(el=>{ el._base = el.style.transform || ''; });
@@ -126,8 +126,8 @@ class Component extends DCLogic {
         return;
       }
       if(current>previous+2&&this._bridgeOffsets){
-        for(var bi=-1;bi<this._bridgeOffsets.length;bi++){
-          var bridgeTop=bi===-1?(this.transSec?this.transSec.offsetTop:NaN):this._bridgeOffsets[bi];
+        for(var bi=0;bi<this._bridgeOffsets.length;bi++){
+          var bridgeTop=this._bridgeOffsets[bi];
           if(!this._bridgeSeen[bi]&&!this._bridgeBypassed[bi]&&isFinite(bridgeTop)&&bridgeTop>previous+2&&bridgeTop<=current+2){
             this.startBridge(bi);
             return;
@@ -155,27 +155,7 @@ class Component extends DCLogic {
       else em.textContent = contact.buttonLabel || 'Tell us your story';
     }
 
-    // --- TRANSLATION centerpiece: build the tale line (letters) + the waveform bars ---
-    this.transSec = document.getElementById('c-translation');
     this.newsSec = document.getElementById('c-news');
-    this.taleLine = document.getElementById('tale-line');
-    this.waveRow  = document.getElementById('wave-row');
-    this.transFoot= document.getElementById('trans-foot');
-    this.tcaps = [0,1,2].map(i=>document.getElementById('tcap-'+i));
-    this.rebuildTranslationLine();
-    if(this.waveRow){
-      this.NBAR=56; this.bars=[];
-      for(var bi=0; bi<this.NBAR; bi++){
-        var bar=document.createElement('div');
-        var bw='clamp(2px,0.5vw,5px)';
-        bar.style.cssText='width:'+bw+';height:6px;border-radius:6px;background:var(--accent,#0E6E7D);opacity:0;transform-origin:center;will-change:height,opacity';
-        this.waveRow.appendChild(bar);
-        // a stable pseudo-random amplitude profile (bell-ish, music-like)
-        var t=bi/(this.NBAR-1), env=Math.sin(t*Math.PI);
-        var amp=env*(0.35+0.65*Math.abs(Math.sin(bi*1.7)+0.5*Math.sin(bi*0.6)));
-        this.bars.push({el:bar, amp:Math.max(0.12,Math.min(1,amp))});
-      }
-    }
 
     this._escapeHandler=(e)=>{ if(e.key==='Escape') this.closeAll(); };
     window.addEventListener('keydown', this._escapeHandler);
@@ -410,8 +390,6 @@ class Component extends DCLogic {
     var cfg = window.TALETONE_CONTENT || {};
     var homeData = cfg.home || {};
     this.HOME = this._localizedObject(homeData, homeData.translations);
-    var translationData = cfg.translation || {};
-    this.TRANSLATION = this._localizedObject(translationData, translationData.translations);
     var projectData = cfg.projects || {};
     this.PROJECTS_META = this._localizedObject(projectData, projectData.translations);
     this.PROJECTS = (Array.isArray(projectData.cards) ? projectData.cards : []).map((p,i)=>this._normalizeVisualEntry(this._localizedListItem(p, projectData.translations, i), 'project-' + (i + 1)));
@@ -483,131 +461,7 @@ class Component extends DCLogic {
     return src;
   }
 
-  translationMobileLinesFor(kind, fallbackText){
-    var data = this.TRANSLATION || {};
-    var key = kind === 'footer' ? 'footerMobileLines' : 'mobileLines';
-    var source = Array.isArray(data[key]) ? data[key] : null;
-    if(!source || !source.length) source = [{ text:String(fallbackText || ''), indent:0 }];
-    var out=[];
-    for(var i=0; i<source.length; i++){
-      var item=source[i] || {};
-      var text = item.text == null ? '' : String(item.text);
-      if(!text.trim()) continue;
-      var indent = parseInt(item.indent, 10);
-      if(!isFinite(indent)) indent = 0;
-      indent = Math.max(-2, Math.min(2, indent));
-      out.push({ text:text, indent:indent });
-    }
-    return out.length ? out : [{ text:String(fallbackText || ''), indent:0 }];
-  }
 
-  rebuildTranslationFooter(){
-    if(!this.transFoot) this.transFoot = document.getElementById('trans-foot');
-    if(!this.transFoot) return;
-    var footer = (this.TRANSLATION && this.TRANSLATION.footer) || '';
-    var mobileMode = window.innerWidth <= 760;
-    var lines = mobileMode ? this.translationMobileLinesFor('footer', footer) : [];
-    var sig = footer + '|' + mobileMode + '|' + (mobileMode ? JSON.stringify(lines) : '');
-    if(this._translationFooterSig === sig) return;
-    this._translationFooterSig = sig;
-    this.transFoot.innerHTML = '';
-    if(mobileMode){
-      this.transFoot.classList.add('tt-translation-mobile-foot');
-      this.transFoot.setAttribute('aria-label', footer.replace(/\s+/g,' ').trim());
-      for(var fi=0; fi<lines.length; fi++){
-        var line=document.createElement('span');
-        line.className='tt-translation-mobile-line';
-        line.setAttribute('data-indent', String(lines[fi].indent || 0));
-        var inner=document.createElement('span');
-        inner.className='tt-translation-mobile-line-inner';
-        inner.textContent=lines[fi].text || '';
-        line.appendChild(inner);
-        this.transFoot.appendChild(line);
-      }
-      return;
-    }
-    this.transFoot.classList.remove('tt-translation-mobile-foot');
-    this.transFoot.removeAttribute('aria-label');
-    this.transFoot.textContent = footer;
-  }
-  rebuildTranslationLine(){
-    if(!this.taleLine) this.taleLine = document.getElementById('tale-line');
-    if(!this.taleLine) return;
-    var sentence = (this.TRANSLATION && this.TRANSLATION.sentence) || 'Once, a quiet story wished to be heard.';
-    var mobileMode = window.innerWidth <= 760;
-    var mobileLines = mobileMode ? this.translationMobileLinesFor('sentence', sentence) : [];
-    var lineSig = mobileMode ? JSON.stringify(mobileLines) : '';
-    if(this._translationSentence === sentence && this._translationMobileMode === mobileMode && this._translationLineSig === lineSig && this.letters && this.letters.length){ this.rebuildTranslationFooter(); return; }
-    this._translationSentence = sentence;
-    this._translationMobileMode = mobileMode;
-    this._translationLineSig = lineSig;
-    this.taleLine.innerHTML = '';
-    this.taleLine.setAttribute('aria-label', String(sentence).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim());
-    this.letters = [];
-    this._translationRich = !mobileMode && (this.looksLikeRichText(sentence) || /[\r\n\t]| {2,}/.test(String(sentence)));
-    if(mobileMode){
-      this.taleLine.classList.add('tt-translation-mobile-mode');
-      this.taleLine.style.whiteSpace = 'normal';
-      this.taleLine.style.display = 'flex';
-      this.taleLine.style.wordBreak = 'keep-all';
-      this.taleLine.style.overflowWrap = 'normal';
-      this.taleLine.style.textWrap = 'balance';
-      this.taleLine.style.flexDirection = 'column';
-      for(var li=0; li<mobileLines.length; li++){
-        var line=document.createElement('span');
-        line.className='tt-translation-mobile-line';
-        line.setAttribute('data-indent', String(mobileLines[li].indent || 0));
-        for(var ci=0; ci<String(mobileLines[li].text || '').length; ci++){
-          var ch=String(mobileLines[li].text || '')[ci];
-          var sp=document.createElement('span');
-          sp.className='tt-translation-mobile-line-inner';
-          sp.textContent = ch===' ' ? '\u00A0' : ch;
-          sp.style.display='inline-block';
-          sp.style.willChange='transform,opacity';
-          line.appendChild(sp);
-          this.letters.push(sp);
-        }
-        this.taleLine.appendChild(line);
-      }
-      this.rebuildTranslationFooter();
-      return;
-    }
-    this.taleLine.classList.remove('tt-translation-mobile-mode');
-    if(this._translationRich){
-      this.taleLine.style.whiteSpace = 'pre-wrap';
-      this.taleLine.style.display = 'block';
-      this.taleLine.style.wordBreak = 'keep-all';
-      this.taleLine.style.overflowWrap = 'anywhere';
-      this.taleLine.innerHTML = this.looksLikeRichText(sentence) ? this.sanitizeRichHtml(sentence) : this.plainTextHtml(sentence);
-      this.letters = [this.taleLine];
-      this.rebuildTranslationFooter();
-      return;
-    }
-    this.taleLine.style.whiteSpace = '';
-    this.taleLine.style.display = '';
-    this.taleLine.style.wordBreak = '';
-    this.taleLine.style.overflowWrap = '';
-    this.taleLine.style.textWrap = '';
-    this.taleLine.style.flexDirection = '';
-    // Letters animate one by one, but lines may only break between words (never "\uB429\uB2C8 / \uB2E4."),
-    // and the lines are balanced inside one centred block.
-    var block=document.createElement('span');
-    block.className='tt-tale-block';
-    var word=null;
-    for(var ci=0; ci<sentence.length; ci++){
-      var ch=sentence[ci];
-      if(!word){ word=document.createElement('span'); word.className='tt-tale-word'; block.appendChild(word); }
-      var sp=document.createElement('span');
-      sp.textContent = ch===' ' ? '\u00A0' : ch;
-      sp.style.display='inline-block';
-      sp.style.willChange='transform,opacity';
-      word.appendChild(sp);
-      this.letters.push(sp);
-      if(ch===' '){ word=null; block.appendChild(document.createTextNode(' ')); }
-    }
-    this.taleLine.appendChild(block);
-    this.rebuildTranslationFooter();
-  }
   loadMemberImages(){
     if(document.body.getAttribute('data-active-chapter')!=='members'||(this._chapterTarget&&this._chapterTarget!=='c-members'))return;
     var section = document.getElementById('c-members');
@@ -1415,7 +1269,7 @@ class Component extends DCLogic {
       var el=this.motionEls[i], rect=el.getBoundingClientRect();
       el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};
     }
-    this.sections=['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+    this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
     this._railCenters=[];
     for(var si=0;si<this.sections.length;si++){
       var section=this.sections[si];
@@ -1428,7 +1282,7 @@ class Component extends DCLogic {
     }
     this._depthKeys=this._buildDepthKeys(layoutHeight);
     if(this._bridgeRun && this._bridgeRun.phase!=='advancing'){
-      var anchor=this._bridgeRun.index===-1?this.transSec.offsetTop:this._bridgeOffsets[this._bridgeRun.index];
+      var anchor=this._bridgeOffsets[this._bridgeRun.index];
       if(Number.isFinite(anchor)) this.scroller.scrollTo({top:anchor,behavior:'auto'});
     }
     this._deepBookGeometry=null;
@@ -1448,7 +1302,7 @@ class Component extends DCLogic {
   // The descent to the next layer happens between a chapter's bridge and the next chapter,
   // so the sea visibly gets deeper at each handoff instead of drifting with page length.
   _buildDepthKeys(layoutHeight){
-    var layers=[['c-home',0.2,0],['c-translation',0.26,60],['c-projects',0.34,200],['c-members',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
+    var layers=[['c-home',0.2,0],['c-projects',0.34,200],['c-members',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
     var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
     for(var i=0;i<layers.length;i++){
       var el=document.getElementById(layers[i][0]); if(!el) continue;
@@ -1616,7 +1470,6 @@ class Component extends DCLogic {
     var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;
     if(fastMobile&&sceneDirty&&Object.keys(this._bridgeSeen).length){
       this.updateBridges(scEl.clientHeight);
-      if(this._bridgeSeen[-1]&&this.isNearViewport(this.transSec,scEl.clientHeight*0.35)) this.updateTranslation(scEl,(nowLoop-this.t0)/1000);
     }
     if(fastMobile && this._mobilePaletteFrame && frameNow-this._mobilePaletteFrame<90){
       this.scrollCenter=sc+scEl.clientHeight/2;
@@ -1774,16 +1627,17 @@ class Component extends DCLogic {
     if(sceneDirty){
       // active section and progress are scroll-derived; keep their last values while idle.
       if(!this.sections||!this.sections.length){
-        this.sections=['c-home','c-translation','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+        this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
       var act=0, line=vh2;
       for(var k=0;k<this.sections.length;k++){
         if(this.sections[k].getBoundingClientRect().top <= line) act=k;
       }
       if(act!==this.lastActive){
+        var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-news':5,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
         for(var j=0;j<7;j++){
           var nb=document.getElementById('nav-'+j); if(!nb) continue;
-          var on=j===act;
+          var on=j===actNav;
           nb.style.opacity = on?'1':'0.38';
           nb.style.color = on?'var(--accent,#0E6E7D)':'var(--ink,#141C30)';
           var dot=nb.querySelector('.nav-dot') || nb.querySelector('span:last-child');
@@ -1807,7 +1661,6 @@ class Component extends DCLogic {
       this.scrollCenter = sc + vh2;
       this.scrollP = p;
     }
-    if((sceneDirty||this._bridgeRun?.index===-1) && this.transSec && this.isNearViewport(this.transSec,scEl.clientHeight*0.35)) this.updateTranslation(scEl,tA);
     this.draw(n, pal, fastMobile);
     this.raf = requestAnimationFrame(this.loop);
   }
@@ -2014,10 +1867,8 @@ class Component extends DCLogic {
     c.globalAlpha=1;
     if(fastMobile){
       if(this.inks && this.inks.length>4) this.inks.splice(0,this.inks.length-4);
-      this.transGlint=null;
     } else {
       this.drawInk(time);
-      this.drawGlint(this.transGlint, pal.accent2, time, 70);
     }
     this.drawRail(n, pal, time);
   }
@@ -2056,26 +1907,6 @@ class Component extends DCLogic {
     if(this.inks.length>14) this.inks.shift();
   }
 
-  // Shinkai-ish light particles: dissolving letters rise as glints/stars
-  drawGlint(g, accent, time, rise){
-    if(!g) return;
-    var c=this.ctx, ar=this.hx(accent);
-    if(!this._glints){ this._glints=Array.from({length:46},(_,i)=>({rx:Math.random()-0.5, ry:Math.random()-0.5, sp:Math.random()*0.5+0.4, ph:Math.random()*6.28, r:Math.random()*1.8+0.7})); }
-    for(var i=0;i<this._glints.length;i++){
-      var p=this._glints[i];
-      var t=(time*p.sp + p.ph)%1;
-      var x=g.x + p.rx*g.w*0.96;
-      var y=g.y + p.ry*g.h - t*rise;          // drift upward
-      var tw=0.5+0.5*Math.sin(time*3+p.ph);
-      var a=g.k*tw*(1-t)*0.9;
-      if(a<=0.01) continue;
-      c.globalAlpha=a*0.3; c.fillStyle='rgb('+ar[0]+','+ar[1]+','+ar[2]+')';
-      c.beginPath(); c.arc(x,y,p.r*3.2,0,6.283); c.fill();
-      c.globalAlpha=a; c.fillStyle='rgb('+Math.min(255,ar[0]+90)+','+Math.min(255,ar[1]+90)+','+Math.min(255,ar[2]+90)+')';
-      c.beginPath(); c.arc(x,y,p.r,0,6.283); c.fill();
-    }
-    c.globalAlpha=1;
-  }
 
   // The score playhead: the whole page is one staff scrolling past a fixed reading head.
   // Each chapter's note ignites exactly as it reaches the head -> the reason the chapter "plays".
@@ -2136,13 +1967,13 @@ class Component extends DCLogic {
     var bridge = this.BRIDGES && this.BRIDGES[i];
     var id = String((bridge && bridge.id) || '').toLowerCase();
     var byId = {
-      'translation-projects': 'orbs',
+      'home-projects': 'prologue',
       'projects-members': 'gather',
       'members-works': 'bloom',
       'works-news': 'ripple',
       'news-contact': 'page'
     };
-    return byId[id] || ['orbs','gather','bloom','ripple','page'][i] || 'orbs';
+    return byId[id] || ['prologue','gather','bloom','ripple','page'][i] || 'gather';
   }
 
   bridgePhraseForIndex(i){
@@ -2213,9 +2044,9 @@ class Component extends DCLogic {
     var langs=['kr','en','jp'];
     for(var k=0;k<langs.length;k++){ var btn=document.getElementById('lang-'+langs[k]); if(btn){ var on=langs[k]===l; btn.style.background=on?'var(--ink,#141C30)':'none'; btn.style.color=on?'var(--paper,#fffdf8)':'var(--ink,#141C30)'; btn.style.border='0'; btn.style.outline='0'; btn.style.boxShadow='none'; btn.style.borderRadius='999px'; btn.style.overflow='hidden'; btn.style.backgroundClip='padding-box'; btn.style.appearance='none'; btn.style.webkitAppearance='none'; btn.style.webkitTapHighlightColor='transparent'; btn.style.minWidth='44px'; btn.style.minHeight='44px'; } }
     try{ localStorage.setItem('tt_lang', l); }catch(e){}
-    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this.rebuildTranslationLine(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
+    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
     clearTimeout(this._langRebuildTimer);
-    this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this.tcaps = [0,1,2].map(i=>document.getElementById('tcap-'+i)); this.transFoot=document.getElementById('trans-foot'); this.taleLine=document.getElementById('tale-line'); this.rebuildTranslationLine(); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
+    this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
   }
 
   buildBridgeVisual(bg, type, idx){
@@ -2274,17 +2105,13 @@ class Component extends DCLogic {
         gl._gx=gx; gl._gy=gy; gl._delay=Math.random()*0.22; ritual.appendChild(gl); items.push(gl);
       }
       items=items.concat(Array.from(v.querySelectorAll('.tt-one-line,.tt-line-echo,.tt-line-trail,.tt-line-note')));
-    } else if(type==='orbs'){
-      // LISTEN v2 - the story RUSHES in as comet streams; the listener visibly thumps on each beat
-      var field=document.createElement('div'); field.className='tt-orb-stage'; v.appendChild(field);
-      var ear=document.createElement('i'); ear.className='tt-bridge-orb tt-listen-ear'; v.appendChild(ear); items.push(ear);
-      var lring=document.createElement('i'); lring.className='tt-listen-ring'; v.appendChild(lring); items.push(lring);
-      for(var la=0; la<3; la++){ var arc=document.createElement('i'); arc.className='tt-listen-arc'; arc._delay=la/3; v.appendChild(arc); items.push(arc); }
-      for(var hh=0; hh<2; hh++){ var hr=document.createElement('i'); hr.className='tt-shock-ring'; hr._hit=hh; v.appendChild(hr); items.push(hr); }
-      for(var oi=0, flowCount=lightVisual?16:40; oi<flowCount; oi++){
-        var fd=dot(field,0,0,0,0,2.4+Math.random()*5,Math.random());
-        fd._flow=1; fd._lane=(Math.random()*2-1); fd._amp=10+Math.random()*26; fd._spd=0.7+Math.random()*0.9;
-      }
+    } else if(type==='prologue'){
+      // HOW WE DIVE: the three steps of the journey light up one after another, joined by a thread of light
+      var steps=document.createElement('div'); steps.className='tt-prologue-steps'; v.appendChild(steps);
+      ['TALE','TONE','MUSIC'].forEach(function(word, si){
+        if(si){ var link=document.createElement('i'); link.className='tt-prologue-link'; link._step=si-0.5; steps.appendChild(link); items.push(link); }
+        var st=document.createElement('span'); st.className='tt-prologue-step'; st.textContent=word; st._step=si; steps.appendChild(st); items.push(st);
+      });
     } else if(type==='gather'){
       // KINDLE v2 - trembling build-up, then IGNITION: shockwave, spark burst, light wave rolling outward
       var field2=document.createElement('div'); field2.className='tt-orb-stage'; v.appendChild(field2);
@@ -2378,42 +2205,12 @@ class Component extends DCLogic {
           glyph.style.transform='translate('+glyph._gx.toFixed(1)+'px,'+glyph._gy.toFixed(1)+'px) scale('+(0.45+1.2*gp).toFixed(3)+')';
         }
       }
-    } else if(type==='orbs'){
-      // LISTEN v2
-      var eo1=function(k){return 1-Math.pow(1-k,3);};
-      var earOn=this.smooth(0.06,0.2,prog);
-      var attend=this.smooth(0.22,0.48,prog);
-      var beat=Math.pow(Math.max(0,Math.sin(time*3.1)),8);
-      bg._imp=0.22*beat*attend*(1-exit);
-      for(var i=0;i<items.length;i++){
-        var it=items[i]; var cn=String(it.className||'');
-        if(cn.indexOf('tt-listen-ear')>-1){
-          var eo=earOn*(1-exit);
-          it.style.opacity=(eo*.97).toFixed(3);
-          it.style.transform='translate(150px,'+(5*Math.sin(time*1.3)).toFixed(1)+'px) scale('+(0.34+0.6*eo+beat*0.26*attend).toFixed(3)+')';
-        } else if(cn.indexOf('tt-listen-ring')>-1){
-          var lr=attend*(1-exit);
-          it.style.opacity=(lr*.55).toFixed(3);
-          it.style.transform='translate(150px,0) rotate('+(time*10).toFixed(1)+'deg) scale('+(0.7+0.3*lr+beat*0.14).toFixed(3)+')';
-        } else if(cn.indexOf('tt-listen-arc')>-1){
-          var win=this.smooth(0.08,0.18,prog)*(1-this.smooth(0.82,0.95,prog))*(1-exit);
-          var k=(time*0.55+it._delay)%1;
-          it.style.opacity=(Math.sin(k*Math.PI)*0.65*win).toFixed(3);
-          it.style.transform='translate(-330px,0) scale('+(0.15+k*2.3).toFixed(2)+')';
-        } else if(it._hit!=null){
-          var kh=((time*3.1/6.283)+it._hit*0.5)%1;
-          it.style.opacity=((1-kh)*(1-kh)*0.7*attend*(1-exit)).toFixed(3);
-          it.style.transform='translate(150px,0) scale('+(0.12+eo1(kh)*1.9).toFixed(2)+')';
-        } else if(it._flow){
-          var appear=this.smooth(0.04,0.16,prog)*(1-exit);
-          var kf=(time*0.30*it._spd+it._delay)%1;
-          var x=-460+eo1(kf)*610;
-          var calm=1-this.cl((x+130)/270,0,1)*0.9;
-          var y=it._lane*32*calm+Math.sin(kf*14+it._ph)*it._amp*calm;
-          var sx=1+1.6*calm*it._spd, sy=Math.max(0.5,1-0.4*calm);
-          it.style.opacity=(appear*0.95*Math.sin(Math.min(kf*3,1)*Math.PI*0.5)*(kf>0.92?(1-kf)/0.08:1)).toFixed(3);
-          it.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) scale('+sx.toFixed(2)+','+sy.toFixed(2)+')';
-        }
+    } else if(type==='prologue'){
+      for(var pi=0;pi<items.length;pi++){
+        var ps=items[pi], isLink=String(ps.className).indexOf('link')>-1, at=0.1+ps._step*0.17;
+        var pon=this.smooth(at,at+0.12,prog)*(1-exit);
+        ps.style.opacity=(pon*(isLink?0.7:1)).toFixed(3);
+        ps.style.transform=isLink?'scaleX('+pon.toFixed(3)+')':'translateY('+((1-pon)*12).toFixed(1)+'px)';
       }
     } else if(type==='gather'){
       // KINDLE v2
@@ -2592,10 +2389,10 @@ class Component extends DCLogic {
 
   startBridge(index){
     if(this._bridgeRun || this._bridgeSeen[index] || this._bridgeBypassed[index] || this._bridgeNavTarget || !this.scroller) return;
-    var bg=this.bridges[index], outer=index===-1?this.transSec:bg&&(bg._bridgeOuter||bg.closest('[data-story-bridge-wrap]'));
+    var bg=this.bridges[index], outer=bg&&(bg._bridgeOuter||bg.closest('[data-story-bridge-wrap]'));
     if(!outer) return;
     // One owner: lock native scrolling BEFORE aligning, then run animation + reading hold.
-    var copy=index===-1?'':this.bridgeMobileLinesForIndex(index).map(line=>line.text||'').join('');
+    var copy=this.bridgeMobileLinesForIndex(index).map(line=>line.text||'').join('');
     var reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this._reduceMotion=reduced;
     var style=this.scroller.style, saved={};
@@ -2604,7 +2401,6 @@ class Component extends DCLogic {
     });
     this._bridgeRun={index:index,phase:'playing',startedAt:null,duration:reduced?700:1200,
       hold:Math.min(2600,Math.max(1400,copy.trim().length*22)),saved:saved};
-    if(index===-1){this._bridgeRun.duration=reduced?700:5600;this._bridgeRun.hold=reduced?1800:0;}
     outer.setAttribute('data-bridge-active','');
     style.setProperty('overflow-y','hidden','important');
     style.setProperty('touch-action','none','important');
@@ -2620,15 +2416,15 @@ class Component extends DCLogic {
     this.scroller.scrollTo({top:outer.offsetTop,behavior:'auto'});
     this._bridgeScrollTop=this.scroller.scrollTop;
     this._sceneDirty=true;
-    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][Math.max(0,index)]}}));
+    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][index]}}));
   }
   // Momentum (touch flicks, trackpad inertia, a wheel smooth-scroll already in flight) can keep
   // moving the scroller after the lock engages; hold it on the bridge until the handoff takes over.
   _pinBridgeAnchor(){
     var run=this._bridgeRun;
     if(!run||run.phase==='advancing'||!this.scroller) return;
-    var bg=run.index===-1?null:this.bridges[run.index];
-    var outer=run.index===-1?this.transSec:bg&&(bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null));
+    var bg=this.bridges[run.index];
+    var outer=bg&&(bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null));
     if(!outer) return;
     var anchor=outer.offsetTop;
     if(Math.abs(this.scroller.scrollTop-anchor)>1){
@@ -2672,7 +2468,7 @@ class Component extends DCLogic {
     var run=this._bridgeRun;
     if(!run) return;
     var targets=[['c-projects','/story-types/'],['c-members','/members/'],['c-works','/works/'],['c-news','/news/'],['c-contact','/contact/']];
-    var route=targets[run.index], target=run.index===-1?this.transSec.nextElementSibling:route&&document.getElementById(route[0]);
+    var route=targets[run.index], target=route&&document.getElementById(route[0]);
     if(!target){ this.releaseBridge(); return; }
     if(run.phase!=='advancing'){
       run.phase='advancing'; run.advanceAt=now; run.from=this.scroller.scrollTop;
@@ -2698,7 +2494,6 @@ class Component extends DCLogic {
     this._bridgeBypassed={};
     var target=targetId&&document.getElementById(targetId), targetTop=target?target.offsetTop:(this.scroller?this.scroller.scrollTop:0);
     this._bridgeNavTarget=target&&Math.abs(this.scroller.scrollTop-targetTop)>3?targetId:null;
-    if(this.transSec && this.transSec.offsetTop<targetTop) this._bridgeBypassed[-1]=true;
     (this.bridges||[]).forEach((bg,i)=>{
       var outer=bg._bridgeOuter||(bg.closest?bg.closest('[data-story-bridge-wrap]'):null);
       var past=!!outer&&outer.offsetTop<=targetTop+2;
@@ -2942,69 +2737,6 @@ class Component extends DCLogic {
     }
   }       
 
-  // TRANSLATE is bridge -1: the same lock, completion record and automatic handoff.
-  updateTranslation(scEl, tA){
-    if(!this.transSec||!this.letters) return;
-    var vh=scEl.clientHeight;
-    var rectT=this.transSec.getBoundingClientRect();
-    var seen=this._bridgeSeen[-1]||this._bridgeBypassed[-1], prog=seen?1:0;
-    if(!seen&&!this._bridgeRun&&rectT.top<=vh*0.5&&rectT.top>=-2&&rectT.bottom>vh*0.5) this.startBridge(-1);
-    var run=this._bridgeRun;
-    if(run&&run.index===-1){
-      this._pinBridgeAnchor();
-      this._setBridgeProgress(run);
-      this.transSec.setAttribute('data-bridge-active','');
-      if(run.startedAt==null) run.startedAt=performance.now();
-      var elapsed=performance.now()-run.startedAt;
-      prog=this.cl(elapsed/run.duration,0,1);
-      if(prog>=1 && run.phase==='playing'){run.phase='holding';scEl.dataset.bridgePhase='holding';}
-      if(run.phase==='holding'&&elapsed>=run.duration+run.hold) this.advanceBridge(performance.now());
-    }
-    var motionTime=prog*7.2;
-    // three acts: tale (0-.4 hold/dissolve), tone (.35-.75 bars rise), music (.62-1 full with a longer readable hold)
-    var dissolve=this.smooth(0.18,0.55,prog); // letters leave
-    var build=this.smooth(0.4,0.78,prog);      // bars arrive
-    var full=this.smooth(0.64,0.82,prog);        // music settles
-    // letters: scatter upward into particles as the tone takes over
-    for(var i=0;i<this.letters.length;i++){
-      var L=this.letters[i], q=this.letters.length>1?i/(this.letters.length-1):0;
-      var d=this.cl((dissolve-q*0.5)*2,0,1);
-      var compactTrans = window.innerWidth <= 900;
-      var scatterY = compactTrans ? 38 : 70;
-      var scatterWave = compactTrans ? 14 : 28;
-      var scatterX = compactTrans ? 14 : 44;
-      var dy=-d*scatterY - d*scatterWave*Math.sin(i*1.3);
-      var dx=d*scatterX*Math.sin(i*2.1);
-      L.style.opacity=(1-d).toFixed(3);
-      L.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(1-0.25*d).toFixed(3)+')';
-    }
-    // bars: fill in left??몄츗ght, height pulses like a live waveform once present
-    if(this.bars){
-      var maxH = Math.min(this.H*0.26, 300);
-      for(var b=0;b<this.bars.length;b++){
-        var B=this.bars[b], bq=b/(this.bars.length-1);
-        var on=this.cl((build-bq*0.6)*2.2,0,1);
-        var pulse=full>0.02 ? (0.55+0.45*Math.sin(motionTime*3.2 + b*0.5)) : 1;
-        var hh=6 + on*B.amp*maxH*(0.55+0.45*full)*pulse;
-        B.el.style.height=hh.toFixed(1)+'px';
-        B.el.style.opacity=(on*(0.5+0.5*full)).toFixed(3);
-        B.el.style.background = full>0.5 ? 'var(--accent2,#3d8a98)' : 'var(--accent,#0E6E7D)';
-      }
-    }
-    // captions cross-fade
-    if(this.tcaps&&this.tcaps[0]){
-      this.tcaps[0].style.opacity=(1-this.smooth(0.2,0.42,prog)).toFixed(3);
-      this.tcaps[1].style.opacity=(this.smooth(0.3,0.5,prog)*(1-this.smooth(0.62,0.78,prog))).toFixed(3);
-      this.tcaps[2].style.opacity=this.smooth(0.62,0.76,prog).toFixed(3);
-    }
-    if(this.transFoot) this.transFoot.style.opacity=full.toFixed(3);
-    // hand the canvas a glint burst: strongest mid-dissolve, around the tale line
-    var burst = dissolve*(1-full);
-    if(burst>0.02 && this.taleLine){
-      var rb=this.taleLine.getBoundingClientRect();
-      this.transGlint={x:rb.left+rb.width/2, y:rb.top+rb.height/2, w:rb.width, h:rb.height, k:burst};
-    } else { this.transGlint=null; }
-  }
 
   pauseWorksAudio(){
     try{
@@ -3264,19 +2996,17 @@ class Component extends DCLogic {
   renderVals(){
     this.ensureDataReady();
     return {
-      nav0:(e)=>this.navigateChapter(e, 'c-home', '/'), nav1:(e)=>this.navigateChapter(e, 'c-translation', '/'),
+      nav0:(e)=>this.navigateChapter(e, 'c-home', '/'),
       nav2:(e)=>this.navigateChapter(e, 'c-projects', '/story-types/'), nav3:(e)=>this.navigateChapter(e, 'c-members', '/members/'),
       nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav5:(e)=>this.navigateChapter(e, 'c-news', '/news/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
       langKR:()=>this.setLang('kr'), langEN:()=>this.setLang('en'), langJP:()=>this.setLang('jp'),
       HOME: this.HOME || {},
-      TRANSLATION: this.TRANSLATION || {},
       BRIDGE_0: (this.BRIDGES||[])[0] || {},
       BRIDGE_1: (this.BRIDGES||[])[1] || {},
       BRIDGE_2: (this.BRIDGES||[])[2] || {},
       BRIDGE_3: (this.BRIDGES||[])[3] || {},
       BRIDGE_4: (this.BRIDGES||[])[4] || {},
       CHAPTER_PROLOGUE: (this.CHAPTER_LABELS||{}).prologue || {},
-      CHAPTER_METHOD: (this.CHAPTER_LABELS||{}).method || { label:'PROLOGUE \u00B7 HOW WE DIVE', note:'TALE \u2192 TONE \u2192 MUSIC' },
       CHAPTER_TALE: (this.CHAPTER_LABELS||{}).tale || {},
       CHAPTER_TONE: (this.CHAPTER_LABELS||{}).tone || {},
       CHAPTER_RESURFACE: (this.CHAPTER_LABELS||{}).resurface || {},

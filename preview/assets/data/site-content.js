@@ -1030,204 +1030,62 @@ window.TALETONE_CONTENT = {
       }
     }
   },
-  "translation": {
-    "caption1": "①  TALE  ·  이야기를 읽습니다",
-    "caption2": "②  TONE  ·  톤을 설계합니다",
-    "caption3": "③  MUSIC  ·  음악으로 피어납니다",
-    "sentence": "이야기는 하나의 빛깔이 됩니다.",
-    "footer": "그 빛깔은 음악으로 피어납니다.",
-    "translations": {
-      "kr": {
-        "caption1": "①  TALE  ·  이야기를 읽습니다",
-        "caption2": "②  TONE  ·  톤을 설계합니다",
-        "caption3": "③  MUSIC  ·  음악으로 피어납니다",
-        "sentence": "이야기는 하나의 빛깔이 됩니다.",
-        "footer": "그 빛깔은 음악으로 피어납니다.",
-        "mobileLines": [
-          {
-            "text": "이야기는 하나의",
-            "indent": 0
-          },
-          {
-            "text": "빛깔이 됩니다.",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ],
-        "footerMobileLines": [
-          {
-            "text": "그 빛깔은",
-            "indent": 0
-          },
-          {
-            "text": "음악으로 피어납니다.",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ]
-      },
-      "en": {
-        "caption1": "①  TALE  ·  We read the story",
-        "caption2": "②  TONE  ·  We shape its tone",
-        "caption3": "③  MUSIC  ·  It blooms into music",
-        "sentence": "A tale becomes a tone.",
-        "footer": "A tone becomes music.",
-        "mobileLines": [
-          {
-            "text": "A tale",
-            "indent": 0
-          },
-          {
-            "text": "becomes a tone.",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ],
-        "footerMobileLines": [
-          {
-            "text": "A tone becomes",
-            "indent": 0
-          },
-          {
-            "text": "music.",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ]
-      },
-      "jp": {
-        "caption1": "①  TALE  ·  物語を読み解く",
-        "caption2": "②  TONE  ·  音色を設計する",
-        "caption3": "③  MUSIC  ·  音楽として花開く",
-        "sentence": "物語は、ひとつの彩りになる。",
-        "footer": "その彩りは、音楽となって花開く。",
-        "mobileLines": [
-          {
-            "text": "物語は、",
-            "indent": 0
-          },
-          {
-            "text": "ひとつの彩りになる。",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ],
-        "footerMobileLines": [
-          {
-            "text": "その彩りは、",
-            "indent": 0
-          },
-          {
-            "text": "音楽となって花開く。",
-            "indent": 0
-          },
-          {
-            "text": "",
-            "indent": 0
-          }
-        ]
-      }
-    },
-    "mobileLines": [
-      {
-        "text": "이야기는 하나의",
-        "indent": 0
-      },
-      {
-        "text": "빛깔이 됩니다.",
-        "indent": 0
-      },
-      {
-        "text": "",
-        "indent": 0
-      }
-    ],
-    "footerMobileLines": [
-      {
-        "text": "그 빛깔은",
-        "indent": 0
-      },
-      {
-        "text": "음악으로 피어납니다.",
-        "indent": 0
-      },
-      {
-        "text": "",
-        "indent": 0
-      }
-    ]
-  },
   "bridges": [
     {
-      "id": "translation-projects",
-      "eyebrow": "CHAPTER 1 · TALE",
-      "text": "우리는 곡을 만들기 전에, 먼저 이야기를 듣습니다.",
+      "id": "home-projects",
+      "eyebrow": "PROLOGUE · HOW WE DIVE",
+      "text": "이야기는 빛깔이 되고,\n그 빛깔은 음악으로 피어납니다.",
       "translations": {
         "kr": {
-          "eyebrow": "CHAPTER 1 · TALE",
-          "text": "우리는 곡을 만들기 전에, 먼저 이야기를 듣습니다.",
+          "eyebrow": "PROLOGUE · HOW WE DIVE",
+          "text": "이야기는 빛깔이 되고,\n그 빛깔은 음악으로 피어납니다.",
           "mobileLines": [
             {
-              "text": "우리는 곡을 만들기 전에,",
+              "text": "이야기는 빛깔이 되고,",
               "indent": 0
             },
             {
-              "text": "먼저 이야기를",
+              "text": "그 빛깔은",
               "indent": 0
             },
             {
-              "text": "듣습니다.",
+              "text": "음악으로 피어납니다.",
               "indent": 0
             }
           ]
         },
         "en": {
-          "eyebrow": "CHAPTER 1 · TALE",
-          "text": "Before we make music, we first listen to the story.",
+          "eyebrow": "PROLOGUE · HOW WE DIVE",
+          "text": "A story becomes a color,\nand the color blooms into music.",
           "mobileLines": [
             {
-              "text": "Before we make music,",
+              "text": "A story becomes a color,",
               "indent": 0
             },
             {
-              "text": "we first listen",
+              "text": "and the color",
               "indent": 0
             },
             {
-              "text": "to the story.",
+              "text": "blooms into music.",
               "indent": 0
             }
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 1 · TALE",
-          "text": "私たちは曲をつくる前に、\nまず物語に耳を傾けます。",
+          "eyebrow": "PROLOGUE · HOW WE DIVE",
+          "text": "物語は色になり、\nその色は音楽となって花開きます。",
           "mobileLines": [
             {
-              "text": "私たちは曲をつくる前に、",
+              "text": "物語は色になり、",
               "indent": 0
             },
             {
-              "text": "まず物語に",
+              "text": "その色は",
               "indent": 0
             },
             {
-              "text": "耳を傾けます。",
+              "text": "音楽となって花開きます。",
               "indent": 0
             }
           ]
@@ -1235,15 +1093,15 @@ window.TALETONE_CONTENT = {
       },
       "mobileLines": [
         {
-          "text": "우리는 곡을 만들기 전에,",
+          "text": "이야기는 빛깔이 되고,",
           "indent": 0
         },
         {
-          "text": "먼저 이야기를",
+          "text": "그 빛깔은",
           "indent": 0
         },
         {
-          "text": "듣습니다.",
+          "text": "음악으로 피어납니다.",
           "indent": 0
         }
       ]
@@ -1726,7 +1584,7 @@ window.TALETONE_CONTENT = {
     "navNews": "NEWS",
     "navContact": "CONTACT",
     "progressInitial": "01",
-    "progressTotal": "07",
+    "progressTotal": "06",
     "close": "닫기",
     "basicInfo": "기본 정보",
     "education": "Education",
@@ -1767,7 +1625,7 @@ window.TALETONE_CONTENT = {
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
-        "progressTotal": "07",
+        "progressTotal": "06",
         "close": "닫기",
         "basicInfo": "기본 정보",
         "education": "Education",
@@ -1808,7 +1666,7 @@ window.TALETONE_CONTENT = {
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
-        "progressTotal": "07",
+        "progressTotal": "06",
         "close": "Close",
         "basicInfo": "Basic info",
         "education": "Education",
@@ -1849,7 +1707,7 @@ window.TALETONE_CONTENT = {
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
-        "progressTotal": "07",
+        "progressTotal": "06",
         "close": "閉じる",
         "basicInfo": "基本情報",
         "education": "Education",
@@ -1886,10 +1744,6 @@ window.TALETONE_CONTENT = {
       "copy": "",
       "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
     },
-    "method": {
-      "label": "PROLOGUE · HOW WE DIVE",
-      "note": "TALE → TONE → MUSIC"
-    },
     "tale": {
       "label": "CHAPTER 1 · TALE",
       "note": "우리가 함께하는 이야기"
@@ -1917,10 +1771,6 @@ window.TALETONE_CONTENT = {
           "note": "수면에서 아래로",
           "copy": "",
           "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
-        },
-        "method": {
-          "label": "PROLOGUE · HOW WE DIVE",
-          "note": "TALE → TONE → MUSIC"
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
@@ -1950,10 +1800,6 @@ window.TALETONE_CONTENT = {
           "copy": "",
           "hint": "Below the surface, an unwritten book is waiting."
         },
-        "method": {
-          "label": "PROLOGUE · HOW WE DIVE",
-          "note": "TALE → TONE → MUSIC"
-        },
         "tale": {
           "label": "CHAPTER 1 · TALE",
           "note": "The stories we work with"
@@ -1981,10 +1827,6 @@ window.TALETONE_CONTENT = {
           "note": "水面からその下へ",
           "copy": "",
           "hint": "水面の下で、まだ書かれていない本が待っています。"
-        },
-        "method": {
-          "label": "PROLOGUE · HOW WE DIVE",
-          "note": "TALE → TONE → MUSIC"
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
