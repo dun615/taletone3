@@ -4023,10 +4023,9 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
   .tt-deck-more::after{content:'';position:absolute;inset:-3px}
   .tt-shelf-filters{row-gap:12px}
 }
-/* the Works header label and note sit on a soft shadow of the deep water */
-.tt-shelf-head .tt-section-chapter{position:relative;isolation:isolate}
-.tt-shelf-head .tt-section-chapter::before{content:'';position:absolute;left:50%;top:50%;width:min(640px,96vw);height:120px;transform:translate(-50%,-38%);z-index:-1;pointer-events:none;filter:blur(10px);
-  background:radial-gradient(closest-side,rgba(4,26,38,.5),rgba(4,26,38,.28) 55%,transparent)}
+/* the Works header label and note: glyph shadows keep them clear of the mid-depth water */
+.tt-shelf-head .tt-section-chapter,.tt-shelf-head .tt-section-note{text-shadow:0 0 10px rgba(3,18,28,.85),0 1px 2px rgba(3,18,28,.7)!important}
+.tt-shelf-head .tt-section-note{color:#fbffff!important}
 
 /* volume fader on the plinth, right of the record, like a turntable's pitch fader; the notch marks 50% (-6 dB) */
 .tt-deck-volume{position:absolute;right:3.4%;top:31%;height:36%;width:26px;z-index:3;display:block;cursor:pointer}

@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/works.css?v=20261017-vol">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261017-vol2">
 <script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
 <style>
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
@@ -281,9 +281,8 @@ body[data-active-chapter] #chapnav a.navbtn{opacity:.8!important}
 /* chapter nav: solid ink labels with the depth-aware halo (no pill: it collapses to dots on some chapters) */
 html body #chapnav .nav-label{color:var(--ink,#141C30)!important;text-shadow:var(--halo,none)!important}
 html body[data-active-chapter] #chapnav a.navbtn{opacity:.9!important}
-.tt-section-chapter-block{position:relative;isolation:isolate}
-.tt-section-chapter-block::before{content:'';position:absolute;inset:-16px -56px;z-index:-1;pointer-events:none;border-radius:999px;
-  background:radial-gradient(closest-side,color-mix(in srgb,var(--paper,#0b1330) calc(var(--deep-glow,0) * 88%),transparent) 0%,color-mix(in srgb,var(--paper,#0b1330) calc(var(--deep-glow,0) * 60%),transparent) 60%,transparent)}
+/* dark-side chapter labels: a glyph shadow (no backing plate: plates read as dark bands on wide screens) */
+.tt-section-chapter,.tt-section-note{text-shadow:0 0 calc(var(--deep-glow,0) * 10px) rgba(3,18,28,calc(var(--deep-glow,0) * .85)),0 1px 2px rgba(3,18,28,calc(var(--deep-glow,0) * .7))!important}
 /* the partner's role on the light summary bar */
 .tt-network-person small{color:#3a4656!important;opacity:1!important}
 /* ===== One close button for every popup: a round X, the same as the Works popup =====
@@ -689,7 +688,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 </style>
-<script defer="" src="assets/js/works.js?v=20261017-vol"></script>
+<script defer="" src="assets/js/works.js?v=20261017-vol2"></script>
 </helmet>
                                         
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
