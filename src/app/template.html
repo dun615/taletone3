@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/works.css?v=20261021-records">
+    <link rel="stylesheet" href="assets/css/works.css?v=20261022-video">
 <script src="assets/js/image-slot.js?v=20261017-lang-routes"></script>
 <style>
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
@@ -249,6 +249,20 @@ body.tt-book-opened .tb-sparks i{animation:tbSpark var(--d) ease-out calc(2.6s +
 .tt-bridge-visual .tb-page{position:absolute;left:50%;top:50%;width:min(380px,74vw);height:min(220px,42vw);margin:calc(min(220px,42vw) / -2) 0 0 calc(min(380px,74vw) / -2);border-radius:16px;opacity:0;
   background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(255,240,206,.42),rgba(255,226,170,.12) 62%,rgba(255,226,170,.03));box-shadow:0 0 70px rgba(255,220,150,.22);filter:blur(1.5px)}
 @media (max-width:760px){.tt-bridge-visual .tb-glow{filter:blur(18px)}}
+/* ===== One close button for every popup: a round X, the same as the Works popup =====
+   (the :is(#…) boosts outrank older per-popup rules that use ID selectors) */
+html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close){display:grid!important;place-items:center!important;width:44px!important;height:44px!important;min-width:0!important;min-height:0!important;padding:0!important;border:0!important;border-radius:50%!important;
+  background:rgba(7,40,48,.72)!important;box-shadow:0 0 0 1px rgba(251,255,255,.18)!important;color:#fbffff!important;font-size:0!important;line-height:0!important;cursor:pointer;transition:background .2s,transform .2s}
+html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):hover{background:rgba(7,40,48,.9)!important;transform:scale(1.05)}
+html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visible{outline:2px solid var(--brand-sky,#8decfc)!important;outline-offset:3px}
+.tt-x-close svg{display:block}
+@media (max-width:760px){html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close){width:40px!important;height:40px!important}}
+/* ===== Brand colours, from the logo: teal #0e6e7d, sky #8decfc, white #fbffff ===== */
+:root{--brand:#0e6e7d;--brand-deep:#0a4f5b;--brand-night:#073640;--brand-sky:#8decfc;--brand-white:#fbffff}
+/* the header lockup reads like the logo: MUSIC in the brand teal near the surface, in sky blue in deep water */
+#brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--depth,0) * 100%),var(--brand))!important;opacity:1!important}
+/* primary buttons wear the brand: teal with white words near the surface, white with teal words in the deep */
+#content#content :is(.tt-home-quick-actions .is-primary,#email-link,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
 :root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
@@ -637,7 +651,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 }
 
 </style>
-<script defer="" src="assets/js/works.js?v=20261021-records"></script>
+<script defer="" src="assets/js/works.js?v=20261022-video"></script>
 </helmet>
                                         
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
@@ -684,7 +698,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <sc-if value="{{ mOpen }}" hint-placeholder-val="{{ false }}">
 <div class="tt-member-modal" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
   <div class="tt-member-panel" onclick="{{ stop }}" style="position:relative;width:min(1060px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.94);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5);padding:clamp(22px,3vw,40px)">
-    <button class="tt-member-close" onclick="{{ closeModal }}" style="position:absolute;right:22px;top:22px;z-index:2;background:#141c30;color:#fffdf8;border:0;border-radius:999px;padding:12px 24px;font-weight:800;font-size:14px;cursor:pointer">{{ UI_LABELS.close }}</button>
+    <button type="button" class="tt-member-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
     <div class="tt-member-grid" style="display:grid;grid-template-columns:clamp(264px,33%,344px) 1fr;gap:clamp(24px,3vw,40px);align-items:stretch">
       <!-- LEFT RAIL: photo + quick facts -->
       <div class="tt-member-rail" style="display:flex;flex-direction:column;gap:16px;min-width:0">
@@ -756,7 +770,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <sc-if value="{{ nOpen }}" hint-placeholder-val="{{ false }}">
 <div class="tt-news-modal" role="dialog" aria-modal="true" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
   <div onclick="{{ stop }}" style="position:relative;width:min(760px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.96);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5)">
-    <button onclick="{{ closeModal }}" style="position:absolute;right:20px;top:20px;z-index:2;background:#141c30;color:#fffdf8;border:0;border-radius:999px;padding:11px 22px;font-weight:800;font-size:14px;cursor:pointer">{{ UI_LABELS.close }}</button>
+    <button type="button" class="tt-news-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
     <image-slot id="{{ nk.slotId }}" src="{{ nk.image }}" fit="{{ nk.fit }}" position="{{ nk.position }}" style="width:100%;height:clamp(220px,34vh,320px);filter:{{ nk.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
     <div style="padding:clamp(26px,3.4vw,44px)">
       <div style="font-weight:800;font-size:13px;letter-spacing:.05em;                  ">{{ nk.tag }} &middot; {{ nk.date }}</div>
@@ -937,7 +951,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
           </div>
           <div class="tt-network-panel-actions">
             <span class="tt-network-panel-count">{{ PARTNERS.length }}</span>
-            <button type="button" class="tt-network-close" onclick="{{ closeModal }}" aria-label="{{ PARTNERS_META.closeLabel }}" title="{{ PARTNERS_META.closeLabel }}" autofocus>&#215;</button>
+            <button type="button" class="tt-network-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ PARTNERS_META.closeLabel }}" title="{{ PARTNERS_META.closeLabel }}" autofocus><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
           </div>
         </header>
         <div class="tt-network-scroll">

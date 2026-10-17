@@ -258,7 +258,7 @@ function detailPage({ lang, pathFor, title, description, ogType, image, schema, 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="light only">
-<meta name="theme-color" content="${preview ? '#0e6e7d' : '#eef6f4'}">
+<meta name="theme-color" content="#0e6e7d">
 <meta name="robots" content="${preview ? 'noindex, nofollow' : 'index, follow'}">
 <link rel="canonical" href="${url}">
 ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseUrl}${pathFor(l)}">`).join('\n')}
@@ -287,9 +287,7 @@ ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseU
 <body>
 <a class="tt-d-skip" href="#main">${esc(d.skip)}</a>
 <header class="tt-d-top">
-${preview
-  ? `<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-paper.png" alt="" width="34" height="40"><span class="tt-d-word">TALETONE<small>MUSIC</small></span></a>`
-  : `<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-ink.png" alt="" width="34" height="40"><span>TALETONE<br>MUSIC</span></a>`}
+<a class="tt-d-brand" href="${lang.prefix}/"><img src="/assets/logo/mark-paper.png" alt="" width="34" height="40"><span class="tt-d-word">TALETONE<small>MUSIC</small></span></a>
 <nav class="tt-d-langs" aria-label="${esc(labels[lang.key].languages)}">
 ${languages.map((l) => `<a href="${preview ? '/preview' : ''}${pathFor(l)}" hreflang="${l.html}" lang="${l.html}"${l === lang ? ' aria-current="true"' : ''}>${l.key.toUpperCase()}</a>`).join('\n')}
 </nav>
@@ -302,7 +300,7 @@ ${body}
 ${contactCta(lang)}
 </main>
 <footer class="tt-d-foot">${esc(localized(site.footerMeta, lang.key).copyright)}</footer>
-${preview ? youtubeScript : analyticsTag}
+${youtubeScript}${preview ? '' : analyticsTag}
 </body>
 </html>
 `;
@@ -337,73 +335,6 @@ ${next ? `<a class="next" href="${pathOf(lang, next)}"><small>${esc(d.next)} &#8
 const listenBlock = (label, audio) => audio
   ? `<p class="tt-d-listen"><span>${esc(label)}</span><audio controls preload="none" src="${esc(assetPath(audio))}"></audio></p>` : '';
 
-function workPage(work, index, lang) {
-  const d = detailLabels[lang.key];
-  const w = localized(work, lang.key);
-  const titleOf = (item) => localized(item, lang.key).title;
-  const isAlbum = Array.isArray(work.tracks) && work.tracks.length > 0;
-  const facts = [[d.artist, w.artist], [d.release, work.date], [d.format, work.format], [d.type, w.type]].filter(([, v]) => v);
-  const tracks = isAlbum ? `<section class="tt-d-section"><h2>${esc(d.tracks)}</h2><div class="tt-d-card"><ol class="tt-d-tracks">
-${work.tracks.map((track, i) => {
-    const t = localized(track, lang.key);
-    return `<li><span class="no">${String(track.trackNo || i + 1).padStart(2, '0')}</span><span class="title">${esc(t.title)}${t.description ? `<small>${esc(String(t.description).trim())}</small>` : ''}</span>${track.audio ? `<audio controls preload="none" src="${esc(assetPath(track.audio))}" aria-label="${esc(d.listen)}: ${esc(t.title)}"></audio>` : ''}</li>`;
-  }).join('\n')}
-</ol></div></section>` : '';
-  const versions = Array.isArray(work.versions) && work.versions.length ? `<section class="tt-d-section"><h2>${esc(d.versions)}</h2><div class="tt-d-card"><ol class="tt-d-tracks">
-${work.versions.map((v) => `<li><span class="no">${esc(v.language || '')}</span><span class="title">${esc(localized(v, lang.key).title)}${v.youtube ? ` <small><a href="${esc(v.youtube)}" rel="noopener">${esc(d.youtube)} &#8599;</a></small>` : ''}</span>${v.audio ? `<audio controls preload="none" src="${esc(assetPath(v.audio))}" aria-label="${esc(d.listen)}: ${esc(v.language || '')}"></audio>` : ''}</li>`).join('\n')}
-</ol></div></section>` : '';
-  const credits = isAlbum ? work.tracks.map((t) => t.credits).filter(Boolean).join('\n\n') || work.credits : work.credits;
-  const description = String(w.description || '').trim() || `${w.title} — ${w.artist}`;
-  const body = `<article>
-<div class="tt-d-hero">
-<figure class="tt-d-cover"><img src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024"></figure>
-<div>
-<p class="tt-d-kicker">${esc(work.format || '')} · ${esc(work.date)}</p>
-<h1>${esc(w.title)}</h1>
-<p class="tt-d-artist">${esc(w.artist)}</p>
-${description ? `<p class="tt-d-lead">${esc(description)}</p>` : ''}
-<dl class="tt-d-facts">
-${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n')}
-</dl>
-<div class="tt-d-actions">
-${work.youtube ? `<a class="tt-d-button" href="${esc(work.youtube)}" rel="noopener">${esc(d.youtube)} <span aria-hidden="true">&#8599;</span></a>` : ''}
-<a class="tt-d-button is-ghost" href="${lang.prefix}/works/">${esc(d.allWorks)}</a>
-</div>
-${isAlbum ? '' : listenBlock(d.listen, work.audio)}
-</div>
-</div>
-${tracks}
-${versions}
-${credits ? `<section class="tt-d-section"><h2>${esc(d.credits)}</h2><div class="tt-d-card"><pre class="tt-d-credits">${esc(String(credits).trim())}</pre></div></section>` : ''}
-</article>
-${pager(lang, worksByDate[index - 1], worksByDate[index + 1], workPath, titleOf)}`;
-  const schema = {
-    '@type': isAlbum ? 'MusicAlbum' : 'MusicRecording',
-    '@id': `${baseUrl}${workPath(lang, work)}#work`,
-    name: w.title,
-    url: `${baseUrl}${workPath(lang, work)}`,
-    description,
-    image: `${baseUrl}${assetPath(work.image)}`,
-    datePublished: isoDate(work.date),
-    inLanguage: lang.html,
-    byArtist: { '@type': 'MusicGroup', name: w.artist },
-    producer: { '@id': `${baseUrl}/#organization` },
-    ...(work.youtube ? { sameAs: [work.youtube] } : {}),
-    ...(isAlbum ? { numTracks: work.tracks.length, track: work.tracks.map((t) => ({ '@type': 'MusicRecording', name: localized(t, lang.key).title })) } : {}),
-  };
-  return detailPage({
-    lang,
-    pathFor: (l) => workPath(l, work),
-    title: `${w.title} — ${w.artist}`,
-    description: description.length > 160 ? `${description.slice(0, 157)}…` : description,
-    ogType: isAlbum ? 'music.album' : 'music.song',
-    image: assetPath(work.image),
-    schema,
-    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/works/`], [w.title, workPath(lang, work)]],
-    body,
-  });
-}
-
 // YouTube id from any watch / share / shorts / embed URL
 const youtubeId = (url) => (String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/) || [])[1] || '';
 // A light YouTube embed: the video's own thumbnail and a play button; the player loads on click.
@@ -411,14 +342,14 @@ const liteYouTube = (id, title, label) => `<div class="tt-yt" data-yt="${id}"><i
 const youtubeScript = `<script>document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.tt-yt-play');if(!b)return;var w=b.closest('.tt-yt'),f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+w.getAttribute('data-yt')+'?autoplay=1&rel=0&playsinline=1';f.title=b.getAttribute('aria-label');f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';f.allowFullscreen=true;w.replaceChildren(f);w.classList.add('is-playing');document.querySelectorAll('audio').forEach(function(a){a.pause();});});</script>`;
 const watchLabel = { kr: '영상 재생', en: 'Play video', jp: '動画を再生' };
 
-function workPageV2(work, index, lang, list) {
+function workPage(work, index, lang, list = worksByDate, preview = false) {
   const d = detailLabels[lang.key];
   const w = localized(work, lang.key);
   const titleOf = (item) => localized(item, lang.key).title;
   const isAlbum = Array.isArray(work.tracks) && work.tracks.length > 0;
   const facts = [[d.release, work.date], [d.format, work.format], [d.type, w.type]].filter(([, v]) => v);
   const id = youtubeId(work.youtube);
-  const previewPath = (l, item) => `/preview${workPath(l, item)}`;
+  const pageOf = (l, item) => `${preview ? '/preview' : ''}${workPath(l, item)}`;
   const trackList = (items, numberOf, titleFor, extra) => `<ol class="tt-d-tracks">
 ${items.map((item, i) => `<li><span class="no">${esc(numberOf(item, i))}</span><span class="title">${esc(titleFor(item))}${extra(item)}</span>${item.audio ? `<audio controls preload="none" src="${esc(assetPath(item.audio))}" aria-label="${esc(d.listen)}: ${esc(titleFor(item))}"></audio>` : ''}</li>`).join('\n')}
 </ol>`;
@@ -451,8 +382,21 @@ ${tracks}
 ${versions}
 ${credits ? `<section class="tt-d-section"><h2>${esc(d.credits)}</h2><div class="tt-d-card"><pre class="tt-d-credits">${esc(String(credits).trim())}</pre></div></section>` : ''}
 </article>
-${pager(lang, list[index - 1], list[index + 1], previewPath, titleOf)}`;
-  const schema = { '@type': isAlbum ? 'MusicAlbum' : 'MusicRecording', name: w.title, url: `${baseUrl}${workPath(lang, work)}` };
+${pager(lang, list[index - 1], list[index + 1], pageOf, titleOf)}`;
+  const schema = {
+    '@type': isAlbum ? 'MusicAlbum' : 'MusicRecording',
+    '@id': `${baseUrl}${workPath(lang, work)}#work`,
+    name: w.title,
+    url: `${baseUrl}${workPath(lang, work)}`,
+    description,
+    image: `${baseUrl}${assetPath(work.image)}`,
+    datePublished: isoDate(work.date),
+    inLanguage: lang.html,
+    byArtist: { '@type': 'MusicGroup', name: w.artist },
+    producer: { '@id': `${baseUrl}/#organization` },
+    ...(work.youtube ? { sameAs: [work.youtube] } : {}),
+    ...(isAlbum ? { numTracks: work.tracks.length, track: work.tracks.map((t) => ({ '@type': 'MusicRecording', name: localized(t, lang.key).title })) } : {}),
+  };
   return detailPage({
     lang,
     pathFor: (l) => workPath(l, work),
@@ -461,9 +405,9 @@ ${pager(lang, list[index - 1], list[index + 1], previewPath, titleOf)}`;
     ogType: isAlbum ? 'music.album' : 'music.song',
     image: assetPath(work.image),
     schema,
-    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/works/`], [w.title, previewPath(lang, work)]],
+    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/works/`], [w.title, pageOf(lang, work)]],
     body,
-    preview: true,
+    preview,
   });
 }
 
@@ -563,7 +507,7 @@ const previewOutputs = [
   ['preview/assets/js/works.js', pWorksJs],
   ['preview/assets/css/works.css', pWorksCss],
   ['preview/assets/css/detail.css', previewDetailCss],
-  ...previewWorksByDate.flatMap((work, i) => languages.map((lang) => [`preview${workPath(lang, work)}index.html`, workPageV2(work, i, lang, previewWorksByDate)])),
+  ...previewWorksByDate.flatMap((work, i) => languages.map((lang) => [`preview${workPath(lang, work)}index.html`, workPage(work, i, lang, previewWorksByDate, true)])),
 ];
 
 const outputs = [

@@ -46,8 +46,8 @@ const rawEditorMarkers = [
 ];
 const expectedCacheKeys = {
   'assets/js/image-slot.js': '20261017-lang-routes',
-  'assets/css/works.css': '20261021-records',
-  'assets/js/works.js': '20261021-records',
+  'assets/css/works.css': '20261022-video',
+  'assets/js/works.js': '20261022-video',
 };
 const expectedSiteContentCacheKey = attr(
   await text('index.html'),
@@ -55,7 +55,8 @@ const expectedSiteContentCacheKey = attr(
 );
 assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
 const routeDocumentBudgetBytes = 40_000;
-const decodedTemplateBudgetBytes = 110_000;
+// 102 KB at revision 2; the type scale, chapter review, brand palette and shared close button bring it to ~112 KB.
+const decodedTemplateBudgetBytes = 116_000;
 // Bridge control now lives here instead of a second controller in support.js.
 const decodedScriptBudgetBytes = 150_000;
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
@@ -647,7 +648,7 @@ const removedAudioPreloadSymbols = [
 ];
 for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
 assert(worksJs.includes("if (state.playing && !dialog.classList.contains('tt-shelf-modal')) pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
-assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-gh-modal tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("['all', 'ost', 'artist'].map("), 'WORKS popup or filters are missing');
+assert(worksJs.includes('function openModal(index, trigger)') && worksJs.includes('class="tt-shelf-modal" role="dialog" aria-modal="true"') && worksJs.includes("data-works-action=\"video\"") && worksJs.includes("['all', 'ost', 'artist'].map("), 'WORKS popup or filters are missing');
 assert(worksCss.includes('.tt-shelf-book.is-playing .tt-shelf-disc') && worksCss.includes('translate:36% 0'), 'WORKS record slide-out is missing');
 const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
 const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
