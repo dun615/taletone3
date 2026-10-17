@@ -4018,7 +4018,7 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 .tt-rack-name,.tt-rack-artist{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere}
 /* U8: 44px touch areas on phones without changing how the chips look */
 @media (max-width:760px){
-  .tt-shelf-chip,.tt-deck-more{position:relative}
+  .tt-shelf-chip{position:relative} /* .tt-deck-more is already absolutely placed on the deck */
   .tt-shelf-chip::after{content:'';position:absolute;left:-3px;right:-3px;top:-6px;bottom:-6px}
   .tt-deck-more::after{content:'';position:absolute;inset:-3px}
   .tt-shelf-filters{row-gap:12px}
