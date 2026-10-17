@@ -11,8 +11,11 @@ class Component extends DCLogic {
     this.ensureDataReady();
     this._loadSeo();
     this._applySeoForCurrentPage();
+    // Content and language messages are accepted only from this site's own origin: a page that frames
+    // taletone.net must not be able to swap its content (e.g. the contact address) inside the frame.
     this._siteDataListener = (event)=>{
-      var message = event && event.data ? event.data : {};
+      if(!event || event.origin !== window.location.origin) return;
+      var message = event.data || {};
       if(message.type === 'TALETONE_SET_LANG'){
         this.setLang(message.lang || 'kr');
         return;
@@ -483,7 +486,7 @@ class Component extends DCLogic {
   openMember(i){ this.setState({mi:i, mOpen:true}); }
   openNews(i){ this.setState({ni:i, nOpen:true}); }
   togglePartner(){var open=!this.state.partnerOpen;document.body.classList.toggle('tt-network-open',open);this.setState({partnerOpen:open});}
-  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'Partner Name',role:'Partner',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||''});}
+  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'',role:'',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||''});}
   _normalizePartners(){this.PARTNERS=(this.PARTNERS||[]).map((p,i)=>this._normalizePartner(p,i));}
   closeAll(){document.body.classList.remove('tt-network-open');this.setState({mOpen:false,nOpen:false,partnerOpen:false});}
 
@@ -744,16 +747,6 @@ class Component extends DCLogic {
     requestAnimationFrame(frame);
   }
 
-  skipIntro(){
-    if(this.introDone||!this.introStart) return;
-    var elapsed=performance.now()-this.introStart;
-    var handoffStart=this.INTRO_PLUNGE_MS*0.56;
-    if(elapsed<handoffStart) this.introStart=performance.now()-handoffStart;
-  }
-
-
-  // utilities
-           cl(v,a,b){return v<a?a:v>b?b:v;}
   smooth(a,b,x){var t=this.cl((x-a)/(b-a),0,1);return t*t*(3-2*t);}
   hx(h){return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
   mix(h1,h2,t){var a=this.hx(h1),b=this.hx(h2);return 'rgb('+Math.round(a[0]+(b[0]-a[0])*t)+','+Math.round(a[1]+(b[1]-a[1])*t)+','+Math.round(a[2]+(b[2]-a[2])*t)+')';}
@@ -766,6 +759,10 @@ class Component extends DCLogic {
     this.eqs=Array.from(document.querySelectorAll('[data-eq]'));
     this.bobs=Array.from(document.querySelectorAll('[data-bob]'));
     this.drifts=Array.from(document.querySelectorAll('[data-drift]'));
+    // elements inside hidden (display:none) markup have a zero box that reads as "near the viewport";
+    // leave them out so nothing invisible is animated every frame
+    var shown=function(el){ return el.offsetParent!==null || getComputedStyle(el).position==='fixed'; };
+    ['spins','floats','floatCards','eqs','bobs','drifts'].forEach(k=>{ this[k]=this[k].filter(shown); });
     this.motionEls=Array.from(new Set([].concat(this.spins,this.floats,this.floatCards,this.eqs,this.bobs,this.drifts)));
   }
   refreshLayoutGeometry(layoutHeight){
@@ -882,6 +879,8 @@ class Component extends DCLogic {
     this._cssVarCache[name] = value;
     style.setProperty(name, value);
   }
+  // utilities
+  cl(v,a,b){return v<a?a:v>b?b:v;}
   isMobileMotion(){
     return window.innerWidth <= 760;
   }
@@ -894,22 +893,12 @@ class Component extends DCLogic {
       if(this.isMobileMotion() && this._scrollSpeed>1.15) this._fastScrollUntil=now+320;
     }
     this._lastScrollSampleT=now;
+    if(pos!==this._lastScrollSampleY) this._lastScrollMoveAt=now;
     this._lastScrollSampleY=pos;
     return now;
   }
   isFastMobileScroll(now){
     return !this._bridgeRun && this.isMobileMotion() && ((now||performance.now()) < (this._fastScrollUntil||0));
-  }
-  scrollToManaged(top, behavior, cooldown){
-    var scEl=this.scroller || document.getElementById('content');
-    if(!scEl || !isFinite(top)) return;
-    var now=performance.now();
-    if(this.isMobileMotion()){
-      if(now < (this._managedScrollUntil||0)) return;
-      if(this.isFastMobileScroll(now)) behavior='auto';
-      this._managedScrollUntil=now+(cooldown||420);
-    }
-    scEl.scrollTo({top:top, behavior:behavior||'smooth'});
   }
   stopBridgeVisual(bg){
     if(!bg) return;
@@ -945,7 +934,9 @@ class Component extends DCLogic {
     if(document.hidden) return;
     if(this._reduceMotion===undefined) this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var frameNow = Number.isFinite(frameTime) ? frameTime : performance.now();
-    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : (this.isMobileMotion() ? 34 : 1000/60));
+    // at rest (no scroll for 1.2 s, no bridge running) the ambient drift needs no more than 30 fps
+    var atRest = this.introDone && !this._bridgeRun && this._lastScrollMoveAt!=null && frameNow-this._lastScrollMoveAt > 1200;
+    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : ((atRest || this.isMobileMotion()) ? 34 : 1000/60));
     if(minFrameMs && this._lastLoopFrame && frameNow-this._lastLoopFrame < minFrameMs){
       this.raf = requestAnimationFrame(this.loop);
       return;
@@ -1167,7 +1158,6 @@ class Component extends DCLogic {
         this.loadMemberImages();
         // Target done.
         if(activeSection&&activeSection.id===this._chapterTarget) this._chapterTarget='';
-        if(previousChapter==='works' && activeChapter!=='works') this.pauseWorksAudio();
         try{ window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_CHANGE',{detail:{chapter:activeChapter,previous:previousChapter}})); }catch(_e){}
         this.lastActive=act;
       }
@@ -2282,7 +2272,7 @@ class Component extends DCLogic {
   async copyContactEmail(e){
     if(e && e.preventDefault) e.preventDefault();
     var contact = this.CONTACT || {};
-    var email = contact.email || 'n4ml@taletone.net';
+    var email = contact.email || 'contact@taletone.net';
     var ok = false;
     try{
       if(navigator.clipboard && navigator.clipboard.writeText){

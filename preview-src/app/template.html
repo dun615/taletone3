@@ -89,7 +89,10 @@ html:lang(ko) body{word-break:keep-all;overflow-wrap:break-word}
 html:lang(ja) body{line-break:strict;word-break:auto-phrase;overflow-wrap:break-word}
 /* 모바일 규칙의 keep-all(한국어용)이 일본어를 통째로 묶지 않게: 일본어는 항상 구절 단위 */
 html:lang(ja) body *{word-break:auto-phrase!important}
-h1,h2,h3,.tt-gh-card-title,.tt-project-title{text-wrap:balance}
+h1,
+h2,
+h3,
+.tt-project-title {text-wrap:balance}
 .tt-project-title{overflow-wrap:anywhere}
 p,li{text-wrap:pretty}
 #tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
@@ -398,7 +401,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 .tt-bridge-visual::before{content:'';position:absolute;left:50%;top:50%;width:min(760px,76vw);height:min(760px,76vw);transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),rgba(106,229,239,.08) 24%,rgba(112,87,255,.04) 46%,transparent 72%);filter:blur(10px);opacity:var(--aura,.8);}
 
 /* 01 ??繞?*/
-.tt-line-echo.e1{top:calc(50% - 38px)}.tt-line-echo.e2{top:calc(50% + 38px)}
+
 
 /* 02 ???筌롫챸??*/
 
@@ -442,15 +445,14 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 /* Original water-entry sequence; JS drives the plunge and real HOME assembly. */
 
-image-slot#tone-art{background:#fff !important}
-image-slot#tone-art::part(frame){background:#fff !important;border:0 !important;outline:0 !important}
-image-slot#tone-art::part(empty),
-image-slot#tone-art::part(ring){display:none !important}
+
+
+
 #c-contact [data-reveal],
 #email-link{position:relative !important;z-index:8 !important}
 #c-contact .tt-book-light-stage{z-index:0 !important;opacity:.72 !important}
 @media (max-width:760px){
-  body.tt-works-modal-open .tt-lang-switcher{display:none !important}
+  
   #chapnav.tt-nav-peek,
   #chapnav:focus-within{
     width:132px !important;

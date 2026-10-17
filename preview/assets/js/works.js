@@ -959,8 +959,6 @@
   // stop the music once the reader leaves the Works chapter
   function bindVisibilityPause() {
     document.addEventListener('visibilitychange', function () { if (document.hidden) pauseAll(); });
-    new MutationObserver(function () { if (state.playing && !isWorksChapterActive()) pauseAll(); })
-      .observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
   }
 
   function ensureRoot() {
@@ -1458,7 +1456,9 @@
     if (!mounted) init();
   });
 
+  // only this site's own origin may push data or language into the Works module (see component.js)
   window.addEventListener('message', function (event) {
+    if (!event || event.origin !== window.location.origin) return;
     var message = event.data || {};
     if (message.type === 'TALETONE_WORKS_SET_DATA') setEditorData(message.data);
     if (message.type === 'TALETONE_SITE_SET_DATA' && message.data) {

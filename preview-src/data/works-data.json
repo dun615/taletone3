@@ -23,14 +23,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=P6fUuhq3XSQ",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -76,14 +68,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=yiprl7-dU04",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -129,14 +113,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=aTNiy1ZRbSo",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -182,14 +158,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=Atgold7UdnY",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -235,14 +203,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=eNK5ERAl6BA",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -288,14 +248,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=jyQiYCZCv-w",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -341,14 +293,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=uYh0Ts9BicU",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -394,14 +338,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=ASWrJXCcqtM",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -447,14 +383,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=ZminQN7-cZ0",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -617,14 +545,6 @@
       "kind": "album",
       "titleTrackIndex": 1,
       "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Album (EP)",
       "translations": {
         "kr": {
@@ -670,14 +590,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=CRWN3Ro8hFg",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -723,14 +635,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=Fu362KCf_Pk",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -776,14 +680,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=w9nvZhBc4O0",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -958,14 +854,6 @@
       "kind": "album",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Album (EP)",
       "translations": {
         "kr": {
@@ -1011,14 +899,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=oSWivTQjve4",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1131,14 +1011,6 @@
       "kind": "multilingual",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1184,14 +1056,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=eqiU5stt1jY",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1321,14 +1185,6 @@
       "kind": "multilingual",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=d_MhBXpQGCI",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1375,14 +1231,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=yuCRITM72pU",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1428,14 +1276,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=HMxAsGo_ldA",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
@@ -1482,14 +1322,6 @@
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=UFTBZFP6LMY",
-      "responsive": {
-        "desktop": {
-          "cardScale": 1,
-          "titleSize": 1,
-          "offsetX": 0,
-          "offsetY": 0
-        }
-      },
       "format": "Single",
       "translations": {
         "kr": {
