@@ -1327,7 +1327,7 @@ class Component extends DCLogic {
       if(Number.isFinite(anchor)) this.scroller.scrollTo({top:anchor,behavior:'auto'});
     }
     this._deepBookGeometry=null;
-    var bookEl=document.querySelector('html[data-intro-v2] .tt-book2 .tb-book')||document.getElementById('deep-book-svg');
+    var bookEl=document.querySelector('html[data-intro-v2] .tt-book2 .tb-scene')||document.getElementById('deep-book-svg');
     if(bookEl){
       var bookRect=bookEl.getBoundingClientRect();
       if(bookRect.width){
@@ -1860,10 +1860,9 @@ class Component extends DCLogic {
       bloom.addColorStop(0,'rgba(255,226,160,'+(0.55*awake).toFixed(3)+')'); bloom.addColorStop(0.3,'rgba(255,214,140,'+(0.2*awake).toFixed(3)+')'); bloom.addColorStop(1,'rgba(255,214,140,0)');
       c.globalCompositeOperation='screen';
       c.fillStyle=bloom; c.fillRect(0,0,W,H);
-      var colW=W*(0.04+0.05*awake)*(0.9+0.1*Math.sin(tw*1.3));
-      var column=c.createLinearGradient(0,aby,0,0);
-      column.addColorStop(0,'rgba(255,236,190,'+(0.45*awake).toFixed(3)+')'); column.addColorStop(1,'rgba(255,236,190,0)');
-      c.fillStyle=column; c.fillRect(abx-colW/2,0,colW,Math.max(0,aby));
+      var colW=W*(0.06+0.06*awake)*(0.9+0.1*Math.sin(tw*1.3));
+      if(!this._columnSprite){ var cs=document.createElement('canvas'); cs.width=64; cs.height=256; var cx=cs.getContext('2d'); var hg=cx.createLinearGradient(0,0,64,0); hg.addColorStop(0,'rgba(255,236,190,0)'); hg.addColorStop(0.5,'rgba(255,236,190,1)'); hg.addColorStop(1,'rgba(255,236,190,0)'); cx.fillStyle=hg; cx.fillRect(0,0,64,256); cx.globalCompositeOperation='destination-in'; var vg=cx.createLinearGradient(0,256,0,0); vg.addColorStop(0,'rgba(0,0,0,1)'); vg.addColorStop(1,'rgba(0,0,0,0)'); cx.fillStyle=vg; cx.fillRect(0,0,64,256); this._columnSprite=cs; }
+      if(aby>0){ c.globalAlpha=0.45*awake; c.drawImage(this._columnSprite,abx-colW/2,0,colW,aby); c.globalAlpha=1; }
       c.globalCompositeOperation='source-over';
     }
     var awakeNow=near>0.6;
