@@ -3,6 +3,8 @@ name: Deploy site
 # Builds the site from sources and publishes it to GitHub Pages.
 # Requires Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
