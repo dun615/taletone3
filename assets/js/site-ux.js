@@ -259,8 +259,40 @@
         link.addEventListener('click', function () { closeMobileChapterMenu(false); });
         menu.appendChild(link);
       });
+      // phones have no language switcher in the top bar; the languages live at the foot of this menu
+      var langs = document.createElement('div');
+      langs.className = 'tt-mobile-menu-langs';
+      langs.setAttribute('role', 'group');
+      [['kr', 'KR', '한국어'], ['en', 'EN', 'English'], ['jp', 'JP', '日本語']].forEach(function (item) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.lang = item[0];
+        button.textContent = item[1];
+        button.setAttribute('aria-label', item[2]);
+        button.addEventListener('click', function () {
+          var source = document.getElementById('lang-' + item[0]);
+          closeMobileChapterMenu(false);
+          if (source) source.click();
+        });
+        langs.appendChild(button);
+      });
+      menu.appendChild(langs);
       document.body.appendChild(menu);
       globalUxState.menu = menu;
+    }
+    // labels follow the page language
+    globalUxState.menu.setAttribute('aria-label', localizedUiLabel('챕터 이동', 'Chapter navigation', 'チャプター移動'));
+    globalUxState.menu.querySelectorAll('a[data-nav-id]').forEach(function (link) {
+      var source = document.getElementById(link.dataset.navId);
+      var label = source && source.querySelector('.nav-label');
+      if (label && label.textContent.trim()) link.textContent = label.textContent.trim();
+    });
+    var langGroup = globalUxState.menu.querySelector('.tt-mobile-menu-langs');
+    if (langGroup) {
+      langGroup.setAttribute('aria-label', localizedUiLabel('언어', 'Language', '言語'));
+      langGroup.querySelectorAll('button').forEach(function (button) {
+        button.setAttribute('aria-pressed', button.dataset.lang === pageLangKey() ? 'true' : 'false');
+      });
     }
 
     progress.setAttribute('aria-label', localizedUiLabel('챕터 메뉴 열기', 'Open chapter menu', 'チャプターメニューを開く'));

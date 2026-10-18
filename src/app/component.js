@@ -545,9 +545,14 @@ class Component extends DCLogic {
       if(!this.sections||!this.sections.length){
         this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
-      var act=0, line=vh2;
+      // A chapter becomes current when its title passes 60% of the screen height (its section box starts much
+      // higher, above a tall top padding, so the counter used to lag behind what the reader sees).
+      var act=0, line=vh2*1.2;
+      if(!this._sectionAnchors) this._sectionAnchors=[];
       for(var k=0;k<this.sections.length;k++){
-        if(this.sections[k].getBoundingClientRect().top <= line) act=k;
+        var anchor=this._sectionAnchors[k];
+        if(!anchor||!anchor.isConnected){ anchor=this.sections[k].querySelector('h2')||this.sections[k]; this._sectionAnchors[k]=anchor===this.sections[k]?null:anchor; }
+        if(anchor.getBoundingClientRect().top <= line) act=k;
       }
       if(act!==this.lastActive){
         var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-news':5,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
@@ -580,6 +585,17 @@ class Component extends DCLogic {
     this.raf = requestAnimationFrame(this.loop);
   }
 
+  // Story Types: the three kinds of stories, with each service line split into separate chips
+  _audiences(){
+    var meta = this.PROJECTS_META || {};
+    return ['Game', 'Creator', 'Animation'].map((key, i)=>({
+      number: String(i + 1).padStart(2, '0'),
+      kicker: meta['audience' + key + 'Kicker'] || '',
+      title: meta['audience' + key + 'Title'] || '',
+      services: [meta['audience' + key + 'Service1'], meta['audience' + key + 'Service2']].join(' · ').split(/\s*[·・]\s*/).filter(Boolean),
+      hook: meta['audience' + key + 'Hook'] || ''
+    })).filter((item)=>item.title);
+  }
   renderVals(){
     this.ensureDataReady();
     return {
@@ -600,6 +616,7 @@ class Component extends DCLogic {
       CHAPTER_EPILOGUE: (this.CHAPTER_LABELS||{}).epilogue || {},
       PROJECTS_META: this.PROJECTS_META || {},
       PROJECTS: this.PROJECTS || [],
+      AUDIENCES: this._audiences(),
       CONTACT: this.CONTACT || {},
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),

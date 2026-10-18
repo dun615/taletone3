@@ -2040,25 +2040,6 @@ body.tt-network-open #content {
   }
 }
 
-/* Public audience cards added for the production site. Keep them clear of the
-   fixed mobile progress rail without changing the existing project cards. */
-@media (max-width: 760px) {
-  #c-projects [data-public-audience][data-reveal] {
-    grid-template-columns: minmax(0, 1fr) !important;margin-left: auto !important;
-    margin-right: max(18px, env(safe-area-inset-right)) !important;
-  }
-
-  #c-projects [data-public-audience][data-reveal] > * {
-    width: 100%;
-    max-width: none;
-  }
-
-  #c-projects [data-public-audience] article p {
-    display: block !important;
-    -webkit-line-clamp: unset !important;
-    -webkit-box-orient: initial !important;  }
-}
-
 @media (min-width: 901px) {
   #c-projects > div[data-reveal]:last-child {
     width:min(1080px,78vw)!important;
@@ -2101,96 +2082,6 @@ body.tt-network-open #content {
 
   #c-projects article.lift a {
     padding: 11px 18px !important;
-    font-size: 13px !important;
-  }
-}
-
-@media (max-width: 760px) {
-  #c-projects [data-public-audience][data-reveal] {
-    display: block !important;
-    width: min(292px, calc(100vw - 88px)) !important;
-    max-width: calc(100vw - 88px);
-    gap: 0 !important;
-    margin-top: -4px !important;
-    margin-bottom: 18px !important;
-    padding: 5px 0;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, .24);
-    border: 1px solid rgba(24, 32, 52, .07) !important;
-    box-shadow: 0 12px 28px rgba(8, 22, 38, .05);
-    overflow: hidden;
-  }
-
-  #c-projects [data-public-audience] article {
-    position: relative;
-    display: block;
-    min-height: 0;
-    padding: 9px 14px 9px 28px;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  #c-projects [data-public-audience] article + article {
-    border-top: 1px solid rgba(20, 28, 48, .075);
-  }
-
-  #c-projects [data-public-audience] article::before {
-    content: "";
-    position: absolute;
-    left: 14px;
-    top: 18px;
-    width: 5px;
-    height: 5px;
-    border-radius: 999px;
-    background: var(--accent, #0E6E7D) !important;
-    box-shadow: 0 0 0 4px rgba(14, 110, 125, .08);
-  }
-
-  #c-projects [data-public-audience] article > div:first-child {
-    margin-bottom: 3px !important;
-    font-size: 7.5px !important;
-    line-height: 1;
-    letter-spacing: .16em !important;
-    opacity: .78;
-  }
-
-  #c-projects [data-public-audience] article h3 {
-    margin: 0 0 3px !important;
-    font-size: 13.5px !important;
-    line-height: 1.18 !important;
-    word-break: keep-all;
-  }
-
-  #c-projects [data-public-audience] article p {
-    margin: 0 !important;
-    font-size: 9.4px !important;
-    line-height: 1.28 !important;
-    font-weight: 600 !important;
-    max-height: 1.28em;
-    white-space: normal;
-    overflow: hidden;
-    color: rgba(68, 80, 95, .82) !important;
-  }
-
-  #c-projects [data-public-audience] article p:last-child {
-    display: none !important;
-  }
-}
-
-@media (max-width: 380px) {
-  #c-projects [data-public-audience][data-reveal] {
-    width: min(282px, calc(100vw - 82px)) !important;
-    max-width: calc(100vw - 82px) !important;
-  }
-
-  #c-projects [data-public-audience] article {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-  }
-
-  #c-projects [data-public-audience] article h3 {
     font-size: 13px !important;
   }
 }
@@ -3727,4 +3618,94 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
   .tt-shelf-modal-main {padding:22px 20px 6px}
   .tt-shelf-modal-info {padding:14px 20px 28px}
   .tt-shelf-modal-facts > div {grid-template-columns:72px minmax(0,1fr);gap:12px;padding:11px 0}
+}
+
+/* =====================================================================
+   Mobile chrome in one row (REVIEW-mobile phase 1, M1/M2/M4): logo on the left, the chapter button on
+   the right, languages inside the chapter menu. The bar is 64px instead of two rows (120px).
+   ===================================================================== */
+.tt-mobile-menu-langs {display:none}
+@media (max-width:760px){
+  html body .tt-top-scrim {height:calc(78px + env(safe-area-inset-top))}
+  html body #brand {top:max(12px,env(safe-area-inset-top))!important;left:max(16px,env(safe-area-inset-left))!important}
+  html body #lang-switcher.tt-lang-switcher {display:none!important}
+  html body #progress,
+  html body[data-active-chapter] #progress {top:max(10px,env(safe-area-inset-top))!important;right:max(12px,env(safe-area-inset-right))!important;
+    height:44px;min-width:0;padding:0 14px 0 16px;gap:4px!important}
+  html body #pdepth {display:none!important}
+  /* three bars after the chapter number say "this opens a menu" */
+  html body #progress::after {content:'';width:16px;height:12px;margin-left:8px;flex:none;
+    background:linear-gradient(currentColor 0 0) top/100% 2px no-repeat,linear-gradient(currentColor 0 0) center/100% 2px no-repeat,linear-gradient(currentColor 0 0) bottom/100% 2px no-repeat}
+  html body #tt-mobile-chapter-menu {top:calc(max(10px,env(safe-area-inset-top)) + 54px)!important}
+  .tt-mobile-menu-langs {display:flex;gap:4px;margin:8px 0 0;padding:10px 0 0;border-top:1px solid rgba(255,255,255,.14)}
+  .tt-mobile-menu-langs button {flex:1;min-height:44px;border:0;border-radius:999px;background:rgba(255,255,255,.08);color:#f4faff;
+    font:800 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.08em;cursor:pointer}
+  .tt-mobile-menu-langs button[aria-pressed="true"] {background:#f4faff;color:#071924}
+  .tt-mobile-menu-langs button:focus-visible {outline:2px solid #8decfc;outline-offset:2px}
+  /* sections no longer need to clear two rows of chrome */
+  html body #c-projects,
+  html body #c-members {padding-top:max(96px,calc(76px + env(safe-area-inset-top)))!important}
+}
+
+/* Bridge sentences stay white (a design decision); near the surface the water is light, so the glyph shadow
+   is darker and wider there and fades with depth (REVIEW-mobile M7). No backing plate: plates read as bands. */
+html body [data-story-bridge-wrap] [data-bridge] {
+  text-shadow:0 1px 2px rgba(4,30,46,calc(.82 - var(--depth,0) * .5)),0 0 12px rgba(4,36,56,calc(.62 - var(--depth,0) * .5)),
+    0 2px 26px rgba(6,40,62,calc(.5 - var(--depth,0) * .45)),0 0 calc(6px + var(--depth,0) * 30px) rgba(196,240,255,calc(.1 + var(--depth,0) * .6)),
+    0 0 calc(var(--depth,0) * 70px) rgba(150,220,255,calc(var(--depth,0) * .38))!important}
+/* the chapter label above it: deep teal near the surface, pale sky once the water darkens (a switch, not a blend:
+   halfway colours match the water) */
+html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
+  --tt-label-light:clamp(0,(.32 - var(--depth,0)) * 40,1);
+  color:color-mix(in srgb,#0a5866 calc(var(--tt-label-light) * 100%),#d2f7fd)!important;
+  text-shadow:0 0 12px color-mix(in srgb,rgba(255,255,255,.6) calc(var(--tt-label-light) * 100%),rgba(4,30,46,.85))!important}
+
+/* Phones: nothing smaller than 12px (REVIEW-mobile M8); the e-mail address gets a 44px touch area */
+@media (max-width:760px){
+  html body .tt-prologue-step,
+  html body .tt-bridge-label,
+  html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]),
+  html body .tt-shelf-chip-count {font-size:12px!important}
+  html body .tt-rack-artist {font-size:12px!important}
+  /* the brand keeps its size on small phones (the language switcher no longer shares the row) */
+  html body #brand > div {font-size:13px!important}
+  html body #brand > div > span:last-child {font-size:12px!important}
+  html body .tt-contact-address a {position:relative}
+  html body .tt-contact-address a::after {content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}
+}
+
+/* Phones: the featured songs and the news cards show their artwork on top instead of a faded backdrop under
+   the text (REVIEW-mobile M12, M17) */
+@media (max-width:760px){
+  html body #c-projects article.lift {gap:12px!important;min-height:0;padding:0 0 22px!important;background:rgba(255,253,248,.94)!important}
+  html body #c-projects article.lift::after {display:none}
+  html body #c-projects article.lift > :nth-child(2) {position:relative;inset:auto;order:-1;width:100%;height:auto;aspect-ratio:16/10;margin-bottom:6px;
+    border-radius:24px 24px 0 0!important;pointer-events:auto}
+  html body #c-projects article.lift > :nth-child(2) image-slot,
+  html body #c-projects article.lift > :nth-child(2) img {opacity:1;filter:none!important;object-position:50% 22%}
+  html body #c-projects article.lift > :not(:nth-child(2)) {max-width:none!important;margin-left:clamp(18px,5vw,22px)!important;margin-right:clamp(18px,5vw,22px)!important}
+  html body #c-projects article.lift > :nth-child(1) {min-height:0}
+  html body #c-projects article.lift > :nth-child(1) > :nth-child(2) {display:none!important}
+  html body #c-projects article.lift p {font-size:var(--fs-m)!important;line-height:1.6!important}
+
+  html body #c-news .lift {justify-content:flex-start;min-height:0;background:#111c31!important}
+  html body #c-news .lift::after {display:none}
+  html body #c-news .lift > :first-child {position:relative;inset:auto;height:auto!important;aspect-ratio:16/9!important;border-radius:24px 24px 0 0!important;
+    filter:none!important;pointer-events:auto}
+  html body #c-news .lift > :last-child {min-height:0;padding:16px 20px 20px!important;justify-content:flex-start;text-shadow:none}
+}
+
+/* Landscape phones (REVIEW-mobile M18): the news picture takes at most 35% of the sheet, and the Works popup
+   keeps its two panes so the facts are not pushed below a screen-high video */
+@media (orientation:landscape) and (max-height:500px){
+  html body .tt-news-modal image-slot {height:35vh!important}
+  html body .tt-shelf-modal-panel {display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);height:auto;max-height:calc(100vh - 32px);overflow:hidden}
+  html body .tt-shelf-modal {padding:16px;align-items:center}
+  html body .tt-shelf-modal-media,
+  html body .tt-shelf-modal-info {max-height:calc(100vh - 34px);overflow:auto}
+  html body .tt-shelf-modal-media .tt-shelf-yt {border-radius:24px 0 0 0}
+  html body .tt-shelf-modal-main {padding:18px 22px 22px}
+  html body .tt-shelf-modal-info {display:flex;padding:64px 20px 20px;background:rgba(2,24,30,.3);border-left:1px solid rgba(251,255,255,.1)}
+  html body .tt-shelf-modal-credits {display:flex;min-height:180px}
+  html body .tt-shelf-modal-credits-list {max-height:none}
 }
