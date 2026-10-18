@@ -604,6 +604,7 @@ class Component extends DCLogic {
       nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav5:(e)=>this.navigateChapter(e, 'c-news', '/news/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
       langKR:()=>this.setLang('kr'), langEN:()=>this.setLang('en'), langJP:()=>this.setLang('jp'),
       HOME: this.HOME || {},
+      LATEST_WORK: this.LATEST_WORK || {},
       BRIDGE_0: (this.BRIDGES||[])[0] || {},
       BRIDGE_1: (this.BRIDGES||[])[1] || {},
       BRIDGE_2: (this.BRIDGES||[])[2] || {},

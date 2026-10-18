@@ -240,6 +240,8 @@
       .filter(function (entry) { return matchesFilter(entry.work, state.filter); })
       .sort(function (a, b) { return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index; });
   }
+  // phones get the compact deck and the sideways rack (see works.css "Works on phones")
+  function isPhone() { return window.innerWidth <= 760; }
   function shelfStep() {
     if (window.innerWidth <= 1100) return 6;
     return 8;
@@ -329,15 +331,19 @@
     var picks = Array.prototype.slice.call(root.querySelectorAll('.tt-rack-pick'));
     var at = picks.indexOf(pick);
     var grid = root.querySelector('.tt-rack-grid');
-    var cols = grid ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 4;
-    var next = { ArrowRight: at + 1, ArrowLeft: at - 1, ArrowDown: at + cols, ArrowUp: at - cols, Home: 0, End: picks.length - 1 }[event.key];
+    var columnFlow = grid && getComputedStyle(grid).gridAutoFlow.indexOf('column') === 0;
+    var rows = columnFlow ? getComputedStyle(grid).gridTemplateRows.split(' ').length : 1;
+    var cols = grid && !columnFlow ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 4;
+    var next = (columnFlow
+      ? { ArrowRight: at + rows, ArrowLeft: at - rows, ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: picks.length - 1 }
+      : { ArrowRight: at + 1, ArrowLeft: at - 1, ArrowDown: at + cols, ArrowUp: at - cols, Home: 0, End: picks.length - 1 })[event.key];
     if (next == null) return;
     event.preventDefault();
     next = Math.max(0, Math.min(picks.length - 1, next));
     pick.setAttribute('tabindex', '-1');
     picks[next].setAttribute('tabindex', '0');
     picks[next].focus();
-    picks[next].scrollIntoView({ block: 'nearest' });
+    picks[next].scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
   function rackItemHtml(entry, order) {
@@ -373,6 +379,7 @@
           var label = languageLabel(version, i);
           return '<button type="button" class="' + (label === state.language ? 'is-on' : '') + '" aria-pressed="' + (label === state.language) + '" data-works-action="language" data-language="' + esc(label) + '">' + esc(label) + '</button>';
         }).join('') + '</div>' : '';
+    var moreButton = '<button type="button" class="tt-deck-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>';
     return '<section class="tt-deck' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
       '<div class="tt-deck-table">' +
         '<div class="tt-deck-platter">' + discHtml(work, 'tt-disc--platter') + '<span class="tt-deck-spindle"></span></div>' +
@@ -381,7 +388,7 @@
           ? '<button type="button" class="tt-deck-arm-base tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>'
           : '<span class="tt-deck-arm-base" aria-hidden="true"></span>') +
         '<label class="tt-deck-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
-        '<button type="button" class="tt-deck-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' +
+        (isPhone() ? '' : moreButton) +
         '<span class="tt-deck-led" aria-hidden="true"></span>' +
       '</div>' +
       '<div class="tt-deck-info">' +
@@ -390,6 +397,7 @@
         '<p class="tt-deck-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackTitle ? ' · <span>' + esc(trackTitle) + '</span>' : '') + '</p>' +
         (unit.description ? '<p class="tt-deck-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
         tracks + langs +
+        (isPhone() ? moreButton : '') +
       '</div>' +
     '</section>';
   }
@@ -612,7 +620,7 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '160px 0px' });
+    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {
@@ -961,7 +969,7 @@
   var lastWidthStep = 0;
   function onResize() {
     sizeRack();
-    var step = shelfStep();
+    var step = shelfStep() + (isPhone() ? 100 : 0);
     if (mounted && step !== lastWidthStep) { lastWidthStep = step; render(); }
   }
 

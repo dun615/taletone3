@@ -302,7 +302,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
 :root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
-@media (max-width:760px){:root{--fs-xs:12px;--fs-m:14px;--fs-l:16px;--fs-xl:20px;--fs-2xl:26px;--fs-3xl:34px;--fs-4xl:48px}}
+@media (max-width:760px){:root{--fs-xs:12px;--fs-m:15px;--fs-l:17px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:34px;--fs-4xl:48px}}
 /* ===== Chapter review R1-R9 (revision 2) ===== */
 #content#content .tt-section-chapter{font-size:var(--fs-xs)}
 #content#content .tt-section-note{font-size:var(--fs-s);letter-spacing:.02em}
@@ -842,6 +842,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <a class="is-primary" href="/works/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
     <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
   </div>
+  <sc-if value="{{ LATEST_WORK.slug }}"><a class="tt-home-latest" href="/works/?work={{ LATEST_WORK.slug }}" aria-label="{{ LATEST_WORK.ariaLabel }}"><img src="{{ LATEST_WORK.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ LATEST_WORK.label }}</small><b>{{ LATEST_WORK.title }}</b><em>{{ LATEST_WORK.artist }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
   <div data-px="-0.04" style="position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:min(880px,82vw);opacity:.55;pointer-events:none">
     <svg data-drift="" viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
       <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.6">

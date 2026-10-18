@@ -24,8 +24,9 @@ const functionalViewports = [
 const pages = [
   {
     key: 'home', path: '/', coldWaitMs: 7_000, warmWaitMs: 2_500,
-    // Runs #54-#56 measured 16 first-party requests and 20-23 Google Fonts requests on Linux.
-    maxFirstPartyRequests: 18, maxGoogleFontRequests: 30,
+    // Runs #54-#56 measured 16 first-party requests and 20-23 Google Fonts requests on Linux; phones add one
+    // for the newest work's cover on the home page.
+    maxFirstPartyRequests: 19, maxGoogleFontRequests: 30,
     maxTransferBytes: 1_200_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 6_000, maxLongTasks: 45, maxDomNodes: 1_500,
   },

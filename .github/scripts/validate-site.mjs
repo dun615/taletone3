@@ -399,7 +399,11 @@ const parseAssignedJson = (source, name) => {
 const siteJs = parseAssignedJson(await text('assets/data/site-content.js'), 'window.TALETONE_CONTENT');
 const seoSource = await text('assets/data/seo-content.js');
 const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
-assert(JSON.stringify(siteJson) === JSON.stringify(siteJs), 'site-content JSON/JS drift');
+// the build adds the newest work (for the home page's phone card); everything else must match the JSON
+const { latestWork: builtLatestWork, ...siteJsContent } = siteJs;
+assert(JSON.stringify(siteJson) === JSON.stringify(siteJsContent), 'site-content JSON/JS drift');
+const newestWork = [...(await readJson('assets/data/works-data.json')).works].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
+assert(builtLatestWork && newestWork && builtLatestWork.slug === newestWork.slug, 'site-content.js latestWork is not the newest work');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
 const siteLanguages = ['kr', 'en', 'jp'];

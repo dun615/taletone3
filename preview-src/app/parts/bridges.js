@@ -313,7 +313,16 @@ var ComponentBridges = {
     this._setBridgeProgress(null);
     this._bridgeRun=null;
     this._bridgeInputCutoff=performance.now();
-    document.querySelectorAll('[data-bridge-active]').forEach(outer=>outer.removeAttribute('data-bridge-active'));
+    // On phones a played bridge shrinks to a short band once released (works.css); keep the chapter the
+    // handoff just reached where it is instead of letting it jump up by the difference.
+    // (Measured on the next chapter: the browser's own scroll anchoring sometimes corrects part of it already.)
+    document.querySelectorAll('[data-bridge-active]').forEach(outer=>{
+      var next=outer.nextElementSibling, before=next?next.getBoundingClientRect().top:0;
+      outer.removeAttribute('data-bridge-active');
+      if(!next||!this.scroller) return;
+      var moved=next.getBoundingClientRect().top-before;
+      if(Math.abs(moved)>0.5) this.scroller.scrollTop=Math.max(0,this.scroller.scrollTop+moved);
+    });
     if(this.scroller){
       Object.keys(run.saved).forEach(key=>{
         var value=run.saved[key];

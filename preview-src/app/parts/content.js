@@ -117,6 +117,15 @@ var ComponentContent = {
     var cfg = window.TALETONE_CONTENT || {};
     var homeData = cfg.home || {};
     this.HOME = this._localizedObject(homeData, homeData.translations);
+    // the newest work (added by the build) for the home page's "listen" card on phones
+    var latest = cfg.latestWork;
+    this.LATEST_WORK = {};
+    if(latest && latest.slug){
+      var lw = this._localizedObject(latest, latest.translations);
+      lw.label = {kr:'최신 작업', en:'Latest release', jp:'最新リリース'}[this._langKey()] || '최신 작업';
+      lw.ariaLabel = lw.label + ': ' + lw.title + ', ' + lw.artist;
+      this.LATEST_WORK = lw;
+    }
     var projectData = cfg.projects || {};
     this.PROJECTS_META = this._localizedObject(projectData, projectData.translations);
     this.PROJECTS = (Array.isArray(projectData.cards) ? projectData.cards : []).map((p,i)=>this._normalizeVisualEntry(this._localizedListItem(p, projectData.translations, i), 'project-' + (i + 1)));

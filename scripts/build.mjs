@@ -103,7 +103,15 @@ const appBundle = makeAppBundle(liveTemplate, await composeComponent('src/app'))
 
 const dataScript = (data, name, aliases = []) =>
   [`window.${name} = ${JSON.stringify(data, null, 2)};`, ...aliases.map((alias) => `window.${alias} = window.${name};`)].join('\n') + '\n';
-const siteScript = dataScript(site, 'TALETONE_CONTENT');
+// The newest work rides along with the site content, so the home page can show it without loading Works.
+const latestWorkOf = (list) => {
+  const work = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
+  if (!work) return null;
+  const tr = work.translations || {};
+  const pick = (lang) => ({ title: (tr[lang] && tr[lang].title) || work.title, artist: (tr[lang] && tr[lang].artist) || work.artist });
+  return { slug: work.slug, title: work.title, artist: work.artist, thumb: work.thumb || work.image, translations: { en: pick('en'), jp: pick('jp') } };
+};
+const siteScript = dataScript({ ...site, latestWork: latestWorkOf(works.works) }, 'TALETONE_CONTENT');
 const seoScript = dataScript(seo, 'TALETONE_SEO_CONTENT', ['TALETONE_SEO']);
 
 function pageCopy(page, lang) {
@@ -512,7 +520,7 @@ const previewTemplate = pTemplate
   .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`)
   .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
 const previewApp = makeAppBundle(previewTemplate, pComponent);
-const previewSiteScript = dataScript(JSON.parse(pSiteText), 'TALETONE_CONTENT');
+const previewSiteScript = dataScript({ ...JSON.parse(pSiteText), latestWork: latestWorkOf(JSON.parse(pWorksText).works) }, 'TALETONE_CONTENT');
 const previewOutputs = [
   ['preview/index.html', renderPage(seo.pages.find((p) => p.key === 'home'), languages[0], {
     APP_VERSION: version(previewApp),
