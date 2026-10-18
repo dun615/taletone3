@@ -239,7 +239,6 @@ var ComponentContent = {
   },
 
   pauseWorksAudio(){
-    if(this._previewExperiment && this._previewExperiment('3')) return; // preview experiment X3: music follows the reader
     try{
       if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.pauseAll){ window.TALETONE_WORKS_API.pauseAll(); return; }
       document.querySelectorAll('#c-works audio,audio[data-works-audio]').forEach(function(a){ a.pause(); });

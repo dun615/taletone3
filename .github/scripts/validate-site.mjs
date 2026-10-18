@@ -630,9 +630,7 @@ assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME ch
 for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
 assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
 assert(!/if\s*\(detail\.chapter\)\s*render\(\)/.test(worksJs), 'WORKS unconditional chapter-change render returned');
-// Leaving Works pauses the music; only the /preview/ experiment X3 (music everywhere) may skip that.
-assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*if\s*\(experiment\('3'\)\)\s*refreshMiniPlayer\(\);\s*else\s*pauseAll\(\);\s*return;\s*\}/.test(worksJs), 'WORKS audio keeps playing outside the chapter');
-assert(worksJs.includes("try { return /\\/preview(\\/|$)/.test(location.pathname) ? String(localStorage.getItem('tt_x')"), 'WORKS preview experiments are not limited to /preview/');
+assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(\);\s*return;\s*\}/.test(worksJs), 'WORKS audio keeps playing outside the chapter');
 const removedAudioPreloadSymbols = [
   'allLayeredAudioWarmStarted',
   'warmAudioEntries',

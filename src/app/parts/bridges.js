@@ -255,7 +255,7 @@ var ComponentBridges = {
     var reduced=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this._reduceMotion=reduced;
     var style=this.scroller.style, saved={};
-    ['overflow-y','touch-action','overscroll-behavior','scroll-behavior'].forEach(key=>{
+    ['overflow-y','touch-action','overscroll-behavior','scroll-behavior','scroll-snap-type'].forEach(key=>{
       saved[key]=[style.getPropertyValue(key),style.getPropertyPriority(key)];
     });
     this._bridgeRun={index:index,phase:'playing',startedAt:null,duration:reduced?700:1200,
@@ -265,6 +265,7 @@ var ComponentBridges = {
     style.setProperty('touch-action','none','important');
     style.setProperty('overscroll-behavior','none','important');
     style.setProperty('scroll-behavior','auto','important');
+    style.setProperty('scroll-snap-type','none','important'); // chapter snapping (phones) must not fight the lock
     this.scroller.dataset.bridgePhase='playing';
     this.scroller.dataset.bridgeIndex=String(index);
     this._fastScrollUntil=0;
@@ -450,6 +451,22 @@ var ComponentBridges = {
     var now=performance.now();
     if(this._bridgeRun && this._bridgeRun.phase==='advancing') this.advanceBridge(now);
     var fastMobile=this.isFastMobileScroll(now);
+    // Bridges play on the way down only. Readers who come back up (or land on a later chapter and scroll
+    // back) pass a bridge in its finished state instead of being held by it. The last real direction is
+    // kept, so stopping on the bridge does not count as going down.
+    // A direction only counts after a clear 48px, so small nudges either way (a scroll-snap settling, a
+    // bounce) do not flip it. Until the reader has gone up, the direction is "down".
+    if(this.scroller&&!this._bridgeRun){
+      var st=this.scroller.scrollTop;
+      if(this._bridgeScrollDir===-1){
+        this._bridgeTurnAt=Math.min(this._bridgeTurnAt,st);
+        if(st>this._bridgeTurnAt+48){ this._bridgeScrollDir=1; this._bridgeTurnAt=st; }
+      } else {
+        this._bridgeTurnAt=this._bridgeTurnAt==null?st:Math.max(this._bridgeTurnAt,st);
+        if(st<this._bridgeTurnAt-48){ this._bridgeScrollDir=-1; this._bridgeTurnAt=st; }
+      }
+      this._bridgeScrollPrev=st;
+    }
     for(var gi=0;gi<this.bridges.length;gi++){
       var bg=this.bridges[gi];
       var outer=bg._bridgeOuter || (bg.closest ? bg.closest('[data-story-bridge-wrap]') : null) || (bg.parentElement && bg.parentElement.classList && bg.parentElement.classList.contains('tt-bridge-pin-stage') ? bg.parentElement.parentElement : bg.parentElement);
@@ -556,7 +573,15 @@ var ComponentBridges = {
       if(this._reduceMotion===undefined) this._reduceMotion=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
       var DUR=this._reduceMotion?700:1200, FINAL=0.90, prog=0, bridgeTime=DUR/1000+gi*0.31;
       var entering=rect.top<=vhR*0.5&&rect.top>=-2&&rect.bottom>vhR*0.5;
-      if(!bg._seen&&!this._bridgeRun&&entering) this.startBridge(gi);
+      if(!bg._seen&&!this._bridgeRun&&entering){
+        if(this._bridgeScrollDir===-1){
+          // finished at once; on phones that also shrinks it, so keep the chapter below where it was
+          var below=outer.nextElementSibling, belowTop=below?below.getBoundingClientRect().top:0;
+          this._bridgeBypassed[gi]=true; bg._seen=true; outer.classList.add('tt-bridge-seen');
+          if(below&&this.scroller){ var shift=below.getBoundingClientRect().top-belowTop; if(Math.abs(shift)>0.5){ this.scroller.scrollTop+=shift; this._bridgeScrollPrev=this.scroller.scrollTop; } }
+        }
+        else this.startBridge(gi);
+      }
       var run=this._bridgeRun, active=run&&run.index===gi;
       bg._playing=!!active;
       if(active){
