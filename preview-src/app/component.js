@@ -545,9 +545,14 @@ class Component extends DCLogic {
       if(!this.sections||!this.sections.length){
         this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
-      var act=0, line=vh2;
+      // A chapter becomes current when its title passes 60% of the screen height (its section box starts much
+      // higher, above a tall top padding, so the counter used to lag behind what the reader sees).
+      var act=0, line=vh2*1.2;
+      if(!this._sectionAnchors) this._sectionAnchors=[];
       for(var k=0;k<this.sections.length;k++){
-        if(this.sections[k].getBoundingClientRect().top <= line) act=k;
+        var anchor=this._sectionAnchors[k];
+        if(!anchor||!anchor.isConnected){ anchor=this.sections[k].querySelector('h2')||this.sections[k]; this._sectionAnchors[k]=anchor===this.sections[k]?null:anchor; }
+        if(anchor.getBoundingClientRect().top <= line) act=k;
       }
       if(act!==this.lastActive){
         var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-news':5,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
