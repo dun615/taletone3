@@ -3720,41 +3720,24 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body [data-story-bridge-wrap].tt-bridge-seen:not([data-bridge-active]) [data-bridge-line] {height:30px!important}
 }
 
-/* =====================================================================
-   Works on phones (REVIEW-mobile phase 2, M14/M15): the turntable shrinks to a deck beside the song info,
-   and the rack is two rows that slide sideways with the page's own vertical scroll left alone.
-   ===================================================================== */
+/* Members, phone layout of its own: a profile list (photo, role, name, one line) that shows the whole team at
+   once; a tap opens the member sheet as before. Replaces the sideways cards. */
 @media (max-width:760px){
-  html body .tt-crate-stage {gap:22px}
-  html body .tt-deck {display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);gap:16px;align-items:center}
-  html body .tt-deck-table {border-radius:18px}
-  html body .tt-deck-info {padding:0;min-width:0}
-  html body .tt-deck-info .tt-deck-title {margin:4px 0 2px;font-size:var(--fs-l,18px);line-height:1.25}
-  html body .tt-deck-info .tt-deck-artist {font-size:var(--fs-s,13px)}
-  html body .tt-deck-info .tt-deck-story {display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:8px;font-size:var(--fs-s,13px)}
-  html body .tt-deck-info .tt-deck-chips {margin-top:8px}
-  /* the play button on the small deck stays a full 44px target */
-  html body button.tt-deck-arm-base {width:44px!important;right:6%!important;top:7%!important}
-  html body .tt-deck-volume {display:none!important}
-  /* "자세히 +" sits with the info on phones */
-  html body .tt-deck-info .tt-deck-more {position:relative;right:auto;bottom:auto;margin-top:12px;min-height:44px}
-  /* the rack: two rows, sideways, snapping to a column */
-  html body .tt-crate-rack .tt-rack-grid {display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-template-columns:none;
-    grid-auto-columns:calc((100% - 28px) / 2.6);gap:18px 14px;max-height:none!important;overflow-x:auto;overflow-y:hidden;
-    scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding:10px 14px 16px;margin:0 -14px;scroll-padding:0 14px}
-  html body .tt-crate-rack .tt-rack-item {scroll-snap-align:start}
-}
-
-/* Members on phones (REVIEW-mobile phase 2, M13): one large card at a time that slides sideways, with the next
-   card peeking in, instead of a 2×2 grid of small cards */
-@media (max-width:760px){
-  html body #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:grid!important;grid-auto-flow:column;grid-template-columns:none!important;
-    grid-auto-columns:76%;gap:14px!important;justify-content:start!important;width:auto!important;max-width:none!important;margin:0 -18px!important;padding:6px 18px 20px!important;
-    overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding:0 18px;overscroll-behavior-x:contain;scrollbar-width:none}
-  html body #c-members > .tt-s-grid-template-columns-0466[data-reveal]::-webkit-scrollbar {display:none}
-  html body #c-members .tt-member-card {aspect-ratio:4/5!important;scroll-snap-align:start}
-  html body #c-members .tt-member-card-copy {padding:18px 18px 18px!important}
-  html body #c-members .tt-member-card-tagline {font-size:var(--fs-m)!important;line-height:1.5!important}
+  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-direction:column;gap:12px!important;width:100%!important;
+    max-width:none!important;margin:0!important;padding:0!important;overflow:visible}
+  #content#content #c-members .tt-member-card {display:grid!important;grid-template-columns:92px minmax(0,1fr) 20px;align-items:center;column-gap:16px;
+    aspect-ratio:auto!important;min-height:0!important;height:auto!important;padding:12px 16px 12px 12px!important;border-radius:20px!important;
+    background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important;transform:none!important}
+  #content#content #c-members .tt-member-card > img {position:static!important;grid-column:1;grid-row:1;width:92px!important;height:112px!important;border-radius:14px;
+    object-fit:cover;object-position:50% 18%;background:#eef4f7}
+  #content#content #c-members .tt-member-card-index {display:none!important}
+  #content#content #c-members .tt-member-card-copy {position:static!important;grid-column:2;padding:0!important;background:none!important;display:flex;flex-direction:column;gap:4px;min-width:0}
+  #content#content #c-members .tt-member-card-role {margin:0!important;min-height:0!important;height:auto!important;padding:0!important;font-size:12px!important;letter-spacing:.06em!important;
+    line-height:1.3!important;color:#0e6e7d!important;white-space:normal!important}
+  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:24px!important;line-height:1.1!important}
+  #content#content #c-members .tt-member-card-tagline {margin:2px 0 0!important;font-size:14px!important;line-height:1.5!important;color:#44505f!important;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #content#content #c-members .tt-member-card::after {content:'';grid-column:3;width:9px;height:9px;justify-self:center;border-top:2px solid #8a96a3;border-right:2px solid #8a96a3;transform:rotate(45deg)}
 }
 
 /* Home and Track Record on phones (REVIEW-mobile phase 2, M10/M11): the newest work under the buttons (it opens
@@ -3788,4 +3771,144 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body .tt-sheet-grip {display:block;position:absolute;left:50%;top:8px;z-index:6;width:42px;height:5px;margin-left:-21px;border-radius:5px;
     background:rgba(120,140,150,.55);box-shadow:0 0 0 1px rgba(255,255,255,.35);pointer-events:none}
   html body .tt-shelf-modal-credits-list {max-height:none!important;overflow:visible!important}
+}
+
+/* =====================================================================
+   Preview experiments X1–X5 (REVIEW-mobile phase 3). Classes come from the "실험" tab on /preview/ only
+   (site-ux.js); nothing here applies on the live site.
+   ===================================================================== */
+.tt-x-tab {position:fixed;left:0;top:42%;z-index:400;padding:10px 8px;border:0;border-radius:0 10px 10px 0;background:#f6c343;color:#141c30;
+  font:800 12px/1 var(--tt-noto-primary),sans-serif;writing-mode:vertical-rl;letter-spacing:.1em;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+.tt-x-panel {position:fixed;left:12px;right:12px;top:50%;transform:translateY(-50%);z-index:401;max-width:380px;margin:0 auto;padding:16px;border-radius:16px;
+  background:#fffdf8;color:#141c30;box-shadow:0 24px 60px rgba(0,0,0,.4);font:500 14px/1.4 var(--tt-noto-primary),sans-serif}
+.tt-x-panel[hidden] {display:none}
+.tt-x-head {margin:0 0 10px;font-weight:800;font-size:13px;color:#0e6e7d}
+.tt-x-panel label {display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(20,28,48,.08);cursor:pointer}
+.tt-x-panel input {width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#0e6e7d}
+.tt-x-panel b {display:block;font-weight:800}
+.tt-x-panel small {display:block;color:#5b6170;font-size:12px}
+.tt-x-actions {display:flex;gap:8px;margin-top:12px}
+.tt-x-actions button {flex:1;min-height:44px;border:0;border-radius:999px;font:800 13px/1 var(--tt-noto-primary),sans-serif;cursor:pointer;background:#0e6e7d;color:#fff}
+.tt-x-actions button[data-x="off"] {background:#e8ecef;color:#141c30}
+#tt-x-dock,#tt-x-mini {display:none}
+
+@media (max-width:760px){
+  /* X1: the dock */
+  html.tt-x1 body #brand,
+  html.tt-x1 body #progress,
+  html.tt-x1 body .tt-top-scrim {display:none!important}
+  html.tt-x1 body #c-projects,
+  html.tt-x1 body #c-members {padding-top:max(48px,calc(28px + env(safe-area-inset-top)))!important}
+  html.tt-x1 #tt-x-dock {display:flex;position:fixed;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));
+    bottom:max(10px,env(safe-area-inset-bottom));z-index:96;align-items:center;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(7,25,36,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(2,14,24,.35);border:1px solid rgba(255,255,255,.14)}
+  html.tt-x1 #tt-x-dock button {min-height:48px;border:0;border-radius:999px;cursor:pointer;color:#f4faff;background:none;font:800 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif}
+  html.tt-x1 .tt-x-dock-home {width:48px;display:grid;place-items:center;padding:0}
+  html.tt-x1 .tt-x-dock-home img {width:30px;height:30px;object-fit:contain}
+  html.tt-x1 .tt-x-dock-chapter {flex:1;display:flex;align-items:center;gap:8px;padding:0 14px;background:rgba(255,255,255,.08)!important;min-width:0;letter-spacing:.08em}
+  html.tt-x1 .tt-x-dock-num {opacity:.6}
+  html.tt-x1 .tt-x-dock-name {flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html.tt-x1 .tt-x-dock-chapter i {width:14px;height:10px;flex:none;background:linear-gradient(currentColor 0 0) top/100% 2px no-repeat,linear-gradient(currentColor 0 0) center/100% 2px no-repeat,linear-gradient(currentColor 0 0) bottom/100% 2px no-repeat}
+  html.tt-x1 .tt-x-dock-cta {padding:0 18px;background:#f4faff!important;color:#071924!important}
+  html.tt-x1 body #tt-mobile-chapter-menu {top:auto!important;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 70px)!important;left:max(10px,env(safe-area-inset-left));right:auto;
+    width:min(300px,calc(100vw - 20px));border-radius:18px}
+  html.tt-x1 body #tt-bridge-progress {bottom:calc(max(10px,env(safe-area-inset-bottom)) + 76px)!important}
+
+  /* X2: each chapter start is a resting point */
+  html.tt-x2 #content {scroll-snap-type:y proximity}
+  html.tt-x2 #content :is(#c-home,#c-track-record,#c-projects,#c-members,#c-works,#c-news,#c-contact,[data-story-bridge-wrap]) {scroll-snap-align:start}
+
+  /* X5: no bridges; the sentence is a quote above the next chapter title */
+  html.tt-x5 [data-story-bridge-wrap] {display:none!important}
+  .tt-x5-quote {margin:0 auto 22px;max-width:30em;padding:0 8px;font:700 var(--fs-m,15px)/1.6 var(--tt-noto-primary),sans-serif;color:var(--ink,#141c30);opacity:.82;text-wrap:balance;word-break:keep-all}
+  .tt-x5-quote.is-standalone {padding:56px 24px 0;text-align:center;margin-bottom:-40px;position:relative;z-index:2}
+  .tt-x5-quote::before {content:'\201C';display:block;font:700 34px/1 'Quicksand',Georgia,serif;color:var(--accent,#0e6e7d);opacity:.6}
+}
+
+/* X3: the mini player (any width), above the dock when X1 is on */
+html.tt-x3 #tt-x-mini:not([hidden]) {display:flex;position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:95;
+  width:min(420px,calc(100vw - 20px));align-items:center;gap:10px;padding:6px 6px 6px 6px;border-radius:16px;background:rgba(7,25,36,.92);color:#f4faff;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(2,14,24,.35);border:1px solid rgba(255,255,255,.14)}
+@media (max-width:760px){html.tt-x1.tt-x3 #tt-x-mini:not([hidden]) {bottom:calc(max(10px,env(safe-area-inset-bottom)) + 70px)}}
+#tt-x-mini img {width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
+.tt-x-mini-copy {flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tt-x-mini-copy b {font:700 14px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-x-mini-copy em {font:600 12px/1.2 var(--tt-noto-primary),sans-serif;font-style:normal;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tt-x-mini button {flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;background:rgba(255,255,255,.1);color:#f4faff;font:700 18px/1 sans-serif}
+#tt-x-mini .tt-x-mini-toggle {background:#f4faff;color:#071924}
+#tt-x-mini .tt-x-mini-toggle .tt-shelf-play-icon {width:0;height:0;margin-left:3px;border-left:12px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
+#tt-x-mini .tt-x-mini-toggle.is-playing .tt-shelf-play-icon {width:11px;height:13px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
+
+/* =====================================================================
+   Works, phone layout of its own (no turntable): a large-cover "now playing" card, then the songs as a
+   list like a music app. Markup from works.js (isPhone); the desktop record shop is untouched.
+   ===================================================================== */
+@media (max-width:760px){
+  html body .tt-crate-stage {display:block}
+  html body .tt-crate-deck {position:static;max-width:none;margin:0 0 30px}
+  /* now playing */
+  .tt-m-hero {display:block}
+  .tt-m-hero-art {position:relative;aspect-ratio:1;border-radius:22px;overflow:hidden;background:#073640;box-shadow:0 26px 54px rgba(0,14,22,.5),0 0 0 1px rgba(141,236,252,.14)}
+  .tt-m-hero-art img {display:block;width:100%;height:100%}
+  .tt-m-hero-art::after {content:'';position:absolute;inset:auto 0 0 0;height:42%;background:linear-gradient(180deg,rgba(4,26,34,0),rgba(4,26,34,.7));pointer-events:none}
+  html body .tt-m-hero-play {position:absolute;right:16px;bottom:16px;z-index:2;display:grid;place-items:center;width:64px;height:64px;padding:0;border:0;border-radius:50%;
+    background:#fbffff;color:#0a4f5b;cursor:pointer;box-shadow:0 12px 28px rgba(0,14,22,.45)}
+  html body .tt-m-hero-play .tt-shelf-play-icon {width:0;height:0;margin-left:5px;border-left:20px solid currentColor;border-top:12px solid transparent;border-bottom:12px solid transparent;background:none}
+  html body .tt-m-hero-play.is-playing .tt-shelf-play-icon {width:18px;height:22px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 34%,transparent 34% 66%,currentColor 66%)}
+  html body .tt-m-hero-play:focus-visible {outline:2px solid #8decfc;outline-offset:4px}
+  .tt-m-hero-eq {position:absolute;left:18px;bottom:22px;z-index:2;display:flex;align-items:flex-end;gap:3px;height:22px;opacity:0;transition:opacity .3s}
+  .tt-m-hero-eq i {width:4px;height:30%;border-radius:2px;background:#fbffff;animation:ttShelfEq .9s ease-in-out infinite}
+  .tt-m-hero-eq i:nth-child(2) {animation-delay:-.3s}.tt-m-hero-eq i:nth-child(3) {animation-delay:-.6s}.tt-m-hero-eq i:nth-child(4) {animation-delay:-.15s}
+  .tt-m-hero.is-playing .tt-m-hero-eq {opacity:1}
+  html body .tt-m-hero-info {padding:18px 2px 0;text-align:left}
+  html body .tt-m-hero-info .tt-shelf-format {margin:0;color:#8decfc}
+  html body .tt-m-hero-info .tt-deck-title {margin:6px 0 4px;font:700 26px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff}
+  html body .tt-m-hero-info .tt-deck-artist {margin:0;font:600 15px/1.4 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.75)}
+  html body .tt-m-hero-info .tt-deck-chips {margin-top:12px}
+  html body .tt-m-hero-info .tt-deck-more {position:static;display:inline-flex;margin-top:14px;min-height:44px;padding:0 18px}
+
+  /* the list */
+  html body .tt-crate-rack .tt-shelf-filters {flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -16px 14px;padding:2px 16px 6px;scrollbar-width:none}
+  html body .tt-crate-rack .tt-shelf-filters::-webkit-scrollbar {display:none}
+  html body .tt-crate-rack .tt-shelf-chip {flex:none}
+  html body .tt-crate-rack .tt-m-list {display:flex;flex-direction:column;gap:2px;max-height:none!important;overflow:visible!important;margin:0;padding:0;list-style:none}
+  html body .tt-m-row {transform:none!important;animation:none!important;text-align:left}
+  html body .tt-m-row .tt-rack-pick {display:grid;grid-template-columns:56px minmax(0,1fr) auto 28px;align-items:center;gap:12px;width:100%;min-height:72px;
+    padding:8px;border:0;border-radius:14px;background:none;color:#fbffff;text-align:left;cursor:pointer;transform:none!important}
+  html body .tt-m-row .tt-rack-pick::after,
+  html body .tt-m-row .tt-rack-pick::before {content:none;display:none}
+  html body .tt-m-row .tt-rack-pick:focus-visible {outline:2px solid #8decfc;outline-offset:-2px}
+  html body .tt-m-row.is-current .tt-rack-pick {background:rgba(141,236,252,.12);box-shadow:inset 0 0 0 1px rgba(141,236,252,.28)}
+  .tt-m-row-art {width:56px;height:56px;border-radius:10px;box-shadow:0 6px 14px rgba(0,14,22,.35)}
+  .tt-m-row-text {display:flex;flex-direction:column;gap:3px;min-width:0}
+  html body .tt-m-row .tt-rack-name {font:700 15px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html body .tt-m-row .tt-rack-artist {margin:0;font:600 13px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.65)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tt-m-row-year {font:700 12px/1 'Quicksand',sans-serif;color:rgba(251,255,255,.5)}
+  html body .tt-m-row .tt-rack-badge {position:static;display:none;justify-self:center;height:20px;padding:4px 6px}
+  html body .tt-m-row.is-playing .tt-rack-badge {display:flex}
+  .tt-m-row-play {justify-self:center;width:0;height:0;border-left:10px solid rgba(251,255,255,.55);border-top:6px solid transparent;border-bottom:6px solid transparent}
+  .tt-m-row.is-playing .tt-m-row-play {display:none}
+  .tt-m-list-more {display:block;width:100%;min-height:48px;margin:12px 0 0;border:1px solid rgba(141,236,252,.4);border-radius:999px;background:none;color:#fbffff;
+    font:800 14px/1 var(--tt-noto-primary),sans-serif;cursor:pointer}
+  .tt-m-list-more:focus-visible {outline:2px solid #8decfc;outline-offset:3px}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-hero-eq i {animation:none}}
+
+/* News, phone layout of its own: the newest item as a large card, the rest as compact rows (thumbnail, tag and
+   date, title) like a news app. The whole row opens the article sheet as before. */
+@media (max-width:760px){
+  #content#content #c-news .tt-s-grid-template-columns-0466 {display:flex!important;flex-direction:column;gap:0!important}
+  #content#content #c-news .lift:first-child {margin-bottom:10px}
+  #content#content #c-news .lift:not(:first-child) {display:grid!important;grid-template-columns:96px minmax(0,1fr);align-items:center;column-gap:14px;
+    min-height:0!important;padding:14px 4px!important;border-radius:0!important;background:none!important;box-shadow:none!important;border:0!important;
+    border-top:1px solid rgba(251,255,255,.12)!important;overflow:visible!important}
+  #content#content #c-news .lift:not(:first-child) > :first-child {position:relative!important;inset:auto!important;width:96px!important;height:96px!important;aspect-ratio:1!important;
+    border-radius:14px!important;overflow:hidden}
+  #content#content #c-news .lift:not(:first-child) > :last-child {padding:0!important;min-height:0!important;display:flex;flex-direction:column;gap:6px}
+  #content#content #c-news .lift:not(:first-child) > :last-child > :first-child {font-size:12px!important}
+  #content#content #c-news .lift:not(:first-child) .tt-news-title {margin:0!important;font-size:16px!important;line-height:1.35!important;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #content#content #c-news .lift:not(:first-child) p,
+  #content#content #c-news .lift:not(:first-child) > :last-child > :last-child:not(.tt-news-title) {display:none!important}
+  #content#content #c-members .tt-network-summary {min-height:72px;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
 }

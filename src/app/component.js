@@ -86,11 +86,22 @@ class Component extends DCLogic {
     this.revEls.forEach(el=>{ el.style.transition='none'; el.style.willChange='opacity,transform'; });
   }
   // Bridge state, the input lock used while a bridge plays, and its cached geometry.
+  // Preview-only experiments (REVIEW-mobile phase 3), switched on from the "실험" tab on /preview/.
+  _previewExperiment(n){
+    if(this._previewExperiments==null){
+      var list=[];
+      try{ if(/\/preview(\/|$)/.test(location.pathname)) list=String(localStorage.getItem('tt_x')||'').split(',').filter(Boolean); }catch(_e){}
+      this._previewExperiments=list;
+    }
+    return this._previewExperiments.indexOf(String(n))>=0;
+  }
   _mountBridges(){
     this.bridges = Array.from(document.querySelectorAll('[data-bridge]'));
     this._bridgeSeen = {};
     this._bridgeBypassed = {};
     try{ JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]').forEach(i=>{if(Number.isInteger(i)&&i>=-1&&i<5)this._bridgeSeen[i]=true;}); }catch(_){}
+    // preview experiment X5 (phones): the bridges are gone, so none may start and lock the page
+    if(this._previewExperiment('5') && window.innerWidth<=760){ for(var bi=0;bi<5;bi++) this._bridgeSeen[bi]=true; }
     this._bridgeRun = null;
     this._bridgeScrollTop = this.scroller ? this.scroller.scrollTop : 0;
     this._bridgeInputHandler=(e)=>{
