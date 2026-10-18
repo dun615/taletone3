@@ -240,6 +240,12 @@
       .filter(function (entry) { return matchesFilter(entry.work, state.filter); })
       .sort(function (a, b) { return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index; });
   }
+  // Preview-only experiments (REVIEW-mobile phase 3), switched on from the "실험" tab on /preview/
+  var previewX = (function () {
+    try { return /\/preview(\/|$)/.test(location.pathname) ? String(localStorage.getItem('tt_x') || '').split(',').filter(Boolean) : []; } catch (_e) { return []; }
+  })();
+  function experiment(n) { return previewX.indexOf(String(n)) >= 0; }
+
   // phones get the compact deck and the sideways rack (see works.css "Works on phones")
   function isPhone() { return window.innerWidth <= 760; }
   function shelfStep() {
@@ -542,6 +548,7 @@
     handOffRackScroll();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
+    watchFeed();
     playPending();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
@@ -830,7 +837,52 @@
     refreshPlaying(true);
   }
   // Light update: play states, the record sleeves and the player, without rebuilding the shelf
+  // X3 mini player: cover, title, play/pause and a way back to Works, shown outside the Works chapter
+  function refreshMiniPlayer() {
+    if (!experiment('3')) return;
+    var bar = document.getElementById('tt-x-mini');
+    var work = works[state.current];
+    var show = state.engaged && work && !isWorksChapterActive();
+    if (!show) { if (bar) bar.hidden = true; return; }
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'tt-x-mini';
+      bar.innerHTML = '<img alt=""><span class="tt-x-mini-copy"><b></b><em></em></span>' +
+        '<button type="button" class="tt-x-mini-toggle"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' +
+        '<button type="button" class="tt-x-mini-go" aria-label="Works">&#8599;</button>';
+      bar.querySelector('.tt-x-mini-toggle').addEventListener('click', function () {
+        if (state.playing) pauseAll(); else { if (!audio || !audio.getAttribute('src')) loadCurrent(false); resume(); }
+      });
+      bar.querySelector('.tt-x-mini-go').addEventListener('click', function () { var b = document.getElementById('nav-4'); if (b) b.click(); });
+      document.body.appendChild(bar);
+    }
+    var unit = localizedUnit(work);
+    bar.hidden = false;
+    bar.querySelector('img').src = rootUrl(work.thumb || work.image);
+    bar.querySelector('b').textContent = plainRichText(unit.title || work.title || '');
+    bar.querySelector('em').textContent = plainRichText(unit.artist || work.artist || '');
+    var toggle = bar.querySelector('.tt-x-mini-toggle');
+    toggle.classList.toggle('is-playing', state.playing);
+    toggle.setAttribute('aria-label', state.playing ? L().pause : L().play);
+  }
+
+  // X4 (phones): the cover in the middle of the screen plays, once the reader has started the music
+  var feedObserver = null;
+  function watchFeed() {
+    if (!experiment('4') || !isPhone() || !root || !('IntersectionObserver' in window)) return;
+    if (feedObserver) feedObserver.disconnect();
+    feedObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting || !state.engaged || !state.playing) return;
+        var index = Number(entry.target.getAttribute('data-works-book'));
+        if (index !== state.current && works[index] && hasAudio(works[index])) pick(index);
+      });
+    }, { root: null, rootMargin: '-45% 0px -45% 0px' });
+    root.querySelectorAll('[data-works-book]').forEach(function (item) { feedObserver.observe(item); });
+  }
+
   function refreshPlaying(rebuild) {
+    refreshMiniPlayer();
     if (!root) return;
     var labels = L();
     root.querySelectorAll('[data-works-book]').forEach(function (item) {
@@ -984,9 +1036,10 @@
   window.addEventListener('TALETONE_CHAPTER_CHANGE', function (event) {
     var chapter = event && event.detail ? event.detail.chapter : '';
     if (!chapter) return;
-    if (chapter !== 'works') { pauseAll(); return; }
+    if (chapter !== 'works') { if (experiment('3')) refreshMiniPlayer(); else pauseAll(); return; }
     if (!mounted) init();
     else playPending(true);
+    refreshMiniPlayer();
   });
 
   window.addEventListener('TALETONE_CHAPTER_PRELOAD', function (event) {

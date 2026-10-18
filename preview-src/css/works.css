@@ -3789,3 +3789,78 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
     background:rgba(120,140,150,.55);box-shadow:0 0 0 1px rgba(255,255,255,.35);pointer-events:none}
   html body .tt-shelf-modal-credits-list {max-height:none!important;overflow:visible!important}
 }
+
+/* =====================================================================
+   Preview experiments X1–X5 (REVIEW-mobile phase 3). Classes come from the "실험" tab on /preview/ only
+   (site-ux.js); nothing here applies on the live site.
+   ===================================================================== */
+.tt-x-tab {position:fixed;left:0;top:42%;z-index:400;padding:10px 8px;border:0;border-radius:0 10px 10px 0;background:#f6c343;color:#141c30;
+  font:800 12px/1 var(--tt-noto-primary),sans-serif;writing-mode:vertical-rl;letter-spacing:.1em;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer}
+.tt-x-panel {position:fixed;left:12px;right:12px;top:50%;transform:translateY(-50%);z-index:401;max-width:380px;margin:0 auto;padding:16px;border-radius:16px;
+  background:#fffdf8;color:#141c30;box-shadow:0 24px 60px rgba(0,0,0,.4);font:500 14px/1.4 var(--tt-noto-primary),sans-serif}
+.tt-x-panel[hidden] {display:none}
+.tt-x-head {margin:0 0 10px;font-weight:800;font-size:13px;color:#0e6e7d}
+.tt-x-panel label {display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(20,28,48,.08);cursor:pointer}
+.tt-x-panel input {width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#0e6e7d}
+.tt-x-panel b {display:block;font-weight:800}
+.tt-x-panel small {display:block;color:#5b6170;font-size:12px}
+.tt-x-actions {display:flex;gap:8px;margin-top:12px}
+.tt-x-actions button {flex:1;min-height:44px;border:0;border-radius:999px;font:800 13px/1 var(--tt-noto-primary),sans-serif;cursor:pointer;background:#0e6e7d;color:#fff}
+.tt-x-actions button[data-x="off"] {background:#e8ecef;color:#141c30}
+#tt-x-dock,#tt-x-mini {display:none}
+
+@media (max-width:760px){
+  /* X1: the dock */
+  html.tt-x1 body #brand,
+  html.tt-x1 body #progress,
+  html.tt-x1 body .tt-top-scrim {display:none!important}
+  html.tt-x1 body #c-projects,
+  html.tt-x1 body #c-members {padding-top:max(48px,calc(28px + env(safe-area-inset-top)))!important}
+  html.tt-x1 #tt-x-dock {display:flex;position:fixed;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));
+    bottom:max(10px,env(safe-area-inset-bottom));z-index:96;align-items:center;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(7,25,36,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(2,14,24,.35);border:1px solid rgba(255,255,255,.14)}
+  html.tt-x1 #tt-x-dock button {min-height:48px;border:0;border-radius:999px;cursor:pointer;color:#f4faff;background:none;font:800 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif}
+  html.tt-x1 .tt-x-dock-home {width:48px;display:grid;place-items:center;padding:0}
+  html.tt-x1 .tt-x-dock-home img {width:30px;height:30px;object-fit:contain}
+  html.tt-x1 .tt-x-dock-chapter {flex:1;display:flex;align-items:center;gap:8px;padding:0 14px;background:rgba(255,255,255,.08)!important;min-width:0;letter-spacing:.08em}
+  html.tt-x1 .tt-x-dock-num {opacity:.6}
+  html.tt-x1 .tt-x-dock-name {flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html.tt-x1 .tt-x-dock-chapter i {width:14px;height:10px;flex:none;background:linear-gradient(currentColor 0 0) top/100% 2px no-repeat,linear-gradient(currentColor 0 0) center/100% 2px no-repeat,linear-gradient(currentColor 0 0) bottom/100% 2px no-repeat}
+  html.tt-x1 .tt-x-dock-cta {padding:0 18px;background:#f4faff!important;color:#071924!important}
+  html.tt-x1 body #tt-mobile-chapter-menu {top:auto!important;bottom:calc(max(10px,env(safe-area-inset-bottom)) + 70px)!important;left:max(10px,env(safe-area-inset-left));right:auto;
+    width:min(300px,calc(100vw - 20px));border-radius:18px}
+  html.tt-x1 body #tt-bridge-progress {bottom:calc(max(10px,env(safe-area-inset-bottom)) + 76px)!important}
+
+  /* X2: each chapter start is a resting point */
+  html.tt-x2 #content {scroll-snap-type:y proximity}
+  html.tt-x2 #content :is(#c-home,#c-track-record,#c-projects,#c-members,#c-works,#c-news,#c-contact,[data-story-bridge-wrap]) {scroll-snap-align:start}
+
+  /* X4: Works as a vertical feed of large covers */
+  html.tt-x4 body .tt-crate-rack .tt-rack-grid {grid-auto-flow:row;grid-template-rows:none;grid-template-columns:1fr!important;grid-auto-columns:auto;overflow:visible;
+    scroll-snap-type:none;gap:22px;padding:6px 0 20px;margin:0}
+  html.tt-x4 body .tt-crate-rack .tt-rack-item {scroll-snap-align:none}
+  html.tt-x4 body .tt-crate-deck {position:sticky;top:max(64px,calc(54px + env(safe-area-inset-top)));z-index:5;padding:8px 0;
+    background:linear-gradient(180deg,rgba(9,52,66,.96) 70%,rgba(9,52,66,0))}
+  html.tt-x4 body .tt-deck-info .tt-deck-story,
+  html.tt-x4 body .tt-deck-info .tt-deck-chips {display:none}
+
+  /* X5: no bridges; the sentence is a quote above the next chapter title */
+  html.tt-x5 [data-story-bridge-wrap] {display:none!important}
+  .tt-x5-quote {margin:0 auto 22px;max-width:30em;padding:0 8px;font:700 var(--fs-m,15px)/1.6 var(--tt-noto-primary),sans-serif;color:var(--ink,#141c30);opacity:.82;text-wrap:balance;word-break:keep-all}
+  .tt-x5-quote.is-standalone {padding:56px 24px 0;text-align:center;margin-bottom:-40px;position:relative;z-index:2}
+  .tt-x5-quote::before {content:'\201C';display:block;font:700 34px/1 'Quicksand',Georgia,serif;color:var(--accent,#0e6e7d);opacity:.6}
+}
+
+/* X3: the mini player (any width), above the dock when X1 is on */
+html.tt-x3 #tt-x-mini:not([hidden]) {display:flex;position:fixed;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:95;
+  width:min(420px,calc(100vw - 20px));align-items:center;gap:10px;padding:6px 6px 6px 6px;border-radius:16px;background:rgba(7,25,36,.92);color:#f4faff;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(2,14,24,.35);border:1px solid rgba(255,255,255,.14)}
+@media (max-width:760px){html.tt-x1.tt-x3 #tt-x-mini:not([hidden]) {bottom:calc(max(10px,env(safe-area-inset-bottom)) + 70px)}}
+#tt-x-mini img {width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
+.tt-x-mini-copy {flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tt-x-mini-copy b {font:700 14px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-x-mini-copy em {font:600 12px/1.2 var(--tt-noto-primary),sans-serif;font-style:normal;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#tt-x-mini button {flex:none;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;background:rgba(255,255,255,.1);color:#f4faff;font:700 18px/1 sans-serif}
+#tt-x-mini .tt-x-mini-toggle {background:#f4faff;color:#071924}
+#tt-x-mini .tt-x-mini-toggle .tt-shelf-play-icon {width:0;height:0;margin-left:3px;border-left:12px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
+#tt-x-mini .tt-x-mini-toggle.is-playing .tt-shelf-play-icon {width:11px;height:13px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
