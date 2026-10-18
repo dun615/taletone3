@@ -624,7 +624,9 @@
       if (trigger) rememberDialogTrigger(trigger);
       if (document.body && document.body.classList.contains('tt-mobile-chapter-open')) {
         var progress = document.getElementById('progress');
-        if ((!globalUxState.menu || !globalUxState.menu.contains(event.target)) && (!progress || !progress.contains(event.target))) {
+        // (the dock's chapter button toggles the menu itself)
+        if ((!globalUxState.menu || !globalUxState.menu.contains(event.target)) && (!progress || !progress.contains(event.target)) &&
+          !(event.target.closest && event.target.closest('#tt-dock'))) {
           closeMobileChapterMenu(false);
         }
       }
@@ -642,103 +644,58 @@
   else initGlobalUx();
 })();
 
-// ===== Preview experiments (REVIEW-mobile phase 3) =====
-// Only on /preview/: a "실험" tab switches X1–X3 and X5 on and off (X4 became the phone Works layout) (saved in this browser), so each idea can be tried
-// on a phone before deciding. The live site never runs any of it.
+// ===== Phones: one dock at the bottom (was preview experiment X1) =====
+// Logo, the current chapter (opens the chapter menu) and "문의하기", in reach of the thumb; the top of the
+// screen stays clear. works.css shows it at 760px and below only.
 (function () {
-  if (!/\/preview(\/|$)/.test(location.pathname)) return;
-  var KEY = 'tt_x';
-  var ideas = [
-    ['1', '아래쪽 도크', '위쪽 장치를 없애고 화면 아래 도크 하나로 (휴대폰)'],
-    ['2', '스토리 모드', '챕터 시작마다 화면이 맞춰 멈춤 (휴대폰)'],
-    ['3', '어디서나 재생', 'Works를 벗어나도 음악이 계속되고 미니 플레이어가 따라옴'],
-    ['5', '브릿지 없애기', '챕터 사이 화면 대신 제목 위 한 줄 인용 (휴대폰)']
-  ];
-  var on = [];
-  try { on = String(localStorage.getItem(KEY) || '').split(',').filter(Boolean); } catch (_e) {}
-  on.forEach(function (n) { document.documentElement.classList.add('tt-x' + n); });
-  var has = function (n) { return on.indexOf(n) >= 0; };
-
   function ready(fn) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
-  // chapter links stay in the page: use the (hidden) chapter nav buttons, which run the in-app navigation
+  // chapter links stay in the page: the (hidden) chapter nav buttons run the in-app navigation
   function goChapter(id) { var b = document.getElementById(id); if (b) b.click(); }
 
   ready(function () {
-    // ---- the switch panel ----
-    var tab = document.createElement('button');
-    tab.type = 'button'; tab.className = 'tt-x-tab'; tab.textContent = '실험' + (on.length ? ' ' + on.length : '');
-    var panel = document.createElement('div');
-    panel.className = 'tt-x-panel'; panel.hidden = true;
-    panel.innerHTML = '<p class="tt-x-head">미리보기 실험 (이 브라우저에만 저장)</p>' + ideas.map(function (idea) {
-      return '<label><input type="checkbox" value="' + idea[0] + '"' + (has(idea[0]) ? ' checked' : '') + '><span><b>X' + idea[0] + ' ' + idea[1] + '</b><small>' + idea[2] + '</small></span></label>';
-    }).join('') + '<div class="tt-x-actions"><button type="button" data-x="apply">적용하고 새로고침</button><button type="button" data-x="off">모두 끄기</button></div>';
-    // the screen this browser reports (CSS pixels, device pixel ratio), to tune layouts for a given phone
-    var screenLine = document.createElement('p');
-    screenLine.className = 'tt-x-screen';
-    var showScreen = function () {
-      screenLine.textContent = '화면 ' + window.innerWidth + '×' + window.innerHeight + ' · 배율 ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) +
-        ' · ' + (window.innerWidth > window.innerHeight ? '가로' : '세로');
+    var dock = document.createElement('nav');
+    dock.id = 'tt-dock';
+    dock.innerHTML = '<button type="button" class="tt-dock-home"><img src="assets/logo/mark-ink.png" alt=""></button>' +
+      '<button type="button" class="tt-dock-chapter" aria-haspopup="menu" aria-controls="tt-mobile-chapter-menu"><span class="tt-dock-num"></span><span class="tt-dock-name"></span><i aria-hidden="true"></i></button>' +
+      '<button type="button" class="tt-dock-cta"></button>';
+    document.body.appendChild(dock);
+    var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', news: 'nav-5', contact: 'nav-6' };
+    var order = ['home', 'projects', 'members', 'works', 'news', 'contact'];
+    var sync = function () {
+      var chapter = document.body.getAttribute('data-active-chapter') || 'home';
+      var nav = document.getElementById(names[chapter] || 'nav-0');
+      var label = nav && nav.querySelector('.nav-label');
+      var lang = document.documentElement.lang || 'ko';
+      var en = /^en/.test(lang), ja = /^ja/.test(lang);
+      dock.setAttribute('aria-label', en ? 'Site dock' : ja ? 'サイトドック' : '사이트 도크');
+      dock.querySelector('.tt-dock-home').setAttribute('aria-label', 'HOME');
+      dock.querySelector('.tt-dock-num').textContent = String(Math.max(0, order.indexOf(chapter)) + 1).padStart(2, '0');
+      dock.querySelector('.tt-dock-name').textContent = label ? label.textContent.trim() : '';
+      dock.querySelector('.tt-dock-chapter').setAttribute('aria-label', (en ? 'Chapter menu: ' : ja ? 'チャプターメニュー：' : '챕터 메뉴: ') + (label ? label.textContent.trim() : ''));
+      dock.querySelector('.tt-dock-cta').textContent = en ? 'Contact' : ja ? 'お問い合わせ' : '문의하기';
     };
-    showScreen();
-    window.addEventListener('resize', showScreen, { passive: true });
-    panel.insertBefore(screenLine, panel.firstChild.nextSibling);
-    tab.addEventListener('click', function () { showScreen(); panel.hidden = !panel.hidden; });
-    panel.addEventListener('click', function (event) {
-      var action = event.target && event.target.getAttribute && event.target.getAttribute('data-x');
-      if (!action) return;
-      var picked = action === 'off' ? [] : Array.prototype.map.call(panel.querySelectorAll('input:checked'), function (i) { return i.value; });
-      try { localStorage.setItem(KEY, picked.join(',')); } catch (_e) {}
-      location.href = '/preview/';
+    sync();
+    new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
+    new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    dock.querySelector('.tt-dock-home').addEventListener('click', function () { goChapter('nav-0'); });
+    dock.querySelector('.tt-dock-cta').addEventListener('click', function () { goChapter('nav-6'); });
+    dock.querySelector('.tt-dock-chapter').addEventListener('click', function (event) {
+      event.stopPropagation();
+      if (window.TALETONE_SITE_UX && window.TALETONE_SITE_UX.toggleChapterMenu) window.TALETONE_SITE_UX.toggleChapterMenu();
     });
-    document.body.appendChild(tab);
-    document.body.appendChild(panel);
 
-    // ---- X1: one dock at the bottom (phones) ----
-    if (has('1')) {
-      var dock = document.createElement('nav');
-      dock.id = 'tt-x-dock';
-      dock.setAttribute('aria-label', '사이트 도크');
-      dock.innerHTML = '<button type="button" class="tt-x-dock-home" aria-label="HOME"><img src="assets/logo/mark-paper.png" alt=""></button>' +
-        '<button type="button" class="tt-x-dock-chapter" aria-haspopup="menu" aria-controls="tt-mobile-chapter-menu"><span class="tt-x-dock-num"></span><span class="tt-x-dock-name"></span><i aria-hidden="true"></i></button>' +
-        '<button type="button" class="tt-x-dock-cta"></button>';
-      document.body.appendChild(dock);
-      var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', news: 'nav-5', contact: 'nav-6' };
-      var order = ['home', 'projects', 'members', 'works', 'news', 'contact'];
-      var sync = function () {
-        var chapter = document.body.getAttribute('data-active-chapter') || 'home';
-        var nav = document.getElementById(names[chapter] || 'nav-0');
-        var label = nav && nav.querySelector('.nav-label');
-        dock.querySelector('.tt-x-dock-num').textContent = String(Math.max(0, order.indexOf(chapter)) + 1).padStart(2, '0');
-        dock.querySelector('.tt-x-dock-name').textContent = label ? label.textContent.trim() : '';
-        var lang = document.documentElement.lang || 'ko';
-        dock.querySelector('.tt-x-dock-cta').textContent = /^en/.test(lang) ? 'Contact' : /^ja/.test(lang) ? 'お問い合わせ' : '문의하기';
+    // /preview/ only: a small readout of this screen's CSS size, to tune layouts for a given phone (e.g. a foldable)
+    if (/\/preview(\/|$)/.test(location.pathname)) {
+      var badge = document.createElement('button');
+      badge.type = 'button';
+      badge.className = 'tt-screen-badge';
+      var show = function () {
+        badge.textContent = window.innerWidth + '×' + window.innerHeight + ' · ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) + 'x';
       };
-      sync();
-      new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
-      new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
-      dock.querySelector('.tt-x-dock-home').addEventListener('click', function () { goChapter('nav-0'); });
-      dock.querySelector('.tt-x-dock-cta').addEventListener('click', function () { goChapter('nav-6'); });
-      dock.querySelector('.tt-x-dock-chapter').addEventListener('click', function (event) {
-        event.stopPropagation();
-        if (window.TALETONE_SITE_UX && window.TALETONE_SITE_UX.toggleChapterMenu) window.TALETONE_SITE_UX.toggleChapterMenu();
-      });
-    }
-
-    // ---- X5: no bridges on phones; each sentence becomes a quote above the next chapter's title ----
-    if (has('5') && window.innerWidth <= 760) {
-      Array.prototype.forEach.call(document.querySelectorAll('[data-story-bridge-wrap]'), function (wrap) {
-        var sentence = wrap.querySelector('[data-bridge]');
-        var text = sentence && (sentence.getAttribute('aria-label') || sentence.textContent || '').replace(/\s+/g, ' ').trim();
-        var next = wrap.nextElementSibling;
-        var head = next && next.querySelector('[data-reveal]');
-        if (!text || !next) return;
-        var quote = document.createElement('p');
-        quote.className = 'tt-x5-quote';
-        quote.textContent = text;
-        // Works draws its own header later, so its quote sits just before the chapter instead
-        if (head) head.insertBefore(quote, head.firstChild);
-        else { quote.classList.add('is-standalone'); next.parentNode.insertBefore(quote, next); }
-      });
+      show();
+      window.addEventListener('resize', show, { passive: true });
+      badge.addEventListener('click', function () { badge.classList.toggle('is-folded'); });
+      document.body.appendChild(badge);
     }
   });
 })();
