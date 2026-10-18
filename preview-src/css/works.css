@@ -3782,6 +3782,7 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
 .tt-x-panel {position:fixed;left:12px;right:12px;top:50%;transform:translateY(-50%);z-index:401;max-width:380px;margin:0 auto;padding:16px;border-radius:16px;
   background:#fffdf8;color:#141c30;box-shadow:0 24px 60px rgba(0,0,0,.4);font:500 14px/1.4 var(--tt-noto-primary),sans-serif}
 .tt-x-panel[hidden] {display:none}
+.tt-x-screen {margin:0 0 10px;padding:8px 10px;border-radius:10px;background:#eef4f7;font:800 13px/1.3 var(--tt-noto-primary),sans-serif;color:#141c30}
 .tt-x-head {margin:0 0 10px;font-weight:800;font-size:13px;color:#0e6e7d}
 .tt-x-panel label {display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(20,28,48,.08);cursor:pointer}
 .tt-x-panel input {width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#0e6e7d}
@@ -3840,59 +3841,58 @@ html.tt-x3 #tt-x-mini:not([hidden]) {display:flex;position:fixed;left:50%;bottom
 #tt-x-mini .tt-x-mini-toggle.is-playing .tt-shelf-play-icon {width:11px;height:13px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 35%,transparent 35% 65%,currentColor 65%)}
 
 /* =====================================================================
-   Works, phone layout of its own (no turntable): a large-cover "now playing" card, then the songs as a
-   list like a music app. Markup from works.js (isPhone); the desktop record shop is untouched.
+   Works, phone layout of its own (no turntable): a compact "now playing" panel directly above a sideways cover
+   carousel, so the chosen song and the choices share one screen. Markup from works.js (isPhone); the desktop
+   record shop is untouched.
    ===================================================================== */
 @media (max-width:760px){
   html body .tt-crate-stage {display:block}
-  html body .tt-crate-deck {position:static;max-width:none;margin:0 0 30px}
+  html body .tt-crate-deck {position:static;max-width:none;margin:0 0 18px}
   /* now playing */
-  .tt-m-hero {display:block}
-  .tt-m-hero-art {position:relative;aspect-ratio:1;border-radius:22px;overflow:hidden;background:#073640;box-shadow:0 26px 54px rgba(0,14,22,.5),0 0 0 1px rgba(141,236,252,.14)}
-  .tt-m-hero-art img {display:block;width:100%;height:100%}
-  .tt-m-hero-art::after {content:'';position:absolute;inset:auto 0 0 0;height:42%;background:linear-gradient(180deg,rgba(4,26,34,0),rgba(4,26,34,.7));pointer-events:none}
-  html body .tt-m-hero-play {position:absolute;right:16px;bottom:16px;z-index:2;display:grid;place-items:center;width:64px;height:64px;padding:0;border:0;border-radius:50%;
-    background:#fbffff;color:#0a4f5b;cursor:pointer;box-shadow:0 12px 28px rgba(0,14,22,.45)}
-  html body .tt-m-hero-play .tt-shelf-play-icon {width:0;height:0;margin-left:5px;border-left:20px solid currentColor;border-top:12px solid transparent;border-bottom:12px solid transparent;background:none}
-  html body .tt-m-hero-play.is-playing .tt-shelf-play-icon {width:18px;height:22px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 34%,transparent 34% 66%,currentColor 66%)}
-  html body .tt-m-hero-play:focus-visible {outline:2px solid #8decfc;outline-offset:4px}
-  .tt-m-hero-eq {position:absolute;left:18px;bottom:22px;z-index:2;display:flex;align-items:flex-end;gap:3px;height:22px;opacity:0;transition:opacity .3s}
-  .tt-m-hero-eq i {width:4px;height:30%;border-radius:2px;background:#fbffff;animation:ttShelfEq .9s ease-in-out infinite}
-  .tt-m-hero-eq i:nth-child(2) {animation-delay:-.3s}.tt-m-hero-eq i:nth-child(3) {animation-delay:-.6s}.tt-m-hero-eq i:nth-child(4) {animation-delay:-.15s}
-  .tt-m-hero.is-playing .tt-m-hero-eq {opacity:1}
-  html body .tt-m-hero-info {padding:18px 2px 0;text-align:left}
-  html body .tt-m-hero-info .tt-shelf-format {margin:0;color:#8decfc}
-  html body .tt-m-hero-info .tt-deck-title {margin:6px 0 4px;font:700 26px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff}
-  html body .tt-m-hero-info .tt-deck-artist {margin:0;font:600 15px/1.4 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.75)}
-  html body .tt-m-hero-info .tt-deck-chips {margin-top:12px}
-  html body .tt-m-hero-info .tt-deck-more {position:static;display:inline-flex;margin-top:14px;min-height:44px;padding:0 18px}
+  .tt-m-now {padding:12px;border-radius:20px;background:rgba(4,30,40,.55);box-shadow:inset 0 0 0 1px rgba(141,236,252,.18),0 14px 30px rgba(0,14,22,.3)}
+  .tt-m-now-main {display:grid;grid-template-columns:72px minmax(0,1fr) 52px;align-items:center;gap:14px}
+  .tt-m-now-art {position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;box-shadow:0 8px 18px rgba(0,14,22,.4)}
+  .tt-m-now-art img {display:block;width:100%;height:100%}
+  .tt-m-now-eq {position:absolute;inset:auto 0 0 0;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:26px;padding-bottom:6px;
+    background:linear-gradient(180deg,rgba(4,26,34,0),rgba(4,26,34,.7));opacity:0;transition:opacity .3s}
+  .tt-m-now-eq i {width:3px;height:35%;border-radius:2px;background:#fbffff;animation:ttShelfEq .9s ease-in-out infinite}
+  .tt-m-now-eq i:nth-child(2) {animation-delay:-.3s}.tt-m-now-eq i:nth-child(3) {animation-delay:-.6s}
+  .tt-m-now.is-playing .tt-m-now-eq {opacity:1}
+  html body .tt-m-now-info {padding:0;min-width:0;text-align:left}
+  html body .tt-m-now-info .tt-shelf-format {margin:0;font-size:12px;color:#8decfc}
+  html body .tt-m-now-info .tt-deck-title {margin:3px 0 2px;font:700 18px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html body .tt-m-now-info .tt-deck-artist {margin:0;font:600 13px/1.3 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html body .tt-m-now-play {display:grid;place-items:center;width:52px;height:52px;padding:0;border:0;border-radius:50%;background:#fbffff;color:#0a4f5b;cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,14,22,.4)}
+  html body .tt-m-now-play .tt-shelf-play-icon {width:0;height:0;margin-left:4px;border-left:16px solid currentColor;border-top:10px solid transparent;border-bottom:10px solid transparent;background:none}
+  html body .tt-m-now-play.is-playing .tt-shelf-play-icon {width:15px;height:18px;margin:0;border:0;background:linear-gradient(90deg,currentColor 0 34%,transparent 34% 66%,currentColor 66%)}
+  html body .tt-m-now-play:focus-visible {outline:2px solid #8decfc;outline-offset:3px}
+  .tt-m-now-actions {display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+  .tt-m-now-actions:empty {display:none}
+  html body .tt-m-now-actions .tt-deck-chips {margin:0}
+  /* relative: its 44px touch area (::after) must stay on the button, not cover the carousel */
+  html body .tt-m-now-actions .tt-deck-more {position:relative;min-height:40px;margin-left:auto;padding:0 16px}
 
-  /* the list */
-  html body .tt-crate-rack .tt-shelf-filters {flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -16px 14px;padding:2px 16px 6px;scrollbar-width:none}
+  /* the carousel */
+  html body .tt-crate-rack .tt-shelf-filters {flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -16px 12px;padding:2px 16px 6px;scrollbar-width:none}
   html body .tt-crate-rack .tt-shelf-filters::-webkit-scrollbar {display:none}
   html body .tt-crate-rack .tt-shelf-chip {flex:none}
-  html body .tt-crate-rack .tt-m-list {display:flex;flex-direction:column;gap:2px;max-height:none!important;overflow:visible!important;margin:0;padding:0;list-style:none}
-  html body .tt-m-row {transform:none!important;animation:none!important;text-align:left}
-  html body .tt-m-row .tt-rack-pick {display:grid;grid-template-columns:56px minmax(0,1fr) auto 28px;align-items:center;gap:12px;width:100%;min-height:72px;
-    padding:8px;border:0;border-radius:14px;background:none;color:#fbffff;text-align:left;cursor:pointer;transform:none!important}
-  html body .tt-m-row .tt-rack-pick::after,
-  html body .tt-m-row .tt-rack-pick::before {content:none;display:none}
-  html body .tt-m-row .tt-rack-pick:focus-visible {outline:2px solid #8decfc;outline-offset:-2px}
-  html body .tt-m-row.is-current .tt-rack-pick {background:rgba(141,236,252,.12);box-shadow:inset 0 0 0 1px rgba(141,236,252,.28)}
-  .tt-m-row-art {width:56px;height:56px;border-radius:10px;box-shadow:0 6px 14px rgba(0,14,22,.35)}
-  .tt-m-row-text {display:flex;flex-direction:column;gap:3px;min-width:0}
-  html body .tt-m-row .tt-rack-name {font:700 15px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  html body .tt-m-row .tt-rack-artist {margin:0;font:600 13px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.65)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .tt-m-row-year {font:700 12px/1 'Quicksand',sans-serif;color:rgba(251,255,255,.5)}
-  html body .tt-m-row .tt-rack-badge {position:static;display:none;justify-self:center;height:20px;padding:4px 6px}
-  html body .tt-m-row.is-playing .tt-rack-badge {display:flex}
-  .tt-m-row-play {justify-self:center;width:0;height:0;border-left:10px solid rgba(251,255,255,.55);border-top:6px solid transparent;border-bottom:6px solid transparent}
-  .tt-m-row.is-playing .tt-m-row-play {display:none}
-  .tt-m-list-more {display:block;width:100%;min-height:48px;margin:12px 0 0;border:1px solid rgba(141,236,252,.4);border-radius:999px;background:none;color:#fbffff;
-    font:800 14px/1 var(--tt-noto-primary),sans-serif;cursor:pointer}
-  .tt-m-list-more:focus-visible {outline:2px solid #8decfc;outline-offset:3px}
+  html body .tt-crate-rack .tt-m-carousel {display:flex;gap:12px;max-height:none!important;overflow-x:auto;overflow-y:hidden!important;margin:0 -16px;padding:4px 16px 14px;
+    list-style:none;scroll-snap-type:x mandatory;scroll-padding:0 16px;overscroll-behavior-x:contain;scrollbar-width:none}
+  html body .tt-crate-rack .tt-m-carousel::-webkit-scrollbar {display:none}
+  html body .tt-m-card {flex:0 0 clamp(128px,38vw,168px);scroll-snap-align:start;transform:none!important;animation:none!important;text-align:left}
+  html body .tt-m-card .tt-rack-pick {display:flex;flex-direction:column;gap:4px;width:100%;padding:0;border:0;background:none;color:#fbffff;text-align:left;cursor:pointer;transform:none!important}
+  html body .tt-m-card .tt-rack-pick::before,
+  html body .tt-m-card .tt-rack-pick::after {content:none;display:none}
+  html body .tt-m-card .tt-rack-pick:focus-visible {outline:2px solid #8decfc;outline-offset:3px;border-radius:14px}
+  .tt-m-card-art {position:relative;display:block;aspect-ratio:1;border-radius:14px;overflow:hidden;margin-bottom:6px;box-shadow:0 10px 22px rgba(0,14,22,.4)}
+  .tt-m-card-art img {display:block;width:100%;height:100%}
+  html body .tt-m-card.is-current .tt-m-card-art {box-shadow:0 0 0 3px #8decfc,0 10px 22px rgba(0,14,22,.4)}
+  html body .tt-m-card .tt-rack-badge {position:absolute;left:8px;bottom:8px;right:auto;top:auto;height:22px}
+  html body .tt-m-card .tt-rack-name {font:700 14px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html body .tt-m-card .tt-rack-artist {margin:0;font:600 12px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.65)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
-@media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-hero-eq i {animation:none}}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-now-eq i {animation:none}}
 
 /* News, phone layout of its own: the newest item as a large card, the rest as compact rows (thumbnail, tag and
    date, title) like a news app. The whole row opens the article sheet as before. */
@@ -3911,4 +3911,24 @@ html.tt-x3 #tt-x-mini:not([hidden]) {display:flex;position:fixed;left:50%;bottom
   #content#content #c-news .lift:not(:first-child) p,
   #content#content #c-news .lift:not(:first-child) > :last-child > :last-child:not(.tt-news-title) {display:none!important}
   #content#content #c-members .tt-network-summary {min-height:72px;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
+}
+
+/* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) and a
+   smaller newest-news card (wide picture, two-line summary) — both were taller than a screen half */
+@media (max-width:760px){
+  #content#content #c-projects article.lift {display:grid!important;grid-template-columns:104px minmax(0,1fr);grid-template-areas:"media head" "media copy" "button button";
+    column-gap:14px!important;row-gap:4px!important;align-items:start;padding:14px!important;border-radius:20px!important}
+  #content#content #c-projects article.lift > :nth-child(1) {grid-area:head;margin:0!important;min-height:0}
+  #content#content #c-projects article.lift > :nth-child(1) > :first-child > :first-child {margin-bottom:4px!important;font-size:12px!important}
+  #content#content #c-projects .tt-project-title {font-size:22px!important;line-height:1.15!important}
+  #content#content #c-projects article.lift > :nth-child(2) {grid-area:media;order:0;width:104px;height:104px;aspect-ratio:1;margin:0!important;border-radius:14px!important}
+  #content#content #c-projects article.lift > :nth-child(3) {grid-area:copy;margin:2px 0 0!important;font-size:13.5px!important;line-height:1.5!important;
+    display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden!important}
+  #content#content #c-projects article.lift > :nth-child(4) {grid-area:button;justify-self:stretch;justify-content:center;margin:12px 0 0!important}
+
+  #content#content #c-news .lift:first-child > :first-child {aspect-ratio:21/9!important}
+  #content#content #c-news .lift:first-child > :last-child > :last-child:not(.tt-news-title) {display:none!important}
+  #content#content #c-news .lift:first-child > :last-child {padding:14px 16px 16px!important;gap:6px}
+  #content#content #c-news .lift:first-child .tt-news-title {margin:4px 0!important;font-size:18px!important;line-height:1.3!important}
+  #content#content #c-news .lift:first-child p {font-size:13.5px!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }

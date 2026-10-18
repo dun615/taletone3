@@ -672,7 +672,17 @@
     panel.innerHTML = '<p class="tt-x-head">미리보기 실험 (이 브라우저에만 저장)</p>' + ideas.map(function (idea) {
       return '<label><input type="checkbox" value="' + idea[0] + '"' + (has(idea[0]) ? ' checked' : '') + '><span><b>X' + idea[0] + ' ' + idea[1] + '</b><small>' + idea[2] + '</small></span></label>';
     }).join('') + '<div class="tt-x-actions"><button type="button" data-x="apply">적용하고 새로고침</button><button type="button" data-x="off">모두 끄기</button></div>';
-    tab.addEventListener('click', function () { panel.hidden = !panel.hidden; });
+    // the screen this browser reports (CSS pixels, device pixel ratio), to tune layouts for a given phone
+    var screenLine = document.createElement('p');
+    screenLine.className = 'tt-x-screen';
+    var showScreen = function () {
+      screenLine.textContent = '화면 ' + window.innerWidth + '×' + window.innerHeight + ' · 배율 ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) +
+        ' · ' + (window.innerWidth > window.innerHeight ? '가로' : '세로');
+    };
+    showScreen();
+    window.addEventListener('resize', showScreen, { passive: true });
+    panel.insertBefore(screenLine, panel.firstChild.nextSibling);
+    tab.addEventListener('click', function () { showScreen(); panel.hidden = !panel.hidden; });
     panel.addEventListener('click', function (event) {
       var action = event.target && event.target.getAttribute && event.target.getAttribute('data-x');
       if (!action) return;
