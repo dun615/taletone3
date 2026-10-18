@@ -358,6 +358,18 @@
     var title = plainRichText(unit.title || work.title || '');
     var artist = plainRichText(unit.artist || work.artist || '');
     var current = state.current === index;
+    if (isPhone()) {
+      var thumb = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
+      return '<li class="tt-rack-item tt-m-row' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
+        '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
+          '<img class="tt-m-row-art" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '">' +
+          '<span class="tt-m-row-text"><span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span></span>' +
+          '<span class="tt-m-row-year">' + esc(yearOf(work)) + '</span>' +
+          '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
+          '<span class="tt-m-row-play" aria-hidden="true"></span>' +
+        '</button>' +
+      '</li>';
+    }
     return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + (artist ? ' — ' + artist : '')) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
         sleeveHtml(work, order < 8) +
@@ -386,6 +398,24 @@
           return '<button type="button" class="' + (label === state.language ? 'is-on' : '') + '" aria-pressed="' + (label === state.language) + '" data-works-action="language" data-language="' + esc(label) + '">' + esc(label) + '</button>';
         }).join('') + '</div>' : '';
     var moreButton = '<button type="button" class="tt-deck-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>';
+    if (isPhone()) {
+      var image = unit.image || work.image || '';
+      return '<section class="tt-deck tt-m-hero' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
+        '<div class="tt-m-hero-art">' +
+          '<img src="' + esc(image) + '" alt="" decoding="async" style="' + coverStyle(unit) + '">' +
+          '<span class="tt-m-hero-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>' +
+          (hasAudio(work)
+            ? '<button type="button" class="tt-deck-toggle tt-m-hero-play' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>'
+            : '') +
+        '</div>' +
+        '<div class="tt-deck-info tt-m-hero-info">' +
+          '<p class="tt-shelf-format">' + esc([work.format || (isAlbum(work) ? 'Album' : 'Single'), yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
+          '<h3 class="tt-deck-title">' + esc(title) + '</h3>' +
+          '<p class="tt-deck-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackTitle ? ' · <span>' + esc(trackTitle) + '</span>' : '') + '</p>' +
+          tracks + langs + moreButton +
+        '</div>' +
+      '</section>';
+    }
     return '<section class="tt-deck' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
       '<div class="tt-deck-table">' +
         '<div class="tt-deck-platter">' + discHtml(work, 'tt-disc--platter') + '<span class="tt-deck-spindle"></span></div>' +
@@ -394,7 +424,7 @@
           ? '<button type="button" class="tt-deck-arm-base tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>'
           : '<span class="tt-deck-arm-base" aria-hidden="true"></span>') +
         '<label class="tt-deck-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
-        (isPhone() ? '' : moreButton) +
+        moreButton +
         '<span class="tt-deck-led" aria-hidden="true"></span>' +
       '</div>' +
       '<div class="tt-deck-info">' +
@@ -403,7 +433,6 @@
         '<p class="tt-deck-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackTitle ? ' · <span>' + esc(trackTitle) + '</span>' : '') + '</p>' +
         (unit.description ? '<p class="tt-deck-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
         tracks + langs +
-        (isPhone() ? moreButton : '') +
       '</div>' +
     '</section>';
   }
@@ -530,6 +559,19 @@
     });
   }
 
+  // phones: a list of six rows with "show all"; elsewhere the whole rack
+  var PHONE_ROWS = 6;
+  function rackListHtml(list) {
+    if (!isPhone()) return '<ul class="tt-rack-grid">' + list.map(rackItemHtml).join('') + '</ul>';
+    var shown = state.listOpen ? list : list.slice(0, PHONE_ROWS);
+    var key = pageLangKey();
+    var more = list.length > PHONE_ROWS
+      ? '<button type="button" class="tt-m-list-more" data-works-action="list-more" aria-expanded="' + !!state.listOpen + '">' +
+          esc(state.listOpen ? ({ en: 'Show less', jp: '閉じる' }[key] || '접기') : ({ en: 'Show all ' + list.length, jp: list.length + '曲すべて見る' }[key] || '전체 ' + list.length + '곡 보기')) + '</button>'
+      : '';
+    return '<ul class="tt-rack-grid tt-m-list">' + shown.map(rackItemHtml).join('') + '</ul>' + more;
+  }
+
   function render(before) {
     if (!root) root = ensureRoot();
     if (!root) return;
@@ -537,7 +579,7 @@
     root.innerHTML = '<div class="tt-shelf tt-crate' + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() +
       '<div class="tt-crate-stage">' +
         '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
-        '<div class="tt-crate-rack">' + filtersHtml() + '<ul class="tt-rack-grid">' + list.map(rackItemHtml).join('') + '</ul></div>' +
+        '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
       '</div>' + clientsHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
@@ -548,7 +590,6 @@
     handOffRackScroll();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
-    watchFeed();
     playPending();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
@@ -866,21 +907,6 @@
     toggle.setAttribute('aria-label', state.playing ? L().pause : L().play);
   }
 
-  // X4 (phones): the cover in the middle of the screen plays, once the reader has started the music
-  var feedObserver = null;
-  function watchFeed() {
-    if (!experiment('4') || !isPhone() || !root || !('IntersectionObserver' in window)) return;
-    if (feedObserver) feedObserver.disconnect();
-    feedObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting || !state.engaged || !state.playing) return;
-        var index = Number(entry.target.getAttribute('data-works-book'));
-        if (index !== state.current && works[index] && hasAudio(works[index])) pick(index);
-      });
-    }, { root: null, rootMargin: '-45% 0px -45% 0px' });
-    root.querySelectorAll('[data-works-book]').forEach(function (item) { feedObserver.observe(item); });
-  }
-
   function refreshPlaying(rebuild) {
     refreshMiniPlayer();
     if (!root) return;
@@ -922,6 +948,7 @@
     if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
+      state.listOpen = false;
       render(before);
       announce((L()[state.filter] || state.filter) + ' · ' + visibleWorks().length);
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
@@ -952,6 +979,10 @@
       if (index === state.current && state.playing) pauseAll(); else if (index === state.current) resume(); else { playIndex(index); refreshPlaying(true); }
     } else if (action === 'modal-track') {
       playIndex(Number(button.getAttribute('data-index')), Number(button.getAttribute('data-track')) || 0);
+    } else if (action === 'list-more') {
+      state.listOpen = !state.listOpen;
+      render();
+      var moreButton = root && root.querySelector('.tt-m-list-more'); if (moreButton) moreButton.focus({ preventScroll: true });
     } else if (action === 'toggle') {
       if (state.playing) pauseAll(); else { if (!audio || !audio.getAttribute('src')) loadCurrent(false); resume(); }
     } else if (action === 'track') {

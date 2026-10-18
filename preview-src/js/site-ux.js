@@ -643,7 +643,7 @@
 })();
 
 // ===== Preview experiments (REVIEW-mobile phase 3) =====
-// Only on /preview/: a "실험" tab switches X1–X5 on and off (saved in this browser), so each idea can be tried
+// Only on /preview/: a "실험" tab switches X1–X3 and X5 on and off (X4 became the phone Works layout) (saved in this browser), so each idea can be tried
 // on a phone before deciding. The live site never runs any of it.
 (function () {
   if (!/\/preview(\/|$)/.test(location.pathname)) return;
@@ -652,7 +652,6 @@
     ['1', '아래쪽 도크', '위쪽 장치를 없애고 화면 아래 도크 하나로 (휴대폰)'],
     ['2', '스토리 모드', '챕터 시작마다 화면이 맞춰 멈춤 (휴대폰)'],
     ['3', '어디서나 재생', 'Works를 벗어나도 음악이 계속되고 미니 플레이어가 따라옴'],
-    ['4', 'Works 세로 피드', '커버를 크게 세로로, 가운데 온 곡을 재생 (휴대폰)'],
     ['5', '브릿지 없애기', '챕터 사이 화면 대신 제목 위 한 줄 인용 (휴대폰)']
   ];
   var on = [];
