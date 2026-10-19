@@ -690,7 +690,8 @@
       badge.type = 'button';
       badge.className = 'tt-screen-badge';
       var show = function () {
-        badge.textContent = window.innerWidth + '×' + window.innerHeight + ' · ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) + 'x';
+        var cs = document.documentElement.getAttribute('data-cs') || 'a';
+        badge.textContent = window.innerWidth + '×' + window.innerHeight + ' · ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) + 'x · 다크테스트 ' + cs.toUpperCase();
       };
       show();
       window.addEventListener('resize', show, { passive: true });
