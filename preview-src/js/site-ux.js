@@ -691,10 +691,15 @@
       badge.className = 'tt-screen-badge';
       var show = function () {
         var cs = document.documentElement.getAttribute('data-cs') || 'a';
-        badge.textContent = window.innerWidth + '×' + window.innerHeight + ' · ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) + 'x · 다크테스트 ' + cs.toUpperCase();
+        // what this browser reveals about dark mode (Samsung Internet's forced dark cannot be detected directly)
+        var prefersDark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        var samsung = /SamsungBrowser\/([\d.]+)/.exec(navigator.userAgent || '');
+        badge.textContent = window.innerWidth + '×' + window.innerHeight + ' · ' + (Math.round((window.devicePixelRatio || 1) * 100) / 100) + 'x · 다크테스트 ' + cs.toUpperCase() +
+          ' · 다크감지 ' + (prefersDark ? '예' : '아니오') + (samsung ? ' · 삼성 ' + samsung[1] : '');
       };
       show();
       window.addEventListener('resize', show, { passive: true });
+      if (window.matchMedia) { try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', show); } catch (_e) {} }
       badge.addEventListener('click', function () { badge.classList.toggle('is-folded'); });
       document.body.appendChild(badge);
     }
