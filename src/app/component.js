@@ -172,6 +172,7 @@ class Component extends DCLogic {
           }
         }
       }
+      if(current>previous+2) this._preloadAhead(current);
       if(!this.isMobileMotion()) return;
       this._fastScrollUntil=performance.now()+220;
       if(this._fastMobileState!==true){ document.body.classList.add('tt-mobile-scroll-active'); this._fastMobileState=true; }
@@ -182,6 +183,24 @@ class Component extends DCLogic {
       },190);
     };
     if(this.scroller) this.scroller.addEventListener('scroll',this._mobileScrollHandler,{passive:true});
+    // only the reader's own scrolling counts for _preloadAhead (not route landings or menu jumps)
+    var markInput=()=>{ this._userScrollAt=performance.now(); };
+    ['wheel','touchmove','keydown'].forEach((type)=>window.addEventListener(type,markInput,{passive:true}));
+  }
+  // Reading downward by hand: a chapter within a screen and a half below the view gets its pictures now
+  // (TALETONE_CHAPTER_PRELOAD, as a bridge does), so they are decoded by the time it scrolls in. A menu or
+  // dock jump (_chapterTarget, _bridgeNavTarget) or a route landing preloads nothing it passes over.
+  _preloadAhead(top){
+    if(this._chapterTarget||this._bridgeNavTarget||performance.now()-(this._userScrollAt||-1e9)>1200) return;
+    var done=this._preloadedChapters||(this._preloadedChapters={});
+    var view=this.scroller?this.scroller.clientHeight:window.innerHeight;
+    ['projects','members','works','news','contact'].forEach((chapter)=>{
+      if(done[chapter]) return;
+      var section=document.getElementById('c-'+chapter);
+      if(!section||section.getBoundingClientRect().top>view*2.5) return;
+      done[chapter]=true;
+      window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:chapter}}));
+    });
   }
   // The contact button link and label.
   _mountContactLink(){
