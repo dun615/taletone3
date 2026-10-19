@@ -742,70 +742,52 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- ===== MEMBER DETAIL MODAL ===== -->
 <sc-if value="{{ mOpen }}" hint-placeholder-val="{{ false }}">
 <div class="tt-member-modal tt-s-z-index-300-daaf tt-s-place-items-center-9906" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
-  <div class="tt-member-panel tt-s-width-min-1060px-96vw-fd47" onclick="{{ stop }}" style="position:relative;width:min(1060px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.94);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5);padding:clamp(22px,3vw,40px)">
+  <div class="tt-member-panel tt-sheet" onclick="{{ stop }}" style="--m-accent:{{ m.accent }}">
     <button type="button" class="tt-member-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-    <div class="tt-member-grid tt-s-grid-template-columns-6b05 tt-s-grid-template-columns-0466" style="display:grid;grid-template-columns:clamp(264px,33%,344px) 1fr;gap:clamp(24px,3vw,40px);align-items:stretch">
-      <!-- LEFT RAIL: photo + quick facts -->
-      <div class="tt-member-rail" style="display:flex;flex-direction:column;gap:16px;min-width:0">
-        <div class="tt-member-photo-wrap tt-s-aspect-ratio-4-5-7db9" style="border-radius:22px;overflow:hidden;background:linear-gradient(160deg,{{ m.tint }},#ffffff);aspect-ratio:4/5;box-shadow:0 14px 38px rgba(8,22,38,.12)">
-          <img id="m-photo" src="{{ m.photo }}" alt="{{ m.name }}" style="width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(120% 120% at 50% 38%,#000 64%,transparent 100%);mask-image:radial-gradient(120% 120% at 50% 38%,#000 64%,transparent 100%)">
-        </div>
-        <!-- Basic Info -->
-        <div class="tt-member-basic" style="border-radius:18px;background:rgba(236,242,255,.6);border:1px solid rgba(24,32,52,.06);padding:20px 22px 22px">
-          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em;color:#16202e;margin-bottom:15px;display:flex;align-items:center;gap:9px"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.accent }}"></span>{{ UI_LABELS.basicInfo }}</div>
-          <div class="tt-s-font-size-11px-8b68" style="font-weight:800;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:{{ m.accent }};margin-bottom:5px">{{ UI_LABELS.education }}</div>
-          
-          <div class="tt-s-font-size-14px-0cf0" style="font-weight:500;font-size:14px;line-height:1.55;color:#5a6678;white-space:pre-wrap;margin-bottom:16px">{{ m.education }}</div>
-          
-          
-          <div class="tt-s-font-size-11px-8b68" style="font-weight:800;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:{{ m.accent }};margin-bottom:5px">{{ UI_LABELS.mbti }}</div>
-          
-          <div class="tt-s-font-size-14px-0cf0" style="font-weight:600;font-size:14px;color:#5a6678">{{ m.mbti }}</div>
-          
-          
-        </div>
-        <!-- Traits -->
-        <div class="tt-member-traits" style="border-radius:18px;background:rgba(236,242,255,.6);border:1px solid rgba(24,32,52,.06);padding:20px 22px 22px">
-          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em;color:#16202e;margin-bottom:14px;display:flex;align-items:center;gap:9px"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.accent }}"></span>{{ UI_LABELS.traits }}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
-            
-            <sc-for list="{{ m.traits }}" as="t" hint-placeholder-count="4">
-            <span style="padding:8px 14px;border-radius:999px;background:#e7ecf6;font-weight:700;font-size:12.5px;color:#3a4254">{{ t }}</span>
-            </sc-for>
-            
-            
+    <header class="tt-sheet-head">
+      <div class="tt-sheet-disc"><img id="m-photo" src="{{ m.photo }}" alt="{{ m.name }}" decoding="async"></div>
+      <div class="tt-sheet-id">
+        <div class="tt-sheet-role">{{ m.role }}</div>
+        <div class="tt-sheet-nameline"><h3 class="tt-member-brand tt-sheet-name">{{ m.brand }}</h3><span class="tt-sheet-tag">#{{ m.animal }}</span></div>
+        <sc-if value="{{ m.tagline }}"><p class="tt-sheet-tagline">{{ m.tagline }}</p></sc-if>
+      </div>
+    </header>
+    <div class="tt-sheet-body">
+      <section class="tt-sheet-credits" data-sheet-scroll="">
+        <sc-if value="{{ M_SHEET.hasSelected }}">
+          <h4 class="tt-sheet-label">{{ UI_LABELS.selectedCredits }}</h4>
+          <ol class="tt-sheet-selected">
+            <sc-for list="{{ M_SHEET.selected }}" as="pick" hint-placeholder-count="3"><li><span class="tt-sheet-no">{{ pick.number }}</span><p>{{ pick.text }}</p></li></sc-for>
+          </ol>
+        </sc-if>
+        <sc-if value="{{ M_SHEET.hasCredits }}">
+          <h4 class="tt-sheet-label">{{ UI_LABELS.allCredits }}<span class="tt-sheet-count">{{ M_SHEET.count }}</span></h4>
+          <sc-for list="{{ M_SHEET.groups }}" as="group" hint-placeholder-count="3">
+          <div class="tt-sheet-group">
+            <sc-if value="{{ group.label }}"><div class="tt-sheet-year">{{ group.label }}</div></sc-if>
+            <ul class="tt-sheet-list">
+              <sc-for list="{{ group.items }}" as="credit" hint-placeholder-count="4">
+              <li>
+                <span class="tt-sheet-work">{{ credit.title }}</span>
+                <sc-if value="{{ credit.roles }}"><span class="tt-sheet-roles">{{ credit.roles }}</span></sc-if>
+                <sc-if value="{{ credit.link }}"><a class="tt-sheet-link" href="{{ credit.link }}" target="_blank" rel="noopener">{{ credit.linkText }} ↗</a></sc-if>
+                <sc-if value="{{ credit.subs.length }}"><ul class="tt-sheet-subs"><sc-for list="{{ credit.subs }}" as="track" hint-placeholder-count="2"><li><span class="tt-sheet-work">{{ track.title }}</span><sc-if value="{{ track.roles }}"><span class="tt-sheet-roles">{{ track.roles }}</span></sc-if></li></sc-for></ul></sc-if>
+              </li>
+              </sc-for>
+            </ul>
           </div>
-          
-          <a href="{{ m.iglink }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:999px;background:#141c30;color:#fffdf8;font-weight:700;font-size:13px;text-decoration:none">{{ UI_LABELS.sns }}</a>
-          
-          
-        </div>
-      </div>
-      <!-- RIGHT MAIN: identity + credit -->
-      <div class="tt-member-main" style="display:flex;flex-direction:column;min-width:0">
-        <div class="tt-member-identity">
-        
-        <div style="font-weight:800;font-size:clamp(12px,1.3vw,15px);letter-spacing:.04em;color:{{ m.accent }};margin-bottom:10px">{{ m.role }}</div>
-        <div class="tt-member-brand tt-s-font-size-clamp-46px-6-e8cc" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(46px,6vw,90px);letter-spacing:-.01em;line-height:.88;color:#16202e">{{ m.brand }}</div>
-        <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(22px,2.6vw,34px);letter-spacing:-.02em;color:#16202e;margin-top:16px">{{ m.tagline }}</div>
-        <div style="font-weight:500;font-size:clamp(14px,1.4vw,18px);color:#6b7488;margin-top:7px">{{ m.taglineKo }}</div>
-        
-        
-        </div>
-        <div class="tt-member-credit-section">
-        <div style="height:1px;background:linear-gradient(90deg,rgba(24,32,52,.16),rgba(24,32,52,0));margin:26px 0 20px"></div>
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
-          <div style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:20px;letter-spacing:-.01em;color:#16202e">{{ UI_LABELS.credit }}</div>
-          <div style="flex:1;height:1px;background:rgba(24,32,52,.08)"></div>
-        </div>
-        <div class="tt-member-credit-box tt-s-max-height-clamp-300px-6d6c" style="max-height:clamp(300px,46vh,520px);overflow-y:auto;scrollbar-width:thin;border-radius:14px;background:rgba(236,242,255,.45);border:1px solid rgba(24,32,52,.05);padding:18px 16px 18px 20px">
-          
-          <div class="tt-s-font-size-14px-0cf0" style="white-space:pre-wrap;font-weight:500;font-size:14px;line-height:1.66;color:#5a6678">{{ m.creditsText }}</div>
-          
-          
-        </div>
-        </div>
-      </div>
+          </sc-for>
+        </sc-if>
+      </section>
+      <aside class="tt-sheet-profile">
+        <h4 class="tt-sheet-label">{{ UI_LABELS.profile }}</h4>
+        <dl class="tt-sheet-facts">
+          <sc-if value="{{ M_SHEET.hasEducation }}"><div><dt>{{ UI_LABELS.education }}</dt><dd class="tt-sheet-pre">{{ m.education }}</dd></div></sc-if>
+          <sc-if value="{{ M_SHEET.hasMbti }}"><div><dt>{{ UI_LABELS.mbti }}</dt><dd>{{ m.mbti }}</dd></div></sc-if>
+        </dl>
+        <sc-if value="{{ M_SHEET.hasTraits }}"><ul class="tt-sheet-traits"><sc-for list="{{ M_SHEET.traits }}" as="trait" hint-placeholder-count="3"><li>{{ trait }}</li></sc-for></ul></sc-if>
+        <sc-if value="{{ M_SHEET.hasSns }}"><a class="tt-sheet-sns" href="{{ m.iglink }}" target="_blank" rel="noopener" aria-label="{{ UI_LABELS.snsLink }}">{{ UI_LABELS.sns }}</a></sc-if>
+      </aside>
     </div>
   </div>
 </div>

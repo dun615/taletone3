@@ -212,6 +212,43 @@ var ComponentContent = {
 
   openMember(i){ this.setState({mi:i, mOpen:true}); },
 
+  // The member sheet reads creditsText as liner notes: "| 2025" starts a group, "* work — roles" is an entry,
+  // an indented "* <track> — roles" belongs to the entry above, a bare [text](url) line links the entry above,
+  // and trailing #tags are dropped (the keywords already show them). Text with no markers becomes one group.
+  memberSheet(m){
+    var groups = [], group = null, last = null;
+    String((m && m.creditsText) || '').split(/\r?\n/).forEach(function(raw){
+      var line = raw.replace(/\s+$/, ''), text = line.trim();
+      if(!text || /^#\S/.test(text)) return;
+      var head = text.match(/^\|\s*(.+)$/);
+      if(head){ group = {label: head[1].trim(), items: []}; groups.push(group); last = null; return; }
+      if(!group){ group = {label: '', items: []}; groups.push(group); }
+      var link = text.match(/^\[([^\]]+)\]\((https?:[^)\s]+)\)$/);
+      if(link && last){ last.link = link[2]; last.linkText = link[1].replace(/^https?:\/\//, '').replace(/\/$/, ''); return; }
+      var body = text.replace(/^[-*•]\s*/, ''), parts = body.split(/\s+—\s+/);
+      var entry = {title: parts[0], roles: parts.slice(1).join(' — '), subs: [], link: '', linkText: ''};
+      if(/^\s{2,}[-*•]\s/.test(line) && last){ last.subs.push(entry); return; }
+      group.items.push(entry); last = entry;
+    });
+    groups = groups.filter(function(g){ return g.items.length; });
+    var selected = (Array.isArray(m && m.featuredCredits) ? m.featuredCredits : []).map(function(item){
+      return String(item || '').replace(/^\s*[-*•]\s*/, '').trim();
+    }).filter(Boolean).slice(0, 3).map(function(text, i){ return {number: String(i + 1).padStart(2, '0'), text: text}; });
+    var traits = (Array.isArray(m && m.traits) ? m.traits : []).map(function(t){ return String(t || '').replace(/^#/, '').replace(/_/g, ' ').trim(); }).filter(Boolean);
+    return {
+      groups: groups,
+      count: groups.reduce(function(sum, g){ return sum + g.items.length; }, 0),
+      hasCredits: groups.length > 0,
+      selected: selected,
+      hasSelected: selected.length > 0,
+      traits: traits,
+      hasTraits: traits.length > 0,
+      hasEducation: !!(m && m.education),
+      hasMbti: !!(m && m.mbti),
+      hasSns: !!(m && m.iglink)
+    };
+  },
+
   openNews(i){ this.setState({ni:i, nOpen:true}); },
 
   togglePartner(){var open=!this.state.partnerOpen;document.body.classList.toggle('tt-network-open',open);this.setState({partnerOpen:open});},

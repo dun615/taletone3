@@ -636,6 +636,7 @@ class Component extends DCLogic {
       })),
       mOpen: this.state.mOpen, nOpen: this.state.nOpen,
       m: (this.MEMBERS||[])[this.state.mi] || {},
+      M_SHEET: this.memberSheet((this.MEMBERS||[])[this.state.mi] || {}),
       nk: (this.NEWS||[])[this.state.ni] || {},
       partnerOpen: this.state.partnerOpen,
       togglePartner:()=>this.togglePartner(),
