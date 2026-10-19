@@ -3934,3 +3934,50 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body[data-active-chapter] #brand-mark[src*="mark-ink"] {filter:invert(calc(1 - var(--tt-brand-light)))!important}
   html body #brand, html body #brand > div, html body #brand > div > span {transition:none!important}
 }
+
+/* =====================================================================
+   Members as five records: each member is their own CD (assets/members/member-cd-0N.svg, no photos).
+   Desktop: the discs in a row, each lifting and tilting a little on hover, the role, name and line beneath.
+   Phones: the profile list with the disc as its picture. The creative director (data-no-detail) has no sheet.
+   ===================================================================== */
+#content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-wrap:wrap;justify-content:center;
+  gap:clamp(22px,2.6vw,40px) clamp(16px,2vw,30px)!important;width:min(1200px,94vw)!important}
+#content#content #c-members .tt-member-card {flex:0 1 clamp(170px,17vw,206px);display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start!important;text-align:center;
+  aspect-ratio:auto!important;height:auto!important;min-height:0!important;padding:0!important;overflow:visible!important;
+  background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;transform:none!important}
+#content#content #c-members .tt-member-card > img {position:relative!important;inset:auto!important;width:100%!important;height:auto!important;aspect-ratio:1;
+  object-fit:contain!important;border-radius:50%;-webkit-mask-image:none!important;mask-image:none!important;
+  filter:drop-shadow(0 16px 26px rgba(8,22,38,.22));transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s}
+#content#content #c-members .tt-member-card:not([data-no-detail="true"]):is(:hover,:focus-visible) > img {transform:translateY(-8px) rotate(-9deg);
+  filter:drop-shadow(0 24px 34px rgba(8,22,38,.3))}
+#content#content #c-members .tt-member-card[data-no-detail="true"] {cursor:default!important}
+#content#content #c-members .tt-member-card-index {position:static!important;display:flex;justify-content:center;align-items:center;gap:7px;margin:16px 0 6px;
+  font-size:13px!important;text-shadow:none!important}
+#content#content #c-members .tt-member-card-copy {position:static!important;padding:0!important;background:none!important;display:flex;flex-direction:column;align-items:center;gap:4px}
+#content#content #c-members .tt-member-card-role {min-height:0!important;height:auto!important;padding:0!important;font-size:11px!important;letter-spacing:.1em!important;
+  line-height:1.35!important;color:#3a4656!important;white-space:normal!important;display:block!important;text-align:center!important}
+#content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:clamp(22px,1.9vw,28px)!important;white-space:nowrap}
+#content#content #c-members .tt-member-card-tagline {font-size:13.5px!important;line-height:1.55!important;color:#44505f!important;max-width:16em;margin-top:2px}
+#content#content #c-members .tt-member-card:focus-visible {outline:2px solid var(--accent,#0e6e7d);outline-offset:8px;border-radius:24px!important}
+@media (prefers-reduced-motion:reduce){#content#content #c-members .tt-member-card > img {transition:none}}
+
+/* the sheet shows the member's disc where the photo was */
+.tt-member-modal .tt-member-photo-wrap {display:grid;place-items:center;aspect-ratio:1!important}
+.tt-member-modal .tt-member-photo-wrap img {width:84%!important;height:84%!important;object-fit:contain!important;-webkit-mask-image:none!important;mask-image:none!important;
+  filter:drop-shadow(0 18px 30px rgba(8,22,38,.25))}
+
+/* phones: the profile list with the disc as a round picture */
+@media (max-width:760px){
+  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-direction:column;flex-wrap:nowrap;gap:12px!important;width:100%!important}
+  #content#content #c-members .tt-member-card {flex:none;display:grid!important;grid-template-columns:84px minmax(0,1fr) 20px;align-items:center;text-align:left;column-gap:16px;
+    padding:12px 16px 12px 12px!important;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
+  #content#content #c-members .tt-member-card > img {grid-column:1;grid-row:1;width:84px!important;height:84px!important;filter:drop-shadow(0 6px 12px rgba(8,22,38,.2))}
+  #content#content #c-members .tt-member-card:not([data-no-detail="true"]):is(:hover,:focus-visible) > img {transform:none}
+  #content#content #c-members .tt-member-card-copy {align-items:flex-start;gap:3px}
+  #content#content #c-members .tt-member-card-role {text-align:left!important;color:#0e6e7d!important;font-size:12px!important;letter-spacing:.06em!important}
+  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:24px!important}
+  #content#content #c-members .tt-member-card-tagline {max-width:none;font-size:14px!important}
+  #content#content #c-members .tt-member-card[data-no-detail="true"]::after {display:none}
+  .tt-member-modal .tt-member-photo-wrap {aspect-ratio:auto!important;padding:18px 0}
+  .tt-member-modal .tt-member-photo-wrap img {width:min(60vw,240px)!important;height:auto!important;aspect-ratio:1}
+}

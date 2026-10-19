@@ -368,6 +368,12 @@
   function patchInteractiveCards() {
     document.querySelectorAll('#c-members .tt-member-card, #c-news .lift').forEach(function (card) {
       var kind = card.classList.contains('tt-member-card') ? 'member' : 'news';
+      // a member without a detail sheet is plain content, not a button
+      if (card.getAttribute('data-no-detail') === 'true') {
+        ['role', 'tabindex', 'aria-haspopup', 'aria-label'].forEach(function (name) { card.removeAttribute(name); });
+        delete card.dataset.ttDialogTrigger;
+        return;
+      }
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
       card.setAttribute('aria-haspopup', 'dialog');
