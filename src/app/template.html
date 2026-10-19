@@ -707,8 +707,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <sc-if value="{{ mOpen }}" hint-placeholder-val="{{ false }}">
 <div class="tt-member-modal tt-s-z-index-300-daaf tt-s-place-items-center-9906" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
   <div class="tt-member-panel tt-sheet" onclick="{{ stop }}" style="--m-accent:{{ m.accent }}">
-    <button type="button" class="tt-member-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
     <header class="tt-sheet-head">
+      <button type="button" class="tt-member-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
       <div class="tt-sheet-disc"><img id="m-photo" src="{{ m.photo }}" alt="{{ m.name }}" decoding="async"></div>
       <div class="tt-sheet-id">
         <div class="tt-sheet-role">{{ m.role }}</div>
