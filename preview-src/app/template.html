@@ -12,8 +12,6 @@
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
 @font-face{font-family:'Hanken Grotesk';font-style:normal;font-weight:800;font-display:swap;src:url('assets/fonts/hanken-grotesk-latin-normal-v12.woff2') format('woff2')}
 
-
-
 @font-face{font-family:'Quicksand';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
 @font-face{font-family:'Quicksand';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
 @font-face{font-family:'Quicksand';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/quicksand-latin-normal-v37.woff2') format('woff2')}
@@ -42,10 +40,6 @@ image-slot{display:block}
   #chapnav .navbtn{display:flex !important;width:44px !important;height:44px;justify-content:center;gap:0 !important;padding:0 !important}
 }
 
-
-
-
-
 @media (max-width:760px){
   #brand{left:18px;top:16px}
   #chapnav{right:14px;gap:16px}
@@ -62,11 +56,7 @@ image-slot{display:block}
 .lift:hover{box-shadow:0 26px 60px rgba(8,22,38,.22);filter:brightness(1.05)}
 .lift:hover img{transform:scale(1.05)}
 .lift img{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-.tt-member-card{z-index:10}
-.tt-member-card-index{position:absolute;left:16px;top:14px;z-index:6;display:inline-flex;align-items:center;gap:7px;font-weight:900;font-size:13px;line-height:1;letter-spacing:.02em;color:#141C30;text-shadow:0 1px 10px rgba(255,255,255,.72);pointer-events:none}
-.tt-member-card-index::before{content:none}
-.tt-member-card-index .tt-member-card-number{display:inline-block;color:#141C30}
-.tt-member-card-index .tt-member-card-dot{width:8px;height:8px;border-radius:50%;display:block;flex:0 0 auto}
+
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
 /* narrative chapter labels */
@@ -331,13 +321,11 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 @media (max-width:760px){.tt-audience-head{margin-bottom:8px}.tt-audience-title{margin-bottom:12px}.tt-audience-services{margin-bottom:16px;gap:6px}.tt-audience-services li{padding:6px 11px}.tt-audience-hook{padding-top:12px;font-size:var(--fs-s)}}
 .tt-audience-hook::before{content:'\201C';position:absolute;left:0;top:8px;font:700 38px/1 'Quicksand',Georgia,serif;color:var(--accent,#0E6E7D);opacity:.55}
 #content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
-@media (max-width:760px){#content#content .tt-member-card{aspect-ratio:9/16!important}#content#content .tt-member-card-copy{padding-top:40px!important}.tt-member-card-role{letter-spacing:.08em}#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
+@media (max-width:760px){#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
 /* R5 */
 #c-projects article.lift a{min-height:44px;box-sizing:border-box}
 /* R6: role label, name, the member's line */
-.tt-member-card-role{margin-bottom:6px;font-weight:800;font-size:var(--fs-xs);line-height:1.35;letter-spacing:.12em;text-transform:uppercase;color:#4a5466;word-break:keep-all;overflow-wrap:anywhere}
-.tt-member-card-tagline{margin-top:8px;font-weight:600;font-size:var(--fs-s);line-height:1.5;color:#2c3546;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-wrap:pretty}
-#content#content .tt-member-card-copy{padding-top:54px!important;background:linear-gradient(to top,rgba(255,253,248,.97) 70%,rgba(255,253,248,.82) 84%,rgba(255,253,248,0))!important}
+
 /* R7: partners, named */
 #content#content .tt-network-summary{display:flex;align-items:center;gap:20px;min-height:64px}
 #content#content .tt-network-title{font-size:var(--fs-l);white-space:nowrap}
@@ -408,28 +396,15 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
 
 /* 01 ??繞?*/
 
-
 /* 02 ???筌롫챸??*/
 
-
-
 /* 03 嶺뚮ㅄ維????鍮??*/
-
-
-
 
 /* 04 ??源낆꽑??????덈펲 */
 
 /* 05 ??怨뺥닡?띠룆理???*/
 
 /* 06 ????瑜곷턄嶺뚯솘? */
-
-
-
-
-
-
-
 
 @media (max-width:760px){
   [data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh;height:100vh!important}
@@ -442,17 +417,11 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:fo
   .tt-bridge-pin-stage [data-bridge] span{max-width:none!important;white-space:pre!important;word-break:keep-all!important;overflow-wrap:normal!important;filter:none!important}
   .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]){font-size:11px;line-height:1.25;text-align:center;color:#0E6E7D!important;text-shadow:0 1px 10px rgba(255,255,255,.58)!important}
   #progress{z-index:95!important;display:flex!important;visibility:visible!important;opacity:1;pointer-events:none!important}
-  .tt-member-card-index{left:18px!important;top:18px!important;font-size:16px!important;gap:8px!important;text-shadow:0 1px 12px rgba(255,255,255,.82)!important}
-  .tt-member-card-index .tt-member-card-dot{width:10px!important;height:10px!important}
+
 }
 @media (prefers-reduced-motion: reduce){.tt-bridge-visual{display:grid;opacity:.5!important;filter:none}.tt-bridge-visual *{animation:none!important;transition:none!important}[data-story-bridge-wrap].tt-bridge-pinned{min-height:100vh}.tt-bridge-pin-stage{position:relative;height:100vh}}
 
-
-
 /* Original water-entry sequence; JS drives the plunge and real HOME assembly. */
-
-
-
 
 #c-contact [data-reveal],
 #email-link{position:relative;z-index:8}
@@ -600,10 +569,6 @@ body[data-active-chapter="contact"] #nav-6{
   #lang-switcher.tt-lang-switcher button:focus,#lang-switcher.tt-lang-switcher button:focus-visible,#lang-switcher.tt-lang-switcher button:active{border:0!important;outline:0!important;box-shadow:none!important;border-radius:999px!important}
 }
 
-
-
-
-
 /* Members readability lock: keep this chapter from inheriting scroll blur or low-contrast nav states. */
 #c-members > [data-reveal]:first-child,
 #c-members > [data-reveal]:first-child * {
@@ -647,7 +612,6 @@ body[data-active-chapter="contact"] #nav-6{
   opacity: 1;
   text-shadow: none !important;
 }
-
 
 #c-members > [data-reveal]:first-child h2 {
   /* the brand's deepest teal: Members sits at the light/dark crossover, where #0E6E7D reads at 2:1 */

@@ -868,6 +868,47 @@ async function runBridgeSmoke(chrome, origin) {
       await fetch(`http://127.0.0.1:${chrome.port}/json/close/${target.id}`).catch(()=>{});
     }
   }
+  passed.push(...await runFirstBridgeOnPhone(chrome, origin));
+  return passed;
+}
+
+// A first visit on a short phone screen (a Z Fold cover is about 412x660): reading straight down must lock the
+// first bridge, right after the intro. The intro's settling glide upward was once taken as the reader going up
+// (phones skip the direction-tracking frames while scrolling fast) and the first flick passed the bridge.
+async function runFirstBridgeOnPhone(chrome, origin) {
+  const passed = [];
+  const cases = [
+    { key: 'after-intro-2.8s', wait: 2800 },
+    { key: 'after-intro-5.4s', wait: 5400 }
+  ];
+  for (const testCase of cases) {
+    const label = `bridge/phone-first-visit/${testCase.key}`;
+    const target = await (await fetch(`http://127.0.0.1:${chrome.port}/json/new?about:blank`, { method: 'PUT' })).json();
+    const client = new CdpClient(target.webSocketDebuggerUrl);
+    await client.ready;
+    try {
+      await Promise.all([client.send('Page.enable'), client.send('Runtime.enable')]);
+      await client.send('Emulation.setDeviceMetricsOverride', { width: 412, height: 660, deviceScaleFactor: 1, mobile: true });
+      await client.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
+      await navigateForInteraction(client, `${origin}/?first-bridge=${testCase.key}`, testCase.wait);
+      await evaluate(client, `(() => { window.__firstBridge = false; const sc = document.getElementById('content');
+        const watch = () => { if (sc.dataset.bridgeIndex === '0') window.__firstBridge = true; if (!window.__firstBridge) requestAnimationFrame(watch); };
+        watch(); return true; })()`);
+      // three touch flicks with momentum, as a reader does right after the page opens
+      for (let i = 0; i < 3 && !(await evaluate(client, 'window.__firstBridge')); i++) {
+        await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 190, y: 475 }] });
+        for (let k = 1; k <= 5; k++) { await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 190, y: 475 - k * 60 }] }); await sleep(12); }
+        await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+        await sleep(700);
+      }
+      await sleep(400);
+      assert(await evaluate(client, 'window.__firstBridge'), `${label}: the first bridge did not lock while reading straight down`);
+      passed.push(label);
+    } finally {
+      client.close();
+      await fetch(`http://127.0.0.1:${chrome.port}/json/close/${target.id}`).catch(()=>{});
+    }
+  }
   return passed;
 }
 

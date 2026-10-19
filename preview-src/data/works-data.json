@@ -973,14 +973,6 @@
           "brightness": 0.6,
           "language": "KR",
           "youtube": "https://www.youtube.com/watch?v=d_MhBXpQGCI",
-          "responsive": {
-            "desktop": {
-              "cardScale": 1,
-              "titleSize": 1,
-              "offsetX": 0,
-              "offsetY": 0
-            }
-          },
           "translations": {
             "en": {
               "title": "Watercolour",
@@ -1009,14 +1001,6 @@
           "brightness": 0.6,
           "language": "JP",
           "youtube": "https://www.youtube.com/watch?v=01bDyJsI5cI",
-          "responsive": {
-            "desktop": {
-              "cardScale": 1,
-              "titleSize": 1,
-              "offsetX": 0,
-              "offsetY": 0
-            }
-          },
           "translations": {
             "en": {
               "title": "Watercolour",
