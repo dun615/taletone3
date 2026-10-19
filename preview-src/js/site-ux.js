@@ -366,8 +366,8 @@
   }
 
   function patchInteractiveCards() {
-    document.querySelectorAll('#c-members .tt-member-card, #c-news .lift').forEach(function (card) {
-      var kind = card.classList.contains('tt-member-card') ? 'member' : 'news';
+    document.querySelectorAll('#c-members .tt-crew-row, #c-news .lift').forEach(function (card) {
+      var kind = card.classList.contains('tt-crew-row') ? 'member' : 'news';
       // a member without a detail sheet is plain content, not a button
       if (card.getAttribute('data-no-detail') === 'true') {
         ['role', 'tabindex', 'aria-haspopup', 'aria-label'].forEach(function (name) { card.removeAttribute(name); });
@@ -381,6 +381,15 @@
       card.dataset.ttDialogTrigger = 'true';
     });
   }
+
+  // Members: the row under the pointer or focus puts that member's disc on the stage
+  function featureCrewMember(event) {
+    var row = event.target && event.target.closest && event.target.closest('#c-members .tt-crew-row');
+    var crew = row && row.closest('.tt-crew');
+    if (crew) crew.setAttribute('data-featured', row.getAttribute('data-i'));
+  }
+  document.addEventListener('pointerover', featureCrewMember);
+  document.addEventListener('focusin', featureCrewMember);
 
   function findSiteDialog() {
     return document.querySelector('.tt-shelf-modal[role="dialog"], .tt-member-modal, .tt-news-modal');

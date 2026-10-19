@@ -3723,26 +3723,6 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body [data-story-bridge-wrap].tt-bridge-seen:not([data-bridge-active]) [data-bridge-line] {height:30px!important}
 }
 
-/* Members, phone layout of its own: a profile list (photo, role, name, one line) that shows the whole team at
-   once; a tap opens the member sheet as before. Replaces the sideways cards. */
-@media (max-width:760px){
-  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-direction:column;gap:12px!important;width:100%!important;
-    max-width:none!important;margin:0!important;padding:0!important;overflow:visible}
-  #content#content #c-members .tt-member-card {display:grid!important;grid-template-columns:92px minmax(0,1fr) 20px;align-items:center;column-gap:16px;
-    aspect-ratio:auto!important;min-height:0!important;height:auto!important;padding:12px 16px 12px 12px!important;border-radius:20px!important;
-    background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important;transform:none!important}
-  #content#content #c-members .tt-member-card > img {position:static!important;grid-column:1;grid-row:1;width:92px!important;height:112px!important;border-radius:14px;
-    object-fit:cover;object-position:50% 18%;background:#eef4f7}
-  #content#content #c-members .tt-member-card-index {display:none!important}
-  #content#content #c-members .tt-member-card-copy {position:static!important;grid-column:2;padding:0!important;background:none!important;display:flex;flex-direction:column;gap:4px;min-width:0}
-  #content#content #c-members .tt-member-card-role {margin:0!important;min-height:0!important;height:auto!important;padding:0!important;font-size:12px!important;letter-spacing:.06em!important;
-    line-height:1.3!important;color:#0e6e7d!important;white-space:normal!important}
-  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:24px!important;line-height:1.1!important}
-  #content#content #c-members .tt-member-card-tagline {margin:2px 0 0!important;font-size:14px!important;line-height:1.5!important;color:#44505f!important;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  #content#content #c-members .tt-member-card::after {content:'';grid-column:3;width:9px;height:9px;justify-self:center;border-top:2px solid #8a96a3;border-right:2px solid #8a96a3;transform:rotate(45deg)}
-}
-
 /* Home and Track Record on phones (REVIEW-mobile phase 2, M10/M11): the newest work under the buttons (it opens
    Works with that record playing), no ghost "TALE TONE" behind the title, and the two numbers on one row */
 .tt-home-latest {display:none}
@@ -3936,66 +3916,109 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
 }
 
 /* =====================================================================
-   Members as five records: each member is their own CD (assets/members/member-cd-0N.svg, no photos).
-   Desktop: the discs in a row, each lifting and tilting a little on hover, the role, name and line beneath.
-   Phones: the profile list with the disc as its picture. The creative director (data-no-detail) has no sheet.
+   Members as an album's credits (fresh markup: .tt-crew, nothing older styles it).
+   One panel. Desktop/tablet: the featured member's CD on the left, the five members as a tracklist on the
+   right; the row under the pointer or focus puts its disc on the stage (site-ux.js featureCrewMember).
+   Phones: the tracklist alone, each row with a small disc. Rows are name and job title only - the rest lives
+   in the member's sheet. The creative director (data-no-detail) has no sheet and no arrow.
    ===================================================================== */
-#content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-wrap:wrap;justify-content:center;
-  gap:clamp(22px,2.6vw,40px) clamp(16px,2vw,30px)!important;width:min(1200px,94vw)!important}
-#content#content #c-members .tt-member-card {flex:0 1 clamp(170px,17vw,206px);display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start!important;text-align:center;
-  aspect-ratio:auto!important;height:auto!important;min-height:0!important;padding:0!important;overflow:visible!important;
-  background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;transform:none!important}
-#content#content #c-members .tt-member-card > img {position:relative!important;inset:auto!important;width:100%!important;height:auto!important;aspect-ratio:1;
-  object-fit:contain!important;border-radius:50%;-webkit-mask-image:none!important;mask-image:none!important;
-  filter:drop-shadow(0 16px 26px rgba(8,22,38,.22));transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s}
-#content#content #c-members .tt-member-card:not([data-no-detail="true"]):is(:hover,:focus-visible) > img {transform:translateY(-8px) rotate(-9deg);
-  filter:drop-shadow(0 24px 34px rgba(8,22,38,.3))}
-#content#content #c-members .tt-member-card[data-no-detail="true"] {cursor:default!important}
-#content#content #c-members .tt-member-card-index {position:static!important;display:flex;justify-content:center;align-items:center;gap:7px;margin:16px 0 6px;
-  font-size:13px!important;text-shadow:none!important}
-#content#content #c-members .tt-member-card-copy {position:static!important;padding:0!important;background:none!important;display:flex;flex-direction:column;align-items:center;gap:4px}
-#content#content #c-members .tt-member-card-role {min-height:0!important;height:auto!important;padding:0!important;font-size:11px!important;letter-spacing:.1em!important;
-  line-height:1.35!important;color:#3a4656!important;white-space:normal!important;display:block!important;text-align:center!important}
-#content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:clamp(22px,1.9vw,28px)!important;white-space:nowrap}
-#content#content #c-members .tt-member-card-tagline {font-size:13.5px!important;line-height:1.55!important;color:#44505f!important;max-width:16em;margin-top:2px}
-#content#content #c-members .tt-member-card:focus-visible {outline:2px solid var(--accent,#0e6e7d);outline-offset:8px;border-radius:24px!important}
-@media (prefers-reduced-motion:reduce){#content#content #c-members .tt-member-card > img {transition:none}}
+#c-members .tt-crew {box-sizing:border-box;width:min(1080px,90vw)!important;max-width:none!important;margin:0!important;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;
+  gap:clamp(28px,4.4vw,72px);padding:clamp(24px,3.2vw,44px) clamp(24px,3.6vw,52px);border-radius:32px;
+  background:rgba(255,253,248,.74);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 70px rgba(8,22,38,.16);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1)}
+
+/* the stage: five discs stacked, the featured one shown */
+#c-members .tt-crew-stage {display:grid;justify-items:center}
+#c-members .tt-crew-feature {grid-area:1/1;margin:0;display:flex;flex-direction:column;align-items:center;width:100%;
+  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
+#c-members .tt-crew-disc {position:relative;display:block;width:min(100%,300px,33vh);aspect-ratio:1;border-radius:50%}
+#c-members .tt-crew-disc::before {content:"";position:absolute;inset:-12px;border-radius:50%;
+  background:rgba(255,255,255,.55)}
+#c-members .tt-crew-disc img {position:relative;display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;
+  filter:drop-shadow(0 22px 34px rgba(8,22,38,.26));transform:rotate(-24deg) scale(.94);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+#c-members .tt-crew-feature figcaption {margin-top:clamp(16px,2.6vh,26px);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+#c-members .tt-crew-feature-name {font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;
+  font-size:clamp(28px,2.6vw,38px);line-height:1;color:#141c30}
+#c-members .tt-crew-feature-role {font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3a4656}
+#c-members .tt-crew-feature-role::before {content:"";display:inline-block;width:8px;height:8px;margin-right:9px;border-radius:50%;
+  background:var(--crew-accent,#6fe9f8);vertical-align:1px;box-shadow:0 0 0 1px rgba(20,28,48,.12)}
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"],
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"],
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"],
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"],
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"] {opacity:1;visibility:visible;transition:opacity .45s ease}
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"] img,
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"] img,
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"] img,
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"] img,
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"] img {transform:none}
+
+/* the tracklist */
+#c-members .tt-crew-list {list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+#c-members .tt-crew-item + .tt-crew-item {border-top:1px solid rgba(20,28,48,.1)}
+#c-members .tt-crew-row {display:grid;grid-template-columns:28px 48px minmax(0,1fr) 18px;align-items:center;column-gap:16px;
+  padding:clamp(9px,1.4vh,13px) 14px;margin:3px 0;border-radius:16px;cursor:pointer;transition:background-color .25s ease}
+#c-members .tt-crew-row[data-no-detail="true"] {cursor:default}
+#c-members .tt-crew-no {font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;color:#7a8794;font-variant-numeric:tabular-nums}
+#c-members .tt-crew-row > img {width:48px;height:48px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 5px 10px rgba(8,22,38,.18));
+  transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+#c-members .tt-crew-text {display:flex;align-items:baseline;justify-content:space-between;gap:16px;min-width:0}
+#c-members .tt-crew-name {font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:22px;line-height:1.15;color:#141c30;white-space:nowrap}
+#c-members .tt-crew-role {font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a5868;text-align:right}
+#c-members .tt-crew-go {justify-self:center;width:8px;height:8px;border-top:2px solid #8a96a3;border-right:2px solid #8a96a3;transform:rotate(45deg);
+  transition:transform .25s ease,border-color .25s ease}
+#c-members .tt-crew-row[data-no-detail="true"] .tt-crew-go {visibility:hidden}
+#c-members .tt-crew[data-featured="01"] .tt-crew-row[data-i="01"],
+#c-members .tt-crew[data-featured="02"] .tt-crew-row[data-i="02"],
+#c-members .tt-crew[data-featured="03"] .tt-crew-row[data-i="03"],
+#c-members .tt-crew[data-featured="04"] .tt-crew-row[data-i="04"],
+#c-members .tt-crew[data-featured="05"] .tt-crew-row[data-i="05"] {background:rgba(255,255,255,.78)}
+#c-members .tt-crew-row:not([data-no-detail="true"]):hover .tt-crew-go {transform:translateX(3px) rotate(45deg);border-color:#141c30}
+#c-members .tt-crew-row:hover > img {transform:rotate(-14deg)}
+#c-members .tt-crew-row:focus-visible {outline:2px solid var(--accent,#0e6e7d);outline-offset:2px}
+
+/* the partnership bar lines up with the panel */
+#c-members .tt-network-directory {width:min(1080px,90vw)!important;max-width:none!important;margin-top:clamp(14px,2.2vh,24px)!important}
+
+/* narrower panels: the role goes under the name */
+@media (max-width:1180px){
+  #c-members .tt-crew-text {flex-direction:column;align-items:flex-start;gap:4px}
+  #c-members .tt-crew-role {text-align:left;font-size:11px}
+}
+@media (max-width:900px) and (min-width:761px){
+  #c-members .tt-crew {grid-template-columns:minmax(0,4fr) minmax(0,6fr)}
+  #c-members .tt-crew-row {grid-template-columns:40px minmax(0,1fr) 16px}
+  #c-members .tt-crew-no {display:none}
+}
+
+/* phones: the tracklist alone */
+@media (max-width:760px){
+  #c-members .tt-crew {display:block;width:100%;padding:6px 8px;border-radius:24px;box-shadow:0 14px 34px rgba(8,22,38,.12)}
+  #c-members .tt-crew-stage {display:none}
+  #c-members .tt-crew-row {grid-template-columns:56px minmax(0,1fr) 18px;padding:11px 10px;margin:2px 0}
+  #c-members .tt-crew-no {display:none}
+  #c-members .tt-crew-row > img {width:56px;height:56px}
+  #c-members .tt-crew-name {font-size:20px}
+  #c-members .tt-crew-role {font-size:11.5px;letter-spacing:.08em}
+  #c-members .tt-crew[data-featured] .tt-crew-row {background:none}
+  #c-members .tt-crew-row:active {background:rgba(255,255,255,.78)}
+  #c-members .tt-network-directory {width:100%!important}
+}
+@media (prefers-reduced-motion:reduce){
+  #c-members .tt-crew-feature, #c-members .tt-crew-disc img, #c-members .tt-crew-row > img {transition:none}
+}
 
 /* the sheet shows the member's disc where the photo was */
 .tt-member-modal .tt-member-photo-wrap {display:grid;place-items:center;aspect-ratio:1!important}
 .tt-member-modal .tt-member-photo-wrap img {width:84%!important;height:84%!important;object-fit:contain!important;-webkit-mask-image:none!important;mask-image:none!important;
   filter:drop-shadow(0 18px 30px rgba(8,22,38,.25))}
-
-/* phones: the profile list with the disc as a round picture */
 @media (max-width:760px){
-  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {display:flex!important;flex-direction:column;flex-wrap:nowrap;gap:12px!important;width:100%!important}
-  #content#content #c-members .tt-member-card {flex:none;display:grid!important;grid-template-columns:84px minmax(0,1fr) 20px;align-items:center;text-align:left;column-gap:16px;
-    padding:12px 16px 12px 12px!important;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
-  #content#content #c-members .tt-member-card > img {grid-column:1;grid-row:1;width:84px!important;height:84px!important;filter:drop-shadow(0 6px 12px rgba(8,22,38,.2))}
-  #content#content #c-members .tt-member-card:not([data-no-detail="true"]):is(:hover,:focus-visible) > img {transform:none}
-  #content#content #c-members .tt-member-card-copy {align-items:flex-start;gap:3px}
-  #content#content #c-members .tt-member-card-role {text-align:left!important;color:#0e6e7d!important;font-size:12px!important;letter-spacing:.06em!important}
-  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:24px!important}
-  #content#content #c-members .tt-member-card-tagline {max-width:none;font-size:14px!important}
-  #content#content #c-members .tt-member-card[data-no-detail="true"]::after {display:none}
   .tt-member-modal .tt-member-photo-wrap {aspect-ratio:auto!important;padding:18px 0}
   .tt-member-modal .tt-member-photo-wrap img {width:min(60vw,240px)!important;height:auto!important;aspect-ratio:1}
 }
 
-/* Members, simplified: a card is the disc, the name and the job title — nothing else. The number, the dot and
-   the one-line description live in the member's sheet. Name first (it is what people look for), role beneath. */
-#content#content #c-members .tt-member-card-index,
-#content#content #c-members .tt-member-card-tagline {display:none!important}
-#content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {gap:clamp(28px,3.4vw,56px) clamp(24px,3.6vw,64px)!important;width:min(1160px,90vw)!important}
-#content#content #c-members .tt-member-card {flex:0 1 clamp(140px,13.5vw,176px)}
-#content#content #c-members .tt-member-card-copy {margin-top:18px;gap:6px}
-#content#content #c-members .tt-member-card-copy > div:nth-child(2) {order:1;font-size:clamp(20px,1.7vw,24px)!important}
-#content#content #c-members .tt-member-card-role {order:2;font-size:11px!important;letter-spacing:.12em!important;color:#4a5868!important;max-width:15em}
-@media (max-width:760px){
-  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {gap:10px!important}
-  #content#content #c-members .tt-member-card {grid-template-columns:60px minmax(0,1fr) 20px;flex:none!important;grid-template-rows:auto!important;grid-auto-rows:auto!important;column-gap:14px;padding:10px 16px 10px 10px!important}
-  #content#content #c-members .tt-member-card > img {width:60px!important;height:60px!important}
-  #content#content #c-members .tt-member-card-copy {margin-top:0;gap:2px}
-  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:20px!important}
-  #content#content #c-members .tt-member-card-role {font-size:12px!important;letter-spacing:.04em!important;max-width:none}
+/* the credits panel fits one screen on laptops: a little less air above and under the chapter title */
+@media (min-width:761px){
+  #content#content #c-members {padding-top:clamp(76px,11vh,130px)!important;padding-bottom:clamp(40px,7vh,96px)!important}
+  #content#content #c-members > [data-reveal]:first-child {margin-bottom:clamp(22px,3.6vh,44px)!important}
 }
