@@ -630,7 +630,9 @@ class Component extends DCLogic {
       MEMBERS_META: this.MEMBERS_META || {},
       MEMBER_CARDS: (this.MEMBERS||[]).map((m,i)=>Object.assign({}, m, {
         number: String(i + 1).padStart(2, '0'),
-        open: ()=>this.openMember(i)
+        // a member with noDetail (the creative director) has no sheet: the card is not a button
+        noDetailFlag: m.noDetail ? 'true' : 'false',
+        open: m.noDetail ? ()=>{} : ()=>this.openMember(i)
       })),
       mOpen: this.state.mOpen, nOpen: this.state.nOpen,
       m: (this.MEMBERS||[])[this.state.mi] || {},

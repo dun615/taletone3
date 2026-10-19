@@ -362,7 +362,7 @@ async function snapshot(client) {
       domNodes: document.getElementsByTagName('*').length,
       chapter: document.body.getAttribute('data-active-chapter') || '',
       worksCards: document.querySelectorAll('[data-works-book]').length,
-      memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
+      memberImagesAssigned: document.querySelectorAll('#c-members .tt-crew-row img[src]').length,
       overflow: document.documentElement.scrollWidth > innerWidth + 1,
       homeTop: document.querySelector('#c-home')?.getBoundingClientRect().top ?? null,
       contentScrollTop: content?.scrollTop ?? null,
@@ -477,8 +477,8 @@ async function runFunctionalMatrix(chrome, origin) {
               sectionTop: rect ? rect.top : null,
               textLength: section ? section.innerText.trim().length : 0,
               worksCards: document.querySelectorAll('[data-works-book]').length,
-              memberImagesAssigned: document.querySelectorAll('#c-members .tt-member-card img[src]').length,
-              memberImagesDeferred: document.querySelectorAll('#c-members .tt-member-card img[data-member-src]').length,
+              memberImagesAssigned: document.querySelectorAll('#c-members .tt-crew-row img[src]').length,
+              memberImagesDeferred: document.querySelectorAll('#c-members .tt-crew-row img[data-member-src]').length,
               overflow: document.documentElement.scrollWidth > innerWidth + 1,
               broken,
               langButton: !!document.querySelector('#lang-${language}'),
@@ -497,9 +497,9 @@ async function runFunctionalMatrix(chrome, origin) {
           assert(network.sameOriginFailures.length === 0, `${key}: network errors: ${network.sameOriginFailures.join(', ')}`);
           assert(network.runtimeErrors.length === 0 && state.observerErrors.length === 0, `${key}: runtime errors: ${[...network.runtimeErrors, ...state.observerErrors].join(' | ')}`);
           if (route.key === 'members') {
-            assert(state.memberImagesAssigned === 4 && state.memberImagesDeferred === 0, `${key}: member images were not activated on entry`);
+            assert(state.memberImagesAssigned === 5 && state.memberImagesDeferred === 0, `${key}: member images were not activated on entry`);
           } else {
-            assert(state.memberImagesAssigned === 0 && state.memberImagesDeferred === 4, `${key}: hidden member images were activated`);
+            assert(state.memberImagesAssigned === 0 && state.memberImagesDeferred === 5, `${key}: hidden member images were activated`);
           }
           if (route.key === 'works') {
             assert(state.worksCards >= 6, `${key}: expected the first WORKS shelf, found ${state.worksCards} books`);
@@ -626,7 +626,7 @@ async function runInteractionSmoke(chrome, origin) {
 
     await navigateForInteraction(client, `${origin}/members/?lang=kr&runtime-interaction=1`);
     const memberFocused = await evaluate(client, `(() => {
-      const trigger = document.querySelector('#c-members .tt-member-card[data-tt-dialog-trigger="true"]');
+      const trigger = document.querySelector('#c-members .tt-crew-row[data-tt-dialog-trigger="true"]');
       trigger?.focus();
       return !!trigger && document.activeElement === trigger;
     })()`);
@@ -642,7 +642,7 @@ async function runInteractionSmoke(chrome, origin) {
     assert(memberOpen.dialog && memberOpen.closeFocused && memberOpen.focusVisible && memberOpen.photoReady, 'interaction: MEMBERS keyboard dialog or photo is invalid');
     await pressKey(client, 'Escape', 'Escape', 27);
     await sleep(120);
-    const memberClosed = await evaluate(client, `!document.querySelector('.tt-member-modal[role="dialog"]') && document.activeElement?.matches('#c-members .tt-member-card[data-tt-dialog-trigger="true"]')`);
+    const memberClosed = await evaluate(client, `!document.querySelector('.tt-member-modal[role="dialog"]') && document.activeElement?.matches('#c-members .tt-crew-row[data-tt-dialog-trigger="true"]')`);
     assert(memberClosed, 'interaction: MEMBERS Escape did not close and restore trigger focus');
     passed.push('members-keyboard-dialog');
 
@@ -668,14 +668,14 @@ async function runInteractionSmoke(chrome, origin) {
     passed.push('news-language-dialog');
 
     await navigateForInteraction(client, `${origin}/story-types/?lang=kr&runtime-interaction=1`);
-    const beforeSkippedMembers = await evaluate(client, `document.querySelectorAll('#c-members .tt-member-card img[src]').length`);
+    const beforeSkippedMembers = await evaluate(client, `document.querySelectorAll('#c-members .tt-crew-row img[src]').length`);
     await clickSelector(client, '#nav-4');
     await sleep(1_800);
     const chapterTransition = await evaluate(client, `(() => ({
       path: location.pathname,
       chapter: document.body.getAttribute('data-active-chapter'),
       cards: document.querySelectorAll('[data-works-book]').length,
-      memberImages: document.querySelectorAll('#c-members .tt-member-card img[src]').length
+      memberImages: document.querySelectorAll('#c-members .tt-crew-row img[src]').length
     }))()`);
     assert(beforeSkippedMembers === 0 && chapterTransition.memberImages === 0, 'interaction: skipped MEMBERS chapter loaded hidden member images');
     assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards >= 6, 'interaction: STORY TYPES to WORKS transition did not settle');
@@ -787,7 +787,7 @@ async function runBridgeSmoke(chrome, origin) {
           if(n===10 && index>=1 && index<=3){
             const ready = await evaluate(client, `(() => {
               const section=document.getElementById('${destinations[index]}');
-              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-rack-item img[src]'))":"Array.from(section.querySelectorAll('.tt-member-card img'))"};
+              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-rack-item img[src]'))":"Array.from(section.querySelectorAll('.tt-crew-row img'))"};
               return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
             })()`);
             assert(ready, `${label}: next chapter images were not ready during playback`);

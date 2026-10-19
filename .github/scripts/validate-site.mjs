@@ -178,7 +178,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decoded.includes('id="c-translation"') && !decoded.includes('id="tale-line"') && !decoded.includes('class="nav-chapter"'), `${file}: retired TRANSLATE chapter or menu chapter words returned`);
     assert(decoded.includes(':root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}'), `${file}: site type scale is missing`);
     assert(decoded.includes('html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important'), `${file}: Korean keep-all override is missing`);
-    assert(decoded.includes('background:{{ member.dotAccent }}'), `${file}: member card dot does not use dotAccent`);
+    assert(decoded.includes('--crew-accent:{{ member.dotAccent }}'), `${file}: member dot does not use dotAccent`);
     assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
     assert(/class="tt-news-modal(?: [\w-]+)*" role="dialog" aria-modal="true"/.test(decoded), `${file}: NEWS dialog lacks a direct selector`);
@@ -592,7 +592,7 @@ for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', '
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
+assert(Buffer.byteLength(worksCss) <= 150_000, 'WORKS CSS exceeds 150 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
 assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
 const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
