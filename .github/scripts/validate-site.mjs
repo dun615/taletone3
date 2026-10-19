@@ -260,7 +260,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
     assert(!decodedScript.includes('--tt-bridge-play-state'), `${file}: removed bridge CSS clock state returned`);
     const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    assert(decodedScript.includes('current>previous+2&&this._bridgeOffsets') && decodedScript.includes('this.startBridge(bi);'), `${file}: large scroll gestures can skip an unvisited bridge`);
+    assert(decodedScript.includes('current>previous&&this._bridgeOffsets') && decodedScript.includes('this._trackBridgeDir(current);') && decodedScript.includes('this.startBridge(bi);'), `${file}: large scroll gestures can skip an unvisited bridge`);
     for (const obsolete of ['_bridgeGate', '_continueCue', 'tt-bridge-continue', 'Scroll to continue', 'スクロールして次の章へ', '계속 스크롤해 다음 장으로', 'outer._shaken']) assert(!decodedScript.includes(obsolete), `${file}: obsolete bridge behavior returned: ${obsolete}`);
     assert(decodedScript.includes('bypassBridges(targetId){') && decodedScript.includes('this.bypassBridges(page.sectionId);') && decodedScript.includes('this.bypassBridges(id);'), `${file}: direct navigation does not bypass bridge settlement consistently`);
     assert(updateBridgesBody.includes('elapsed>=DUR+run.hold') && decodedScript.includes("run.phase='advancing'") && decodedScript.includes('now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();'), `${file}: bridge handoff does not drain the active scroll gesture before release`);
