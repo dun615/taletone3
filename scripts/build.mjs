@@ -528,10 +528,6 @@ const previewOutputs = [
     NANUM_FONT_URL: nanumUrl(await nanumCharacters(root, PREVIEW_SOURCES)),
   }).replace('<html lang="ko">', '<html lang="ko" data-intro-v2>')
     .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
-    // dark-mode test (preview only): /preview/?cs=b or ?cs=c declares dark support in different ways so a phone
-    // browser that forces dark mode (Samsung Internet) can be checked against each; ?cs=a goes back
-    .replace('<meta name="supported-color-schemes" content="light">', `    .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
-<script>(function(){try{var q=new URLSearchParams(location.search).get('cs');if(q)localStorage.setItem('tt_cs',q==='a'?'':q);var v=localStorage.getItem('tt_cs')||'';if(v!=='b'&&v!=='c')return;document.documentElement.setAttribute('data-cs',v);var m=document.querySelector('meta[name="color-scheme"]'),n=document.querySelector('meta[name="supported-color-schemes"]');if(m)m.setAttribute('content','light dark');if(n)n.setAttribute('content','light dark');}catch(e){}})();</script>`)
     .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
     .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
     .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(pSupport)}`)],

@@ -3913,8 +3913,3 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   #content#content #c-news .lift:first-child .tt-news-title {margin:4px 0!important;font-size:18px!important;line-height:1.3!important}
   #content#content #c-news .lift:first-child p {font-size:13.5px!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
-
-/* Dark-mode test (preview only, see build.mjs): variant c also says "light dark" in CSS; the site keeps its
-   own light colours, set explicitly, so nothing turns dark by itself */
-html[data-cs="c"],html[data-cs="c"] body,html[data-cs="c"] #content,html[data-cs="c"] x-dc {color-scheme:light dark!important}
-html[data-cs="c"] body {color:#141c30}
