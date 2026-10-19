@@ -162,11 +162,15 @@ class Component extends DCLogic {
         if(!destination||Math.abs(current-destination.offsetTop)<=3||performance.now()-(this._bridgeNavAt||0)>1500) this._bridgeNavTarget=null;
         return;
       }
-      // (not right after the reader went up: bridges play on the way down only, see updateBridges)
-      if(current>previous+2&&this._bridgeOffsets&&this._bridgeScrollDir!==-1){
+      // (not right after the reader went up: bridges play on the way down only, see updateBridges). A bridge
+      // also starts when the scroll leaves from just on it: momentum and snapping can park the page a few px
+      // short of its top, and the next flick then begins there instead of crossing it. Any step down counts:
+      // decelerating momentum moves only a pixel or two per scroll event.
+      this._trackBridgeDir(current);
+      if(current>previous&&this._bridgeOffsets&&this._bridgeScrollDir!==-1){
         for(var bi=0;bi<this._bridgeOffsets.length;bi++){
           var bridgeTop=this._bridgeOffsets[bi];
-          if(!this._bridgeSeen[bi]&&!this._bridgeBypassed[bi]&&isFinite(bridgeTop)&&bridgeTop>previous+2&&bridgeTop<=current+2){
+          if(!this._bridgeSeen[bi]&&!this._bridgeBypassed[bi]&&isFinite(bridgeTop)&&bridgeTop>previous-6&&bridgeTop<=current+2){
             this.startBridge(bi);
             return;
           }

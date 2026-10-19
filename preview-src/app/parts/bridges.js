@@ -363,6 +363,20 @@ var ComponentBridges = {
     if(p>=1 && now-run.advanceAt>=(this._reduceMotion?350:650) && now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();
   },
 
+  // The reading direction bridges follow (see updateBridges). The scroll handler feeds it too: phones skip
+  // scene frames while scrolling fast, and without that a programmatic glide upward (the intro settling Home)
+  // could leave "up" in place for a whole first flick down, letting the first bridge pass unplayed.
+  _trackBridgeDir(st){
+    if(this._bridgeScrollDir===-1){
+      this._bridgeTurnAt=Math.min(this._bridgeTurnAt,st);
+      if(st>this._bridgeTurnAt+48){ this._bridgeScrollDir=1; this._bridgeTurnAt=st; }
+    } else {
+      this._bridgeTurnAt=this._bridgeTurnAt==null?st:Math.max(this._bridgeTurnAt,st);
+      if(st<this._bridgeTurnAt-48){ this._bridgeScrollDir=-1; this._bridgeTurnAt=st; }
+    }
+    this._bridgeScrollPrev=st;
+  },
+
   bypassBridges(targetId){
     this.releaseBridge();
     this._bridgeBypassed={};
@@ -464,17 +478,7 @@ var ComponentBridges = {
     // kept, so stopping on the bridge does not count as going down.
     // A direction only counts after a clear 48px, so small nudges either way (a scroll-snap settling, a
     // bounce) do not flip it. Until the reader has gone up, the direction is "down".
-    if(this.scroller&&!this._bridgeRun){
-      var st=this.scroller.scrollTop;
-      if(this._bridgeScrollDir===-1){
-        this._bridgeTurnAt=Math.min(this._bridgeTurnAt,st);
-        if(st>this._bridgeTurnAt+48){ this._bridgeScrollDir=1; this._bridgeTurnAt=st; }
-      } else {
-        this._bridgeTurnAt=this._bridgeTurnAt==null?st:Math.max(this._bridgeTurnAt,st);
-        if(st<this._bridgeTurnAt-48){ this._bridgeScrollDir=-1; this._bridgeTurnAt=st; }
-      }
-      this._bridgeScrollPrev=st;
-    }
+    if(this.scroller&&!this._bridgeRun) this._trackBridgeDir(this.scroller.scrollTop);
     for(var gi=0;gi<this.bridges.length;gi++){
       var bg=this.bridges[gi];
       var outer=bg._bridgeOuter || (bg.closest ? bg.closest('[data-story-bridge-wrap]') : null) || (bg.parentElement && bg.parentElement.classList && bg.parentElement.classList.contains('tt-bridge-pin-stage') ? bg.parentElement.parentElement : bg.parentElement);
