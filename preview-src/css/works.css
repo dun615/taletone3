@@ -3981,3 +3981,21 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   .tt-member-modal .tt-member-photo-wrap {aspect-ratio:auto!important;padding:18px 0}
   .tt-member-modal .tt-member-photo-wrap img {width:min(60vw,240px)!important;height:auto!important;aspect-ratio:1}
 }
+
+/* Members, simplified: a card is the disc, the name and the job title — nothing else. The number, the dot and
+   the one-line description live in the member's sheet. Name first (it is what people look for), role beneath. */
+#content#content #c-members .tt-member-card-index,
+#content#content #c-members .tt-member-card-tagline {display:none!important}
+#content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {gap:clamp(28px,3.4vw,56px) clamp(24px,3.6vw,64px)!important;width:min(1160px,90vw)!important}
+#content#content #c-members .tt-member-card {flex:0 1 clamp(140px,13.5vw,176px)}
+#content#content #c-members .tt-member-card-copy {margin-top:18px;gap:6px}
+#content#content #c-members .tt-member-card-copy > div:nth-child(2) {order:1;font-size:clamp(20px,1.7vw,24px)!important}
+#content#content #c-members .tt-member-card-role {order:2;font-size:11px!important;letter-spacing:.12em!important;color:#4a5868!important;max-width:15em}
+@media (max-width:760px){
+  #content#content #c-members > .tt-s-grid-template-columns-0466[data-reveal] {gap:10px!important}
+  #content#content #c-members .tt-member-card {grid-template-columns:60px minmax(0,1fr) 20px;flex:none!important;grid-template-rows:auto!important;grid-auto-rows:auto!important;column-gap:14px;padding:10px 16px 10px 10px!important}
+  #content#content #c-members .tt-member-card > img {width:60px!important;height:60px!important}
+  #content#content #c-members .tt-member-card-copy {margin-top:0;gap:2px}
+  #content#content #c-members .tt-member-card-copy > div:nth-child(2) {font-size:20px!important}
+  #content#content #c-members .tt-member-card-role {font-size:12px!important;letter-spacing:.04em!important;max-width:none}
+}
