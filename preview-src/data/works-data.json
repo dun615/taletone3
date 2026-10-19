@@ -112,7 +112,7 @@
         "jp": {
           "artist": "ゼンレスゾーンゼロ",
           "title": "Drawing Summer",
-          "type": "Zenless Zone Zero HoYoFair Album \"Random Play\" Anniversary",
+          "type": "ゼンレスゾーンゼロ HoYoFair Album \"Random Play\" Anniversary",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
         }
       }
@@ -149,10 +149,10 @@
           "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
         },
         "jp": {
-          "artist": "ヘボム (HAEBOM)",
+          "artist": "HAEBOM",
           "title": "Love Dopamine",
-          "type": "ヘボム (HAEBOM) 3rd Single",
-          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すヘボムの物語。"
+          "type": "HAEBOM 3rd Single",
+          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すHAEBOMの物語。"
         }
       }
     },
@@ -340,13 +340,13 @@
         "en": {
           "artist": "Floweress Loe (V-llage)",
           "title": "Floris Waltz",
-          "type": "V-llage 'Floris Loe' 1st Single",
+          "type": "V-llage 'Floweress Loe' 1st Single",
           "description": "The tale of a little flower fairy, writing a story that belongs to just the two of us."
         },
         "jp": {
-          "artist": "フローリス・ロエ (V-llage)",
+          "artist": "Floweress Loe (V-llage)",
           "title": "Floris Waltz",
-          "type": "V-llage『Floris Loe』1st Single",
+          "type": "V-llage『Floweress Loe』1st Single",
           "description": "ふたりだけの物語を綴っていく、小さな花の妖精のお話。"
         }
       }
@@ -540,7 +540,7 @@
       "artist": "MAIMATSU",
       "title": "새해결심 작심삼일",
       "date": "2024.12.27",
-      "type": "MAIMATSU 2nd Single",
+      "type": "MAIMATSU 3rd Single",
       "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기",
       "credits": "기획 : 피피아이프로덕션\n투자 : 피피아이프로덕션\n총괄 프로듀싱 : N4ML(TONALIE)\n\n작곡 : N4ML(TONALIE)\n편곡 : N4ML(TONALIE)\n작사 : N4ML(TONALIE)\n\n노래 : 미카, 치세, 키나코, 나나치\n악기 연주 및 프로그래밍 : N4ML(TONALIE)\n\n보컬 보정 : N4ML(TONALIE)\n보컬 디렉팅 : N4ML(TONALIE)\n레코딩 : N4ML(TONALIE)\n믹싱 : N4ML(TONALIE)\n마스터링 : 이준용 (U-il SoundWorks)",
       "image": "assets/works/images/asset-mq67x68i-u0rf-.jpg-2948bef820da.webp",
@@ -561,14 +561,14 @@
       "translations": {
         "en": {
           "artist": "MAIMATSU",
-          "type": "MAIMATSU 2nd Single",
+          "type": "MAIMATSU 3rd Single",
           "description": "A story of four girls making New Year's plans that will likely fail again.",
           "title": "NEW YEAR SYNDROME"
         },
         "jp": {
           "artist": "MAIMATSU",
           "title": "NEW YEAR SYNDROME",
-          "type": "MAIMATSU 2nd Single",
+          "type": "MAIMATSU 3rd Single",
           "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
         }
       }
@@ -839,13 +839,13 @@
           "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
           "translations": {
             "jp": {
-              "title": "かにずむ☆ほりっく",
-              "type": "V-llage『ティグリス・カニン』1st Single",
+              "title": "Kanism☆Holic",
+              "type": "V-llage『Tygris Kanin』1st Single",
               "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
             },
             "en": {
               "title": "Kanism☆Holic",
-              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "type": "V-llage 'Tygris Kanin' 1st Single",
               "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
             }
           }
@@ -867,13 +867,13 @@
           "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8",
           "translations": {
             "jp": {
-              "title": "かにずむ☆ほりっく",
-              "type": "V-llage『ティグリス・カニン』1st Single",
+              "title": "Kanism☆Holic",
+              "type": "V-llage『Tygris Kanin』1st Single",
               "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
             },
             "en": {
               "title": "Kanism☆Holic",
-              "type": "V-llage 'Tigris Kanin' 1st Single",
+              "type": "V-llage 'Tygris Kanin' 1st Single",
               "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
             }
           }
@@ -886,16 +886,16 @@
       "format": "Single",
       "translations": {
         "en": {
-          "artist": "Tigris Kanin",
-          "type": "V-llage 'Tigris Kanin' 1st Single",
+          "artist": "Tygris Kanin",
+          "type": "V-llage 'Tygris Kanin' 1st Single",
           "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
           "title": "Kanism☆Holic"
         },
         "jp": {
-          "artist": "ティグリス・カニン",
-          "type": "V-llage『ティグリス・カニン』1st Single",
+          "artist": "Tygris Kanin",
+          "type": "V-llage『Tygris Kanin』1st Single",
           "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
-          "title": "かにずむ☆ほりっく"
+          "title": "Kanism☆Holic"
         }
       }
     },
@@ -1086,7 +1086,7 @@
         "jp": {
           "artist": "Shabel Tonya",
           "title": "STAR to STAR",
-          "type": "Honkai: Star Rail『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
+          "type": "崩壊：スターレイル『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
           "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
         }
       }
