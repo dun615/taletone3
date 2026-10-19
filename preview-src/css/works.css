@@ -2943,12 +2943,8 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body #c-track-record article.lift > :nth-child(3) {font-size:12px!important}
 }
 
-/* Sheets on phones (REVIEW-mobile phase 2, M16): a grip says "pull down to close" (site-ux.js), and the Works
-   popup has one scroll — the credits no longer scroll inside it */
-.tt-sheet-grip {display:none}
+/* Sheets on phones (REVIEW-mobile phase 2, M16): the Works popup has one scroll — the credits no longer scroll inside it */
 @media (max-width:760px){
-  html body .tt-sheet-grip {display:block;position:absolute;left:50%;top:8px;z-index:6;width:42px;height:5px;margin-left:-21px;border-radius:5px;
-    background:rgba(120,140,150,.55);box-shadow:0 0 0 1px rgba(255,255,255,.35);pointer-events:none}
   html body .tt-shelf-modal-credits-list {max-height:none!important;overflow:visible!important}
 }
 
@@ -3347,4 +3343,12 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
   /* the space above the sheet is the panel's margin, not the dialog's padding, so the pinned header meets the top edge */
   html body div.tt-member-modal.tt-member-modal.tt-member-modal:has(#m-photo) {padding-top:0!important}
   html body .tt-member-modal .tt-sheet {margin-top:max(12px,env(safe-area-inset-top))}
+}
+@media (max-width:760px){
+  /* SNS sits at the right end of the Profile label's row, which is otherwise empty, instead of taking a row of its own */
+  .tt-sheet-profile {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:12px}
+  .tt-sheet-profile > .tt-sheet-label {grid-column:1;grid-row:1;margin:0}
+  .tt-sheet-profile > .tt-sheet-sns {grid-column:2;grid-row:1;margin:0;padding:5px 12px;font-size:12px;line-height:1.5}
+  .tt-sheet-profile > .tt-sheet-facts {grid-column:1/-1;margin:12px 0}
+  .tt-sheet-profile > .tt-sheet-traits {grid-column:1/-1}
 }

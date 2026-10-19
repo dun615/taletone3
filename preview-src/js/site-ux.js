@@ -379,38 +379,6 @@
     }
   }
 
-  // Phones: a dialog panel can be pulled down to close, like a native sheet. It only follows the finger while
-  // the panel is scrolled to its top, so reading further down still scrolls normally.
-  function enableSheetDrag(panel, close) {
-    if (!panel || !close || panel.dataset.ttSheetDrag) return;
-    panel.dataset.ttSheetDrag = 'true';
-    var grip = document.createElement('span');
-    grip.className = 'tt-sheet-grip';
-    grip.setAttribute('aria-hidden', 'true');
-    panel.insertBefore(grip, panel.firstChild);
-    var startY = null, dy = 0;
-    panel.addEventListener('touchstart', function (event) {
-      if (window.innerWidth > 760 || event.touches.length !== 1 || panel.scrollTop > 0) { startY = null; return; }
-      startY = event.touches[0].clientY; dy = 0;
-      panel.style.transition = 'none';
-    }, { passive: true });
-    panel.addEventListener('touchmove', function (event) {
-      if (startY == null) return;
-      dy = event.touches[0].clientY - startY;
-      if (dy <= 0 || panel.scrollTop > 0) { dy = 0; panel.style.transform = ''; return; }
-      if (event.cancelable) event.preventDefault();
-      panel.style.transform = 'translateY(' + Math.round(dy * 0.92) + 'px)';
-    }, { passive: false });
-    panel.addEventListener('touchend', function () {
-      if (startY == null) return;
-      startY = null;
-      panel.style.transition = 'transform .22s ease';
-      if (dy > 110) { panel.style.transform = 'translateY(100%)'; setTimeout(function () { close.click(); }, 160); }
-      else panel.style.transform = '';
-      dy = 0;
-    });
-  }
-
   function activateSiteDialog(dialog) {
     if (!dialog || dialog === globalUxState.dialog) return;
     if (globalUxState.dialog) deactivateSiteDialog(false);
@@ -434,7 +402,6 @@
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
     }
-    enableSheetDrag(panel, close);
     setDialogChromeHidden(true);
     setSiblingsInert(dialog);
     if (document.body) document.body.classList.add('tt-site-dialog-open');
