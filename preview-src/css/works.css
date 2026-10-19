@@ -3321,3 +3321,30 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
   .tt-sheet-head {flex:none}
   .tt-sheet-body {flex:1 1 auto;min-height:0}
 }
+
+/* Member sheet on phones: the header (disc, role, name, the one line, close) stays pinned while the sheet
+   scrolls, and the profile (education, MBTI, keywords, SNS) comes first, compact, above the long credits. */
+.tt-sheet-head {position:relative}
+@media (max-width:760px){
+  .tt-sheet-head {position:sticky;top:0;z-index:5;grid-template-columns:56px minmax(0,1fr);gap:14px;padding:24px 62px 14px 16px;
+    box-shadow:0 10px 18px -14px rgba(8,22,38,.35)}
+  .tt-sheet-disc {width:56px}
+  .tt-sheet-role {font-size:10px}
+  html body .tt-member-modal .tt-sheet-name {font-size:28px!important}
+  .tt-sheet-nameline {margin-top:4px;gap:2px 10px}
+  .tt-sheet-tag {font-size:12px}
+  .tt-sheet-tagline {margin-top:6px;font-size:13.5px;line-height:1.45}
+  html body .tt-member-modal .tt-sheet .tt-member-close {top:12px!important;right:12px!important}
+  .tt-sheet-profile {order:-1;border-top:0;border-bottom:1px solid rgba(20,28,48,.07);border-radius:0;padding:16px 16px 18px}
+  .tt-sheet-profile .tt-sheet-label {margin-bottom:10px}
+  .tt-sheet-facts {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 20px;margin:0 0 12px}
+  .tt-sheet-facts dd {margin:3px 0 0;font-size:13.5px;line-height:1.5}
+  .tt-sheet-traits li {padding:5px 11px;font-size:12px}
+  .tt-sheet-sns {margin-top:12px;padding:8px 16px;font-size:12.5px}
+  .tt-sheet-credits {padding-top:20px}
+}
+@media (max-width:760px){
+  /* the space above the sheet is the panel's margin, not the dialog's padding, so the pinned header meets the top edge */
+  html body div.tt-member-modal.tt-member-modal.tt-member-modal:has(#m-photo) {padding-top:0!important}
+  html body .tt-member-modal .tt-sheet {margin-top:max(12px,env(safe-area-inset-top))}
+}
