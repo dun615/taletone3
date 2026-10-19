@@ -437,33 +437,12 @@ body[data-active-chapter="contact"] #progress {
     margin: 0 0 12px 12px;
   }
 
-  .tt-member-grid {
-    clear: both;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 18px !important;
-    align-items: start !important;
-  }
-
-  .tt-member-photo-wrap {
-    width: 100%;
-    max-width: 440px;
-    margin-left: auto;
-    margin-right: auto;
-    aspect-ratio: 1 / 1 !important;
-  }
-
   .tt-member-brand {
     font-size: clamp(34px, 12vw, 54px) !important;
     line-height: .98 !important;
     overflow-wrap: anywhere;
   }
 
-  .tt-member-credit-box {
-    max-height: 48vh !important;
-    width: 100%;
-    overflow-y: auto !important;
-    overflow-x: hidden;
-  }
 }
 
 /* ===== Final tablet/mobile alignment patch ===== */
@@ -576,65 +555,6 @@ div.tt-s-grid-template-columns-6b05:has(#m-photo) > div:nth-child(2) {
 }
 
 /* ===== Final mobile corrections: member modal order + translate caption ===== */
-@media (max-width: 900px) and (orientation: portrait) {
-  .tt-member-grid {
-    display: flex !important;
-    flex-direction: column;
-    gap: 18px !important;
-    align-items: stretch !important;
-  }
-
-  .tt-member-rail,
-.tt-member-main {
-    display: contents !important;
-  }
-
-  .tt-member-photo-wrap {
-    order: 1;
-  }
-
-  .tt-member-identity {
-    order: 2;
-    margin-top: 2px;
-  }
-
-  .tt-member-basic {
-    order: 3;
-  }
-
-  .tt-member-traits {
-    order: 4;
-  }
-
-  .tt-member-credit-section {
-    order: 5;
-  }
-
-  div.tt-s-grid-template-columns-6b05:has(#m-photo) .tt-member-photo-wrap {
-    order: 1;
-  }
-
-  div.tt-s-grid-template-columns-6b05:has(#m-photo) .tt-member-identity {
-    order: 2;
-  }
-
-  div.tt-s-grid-template-columns-6b05:has(#m-photo) .tt-member-basic {
-    order: 3;
-  }
-
-  div.tt-s-grid-template-columns-6b05:has(#m-photo) .tt-member-traits {
-    order: 4;
-  }
-
-  div.tt-s-grid-template-columns-6b05:has(#m-photo) .tt-member-credit-section {
-    order: 5;
-  }
-
-  .tt-member-credit-box {
-    max-height: none !important;
-  }
-
-}
 
 @media (max-width: 640px) {
   #progress {
@@ -2471,10 +2391,6 @@ body.tt-site-dialog-open #progress {
     display: none !important;
   }
 
-  body .tt-member-modal .tt-member-credit-box {
-    max-height: none !important;
-    overflow: visible !important;
-  }
 }
 
 /* ===== Mobile production polish: bridge fit, member roles and WORKS gallery ===== */
@@ -2517,27 +2433,6 @@ body.tt-site-dialog-open #progress {
 }
 
 /* Match each detail credit panel to the bottom of its paired information column. */
-@media (min-width: 901px), (min-width: 761px) and (orientation: landscape) {
-  .tt-member-modal .tt-member-main {
-    height: 0;
-    min-height: 100%;
-    overflow: hidden;
-  }
-
-  .tt-member-modal .tt-member-credit-section {
-    min-height: 0;
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tt-member-modal .tt-member-credit-box {
-    min-height: 0;
-    max-height: none !important;
-    flex: 1 1 0;
-    overflow-y: auto;
-  }
-}
 
 body.tt-site-dialog-open #brand,
 body.tt-site-dialog-open #lang-switcher,
@@ -2583,241 +2478,6 @@ body.tt-network-open #tt-mobile-chapter-menu {
 }
 
 /* ===== Member detail: selected credits first, full career on demand ===== */
-.tt-member-modal .tt-member-credit-section {
-  min-height: 0;
-}
-
-.tt-member-modal .tt-member-credit-section > div:first-child {
-  margin: 18px 0 16px !important;
-}
-
-.tt-member-modal .tt-member-credit-section > div:nth-child(2) {
-  margin-bottom: 12px !important;
-}
-
-.tt-member-modal .tt-member-credit-heading {
-  font-size: 18px !important;
-}
-
-.tt-member-modal .tt-member-credit-box {
-  width: 100%;
-  max-height: none !important;
-  min-height: 0;
-  overflow: visible !important;
-  flex: none;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-}
-
-.tt-member-featured-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.tt-member-featured-list li {
-  min-width: 0;
-  min-height: 92px;
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  align-items: start;
-  gap: 10px;
-  padding: 14px;
-  border: 1px solid rgba(20, 28, 48, .08);
-  border-top: 3px solid var(--tt-member-accent, #0E6E7D);
-  border-radius: 10px;
-  background: rgba(236, 242, 255, .58);
-}
-
-.tt-member-featured-number {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--tt-member-accent, #0E6E7D);
-  color: #fff;
-  font: 800 10px/1 'Quicksand', var(--tt-noto-primary), var(--tt-noto-secondary), sans-serif;
-  letter-spacing: .06em;
-}
-
-.tt-member-featured-list p {
-  margin: 1px 0 0;
-  color: #263244;
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.48;
-  overflow-wrap: anywhere;
-}
-
-.tt-member-credit-details {
-  margin-top: 10px;
-  border: 1px solid rgba(20, 28, 48, .09);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, .72);
-  overflow: hidden;
-}
-
-.tt-member-credit-details summary {
-  min-height: 48px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto 18px;
-  align-items: center;
-  gap: 10px;
-  padding: 0 16px;
-  color: #16202e;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-}
-
-.tt-member-credit-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.tt-member-credit-details summary:focus-visible {
-  outline: 3px solid #F0A634;
-  outline-offset: -3px;
-}
-
-.tt-member-credit-summary-label {
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.tt-member-credit-count {
-  color: #6b7488;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.tt-member-credit-arrow {
-  width: 9px;
-  height: 9px;
-  justify-self: end;
-  border-right: 2px solid var(--tt-member-accent, #0E6E7D);
-  border-bottom: 2px solid var(--tt-member-accent, #0E6E7D);
-  transform: rotate(45deg) translateY(-2px);
-  transition: transform .18s ease;
-}
-
-.tt-member-credit-details[open] .tt-member-credit-arrow {
-  transform: rotate(225deg) translate(-2px, -2px);
-}
-
-.tt-member-credit-all {
-  max-height: min(46vh, 520px);
-  overflow: auto;
-  padding: 18px 20px 22px;
-  border-top: 1px solid rgba(20, 28, 48, .08);
-  color: #5a6678;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.68;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  scrollbar-width: thin;
-}
-
-@media (min-width: 901px) {
-  .tt-member-modal .tt-member-grid {
-    grid-template-columns: minmax(250px, 31%) minmax(0, 1fr) minmax(0, 1fr) !important;
-    grid-template-rows: auto auto auto;
-    column-gap: 18px !important;
-    row-gap: 14px !important;
-    align-items: stretch !important;
-  }
-
-  .tt-member-modal .tt-member-rail,
-.tt-member-modal .tt-member-main {
-    display: contents !important;
-    height: auto;
-    min-height: 0;
-    overflow: visible;
-  }
-
-  .tt-member-modal .tt-member-photo-wrap {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    width: 100%;
-    height: 100%;
-    min-height: 308px;
-    aspect-ratio: auto !important;
-  }
-
-  .tt-member-modal .tt-member-identity {
-    grid-column: 2 / 4;
-    grid-row: 1;
-    align-self: end;
-    padding-right: 108px;
-  }
-
-  .tt-member-modal .tt-member-basic {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  .tt-member-modal .tt-member-traits {
-    grid-column: 3;
-    grid-row: 2;
-  }
-
-  .tt-member-modal .tt-member-basic,
-.tt-member-modal .tt-member-traits {
-    align-self: stretch;
-    padding: 16px 18px 18px !important;
-  }
-
-  .tt-member-modal .tt-member-credit-section {
-    grid-column: 1 / 4;
-    grid-row: 3;
-    display: block;
-    flex: none;
-  }
-}
-
-@media (max-width: 900px) {
-  .tt-member-featured-list {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-  }
-
-  .tt-member-featured-list li {
-    min-height: 0;
-    padding: 12px;
-  }
-
-  .tt-member-credit-all {
-    max-height: none;
-    overflow: visible;
-  }
-}
-
-@media (max-width: 760px) {
-  .tt-member-modal .tt-member-credit-section > div:first-child {
-    margin: 10px 0 14px !important;
-  }
-
-  .tt-member-modal .tt-member-credit-details summary {
-    min-height: 52px;
-    padding: 0 14px;
-  }
-
-  .tt-member-modal .tt-member-credit-all {
-    padding: 16px 14px 20px;
-    font-size: 12.5px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tt-member-credit-arrow {
-    transition: none;
-  }
-}
 
 /* NEWS previews are generated from the localized article body. Keep the
    excerpt subordinate to the title at every viewport size. */
@@ -3684,13 +3344,6 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
 }
 
 /* the sheet shows the member's disc where the photo was */
-.tt-member-modal .tt-member-photo-wrap {display:grid;place-items:center;aspect-ratio:1!important}
-.tt-member-modal .tt-member-photo-wrap img {width:84%!important;height:84%!important;object-fit:contain!important;-webkit-mask-image:none!important;mask-image:none!important;
-  filter:drop-shadow(0 18px 30px rgba(8,22,38,.25))}
-@media (max-width:760px){
-  .tt-member-modal .tt-member-photo-wrap {aspect-ratio:auto!important;padding:18px 0}
-  .tt-member-modal .tt-member-photo-wrap img {width:min(60vw,240px)!important;height:auto!important;aspect-ratio:1}
-}
 
 /* the credits panel fits one screen on laptops: a little less air above and under the chapter title */
 @media (min-width:761px){
@@ -3705,3 +3358,105 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
 /* with the hashtag beside the name, the role sits under it at every width */
 #c-members .tt-crew-text {flex-direction:column;align-items:flex-start;gap:4px}
 #c-members .tt-crew-role {text-align:left;font-size:11px}
+
+/* =====================================================================
+   Member sheet as liner notes (fresh markup: .tt-sheet-*). A header band in the member's colour with the
+   CD, role, name and animal tag; below it the credits (selected first, then every year) beside a narrow
+   profile column. Desktop: the panel has a fixed height and the credits scroll inside it. Phones: one
+   long sheet (the dialog scrolls), credits first, profile last. Parsing: memberSheet() in content.js.
+   ===================================================================== */
+html body .tt-member-modal .tt-sheet {position:relative;box-sizing:border-box;width:min(1040px,94vw)!important;height:min(780px,88vh);max-height:none!important;padding:0!important;
+  overflow:hidden!important;display:grid;grid-template-rows:auto minmax(0,1fr);border-radius:28px!important;background:#fbfaf6!important;
+  border:1px solid rgba(255,255,255,.8);box-shadow:0 50px 120px rgba(8,12,30,.45)}
+.tt-sheet .tt-member-close {z-index:4}
+
+.tt-sheet-head {display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(20px,2.6vw,34px);
+  padding:clamp(24px,3vw,36px) clamp(64px,7vw,92px) clamp(22px,2.6vw,30px) clamp(24px,3.4vw,44px);
+  background:linear-gradient(115deg,color-mix(in srgb,var(--m-accent,#a8caff) 38%,#fff) 0%,color-mix(in srgb,var(--m-accent,#a8caff) 12%,#fbfaf6) 46%,#fbfaf6 100%);
+  border-bottom:1px solid rgba(20,28,48,.08)}
+.tt-sheet-disc {width:clamp(104px,11vw,140px);aspect-ratio:1}
+.tt-sheet-disc img {display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;transform:rotate(-8deg);
+  filter:drop-shadow(0 14px 22px rgba(8,22,38,.24))}
+.tt-sheet-id {min-width:0}
+.tt-sheet-role {font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3a4656}
+.tt-sheet-role::before {content:"";display:inline-block;width:8px;height:8px;margin-right:9px;border-radius:50%;background:var(--m-accent,#a8caff);
+  vertical-align:1px;box-shadow:0 0 0 1px rgba(20,28,48,.14)}
+.tt-sheet-nameline {display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;margin-top:8px}
+html body .tt-member-modal .tt-sheet-name {margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;
+  font-size:clamp(40px,4.6vw,60px)!important;line-height:1!important;letter-spacing:-.01em;color:#141c30}
+.tt-sheet-tag {font-size:15px;font-weight:700;color:#0e6e7d}
+.tt-sheet-tagline {margin:12px 0 0;font-size:clamp(15px,1.4vw,18px);font-weight:500;line-height:1.5;color:#3a4656;max-width:40em}
+
+.tt-sheet-body {display:grid;grid-template-columns:minmax(0,1fr) clamp(240px,27%,300px);min-height:0}
+.tt-sheet-credits {min-height:0;overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;padding:28px clamp(24px,3.4vw,44px) 40px}
+.tt-sheet-profile {min-height:0;overflow-y:auto;scrollbar-width:thin;padding:28px clamp(22px,2.4vw,32px) 32px;background:rgba(20,28,48,.025);
+  border-left:1px solid rgba(20,28,48,.07)}
+.tt-sheet-label {display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#5b6676}
+.tt-sheet-count {padding:2px 8px;border-radius:999px;background:rgba(20,28,48,.07);font-size:11px;letter-spacing:.02em;color:#3a4656}
+
+.tt-sheet-selected {list-style:none;margin:0 0 34px;padding:0;display:grid;gap:8px}
+.tt-sheet-selected li {display:grid;grid-template-columns:30px minmax(0,1fr);align-items:baseline;gap:10px;padding:14px 18px;border-radius:14px;
+  background:color-mix(in srgb,var(--m-accent,#a8caff) 16%,#fff);border:1px solid color-mix(in srgb,var(--m-accent,#a8caff) 40%,#fff)}
+.tt-sheet-no {font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;color:#5b6676;font-variant-numeric:tabular-nums}
+.tt-sheet-selected p {margin:0;font-size:15px;font-weight:600;line-height:1.5;color:#16202e}
+
+.tt-sheet-group {display:grid;grid-template-columns:104px minmax(0,1fr);gap:0 18px;padding:16px 0 6px;border-top:1px solid rgba(20,28,48,.09)}
+.tt-sheet-year {position:sticky;top:-28px;align-self:start;padding-top:8px;font-family:'Quicksand',var(--tt-noto-primary),sans-serif;font-weight:700;
+  font-size:19px;line-height:1.2;color:#141c30}
+.tt-sheet-list, .tt-sheet-subs {list-style:none;margin:0;padding:0}
+.tt-sheet-group > sc-if:empty + .tt-sheet-list, .tt-sheet-group > .tt-sheet-list:first-child {grid-column:1/-1}
+.tt-sheet-list > li {padding:8px 0 10px}
+.tt-sheet-list > li + li {border-top:1px dashed rgba(20,28,48,.08)}
+.tt-sheet-work {display:block;font-size:15px;font-weight:600;line-height:1.45;color:#16202e}
+.tt-sheet-roles {display:block;margin-top:3px;font-size:13px;font-weight:500;line-height:1.5;color:#6b7684}
+.tt-sheet-subs {margin-top:8px;padding-left:14px;border-left:2px solid color-mix(in srgb,var(--m-accent,#a8caff) 60%,#fff)}
+.tt-sheet-subs li + li {margin-top:6px}
+.tt-sheet-subs .tt-sheet-work {font-size:14px;font-weight:600}
+.tt-sheet-link {display:inline-block;margin-top:4px;font-size:13px;font-weight:700;color:#0e6e7d;text-decoration:none}
+.tt-sheet-link:hover {text-decoration:underline}
+
+.tt-sheet-facts {margin:0 0 18px}
+.tt-sheet-facts dt {font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#6b7684}
+.tt-sheet-facts dd {margin:5px 0 16px;font-size:14px;font-weight:500;line-height:1.6;color:#2a3444}
+.tt-sheet-pre {white-space:pre-line}
+.tt-sheet-traits {list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.tt-sheet-traits li {padding:6px 12px;border-radius:999px;background:#fff;border:1px solid rgba(20,28,48,.1);font-size:12.5px;font-weight:600;color:#3a4254}
+.tt-sheet-sns {display:inline-flex;align-items:center;margin-top:20px;padding:10px 18px;border-radius:999px;background:#141c30;color:#fffdf8;
+  font-size:13px;font-weight:700;text-decoration:none}
+.tt-sheet-sns:hover {background:#0e6e7d}
+
+/* tablets: a narrower profile column, the year above its list */
+@media (max-width:1000px) and (min-width:761px){
+  .tt-sheet-body {grid-template-columns:minmax(0,1fr) 240px}
+  .tt-sheet-group {grid-template-columns:1fr}
+  .tt-sheet-year {position:static;padding:0 0 4px}
+}
+
+/* phones: one sheet that scrolls as a whole; credits first, profile at the end */
+@media (max-width:760px){
+  html body .tt-member-modal .tt-sheet {width:100%!important;max-width:none;height:auto;overflow:visible!important;display:block;border-radius:24px!important;margin:0 auto 24px}
+  .tt-sheet-head {grid-template-columns:76px minmax(0,1fr);gap:16px;padding:30px 66px 20px 18px;border-radius:24px 24px 0 0}
+  .tt-sheet-disc {width:76px}
+  .tt-sheet-role {font-size:10.5px;letter-spacing:.1em}
+  html body .tt-member-modal .tt-sheet-name {font-size:34px!important}
+  .tt-sheet-tag {font-size:13px}
+  .tt-sheet-body {display:flex;flex-direction:column}
+  .tt-sheet-credits, .tt-sheet-profile {overflow:visible;padding:22px 18px 26px}
+  .tt-sheet-profile {border-left:0;border-top:1px solid rgba(20,28,48,.07);border-radius:0 0 24px 24px}
+  .tt-sheet-selected {margin-bottom:26px}
+  .tt-sheet-selected li {padding:12px 14px;grid-template-columns:24px minmax(0,1fr)}
+  .tt-sheet-selected p {font-size:14px}
+  .tt-sheet-group {grid-template-columns:1fr;padding-top:14px}
+  .tt-sheet-year {position:static;padding:0 0 2px;font-size:17px}
+  .tt-sheet-work {font-size:14px}
+  .tt-sheet-roles {font-size:12.5px}
+}
+html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!important;top:16px!important;right:16px!important;left:auto!important;bottom:auto!important;
+  float:none;margin:0!important;transform:none!important}
+.tt-sheet-label {letter-spacing:.06em}
+/* the sheet is as tall as its content up to the cap; only then do the credits scroll */
+@media (min-width:761px){
+  html body .tt-member-modal .tt-sheet {display:flex;flex-direction:column;height:auto;max-height:min(780px,88vh)!important}
+  .tt-sheet-head {flex:none}
+  .tt-sheet-body {flex:1 1 auto;min-height:0}
+}
