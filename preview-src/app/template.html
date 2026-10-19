@@ -957,15 +957,15 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div class="tt-crew" data-reveal="" data-featured="01" style="opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
     <div class="tt-crew-stage" aria-hidden="true">
       <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="5">
-      <figure class="tt-crew-feature" data-i="{{ member.number }}" style="--crew-accent:{{ member.accent }}">
-        <span class="tt-crew-disc"><img data-member-src="{{ member.photo }}" alt="" loading="lazy" decoding="async"></span>
+      <figure class="tt-crew-feature" data-i="{{ member.number }}" data-animal="{{ member.animal }}" style="--crew-accent:{{ member.accent }}">
+        <span class="tt-crew-disc"><span class="tt-crew-tail"></span><img data-member-src="{{ member.photo }}" alt="" loading="lazy" decoding="async"></span>
         <figcaption><span class="tt-crew-feature-name">{{ member.name }}</span><span class="tt-crew-feature-role">{{ member.role }}</span></figcaption>
       </figure>
       </sc-for>
     </div>
     <ol class="tt-crew-list">
       <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="5">
-      <li class="tt-crew-item"><div onclick="{{ member.open }}" class="tt-crew-row" data-i="{{ member.number }}" data-no-detail="{{ member.noDetailFlag }}">
+      <li class="tt-crew-item"><div onclick="{{ member.open }}" class="tt-crew-row" data-i="{{ member.number }}" data-animal="{{ member.animal }}" data-no-detail="{{ member.noDetailFlag }}">
         <span class="tt-crew-no">{{ member.number }}</span>
         <img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy" decoding="async">
         <span class="tt-crew-text"><span class="tt-crew-name">{{ member.name }}</span><span class="tt-crew-role">{{ member.role }}</span></span>

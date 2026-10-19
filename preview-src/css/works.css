@@ -4022,3 +4022,105 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   #content#content #c-members {padding-top:clamp(76px,11vh,130px)!important;padding-bottom:clamp(40px,7vh,96px)!important}
   #content#content #c-members > [data-reveal]:first-child {margin-bottom:clamp(22px,3.6vh,44px)!important}
 }
+
+/* =====================================================================
+   TALE is also a tail: each member is an animal (data-animal) and the featured disc shows its tail
+   peeking out from behind, each with its own gesture — otter paddles, wolfdog wags, rabbit hops,
+   fox sweeps, and the hamster has almost no tail, so its disc runs like a wheel instead.
+   The tails are assets/members/tail-<animal>.svg (placeholders until the illustrated ones arrive);
+   they load only once the member discs do (img[src] is set when MEMBERS becomes active).
+   ===================================================================== */
+#c-members .tt-crew-tail {position:absolute;z-index:0;left:60%;top:36%;width:62%;aspect-ratio:1;pointer-events:none;
+  background:center/contain no-repeat;transform-origin:0% 85%;opacity:0;transform:rotate(-36deg) scale(.5);
+  transition:opacity .3s ease}
+#c-members .tt-crew-disc img {z-index:1}
+#c-members .tt-crew-disc:has(img[src]) .tt-crew-tail {background-image:var(--crew-tail)}
+#c-members [data-animal="otter"] {--crew-tail:url("/assets/members/tail-otter.svg")}
+#c-members [data-animal="wolfdog"] {--crew-tail:url("/assets/members/tail-wolfdog.svg")}
+#c-members [data-animal="fox"] {--crew-tail:url("/assets/members/tail-fox.svg")}
+#c-members [data-animal="rabbit"] {--crew-tail:url("/assets/members/tail-rabbit.svg")}
+#c-members [data-animal="hamster"] {--crew-tail:url("/assets/members/tail-hamster.svg")}
+/* the puff and the nub sit on the rim instead of reaching out */
+#c-members [data-animal="rabbit"] .tt-crew-tail {left:72%;top:68%;width:30%;transform-origin:20% 20%}
+#c-members [data-animal="hamster"] .tt-crew-tail {left:80%;top:76%;width:17%;transform-origin:10% 10%}
+#c-members [data-animal="fox"] .tt-crew-tail {width:72%;top:30%}
+
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"] .tt-crew-tail,
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"] .tt-crew-tail,
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"] .tt-crew-tail,
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"] .tt-crew-tail,
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"] .tt-crew-tail {opacity:1;transform:none;
+  animation:tt-tail-in .8s cubic-bezier(.34,1.4,.5,1) .1s both,var(--crew-gesture)}
+@keyframes tt-tail-in {from {opacity:0;transform:rotate(-36deg) scale(.5)} to {opacity:1;transform:none}}
+
+/* the gestures: a beat of movement, then rest, repeating */
+#c-members .tt-crew-feature[data-animal="otter"] {--crew-gesture:tt-tail-paddle 4.2s ease-in-out .9s infinite}
+#c-members .tt-crew-feature[data-animal="wolfdog"] {--crew-gesture:tt-tail-wag 3.6s ease-in-out .9s infinite}
+#c-members .tt-crew-feature[data-animal="fox"] {--crew-gesture:tt-tail-sweep 5.4s ease-in-out .9s infinite}
+#c-members .tt-crew-feature[data-animal="rabbit"] {--crew-gesture:tt-tail-jiggle 2.8s ease-in-out .9s infinite}
+#c-members .tt-crew-feature[data-animal="hamster"] {--crew-gesture:tt-tail-jiggle 2.2s ease-in-out .9s infinite}
+@keyframes tt-tail-paddle {0%,100% {transform:none} 30% {transform:rotate(-9deg)} 60% {transform:rotate(3deg)}}
+@keyframes tt-tail-wag {0%,46%,100% {transform:none} 8% {transform:rotate(-12deg)} 16% {transform:rotate(6deg)} 24% {transform:rotate(-10deg)} 32% {transform:rotate(4deg)}}
+@keyframes tt-tail-sweep {0%,100% {transform:none} 40% {transform:rotate(-20deg) scale(1.03)} 70% {transform:rotate(4deg)}}
+@keyframes tt-tail-jiggle {0%,40%,100% {transform:none} 10% {transform:scale(1.12) rotate(-6deg)} 22% {transform:scale(.94) rotate(4deg)}}
+
+/* the disc itself moves the animal's way: the otter floats, the rabbit hops, the hamster's wheel turns */
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"][data-animal="otter"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"][data-animal="otter"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"][data-animal="otter"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"][data-animal="otter"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"][data-animal="otter"] .tt-crew-disc {animation:tt-disc-float 4.2s ease-in-out .9s infinite}
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"][data-animal="rabbit"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"][data-animal="rabbit"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"][data-animal="rabbit"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"][data-animal="rabbit"] .tt-crew-disc,
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"][data-animal="rabbit"] .tt-crew-disc {animation:tt-disc-hop 2.8s cubic-bezier(.3,0,.4,1) .9s infinite}
+#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"][data-animal="hamster"] .tt-crew-disc img,
+#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"][data-animal="hamster"] .tt-crew-disc img,
+#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"][data-animal="hamster"] .tt-crew-disc img,
+#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"][data-animal="hamster"] .tt-crew-disc img,
+#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"][data-animal="hamster"] .tt-crew-disc img {animation:tt-disc-wheel 4.4s cubic-bezier(.5,0,.3,1) .9s infinite}
+@keyframes tt-disc-float {0%,100% {transform:none} 50% {transform:translateY(-8px) rotate(-1.5deg)}}
+@keyframes tt-disc-hop {0%,44%,100% {transform:none} 12% {transform:translateY(-18px)} 22% {transform:none} 28% {transform:translateY(-7px)} 34% {transform:none}}
+@keyframes tt-disc-wheel {0% {transform:rotate(0)} 40%,100% {transform:rotate(360deg)}}
+
+/* tracklist: the small disc does its animal's move once when its row is picked (hover, focus or tap) */
+#c-members .tt-crew-row:hover > img {transform:none}
+#c-members .tt-crew[data-featured="01"] .tt-crew-row[data-i="01"] > img,
+#c-members .tt-crew[data-featured="02"] .tt-crew-row[data-i="02"] > img,
+#c-members .tt-crew[data-featured="03"] .tt-crew-row[data-i="03"] > img,
+#c-members .tt-crew[data-featured="04"] .tt-crew-row[data-i="04"] > img,
+#c-members .tt-crew[data-featured="05"] .tt-crew-row[data-i="05"] > img {animation:var(--crew-move) both}
+#c-members .tt-crew-row[data-animal="otter"] {--crew-move:tt-disc-float 1.4s ease-in-out}
+#c-members .tt-crew-row[data-animal="wolfdog"] {--crew-move:tt-row-perk .7s ease-out}
+#c-members .tt-crew-row[data-animal="rabbit"] {--crew-move:tt-disc-hop 1.6s cubic-bezier(.3,0,.4,1)}
+#c-members .tt-crew-row[data-animal="fox"] {--crew-move:tt-row-sly .9s ease-in-out}
+#c-members .tt-crew-row[data-animal="hamster"] {--crew-move:tt-disc-wheel 1.6s cubic-bezier(.5,0,.3,1)}
+@keyframes tt-row-perk {0%,100% {transform:none} 35% {transform:translateY(-5px) rotate(8deg)} 65% {transform:rotate(-4deg)}}
+@keyframes tt-row-sly {0%,100% {transform:none} 40% {transform:rotate(-16deg) translateX(-2px)} 70% {transform:rotate(6deg)}}
+
+/* phones have no stage; tablets and up keep the tail inside the panel's stage column */
+@media (max-width:900px){#c-members .tt-crew-tail {width:50%}}
+@media (prefers-reduced-motion:reduce){
+  #c-members .tt-crew-tail, #c-members .tt-crew-disc, #c-members .tt-crew-disc img, #c-members .tt-crew-row > img {animation:none!important;transition:opacity .2s ease}
+}
+
+/* tails read as tails: bigger, further out, with a soft shadow off the panel */
+#c-members .tt-crew-tail {filter:drop-shadow(0 8px 12px rgba(8,22,38,.16))}
+#c-members [data-animal="otter"] .tt-crew-tail {left:56%;top:36%;width:74%;transform-origin:0% 66%}
+#c-members [data-animal="wolfdog"] .tt-crew-tail {left:58%;top:18%;width:76%}
+#c-members [data-animal="fox"] .tt-crew-tail {left:58%;top:24%;width:80%}
+#c-members [data-animal="rabbit"] .tt-crew-tail {left:70%;top:62%;width:38%}
+#c-members [data-animal="hamster"] .tt-crew-tail {left:79%;top:74%;width:22%}
+@media (max-width:900px){
+  #c-members [data-animal="otter"] .tt-crew-tail, #c-members [data-animal="wolfdog"] .tt-crew-tail, #c-members [data-animal="fox"] .tt-crew-tail {width:56%}
+}
+/* narrow tablets: a smaller disc leaves the tail room inside the stage column */
+@media (max-width:900px) and (min-width:761px){
+  #c-members .tt-crew-stage {justify-items:start}
+  #c-members .tt-crew-disc {width:min(72%,300px,33vh)}
+  #c-members .tt-crew-feature {align-items:flex-start}
+  #c-members .tt-crew-feature figcaption {align-items:flex-start;text-align:left}
+  #c-members [data-animal="otter"] .tt-crew-tail, #c-members [data-animal="wolfdog"] .tt-crew-tail, #c-members [data-animal="fox"] .tt-crew-tail {width:74%}
+  #c-members .tt-crew-disc {width:min(76%,300px,33vh)}
+}
