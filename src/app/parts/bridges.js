@@ -397,6 +397,14 @@ var ComponentBridges = {
       bg.style.wordBreak='keep-all';
       bg.style.overflowWrap='normal';
       bg.style.textWrap='nowrap';
+      // The lines never wrap, so a long one (EN "At our fingertips, that color turns to sound") could run past
+      // the screen edge: shrink the type just enough to keep the widest line clear of the side chapter nav.
+      var room=Math.min(bg.clientWidth||0, window.innerWidth-2*Math.min(190,window.innerWidth*0.12));
+      var wide=bg.scrollWidth||0;
+      if(room>0&&wide>room){
+        var size=parseFloat(getComputedStyle(bg).fontSize)||0;
+        if(size) bg.style.setProperty('font-size',Math.max(24,size*room/wide).toFixed(1)+'px');
+      }
       bg._fitVw = window.innerWidth;
       return;
     }
