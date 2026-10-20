@@ -366,6 +366,17 @@ const sitemap = await text('sitemap.xml');
 assert(/Sitemap:\s*https:\/\/taletone\.net\/sitemap\.xml/i.test(robots), 'robots.txt: sitemap declaration missing');
 for (const [, , route] of routes) assert(sitemap.includes(`<loc>https://taletone.net${route}</loc>`), `sitemap.xml: missing ${route}`);
 
+// News feeds, one per language, each listing every news item and linked from the pages of its language.
+const newsItems = JSON.parse(await text('assets/data/site-content.json')).news;
+for (const [prefix] of [[''], ['/en'], ['/ja']]) {
+  const feed = await text(`${prefix.slice(1)}${prefix ? '/' : ''}rss.xml`);
+  assert(feed.startsWith('<?xml') && feed.includes('<rss version="2.0"'), `${prefix}/rss.xml: not an RSS 2.0 feed`);
+  for (const item of newsItems) assert(feed.includes(`<link>https://taletone.net${prefix}/news/${item.slug}/</link>`), `${prefix}/rss.xml: missing ${item.slug}`);
+  assert(!/⁠/.test(feed), `${prefix}/rss.xml: invisible word joiners left in the text`);
+  const home = await text(`${prefix.slice(1)}${prefix ? '/' : ''}index.html`);
+  assert(home.includes(`type="application/rss+xml"`) && home.includes(`href="https://taletone.net${prefix}/rss.xml"`), `${prefix || '/'} page: news feed link missing`);
+}
+
 // Localized routes: same app, own URL, language-specific head and fallback content.
 for (const [prefix, htmlLang] of [['', 'ko'], ['/en', 'en'], ['/ja', 'ja']]) {
   for (const [, file, route] of routes) {

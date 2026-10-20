@@ -220,6 +220,7 @@ function renderPage(page, lang, overrides = {}) {
   const hreflang = [
     ...languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${urlFor(l, page.path)}">`),
     `<link rel="alternate" hreflang="x-default" href="${urlFor(languages[0], page.path)}">`,
+    feedLink(lang),
   ].join('\n');
   const ogLocale = [
     `<meta property="og:locale" content="${lang.locale}">`,
@@ -259,6 +260,14 @@ const detailLabels = {
 const worksByDate = [...works.works].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 const assetPath = (value) => `/${String(value || '').replace(/\\/g, '/').replace(/^\/+/, '')}`;
 const isoDate = (value) => String(value || '').replace(/\./g, '-');
+// news feeds (rssFeed below), one per language, linked from every page's head
+const feedTitle = { kr: 'TALETONE MUSIC 소식', en: 'TALETONE MUSIC News', jp: 'TALETONE MUSIC ニュース' };
+const feedPath = (lang) => `${lang.prefix}/rss.xml`;
+function feedLink(lang) {
+  return `<link rel="alternate" type="application/rss+xml" title="${esc(feedTitle[lang.key])}" href="${baseUrl}${feedPath(lang)}">`;
+}
+// news dates are KST calendar days
+const rfc822 = (value) => new Date(`${isoDate(value)}T09:00:00+09:00`).toUTCString();
 const workPath = (lang, work) => `${lang.prefix}/works/${work.slug}/`;
 const newsPath = (lang, item) => `${lang.prefix}/news/${item.slug}/`;
 const detailCss = await read('assets/css/detail.css');
@@ -287,6 +296,7 @@ function detailPage({ lang, pathFor, title, description, ogType, image, schema, 
 <link rel="canonical" href="${url}">
 ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseUrl}${pathFor(l)}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${baseUrl}${pathFor(languages[0])}">
+${feedLink(lang)}
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="TALETONE MUSIC">
 <meta property="og:title" content="${esc(fullTitle)}">
@@ -483,6 +493,42 @@ const detailPages = [
   ...site.news.flatMap((item, i) => languages.map((lang) => [`${newsPath(lang, item).slice(1)}index.html`, newsPage(item, i, lang)])),
 ];
 
+// ---- News feeds: /rss.xml (Korean), /en/rss.xml, /ja/rss.xml (RSS 2.0, for Naver and feed readers) ----
+function rssFeed(lang) {
+  const newsPage = seo.pages.find((page) => page.key === 'news');
+  const items = [...site.news].sort((a, b) => String(b.date).localeCompare(String(a.date))).map((item) => {
+    const n = localized(item, lang.key);
+    // (U+2060 word joiners keep Korean particles on the line in the page; a feed reader needs plain text)
+    const text = String(n.summary || n.body || '').replace(/\r|⁠/g, '').split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 2).join(' ');
+    const url = `${baseUrl}${newsPath(lang, item)}`;
+    return [
+      '    <item>',
+      `      <title>${esc(n.title)}</title>`,
+      `      <link>${url}</link>`,
+      `      <guid isPermaLink="true">${url}</guid>`,
+      `      <pubDate>${rfc822(item.date)}</pubDate>`,
+      n.tag || n.category ? `      <category>${esc(n.tag || n.category)}</category>` : '',
+      `      <description>${esc(text.length > 300 ? `${text.slice(0, 297)}…` : text)}</description>`,
+      '    </item>',
+    ].filter(Boolean).join('\n');
+  });
+  const newest = [...site.news].map((item) => item.date).sort().pop();
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${esc(feedTitle[lang.key])}</title>
+    <link>${baseUrl}${lang.prefix}/news/</link>
+    <description>${esc(pageCopy(newsPage, lang).description)}</description>
+    <language>${lang.html}</language>
+    <atom:link href="${baseUrl}${feedPath(lang)}" rel="self" type="application/rss+xml"/>
+    ${newest ? `<lastBuildDate>${rfc822(newest)}</lastBuildDate>` : ''}
+    <image><url>${baseUrl}/assets/icons/icon-512.png</url><title>${esc(feedTitle[lang.key])}</title><link>${baseUrl}${lang.prefix}/news/</link></image>
+${items.join('\n')}
+  </channel>
+</rss>
+`;
+}
+
 function sitemap() {
   const entry = (pathFor) => languages.map((lang) => [
     '  <url>',
@@ -550,6 +596,7 @@ const outputs = [
   ['assets/data/site-content.js', siteScript],
   ['assets/data/seo-content.js', seoScript],
   ['sitemap.xml', sitemap()],
+  ...languages.map((lang) => [feedPath(lang).slice(1), rssFeed(lang)]),
 ];
 
 if (listOnly) { console.log(outputs.map(([relative]) => relative).join('\n')); process.exit(0); }
