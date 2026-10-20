@@ -466,13 +466,26 @@
     '</section>';
   }
 
+  // An album shows the credits of one track at a time: the one playing, else its title track. The heading
+  // names the track; picking another track in the popup switches them (refreshPlaying). Language versions
+  // of a single keep the work's own credits.
+  function creditsFor(work, index) {
+    var unit = localizedUnit(work), labels = L();
+    if (work.tracks && work.tracks.length > 1) {
+      var i = state.current === index ? state.track : titleTrackIndex(work);
+      var track = localizedUnit(work.tracks[i] || {});
+      return { text: String(track.credits || unit.credits || work.credits || '').trim(), label: labels.credits + ' · ' + pad(i + 1) + ' ' + plainRichText(track.title || '') };
+    }
+    return { text: String(unit.credits || work.credits || '').trim(), label: labels.credits };
+  }
+
   function modalHtml(index) {
     var work = works[index]; if (!work) return '';
     var labels = L(), meta = localizedMeta();
     var unit = localizedUnit(work);
     var title = plainRichText(unit.title || work.title || '');
     var image = unit.image || work.image || '';
-    var credits = String(unit.credits || work.credits || '').trim();
+    var credit = creditsFor(work, index);
     var id = youtubeId(work.youtube);
     var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
       .filter(function (row) { return row[1]; })
@@ -500,7 +513,7 @@
         '<div class="tt-shelf-modal-info">' +
           (facts ? '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' : '') +
           trackRowsHtml(work, index) +
-          (credits ? creditsHtml(credits, labels.credits) : '') +
+          (credit.text ? creditsHtml(credit.text, credit.label) : '') +
         '</div>' +
       '</div>' +
     '</div>';
@@ -685,30 +698,131 @@
     if (notify !== false) window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
-  // ---- playback: one audio element; tracks and language versions switch in place ----
+  // ---- playback: one audio element for a record; its language versions play together (below) ----
   // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
   // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
-  var gainCtx = null, gainNode = null;
+  var gainCtx = null, gainNode = null, elementRouted = false;
   function volumeText(v) {
     return Math.round(v * 100) + '% (' + (v > 0 ? (20 * Math.log10(v)).toFixed(1) + ' dB' : '-∞ dB') + ')';
   }
   function applyVolume() {
     if (gainNode) gainNode.gain.value = state.volume;
-    else if (audio) audio.volume = state.volume;
+    if (audio && !elementRouted) audio.volume = state.volume;
   }
-  function ensureGain() {
-    if (gainNode || !audio) return;
+  // the audio clock and the master volume every source plays through
+  function ensureCtx() {
+    if (gainCtx) return gainCtx;
     var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return;
+    if (!AC) return null;
     try {
       gainCtx = new AC();
-      var source = gainCtx.createMediaElementSource(audio);
       gainNode = gainCtx.createGain();
-      source.connect(gainNode);
       gainNode.connect(gainCtx.destination);
-      audio.volume = 1;
-    } catch (_e) { gainNode = null; }
+    } catch (_e) { gainCtx = null; gainNode = null; }
     applyVolume();
+    return gainCtx;
+  }
+  function ensureGain() {
+    if (elementRouted || !audio || !ensureCtx()) return;
+    try {
+      gainCtx.createMediaElementSource(audio).connect(gainNode);
+      audio.volume = 1;
+      elementRouted = true;
+    } catch (_e) {}
+    applyVolume();
+  }
+
+  // ---- language versions: all of them play at once, in step; a switch moves only their volumes ----
+  // The KR and JP versions of a single share one arrangement, so both are decoded and started on the same
+  // instant of the audio clock: the chosen language is heard, the other runs silent, and switching is a
+  // 15 ms crossfade with no reload and no gap. If they cannot be decoded, the element plays one version at
+  // a time instead (a switch then reloads at the same position).
+  var layerBuffers = {};                     // url -> Promise<AudioBuffer>
+  var layer = null;                          // { key, sources: { LANG: { source, gain } }, startedAt, offset, duration }
+  var layerPaused = { key: '', offset: 0 };  // where a paused record resumes
+  var layerToken = 0, layerLoading = false, layerFailed = {};
+  function layeredEntries() {
+    var work = works[state.current]; if (!work) return [];
+    var list = variantsFor(work, state.track).map(function (version, i) { return { language: languageLabel(version, i), url: audioUrl(version.audio) }; })
+      .filter(function (entry) { return entry.url; });
+    return list.length > 1 ? list : [];
+  }
+  function layerKey(entries) { return state.current + '|' + state.track + '|' + entries.map(function (e) { return e.url; }).join('|'); }
+  function layerBuffer(url) {
+    if (!layerBuffers[url]) {
+      layerBuffers[url] = fetch(url).then(function (response) { if (!response.ok) throw new Error('audio ' + response.status); return response.arrayBuffer(); })
+        .then(function (data) { return new Promise(function (ok, fail) { var p = gainCtx.decodeAudioData(data, ok, fail); if (p && p.then) p.then(ok, fail); }); })
+        .catch(function (error) { delete layerBuffers[url]; throw error; });
+    }
+    return layerBuffers[url];
+  }
+  function layerPosition() { return layer ? Math.min(layer.duration, layer.offset + Math.max(0, gainCtx.currentTime - layer.startedAt)) : 0; }
+  function stopLayer(keepPosition) {
+    layerToken++;
+    layerLoading = false;
+    if (!layer) return;
+    if (keepPosition) layerPaused = { key: layer.key, offset: layerPosition() };
+    var old = layer; layer = null;
+    Object.keys(old.sources).forEach(function (lang) {
+      var node = old.sources[lang];
+      node.source.onended = null;
+      try { node.source.stop(); } catch (_e) {}
+      try { node.gain.disconnect(); } catch (_e2) {}
+    });
+  }
+  function setLayerLanguage() {
+    if (!layer) return;
+    var now = gainCtx.currentTime;
+    Object.keys(layer.sources).forEach(function (lang) {
+      var g = layer.sources[lang].gain.gain;
+      g.cancelScheduledValues(now);
+      g.setValueAtTime(g.value, now);
+      g.linearRampToValueAtTime(lang === state.language ? 1 : 0, now + 0.015);
+    });
+  }
+  // Plays the current record's language versions together. Returns false when it has none to layer (or
+  // they failed to decode), and the element plays it instead.
+  function playLayered() {
+    var entries = layeredEntries(), key = entries.length ? layerKey(entries) : '';
+    if (!entries.length || layerFailed[key] || !ensureCtx() || !window.fetch) { stopLayer(false); return false; }
+    if (layer && layer.key === key) return true;
+    stopLayer(false);
+    var token = ++layerToken;
+    layerLoading = true;
+    if (audio && !audio.paused) audio.pause();
+    Promise.all(entries.map(function (entry) { return layerBuffer(entry.url); })).then(function (buffers) {
+      if (token !== layerToken || !state.playing) return;
+      layerLoading = false;
+      var durations = buffers.map(function (b) { return b.duration; });
+      var duration = Math.min.apply(Math, durations), shortest = durations.indexOf(duration);
+      var offset = layerPaused.key === key && layerPaused.offset < duration - 0.05 ? layerPaused.offset : 0;
+      var when = gainCtx.currentTime + 0.03, sources = {};
+      entries.forEach(function (entry, i) {
+        var source = gainCtx.createBufferSource(), gain = gainCtx.createGain();
+        source.buffer = buffers[i];
+        gain.gain.value = entry.language === state.language ? 1 : 0;
+        source.connect(gain);
+        gain.connect(gainNode);
+        source.start(when, offset);
+        sources[entry.language] = { source: source, gain: gain };
+      });
+      layer = { key: key, sources: sources, startedAt: when, offset: offset, duration: duration };
+      // the end of the shortest version ends the record
+      sources[entries[shortest].language].source.onended = function () {
+        stopLayer(false);
+        layerPaused = { key: '', offset: 0 };
+        state.playing = false; setMediaStatus('playback', 'ended'); refreshPlaying();
+      };
+      setMediaStatus('audio-engine', 'layered');
+    }).catch(function () {
+      if (token !== layerToken) return;
+      layerLoading = false;
+      layerFailed[key] = true;
+      if (!state.playing) return;
+      loadCurrent(false);
+      playElement();
+    });
+    return true;
   }
   function onVolumeInput(event) {
     var input = event.target;
@@ -724,7 +838,8 @@
     audio.preload = 'none';
     audio.volume = state.volume;
     audio.addEventListener('ended', function () { state.playing = false; setMediaStatus('playback', 'ended'); refreshPlaying(); });
-    audio.addEventListener('pause', function () { if (state.playing && audio.paused) { state.playing = false; refreshPlaying(); } });
+    // (not when it was paused to hand the record over to its layered language versions)
+    audio.addEventListener('pause', function () { if (state.playing && audio.paused && !layer && !layerLoading) { state.playing = false; refreshPlaying(); } });
     // the element is the truth: if it plays, the deck shows it playing
     audio.addEventListener('playing', function () { if (!priming && !state.playing) { state.playing = true; setMediaStatus('playback', 'playing'); refreshPlaying(); } });
     return audio;
@@ -808,25 +923,28 @@
   function resume() {
     state.engaged = true;
     priming = false;
-    if (audio) audio.muted = false;
     var engagedShelf = root && root.querySelector('.tt-shelf'); if (engagedShelf) engagedShelf.classList.add('is-engaged');
     var video = root && root.querySelector('.tt-shelf-yt.is-playing');
     if (video) { video.closest('.tt-shelf-modal-stage') && closeVideo(video); }
-    var el = ensureAudioEl();
-    ensureGain();
-    if (gainCtx && gainCtx.state === 'suspended') gainCtx.resume();
-    var attempt = el.play();
-    var token = ++playAttempt;
+    if (ensureCtx() && gainCtx.state === 'suspended') gainCtx.resume();
     state.playing = true;
     setMediaStatus('playback', 'playing');
+    if (!playLayered()) playElement();
+    refreshPlaying(true);
+    announce(L().nowPlaying + ': ' + currentTitle());
+  }
+  function playElement() {
+    var el = ensureAudioEl();
+    el.muted = false;
+    ensureGain();
+    var attempt = el.play();
+    var token = ++playAttempt;
     // Switching records quickly aborts the previous play() (AbortError) after the new one has started;
     // only a refusal of the latest attempt means playback really was blocked.
     if (attempt && attempt.catch) attempt.catch(function (error) {
       if (token !== playAttempt || (error && error.name === 'AbortError') || !el.paused) return;
       state.playing = false; setMediaStatus('playback', 'blocked'); refreshPlaying();
     });
-    refreshPlaying(true);
-    announce(L().nowPlaying + ': ' + currentTitle());
   }
   function closeVideo(wrap) {
     var id = wrap.getAttribute('data-yt');
@@ -835,6 +953,7 @@
     wrap.innerHTML = '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt=""><button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title) + '"><span aria-hidden="true"></span></button>';
   }
   function pauseAll() {
+    stopLayer(true);
     if (audio && !audio.paused) audio.pause();
     if (state.playing) { state.playing = false; setMediaStatus('playback', 'paused'); refreshPlaying(); announce(L().pause); }
   }
@@ -859,6 +978,7 @@
   }
   function stopAll() {
     pauseAll();
+    layerPaused = { key: '', offset: 0 };
     if (audio) { audio.removeAttribute('src'); audio.load(); }
     state.engaged = false;
     var stoppedShelf = root && root.querySelector('.tt-shelf'); if (stoppedShelf) stoppedShelf.classList.remove('is-engaged');
@@ -889,6 +1009,15 @@
     root.querySelectorAll('[data-works-action="modal-track"]').forEach(function (button) {
       button.classList.toggle('is-on', Number(button.getAttribute('data-index')) === state.current && Number(button.getAttribute('data-track')) === state.track);
     });
+    // an open album popup follows the chosen track with its credits
+    var info = root.querySelector('.tt-shelf-modal-info'), shown = works[state.modal];
+    if (info && shown && shown.tracks && shown.tracks.length > 1) {
+      var credit = creditsFor(shown, state.modal), old = info.querySelector('.tt-shelf-modal-credits');
+      if (!old || old.getAttribute('aria-label') !== credit.label) {
+        var holder = document.createElement('div'); holder.innerHTML = credit.text ? creditsHtml(credit.text, credit.label) : '';
+        if (old && holder.firstChild) old.replaceWith(holder.firstChild); else if (old) old.remove(); else if (holder.firstChild) info.appendChild(holder.firstChild);
+      }
+    }
   }
 
   function isWorksChapterActive() {
@@ -943,9 +1072,16 @@
       loadCurrent(false); resume(); refreshPlaying(true);
     } else if (action === 'language') {
       state.language = button.getAttribute('data-language') || state.language;
-      var wasPlaying = state.playing;
-      loadCurrent(true);
-      if (wasPlaying) resume(); else refreshPlaying(true);
+      var entries = layeredEntries();
+      if (entries.length && !layerFailed[layerKey(entries)]) {
+        // layered: playing moves the volumes; loading or paused, the next start uses the new language
+        setLayerLanguage();
+        refreshPlaying(true);
+      } else {
+        var wasPlaying = state.playing;
+        loadCurrent(true);
+        if (wasPlaying) resume(); else refreshPlaying(true);
+      }
     }
   }
   // stop the music once the reader leaves the Works chapter
