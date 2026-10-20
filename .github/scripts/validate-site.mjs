@@ -601,9 +601,11 @@ for (const work of JSON.parse(await text('assets/data/works-data.json')).works) 
 }
 for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
 const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
-assert(/display:\s*inline-flex;/.test(homeTaglineRule) && /font-size:\s*clamp\(18px, 2vw, 28px\);/.test(homeTaglineRule), 'HOME tagline is no longer visually grouped with the title');
+// (its size comes from the template's #content#content rule, which always won over works.css)
+const liveTemplate = await text('src/app/template.html');
+assert(/display:\s*inline-flex;/.test(homeTaglineRule) && liveTemplate.includes('#content#content .tt-home-tagline{font-size:var(--fs-xl)}'), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-assert(Buffer.byteLength(worksCss) <= 150_000, 'WORKS CSS exceeds 150 KB source budget');
+assert(Buffer.byteLength(worksCss) <= 130_000, 'WORKS CSS exceeds 130 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
 assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
 const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
@@ -665,8 +667,10 @@ for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-
 assert((worksCss.match(/\.tt-mobile-bridge-line\[data-indent=/g) || []).length === 4, 'duplicate mobile bridge indent rules returned');
 assert((worksCss.match(/#lang-switcher\.tt-lang-switcher button:focus,\s*#lang-switcher\.tt-lang-switcher button:focus-visible,\s*#lang-switcher\.tt-lang-switcher button:active\s*\{\s*border: 0 !important;\s*outline: 0 !important;\s*box-shadow: none !important;\s*border-radius: 999px !important;\s*\}/g) || []).length === 1, 'duplicate mobile language focus rule returned');
 assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="news"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px(?: !important)?;\s*top: auto(?: !important)?;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\)(?: !important)?;\s*transform: none(?: !important)?;\s*transform-origin: left bottom(?: !important)?;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
-assert(/#sky\s*\{[\s\S]*?height:\s*auto\s*(?:!important)?;[\s\S]*?min-height:\s*0\s*(?:!important)?;/i.test(worksCss), 'mobile sky does not cover the expanded viewport');
-assert(/#fx,[\s\S]*?height:\s*100lvh\s*!important;[\s\S]*?min-height:\s*0\s*!important;/i.test(worksCss), 'mobile canvas does not use the large viewport height');
+// The phone sky and water canvas follow the visible viewport: the template's own rules (they come after
+// works.css in the cascade, so they are the ones that apply) size them to 100dvh with a 100vh floor.
+assert(/#sky\{[^}]*height:100dvh;min-height:100vh/.test(liveTemplate), 'mobile sky does not cover the expanded viewport');
+assert(/#fx,canvas#fx[^}]*height:100dvh!important;min-height:100vh!important/.test(liveTemplate), 'mobile canvas does not cover the viewport height');
 assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');
 assert(!worksCss.includes('ttIntroOverlayHandoff'), 'obsolete CSS-only intro handoff is still present');
 
