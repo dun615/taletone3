@@ -111,7 +111,17 @@ const latestWorkOf = (list) => {
   const pick = (lang) => ({ title: (tr[lang] && tr[lang].title) || work.title, artist: (tr[lang] && tr[lang].artist) || work.artist });
   return { slug: work.slug, title: work.title, artist: work.artist, thumb: work.thumb || work.image, translations: { en: pick('en'), jp: pick('jp') } };
 };
-const siteScript = dataScript({ ...site, latestWork: latestWorkOf(works.works) }, 'TALETONE_CONTENT');
+// The home page's featured song (site.home.listen) and the client logos ride along too, so home needs no Works data.
+const listenWorkOf = (siteData, list) => {
+  const slug = ((siteData.home || {}).listen || {}).slug;
+  const work = slug && list.find((item) => item.slug === slug);
+  if (!work) return null;
+  const tr = work.translations || {};
+  const pick = (lang) => ({ title: (tr[lang] && tr[lang].title) || work.title, artist: (tr[lang] && tr[lang].artist) || work.artist });
+  return { slug: work.slug, title: work.title, artist: work.artist, thumb: work.thumb || work.image, translations: { en: pick('en'), jp: pick('jp') } };
+};
+const siteExtras = (siteData, worksData) => ({ latestWork: latestWorkOf(worksData.works), listenWork: listenWorkOf(siteData, worksData.works), clientLogos: worksData.clientLogos || [] });
+const siteScript = dataScript({ ...site, ...siteExtras(site, works) }, 'TALETONE_CONTENT');
 const seoScript = dataScript(seo, 'TALETONE_SEO_CONTENT', ['TALETONE_SEO']);
 
 function pageCopy(page, lang) {
@@ -566,7 +576,7 @@ const previewTemplate = pTemplate
   .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`)
   .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
 const previewApp = makeAppBundle(previewTemplate, pComponent);
-const previewSiteScript = dataScript({ ...JSON.parse(pSiteText), latestWork: latestWorkOf(JSON.parse(pWorksText).works) }, 'TALETONE_CONTENT');
+const previewSiteScript = dataScript({ ...JSON.parse(pSiteText), ...siteExtras(JSON.parse(pSiteText), JSON.parse(pWorksText)) }, 'TALETONE_CONTENT');
 const previewOutputs = [
   ['preview/index.html', renderPage(seo.pages.find((p) => p.key === 'home'), languages[0], {
     APP_VERSION: version(previewApp),

@@ -499,7 +499,13 @@
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "worksCtaLabel": "Works 바로가기",
-        "contactCtaLabel": "프로젝트 문의"
+        "contactCtaLabel": "프로젝트 문의",
+        "listen": {
+          "slug": "drawing-summer",
+          "label": "대표곡 듣기",
+          "context": "젠레스 존 제로 1주년 공식 OST"
+        },
+        "logosLabel": "함께한 곳"
       },
       "en": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -510,7 +516,13 @@
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "worksCtaLabel": "Go to Works",
-        "contactCtaLabel": "Project Inquiry"
+        "contactCtaLabel": "Project Inquiry",
+        "listen": {
+          "slug": "drawing-summer",
+          "label": "Listen",
+          "context": "Zenless Zone Zero 1st Anniversary Official OST"
+        },
+        "logosLabel": "Worked with"
       },
       "jp": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -521,13 +533,25 @@
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "worksCtaLabel": "Worksへ",
-        "contactCtaLabel": "プロジェクトのご相談"
+        "contactCtaLabel": "プロジェクトのご相談",
+        "listen": {
+          "slug": "drawing-summer",
+          "label": "代表曲を聴く",
+          "context": "ゼンレスゾーンゼロ 1周年公式OST"
+        },
+        "logosLabel": "お取引先"
       }
     },
     "worksCtaLabel": "Works 바로가기",
     "contactCtaLabel": "프로젝트 문의",
     "backgroundLine1": "TALE",
-    "backgroundLine2": "TONE"
+    "backgroundLine2": "TONE",
+    "listen": {
+      "slug": "drawing-summer",
+      "label": "대표곡 듣기",
+      "context": "젠레스 존 제로 1주년 공식 OST"
+    },
+    "logosLabel": "함께한 곳"
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
@@ -660,7 +684,21 @@
         "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
         "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
         "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
-        "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?"
+        "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
+        "proof": {
+          "eyebrow": "HOW A SONG BEGINS",
+          "title": "한 곡은 이렇게 시작됩니다",
+          "body": "[TODO: 기획서와 데모를 소개하는 한두 문장]",
+          "sketchLabel": "스토리보드형 음악 기획서",
+          "sketchImage": "",
+          "sketchTodo": "[TODO: 공개 가능한 기획서 이미지]",
+          "demoLabel": "처음 제안한 데모",
+          "finalLabel": "완성곡",
+          "demoSrc": "",
+          "finalSrc": "",
+          "audioTodo": "[TODO: 데모·완성곡 음원 (자체 프로젝트)]",
+          "note": "[TODO: 데모에서 무엇이, 왜 바뀌었는지 한 줄]"
+        }
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
@@ -783,7 +821,47 @@
           "참고 레퍼런스 링크"
         ],
         "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
-        "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:"
+        "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:",
+        "replyNote": "[TODO: 영업일 ○일 안에 답장드립니다.]",
+        "timelineNote": "[TODO: 한 곡은 보통 ○주 정도 걸립니다.]",
+        "form": {
+          "title": "간단히 남겨 주세요",
+          "nameLabel": "이름 / 소속",
+          "contactLabel": "연락받을 이메일",
+          "projectLabel": "프로젝트 한 줄 소개",
+          "projectPlaceholder": "예: 버추얼 아티스트 데뷔곡, 게임 캐릭터송",
+          "songLabel": "필요한 노래",
+          "songOptions": [
+            "오리지널송",
+            "OST·주제가",
+            "캐릭터송",
+            "앨범",
+            "기타"
+          ],
+          "budgetLabel": "예산 범위 (곡당)",
+          "budgetOptions": [
+            "500만~800만 원",
+            "800만~1,500만 원",
+            "1,500만 원 이상",
+            "협의"
+          ],
+          "scheduleLabel": "희망 일정·공개 시점",
+          "messageLabel": "하고 싶은 이야기 (선택)",
+          "submitLabel": "문의 보내기",
+          "mailNote": "메일로 직접 보내셔도 좋습니다."
+        },
+        "channelsLabel": "다른 채널로도 연락할 수 있어요",
+        "channels": [
+          {
+            "label": "X",
+            "url": ""
+          },
+          {
+            "label": "Discord",
+            "url": ""
+          }
+        ],
+        "channelsTodo": "[TODO: X·디스코드 등 문의 채널 링크]"
       },
       "en": {
         "eyebrow": "Contact",
@@ -1679,5 +1757,30 @@
         }
       }
     }
-  ]
+  ],
+  "voices": {
+    "translations": {
+      "kr": {
+        "eyebrow": "VOICES",
+        "title": "함께한 분들의 이야기",
+        "items": [
+          {
+            "quote": "[TODO: 클라이언트 후기 1 (허락받은 문장)]",
+            "name": "[TODO: 이름]",
+            "role": "[TODO: 소속·프로젝트]"
+          },
+          {
+            "quote": "[TODO: 클라이언트 후기 2 (허락받은 문장)]",
+            "name": "[TODO: 이름]",
+            "role": "[TODO: 소속·프로젝트]"
+          },
+          {
+            "quote": "[TODO: 클라이언트 후기 3 (허락받은 문장)]",
+            "name": "[TODO: 이름]",
+            "role": "[TODO: 소속·프로젝트]"
+          }
+        ]
+      }
+    }
+  }
 }

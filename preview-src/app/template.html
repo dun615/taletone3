@@ -788,7 +788,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <a class="is-primary" href="/works/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
     <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
   </div>
-  <sc-if value="{{ LATEST_WORK.slug }}"><a class="tt-home-latest" href="/works/?work={{ LATEST_WORK.slug }}" aria-label="{{ LATEST_WORK.ariaLabel }}"><img src="{{ LATEST_WORK.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ LATEST_WORK.label }}</small><b>{{ LATEST_WORK.title }}</b><em>{{ LATEST_WORK.artist }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
+  <sc-if value="{{ HOME_LISTEN.slug }}"><a class="tt-home-latest" href="/works/?work={{ HOME_LISTEN.slug }}" aria-label="{{ HOME_LISTEN.ariaLabel }}"><img src="{{ HOME_LISTEN.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ HOME_LISTEN.label }}</small><b>{{ HOME_LISTEN.title }}</b><em>{{ HOME_LISTEN.context }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
   <div data-px="-0.04" style="position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:min(880px,82vw);opacity:.55;pointer-events:none">
     <svg data-drift="" viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
       <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.6">
@@ -825,6 +825,12 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       </article>
       </sc-for>
     </div>
+    <sc-if value="{{ CLIENT_LOGOS.length }}">
+    <div class="tt-logo-row">
+      <span class="tt-logo-row-label">{{ HOME.logosLabel }}</span>
+      <ul><sc-for list="{{ CLIENT_LOGOS }}" as="logo" hint-placeholder-count="5"><li><img data-defer-src="{{ logo.src }}" alt="{{ logo.alt }}" decoding="async"></li></sc-for></ul>
+    </div>
+    </sc-if>
   </div>
 </section>
 
@@ -880,6 +886,25 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </article>
     </sc-for>
   </div>
+  <sc-if value="{{ PROOF.title }}">
+  <div class="tt-proof" data-reveal="">
+    <div class="tt-proof-head"><span class="tt-proof-eyebrow">{{ PROOF.eyebrow }}</span><h3 class="tt-proof-title">{{ PROOF.title }}</h3><p class="tt-proof-body">{{ PROOF.body }}</p></div>
+    <div class="tt-proof-grid">
+      <figure class="tt-proof-sketch">
+        <sc-if value="{{ PROOF.hasSketch }}"><img data-defer-src="{{ PROOF.sketchImage }}" alt="{{ PROOF.sketchLabel }}" decoding="async"></sc-if>
+        <sc-if value="{{ PROOF.noSketch }}"><div class="tt-proof-sketch-empty" aria-hidden="true"><i></i><i></i><i></i></div></sc-if>
+        <figcaption><b>{{ PROOF.sketchLabel }}</b><sc-if value="{{ PROOF.noSketch }}"> {{ PROOF.sketchTodo }}</sc-if></figcaption>
+      </figure>
+      <div class="tt-proof-listen">
+        <div class="tt-proof-track"><span class="tt-proof-step">01</span><span class="tt-proof-track-label">{{ PROOF.demoLabel }}</span><sc-if value="{{ PROOF.demoSrc }}"><audio controls preload="none" src="{{ PROOF.demoSrc }}"></audio></sc-if><sc-if value="{{ PROOF.noAudio }}"><span class="tt-proof-wave" aria-hidden="true"></span></sc-if></div>
+        <div class="tt-proof-arrow" aria-hidden="true"></div>
+        <div class="tt-proof-track is-final"><span class="tt-proof-step">02</span><span class="tt-proof-track-label">{{ PROOF.finalLabel }}</span><sc-if value="{{ PROOF.finalSrc }}"><audio controls preload="none" src="{{ PROOF.finalSrc }}"></audio></sc-if><sc-if value="{{ PROOF.noAudio }}"><span class="tt-proof-wave" aria-hidden="true"></span></sc-if></div>
+        <sc-if value="{{ PROOF.noAudio }}"><p class="tt-proof-todo">{{ PROOF.audioTodo }}</p></sc-if>
+        <p class="tt-proof-note">{{ PROOF.note }}</p>
+      </div>
+    </div>
+  </div>
+  </sc-if>
 </section>
 
 
@@ -976,6 +1001,14 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div id="tt-gh-works-app"></div>
   
 </section>
+  <sc-if value="{{ VOICES.title }}">
+  <div class="tt-voices" data-reveal="">
+    <div class="tt-voices-head"><span class="tt-voices-eyebrow">{{ VOICES.eyebrow }}</span><h3 class="tt-voices-title">{{ VOICES.title }}</h3></div>
+    <ul class="tt-voices-list">
+      <sc-for list="{{ VOICES.items }}" as="v" hint-placeholder-count="3"><li class="tt-voice"><blockquote>{{ v.quote }}</blockquote><p class="tt-voice-by"><b>{{ v.name }}</b><span>{{ v.role }}</span></p></li></sc-for>
+    </ul>
+  </div>
+  </sc-if>
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div class="tt-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
@@ -1041,7 +1074,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
     </div>
     <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
+    <sc-if value="{{ CONTACT.replyNote }}"><p class="tt-contact-promise">{{ CONTACT.replyNote }}<sc-if value="{{ CONTACT.timelineNote }}"><br>{{ CONTACT.timelineNote }}</sc-if></p></sc-if>
     <div class="tt-s-color-var-accent-9aa3" id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
+    <sc-if value="{{ CONTACT_NO_FORM }}">
     <sc-if value="{{ CONTACT.guideTitle }}">
     <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
       <p class="tt-s-color-var-ink-f97e" style="margin:0 0 10px;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
@@ -1050,8 +1085,30 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       </ul>
     </div>
     </sc-if>
+    </sc-if>
   </div>
 
+  <sc-if value="{{ CONTACT_FORM.title }}">
+  <form class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
+    <p class="tt-inquiry-title">{{ CONTACT_FORM.title }}</p>
+    <div class="tt-inquiry-grid">
+      <label><span>{{ CONTACT_FORM.nameLabel }}</span><input name="name" type="text" autocomplete="organization"></label>
+      <label><span>{{ CONTACT_FORM.contactLabel }}</span><input name="reply" type="email" autocomplete="email" required></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.projectLabel }}</span><input name="project" type="text" placeholder="{{ CONTACT_FORM.projectPlaceholder }}" required></label>
+      <fieldset class="is-wide"><legend>{{ CONTACT_FORM.songLabel }}</legend><div class="tt-inquiry-chips"><sc-for list="{{ CONTACT_FORM.songOptions }}" as="opt" hint-placeholder-count="5"><label class="tt-inquiry-chip"><input type="checkbox" name="song" value="{{ opt }}"><span>{{ opt }}</span></label></sc-for></div></fieldset>
+      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><select name="budget"><option value=""></option><sc-for list="{{ CONTACT_FORM.budgetOptions }}" as="opt" hint-placeholder-count="4"><option value="{{ opt }}">{{ opt }}</option></sc-for></select></label>
+      <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text"></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
+    </div>
+    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
+    <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
+  </form>
+  <div class="tt-contact-channels" data-reveal="">
+    <span>{{ CONTACT.channelsLabel }}</span>
+    <sc-for list="{{ CONTACT_CHANNELS }}" as="ch" hint-placeholder-count="2"><a href="{{ ch.url }}" target="_blank" rel="noopener">{{ ch.label }} ↗</a></sc-for>
+    <sc-if value="{{ CONTACT.channelsTodo }}"><em>{{ CONTACT.channelsTodo }}</em></sc-if>
+  </div>
+  </sc-if>
     <!-- the book rests on the sea floor at the very bottom of the page, in the water -->
     <div style="margin-top:clamp(40px,8vh,120px);position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center">
 <div data-float="" style="position:relative;z-index:2;width:min(800px,92vw);overflow:visible">

@@ -160,6 +160,24 @@ var ComponentContent = {
       return id !== 'home-translation' && id !== 'home_translation' && id !== 'hometranslation';
     });
     this.BRIDGES = bridgeData.map((b)=>this._localizedObject(b, b && b.translations));
+    // Home's featured song: the work card comes from the build (listenWork), the label and context from home.listen
+    var listen = this.HOME.listen || {}, listenWork = cfg.listenWork ? this._localizedObject(cfg.listenWork, cfg.listenWork.translations) : {};
+    this.HOME_LISTEN = listenWork.slug && listen.slug === listenWork.slug ? Object.assign({}, listenWork, {
+      label: listen.label || '', context: listen.context || listenWork.artist || '',
+      ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
+    }) : {};
+    this.CLIENT_LOGOS = Array.isArray(cfg.clientLogos) ? cfg.clientLogos : [];
+    // Blocks written only for some languages (the proof, the client voices, the inquiry form) are empty elsewhere
+    var proof = this.PROJECTS_META.proof || null;
+    this.PROOF = proof ? Object.assign({}, proof, {
+      hasSketch: !!proof.sketchImage, noSketch: !proof.sketchImage,
+      hasAudio: !!(proof.demoSrc || proof.finalSrc), noAudio: !(proof.demoSrc || proof.finalSrc)
+    }) : {};
+    var voicesData = cfg.voices || {};
+    this.VOICES = this._localizedObject(voicesData, voicesData.translations);
+    var contactExtra = this.CONTACT || {};
+    this.CONTACT_FORM = contactExtra.form || {};
+    this.CONTACT_CHANNELS = (Array.isArray(contactExtra.channels) ? contactExtra.channels : []).filter((c)=>c && c.url);
   },
 
   _normalizeNumber(value, fallback){
@@ -280,6 +298,20 @@ var ComponentContent = {
       if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.pauseAll){ window.TALETONE_WORKS_API.pauseAll(); return; }
       document.querySelectorAll('#c-works audio,audio[data-works-audio]').forEach(function(a){ a.pause(); });
     }catch(_e){}
+  },
+
+  // The inquiry form. Until a form service is connected it writes the answers into a mail to the contact address.
+  sendInquiry(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var formEl = e && e.currentTarget, contact = this.CONTACT || {}, f = this.CONTACT_FORM || {};
+    if(!formEl || !contact.email) return;
+    var data = new FormData(formEl), value = (name)=>String(data.get(name) || '').trim();
+    var lines = [
+      [f.nameLabel, value('name')], [f.contactLabel, value('reply')], [f.projectLabel, value('project')],
+      [f.songLabel, data.getAll('song').join(', ')], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')]
+    ].filter((row)=>row[0]).map((row)=>row[0] + ': ' + (row[1] || '-'));
+    var subject = (contact.mailSubject || '') + (value('project') ? ' — ' + value('project') : '');
+    window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
   },
 
   async copyContactEmail(e){

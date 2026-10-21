@@ -645,6 +645,10 @@ class Component extends DCLogic {
       CONTACT: this.CONTACT || {},
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
+      sendInquiry:(e)=>this.sendInquiry(e),
+      // inquiry layout: the featured song, client logos, the proof, client voices and the short form
+      HOME_LISTEN: this.HOME_LISTEN || {}, CLIENT_LOGOS: this.CLIENT_LOGOS || [], PROOF: this.PROOF || {}, VOICES: this.VOICES || {},
+      CONTACT_FORM: this.CONTACT_FORM || {}, CONTACT_NO_FORM: !(this.CONTACT_FORM || {}).title, CONTACT_CHANNELS: this.CONTACT_CHANNELS || [],
       TRACK_RECORD: this.TRACK_RECORD || [],
       NEWS_META: this.NEWS_META || {},
       PARTNERS_META: this.PARTNERS_META || {},
