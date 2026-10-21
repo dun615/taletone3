@@ -111,7 +111,7 @@ const latestWorkOf = (list) => {
   const pick = (lang) => ({ title: (tr[lang] && tr[lang].title) || work.title, artist: (tr[lang] && tr[lang].artist) || work.artist });
   return { slug: work.slug, title: work.title, artist: work.artist, thumb: work.thumb || work.image, translations: { en: pick('en'), jp: pick('jp') } };
 };
-// The home page's featured song (site.home.listen) and the client logos ride along too, so home needs no Works data.
+// The home page's featured song (site.home.listen) rides along too, so home needs no Works data.
 const listenWorkOf = (siteData, list) => {
   const slug = ((siteData.home || {}).listen || {}).slug;
   const work = slug && list.find((item) => item.slug === slug);
@@ -120,7 +120,7 @@ const listenWorkOf = (siteData, list) => {
   const pick = (lang) => ({ title: (tr[lang] && tr[lang].title) || work.title, artist: (tr[lang] && tr[lang].artist) || work.artist });
   return { slug: work.slug, title: work.title, artist: work.artist, thumb: work.thumb || work.image, translations: { en: pick('en'), jp: pick('jp') } };
 };
-const siteExtras = (siteData, worksData) => ({ latestWork: latestWorkOf(worksData.works), listenWork: listenWorkOf(siteData, worksData.works), clientLogos: worksData.clientLogos || [] });
+const siteExtras = (siteData, worksData) => ({ latestWork: latestWorkOf(worksData.works), listenWork: listenWorkOf(siteData, worksData.works) });
 const siteScript = dataScript({ ...site, ...siteExtras(site, works) }, 'TALETONE_CONTENT');
 const seoScript = dataScript(seo, 'TALETONE_SEO_CONTENT', ['TALETONE_SEO']);
 

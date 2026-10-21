@@ -684,8 +684,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- RIGHT CHAPTER NAV -->
 <div id="chapnav" style="position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
   <a id="nav-0" href="/" onclick="{{ nav0 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navHome }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
@@ -811,29 +811,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 </section>
 
 
-<!-- ================= 01B TRACK RECORD ================= -->
-<section id="c-track-record" data-screen-label="Track Record" aria-label="TALETONE MUSIC Track Record" style="min-height:52vh;display:flex;align-items:center;justify-content:center;position:relative;padding:76px 6vw 92px;text-align:center">
-  <div data-reveal="" style="width:min(1040px,92vw);opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_PROLOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_PROLOGUE.note }}</div></div>
-    <div class="tt-s-color-var-accent-9aa3" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:20px">TRACK RECORD</div>
-    <div class="tt-s-grid-template-columns-0466" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;align-items:stretch">
-      <sc-for list="{{ TRACK_RECORD }}" as="record" hint-placeholder-count="2">
-      <article class="lift" style="border-radius:18px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.08);padding:28px 24px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:180px">
-        <div class="tt-s-color-var-ink-f97e" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:var(--fs-4xl);letter-spacing:-.03em;line-height:.9;color:var(--ink,#141C30)">{{ record.value }}</div>
-        <div class="tt-s-color-var-ink-f97e" style="font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)">{{ record.label }}</div>
-        <div style="font-weight:600;font-size:var(--fs-s);line-height:1.5;color:var(--soft,#44505F);max-width:26em">{{ record.note }}</div>
-      </article>
-      </sc-for>
-    </div>
-    <sc-if value="{{ CLIENT_LOGOS.length }}">
-    <div class="tt-logo-row">
-      <span class="tt-logo-row-label">{{ HOME.logosLabel }}</span>
-      <ul><sc-for list="{{ CLIENT_LOGOS }}" as="logo" hint-placeholder-count="5"><li><img data-defer-src="{{ logo.src }}" alt="{{ logo.alt }}" decoding="async"></li></sc-for></ul>
-    </div>
-    </sc-if>
-  </div>
-</section>
-
 
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
@@ -844,15 +821,16 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
-<!-- ================= 03 STORY TYPES (soraniwa + TALETONES) ================= -->
-<section id="c-projects" data-screen-label="03 Story Types" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
-  <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+<!-- ================= 02 ABOUT US (c-members) ================= -->
+<section id="c-members" data-screen-label="02 About Us" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
-    <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
-    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="font-style:italic;color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
-  <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
+  <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
+  <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-18px 0 40px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
     <article class="tt-audience">
       <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
@@ -864,67 +842,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </article>
     </sc-for>
   </div>
-  <div class="tt-s-grid-template-columns-0466" data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
-    <sc-for list="{{ PROJECTS }}" as="p" hint-placeholder-count="2">
-    <article class="lift" style="position:relative;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.1);padding:34px 32px 32px;display:flex;flex-direction:column;gap:22px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
-        <div>
-          <div class="tt-s-color-var-accent-9aa3" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:10px">{{ p.label }}</div>
-          <div class="tt-project-title tt-s-color-var-ink-f97e" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-3xl);letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30)">{{ p.title }}</div>
-        </div>
-        <div class="tt-s-place-items-center-9906" style="position:relative;width:74px;height:74px;flex:none;display:grid;place-items:center">
-          <div data-spin="16" style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--accent,#0E6E7D);opacity:.5"></div>
-          <div data-spin="-26" style="position:absolute;inset:11px;border-radius:50%;border:1px solid var(--accent2,#3d8a98);opacity:.6"></div>
-          <div data-float="" style="width:11px;height:11px;border-radius:50%;background:var(--accent,#0E6E7D)"></div>
-        </div>
-      </div>
-      <div data-float="" style="border-radius:20px;overflow:hidden">
-        <image-slot id="{{ p.slotId }}" src="{{ p.image }}" fit="{{ p.fit }}" position="{{ p.position }}" style="width:100%;height:230px;filter:{{ p.filter }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot>
-      </div>
-      <p style="margin:0;font-weight:600;font-size:var(--fs-m);line-height:1.6;color:var(--soft,#44505F)">{{ p.description }}</p>
-      <sc-if value="{{ p.hasLink }}"><a href="{{ p.link }}" target="{{ p.linkTarget }}" rel="{{ p.linkRel }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:{{ p.buttonColor }};color:{{ p.buttonTextColor }};padding:14px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.14)"><span>{{ p.buttonLabel }}</span> <span>&#8594;</span></a></sc-if><sc-if value="{{ p.isPending }}"><span class="tt-s-color-var-accent-9aa3" aria-disabled="true" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:rgba(14,110,125,.12);color:var(--accent,#0E6E7D);padding:12px 22px;border-radius:999px;border:1px solid rgba(14,110,125,.18);font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:none"><span>{{ p.buttonLabel }}</span></span></sc-if>
-    </article>
-    </sc-for>
-  </div>
-  <sc-if value="{{ PROOF.title }}">
-  <div class="tt-proof" data-reveal="">
-    <div class="tt-proof-head"><span class="tt-proof-eyebrow">{{ PROOF.eyebrow }}</span><h3 class="tt-proof-title">{{ PROOF.title }}</h3><p class="tt-proof-body">{{ PROOF.body }}</p></div>
-    <div class="tt-proof-grid">
-      <figure class="tt-proof-sketch">
-        <sc-if value="{{ PROOF.hasSketch }}"><img data-defer-src="{{ PROOF.sketchImage }}" alt="{{ PROOF.sketchLabel }}" decoding="async"></sc-if>
-        <sc-if value="{{ PROOF.noSketch }}"><div class="tt-proof-sketch-empty" aria-hidden="true"><i></i><i></i><i></i></div></sc-if>
-        <figcaption><b>{{ PROOF.sketchLabel }}</b><sc-if value="{{ PROOF.noSketch }}"> {{ PROOF.sketchTodo }}</sc-if></figcaption>
-      </figure>
-      <div class="tt-proof-listen">
-        <div class="tt-proof-track"><span class="tt-proof-step">01</span><span class="tt-proof-track-label">{{ PROOF.demoLabel }}</span><sc-if value="{{ PROOF.demoSrc }}"><audio controls preload="none" src="{{ PROOF.demoSrc }}"></audio></sc-if><sc-if value="{{ PROOF.noAudio }}"><span class="tt-proof-wave" aria-hidden="true"></span></sc-if></div>
-        <div class="tt-proof-arrow" aria-hidden="true"></div>
-        <div class="tt-proof-track is-final"><span class="tt-proof-step">02</span><span class="tt-proof-track-label">{{ PROOF.finalLabel }}</span><sc-if value="{{ PROOF.finalSrc }}"><audio controls preload="none" src="{{ PROOF.finalSrc }}"></audio></sc-if><sc-if value="{{ PROOF.noAudio }}"><span class="tt-proof-wave" aria-hidden="true"></span></sc-if></div>
-        <sc-if value="{{ PROOF.noAudio }}"><p class="tt-proof-todo">{{ PROOF.audioTodo }}</p></sc-if>
-        <p class="tt-proof-note">{{ PROOF.note }}</p>
-      </div>
-    </div>
-  </div>
-  </sc-if>
-</section>
-
-
-<!-- bridge -->
-<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
-  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
-  <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
-  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
-</div>
-
-<!-- ================= 04 MEMBERS ================= -->
-<section id="c-members" data-screen-label="04 Members" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
-  <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }}</h2>
-    <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
-    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
-  </div>
+  <sc-if value="{{ MEMBERS_META.teamLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.teamLabel }}</p></sc-if>
   <div class="tt-crew" data-reveal="" data-featured="01" style="opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
     <div class="tt-crew-stage" aria-hidden="true">
       <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="5">
@@ -989,6 +907,45 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
+  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+<!-- ================= 03 HOW WE WORK (c-projects) ================= -->
+<section id="c-projects" data-screen-label="03 How We Work" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
+    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
+    <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
+    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+  </div>
+  <sc-if value="{{ PROOF.steps.length }}">
+  <ol class="tt-how">
+    <sc-for list="{{ PROOF.steps }}" as="st" hint-placeholder-count="3">
+    <li class="tt-how-step" data-reveal="">
+      <sc-if value="{{ st.hasMedia }}"><div class="tt-how-media">
+        <sc-if value="{{ st.showImage }}"><img data-defer-src="{{ st.image }}" alt="{{ st.title }}" decoding="async"></sc-if>
+        <sc-if value="{{ st.showSketch }}"><span class="tt-how-sketch" aria-hidden="true"><i></i><i></i><i></i></span></sc-if>
+        <sc-if value="{{ st.showAudio }}"><audio controls preload="none" src="{{ st.src }}"></audio></sc-if>
+        <sc-if value="{{ st.showWave }}"><span class="tt-how-wave" aria-hidden="true"></span></sc-if>
+        <sc-if value="{{ st.todo }}"><p class="tt-how-todo">{{ st.todo }}</p></sc-if>
+      </div></sc-if>
+      <span class="tt-how-no">{{ st.no }}</span>
+      <h3 class="tt-how-title">{{ st.title }}</h3>
+      <p class="tt-how-body">{{ st.body }}</p>
+    </li>
+    </sc-for>
+  </ol>
+  <sc-if value="{{ PROOF.note }}"><p class="tt-how-note" data-reveal="">{{ PROOF.note }}</p></sc-if>
+  </sc-if>
+</section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div class="tt-bridge-label">{{ BRIDGE_2.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_2.text }}</span>
   <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
@@ -1003,7 +960,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 </section>
   <sc-if value="{{ VOICES.title }}">
   <div class="tt-voices" data-reveal="">
-    <div class="tt-voices-head"><span class="tt-voices-eyebrow">{{ VOICES.eyebrow }}</span><h3 class="tt-voices-title">{{ VOICES.title }}</h3></div>
+    <h3 class="tt-voices-title">{{ VOICES.title }}</h3>
     <ul class="tt-voices-list">
       <sc-for list="{{ VOICES.items }}" as="v" hint-placeholder-count="3"><li class="tt-voice"><blockquote>{{ v.quote }}</blockquote><p class="tt-voice-by"><b>{{ v.name }}</b><span>{{ v.role }}</span></p></li></sc-for>
     </ul>

@@ -498,14 +498,13 @@
         "scrollHint": "아래로 내려가 보세요",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "worksCtaLabel": "Works 바로가기",
+        "worksCtaLabel": "디스코그래피 바로가기",
         "contactCtaLabel": "프로젝트 문의",
         "listen": {
           "slug": "drawing-summer",
           "label": "대표곡 듣기",
           "context": "젠레스 존 제로 1주년 공식 OST"
-        },
-        "logosLabel": "함께한 곳"
+        }
       },
       "en": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -515,14 +514,13 @@
         "scrollHint": "Scroll to dive in",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "worksCtaLabel": "Go to Works",
+        "worksCtaLabel": "Go to Discography",
         "contactCtaLabel": "Project Inquiry",
         "listen": {
           "slug": "drawing-summer",
           "label": "Listen",
           "context": "Zenless Zone Zero 1st Anniversary Official OST"
-        },
-        "logosLabel": "Worked with"
+        }
       },
       "jp": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCTION",
@@ -532,17 +530,16 @@
         "scrollHint": "スクロールして潜る",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
-        "worksCtaLabel": "Worksへ",
+        "worksCtaLabel": "Discographyへ",
         "contactCtaLabel": "プロジェクトのご相談",
         "listen": {
           "slug": "drawing-summer",
           "label": "代表曲を聴く",
           "context": "ゼンレスゾーンゼロ 1周年公式OST"
-        },
-        "logosLabel": "お取引先"
+        }
       }
     },
-    "worksCtaLabel": "Works 바로가기",
+    "worksCtaLabel": "디스코그래피 바로가기",
     "contactCtaLabel": "프로젝트 문의",
     "backgroundLine1": "TALE",
     "backgroundLine2": "TONE",
@@ -550,15 +547,14 @@
       "slug": "drawing-summer",
       "label": "대표곡 듣기",
       "context": "젠레스 존 제로 1주년 공식 OST"
-    },
-    "logosLabel": "함께한 곳"
+    }
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
-    "title": "STORY",
-    "titleAccent": " TYPES",
-    "subtitle": "자기만의 세계를 가진 이야기에게, 노래를 지어 줍니다.",
-    "description": "게임 속 모험도, 버추얼 아티스트의 첫 무대도, 애니메이션의 한 장면도. 우리는 그 안에 담긴 마음과 인물을 먼저 읽고, 어울리는 소리를 찾아 나섭니다.",
+    "title": "HOW WE",
+    "titleAccent": " WORK",
+    "subtitle": "레퍼런스보다, 이야기를 먼저 읽습니다.",
+    "description": "세계관과 인물의 마음을 읽고, 그 이야기에 어울리는 노래를 먼저 그려 제안합니다.",
     "cards": [
       {
         "id": "selected-game-ip",
@@ -650,10 +646,10 @@
     "translations": {
       "kr": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "STORY",
-        "titleAccent": " TYPES",
-        "subtitle": "자기만의 세계를 가진 이야기에게, 노래를 지어 줍니다.",
-        "description": "게임 속 모험도, 버추얼 아티스트의 첫 무대도, 애니메이션의 한 장면도. 우리는 그 안에 담긴 마음과 인물을 먼저 읽고, 어울리는 소리를 찾아 나섭니다.",
+        "title": "HOW WE",
+        "titleAccent": " WORK",
+        "subtitle": "레퍼런스보다, 이야기를 먼저 읽습니다.",
+        "description": "세계관과 인물의 마음을 읽고, 그 이야기에 어울리는 노래를 먼저 그려 제안합니다.",
         "cards": [
           {
             "label": "GAME IP",
@@ -686,26 +682,41 @@
         "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
         "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
         "proof": {
-          "eyebrow": "HOW A SONG BEGINS",
-          "title": "한 곡은 이렇게 시작됩니다",
-          "body": "[TODO: 기획서와 데모를 소개하는 한두 문장]",
-          "sketchLabel": "스토리보드형 음악 기획서",
-          "sketchImage": "",
-          "sketchTodo": "[TODO: 공개 가능한 기획서 이미지]",
-          "demoLabel": "처음 제안한 데모",
-          "finalLabel": "완성곡",
-          "demoSrc": "",
-          "finalSrc": "",
-          "audioTodo": "[TODO: 데모·완성곡 음원 (자체 프로젝트)]",
+          "steps": [
+            {
+              "no": "01",
+              "title": "이야기를 읽습니다",
+              "body": "세계관과 인물, 장면을 읽고 스토리보드형 음악 기획서로 정리합니다.",
+              "kind": "sketch",
+              "image": "",
+              "todo": "[TODO: 공개 가능한 기획서 이미지]"
+            },
+            {
+              "no": "02",
+              "title": "데모로 먼저 들려드립니다",
+              "body": "기획서에 맞춰 만든 데모로 방향을 함께 확인합니다.",
+              "kind": "audio",
+              "src": "",
+              "todo": "[TODO: 데모 음원 (자체 프로젝트)]"
+            },
+            {
+              "no": "03",
+              "title": "한 곡으로 완성합니다",
+              "body": "가이드 녹음을 거쳐 완성곡으로 납품합니다.",
+              "kind": "audio",
+              "src": "",
+              "todo": "[TODO: 같은 곡의 완성곡 음원]"
+            }
+          ],
           "note": "[TODO: 데모에서 무엇이, 왜 바뀌었는지 한 줄]"
         }
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "STORY",
-        "titleAccent": " TYPES",
-        "subtitle": "For stories with worlds of their own, we write the songs.",
-        "description": "A quest inside a game, a virtual artist's first stage, a single scene of animation. We read the hearts and characters inside first, then go looking for the sound that fits.",
+        "title": "HOW WE",
+        "titleAccent": " WORK",
+        "subtitle": "We read the story before any reference.",
+        "description": "We read the world and the hearts of its characters, then sketch and propose the song that fits the story.",
         "cards": [
           {
             "label": "GAME IP",
@@ -736,14 +747,46 @@
         "audienceAnimationTitle": "Animation · Webtoon · Web Novel IP",
         "audienceAnimationService1": "Opening · Ending · Insert songs · BGM",
         "audienceAnimationService2": "Character songs · Promotional music",
-        "audienceAnimationHook": "What sound will keep this scene alive in memory?"
+        "audienceAnimationHook": "What sound will keep this scene alive in memory?",
+        "proof": {
+          "steps": [
+            {
+              "no": "01",
+              "title": "We read the story",
+              "body": "We read the world, the characters and the scenes, and set them out in a storyboard-style music plan.",
+              "kind": "sketch",
+              "image": "",
+              "src": "",
+              "todo": ""
+            },
+            {
+              "no": "02",
+              "title": "You hear a demo first",
+              "body": "A demo made to the plan lets us agree on the direction together.",
+              "kind": "audio",
+              "image": "",
+              "src": "",
+              "todo": ""
+            },
+            {
+              "no": "03",
+              "title": "We finish the song",
+              "body": "After the guide recording, we deliver the finished song.",
+              "kind": "audio",
+              "image": "",
+              "src": "",
+              "todo": ""
+            }
+          ],
+          "note": ""
+        }
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "STORY",
-        "titleAccent": " TYPES",
-        "subtitle": "自分だけの世界を持つ物語に、歌を贈ります。",
-        "description": "ゲームの中の冒険も、バーチャルアーティストの初舞台も、アニメのワンシーンも。私たちはまず、そこに込められた想いと人物を読み解き、ふさわしい音を探しにいきます。",
+        "title": "HOW WE",
+        "titleAccent": " WORK",
+        "subtitle": "リファレンスより先に、物語を読みます。",
+        "description": "世界観と人物の心を読み、その物語にふさわしい歌を先に描いてご提案します。",
         "cards": [
           {
             "label": "GAME IP",
@@ -774,7 +817,39 @@
         "audienceAnimationTitle": "アニメ・ウェブトゥーン・ウェブ小説IP",
         "audienceAnimationService1": "オープニング・エンディング・挿入歌・BGM",
         "audienceAnimationService2": "キャラクターソング・プロモーション音楽",
-        "audienceAnimationHook": "このシーンをいつまでも覚えていてもらえる音は？"
+        "audienceAnimationHook": "このシーンをいつまでも覚えていてもらえる音は？",
+        "proof": {
+          "steps": [
+            {
+              "no": "01",
+              "title": "物語を読みます",
+              "body": "世界観と人物、場面を読み、絵コンテ形式の音楽企画書にまとめます。",
+              "kind": "sketch",
+              "image": "",
+              "src": "",
+              "todo": ""
+            },
+            {
+              "no": "02",
+              "title": "まずデモでお聴かせします",
+              "body": "企画書に沿ったデモで、方向性を一緒に確かめます。",
+              "kind": "audio",
+              "image": "",
+              "src": "",
+              "todo": ""
+            },
+            {
+              "no": "03",
+              "title": "一曲に仕上げます",
+              "body": "ガイド録音を経て、完成曲として納品します。",
+              "kind": "audio",
+              "image": "",
+              "src": "",
+              "todo": ""
+            }
+          ],
+          "note": ""
+        }
       }
     },
     "audienceGameKicker": "SUBCULTURE GAME",
@@ -791,7 +866,36 @@
     "audienceAnimationTitle": "애니메이션 · 웹툰 · 웹소설 IP",
     "audienceAnimationService1": "오프닝 · 엔딩 · 삽입곡 · BGM",
     "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
-    "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?"
+    "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
+    "proof": {
+      "steps": [
+        {
+          "no": "01",
+          "title": "이야기를 읽습니다",
+          "body": "세계관과 인물, 장면을 읽고 스토리보드형 음악 기획서로 정리합니다.",
+          "kind": "sketch",
+          "image": "",
+          "todo": "[TODO: 공개 가능한 기획서 이미지]"
+        },
+        {
+          "no": "02",
+          "title": "데모로 먼저 들려드립니다",
+          "body": "기획서에 맞춰 만든 데모로 방향을 함께 확인합니다.",
+          "kind": "audio",
+          "src": "",
+          "todo": "[TODO: 데모 음원 (자체 프로젝트)]"
+        },
+        {
+          "no": "03",
+          "title": "한 곡으로 완성합니다",
+          "body": "가이드 녹음을 거쳐 완성곡으로 납품합니다.",
+          "kind": "audio",
+          "src": "",
+          "todo": "[TODO: 같은 곡의 완성곡 음원]"
+        }
+      ],
+      "note": "[TODO: 데모에서 무엇이, 왜 바뀌었는지 한 줄]"
+    }
   },
   "contact": {
     "eyebrow": "Contact",
@@ -923,29 +1027,41 @@
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",
-    "title": "MEMBERS",
-    "subtitle": "",
+    "title": "ABOUT",
+    "subtitle": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로덕션입니다.",
     "description": "",
     "translations": {
       "kr": {
         "eyebrow": "The Storytellers",
-        "title": "MEMBERS",
-        "subtitle": "",
-        "description": ""
+        "title": "ABOUT",
+        "subtitle": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로덕션입니다.",
+        "description": "",
+        "titleAccent": "US",
+        "typesLabel": "이런 이야기에 노래를 짓습니다",
+        "teamLabel": "만드는 사람들"
       },
       "en": {
         "eyebrow": "The Storytellers",
-        "title": "MEMBERS",
-        "subtitle": "",
-        "description": ""
+        "title": "ABOUT",
+        "subtitle": "A subculture music production that reads the story first, then writes the song.",
+        "description": "",
+        "titleAccent": "US",
+        "typesLabel": "Stories we write songs for",
+        "teamLabel": "The people"
       },
       "jp": {
         "eyebrow": "The Storytellers",
-        "title": "MEMBERS",
-        "subtitle": "",
-        "description": ""
+        "title": "ABOUT",
+        "subtitle": "物語を先に読み、歌をつくるサブカルチャー音楽プロダクションです。",
+        "description": "",
+        "titleAccent": "US",
+        "typesLabel": "こんな物語に歌をつくります",
+        "teamLabel": "つくる人たち"
       }
-    }
+    },
+    "titleAccent": "US",
+    "typesLabel": "이런 이야기에 노래를 짓습니다",
+    "teamLabel": "만드는 사람들"
   },
   "bridges": [
     {
@@ -1326,8 +1442,8 @@
   ],
   "worksMeta": {
     "eyebrow": "CHAPTER 3 · MUSIC",
-    "title": "OUR",
-    "titleAccent": "WORKS",
+    "title": "",
+    "titleAccent": "DISCOGRAPHY",
     "subtitle": "",
     "description": "",
     "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1338,8 +1454,8 @@
     "translations": {
       "kr": {
         "eyebrow": "CHAPTER 3 · MUSIC",
-        "title": "OUR",
-        "titleAccent": "WORKS",
+        "title": "",
+        "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1350,8 +1466,8 @@
       },
       "en": {
         "eyebrow": "CHAPTER 3 · MUSIC",
-        "title": "OUR",
-        "titleAccent": "WORKS",
+        "title": "",
+        "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1362,8 +1478,8 @@
       },
       "jp": {
         "eyebrow": "CHAPTER 3 · MUSIC",
-        "title": "OUR",
-        "titleAccent": "WORKS",
+        "title": "",
+        "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
         "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
@@ -1463,9 +1579,9 @@
     "langEn": "EN",
     "langJp": "JP",
     "navHome": "HOME",
-    "navProjects": "STORY TYPES",
-    "navMembers": "MEMBERS",
-    "navWorks": "WORKS",
+    "navProjects": "HOW WE WORK",
+    "navMembers": "ABOUT US",
+    "navWorks": "DISCOGRAPHY",
     "navNews": "NEWS",
     "navContact": "CONTACT",
     "progressInitial": "01",
@@ -1498,9 +1614,9 @@
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "STORY TYPES",
-        "navMembers": "MEMBERS",
-        "navWorks": "WORKS",
+        "navProjects": "HOW WE WORK",
+        "navMembers": "ABOUT US",
+        "navWorks": "DISCOGRAPHY",
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
@@ -1533,9 +1649,9 @@
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "STORY TYPES",
-        "navMembers": "MEMBERS",
-        "navWorks": "WORKS",
+        "navProjects": "HOW WE WORK",
+        "navMembers": "ABOUT US",
+        "navWorks": "DISCOGRAPHY",
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
@@ -1568,9 +1684,9 @@
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "STORY TYPES",
-        "navMembers": "MEMBERS",
-        "navWorks": "WORKS",
+        "navProjects": "HOW WE WORK",
+        "navMembers": "ABOUT US",
+        "navWorks": "DISCOGRAPHY",
         "navNews": "NEWS",
         "navContact": "CONTACT",
         "progressInitial": "01",
@@ -1607,11 +1723,11 @@
     },
     "tale": {
       "label": "CHAPTER 1 · TALE",
-      "note": "우리가 귀 기울이는 이야기들"
+      "note": "이야기에 귀 기울이는 사람들"
     },
     "tone": {
       "label": "CHAPTER 2 · TONE",
-      "note": "이야기에 빛깔을 입히는 사람들"
+      "note": "이야기에 빛깔을 입히는 방식"
     },
     "music": {
       "label": "CHAPTER 3 · MUSIC",
@@ -1635,11 +1751,11 @@
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
-          "note": "우리가 귀 기울이는 이야기들"
+          "note": "이야기에 귀 기울이는 사람들"
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",
-          "note": "이야기에 빛깔을 입히는 사람들"
+          "note": "이야기에 빛깔을 입히는 방식"
         },
         "music": {
           "label": "CHAPTER 3 · MUSIC",
@@ -1663,11 +1779,11 @@
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
-          "note": "Stories we listen to"
+          "note": "The ones who listen to stories"
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",
-          "note": "The ones who give stories their color"
+          "note": "How we give stories their color"
         },
         "music": {
           "label": "CHAPTER 3 · MUSIC",
@@ -1691,11 +1807,11 @@
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
-          "note": "私たちが耳を傾ける物語"
+          "note": "物語に耳を傾ける人たち"
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",
-          "note": "物語に色をつける人たち"
+          "note": "物語に色をのせる方法"
         },
         "music": {
           "label": "CHAPTER 3 · MUSIC",
@@ -1761,7 +1877,6 @@
   "voices": {
     "translations": {
       "kr": {
-        "eyebrow": "VOICES",
         "title": "함께한 분들의 이야기",
         "items": [
           {

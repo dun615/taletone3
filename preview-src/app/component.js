@@ -78,7 +78,7 @@ class Component extends DCLogic {
       }
     };
     this.enforceMobileFxLayer();
-    this.sections = ['c-home','c-projects','c-members','c-works','c-news','c-contact']
+    this.sections = ['c-home','c-members','c-projects','c-works','c-news','c-contact']
       .map(id=>document.getElementById(id)).filter(Boolean);
     this.pxEls = Array.from(document.querySelectorAll('[data-px]'));
     this.pxEls.forEach(el=>{ el._base = el.style.transform || ''; });
@@ -198,7 +198,7 @@ class Component extends DCLogic {
     if(this._chapterTarget||this._bridgeNavTarget||performance.now()-(this._userScrollAt||-1e9)>1200) return;
     var done=this._preloadedChapters||(this._preloadedChapters={});
     var view=this.scroller?this.scroller.clientHeight:window.innerHeight;
-    ['projects','members','works','news','contact'].forEach((chapter)=>{
+    ['members','projects','works','news','contact'].forEach((chapter)=>{
       if(done[chapter]) return;
       var section=document.getElementById('c-'+chapter);
       if(!section||section.getBoundingClientRect().top>view*2.5) return;
@@ -567,7 +567,7 @@ class Component extends DCLogic {
     if(sceneDirty){
       // active section and progress are scroll-derived; keep their last values while idle.
       if(!this.sections||!this.sections.length){
-        this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+        this.sections=['c-home','c-members','c-projects','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
       // A chapter becomes current when its title passes 60% of the screen height (its section box starts much
       // higher, above a tall top padding, so the counter used to lag behind what the reader sees).
@@ -646,8 +646,8 @@ class Component extends DCLogic {
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
       sendInquiry:(e)=>this.sendInquiry(e),
-      // inquiry layout: the featured song, client logos, the proof, client voices and the short form
-      HOME_LISTEN: this.HOME_LISTEN || {}, CLIENT_LOGOS: this.CLIENT_LOGOS || [], PROOF: this.PROOF || {}, VOICES: this.VOICES || {},
+      // the featured song, How We Work's steps, client voices and the short inquiry form
+      HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, VOICES: this.VOICES || {},
       CONTACT_FORM: this.CONTACT_FORM || {}, CONTACT_NO_FORM: !(this.CONTACT_FORM || {}).title, CONTACT_CHANNELS: this.CONTACT_CHANNELS || [],
       TRACK_RECORD: this.TRACK_RECORD || [],
       NEWS_META: this.NEWS_META || {},

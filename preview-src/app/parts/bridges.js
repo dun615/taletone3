@@ -276,7 +276,7 @@ var ComponentBridges = {
     this.scroller.scrollTo({top:outer.offsetTop,behavior:'auto'});
     this._bridgeScrollTop=this.scroller.scrollTop;
     this._sceneDirty=true;
-    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['projects','members','works','news','contact'][index]}}));
+    window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['members','projects','works','news','contact'][index]}}));
   },
 
   // Momentum (touch flicks, trackpad inertia, a wheel smooth-scroll already in flight) can keep
@@ -340,7 +340,7 @@ var ComponentBridges = {
   advanceBridge(now){
     var run=this._bridgeRun;
     if(!run) return;
-    var targets=[['c-projects','/story-types/'],['c-members','/members/'],['c-works','/works/'],['c-news','/news/'],['c-contact','/contact/']];
+    var targets=[['c-members','/members/'],['c-projects','/story-types/'],['c-works','/works/'],['c-news','/news/'],['c-contact','/contact/']];
     var route=targets[run.index], target=route&&document.getElementById(route[0]);
     if(!target){ this.releaseBridge(); return; }
     if(run.phase!=='advancing'){
