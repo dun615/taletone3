@@ -2779,47 +2779,67 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-voices-title {margin:0;font-weight:800;font-size:var(--fs-xl);line-height:1.35;color:var(--ink,#141C30)}
 /* About Us: a small label above the kinds of stories and above the people */
 .tt-about-label {margin:0 0 16px;font-weight:800;font-size:var(--fs-s);letter-spacing:.14em;color:var(--accent,#0E6E7D)}
-/* How We Work: the three steps side by side, each with its material on top */
-.tt-how {list-style:none;margin:0;padding:0;width:min(1080px,92vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:how;text-align:left}
-.tt-how-step {position:relative;display:flex;flex-direction:column;gap:8px;padding:16px 16px 22px;border-radius:20px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 14px 34px rgba(8,22,38,.08)}
-.tt-how-step + .tt-how-step::before {content:'';position:absolute;left:-14px;top:50%;width:10px;height:10px;border-top:2px solid var(--accent,#0E6E7D);border-right:2px solid var(--accent,#0E6E7D);transform:translateY(-50%) rotate(45deg);opacity:.55}
-.tt-how-media {display:flex;flex-direction:column;justify-content:center;gap:10px;min-height:0;margin-bottom:8px}
-.tt-how-media > img {display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px}
-.tt-how-media > audio {width:100%}
-.tt-how-sketch {box-sizing:border-box;aspect-ratio:4/3;padding:8% 7%;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(20,28,48,.08);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6%}
-.tt-how-sketch > i {display:flex;flex-direction:column;gap:7px}
-.tt-how-sketch > i::before {content:'';flex:1;border:1.5px dashed rgba(14,110,125,.4);border-radius:6px}
-.tt-how-sketch > i::after {content:'';width:78%;height:6px;border-top:2px solid rgba(14,110,125,.22);border-bottom:2px solid rgba(14,110,125,.14)}
-.tt-how-wave {display:block;aspect-ratio:4/3;border-radius:12px;background:rgba(255,255,255,.55) repeating-linear-gradient(90deg,rgba(14,110,125,.3) 0 3px,transparent 3px 8px) center / 100% 34% no-repeat;border:1px solid rgba(20,28,48,.08)}
-.tt-how-todo {margin:0;font-weight:600;font-size:12.5px;line-height:1.5}
-.tt-how-no {font:700 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.08em;color:var(--accent,#0E6E7D)}
-.tt-how-title {margin:0;font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)}
-.tt-how-body {margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.6;color:var(--soft,#44505F)}
-.tt-how-note {margin:20px 0 0;font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F);text-align:center}
 @media (max-width:900px) {
   .tt-voices-list {grid-template-columns:minmax(0,1fr)}
-  .tt-how {grid-template-columns:minmax(0,1fr);gap:14px}
-  .tt-how-step + .tt-how-step::before {left:50%;top:-11px;transform:translateX(-50%) rotate(135deg)}
-  .tt-how-step[data-media="true"] {display:grid;grid-template-columns:120px minmax(0,1fr);column-gap:14px;row-gap:4px;align-items:start}
-  .tt-how-step[data-media="true"] > .tt-how-media {grid-row:1 / span 4;margin:0}
-  .tt-how-media > img, .tt-how-sketch, .tt-how-wave {aspect-ratio:1}
 }
 @media (max-width:560px) {
   .tt-inquiry {padding:20px 16px 18px}
   .tt-inquiry-grid {grid-template-columns:minmax(0,1fr)}
 }
-/* How We Work: what the client gains (three short statements), the deliverable and the decision point of each step */
-.tt-how-values {list-style:none;margin:-12px 0 48px;padding:0;width:min(1080px,92vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,40px);text-align:left}
-.tt-how-values > li {padding-top:16px;border-top:2px solid var(--accent,#0E6E7D)}
-.tt-how-values h3 {margin:0 0 8px;font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)}
-.tt-how-values p {margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
-.tt-how-label {width:min(1080px,92vw);text-align:left}
-.tt-how-no {display:flex;align-items:center;gap:8px}
-.tt-how-badge {font:800 11px/1 var(--tt-noto-primary),sans-serif;font-style:normal;letter-spacing:.02em;padding:4px 8px;border-radius:999px;background:#0E6E7D;color:#fff}
-.tt-how-out {margin:6px 0 0;padding-top:10px;border-top:1px dashed rgba(20,28,48,.14);display:flex;gap:8px;align-items:baseline;font-size:var(--fs-s)}
-.tt-how-out > b {font-weight:800;color:var(--accent,#0E6E7D)}
-.tt-how-out > span {font-weight:700;color:var(--ink,#141C30)}
+/* How We Work: the consult button */
 .tt-how-cta {margin-top:28px;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:999px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)}
+/* How We Work, after the company profile (TALETONE METHOD): reference-led vs story-led, TALE -> TONE -> MUSIC,
+   the five steps (Design is where the direction is set), what the client gains */
+.tt-method {width:min(1080px,92vw);display:flex;flex-direction:column;gap:18px}
+.tt-method-compare {align-self:center;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 26px;margin:-10px 0 6px;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F)}
+.tt-method-compare p {margin:0;display:flex;gap:8px;align-items:baseline}
+.tt-method-compare p > span {font-weight:700}
+.tt-method-compare p:not(.is-ours) {opacity:.6}
+.tt-method-compare p.is-ours {font-weight:800;color:var(--ink,#141C30)}
+.tt-method-compare p.is-ours > span {color:var(--accent,#0E6E7D)}
+.tt-method-pillars {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.tt-method-pillar {position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 18px 24px;border-radius:20px;background:var(--card,rgba(255,255,255,.6));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 14px 34px rgba(8,22,38,.07);text-align:center}
+.tt-method-pillar + .tt-method-pillar::before {content:'\2192';position:absolute;left:-17px;top:50%;transform:translateY(-50%);font-weight:700;font-size:18px;color:var(--soft,#44505F);opacity:.5}
+.tt-method-pillar h3 {margin:4px 0 0;font:700 var(--fs-xl)/1.1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.02em;color:var(--ink,#141C30)}
+.tt-method-pillar p {margin:0;font-weight:700;font-size:var(--fs-m);line-height:1.5;color:var(--soft,#44505F)}
+.tt-method-icon {position:relative;display:block;width:150px;height:28px}
+.tt-method-icon > i {position:absolute;display:block}
+.tt-method-pillar[data-kind=tale] .tt-method-icon > i {left:50%;height:4px;border-radius:4px;transform:translateX(-50%)}
+.tt-method-pillar[data-kind=tale] .tt-method-icon > i:nth-child(1) {top:2px;width:62%;background:#0E6E7D}
+.tt-method-pillar[data-kind=tale] .tt-method-icon > i:nth-child(2) {top:11px;width:100%;background:#6aa9b4}
+.tt-method-pillar[data-kind=tale] .tt-method-icon > i:nth-child(3) {top:20px;width:46%;background:#b3d3d8}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i {bottom:2px;width:7px;border-radius:4px 4px 2px 2px;background:#E9A23B}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i:nth-child(1) {left:calc(50% - 30px);height:8px}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i:nth-child(2) {left:calc(50% - 17px);height:18px}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i:nth-child(3) {left:calc(50% - 4px);height:12px}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i:nth-child(4) {left:calc(50% + 9px);height:24px}
+.tt-method-pillar[data-kind=tone] .tt-method-icon > i:nth-child(5) {left:calc(50% + 22px);height:14px}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i {left:0;right:0;height:1px;background:rgba(20,28,48,.28)}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(1) {top:6px}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(2) {top:14px}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(3) {top:22px}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(4), .tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(5) {width:9px;height:9px;right:auto;border-radius:50%;background:#141C30}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(4) {left:30%;top:1px}
+.tt-method-pillar[data-kind=music] .tt-method-icon > i:nth-child(5) {left:66%;top:10px}
+.tt-method-process, .tt-method-values {width:min(1080px,92vw);margin-top:44px;text-align:left}
+.tt-method-steps {list-style:none;margin:0;padding:26px 20px 24px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;border-radius:20px;background:var(--card,rgba(255,255,255,.6));border:1px solid var(--cardBorder,rgba(24,32,52,.08))}
+.tt-method-steps > li {position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.tt-method-steps > li + li::before {content:'';position:absolute;top:19px;right:calc(50% + 25px);width:calc(100% - 38px);height:2px;background:rgba(20,28,48,.12)}
+.tt-method-no {display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#0E6E7D;color:#fff;font:700 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif;margin-bottom:6px}
+.tt-method-steps > li:nth-child(n+4) .tt-method-no {background:#141C30}
+.tt-method-steps > li[data-key=true] .tt-method-no {background:#E9A23B;box-shadow:0 0 0 6px rgba(233,162,59,.18)}
+.tt-method-steps b {font:700 var(--fs-l)/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;color:var(--ink,#141C30)}
+.tt-method-steps small {font-weight:600;font-size:var(--fs-s);line-height:1.5;color:var(--soft,#44505F)}
+.tt-method-values ul {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,36px)}
+.tt-method-values li {padding-top:14px;border-top:2px solid var(--accent,#0E6E7D)}
+.tt-method-values h3 {margin:0 0 8px;font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)}
+.tt-method-values p {margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
 @media (max-width:900px) {
-  .tt-how-values {grid-template-columns:minmax(0,1fr);gap:22px;margin:-16px 0 36px}
+  .tt-method-pillars {grid-template-columns:minmax(0,1fr);gap:18px}
+  .tt-method-pillar + .tt-method-pillar::before {content:'\2193';left:50%;top:-16px;transform:translateX(-50%)}
+  .tt-method-steps {grid-template-columns:minmax(0,1fr);gap:0;padding:14px 18px}
+  .tt-method-steps > li {display:grid;grid-template-columns:38px minmax(0,1fr);column-gap:14px;align-items:center;text-align:left;padding:10px 0}
+  .tt-method-steps > li + li::before {top:-10px;left:18px;right:auto;width:2px;height:20px}
+  .tt-method-no {grid-row:1 / span 2;margin:0}
+  .tt-method-values ul {grid-template-columns:minmax(0,1fr);gap:22px}
 }

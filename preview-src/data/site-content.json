@@ -553,8 +553,8 @@
     "eyebrow": "FOR STORY-DRIVEN IP",
     "title": "HOW WE",
     "titleAccent": " WORK",
-    "subtitle": "레퍼런스보다, 이야기를 먼저 읽습니다.",
-    "description": "본 제작에 들어가기 전에 IP의 세계관과 인물을 분석해 음악 기획서로 제안하고, 데모로 방향을 합의한 뒤 제작합니다.",
+    "subtitle": "우리의 이름에는, 우리만의 철학이 담겨 있습니다.",
+    "description": "레퍼런스를 넘어, 이야기를 음악으로 극대화하는 TALETONE MUSIC만의 제작 과정입니다.",
     "cards": [
       {
         "id": "selected-game-ip",
@@ -648,8 +648,8 @@
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "HOW WE",
         "titleAccent": " WORK",
-        "subtitle": "레퍼런스보다, 이야기를 먼저 읽습니다.",
-        "description": "본 제작에 들어가기 전에 IP의 세계관과 인물을 분석해 음악 기획서로 제안하고, 데모로 방향을 합의한 뒤 제작합니다.",
+        "subtitle": "우리의 이름에는, 우리만의 철학이 담겨 있습니다.",
+        "description": "레퍼런스를 넘어, 이야기를 음악으로 극대화하는 TALETONE MUSIC만의 제작 과정입니다.",
         "cards": [
           {
             "label": "GAME IP",
@@ -682,55 +682,77 @@
         "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
         "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
         "proof": {
+          "compare": {
+            "refLabel": "레퍼런스 중심",
+            "refFlow": "사운드 → 가사 → 제목",
+            "storyLabel": "스토리 기반",
+            "storyFlow": "이야기 → 톤 → 음악"
+          },
+          "pillars": [
+            {
+              "name": "TALE",
+              "kind": "tale",
+              "body": "세계관 · 캐릭터 · 장면 · 팬덤 분석"
+            },
+            {
+              "name": "TONE",
+              "kind": "tone",
+              "body": "장르 · 사운드 · 보컬 · 곡 흐름 정리"
+            },
+            {
+              "name": "MUSIC",
+              "kind": "music",
+              "body": "작곡 · 편곡 · 디렉팅 · 믹스 · 마스터 완성"
+            }
+          ],
+          "stepsLabel": "제작 과정",
+          "steps": [
+            {
+              "no": "01",
+              "name": "Listen",
+              "body": "이야기와 고민을 듣습니다",
+              "key": "false"
+            },
+            {
+              "no": "02",
+              "name": "Analyze",
+              "body": "세계관 · 캐릭터 · 강점을 읽습니다",
+              "key": "false"
+            },
+            {
+              "no": "03",
+              "name": "Design",
+              "body": "음악의 톤과 표현을 정리합니다",
+              "key": "true"
+            },
+            {
+              "no": "04",
+              "name": "Produce",
+              "body": "곡으로 만듭니다",
+              "key": "false"
+            },
+            {
+              "no": "05",
+              "name": "Complete",
+              "body": "맞는 형태로 완성합니다",
+              "key": "false"
+            }
+          ],
+          "valuesLabel": "이렇게 일하면 달라지는 것",
           "values": [
             {
               "title": "방향을 먼저 합의합니다",
-              "body": "기획서와 데모 단계에서 곡의 방향을 확정한 뒤 본 제작에 들어갑니다. 제작 후반에 방향이 바뀌어 일정과 비용이 흔들리는 일을 줄입니다."
+              "body": "톤과 표현을 정리하는 단계에서 곡의 방향을 함께 확정한 뒤 제작에 들어갑니다. 제작 후반에 방향이 바뀌어 일정과 비용이 흔들리는 일을 줄입니다."
             },
             {
               "title": "IP에서 출발합니다",
-              "body": "특정 레퍼런스 곡을 따라가지 않고, 세계관과 인물, 장면에서 음악의 근거를 찾습니다. 그 IP와 팬이 자기 이야기로 받아들이는 곡을 목표로 합니다."
+              "body": "특정 레퍼런스 곡을 따라가지 않고 세계관과 인물, 장면에서 음악의 근거를 찾습니다. 그 IP와 팬이 자기 이야기로 받아들이는 곡을 목표로 합니다."
             },
             {
               "title": "소통 창구는 하나입니다",
               "body": "기획과 작곡·편곡부터 보컬 디렉팅, 아트워크까지 한 팀이 이어서 맡고, 프로젝트 매니저가 일정과 소통을 관리합니다."
             }
           ],
-          "stepsLabel": "진행 방식",
-          "outLabel": "결과물",
-          "steps": [
-            {
-              "no": "01",
-              "title": "이야기 분석·기획",
-              "body": "상담 내용과 IP 자료를 바탕으로 세계관·인물·장면을 분석해 스토리보드형 음악 기획서로 정리합니다.",
-              "out": "음악 기획서",
-              "badge": "",
-              "kind": "sketch",
-              "image": "",
-              "todo": "[TODO: 공개 가능한 기획서 이미지]"
-            },
-            {
-              "no": "02",
-              "title": "데모 제안",
-              "body": "기획서에 맞춘 데모를 들려드리고, 피드백을 반영해 곡의 방향을 확정합니다.",
-              "out": "데모 음원",
-              "badge": "방향 확정",
-              "kind": "audio",
-              "src": "",
-              "todo": "[TODO: 데모 음원 (자체 프로젝트)]"
-            },
-            {
-              "no": "03",
-              "title": "제작·납품",
-              "body": "확정된 방향으로 녹음과 믹싱·마스터링을 거쳐 최종 음원을 납품합니다.",
-              "out": "최종 음원",
-              "badge": "",
-              "kind": "audio",
-              "src": "",
-              "todo": "[TODO: 같은 곡의 완성곡 음원]"
-            }
-          ],
-          "note": "[TODO: 데모에서 무엇이, 왜 바뀌었는지 한 줄]",
           "ctaLabel": "프로젝트 상담하기"
         }
       },
@@ -738,8 +760,8 @@
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "HOW WE",
         "titleAccent": " WORK",
-        "subtitle": "We read the story before any reference.",
-        "description": "Before production starts, we study the world and characters of your IP, propose the song in a music plan, and agree on the direction with a demo.",
+        "subtitle": "Our name holds the way we work.",
+        "description": "Beyond references: the TALETONE MUSIC process that turns a story into music, at full strength.",
         "cards": [
           {
             "label": "GAME IP",
@@ -772,10 +794,67 @@
         "audienceAnimationService2": "Character songs · Promotional music",
         "audienceAnimationHook": "What sound will keep this scene alive in memory?",
         "proof": {
+          "compare": {
+            "refLabel": "Reference-led",
+            "refFlow": "Sound → Lyrics → Title",
+            "storyLabel": "Story-led",
+            "storyFlow": "Story → Tone → Music"
+          },
+          "pillars": [
+            {
+              "name": "TALE",
+              "kind": "tale",
+              "body": "World · characters · scenes · fandom, analysed"
+            },
+            {
+              "name": "TONE",
+              "kind": "tone",
+              "body": "Genre · sound · vocals · song flow, set out"
+            },
+            {
+              "name": "MUSIC",
+              "kind": "music",
+              "body": "Composition · arrangement · direction · mix · master, finished"
+            }
+          ],
+          "stepsLabel": "Our process",
+          "steps": [
+            {
+              "no": "01",
+              "name": "Listen",
+              "body": "We hear the story and what worries you",
+              "key": "false"
+            },
+            {
+              "no": "02",
+              "name": "Analyze",
+              "body": "We read the world, the characters and their strengths",
+              "key": "false"
+            },
+            {
+              "no": "03",
+              "name": "Design",
+              "body": "We set out the tone and expression of the music",
+              "key": "true"
+            },
+            {
+              "no": "04",
+              "name": "Produce",
+              "body": "We make it into a song",
+              "key": "false"
+            },
+            {
+              "no": "05",
+              "name": "Complete",
+              "body": "We finish it in the form you need",
+              "key": "false"
+            }
+          ],
+          "valuesLabel": "What this changes for you",
           "values": [
             {
-              "title": "We agree on direction first",
-              "body": "The direction is settled at the plan and demo stage, before full production. That keeps late changes from shaking your schedule and budget."
+              "title": "Direction agreed first",
+              "body": "The direction of the song is settled with you while tone and expression are set out, before production. That keeps late changes from shaking your schedule and budget."
             },
             {
               "title": "We start from your IP",
@@ -786,44 +865,6 @@
               "body": "One team carries planning, composition and arrangement through vocal direction and artwork, and a project manager handles the schedule and communication."
             }
           ],
-          "stepsLabel": "How a project runs",
-          "outLabel": "Deliverable",
-          "steps": [
-            {
-              "no": "01",
-              "title": "Story analysis and planning",
-              "body": "From our first talk and your IP materials, we study the world, characters and scenes and set them out in a storyboard-style music plan.",
-              "out": "Music plan",
-              "badge": "",
-              "kind": "sketch",
-              "image": "",
-              "src": "",
-              "todo": ""
-            },
-            {
-              "no": "02",
-              "title": "Demo",
-              "body": "You hear a demo made to the plan, and with your feedback we lock the direction of the song.",
-              "out": "Demo track",
-              "badge": "Direction locked",
-              "kind": "audio",
-              "image": "",
-              "src": "",
-              "todo": ""
-            },
-            {
-              "no": "03",
-              "title": "Production and delivery",
-              "body": "Recording, mixing and mastering follow the agreed direction, and we deliver the final master.",
-              "out": "Final master",
-              "badge": "",
-              "kind": "audio",
-              "image": "",
-              "src": "",
-              "todo": ""
-            }
-          ],
-          "note": "",
           "ctaLabel": "Talk to us about a project"
         }
       },
@@ -831,8 +872,8 @@
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "HOW WE",
         "titleAccent": " WORK",
-        "subtitle": "リファレンスより先に、物語を読みます。",
-        "description": "本制作に入る前に、IPの世界観と人物を分析して音楽企画書でご提案し、デモで方向性を合意してから制作します。",
+        "subtitle": "私たちの名前には、私たちの哲学が込められています。",
+        "description": "リファレンスを超えて、物語を音楽として最大化する、TALETONE MUSICならではの制作プロセスです。",
         "cards": [
           {
             "label": "GAME IP",
@@ -865,10 +906,67 @@
         "audienceAnimationService2": "キャラクターソング・プロモーション音楽",
         "audienceAnimationHook": "このシーンをいつまでも覚えていてもらえる音は？",
         "proof": {
+          "compare": {
+            "refLabel": "リファレンス中心",
+            "refFlow": "サウンド → 歌詞 → タイトル",
+            "storyLabel": "ストーリーベース",
+            "storyFlow": "物語 → トーン → 音楽"
+          },
+          "pillars": [
+            {
+              "name": "TALE",
+              "kind": "tale",
+              "body": "世界観 · キャラクター · 場面 · ファンダムの分析"
+            },
+            {
+              "name": "TONE",
+              "kind": "tone",
+              "body": "ジャンル · サウンド · ボーカル · 曲の流れの整理"
+            },
+            {
+              "name": "MUSIC",
+              "kind": "music",
+              "body": "作曲 · 編曲 · ディレクション · ミックス · マスターで完成"
+            }
+          ],
+          "stepsLabel": "制作プロセス",
+          "steps": [
+            {
+              "no": "01",
+              "name": "Listen",
+              "body": "物語とお悩みをお聞きします",
+              "key": "false"
+            },
+            {
+              "no": "02",
+              "name": "Analyze",
+              "body": "世界観 · キャラクター · 強みを読み解きます",
+              "key": "false"
+            },
+            {
+              "no": "03",
+              "name": "Design",
+              "body": "音楽のトーンと表現を整理します",
+              "key": "true"
+            },
+            {
+              "no": "04",
+              "name": "Produce",
+              "body": "曲として形にします",
+              "key": "false"
+            },
+            {
+              "no": "05",
+              "name": "Complete",
+              "body": "ふさわしい形で仕上げます",
+              "key": "false"
+            }
+          ],
+          "valuesLabel": "この進め方で変わること",
           "values": [
             {
               "title": "方向性を先に合意します",
-              "body": "企画書とデモの段階で曲の方向性を確定してから、本制作に入ります。制作の後半で方向が変わり、スケジュールや費用が揺らぐことを防ぎます。"
+              "body": "トーンと表現を整理する段階で曲の方向性を一緒に確定してから、制作に入ります。制作の後半で方向が変わり、スケジュールや費用が揺らぐことを防ぎます。"
             },
             {
               "title": "IPから出発します",
@@ -879,44 +977,6 @@
               "body": "企画と作曲・編曲から、ボーカルディレクション、アートワークまで一つのチームが通して担当し、プロジェクトマネージャーがスケジュールとやり取りを管理します。"
             }
           ],
-          "stepsLabel": "進め方",
-          "outLabel": "成果物",
-          "steps": [
-            {
-              "no": "01",
-              "title": "物語の分析・企画",
-              "body": "ヒアリング内容とIP資料をもとに世界観・人物・場面を分析し、絵コンテ形式の音楽企画書にまとめます。",
-              "out": "音楽企画書",
-              "badge": "",
-              "kind": "sketch",
-              "image": "",
-              "src": "",
-              "todo": ""
-            },
-            {
-              "no": "02",
-              "title": "デモのご提案",
-              "body": "企画書に沿ったデモをお聴きいただき、フィードバックを反映して曲の方向性を確定します。",
-              "out": "デモ音源",
-              "badge": "方向性の確定",
-              "kind": "audio",
-              "image": "",
-              "src": "",
-              "todo": ""
-            },
-            {
-              "no": "03",
-              "title": "制作・納品",
-              "body": "確定した方向性で録音とミックス・マスタリングを行い、最終音源を納品します。",
-              "out": "最終音源",
-              "badge": "",
-              "kind": "audio",
-              "image": "",
-              "src": "",
-              "todo": ""
-            }
-          ],
-          "note": "",
           "ctaLabel": "プロジェクトのご相談"
         }
       }
@@ -937,55 +997,77 @@
     "audienceAnimationService2": "캐릭터 송 · 프로모션 음악",
     "audienceAnimationHook": "이 장면을 오래 기억하게 할 소리는 무엇일까요?",
     "proof": {
+      "compare": {
+        "refLabel": "레퍼런스 중심",
+        "refFlow": "사운드 → 가사 → 제목",
+        "storyLabel": "스토리 기반",
+        "storyFlow": "이야기 → 톤 → 음악"
+      },
+      "pillars": [
+        {
+          "name": "TALE",
+          "kind": "tale",
+          "body": "세계관 · 캐릭터 · 장면 · 팬덤 분석"
+        },
+        {
+          "name": "TONE",
+          "kind": "tone",
+          "body": "장르 · 사운드 · 보컬 · 곡 흐름 정리"
+        },
+        {
+          "name": "MUSIC",
+          "kind": "music",
+          "body": "작곡 · 편곡 · 디렉팅 · 믹스 · 마스터 완성"
+        }
+      ],
+      "stepsLabel": "제작 과정",
+      "steps": [
+        {
+          "no": "01",
+          "name": "Listen",
+          "body": "이야기와 고민을 듣습니다",
+          "key": "false"
+        },
+        {
+          "no": "02",
+          "name": "Analyze",
+          "body": "세계관 · 캐릭터 · 강점을 읽습니다",
+          "key": "false"
+        },
+        {
+          "no": "03",
+          "name": "Design",
+          "body": "음악의 톤과 표현을 정리합니다",
+          "key": "true"
+        },
+        {
+          "no": "04",
+          "name": "Produce",
+          "body": "곡으로 만듭니다",
+          "key": "false"
+        },
+        {
+          "no": "05",
+          "name": "Complete",
+          "body": "맞는 형태로 완성합니다",
+          "key": "false"
+        }
+      ],
+      "valuesLabel": "이렇게 일하면 달라지는 것",
       "values": [
         {
           "title": "방향을 먼저 합의합니다",
-          "body": "기획서와 데모 단계에서 곡의 방향을 확정한 뒤 본 제작에 들어갑니다. 제작 후반에 방향이 바뀌어 일정과 비용이 흔들리는 일을 줄입니다."
+          "body": "톤과 표현을 정리하는 단계에서 곡의 방향을 함께 확정한 뒤 제작에 들어갑니다. 제작 후반에 방향이 바뀌어 일정과 비용이 흔들리는 일을 줄입니다."
         },
         {
           "title": "IP에서 출발합니다",
-          "body": "특정 레퍼런스 곡을 따라가지 않고, 세계관과 인물, 장면에서 음악의 근거를 찾습니다. 그 IP와 팬이 자기 이야기로 받아들이는 곡을 목표로 합니다."
+          "body": "특정 레퍼런스 곡을 따라가지 않고 세계관과 인물, 장면에서 음악의 근거를 찾습니다. 그 IP와 팬이 자기 이야기로 받아들이는 곡을 목표로 합니다."
         },
         {
           "title": "소통 창구는 하나입니다",
           "body": "기획과 작곡·편곡부터 보컬 디렉팅, 아트워크까지 한 팀이 이어서 맡고, 프로젝트 매니저가 일정과 소통을 관리합니다."
         }
       ],
-      "stepsLabel": "진행 방식",
-      "outLabel": "결과물",
-      "steps": [
-        {
-          "no": "01",
-          "title": "이야기 분석·기획",
-          "body": "상담 내용과 IP 자료를 바탕으로 세계관·인물·장면을 분석해 스토리보드형 음악 기획서로 정리합니다.",
-          "out": "음악 기획서",
-          "badge": "",
-          "kind": "sketch",
-          "image": "",
-          "todo": "[TODO: 공개 가능한 기획서 이미지]"
-        },
-        {
-          "no": "02",
-          "title": "데모 제안",
-          "body": "기획서에 맞춘 데모를 들려드리고, 피드백을 반영해 곡의 방향을 확정합니다.",
-          "out": "데모 음원",
-          "badge": "방향 확정",
-          "kind": "audio",
-          "src": "",
-          "todo": "[TODO: 데모 음원 (자체 프로젝트)]"
-        },
-        {
-          "no": "03",
-          "title": "제작·납품",
-          "body": "확정된 방향으로 녹음과 믹싱·마스터링을 거쳐 최종 음원을 납품합니다.",
-          "out": "최종 음원",
-          "badge": "",
-          "kind": "audio",
-          "src": "",
-          "todo": "[TODO: 같은 곡의 완성곡 음원]"
-        }
-      ],
-      "note": "[TODO: 데모에서 무엇이, 왜 바뀌었는지 한 줄]",
       "ctaLabel": "프로젝트 상담하기"
     }
   },

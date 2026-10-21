@@ -166,18 +166,8 @@ var ComponentContent = {
       label: listen.label || '', context: listen.context || listenWork.artist || '',
       ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
     }) : {};
-    // HOW WE WORK: three steps, each with its material (the planning sheet, the demo, the finished song). A step
-    // shows a placeholder only while its material is still a [TODO]; otherwise the frame stays out of the way.
-    var proof = this.PROJECTS_META.proof || {};
-    this.PROOF = Object.assign({}, proof, {
-      steps: (Array.isArray(proof.steps) ? proof.steps : []).map((st)=>Object.assign({}, st, {
-        showImage: st.kind === 'sketch' && !!st.image,
-        showSketch: st.kind === 'sketch' && !st.image && !!st.todo,
-        showAudio: st.kind === 'audio' && !!st.src,
-        showWave: st.kind === 'audio' && !st.src && !!st.todo,
-        hasMedia: !!(st.image || st.src || st.todo)
-      }))
-    });
+    // HOW WE WORK: the method (TALE -> TONE -> MUSIC), the five steps and what the client gains
+    this.PROOF = this.PROJECTS_META.proof || {};
     // Blocks written only for some languages (the client voices, the inquiry form) are empty elsewhere
     var voicesData = cfg.voices || {};
     this.VOICES = this._localizedObject(voicesData, voicesData.translations);

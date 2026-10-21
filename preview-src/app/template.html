@@ -919,33 +919,29 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <sc-if value="{{ PROOF.values.length }}">
-  <ul class="tt-how-values">
-    <sc-for list="{{ PROOF.values }}" as="v" hint-placeholder-count="3"><li data-reveal=""><h3>{{ v.title }}</h3><p>{{ v.body }}</p></li></sc-for>
-  </ul>
-  </sc-if>
+  <div class="tt-method" data-reveal="">
+    <sc-if value="{{ PROOF.compare.storyFlow }}"><div class="tt-method-compare"><p><span>{{ PROOF.compare.refLabel }}</span>{{ PROOF.compare.refFlow }}</p><p class="is-ours"><span>{{ PROOF.compare.storyLabel }}</span>{{ PROOF.compare.storyFlow }}</p></div></sc-if>
+    <ol class="tt-method-pillars">
+      <sc-for list="{{ PROOF.pillars }}" as="p" hint-placeholder-count="3"><li class="tt-method-pillar" data-kind="{{ p.kind }}"><span class="tt-method-icon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><h3>{{ p.name }}</h3><p>{{ p.body }}</p></li></sc-for>
+    </ol>
+  </div>
   <sc-if value="{{ PROOF.steps.length }}">
-  <sc-if value="{{ PROOF.stepsLabel }}"><p class="tt-about-label tt-how-label" data-reveal="">{{ PROOF.stepsLabel }}</p></sc-if>
-  <ol class="tt-how">
-    <sc-for list="{{ PROOF.steps }}" as="st" hint-placeholder-count="3">
-    <li class="tt-how-step" data-media="{{ st.hasMedia }}" data-reveal="">
-      <sc-if value="{{ st.hasMedia }}"><div class="tt-how-media">
-        <sc-if value="{{ st.showImage }}"><img data-defer-src="{{ st.image }}" alt="{{ st.title }}" decoding="async"></sc-if>
-        <sc-if value="{{ st.showSketch }}"><span class="tt-how-sketch" aria-hidden="true"><i></i><i></i><i></i></span></sc-if>
-        <sc-if value="{{ st.showAudio }}"><audio controls preload="none" src="{{ st.src }}"></audio></sc-if>
-        <sc-if value="{{ st.showWave }}"><span class="tt-how-wave" aria-hidden="true"></span></sc-if>
-        <sc-if value="{{ st.todo }}"><p class="tt-how-todo">{{ st.todo }}</p></sc-if>
-      </div></sc-if>
-      <span class="tt-how-no">{{ st.no }}<sc-if value="{{ st.badge }}"><em class="tt-how-badge">{{ st.badge }}</em></sc-if></span>
-      <h3 class="tt-how-title">{{ st.title }}</h3>
-      <p class="tt-how-body">{{ st.body }}</p>
-      <sc-if value="{{ st.out }}"><p class="tt-how-out"><b>{{ PROOF.outLabel }}</b><span>{{ st.out }}</span></p></sc-if>
-    </li>
-    </sc-for>
-  </ol>
-  <sc-if value="{{ PROOF.note }}"><p class="tt-how-note" data-reveal="">{{ PROOF.note }}</p></sc-if>
-  <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-how-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
+  <div class="tt-method-process" data-reveal="">
+    <p class="tt-about-label">{{ PROOF.stepsLabel }}</p>
+    <ol class="tt-method-steps">
+      <sc-for list="{{ PROOF.steps }}" as="st" hint-placeholder-count="5"><li data-key="{{ st.key }}"><span class="tt-method-no">{{ st.no }}</span><b>{{ st.name }}</b><small>{{ st.body }}</small></li></sc-for>
+    </ol>
+  </div>
   </sc-if>
+  <sc-if value="{{ PROOF.values.length }}">
+  <div class="tt-method-values" data-reveal="">
+    <p class="tt-about-label">{{ PROOF.valuesLabel }}</p>
+    <ul>
+      <sc-for list="{{ PROOF.values }}" as="v" hint-placeholder-count="3"><li><h3>{{ v.title }}</h3><p>{{ v.body }}</p></li></sc-for>
+    </ul>
+  </div>
+  </sc-if>
+  <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-how-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
 </section>
 
 
