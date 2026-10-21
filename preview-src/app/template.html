@@ -919,15 +919,29 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <div class="tt-compare" data-reveal="">
+  <div class="tt-cmp" data-reveal="">
     <sc-for list="{{ PROOF.rows }}" as="row" hint-placeholder-count="2">
-    <div class="tt-compare-row" data-ours="{{ row.ours }}">
-      <span class="tt-compare-label">{{ row.label }}</span>
-      <ol class="tt-compare-steps"><sc-for list="{{ row.steps }}" as="st" hint-placeholder-count="3"><li><b>{{ st.text }}</b><sc-if value="{{ st.en }}"><small>{{ st.en }}</small></sc-if></li></sc-for></ol>
+    <div class="tt-cmp-card" data-ours="{{ row.ours }}">
+      <div class="tt-cmp-head"><span class="tt-cmp-label">{{ row.label }}</span><sc-if value="{{ row.badge }}"><span class="tt-cmp-badge">{{ row.badge }}</span></sc-if></div>
+      <ol class="tt-cmp-flow"><sc-for list="{{ row.steps }}" as="st" hint-placeholder-count="3"><li><b>{{ st.text }}</b><sc-if value="{{ st.en }}"><small>{{ st.en }}</small></sc-if></li></sc-for></ol>
+      <p class="tt-cmp-result">{{ row.result }}</p>
     </div>
     </sc-for>
   </div>
-  <sc-if value="{{ PROOF.closing }}"><p class="tt-compare-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
+  <sc-if value="{{ PROOF.closing }}"><p class="tt-cmp-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
+  <sc-if value="{{ CASE.title }}">
+  <article class="tt-case" data-reveal="">
+    <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true"></span></a>
+    <div class="tt-case-body">
+      <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
+      <h3 class="tt-case-title">{{ CASE.title }}</h3>
+      <p class="tt-case-meta">{{ CASE.meta }}</p>
+      <ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
+      <p class="tt-case-lesson">{{ CASE.lesson }}</p>
+      <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
+    </div>
+  </article>
+  </sc-if>
   <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
 </section>
 

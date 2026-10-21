@@ -410,8 +410,8 @@ const parseAssignedJson = (source, name) => {
 const siteJs = parseAssignedJson(await text('assets/data/site-content.js'), 'window.TALETONE_CONTENT');
 const seoSource = await text('assets/data/seo-content.js');
 const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
-// the build adds the newest work and home's featured song (home.listen); everything else must match the JSON
-const { latestWork: builtLatestWork, listenWork: builtListenWork, ...siteJsContent } = siteJs;
+// the build adds the newest work, home's featured song (home.listen) and How We Work's case work; everything else must match the JSON
+const { latestWork: builtLatestWork, listenWork: builtListenWork, caseWork: builtCaseWork, ...siteJsContent } = siteJs;
 assert(!siteJson.home?.listen?.slug || builtListenWork?.slug === siteJson.home.listen.slug, 'site-content.js listenWork does not match home.listen');
 assert(JSON.stringify(siteJson) === JSON.stringify(siteJsContent), 'site-content JSON/JS drift');
 const newestWork = [...(await readJson('assets/data/works-data.json')).works].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];

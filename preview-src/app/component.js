@@ -647,7 +647,7 @@ class Component extends DCLogic {
       copyContactEmail:(e)=>this.copyContactEmail(e),
       sendInquiry:(e)=>this.sendInquiry(e),
       // the featured song, How We Work's steps, client voices and the short inquiry form
-      HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, VOICES: this.VOICES || {},
+      HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, CASE: this.CASE || {}, VOICES: this.VOICES || {},
       CONTACT_FORM: this.CONTACT_FORM || {}, CONTACT_NO_FORM: !(this.CONTACT_FORM || {}).title, CONTACT_CHANNELS: this.CONTACT_CHANNELS || [],
       TRACK_RECORD: this.TRACK_RECORD || [],
       NEWS_META: this.NEWS_META || {},
