@@ -919,29 +919,18 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <div class="tt-method" data-reveal="">
-    <sc-if value="{{ PROOF.compare.storyFlow }}"><div class="tt-method-compare"><p><span>{{ PROOF.compare.refLabel }}</span>{{ PROOF.compare.refFlow }}</p><p class="is-ours"><span>{{ PROOF.compare.storyLabel }}</span>{{ PROOF.compare.storyFlow }}</p></div></sc-if>
-    <ol class="tt-method-pillars">
-      <sc-for list="{{ PROOF.pillars }}" as="p" hint-placeholder-count="3"><li class="tt-method-pillar" data-kind="{{ p.kind }}"><span class="tt-method-icon" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><h3>{{ p.name }}</h3><p>{{ p.body }}</p></li></sc-for>
-    </ol>
-  </div>
-  <sc-if value="{{ PROOF.steps.length }}">
-  <div class="tt-method-process" data-reveal="">
-    <p class="tt-about-label">{{ PROOF.stepsLabel }}</p>
-    <ol class="tt-method-steps">
-      <sc-for list="{{ PROOF.steps }}" as="st" hint-placeholder-count="5"><li data-key="{{ st.key }}"><span class="tt-method-no">{{ st.no }}</span><b>{{ st.name }}</b><small>{{ st.body }}</small></li></sc-for>
-    </ol>
-  </div>
-  </sc-if>
-  <sc-if value="{{ PROOF.values.length }}">
-  <div class="tt-method-values" data-reveal="">
-    <p class="tt-about-label">{{ PROOF.valuesLabel }}</p>
-    <ul>
-      <sc-for list="{{ PROOF.values }}" as="v" hint-placeholder-count="3"><li><h3>{{ v.title }}</h3><p>{{ v.body }}</p></li></sc-for>
-    </ul>
-  </div>
-  </sc-if>
-  <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-how-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
+  <ol class="tt-dive">
+    <sc-for list="{{ PROOF.stops }}" as="d" hint-placeholder-count="3">
+    <li class="tt-dive-stop" data-kind="{{ d.kind }}" data-reveal="">
+      <span class="tt-dive-mark" aria-hidden="true"></span>
+      <p class="tt-dive-depth"><b>{{ d.name }}</b><span>{{ d.depth }}</span></p>
+      <h3 class="tt-dive-title">{{ d.title }}</h3>
+      <p class="tt-dive-body">{{ d.body }}</p>
+      <p class="tt-dive-point"><span>{{ PROOF.pointLabel }}</span>{{ d.point }}</p>
+    </li>
+    </sc-for>
+  </ol>
+  <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
 </section>
 
 

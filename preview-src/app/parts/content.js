@@ -166,7 +166,7 @@ var ComponentContent = {
       label: listen.label || '', context: listen.context || listenWork.artist || '',
       ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
     }) : {};
-    // HOW WE WORK: the method (TALE -> TONE -> MUSIC), the five steps and what the client gains
+    // HOW WE WORK: the dive (TALE shallow, TONE middle, MUSIC deep) as the way a song is made, and what each depth means for the client
     this.PROOF = this.PROJECTS_META.proof || {};
     // Blocks written only for some languages (the client voices, the inquiry form) are empty elsewhere
     var voicesData = cfg.voices || {};
