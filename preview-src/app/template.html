@@ -919,17 +919,15 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <ol class="tt-dive">
-    <sc-for list="{{ PROOF.stops }}" as="d" hint-placeholder-count="3">
-    <li class="tt-dive-stop" data-kind="{{ d.kind }}" data-reveal="">
-      <span class="tt-dive-mark" aria-hidden="true"></span>
-      <p class="tt-dive-depth"><b>{{ d.name }}</b><span>{{ d.depth }}</span></p>
-      <h3 class="tt-dive-title">{{ d.title }}</h3>
-      <p class="tt-dive-body">{{ d.body }}</p>
-      <p class="tt-dive-point"><span>{{ PROOF.pointLabel }}</span>{{ d.point }}</p>
-    </li>
+  <div class="tt-compare" data-reveal="">
+    <sc-for list="{{ PROOF.rows }}" as="row" hint-placeholder-count="2">
+    <div class="tt-compare-row" data-ours="{{ row.ours }}">
+      <span class="tt-compare-label">{{ row.label }}</span>
+      <ol class="tt-compare-steps"><sc-for list="{{ row.steps }}" as="st" hint-placeholder-count="3"><li><b>{{ st.text }}</b><sc-if value="{{ st.en }}"><small>{{ st.en }}</small></sc-if></li></sc-for></ol>
+    </div>
     </sc-for>
-  </ol>
+  </div>
+  <sc-if value="{{ PROOF.closing }}"><p class="tt-compare-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
   <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
 </section>
 

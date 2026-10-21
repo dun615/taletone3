@@ -2786,27 +2786,31 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-inquiry {padding:20px 16px 18px}
   .tt-inquiry-grid {grid-template-columns:minmax(0,1fr)}
 }
-/* How We Work: the dive the reader just made, as the way a song is made. One line going down, three depths
-   (TALE shallow, TONE middle, MUSIC deep), each darker than the last, like the depth gauge on the left */
-#c-projects .tt-chapter-lead {white-space:pre-line}
-.tt-dive {position:relative;list-style:none;margin:0;padding:0;width:min(720px,90vw);text-align:left}
-.tt-dive::before {content:'';position:absolute;left:11px;top:10px;bottom:56px;width:2px;border-radius:2px;background:linear-gradient(180deg,#9edbe3,#0E6E7D 55%,#141C30);opacity:.55}
-.tt-dive-stop {position:relative;padding:0 0 48px 52px}
-.tt-dive-mark {position:absolute;left:3px;top:6px;width:18px;height:18px;border-radius:50%;box-sizing:border-box;border:3px solid rgba(255,255,255,.85)}
-.tt-dive-stop[data-kind=tale] .tt-dive-mark {background:#9edbe3;box-shadow:0 0 0 6px rgba(158,219,227,.25)}
-.tt-dive-stop[data-kind=tone] .tt-dive-mark {background:#0E6E7D;box-shadow:0 0 0 6px rgba(14,110,125,.2)}
-.tt-dive-stop[data-kind=music] .tt-dive-mark {background:#141C30;box-shadow:0 0 0 6px rgba(20,28,48,.18)}
-.tt-dive-depth {margin:0 0 6px;display:flex;align-items:baseline;gap:10px}
-.tt-dive-depth > b {font:700 var(--fs-xl)/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.04em;color:var(--ink,#141C30)}
-.tt-dive-depth > span {font-weight:700;font-size:var(--fs-s);letter-spacing:.06em;color:var(--accent,#0E6E7D)}
-.tt-dive-title {margin:0 0 8px;font-weight:800;font-size:var(--fs-l);line-height:1.4;color:var(--ink,#141C30)}
-.tt-dive-body {margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.75;color:var(--soft,#44505F)}
-.tt-dive-point {margin:14px 0 0;padding:12px 16px;border-left:2px solid var(--accent,#0E6E7D);border-radius:0 12px 12px 0;background:var(--card,rgba(255,255,255,.4));font-weight:600;font-size:var(--fs-m);line-height:1.7;color:var(--ink,#141C30)}
-.tt-dive-point > span {display:block;margin-bottom:2px;font-weight:800;font-size:var(--fs-s);letter-spacing:.06em;color:var(--accent,#0E6E7D)}
-.tt-dive-cta {margin-top:4px;display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:var(--fs-m);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
-@media (max-width:760px) {
-  #c-projects .tt-chapter-lead {white-space:normal}
-  .tt-dive-stop {padding:0 0 38px 40px}
-  .tt-dive::before {left:8px}
-  .tt-dive-mark {left:0}
+/* How We Work: one comparison. Reference-led (faded) against story-led, whose three steps are the name: TALE, TONE, MUSIC */
+.tt-compare {display:grid;grid-template-columns:auto auto;justify-content:center;align-items:baseline;gap:22px 36px;margin-top:10px}
+.tt-compare-row {display:contents}
+.tt-compare-label {justify-self:end;font-weight:800;font-size:clamp(16px,1.6vw,22px);white-space:nowrap}
+.tt-compare-steps {list-style:none;margin:0;padding:0;display:flex;align-items:baseline;flex-wrap:nowrap}
+.tt-compare-steps > li {position:relative;display:flex;flex-direction:column;align-items:center;font-size:clamp(28px,3.6vw,52px)}
+.tt-compare-steps > li + li {margin-left:1.45em}
+/* the arrow between steps: a line and a head, sized to the words */
+.tt-compare-steps > li + li::before, .tt-compare-steps > li + li::after {content:'';position:absolute;top:.64em;right:calc(100% + .44em)}
+.tt-compare-steps > li + li::before {width:.58em;height:2px;margin-top:-1px;background:currentColor;opacity:.55}
+.tt-compare-steps > li + li::after {width:.2em;height:.2em;margin-top:-.1em;box-sizing:border-box;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);opacity:.55}
+.tt-compare-steps b {font-weight:800;font-size:1em;line-height:1.28;letter-spacing:-.01em;white-space:nowrap}
+.tt-compare-steps small {margin-top:4px;font:700 11.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.2em}
+.tt-compare-row[data-ours=false] > .tt-compare-label, .tt-compare-row[data-ours=false] li {color:rgba(68,80,95,.42)}
+.tt-compare-row[data-ours=false] b {font-weight:700}
+.tt-compare-row[data-ours=true] > .tt-compare-label {color:var(--accent,#0E6E7D)}
+.tt-compare-row[data-ours=true] li {color:var(--ink,#141C30)}
+.tt-compare-row[data-ours=true] li:last-child b {color:#E9A23B}
+.tt-compare-row[data-ours=true] small {color:var(--accent,#0E6E7D)}
+.tt-compare-closing {margin:38px 0 0;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F);text-align:center}
+.tt-dive-cta {width:fit-content;margin:18px auto 0;display:flex;justify-content:center;align-items:center;gap:8px;font-weight:800;font-size:var(--fs-m);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1.5px}
+@media (max-width:640px) {
+  .tt-compare {grid-template-columns:auto;gap:6px;justify-items:center}
+  .tt-compare-label {justify-self:center;font-size:14px}
+  .tt-compare-row[data-ours=true] > .tt-compare-label {margin-top:24px}
+  .tt-compare-steps > li {font-size:clamp(22px,7vw,30px)}
+  .tt-compare-closing {font-size:var(--fs-m);padding:0 8px}
 }
