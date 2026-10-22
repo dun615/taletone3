@@ -730,24 +730,71 @@
             "eyebrow": "CASE STORY · ORIGINAL IP",
             "title": "soraniwa 「수채화 (Watercolour)」",
             "meta": "soraniwa Project · 1st Single · 2024",
-            "steps": [
-              {
-                "kind": "tale",
-                "label": "TALE · 이야기",
-                "text": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
-              },
-              {
-                "kind": "tone",
-                "label": "TONE · 톤",
-                "text": "[TODO: 이 이야기를 위해 정한 소리의 결과 그 이유 (사운드·보컬·곡의 흐름)]"
-              },
-              {
-                "kind": "music",
-                "label": "MUSIC · 음악",
-                "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
-              }
-            ],
-            "lesson": "[TODO: 이 사례로 전하고 싶은 한 줄]",
+            "tale": {
+              "label": "TALE · 이야기",
+              "text": "기억을 잃은 소라가 호숫가에서 니와와의 추억을 되찾고, 니와를 찾아 떠나기로 다짐하는 프롤로그."
+            },
+            "arc": {
+              "label": "TONE · 기억이 물드는 과정",
+              "intro": "이 곡은 기억이 물들어 가는 과정을 설계했습니다. 흑백에서 시작해 색이 번지고, 깨지고, 다시 물듭니다.",
+              "stages": [
+                {
+                  "section": "Verse 1",
+                  "color": "흑백",
+                  "tone": "gray",
+                  "scene": "호숫가에서 돌을 던지며 니와와의 추억을 떠올린다.",
+                  "music": "[TODO: 이 구간의 음악 한 줄]"
+                },
+                {
+                  "section": "Verse 2",
+                  "color": "번지는 색",
+                  "tone": "bleed",
+                  "scene": "물속으로 걸어 들어가자, 추억이 색을 입고 되살아난다.",
+                  "music": "[TODO: 이 구간의 음악 한 줄]"
+                },
+                {
+                  "section": "Pre-Chorus 2",
+                  "color": "까맣게 · 빨갛게",
+                  "tone": "break",
+                  "scene": "추억이 일그러지며, 학대받고 화형당하던 날이 떠오른다.",
+                  "music": "[TODO: 이 구간의 음악 한 줄]"
+                },
+                {
+                  "section": "Chorus 3",
+                  "color": "다시 물듦",
+                  "tone": "bloom",
+                  "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 빛을 입는다.",
+                  "music": "[TODO: 이 구간의 음악 한 줄]"
+                }
+              ]
+            },
+            "sheet": {
+              "label": "기획서의 한 장면",
+              "section": "Pre-Chorus 2",
+              "caption": "실제 기획서 원문입니다. 가사는 기획 단계의 초안입니다.",
+              "heads": [
+                "가사",
+                "음절",
+                "장면"
+              ],
+              "lyrics": [
+                "까맣게 나를 괴롭혔던 그 날에도",
+                "빨갛게 나를 감싸안던 그 날에도",
+                "너만은 내 옆에서",
+                "나를 바라고 있었어"
+              ],
+              "rhythm": [
+                "OOOOO OOOO OOOO",
+                "OOOOO OOOO OOOO",
+                "OOO OOOO",
+                "OOOOO OOO"
+              ],
+              "scene": "추억이 일그러지고 깨지기 시작하며 학대당하고 화형당했던 때가 상기됨.\n그러자 니와와의 추억이 되살아난다."
+            },
+            "music": {
+              "label": "MUSIC · 음악",
+              "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
+            },
             "listenLabel": "수채화 듣기"
           },
           "ctaLabel": "프로젝트 상담하기"
@@ -986,24 +1033,71 @@
         "eyebrow": "CASE STORY · ORIGINAL IP",
         "title": "soraniwa 「수채화 (Watercolour)」",
         "meta": "soraniwa Project · 1st Single · 2024",
-        "steps": [
-          {
-            "kind": "tale",
-            "label": "TALE · 이야기",
-            "text": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
-          },
-          {
-            "kind": "tone",
-            "label": "TONE · 톤",
-            "text": "[TODO: 이 이야기를 위해 정한 소리의 결과 그 이유 (사운드·보컬·곡의 흐름)]"
-          },
-          {
-            "kind": "music",
-            "label": "MUSIC · 음악",
-            "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
-          }
-        ],
-        "lesson": "[TODO: 이 사례로 전하고 싶은 한 줄]",
+        "tale": {
+          "label": "TALE · 이야기",
+          "text": "기억을 잃은 소라가 호숫가에서 니와와의 추억을 되찾고, 니와를 찾아 떠나기로 다짐하는 프롤로그."
+        },
+        "arc": {
+          "label": "TONE · 기억이 물드는 과정",
+          "intro": "이 곡은 기억이 물들어 가는 과정을 설계했습니다. 흑백에서 시작해 색이 번지고, 깨지고, 다시 물듭니다.",
+          "stages": [
+            {
+              "section": "Verse 1",
+              "color": "흑백",
+              "tone": "gray",
+              "scene": "호숫가에서 돌을 던지며 니와와의 추억을 떠올린다.",
+              "music": "[TODO: 이 구간의 음악 한 줄]"
+            },
+            {
+              "section": "Verse 2",
+              "color": "번지는 색",
+              "tone": "bleed",
+              "scene": "물속으로 걸어 들어가자, 추억이 색을 입고 되살아난다.",
+              "music": "[TODO: 이 구간의 음악 한 줄]"
+            },
+            {
+              "section": "Pre-Chorus 2",
+              "color": "까맣게 · 빨갛게",
+              "tone": "break",
+              "scene": "추억이 일그러지며, 학대받고 화형당하던 날이 떠오른다.",
+              "music": "[TODO: 이 구간의 음악 한 줄]"
+            },
+            {
+              "section": "Chorus 3",
+              "color": "다시 물듦",
+              "tone": "bloom",
+              "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 빛을 입는다.",
+              "music": "[TODO: 이 구간의 음악 한 줄]"
+            }
+          ]
+        },
+        "sheet": {
+          "label": "기획서의 한 장면",
+          "section": "Pre-Chorus 2",
+          "caption": "실제 기획서 원문입니다. 가사는 기획 단계의 초안입니다.",
+          "heads": [
+            "가사",
+            "음절",
+            "장면"
+          ],
+          "lyrics": [
+            "까맣게 나를 괴롭혔던 그 날에도",
+            "빨갛게 나를 감싸안던 그 날에도",
+            "너만은 내 옆에서",
+            "나를 바라고 있었어"
+          ],
+          "rhythm": [
+            "OOOOO OOOO OOOO",
+            "OOOOO OOOO OOOO",
+            "OOO OOOO",
+            "OOOOO OOO"
+          ],
+          "scene": "추억이 일그러지고 깨지기 시작하며 학대당하고 화형당했던 때가 상기됨.\n그러자 니와와의 추억이 되살아난다."
+        },
+        "music": {
+          "label": "MUSIC · 음악",
+          "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
+        },
         "listenLabel": "수채화 듣기"
       },
       "ctaLabel": "프로젝트 상담하기"
