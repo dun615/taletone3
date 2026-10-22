@@ -2788,16 +2788,16 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 }
 /* How We Work: two cards side by side, reference-led (faded, dashed) and story-led (solid, the TALETONE badge),
    then one real case laid out as request + strength = our question -> answer, with its record to play */
-.tt-cmp {width:min(1000px,92vw);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:stretch}
-.tt-cmp-card {box-sizing:border-box;display:flex;flex-direction:column;gap:18px;padding:24px 26px 22px;border-radius:22px;text-align:left}
+.tt-cmp {width:min(1000px,92vw);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
+.tt-cmp-card {position:relative;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 26px 22px;border-radius:22px;text-align:center}
 .tt-cmp-card[data-ours=false] {background:rgba(255,255,255,.16);border:1.5px dashed rgba(20,28,48,.2)}
 .tt-cmp-card[data-ours=true] {background:var(--card,rgba(255,255,255,.7));border:1.5px solid rgba(14,110,125,.45);box-shadow:0 18px 44px rgba(8,22,38,.12)}
-.tt-cmp-head {display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tt-cmp-head {display:flex;align-items:center;justify-content:center;gap:10px}
 .tt-cmp-label {font-weight:800;font-size:var(--fs-m);letter-spacing:.02em}
 .tt-cmp-card[data-ours=false] .tt-cmp-label {color:rgba(68,80,95,.7)}
 .tt-cmp-card[data-ours=true] .tt-cmp-label {color:var(--accent,#0E6E7D)}
-.tt-cmp-badge {padding:5px 10px;border-radius:999px;background:#141C30;color:#fff;font:700 10.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em}
-.tt-cmp-flow {list-style:none;margin:0;padding:0;display:flex;align-items:baseline}
+.tt-cmp-badge {position:absolute;top:20px;right:20px;padding:5px 10px;border-radius:999px;background:#141C30;color:#fff;font:700 10.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em}
+.tt-cmp-flow {list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:baseline}
 .tt-cmp-flow > li {position:relative;display:flex;flex-direction:column;align-items:center;font-size:clamp(24px,2.7vw,38px)}
 .tt-cmp-flow > li + li {margin-left:1.35em}
 .tt-cmp-flow > li + li::before, .tt-cmp-flow > li + li::after {content:'';position:absolute;top:.64em;right:calc(100% + .4em)}
@@ -2809,7 +2809,7 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-cmp-card[data-ours=false] .tt-cmp-flow b {font-weight:700}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li {color:var(--ink,#141C30)}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li:last-child b {color:#E9A23B}
-.tt-cmp-result {margin:auto 0 0;padding-top:14px;border-top:1px solid rgba(20,28,48,.1);font-weight:600;font-size:var(--fs-m);line-height:1.6}
+.tt-cmp-result {align-self:stretch;margin:auto 0 0;padding-top:14px;border-top:1px solid rgba(20,28,48,.1);font-weight:600;font-size:var(--fs-m);line-height:1.6}
 .tt-cmp-card[data-ours=false] .tt-cmp-result {color:rgba(68,80,95,.75)}
 .tt-cmp-card[data-ours=true] .tt-cmp-result {color:var(--ink,#141C30);font-weight:700}
 .tt-cmp-closing {margin:26px 0 0;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F);text-align:center}
