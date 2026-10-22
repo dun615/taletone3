@@ -936,29 +936,15 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <div class="tt-case-intro">
         <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
         <h3 class="tt-case-title">{{ CASE.title }}</h3>
-        <p class="tt-case-meta">{{ CASE.meta }}</p>
-        <div class="tt-case-tale"><span>{{ CASE.tale.label }}</span><sc-if value="{{ CASE.tale.project }}"><p class="tt-case-project">{{ CASE.tale.project }}</p></sc-if><p>{{ CASE.tale.text }}</p></div>
+        <p class="tt-case-summary">{{ CASE.summary }}</p>
+        <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
       </div>
     </div>
-    <div class="tt-case-arc">
-      <span class="tt-case-label">{{ CASE.arc.label }}</span>
-      <sc-if value="{{ CASE.arc.why }}"><p class="tt-case-why">{{ CASE.arc.why }}</p></sc-if>
-      <p class="tt-case-arc-intro">{{ CASE.arc.intro }}</p>
-      <ol class="tt-arc">
-        <sc-for list="{{ CASE.arc.stages }}" as="st" hint-placeholder-count="4"><li data-tone="{{ st.tone }}"><i class="tt-arc-chip" aria-hidden="true"></i><b>{{ st.section }}</b><em>{{ st.color }}</em><p>{{ st.scene }}</p><small>{{ st.music }}</small></li></sc-for>
-      </ol>
+    <div class="tt-case-why"><p>{{ CASE.why }}</p><small>{{ CASE.whySub }}</small></div>
+    <div class="tt-forms" role="table">
+      <div class="tt-forms-head" role="row"><span role="columnheader">{{ CASE.heads.0 }}</span><span role="columnheader">{{ CASE.heads.1 }}</span><span role="columnheader">{{ CASE.heads.2 }}</span></div>
+      <sc-for list="{{ CASE.forms }}" as="fm" hint-placeholder-count="8"><div class="tt-forms-row" role="row" data-tone="{{ fm.tone }}"><b role="cell"><i class="tt-forms-chip" aria-hidden="true"></i>{{ fm.section }}</b><p role="cell">{{ fm.scene }}</p><small role="cell">{{ fm.music }}</small></div></sc-for>
     </div>
-    <sc-if value="{{ CASE.sheet.section }}">
-    <figure class="tt-case-sheet">
-      <figcaption><span class="tt-case-label">{{ CASE.sheet.label }}</span><b>{{ CASE.sheet.section }}</b></figcaption>
-      <div class="tt-sheet-page">
-        <div class="tt-sheet-scene"><span>{{ CASE.sheet.sceneLabel }}</span><p>{{ CASE.sheet.scene }}</p></div>
-        <div class="tt-sheet-syll"><span>{{ CASE.sheet.syllableLabel }}</span><ol><sc-for list="{{ CASE.sheet.syllables }}" as="line" hint-placeholder-count="4"><li><code>{{ line }}</code></li></sc-for></ol></div>
-      </div>
-      <p class="tt-sheet-note">{{ CASE.sheet.caption }}</p>
-    </figure>
-    </sc-if>
-    <div class="tt-case-music"><span class="tt-case-label">{{ CASE.music.label }}</span><p>{{ CASE.music.text }}</p><a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a></div>
   </div>
   </sc-if>
   <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>

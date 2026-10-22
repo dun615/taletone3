@@ -729,65 +729,64 @@
             "slug": "watercolour",
             "eyebrow": "CASE STORY · ORIGINAL IP",
             "title": "soraniwa 「수채화 (Watercolour)」",
-            "meta": "soraniwa Project · 1st Single · 2024",
-            "tale": {
-              "label": "TALE · 이야기",
-              "project": "soraniwa는 TALETONE이 직접 만드는 스토리텔링 음악 프로젝트입니다. 한 곡이 이야기의 한 장이 됩니다.",
-              "text": "모든 기억을 잃은 소녀 소라가, 하나씩 기억을 되찾으며 단짝 니와를 찾아 나서는 이야기. 1st 싱글 「수채화」는 그 프롤로그로, 호숫가에서 니와와의 추억을 떠올린 소라가 니와를 찾겠다고 다짐하는 장면입니다."
-            },
-            "arc": {
-              "label": "TONE · 왜 「수채화」인가",
-              "intro": "불분명한 색들이 번지고 겹쳐 하나의 분명한 그림이 되듯, 이 곡은 흐릿한 흑백에서 시작해 색이 번지고, 깨지고, 다시 물들도록 설계했습니다.",
-              "stages": [
-                {
-                  "section": "Verse 1",
-                  "color": "흑백",
-                  "tone": "gray",
-                  "scene": "호숫가에서 돌을 던지며 니와와의 추억을 떠올린다.",
-                  "music": "[TODO: 이 구간의 음악 한 줄]"
-                },
-                {
-                  "section": "Verse 2",
-                  "color": "번지는 색",
-                  "tone": "bleed",
-                  "scene": "물속으로 걸어 들어가자, 추억이 색을 입고 되살아난다.",
-                  "music": "[TODO: 이 구간의 음악 한 줄]"
-                },
-                {
-                  "section": "Pre-Chorus 2",
-                  "color": "까맣게 · 빨갛게",
-                  "tone": "break",
-                  "scene": "추억이 일그러지며, 학대받고 화형당하던 날이 떠오른다.",
-                  "music": "[TODO: 이 구간의 음악 한 줄]"
-                },
-                {
-                  "section": "Chorus 3",
-                  "color": "다시 물듦",
-                  "tone": "bloom",
-                  "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 빛을 입는다.",
-                  "music": "[TODO: 이 구간의 음악 한 줄]"
-                }
-              ],
-              "why": "잊힌 기억을 다시 떠올리는 일은, 수채화를 그리는 일과 닮았습니다."
-            },
-            "sheet": {
-              "label": "기획서의 한 장면",
-              "section": "Pre-Chorus 2",
-              "caption": "실제 기획서 원문입니다. 곡을 쓰기 전에 송폼마다 장면과 감정, 상황을 먼저 정하고, 작사가를 위한 음절 가이드를 붙였습니다. 가사는 그 뒤에 쓰였습니다.",
-              "sceneLabel": "장면 · 감정 · 상황",
-              "scene": "추억이 일그러지고 깨지기 시작하며 학대당하고 화형당했던 때가 상기됨.\n그러자 니와와의 추억이 되살아난다.",
-              "syllableLabel": "음절 가이드 (작사가용)",
-              "syllables": [
-                "OOOOO OOOO OOOO",
-                "OOOOO OOOO OOOO",
-                "OOO OOOO",
-                "OOOOO OOO"
-              ]
-            },
-            "music": {
-              "label": "MUSIC · 음악",
-              "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
-            },
+            "summary": "TALETONE의 자체 IP. 기억을 잃은 소녀 소라가 단짝 니와를 찾아 나서는 이야기의 프롤로그입니다.",
+            "why": "잊힌 기억을 떠올리는 일은, 수채화를 그리는 일과 닮았습니다.",
+            "whySub": "흐릿한 흑백에서 시작해, 색이 번지고, 깨지고, 다시 물듭니다.",
+            "heads": [
+              "송폼",
+              "장면 · 감정",
+              "음악"
+            ],
+            "forms": [
+              {
+                "section": "Verse 1",
+                "tone": "gray",
+                "scene": "호숫가에서 니와와의 추억을 떠올린다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Chorus 1",
+                "tone": "gray",
+                "scene": "떠올리려 해도, 니와의 얼굴이 기억나지 않는다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Verse 2",
+                "tone": "bleed",
+                "scene": "물속으로 걸어 들어가자, 추억이 색을 입는다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Pre-Chorus 2",
+                "tone": "break",
+                "scene": "추억이 일그러지며, 화형당하던 날이 떠오른다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Chorus 2",
+                "tone": "bleed",
+                "scene": "니와와의 좋았던 추억이 되살아난다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Bridge",
+                "tone": "break",
+                "scene": "만나고 싶은 마음과 그럴 수 없는 절망에 울부짖는다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Chorus 3",
+                "tone": "bloom",
+                "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 물든다.",
+                "music": "[TODO: 음악 한 줄]"
+              },
+              {
+                "section": "Outro",
+                "tone": "bloom",
+                "scene": "흩어진 기억을 품고, 여행을 시작한다.",
+                "music": "[TODO: 음악 한 줄]"
+              }
+            ],
             "listenLabel": "수채화 듣기"
           },
           "ctaLabel": "프로젝트 상담하기"
@@ -1025,65 +1024,64 @@
         "slug": "watercolour",
         "eyebrow": "CASE STORY · ORIGINAL IP",
         "title": "soraniwa 「수채화 (Watercolour)」",
-        "meta": "soraniwa Project · 1st Single · 2024",
-        "tale": {
-          "label": "TALE · 이야기",
-          "project": "soraniwa는 TALETONE이 직접 만드는 스토리텔링 음악 프로젝트입니다. 한 곡이 이야기의 한 장이 됩니다.",
-          "text": "모든 기억을 잃은 소녀 소라가, 하나씩 기억을 되찾으며 단짝 니와를 찾아 나서는 이야기. 1st 싱글 「수채화」는 그 프롤로그로, 호숫가에서 니와와의 추억을 떠올린 소라가 니와를 찾겠다고 다짐하는 장면입니다."
-        },
-        "arc": {
-          "label": "TONE · 왜 「수채화」인가",
-          "intro": "불분명한 색들이 번지고 겹쳐 하나의 분명한 그림이 되듯, 이 곡은 흐릿한 흑백에서 시작해 색이 번지고, 깨지고, 다시 물들도록 설계했습니다.",
-          "stages": [
-            {
-              "section": "Verse 1",
-              "color": "흑백",
-              "tone": "gray",
-              "scene": "호숫가에서 돌을 던지며 니와와의 추억을 떠올린다.",
-              "music": "[TODO: 이 구간의 음악 한 줄]"
-            },
-            {
-              "section": "Verse 2",
-              "color": "번지는 색",
-              "tone": "bleed",
-              "scene": "물속으로 걸어 들어가자, 추억이 색을 입고 되살아난다.",
-              "music": "[TODO: 이 구간의 음악 한 줄]"
-            },
-            {
-              "section": "Pre-Chorus 2",
-              "color": "까맣게 · 빨갛게",
-              "tone": "break",
-              "scene": "추억이 일그러지며, 학대받고 화형당하던 날이 떠오른다.",
-              "music": "[TODO: 이 구간의 음악 한 줄]"
-            },
-            {
-              "section": "Chorus 3",
-              "color": "다시 물듦",
-              "tone": "bloom",
-              "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 빛을 입는다.",
-              "music": "[TODO: 이 구간의 음악 한 줄]"
-            }
-          ],
-          "why": "잊힌 기억을 다시 떠올리는 일은, 수채화를 그리는 일과 닮았습니다."
-        },
-        "sheet": {
-          "label": "기획서의 한 장면",
-          "section": "Pre-Chorus 2",
-          "caption": "실제 기획서 원문입니다. 곡을 쓰기 전에 송폼마다 장면과 감정, 상황을 먼저 정하고, 작사가를 위한 음절 가이드를 붙였습니다. 가사는 그 뒤에 쓰였습니다.",
-          "sceneLabel": "장면 · 감정 · 상황",
-          "scene": "추억이 일그러지고 깨지기 시작하며 학대당하고 화형당했던 때가 상기됨.\n그러자 니와와의 추억이 되살아난다.",
-          "syllableLabel": "음절 가이드 (작사가용)",
-          "syllables": [
-            "OOOOO OOOO OOOO",
-            "OOOOO OOOO OOOO",
-            "OOO OOOO",
-            "OOOOO OOO"
-          ]
-        },
-        "music": {
-          "label": "MUSIC · 음악",
-          "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
-        },
+        "summary": "TALETONE의 자체 IP. 기억을 잃은 소녀 소라가 단짝 니와를 찾아 나서는 이야기의 프롤로그입니다.",
+        "why": "잊힌 기억을 떠올리는 일은, 수채화를 그리는 일과 닮았습니다.",
+        "whySub": "흐릿한 흑백에서 시작해, 색이 번지고, 깨지고, 다시 물듭니다.",
+        "heads": [
+          "송폼",
+          "장면 · 감정",
+          "음악"
+        ],
+        "forms": [
+          {
+            "section": "Verse 1",
+            "tone": "gray",
+            "scene": "호숫가에서 니와와의 추억을 떠올린다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Chorus 1",
+            "tone": "gray",
+            "scene": "떠올리려 해도, 니와의 얼굴이 기억나지 않는다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Verse 2",
+            "tone": "bleed",
+            "scene": "물속으로 걸어 들어가자, 추억이 색을 입는다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Pre-Chorus 2",
+            "tone": "break",
+            "scene": "추억이 일그러지며, 화형당하던 날이 떠오른다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Chorus 2",
+            "tone": "bleed",
+            "scene": "니와와의 좋았던 추억이 되살아난다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Bridge",
+            "tone": "break",
+            "scene": "만나고 싶은 마음과 그럴 수 없는 절망에 울부짖는다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Chorus 3",
+            "tone": "bloom",
+            "scene": "니와를 찾겠다고 다짐하자, 추억이 다시 물든다.",
+            "music": "[TODO: 음악 한 줄]"
+          },
+          {
+            "section": "Outro",
+            "tone": "bloom",
+            "scene": "흩어진 기억을 품고, 여행을 시작한다.",
+            "music": "[TODO: 음악 한 줄]"
+          }
+        ],
         "listenLabel": "수채화 듣기"
       },
       "ctaLabel": "프로젝트 상담하기"
