@@ -2827,7 +2827,9 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-case-label, .tt-case-tale > span {display:block;margin-bottom:8px;font:700 12px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.12em;color:var(--accent,#0E6E7D)}
 .tt-case-tale {margin-top:18px;padding-top:16px;border-top:1px solid rgba(20,28,48,.1)}
 .tt-case-tale > p {margin:0;font-weight:700;font-size:var(--fs-m);line-height:1.65;color:var(--ink,#141C30)}
-.tt-case-arc-intro {margin:0 0 16px;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--ink,#141C30)}
+.tt-case-tale > p.tt-case-project {margin-bottom:8px;font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F)}
+.tt-case-why {margin:2px 0 10px;font-weight:800;font-size:var(--fs-xl);line-height:1.45;color:var(--ink,#141C30)}
+.tt-case-arc-intro {margin:0 0 16px;font-weight:500;font-size:var(--fs-m);line-height:1.7;color:var(--soft,#44505F)}
 /* four stages; each has a watercolour chip that moves from grey to bleeding colour, breaks into black and red, and blooms again */
 .tt-arc {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .tt-arc > li {position:relative;display:flex;flex-direction:column;gap:4px;padding:14px 14px 16px;border-radius:16px;background:rgba(255,255,255,.6);border:1px solid rgba(20,28,48,.08)}
@@ -2841,19 +2843,19 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-arc em {font-style:normal;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)}
 .tt-arc p {margin:4px 0 0;font-weight:600;font-size:var(--fs-s);line-height:1.6;color:var(--ink,#141C30)}
 .tt-arc small {margin-top:8px;padding-top:8px;border-top:1px dashed rgba(20,28,48,.14);font-weight:600;font-size:12.5px;line-height:1.5;color:var(--soft,#44505F)}
-/* the planning document as it was written: lyric lines beside their syllable rhythm, and the scene */
+/* the planning document as it was written: the scene, emotion and situation set for the section before any lyric,
+   and the syllable guide the lyricist wrote to */
 .tt-case-sheet {margin:0}
 .tt-case-sheet figcaption {display:flex;align-items:baseline;gap:10px}
 .tt-case-sheet figcaption > b {font:700 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.06em;padding:4px 9px;border-radius:999px;background:#141C30;color:#fff}
-.tt-sheet-page {display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:0;border-radius:12px;overflow:hidden;background:#fffdf8;border:1px solid rgba(20,28,48,.14);box-shadow:0 10px 26px rgba(8,22,38,.08)}
-.tt-sheet-cols {grid-column:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;padding:10px 16px;border-bottom:1px solid rgba(20,28,48,.1);background:rgba(14,110,125,.06)}
-.tt-sheet-cols > span, .tt-sheet-scene > span {font-weight:800;font-size:12px;letter-spacing:.06em;color:var(--accent,#0E6E7D)}
-.tt-sheet-lines {grid-column:1;list-style:none;margin:0;padding:10px 16px 14px;display:flex;flex-direction:column;gap:8px}
-.tt-sheet-lines > li {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:baseline}
-.tt-sheet-lines > li > span {font-weight:700;font-size:var(--fs-s);line-height:1.5;color:#141c30}
-.tt-sheet-lines > li > code {font:600 12.5px/1.5 ui-monospace,Consolas,monospace;letter-spacing:.08em;color:#5b6676;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-sheet-scene {grid-column:2;grid-row:1 / span 2;padding:10px 16px 14px;border-left:1px solid rgba(20,28,48,.1);background:rgba(233,162,59,.07)}
-.tt-sheet-scene > p {margin:8px 0 0;white-space:pre-line;font-weight:600;font-size:var(--fs-s);line-height:1.7;color:#141c30}
+.tt-sheet-page {display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);border-radius:12px;overflow:hidden;background:#fffdf8;border:1px solid rgba(20,28,48,.14);box-shadow:0 10px 26px rgba(8,22,38,.08)}
+.tt-sheet-scene, .tt-sheet-syll {padding:14px 18px 16px}
+.tt-sheet-scene > span, .tt-sheet-syll > span {font-weight:800;font-size:12px;letter-spacing:.06em;color:var(--accent,#0E6E7D)}
+.tt-sheet-scene > p {margin:10px 0 0;white-space:pre-line;font-weight:700;font-size:var(--fs-m);line-height:1.75;color:#141c30}
+.tt-sheet-syll {border-left:1px solid rgba(20,28,48,.1);background:rgba(14,110,125,.05)}
+.tt-sheet-syll > span {color:#5b6676}
+.tt-sheet-syll > ol {list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tt-sheet-syll code {font:600 12.5px/1.5 ui-monospace,Consolas,monospace;letter-spacing:.08em;color:#5b6676}
 .tt-sheet-note {margin:8px 0 0;font-weight:500;font-size:12px;color:var(--soft,#44505F)}
 .tt-case-music {display:flex;flex-direction:column;padding:16px 18px;border-radius:16px;background:rgba(233,162,59,.12);border:1px solid rgba(233,162,59,.4)}
 .tt-case-music .tt-case-label {color:#b8761a}
@@ -2874,8 +2876,5 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-arc {grid-template-columns:minmax(0,1fr)}
   .tt-arc > li + li::before {display:block;left:50%;top:-10px;margin-left:-4px;transform:rotate(135deg)}
   .tt-sheet-page {grid-template-columns:minmax(0,1fr)}
-  .tt-sheet-scene {grid-column:1;grid-row:auto;border-left:0;border-top:1px solid rgba(20,28,48,.1)}
-  .tt-sheet-cols, .tt-sheet-lines > li {grid-template-columns:minmax(0,1fr)}
-  .tt-sheet-cols > span:nth-child(2) {display:none}
-  .tt-sheet-lines > li {gap:2px}
+  .tt-sheet-syll {border-left:0;border-top:1px solid rgba(20,28,48,.1)}
 }

@@ -170,12 +170,7 @@ var ComponentContent = {
     // case with its record (the cover comes from the build: caseWork); the case is written for some languages only
     this.PROOF = this.PROJECTS_META.proof || {};
     var caseData = this.PROOF.case || {}, caseWork = cfg.caseWork && cfg.caseWork.slug === caseData.slug ? cfg.caseWork : {};
-    var sheet = caseData.sheet || {};
-    this.CASE = caseData.title ? Object.assign({}, caseData, {
-      thumb: caseWork.thumb || '', href: '/works/?work=' + caseData.slug,
-      // one scene of the planning document: each lyric line beside its syllable rhythm
-      sheet: Object.assign({}, sheet, { rows: (sheet.lyrics || []).map((lyric, i)=>({ lyric: lyric, rhythm: (sheet.rhythm || [])[i] || '' })) })
-    }) : {};
+    this.CASE = caseData.title ? Object.assign({}, caseData, { thumb: caseWork.thumb || '', href: '/works/?work=' + caseData.slug }) : {};
     // Blocks written only for some languages (the client voices, the inquiry form) are empty elsewhere
     var voicesData = cfg.voices || {};
     this.VOICES = this._localizedObject(voicesData, voicesData.translations);

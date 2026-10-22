@@ -937,11 +937,12 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
         <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
         <h3 class="tt-case-title">{{ CASE.title }}</h3>
         <p class="tt-case-meta">{{ CASE.meta }}</p>
-        <div class="tt-case-tale"><span>{{ CASE.tale.label }}</span><p>{{ CASE.tale.text }}</p></div>
+        <div class="tt-case-tale"><span>{{ CASE.tale.label }}</span><sc-if value="{{ CASE.tale.project }}"><p class="tt-case-project">{{ CASE.tale.project }}</p></sc-if><p>{{ CASE.tale.text }}</p></div>
       </div>
     </div>
     <div class="tt-case-arc">
       <span class="tt-case-label">{{ CASE.arc.label }}</span>
+      <sc-if value="{{ CASE.arc.why }}"><p class="tt-case-why">{{ CASE.arc.why }}</p></sc-if>
       <p class="tt-case-arc-intro">{{ CASE.arc.intro }}</p>
       <ol class="tt-arc">
         <sc-for list="{{ CASE.arc.stages }}" as="st" hint-placeholder-count="4"><li data-tone="{{ st.tone }}"><i class="tt-arc-chip" aria-hidden="true"></i><b>{{ st.section }}</b><em>{{ st.color }}</em><p>{{ st.scene }}</p><small>{{ st.music }}</small></li></sc-for>
@@ -951,9 +952,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <figure class="tt-case-sheet">
       <figcaption><span class="tt-case-label">{{ CASE.sheet.label }}</span><b>{{ CASE.sheet.section }}</b></figcaption>
       <div class="tt-sheet-page">
-        <div class="tt-sheet-cols"><span>{{ CASE.sheet.heads.0 }}</span><span>{{ CASE.sheet.heads.1 }}</span></div>
-        <ol class="tt-sheet-lines"><sc-for list="{{ CASE.sheet.rows }}" as="row" hint-placeholder-count="4"><li><span>{{ row.lyric }}</span><code>{{ row.rhythm }}</code></li></sc-for></ol>
-        <div class="tt-sheet-scene"><span>{{ CASE.sheet.heads.2 }}</span><p>{{ CASE.sheet.scene }}</p></div>
+        <div class="tt-sheet-scene"><span>{{ CASE.sheet.sceneLabel }}</span><p>{{ CASE.sheet.scene }}</p></div>
+        <div class="tt-sheet-syll"><span>{{ CASE.sheet.syllableLabel }}</span><ol><sc-for list="{{ CASE.sheet.syllables }}" as="line" hint-placeholder-count="4"><li><code>{{ line }}</code></li></sc-for></ol></div>
       </div>
       <p class="tt-sheet-note">{{ CASE.sheet.caption }}</p>
     </figure>
