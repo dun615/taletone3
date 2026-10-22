@@ -167,7 +167,7 @@ var ComponentContent = {
       ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
     }) : {};
     // HOW WE WORK: one comparison, reference-led against story-led (story, tone, music: the name itself), and one real
-    // case with its record (the cover comes from the build: caseWork)
+    // case with its record (the cover comes from the build: caseWork); the case is written for some languages only
     this.PROOF = this.PROJECTS_META.proof || {};
     var caseData = this.PROOF.case || {}, caseWork = cfg.caseWork && cfg.caseWork.slug === caseData.slug ? cfg.caseWork : {};
     this.CASE = caseData.title ? Object.assign({}, caseData, { thumb: caseWork.thumb || '', href: '/works/?work=' + caseData.slug }) : {};

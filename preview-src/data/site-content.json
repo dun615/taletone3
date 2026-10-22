@@ -726,34 +726,29 @@
           ],
           "closing": "TALETONE이라는 이름이 곧, 저희가 노래를 만드는 순서입니다.",
           "case": {
-            "slug": "love-dopamine",
-            "eyebrow": "CASE STORY",
-            "title": "해봄 「Love Dopamine」",
-            "meta": "HAEBOM · 3rd Single",
+            "slug": "watercolour",
+            "eyebrow": "CASE STORY · ORIGINAL IP",
+            "title": "soraniwa 「수채화 (Watercolour)」",
+            "meta": "soraniwa Project · 1st Single · 2024",
             "steps": [
               {
-                "label": "요청",
-                "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
-                "kind": "request"
+                "kind": "tale",
+                "label": "TALE · 이야기",
+                "text": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
               },
               {
-                "label": "강점",
-                "text": "뮤지컬을 전공하며 단련된 파워풀한 복식 발성",
-                "kind": "strength"
+                "kind": "tone",
+                "label": "TONE · 톤",
+                "text": "[TODO: 이 이야기를 위해 정한 소리의 결과 그 이유 (사운드·보컬·곡의 흐름)]"
               },
               {
-                "label": "우리가 던진 질문",
-                "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
-                "kind": "question"
-              },
-              {
-                "label": "답",
-                "text": "치어리딩. 고교 야구부 선배를 짝사랑해 치어리딩부를 만들고 응원하는 이야기",
-                "kind": "answer"
+                "kind": "music",
+                "label": "MUSIC · 음악",
+                "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
               }
             ],
-            "lesson": "강한 목소리는 더 이상 덜어 내야 할 점이 아니라, 이 곡이 존재할 이유가 되었습니다.",
-            "listenLabel": "Love Dopamine 듣기"
+            "lesson": "[TODO: 이 사례로 전하고 싶은 한 줄]",
+            "listenLabel": "수채화 듣기"
           },
           "ctaLabel": "프로젝트 상담하기"
         }
@@ -839,36 +834,6 @@
             }
           ],
           "closing": "Our name, TALETONE, is the order in which we make a song.",
-          "case": {
-            "slug": "love-dopamine",
-            "eyebrow": "CASE STORY",
-            "title": "HAEBOM “Love Dopamine”",
-            "meta": "HAEBOM · 3rd Single",
-            "steps": [
-              {
-                "label": "Request",
-                "text": "“I want to try a bright, pretty J-rock song.”",
-                "kind": "request"
-              },
-              {
-                "label": "Strength",
-                "text": "A powerful, diaphragm-driven voice trained in musical theatre",
-                "kind": "strength"
-              },
-              {
-                "label": "Our question",
-                "text": "What story turns a strong voice into a weapon?",
-                "kind": "question"
-              },
-              {
-                "label": "Answer",
-                "text": "Cheerleading. A girl with a crush on a senior on the high-school baseball team starts a cheer squad to root for him.",
-                "kind": "answer"
-              }
-            ],
-            "lesson": "Her strong voice stopped being something to hold back. It became the reason the song exists.",
-            "listenLabel": "Listen to Love Dopamine"
-          },
           "ctaLabel": "Talk to us about a project"
         }
       },
@@ -953,36 +918,6 @@
             }
           ],
           "closing": "TALETONEという名前そのものが、私たちが歌をつくる順番です。",
-          "case": {
-            "slug": "love-dopamine",
-            "eyebrow": "CASE STORY",
-            "title": "HAEBOM「Love Dopamine」",
-            "meta": "HAEBOM · 3rd Single",
-            "steps": [
-              {
-                "label": "ご要望",
-                "text": "「爽やかでかわいいJ-ROCKを歌ってみたい」",
-                "kind": "request"
-              },
-              {
-                "label": "強み",
-                "text": "ミュージカル専攻で鍛えた、パワフルな腹式発声",
-                "kind": "strength"
-              },
-              {
-                "label": "私たちの問い",
-                "text": "強い発声が武器になる物語とは？",
-                "kind": "question"
-              },
-              {
-                "label": "答え",
-                "text": "チアリーディング。高校野球部の先輩に片思いして、チアリーディング部をつくって応援する物語",
-                "kind": "answer"
-              }
-            ],
-            "lesson": "強い声は、もう抑えるべき点ではなく、この曲が存在する理由になりました。",
-            "listenLabel": "Love Dopamine を聴く"
-          },
           "ctaLabel": "プロジェクトのご相談"
         }
       }
@@ -1047,34 +982,29 @@
       ],
       "closing": "TALETONE이라는 이름이 곧, 저희가 노래를 만드는 순서입니다.",
       "case": {
-        "slug": "love-dopamine",
-        "eyebrow": "CASE STORY",
-        "title": "해봄 「Love Dopamine」",
-        "meta": "HAEBOM · 3rd Single",
+        "slug": "watercolour",
+        "eyebrow": "CASE STORY · ORIGINAL IP",
+        "title": "soraniwa 「수채화 (Watercolour)」",
+        "meta": "soraniwa Project · 1st Single · 2024",
         "steps": [
           {
-            "label": "요청",
-            "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
-            "kind": "request"
+            "kind": "tale",
+            "label": "TALE · 이야기",
+            "text": "잊힌 기억의 조각을 모아, 잃어버린 친구를 찾아가는 한 소녀의 이야기"
           },
           {
-            "label": "강점",
-            "text": "뮤지컬을 전공하며 단련된 파워풀한 복식 발성",
-            "kind": "strength"
+            "kind": "tone",
+            "label": "TONE · 톤",
+            "text": "[TODO: 이 이야기를 위해 정한 소리의 결과 그 이유 (사운드·보컬·곡의 흐름)]"
           },
           {
-            "label": "우리가 던진 질문",
-            "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
-            "kind": "question"
-          },
-          {
-            "label": "답",
-            "text": "치어리딩. 고교 야구부 선배를 짝사랑해 치어리딩부를 만들고 응원하는 이야기",
-            "kind": "answer"
+            "kind": "music",
+            "label": "MUSIC · 음악",
+            "text": "N4ML이 쓴 스토리보드에서 캐릭터와 일러스트, 애니메이션까지 이어진 뮤직비디오. 한국어와 일본어 두 버전으로 발매했습니다."
           }
         ],
-        "lesson": "강한 목소리는 더 이상 덜어 내야 할 점이 아니라, 이 곡이 존재할 이유가 되었습니다.",
-        "listenLabel": "Love Dopamine 듣기"
+        "lesson": "[TODO: 이 사례로 전하고 싶은 한 줄]",
+        "listenLabel": "수채화 듣기"
       },
       "ctaLabel": "프로젝트 상담하기"
     }
@@ -1248,59 +1178,59 @@
   "bridges": [
     {
       "id": "home-projects",
-      "eyebrow": "PROLOGUE · HOW WE DIVE",
-      "text": "이야기는 빛깔이 되고,\n그 빛깔은 음악으로 피어납니다.",
+      "eyebrow": "CHAPTER 1 · TALE",
+      "text": "수면 아래에는,\n이야기에 귀 기울이는 사람들이 있습니다.",
       "translations": {
         "kr": {
-          "eyebrow": "PROLOGUE · HOW WE DIVE",
-          "text": "이야기는 빛깔이 되고,\n그 빛깔은 음악으로 피어납니다.",
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "수면 아래에는,\n이야기에 귀 기울이는 사람들이 있습니다.",
           "mobileLines": [
             {
-              "text": "이야기는 빛깔이 되고,",
+              "text": "수면 아래에는,",
               "indent": 0
             },
             {
-              "text": "그 빛깔은",
+              "text": "이야기에 귀 기울이는",
               "indent": 0
             },
             {
-              "text": "음악으로 피어납니다.",
+              "text": "사람들이 있습니다.",
               "indent": 0
             }
           ]
         },
         "en": {
-          "eyebrow": "PROLOGUE · HOW WE DIVE",
-          "text": "A story becomes a color,\nand the color blooms into music.",
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "Below the surface,\nthere are people who listen to stories.",
           "mobileLines": [
             {
-              "text": "A story becomes a color,",
+              "text": "Below the surface,",
               "indent": 0
             },
             {
-              "text": "and the color",
+              "text": "there are people",
               "indent": 0
             },
             {
-              "text": "blooms into music.",
+              "text": "who listen to stories.",
               "indent": 0
             }
           ]
         },
         "jp": {
-          "eyebrow": "PROLOGUE · HOW WE DIVE",
-          "text": "物語は色になり、\nその色は音楽となって花開きます。",
+          "eyebrow": "CHAPTER 1 · TALE",
+          "text": "水面の下には、\n物語に耳を傾ける人たちがいます。",
           "mobileLines": [
             {
-              "text": "物語は色になり、",
+              "text": "水面の下には、",
               "indent": 0
             },
             {
-              "text": "その色は",
+              "text": "物語に耳を傾ける",
               "indent": 0
             },
             {
-              "text": "音楽となって花開きます。",
+              "text": "人たちがいます。",
               "indent": 0
             }
           ]
@@ -1308,15 +1238,15 @@
       },
       "mobileLines": [
         {
-          "text": "이야기는 빛깔이 되고,",
+          "text": "수면 아래에는,",
           "indent": 0
         },
         {
-          "text": "그 빛깔은",
+          "text": "이야기에 귀 기울이는",
           "indent": 0
         },
         {
-          "text": "음악으로 피어납니다.",
+          "text": "사람들이 있습니다.",
           "indent": 0
         }
       ]

@@ -930,7 +930,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   </div>
   <sc-if value="{{ PROOF.closing }}"><p class="tt-cmp-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
   <sc-if value="{{ CASE.title }}">
-  <article class="tt-case" data-reveal="">
+  <div class="tt-case" data-reveal="">
     <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true"></span></a>
     <div class="tt-case-body">
       <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
@@ -940,7 +940,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <p class="tt-case-lesson">{{ CASE.lesson }}</p>
       <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
     </div>
-  </article>
+  </div>
   </sc-if>
   <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
 </section>
