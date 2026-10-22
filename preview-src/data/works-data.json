@@ -1176,5 +1176,156 @@
       "src": "assets/bundle/61a4a056-186b-4263-b655-8d34e244e748.png",
       "alt": "Devmate"
     }
-  ]
+  ],
+  "loudness": {
+    "target": -14,
+    "ceiling": -1,
+    "files": {
+      "assets\\works\\audio\\Fix-Bubblesweet.mp3": {
+        "lufs": -6.4,
+        "peak": 0,
+        "gain": -7.6
+      },
+      "assets/works/audio/heart-score-mixed-by-n4ml-797bb778a3c9.mp3": {
+        "lufs": -7.2,
+        "peak": 0,
+        "gain": -6.8
+      },
+      "assets/works/audio/asset-mq81ynzj-nj4v3-AR-Master-MP3-320Kbps.mp3-457831b8463e.mp3": {
+        "lufs": -6.7,
+        "peak": -0.1,
+        "gain": -7.3
+      },
+      "assets/works/audio/asset-mq81ygf9-gsou9-_Love-Dopamine-Mastered-320K-.mp3-bd6f9b3eb40f.mp3": {
+        "lufs": -6.8,
+        "peak": -0.3,
+        "gain": -7.2
+      },
+      "assets/works/audio/asset-mq5zk93v-vu5l7-Love-Novel-AR-Master-MP3-320Kbps.mp3-edf40a3c3052.mp3": {
+        "lufs": -8,
+        "peak": 0,
+        "gain": -6
+      },
+      "assets/works/audio/asset-mq81xsz8-sddpk-Fallen-Leaves-AR-Master-MP3-320Kbps.mp3-4f6b5de501fb.mp3": {
+        "lufs": -8.4,
+        "peak": -0.3,
+        "gain": -5.6
+      },
+      "assets/works/audio/asset-mq81zrrk-ioubn-AR-mp3-320-.mp3-632ff56e7922.mp3": {
+        "lufs": -7.7,
+        "peak": -0.3,
+        "gain": -6.3
+      },
+      "assets/works/audio/asset-mq81zybf-4pbw9-The-Run-Catch.mp3-3a8ea14a4e49.mp3": {
+        "lufs": -10.3,
+        "peak": -0.5,
+        "gain": -3.7
+      },
+      "assets/works/audio/asset-mq820ahk-xmfq0-Floris-Waltz-AR-Master-MP3-320Kbps.mp3-4bace4847ca9.mp3": {
+        "lufs": -6.9,
+        "peak": -0.1,
+        "gain": -7.1
+      },
+      "assets/works/audio/asset-mq831c7o-xr7t-1.-August-AR-Master-MP3-320Kbps.mp3-00ff38b5763c.mp3": {
+        "lufs": -9.7,
+        "peak": -0.4,
+        "gain": -4.3
+      },
+      "assets/works/audio/asset-mq831hlf-77vl-2.-Early-Spring-AR-Master-MP3-320Kbps.mp3-5e53cab084f1.mp3": {
+        "lufs": -7.7,
+        "peak": -0.1,
+        "gain": -6.3
+      },
+      "assets/works/audio/asset-mq831lri-sgpr-3.-Balloon-AR-Master-MP3-320Kbps.mp3-468cb598921f.mp3": {
+        "lufs": -11.1,
+        "peak": -0.5,
+        "gain": -2.9
+      },
+      "assets/works/audio/asset-mq831qw9-n91b-4.-Lullaby-for-AR-Master-MP3-320Kbps.mp3-7cb4cbe81d8d.mp3": {
+        "lufs": -15.8,
+        "peak": -0.5,
+        "gain": -0.5
+      },
+      "assets/works/audio/asset-mq820mko-a7z2e-Pompous.mp3-cd03c3ed6d91.mp3": {
+        "lufs": -10.2,
+        "peak": -0.1,
+        "gain": -3.8
+      },
+      "assets/works/audio/asset-mq820qqw-gd2v5-Short-AR-Master-MP3-320Kbps.mp3-4421598762c0.mp3": {
+        "lufs": -4.5,
+        "peak": 0,
+        "gain": -9.5
+      },
+      "assets/works/audio/asset-mq820ymo-przok-RoA_Wrap-Up-MASTER-4416.mp3-d2e1d0ab6f8d.mp3": {
+        "lufs": -7.1,
+        "peak": -0.2,
+        "gain": -6.9
+      },
+      "assets/works/audio/asset-mq7kl9jh-5uvq4-3.-Cloudnine-AR-Master-MP3-320Kbps.mp3-5cb301829f7e.mp3": {
+        "lufs": -8.1,
+        "peak": -0.2,
+        "gain": -5.9
+      },
+      "assets/works/audio/asset-mq7kmpgo-130s-1.-Silverline-AR-Master-MP3-320Kbps.mp3-3ef1ed131b38.mp3": {
+        "lufs": -6.6,
+        "peak": -0.2,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq7kku33-pi6c-2.-RATATA-AR-Master-MP3-320Kbps.mp3-4737a1b7a54e.mp3": {
+        "lufs": -7.2,
+        "peak": -0.2,
+        "gain": -6.8
+      },
+      "assets/works/audio/asset-mq7klqup-ywxi-4.-The-Night-Over-Sky-AR-Master-MP3-320Kbps.mp3-b93274da633e.mp3": {
+        "lufs": -7.4,
+        "peak": -0.6,
+        "gain": -6.6
+      },
+      "assets\\works\\audio\\Master-Fix-My-Village-AR-MP3-320Kbps.mp3": {
+        "lufs": -6.6,
+        "peak": -0.1,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq821nh8-7hfun-KR-AR-Master-4824.mp3-7a50684d859a.mp3": {
+        "lufs": -6.6,
+        "peak": 0.2,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq83zj6q-sxn4-JP-AR-Master-4824.mp3-50c13ec12658.mp3": {
+        "lufs": -6.6,
+        "peak": 0,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq8224r7-3gctx-Back-Stage-AR-Master-MP3-320Kbps.mp3-ab607ce8004e.mp3": {
+        "lufs": -6,
+        "peak": -0.1,
+        "gain": -8
+      },
+      "assets/works/audio/asset-mq7ky3ls-nj7w-N4ML-KR-AR-Master-4824.mp3-f7b3919c6f5f.mp3": {
+        "lufs": -6.8,
+        "peak": 0.3,
+        "gain": -7.2
+      },
+      "assets/works/audio/asset-mq7kygdn-gdh7-N4ML-JP-AR-Master-4824.mp3-52075a11f99f.mp3": {
+        "lufs": -7,
+        "peak": 0.1,
+        "gain": -7
+      },
+      "assets/works/audio/asset-mq822cze-3ceem-N4ML-STAR-to-STAR-AR-Master-MP3-320Kbps.mp3-5f7abf7b5c30.mp3": {
+        "lufs": -7.1,
+        "peak": 0,
+        "gain": -6.9
+      },
+      "assets\\works\\audio\\Night-Sky.mp3": {
+        "lufs": -11.5,
+        "peak": 0,
+        "gain": -2.5
+      },
+      "assets/works/audio/asset-mq823oq8-9ne18-Sailing-StarS-Remastered-.mp3-10aadd13c352.mp3": {
+        "lufs": -7.7,
+        "peak": -0.3,
+        "gain": -6.3
+      }
+    }
+  }
 }

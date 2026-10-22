@@ -211,7 +211,7 @@
     language: 'KR',
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
-    volume: 0.5,      // linear amplitude: 0.5 = 20·log10(0.5) = -6.02 dB (the default)
+    volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false    // the reader has played something
   };
   var audio = null;
@@ -701,13 +701,23 @@
   // ---- playback: one audio element for a record; its language versions play together (below) ----
   // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
   // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
-  var gainCtx = null, gainNode = null, elementRouted = false;
+  var gainCtx = null, gainNode = null, trackNode = null, elementRouted = false;
+  // Every record plays at the same loudness: scripts/measure-loudness.mjs measures each file (BS.1770 integrated,
+  // target -14 LUFS) and writes the gain it needs into the works data (`loudness.files[path].gain`, dB). The file
+  // is left as it is; the gain is applied here, before the volume.
+  var loudness = {}, elementGain = 1;
+  function loudnessGain(path) {
+    var entry = path && loudness[path];
+    return entry && isFinite(entry.gain) ? Math.pow(10, entry.gain / 20) : 1;
+  }
   function volumeText(v) {
     return Math.round(v * 100) + '% (' + (v > 0 ? (20 * Math.log10(v)).toFixed(1) + ' dB' : '-∞ dB') + ')';
   }
   function applyVolume() {
     if (gainNode) gainNode.gain.value = state.volume;
-    if (audio && !elementRouted) audio.volume = state.volume;
+    if (trackNode) trackNode.gain.value = elementGain;
+    // without Web Audio the element's own volume carries both (it cannot go above 1)
+    if (audio && !elementRouted) audio.volume = Math.min(1, state.volume * elementGain);
   }
   // the audio clock and the master volume every source plays through
   function ensureCtx() {
@@ -718,14 +728,16 @@
       gainCtx = new AC();
       gainNode = gainCtx.createGain();
       gainNode.connect(gainCtx.destination);
-    } catch (_e) { gainCtx = null; gainNode = null; }
+      trackNode = gainCtx.createGain();
+      trackNode.connect(gainNode);
+    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; }
     applyVolume();
     return gainCtx;
   }
   function ensureGain() {
     if (elementRouted || !audio || !ensureCtx()) return;
     try {
-      gainCtx.createMediaElementSource(audio).connect(gainNode);
+      gainCtx.createMediaElementSource(audio).connect(trackNode);
       audio.volume = 1;
       elementRouted = true;
     } catch (_e) {}
@@ -743,7 +755,7 @@
   var layerToken = 0, layerLoading = false, layerFailed = {};
   function layeredEntries() {
     var work = works[state.current]; if (!work) return [];
-    var list = variantsFor(work, state.track).map(function (version, i) { return { language: languageLabel(version, i), url: audioUrl(version.audio) }; })
+    var list = variantsFor(work, state.track).map(function (version, i) { return { language: languageLabel(version, i), url: audioUrl(version.audio), level: loudnessGain(version.audio) }; })
       .filter(function (entry) { return entry.url; });
     return list.length > 1 ? list : [];
   }
@@ -777,7 +789,7 @@
       var g = layer.sources[lang].gain.gain;
       g.cancelScheduledValues(now);
       g.setValueAtTime(g.value, now);
-      g.linearRampToValueAtTime(lang === state.language ? 1 : 0, now + 0.015);
+      g.linearRampToValueAtTime(lang === state.language ? layer.sources[lang].level : 0, now + 0.015);
     });
   }
   // Plays the current record's language versions together. Returns false when it has none to layer (or
@@ -800,11 +812,11 @@
       entries.forEach(function (entry, i) {
         var source = gainCtx.createBufferSource(), gain = gainCtx.createGain();
         source.buffer = buffers[i];
-        gain.gain.value = entry.language === state.language ? 1 : 0;
+        gain.gain.value = entry.language === state.language ? entry.level : 0;
         source.connect(gain);
         gain.connect(gainNode);
         source.start(when, offset);
-        sources[entry.language] = { source: source, gain: gain };
+        sources[entry.language] = { source: source, gain: gain, level: entry.level };
       });
       layer = { key: key, sources: sources, startedAt: when, offset: offset, duration: duration };
       // the end of the shortest version ends the record
@@ -849,6 +861,8 @@
     var unit = playableUnit(work, state.track, state.language);
     var src = audioUrl(unit.audio);
     var el = ensureAudioEl();
+    elementGain = loudnessGain(unit.audio);
+    applyVolume();
     var time = keepTime ? el.currentTime : 0;
     if (src && el.getAttribute('src') !== src) {
       el.setAttribute('src', src);
@@ -1115,6 +1129,7 @@
     bindWorksInteractions();
     works = json.works || [];
     logos = json.clientLogos || [];
+    loudness = (json.loudness && json.loudness.files) || {};
     if (works.length) { state.current = 0; state.track = titleTrackIndex(works[0]); state.language = defaultLanguage(works[0], state.track); }
     // a link opened in a new tab (/works/?work=<slug>) selects that record; it plays if the browser allows
     var asked = pendingSlug || new URLSearchParams(location.search).get('work') || '';
@@ -1127,6 +1142,7 @@
     stopAll();
     works = json.works || [];
     logos = json.clientLogos || [];
+    loudness = (json.loudness && json.loudness.files) || {};
     state.modal = -1;
     render();
   }
