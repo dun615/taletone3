@@ -327,7 +327,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* R7: partners, named */
 #content#content .tt-network-summary{display:flex;align-items:center;gap:20px;min-height:64px}
 #content#content .tt-network-title{font-size:var(--fs-l);white-space:nowrap}
-.tt-network-people{flex:1 1 auto;display:flex;flex-wrap:wrap;gap:10px 18px;min-width:0}
+.tt-network-people{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 18px;min-width:0}
 .tt-network-person{display:inline-flex;align-items:center;gap:10px;text-align:left}
 .tt-network-person img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
 .tt-network-person strong{display:block;font-size:var(--fs-s);line-height:1.2}
@@ -335,7 +335,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* a partner without a page: a plain card, no arrow */
 .tt-network-card[data-link="off"]{cursor:default}.tt-network-card[data-link="off"]::after{visibility:hidden}.tt-network-card[data-link="off"]:hover{transform:none;border-color:rgba(20,28,48,.12);background:rgba(255,255,255,.82)}
 /* phones: the title and arrow on one line, the partners on the next */
-@media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%}}
+@media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}}
 #content#content .tt-network-arrow{font-size:var(--fs-l)}
 /* R8: news cards hold their edge on dark water; thumbnails share one tone */
 #content#content #c-news .lift{border:1px solid rgba(232,246,250,.14)!important;position:relative}
