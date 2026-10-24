@@ -332,6 +332,10 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 .tt-network-person img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
 .tt-network-person strong{display:block;font-size:var(--fs-s);line-height:1.2}
 .tt-network-person small{display:block;font-size:var(--fs-xs);line-height:1.3;opacity:.7}
+/* a partner without a page: a plain card, no arrow */
+.tt-network-card[data-link="off"]{cursor:default}.tt-network-card[data-link="off"]::after{visibility:hidden}.tt-network-card[data-link="off"]:hover{transform:none;border-color:rgba(20,28,48,.12);background:rgba(255,255,255,.82)}
+/* phones: the title and arrow on one line, the partners on the next */
+@media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%}}
 #content#content .tt-network-arrow{font-size:var(--fs-l)}
 /* R8: news cards hold their edge on dark water; thumbnails share one tone */
 #content#content #c-news .lift{border:1px solid rgba(232,246,250,.14)!important;position:relative}
@@ -888,7 +892,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
         <div class="tt-network-scroll">
           <div class="tt-network-grid">
             <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1">
-              <a class="tt-network-card" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
+              <a class="tt-network-card" data-link="{{ p.linkState }}" tabindex="{{ p.tabIndex }}" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
                 <image-slot id="{{ 'partner-' + p.id }}" class="tt-network-card-image" style="filter:brightness({{ p.brightness }}%) saturate({{ p.saturation }}%) contrast({{ p.lightness }}%)" shape="rounded" radius="8" placeholder="{{ UI_LABELS.photoPlaceholder }}" src="{{ p.image }}"></image-slot>
                 <span class="tt-network-card-shade"></span>
                 <span class="tt-network-card-copy"><span class="tt-network-card-role">{{ p.role }}</span><strong class="tt-network-card-name">{{ p.name }}</strong></span>

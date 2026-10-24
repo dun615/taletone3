@@ -270,7 +270,7 @@ var ComponentContent = {
 
   togglePartner(){var open=!this.state.partnerOpen;document.body.classList.toggle('tt-network-open',open);this.setState({partnerOpen:open});},
 
-  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'',role:'',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||''});},
+  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'',role:'',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||'',linkState:src.link?'on':'off',tabIndex:src.link?0:-1});},
 
   _normalizePartners(){this.PARTNERS=(this.PARTNERS||[]).map((p,i)=>this._normalizePartner(p,i));},
 
