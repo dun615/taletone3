@@ -1434,7 +1434,8 @@
         "closeLabel": "닫기",
         "yearLabel": "발매일",
         "typeLabel": "형태",
-        "releaseLabel": "발매 정보"
+        "releaseLabel": "발매 정보",
+        "historyLabel": "연혁으로 보기"
       },
       "en": {
         "eyebrow": "CHAPTER 3 · MUSIC",
@@ -1446,7 +1447,8 @@
         "closeLabel": "Close",
         "yearLabel": "Released",
         "typeLabel": "Format",
-        "releaseLabel": "Release"
+        "releaseLabel": "Release",
+        "historyLabel": "View full history"
       },
       "jp": {
         "eyebrow": "CHAPTER 3 · MUSIC",
@@ -1458,9 +1460,11 @@
         "closeLabel": "閉じる",
         "yearLabel": "リリース日",
         "typeLabel": "形態",
-        "releaseLabel": "リリース情報"
+        "releaseLabel": "リリース情報",
+        "historyLabel": "経歴を見る"
       }
-    }
+    },
+    "historyLabel": "연혁으로 보기"
   },
   "newsMeta": {
     "eyebrow": "UPDATES / NOTES",

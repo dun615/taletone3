@@ -223,6 +223,8 @@ class Component extends DCLogic {
 
     this._escapeHandler=(e)=>{ if(e.key==='Escape') this.closeAll(); };
     window.addEventListener('keydown', this._escapeHandler);
+    this._historyHandler=()=>{ if((this.MEMBERS||[]).length) this.openMember(0); };
+    window.addEventListener('TALETONE_OPEN_HISTORY', this._historyHandler);
     this._lastInkSpawn = 0;
     this._spawnInkFromEvent = (e)=>{
       var point = e && ((e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]) || e);
@@ -334,6 +336,7 @@ class Component extends DCLogic {
     }
     window.removeEventListener('message', this._siteDataListener);
     if(this._escapeHandler) window.removeEventListener('keydown',this._escapeHandler);
+    if(this._historyHandler) window.removeEventListener('TALETONE_OPEN_HISTORY',this._historyHandler);
     if(this._spawnInkFromEvent){
       var inkEvents = this._inkEvents && this._inkEvents.length ? this._inkEvents : ['pointerdown','touchstart','click'];
       for(var ie=0; ie<inkEvents.length; ie++) window.removeEventListener(inkEvents[ie], this._spawnInkFromEvent);

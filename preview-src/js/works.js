@@ -528,6 +528,7 @@
       '<div class="tt-section-chapter">' + preserve(music.label || meta.eyebrow) + '</div>' +
       (music.note ? '<div class="tt-section-note">' + esc(music.note) + '</div>' : '') +
       '<h2 class="tt-shelf-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' +
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') +
     '</header>';
   }
 
@@ -1045,6 +1046,8 @@
     var section = document.getElementById('c-works');
     if (!button || !section || !section.contains(button)) return;
     var action = button.getAttribute('data-works-action');
+    // the full career history lives in the profile sheet the app renders
+    if (action === 'history') { window.dispatchEvent(new CustomEvent('TALETONE_OPEN_HISTORY')); return; }
     if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
