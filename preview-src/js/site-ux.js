@@ -76,7 +76,6 @@
       projects: 'c-projects',
       members: 'c-members',
       works: 'c-works',
-      news: 'c-news',
       contact: 'c-contact'
     }[chapter] || 'c-home';
   }
@@ -583,8 +582,8 @@
       '<button type="button" class="tt-dock-chapter" aria-haspopup="menu" aria-controls="tt-mobile-chapter-menu"><span class="tt-dock-num"></span><span class="tt-dock-name"></span><i aria-hidden="true"></i></button>' +
       '<button type="button" class="tt-dock-cta"></button>';
     document.body.appendChild(dock);
-    var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', news: 'nav-5', contact: 'nav-6' };
-    var order = ['home', 'members', 'projects', 'works', 'news', 'contact'];
+    var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', contact: 'nav-6' };
+    var order = ['home', 'members', 'projects', 'works', 'contact'];
     var sync = function () {
       var chapter = document.body.getAttribute('data-active-chapter') || 'home';
       var nav = document.getElementById(names[chapter] || 'nav-0');

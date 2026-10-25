@@ -48,7 +48,7 @@ var ComponentScene = {
       var el=this.motionEls[i], rect=el.getBoundingClientRect();
       el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};
     }
-    this.sections=['c-home','c-members','c-projects','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+    this.sections=['c-home','c-members','c-projects','c-works','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
     this._railCenters=[];
     for(var si=0;si<this.sections.length;si++){
       var section=this.sections[si];
@@ -82,7 +82,7 @@ var ComponentScene = {
   // The descent to the next layer happens between a chapter's bridge and the next chapter,
   // so the sea visibly gets deeper at each handoff instead of drifting with page length.
   _buildDepthKeys(layoutHeight){
-    var layers=[['c-home',0.2,0],['c-members',0.34,200],['c-projects',0.45,600],['c-works',0.6,1200],['c-news',0.7,2000],['c-contact',0.84,3200]];
+    var layers=[['c-home',0.2,0],['c-members',0.34,200],['c-projects',0.45,600],['c-works',0.6,1200],['c-contact',0.84,3200]];
     var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
     for(var i=0;i<layers.length;i++){
       var el=document.getElementById(layers[i][0]); if(!el) continue;
