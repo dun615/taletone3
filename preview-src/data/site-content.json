@@ -2,8 +2,8 @@
   "version": "public-site-pass-20260709",
   "members": [
     {
-      "name": "N4ML",
-      "brand": "N4ML",
+      "name": "TALETONE",
+      "brand": "TALETONE",
       "role": "Executive Producer",
       "accent": "#a8caff",
       "dotAccent": "#a8caff",
@@ -22,8 +22,8 @@
       "iglink": "https://www.instagram.com/n4ml02/",
       "translations": {
         "kr": {
-          "name": "N4ML",
-          "brand": "N4ML",
+          "name": "TALETONE",
+          "brand": "TALETONE",
           "role": "Executive Producer",
           "tagline": "들은 이야기를 한 올씩 엮어, 노래로 짜 냅니다.",
           "education": "서울예술대학교 실용음악과 전자음악전공 졸업\n세종예술고등학교 실용음악과 작곡전공 졸업",
@@ -39,11 +39,12 @@
             "EPIC SEVEN <Always with you> 음악 프로듀싱, 작곡, 편곡, 믹싱",
             "STELLIVE 'Universe' 2nd Single <마음악보> 작곡, 편곡",
             "젠레스 존 제로 <여름을 그리다>, 해봄 <러브도파민> 등 외 상업 발매 60곡 이상"
-          ]
+          ],
+          "aka": "aka N4ML"
         },
         "en": {
-          "name": "N4ML",
-          "brand": "N4ML",
+          "name": "TALETONE",
+          "brand": "TALETONE",
           "role": "Executive Producer",
           "tagline": "Weaves the stories we hear, thread by thread, into song.",
           "education": "Seoul Institute of the Arts\nElectronic Music · Graduated\n\nSejong Arts High School\nComposition · Graduated",
@@ -59,11 +60,12 @@
             "EPIC SEVEN <Always with you> — Music Producer, Composer, Arranger, Mixing Engineer",
             "STELLIVE 'Universe' 2nd Single <Heart Score> — Composer, Arranger",
             "Over 60 commercially released tracks, including Zenless Zone Zero <Drawing Summer> and HAEBOM <Love Dopamine>"
-          ]
+          ],
+          "aka": "aka N4ML"
         },
         "jp": {
-          "name": "N4ML",
-          "brand": "N4ML",
+          "name": "TALETONE",
+          "brand": "TALETONE",
           "role": "Executive Producer",
           "tagline": "聴いた物語を一本ずつ紡いで、歌に織り上げます。",
           "education": "ソウル芸術大学\n電子音楽専攻 卒業\n\n世宗芸術高等学校\n作曲専攻 卒業",
@@ -79,44 +81,16 @@
             "EPIC SEVEN <Always with you> — 音楽プロデュース、作曲、編曲、ミキシング",
             "STELLIVE『Universe』2nd Single <Heart Score> — 作曲、編曲",
             "ゼンレスゾーンゼロ <Drawing Summer>、HAEBOM <Love Dopamine> ほか、商業リリース楽曲 60曲以上"
-          ]
+          ],
+          "aka": "aka N4ML"
         }
       },
       "featuredCredits": [
         "EPIC SEVEN <Always with you> 음악 프로듀싱, 작곡, 편곡, 믹싱",
         "STELLIVE 'Universe' 2nd Single <마음악보> 작곡, 편곡",
         "젠레스 존 제로 <여름을 그리다>, 해봄 <러브도파민> 등 외 상업 발매 60곡 이상"
-      ]
-    },
-    {
-      "name": "고유사",
-      "brand": "고유사",
-      "role": "Creative Director",
-      "accent": "#6fe9f8",
-      "dotAccent": "#6fe9f8",
-      "photo": "assets/members/member-cd-04.svg",
-      "animal": "fox",
-      "tagline": "첫 장면부터 마지막 여운까지, 이야기의 결을 하나로 엮습니다.",
-      "noDetail": true,
-      "traits": [],
-      "mbti": "",
-      "iglink": "",
-      "education": "",
-      "creditsText": "",
-      "translations": {
-        "en": {
-          "name": "GOYUSA",
-          "brand": "GOYUSA",
-          "role": "Creative Director",
-          "tagline": "From the first scene to the last echo, one thread for the whole story."
-        },
-        "jp": {
-          "name": "GOYUSA",
-          "brand": "GOYUSA",
-          "role": "Creative Director",
-          "tagline": "最初の場面から最後の余韻まで、物語の糸をひとつに束ねます。"
-        }
-      }
+      ],
+      "aka": "aka N4ML"
     }
   ],
   "news": [
@@ -345,6 +319,31 @@
         "jp": {
           "name": "MIEE",
           "role": "Art Director"
+        }
+      }
+    },
+    {
+      "id": "goyusa",
+      "name": "고유사",
+      "role": "Creative Director",
+      "image": "assets/members/member-cd-04.svg",
+      "link": "",
+      "brightness": 100,
+      "saturation": 100,
+      "lightness": 100,
+      "textColor": "#ffffff",
+      "translations": {
+        "kr": {
+          "name": "고유사",
+          "role": "Creative Director"
+        },
+        "en": {
+          "name": "GOYUSA",
+          "role": "Creative Director"
+        },
+        "jp": {
+          "name": "GOYUSA",
+          "role": "Creative Director"
         }
       }
     }
@@ -590,7 +589,7 @@
               ]
             }
           ],
-          "closing": "TALETONE이라는 이름이 곧, 저희가 노래를 만드는 순서입니다.",
+          "closing": "TALETONE이라는 이름이 곧, 노래가 만들어지는 순서입니다.",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "CASE STORY",
@@ -608,7 +607,7 @@
                 "kind": "strength"
               },
               {
-                "label": "우리가 던진 질문",
+                "label": "TALETONE의 질문",
                 "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
                 "kind": "question"
               },
@@ -628,7 +627,7 @@
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "HOW WE",
         "titleAccent": " WORK",
-        "subtitle": "We start from the story, not a reference.",
+        "subtitle": "TALETONE starts from the story, not a reference.",
         "description": "",
         "cards": [
           {
@@ -704,8 +703,8 @@
               ]
             }
           ],
-          "closing": "Our name, TALETONE, is the order in which we make a song.",
-          "ctaLabel": "Talk to us about a project",
+          "closing": "The name TALETONE is the order in which a song is made.",
+          "ctaLabel": "Start a project with TALETONE",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "CASE STORY",
@@ -723,7 +722,7 @@
                 "kind": "strength"
               },
               {
-                "label": "Our question",
+                "label": "TALETONE's question",
                 "text": "What story turns a strong voice into a weapon?",
                 "kind": "question"
               },
@@ -818,7 +817,7 @@
               ]
             }
           ],
-          "closing": "TALETONEという名前そのものが、私たちが歌をつくる順番です。",
+          "closing": "TALETONEという名前そのものが、歌が生まれる順番です。",
           "ctaLabel": "プロジェクトのご相談",
           "case": {
             "slug": "love-dopamine",
@@ -837,7 +836,7 @@
                 "kind": "strength"
               },
               {
-                "label": "私たちの問い",
+                "label": "TALETONEの問い",
                 "text": "強い発声が武器になる物語とは？",
                 "kind": "question"
               },
@@ -911,7 +910,7 @@
           ]
         }
       ],
-      "closing": "TALETONE이라는 이름이 곧, 저희가 노래를 만드는 순서입니다.",
+      "closing": "TALETONE이라는 이름이 곧, 노래가 만들어지는 순서입니다.",
       "case": {
         "slug": "love-dopamine",
         "eyebrow": "CASE STORY",
@@ -929,7 +928,7 @@
             "kind": "strength"
           },
           {
-            "label": "우리가 던진 질문",
+            "label": "TALETONE의 질문",
             "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
             "kind": "question"
           },
@@ -1086,7 +1085,7 @@
         "description": "",
         "titleAccent": "US",
         "typesLabel": "이런 이야기에 노래를 짓습니다",
-        "teamLabel": "만드는 사람들"
+        "teamLabel": "만드는 사람"
       },
       "en": {
         "eyebrow": "The Storytellers",
@@ -1094,8 +1093,8 @@
         "subtitle": "A subculture music production that reads the story first, then writes the song.",
         "description": "",
         "titleAccent": "US",
-        "typesLabel": "Stories we write songs for",
-        "teamLabel": "The people"
+        "typesLabel": "Stories TALETONE writes songs for",
+        "teamLabel": "The maker"
       },
       "jp": {
         "eyebrow": "The Storytellers",
@@ -1104,12 +1103,12 @@
         "description": "",
         "titleAccent": "US",
         "typesLabel": "こんな物語に歌をつくります",
-        "teamLabel": "つくる人たち"
+        "teamLabel": "つくる人"
       }
     },
     "titleAccent": "US",
     "typesLabel": "이런 이야기에 노래를 짓습니다",
-    "teamLabel": "만드는 사람들"
+    "teamLabel": "만드는 사람"
   },
   "bridges": [
     {
@@ -1831,7 +1830,7 @@
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",
-          "note": "How we give stories their color"
+          "note": "How a story gets its color"
         },
         "music": {
           "label": "CHAPTER 3 · MUSIC",
