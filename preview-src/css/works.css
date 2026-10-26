@@ -2880,3 +2880,23 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=strength]::before, .tt-case-steps > li[data-kind=question]::before {left:50%;top:-17px;transform:translateX(-50%)}
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
+
+/* Albums as folders in the rack: a stacked sleeve with a "tracks" toggle; open, its tracks follow it as numbered sleeves */
+.tt-rack-item.is-album .tt-sleeve {box-shadow:6px -6px 0 -1px rgba(141,236,252,.28),12px -12px 0 -2px rgba(141,236,252,.13)}
+.tt-rack-item.is-album.is-current .tt-sleeve {box-shadow:0 0 0 2px #8decfc,6px -6px 0 -1px rgba(141,236,252,.28),12px -12px 0 -2px rgba(141,236,252,.13)}
+.tt-rack-folder {display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 11px;border:1px solid rgba(141,236,252,.55);border-radius:999px;
+  background:rgba(4,37,44,.45);color:#8decfc;font:800 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.06em;cursor:pointer;transition:background-color .2s ease}
+.tt-rack-folder span::before {content:'';display:inline-block;width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .25s ease}
+.tt-rack-folder.is-open {background:#8decfc;color:#05303a}
+.tt-rack-folder.is-open span::before {transform:translateY(1px) rotate(-135deg)}
+.tt-rack-folder:hover,.tt-rack-folder:focus-visible {background:rgba(141,236,252,.22)}
+.tt-rack-folder.is-open:hover,.tt-rack-folder.is-open:focus-visible {background:#b6f3fd}
+.tt-rack-trackno {position:absolute;left:6px;top:6px;z-index:2;padding:4px 7px;border-radius:999px;background:rgba(5,30,38,.82);color:#8decfc;
+  font:800 10.5px/1 'Quicksand',sans-serif;letter-spacing:.06em;pointer-events:none}
+.tt-rack-item.is-child .tt-sleeve {outline:1px dashed rgba(141,236,252,.55);outline-offset:4px}
+.tt-rack-item.is-child .tt-rack-artist {color:#8decfc}
+@media (max-width:760px){
+  html body .tt-m-card .tt-rack-folder {margin:6px 0 0;padding:5px 10px;font-size:11px}
+  html body .tt-m-card.is-child .tt-m-card-art {outline:1px dashed rgba(141,236,252,.6);outline-offset:3px}
+  html body .tt-m-card .tt-rack-trackno {left:8px;top:8px}
+}
