@@ -35,8 +35,9 @@ const pages = [
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
     // The record rack shows two-plus rows of small 320px thumbnails (about 18 KB each) and preloads the next rows
-    // as the rack scrolls: measured 37 requests but only ~1 MB cold, well under the byte budget.
-    maxFirstPartyRequests: 42, maxGoogleFontRequests: 30,
+    // as the rack scrolls: measured 37 requests but only ~1 MB cold, well under the byte budget. Phones stack the
+    // album shelves (each with a small plate cover and its first sleeves), measured 45.
+    maxFirstPartyRequests: 50, maxGoogleFontRequests: 30,
     maxTransferBytes: 2_800_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
   },
@@ -595,18 +596,20 @@ async function runInteractionSmoke(chrome, origin) {
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: turntable play button did not pause');
     passed.push('works-pause');
 
-    await clickSelector(client, '[data-works-action="filter"][data-filter="ost"]');
+    // the rack lists songs by what N4ML did on them; album shelves carry a name plate (also a [data-works-book])
+    const rackState = `(() => ({ songs: document.querySelectorAll('.tt-rack-item').length, plates: document.querySelectorAll('.tt-shelf-unit.is-album').length }))()`;
+    await clickSelector(client, '[data-works-action="filter"][data-filter="produce"]');
     await sleep(700);
-    const osts = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(osts === 9, `interaction: OST filter expected 9 sleeves, found ${osts}`);
-    await clickSelector(client, '[data-works-action="filter"][data-filter="original"]');
+    const produced = await evaluate(client, rackState);
+    assert(produced.songs === 42 && produced.plates === 3, `interaction: Producing filter expected 42 songs on 3 album shelves, found ${JSON.stringify(produced)}`);
+    await clickSelector(client, '[data-works-action="filter"][data-filter="arrange"]');
     await sleep(700);
-    const originals = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(originals === 7, `interaction: Original filter expected 7 sleeves, found ${originals}`);
+    const arranged = await evaluate(client, rackState);
+    assert(arranged.songs === 54, `interaction: Arranging filter expected 54 songs, found ${JSON.stringify(arranged)}`);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
-    const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(all === 35, `interaction: whole rack expected 35 sleeves, found ${all}`);
+    const all = await evaluate(client, rackState);
+    assert(all.songs === 58 && all.plates === 6, `interaction: whole rack expected 58 songs on 6 album shelves, found ${JSON.stringify(all)}`);
     passed.push('works-filter-shelf');
 
     // leaving the WORKS chapter stops the music

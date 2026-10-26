@@ -37,7 +37,12 @@
           "type": "DOLONGCHA 2nd Single",
           "description": "真夏の陽射しの下、泡のように弾ける甘いときめきを、ひんやりとした一杯に閉じ込めた物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-soraniwa",
@@ -76,7 +81,11 @@
           "type": "STELLIVE『Universe』2nd Single",
           "description": "それぞれ異なる色を持つ4人の少女が一つのバンドとなり、自分たちだけの物語を紡いでいく物語。"
         }
-      }
+      },
+      "roles": [
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-run-galaxy",
@@ -115,7 +124,12 @@
           "type": "ゼンレスゾーンゼロ HoYoFair Album \"Random Play\" Anniversary",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-taletones",
@@ -154,7 +168,12 @@
           "type": "『Arune』1st Single",
           "description": "悲しみと恋しさを越え、もう一度愛を始める二人の物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-stellive",
@@ -193,7 +212,12 @@
           "type": "V-llage『Kurogami Sasha』1st Single",
           "description": "「あの頃の自分」を終わらせるため、ロシアンルーレットを始めた一人の少女の物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-zzz",
@@ -203,7 +227,7 @@
       "date": "2025.09.10",
       "type": "ANIMATION '강치 아일랜드' 1st OP (Prod by 장준호)",
       "description": "강치 아일랜드에서 꿈과 우정을 키워가는 친구들의 이야기",
-      "credits": "Vocals: SEION\nComposed by: SEION, Jang Junho\nLyrics by: SEION\nArranged by: N4ML",
+      "credits": "Vocals: SEION\nComposed by: SEION, Jang Junho\nLyrics by: SEION\nArranged by: N4ML\nVocal Tune / Mixing / Mastering by: N4ML",
       "image": "assets/works/images/asset-mq637x6b-suft-20752505.jpg-42f728166a48.webp",
       "thumb": "assets/works/images/asset-mq637x6b-suft-20752505.jpg-42f728166a48-w320.webp",
       "ogImage": "assets/works/images/asset-mq637x6b-suft-20752505.jpg-42f728166a48-og.jpg",
@@ -232,7 +256,10 @@
           "type": "アニメーション『Gangchi Island』1st OP（Produced by Jang Junho）",
           "description": "Gangchi Islandで夢と友情を育んでいく仲間たちの物語。"
         }
-      }
+      },
+      "roles": [
+        "arrange"
+      ]
     },
     {
       "id": "work-parable",
@@ -271,7 +298,12 @@
           "type": "HAEBOM 3rd Single",
           "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すHAEBOMの物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-bubble-sweet",
@@ -310,7 +342,12 @@
           "type": "DOLONGCHA 1st Single",
           "description": "好きな人に向かって、迷わず駆け出す一人の少女（？）の物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-ocd",
@@ -349,7 +386,12 @@
           "type": "V-llage『Floweress Loe』1st Single",
           "description": "ふたりだけの物語を綴っていく、小さな花の妖精のお話。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-mq82acph-nd1j",
@@ -395,7 +437,10 @@
             "jp": {
               "description": "終わりを目前にした季節の中で恋に出会い、恋しさと恨みの間に残された一人の物語です。"
             }
-          }
+          },
+          "roles": [
+            "arrange"
+          ]
         },
         {
           "id": "work-mq82acck-jkn2",
@@ -421,7 +466,10 @@
             "jp": {
               "description": "春が訪れても心はまだ冬にいて、去っていった恋を憎み、恋しがる物語です。"
             }
-          }
+          },
+          "roles": [
+            "arrange"
+          ]
         },
         {
           "id": "work-mq82ad65-wqtc",
@@ -447,7 +495,10 @@
             "jp": {
               "description": "すべての冒険が終わった後の午後、何気ない風景の中に静かに残る心の物語です。"
             }
-          }
+          },
+          "roles": [
+            "arrange"
+          ]
         },
         {
           "id": "work-mq82adqb-nkqh",
@@ -473,7 +524,8 @@
             "jp": {
               "description": "眠れない悲しみの夜に、残された心を静かに抱きしめる物語です。"
             }
-          }
+          },
+          "roles": []
         }
       ],
       "kind": "album",
@@ -532,7 +584,12 @@
           "type": "V-LUP『Beldir』1st Single",
           "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-watercolor",
@@ -571,7 +628,12 @@
           "type": "MAIMATSU 3rd Single",
           "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-client-a",
@@ -610,7 +672,12 @@
           "type": "RoA 4th Single",
           "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-client-b",
@@ -658,7 +725,12 @@
               "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。",
               "title": "SilverLine"
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-game-cue-01",
@@ -686,7 +758,12 @@
               "description": "異なる音楽を愛する二人の少女が、一緒にバンドを始める物語です。",
               "title": "RATATA"
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-game-cue-02",
@@ -714,7 +791,12 @@
               "description": "それぞれの悩みを抱えてアイドル部に集まった少女たちの、変化と成長の物語です。",
               "title": "Cloudnine"
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-vtuber-theme",
@@ -742,7 +824,10 @@
               "description": "音楽を通じてつながった二人の少女が、ともに夢を描いていく物語です。",
               "title": "Over the Night Sky"
             }
-          }
+          },
+          "roles": [
+            "produce"
+          ]
         }
       ],
       "kind": "album",
@@ -801,7 +886,12 @@
           "type": "ゲーム『Welcome to V-llage!』主題歌",
           "description": "V-llageという小さな村に集まったみんなで作っていく、あたたかな物語。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-mix-archive-01",
@@ -897,7 +987,11 @@
           "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
           "title": "Kanism☆Holic"
         }
-      }
+      },
+      "roles": [
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-master-archive",
@@ -936,7 +1030,12 @@
           "type": "Mafhills 1st Single",
           "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-mix-archive-02",
@@ -1033,7 +1132,12 @@
           "type": "soraniwa Project 1st Single",
           "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-arrange-work",
@@ -1073,7 +1177,12 @@
           "type": "崩壊：スターレイル『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
           "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-selected-demo",
@@ -1112,7 +1221,12 @@
           "type": "Bed Taker 1st Single",
           "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-archive-21",
@@ -1152,7 +1266,12 @@
           "type": "歌い手8人合唱プロジェクト",
           "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-project-connect-season-1-12",
@@ -1199,7 +1318,12 @@
               "title": "Intro (Teaser)",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-2",
@@ -1227,7 +1351,12 @@
               "title": "CONNECT, to World!",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-3",
@@ -1255,7 +1384,11 @@
               "title": "Party Night",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-4",
@@ -1283,7 +1416,12 @@
               "title": "Altair and Vega",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-5",
@@ -1311,7 +1449,10 @@
               "title": "残された者の願い",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-6",
@@ -1339,7 +1480,11 @@
               "title": "CHERRY POP",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-7",
@@ -1367,7 +1512,12 @@
               "title": "맑음 FANFARE!",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-8",
@@ -1395,7 +1545,10 @@
               "title": "Luvvy Luvvy",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-9",
@@ -1423,7 +1576,12 @@
               "title": "blank",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-10",
@@ -1451,7 +1609,12 @@
               "title": "꿍차GAME",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-project-connect-season-1-track-11",
@@ -1479,7 +1642,12 @@
               "title": "抜け道 (ED)",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         }
       ],
       "kind": "album",
@@ -1547,7 +1715,12 @@
               "title": "ご主人様 Overdose",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-miss-orca-track-14",
@@ -1575,7 +1748,12 @@
               "title": "北極星",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-miss-orca-track-15",
@@ -1603,7 +1781,12 @@
               "title": "New Page",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "produce",
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-miss-orca-track-16",
@@ -1631,7 +1814,11 @@
               "title": "FLIGHT AGAIN",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         }
       ],
       "kind": "album",
@@ -1699,7 +1886,11 @@
               "title": "GO UP!",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-cafe-amor-track-19",
@@ -1727,7 +1918,11 @@
               "title": "Gray Clouds",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-cafe-amor-track-20",
@@ -1755,7 +1950,10 @@
               "title": "恋はパフェのように",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-last-origin-cafe-amor-track-21",
@@ -1783,7 +1981,11 @@
               "title": "ようこそ、ラストパラダイス！",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         }
       ],
       "kind": "album",
@@ -1851,7 +2053,11 @@
               "title": "コズミックテレパシー",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         },
         {
           "id": "work-tt-pocotone-sixtar-gate-track-24",
@@ -1879,7 +2085,11 @@
               "title": "Flower Garden",
               "description": ""
             }
-          }
+          },
+          "roles": [
+            "compose",
+            "arrange"
+          ]
         }
       ],
       "kind": "album",
@@ -1939,7 +2149,12 @@
           "type": "POCOTONE Single",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-paradise-27",
@@ -1978,7 +2193,12 @@
           "type": "V-LUP『Eclipse』Original Song",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-shining-day-28",
@@ -2017,7 +2237,10 @@
           "type": "V-LUP『イ・ジュイン』Original Song",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-always-with-you-32",
@@ -2027,7 +2250,7 @@
       "date": "2022.11.10",
       "type": "게임 '에픽세븐' OST 프로젝트 #5",
       "description": "",
-      "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+      "credits": "노래 : 조경이 (이세리아), 여윤미 (메르세데스), 이경태 (라스), 남도형 (빌트레드)\n작곡 : N4ML\n작사 : 유시\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
       "image": "assets/works/images/always-with-you-cover-1024.webp",
       "thumb": "assets/works/images/always-with-you-cover-1024-w320.webp",
       "ogImage": "assets/works/images/always-with-you-cover-1024-og.jpg",
@@ -2043,7 +2266,7 @@
           "date": "2022.11.10",
           "type": "게임 '에픽세븐' OST 프로젝트 #5",
           "description": "",
-          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "credits": "노래 : 조경이 (이세리아), 여윤미 (메르세데스), 이경태 (라스), 남도형 (빌트레드)\n작곡 : N4ML\n작사 : 유시\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
           "image": "assets/works/images/always-with-you-cover-1024.webp",
           "audio": "assets/works/audio/always-with-you-kr.mp3",
           "fit": "cover",
@@ -2071,7 +2294,7 @@
           "date": "2022.11.10",
           "type": "게임 '에픽세븐' OST 프로젝트 #5",
           "description": "",
-          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "credits": "노래 : 조경이 (이세리아), 여윤미 (메르세데스), 이경태 (라스), 남도형 (빌트레드)\n작곡 : N4ML\n작사 : 유시\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
           "image": "assets/works/images/always-with-you-cover-1024.webp",
           "audio": "assets/works/audio/always-with-you-en.mp3",
           "fit": "cover",
@@ -2099,7 +2322,7 @@
           "date": "2022.11.10",
           "type": "게임 '에픽세븐' OST 프로젝트 #5",
           "description": "",
-          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "credits": "노래 : 조경이 (이세리아), 여윤미 (메르세데스), 이경태 (라스), 남도형 (빌트레드)\n작곡 : N4ML\n작사 : 유시\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
           "image": "assets/works/images/always-with-you-cover-1024.webp",
           "audio": "assets/works/audio/always-with-you-jp.mp3",
           "fit": "cover",
@@ -2141,7 +2364,12 @@
           "type": "ゲーム『エピックセブン』OST プロジェクト #5",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-unmyeong-35",
@@ -2151,7 +2379,7 @@
       "date": "2021.12.30",
       "type": "웹툰 엔딩곡",
       "description": "",
-      "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+      "credits": "그림 : 임달영\n작사 : Risa Yuzuki\n작곡 : 마감요정 (DREAMSCAPEY)\n편곡 : N4ML (DREAMSCAPEY), NEMP\n노래 : Risa Yuzuki\n\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
       "image": "assets/works/images/unmyeong-cover-1024.webp",
       "thumb": "assets/works/images/unmyeong-cover-1024-w320.webp",
       "ogImage": "assets/works/images/unmyeong-cover-1024-og.jpg",
@@ -2167,7 +2395,7 @@
           "date": "2021.12.30",
           "type": "웹툰 엔딩곡",
           "description": "",
-          "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+          "credits": "그림 : 임달영\n작사 : Risa Yuzuki\n작곡 : 마감요정 (DREAMSCAPEY)\n편곡 : N4ML (DREAMSCAPEY), NEMP\n노래 : Risa Yuzuki\n\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
           "image": "assets/works/images/unmyeong-cover-1024.webp",
           "audio": "assets/works/audio/unmyeong-kr.mp3",
           "fit": "cover",
@@ -2195,7 +2423,7 @@
           "date": "2021.12.30",
           "type": "웹툰 엔딩곡",
           "description": "",
-          "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+          "credits": "그림 : 임달영\n작사 : Risa Yuzuki\n작곡 : 마감요정 (DREAMSCAPEY)\n편곡 : N4ML (DREAMSCAPEY), NEMP\n노래 : Risa Yuzuki\n\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
           "image": "assets/works/images/unmyeong-cover-1024.webp",
           "audio": "assets/works/audio/unmyeong-jp.mp3",
           "fit": "cover",
@@ -2237,7 +2465,10 @@
           "type": "SNSコミック エンディング",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-run-into-galaxy-36",
@@ -2276,7 +2507,12 @@
           "type": "第1回 GXG ゲーム音楽コンペティション 金賞",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-we-are-sia-37",
@@ -2315,7 +2551,12 @@
           "type": "ソウル芸術大学 実用音楽科 プロモーション映像",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-sejong-arts-anthem-38",
@@ -2354,7 +2595,12 @@
           "type": "校歌",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-growing-39",
@@ -2393,7 +2639,12 @@
           "type": "N4ML Original",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     },
     {
       "id": "work-tt-tomorrow-40",
@@ -2432,7 +2683,12 @@
           "type": "N4ML Original",
           "description": ""
         }
-      }
+      },
+      "roles": [
+        "produce",
+        "compose",
+        "arrange"
+      ]
     }
   ],
   "clientLogos": [
