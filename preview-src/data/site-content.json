@@ -1873,5 +1873,134 @@
         ]
       }
     }
+  },
+  "mixWorks": {
+    "label": "MIX & ENGINEERING",
+    "note": "믹싱·마스터링으로 참여한 작업",
+    "coverTag": "커버",
+    "translations": {
+      "kr": {
+        "label": "MIX & ENGINEERING",
+        "note": "믹싱·마스터링으로 참여한 작업",
+        "coverTag": "커버"
+      },
+      "en": {
+        "label": "MIX & ENGINEERING",
+        "note": "Mixing and mastering work",
+        "coverTag": "Cover"
+      },
+      "jp": {
+        "label": "MIX & ENGINEERING",
+        "note": "ミキシング・マスタリングで参加した作品",
+        "coverTag": "カバー"
+      }
+    },
+    "items": [
+      {
+        "title": "SNAKE EYES",
+        "artist": "HEXIA_EDEN",
+        "cover": true,
+        "roles": "Tune · Mix · Master",
+        "youtube": "x5jXQY67p40"
+      },
+      {
+        "title": "계절범죄",
+        "artist": "Eryn",
+        "cover": true,
+        "roles": "Rec · Tune · Mix · Master",
+        "youtube": "xxDox1kfbyQ"
+      },
+      {
+        "title": "IDOL",
+        "artist": "히요코",
+        "cover": true,
+        "roles": "Vocal Edit · Mix · Master",
+        "youtube": "odY5ZpGJdwE"
+      },
+      {
+        "title": "강풍 올백",
+        "artist": "오리꿍",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "5CZGWim9alU"
+      },
+      {
+        "title": "QUEEN",
+        "artist": "얌",
+        "cover": true,
+        "roles": "Vocal Edit · Mix · Master",
+        "youtube": "foOXEV6sEGE"
+      },
+      {
+        "title": "새삥",
+        "artist": "레볼루션 하트",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "uhpi9NvoW7I"
+      },
+      {
+        "title": "나의 X에게",
+        "artist": "히요코",
+        "cover": true,
+        "roles": "Vocal Edit · Mix · Master",
+        "youtube": "el1DXyPlMqU"
+      },
+      {
+        "title": "KING",
+        "artist": "오리꿍",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "eCnadYqdN14"
+      },
+      {
+        "title": "Rain Drop",
+        "artist": "오리꿍",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "T0kCFUbp_vY"
+      },
+      {
+        "title": "방해쟁이",
+        "artist": "오리꿍",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "FWwFZLDnzI8"
+      },
+      {
+        "title": "귀여워서 미안해",
+        "artist": "히요코",
+        "cover": true,
+        "roles": "Vocal Edit · Mix · Master",
+        "youtube": "5u-sa-Al8Ik"
+      },
+      {
+        "title": "Eight",
+        "artist": "얌",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "lhHj0qhMOJU"
+      },
+      {
+        "title": "POCOTONE Pack",
+        "artist": "Sixtar Gate: STARTRAIL",
+        "cover": false,
+        "roles": "Mix (all tracks)",
+        "youtube": "uZM1wMO8LTA"
+      },
+      {
+        "title": "흰 눈이 내려와",
+        "artist": "REVOLUTION HEART",
+        "cover": false,
+        "roles": "Mix · Master",
+        "youtube": "jwPoEaqb3NI"
+      },
+      {
+        "title": "Panda Hero",
+        "artist": "레볼루션 하트",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "0wflo2ye0vg"
+      }
+    ]
   }
 }

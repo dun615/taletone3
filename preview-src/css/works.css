@@ -1884,6 +1884,24 @@ body.tt-network-open #tt-mobile-chapter-menu {
 
 .tt-shelf-format {margin:0 0 7px;font:700 12px/1.2 'Quicksand',sans-serif;letter-spacing:.14em;text-transform:uppercase;}
 
+/* MIX & ENGINEERING: a scrolling row of small video cards */
+.tt-mix {margin:clamp(56px,9vh,96px) auto 0;max-width:1180px}
+.tt-mix-head {display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:6px 14px;margin-bottom:20px;text-align:center}
+.tt-mix-label {font:800 12px/1 'Quicksand',sans-serif;letter-spacing:.26em;color:#8decfc}
+.tt-mix-note {font-size:13px;font-weight:600;color:#fbffff;opacity:.85}
+.tt-mix-row {list-style:none;margin:0;padding:4px 2px 14px;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,calc((100% - 54px) / 4));gap:18px;
+  overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.5) transparent}
+.tt-mix-card {scroll-snap-align:start;min-width:0;border-radius:14px;overflow:hidden;background:rgba(4,37,44,.55);border:1px solid rgba(141,236,252,.18)}
+.tt-mix-card .tt-shelf-yt-play span {width:48px;height:48px;box-shadow:0 8px 20px rgba(0,0,0,.35),0 0 0 6px rgba(251,255,255,.14)}
+.tt-mix-card .tt-shelf-yt-play span::before {margin-left:4px;border-left-width:15px;border-top-width:9px;border-bottom-width:9px}
+.tt-mix-copy {display:flex;flex-direction:column;gap:3px;padding:12px 14px 14px;text-align:left}
+.tt-mix-copy strong {font-size:15px;line-height:1.3;color:#fbffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-mix-copy span {font-size:12.5px;color:#cfeef4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-mix-copy small {margin-top:4px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8decfc}
+@media (max-width:760px){
+  .tt-mix-row {grid-auto-columns:76%;gap:12px}
+}
+
 .tt-shelf-clients {margin:clamp(64px,10vh,104px) auto 0;text-align:center}
 .tt-shelf-clients-label {display:block;margin-bottom:22px;font:800 12px/1 'Quicksand',sans-serif;letter-spacing:.26em;}
 .tt-shelf-clients-row {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(22px,4vw,54px)}
