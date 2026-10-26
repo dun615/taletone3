@@ -235,6 +235,45 @@
       }
     },
     {
+      "id": "work-parable",
+      "slug": "love-dopamine",
+      "artist": "해봄",
+      "title": "Love Dopamine",
+      "date": "2025.08.30",
+      "type": "'해봄' 3rd Single",
+      "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기",
+      "credits": "Composed by N4ML (TONALIE)\nLyrics by 유상희\nArranged by N4ML (TONALIE)\n\nGuitar by BlueArpeggio\nBass by 윤재하\nPiano by N4ML (TONALIE)\nSynth by N4ML (TONALIE)\nDrum Designed by N4ML (TONALIE)\n\nRecorded by 스튜디오엠랩\nDirected by 유상희, N4ML (TONALIE)\nEdited by N4ML (TONALIE)\nTuned by N4ML (TONALIE)\nMixed by 신용식@스테이튠드\nMastered by 장태인@seoul archive studio\n\nExecutive Producer - 패러블엔터테인먼트\nManagement Director - 함정훈\nArtist Management - 한유선\nArtist Production - 송윤석\nVisual Contents - 한유선, 이진우\n\nProduction of PARABLE ENTERTAINMENT Inc.\n\nAll Rights Reserved by PARABLE ENTERTAINMENT Inc.",
+      "image": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae.webp",
+      "thumb": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae-w320.webp",
+      "ogImage": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae-og.jpg",
+      "audio": "assets/works/audio/asset-mq81ygf9-gsou9-_Love-Dopamine-Mastered-320K-.mp3-bd6f9b3eb40f.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 4,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=Atgold7UdnY",
+      "format": "Single",
+      "translations": {
+        "en": {
+          "artist": "Haebom",
+          "title": "Love Dopamine",
+          "type": "'Haebom' 3rd Single",
+          "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
+        },
+        "jp": {
+          "artist": "HAEBOM",
+          "title": "Love Dopamine",
+          "type": "HAEBOM 3rd Single",
+          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すHAEBOMの物語。"
+        }
+      }
+    },
+    {
       "id": "work-bubble-sweet",
       "slug": "the-run-catch",
       "artist": "DOLONGCHA",

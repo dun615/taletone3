@@ -606,7 +606,7 @@ async function runInteractionSmoke(chrome, origin) {
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(all === 34, `interaction: whole rack expected 34 sleeves, found ${all}`);
+    assert(all === 35, `interaction: whole rack expected 35 sleeves, found ${all}`);
     passed.push('works-filter-shelf');
 
     // leaving the WORKS chapter stops the music
