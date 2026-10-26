@@ -647,27 +647,20 @@
 
   // phones: every song in one sideways carousel; elsewhere the rack grid
   function rackListHtml(list) {
-    var labels = L(), years = [], byYear = {};
-    // list is newest first with each album's tracks together (entriesFor); split it into years, then into runs of
-    // singles and album blocks
+    var labels = L(), blocks = [];
+    // list is newest first with each album's tracks together (entriesFor): runs of singles and album blocks, in order
     list.forEach(function (entry) {
-      var year = String(entry.work.date || '').slice(0, 4) || '—';
-      if (!byYear[year]) { byYear[year] = { year: year, count: 0, blocks: [] }; years.push(byYear[year]); }
-      var shelf = byYear[year], last = shelf.blocks[shelf.blocks.length - 1];
+      var last = blocks[blocks.length - 1];
       var kind = entry.track == null ? 'singles' : 'album:' + entry.index;
-      if (!last || last.kind !== kind) { last = { kind: kind, index: entry.index, entries: [] }; shelf.blocks.push(last); }
+      if (!last || last.kind !== kind) { last = { kind: kind, index: entry.index, entries: [] }; blocks.push(last); }
       last.entries.push(entry);
-      shelf.count++;
     });
     var order = 0;
     var row = function (entries) {
       return '<ul class="tt-shelf-row' + (isPhone() ? ' tt-m-carousel' : '') + '">' + entries.map(function (entry) { return rackItemHtml(entry, order++); }).join('') + '</ul>';
     };
     var count = function (n) { return n + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs); };
-    var html = years.map(function (shelf) {
-      return '<section class="tt-shelf-unit tt-year-shelf" aria-label="' + esc(shelf.year) + '">' +
-        '<div class="tt-year-plate"><span class="tt-year-plate-year">' + esc(shelf.year) + '</span><span class="tt-shelf-plate-count">' + count(shelf.count) + '</span></div>' +
-        shelf.blocks.map(function (block) {
+    var html = blocks.map(function (block) {
           if (block.kind === 'singles') return '<div class="tt-shelf-block">' + row(block.entries) + '</div>';
           var work = works[block.index], unit = localizedUnit(work);
           var name = plainRichText(String(unit.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
@@ -679,7 +672,6 @@
               '<span class="tt-shelf-plate-text"><span class="tt-shelf-plate-name">' + esc(name) + '</span><span class="tt-shelf-plate-artist">' + esc(artist) + '</span></span>' +
               '<span class="tt-shelf-plate-count">' + (shown !== total ? shown + ' / ' : '') + count(total) + '</span>' +
             '</div>' + row(block.entries) + '</div>';
-        }).join('') + '</section>';
     }).join('');
     return '<div class="tt-rack-grid tt-rack-shelves">' + html + '</div>';
   }

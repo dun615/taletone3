@@ -2881,11 +2881,8 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
 
-/* The rack as year shelves, newest first; an album sits at its release date as a block with its own name band */
+/* The rack: songs newest first; an album sits at its release date as a block with its own name band */
 .tt-crate-rack .tt-rack-grid.tt-rack-shelves {display:block}
-.tt-year-shelf + .tt-year-shelf {margin-top:34px}
-.tt-year-plate {display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px;padding:0 2px 8px;border-bottom:1px solid rgba(141,236,252,.35)}
-.tt-year-plate-year {font:800 22px/1 'Quicksand',sans-serif;letter-spacing:.04em;color:#fbffff}
 .tt-shelf-block + .tt-shelf-block {margin-top:28px}
 .tt-shelf-plate {display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:8px 12px 8px 10px;border-left:3px solid #8decfc;border-radius:4px 10px 10px 4px;
   background:linear-gradient(90deg,rgba(141,236,252,.18),rgba(141,236,252,.03) 85%)}
@@ -2903,10 +2900,7 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-rack-roles {color:#8decfc!important}
 @media (max-width:760px){
   html body .tt-crate-rack .tt-rack-grid.tt-rack-shelves {max-height:none!important;overflow:visible!important;padding:0;margin:0}
-  .tt-year-shelf + .tt-year-shelf {margin-top:22px}
   .tt-shelf-block + .tt-shelf-block {margin-top:14px}
-  .tt-year-plate {margin-bottom:10px}
-  .tt-year-plate-year {font-size:18px}
   .tt-shelf-plate {margin-bottom:10px}
   html body .tt-m-card .tt-rack-trackno {left:8px;top:8px}
 }
