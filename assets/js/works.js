@@ -217,9 +217,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -553,6 +553,7 @@
             '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
             (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
+            coversHtml(work) +
           '</div>' +
         '</div>' +
         '<div class="tt-shelf-modal-info">' +
@@ -562,6 +563,20 @@
         '</div>' +
       '</div>' +
     '</div>';
+  }
+
+  // official covers of the song (the client's own promotion): small videos under the record's story
+  function coversHtml(work) {
+    var list = Array.isArray(work.officialCovers) ? work.officialCovers.filter(function (c) { return c && c.youtube; }) : [];
+    if (!list.length) return '';
+    var labels = L(), lang = pageLangKey();
+    return '<section class="tt-shelf-covers" aria-label="' + esc(labels.covers) + '"><h4 class="tt-shelf-covers-title">' + esc(labels.covers) + '</h4><ul>' +
+      list.map(function (c) {
+        var who = (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '';
+        return '<li><div class="tt-shelf-yt" data-yt="' + esc(c.youtube) + '"><img src="https://i.ytimg.com/vi/' + esc(c.youtube) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
+          '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(who + ' — ' + labels.video) + '"><span aria-hidden="true"></span></button></div>' +
+          '<p>' + esc(who) + '</p></li>';
+      }).join('') + '</ul></section>';
   }
 
   function headHtml() {

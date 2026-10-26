@@ -2302,7 +2302,7 @@
           "posY": "50%",
           "brightness": 0.6,
           "language": "EN",
-          "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
+          "youtube": "https://www.youtube.com/watch?v=TZUvN7G83lA",
           "translations": {
             "en": {
               "title": "7th world: Always with you",
@@ -2369,6 +2369,23 @@
         "produce",
         "compose",
         "arrange"
+      ],
+      "officialCovers": [
+        {
+          "artist": "Official EN ver.",
+          "artistJp": "公式英語版",
+          "youtube": "TZUvN7G83lA"
+        },
+        {
+          "artist": "릴파",
+          "artistEn": "LILPA",
+          "artistJp": "リルパ",
+          "youtube": "JwEEIHzZNuQ"
+        },
+        {
+          "artist": "Takanashi Kiara × Ouro Kronii (hololive)",
+          "youtube": "kJ0hczPwSnM"
+        }
       ]
     },
     {

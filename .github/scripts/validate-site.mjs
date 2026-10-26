@@ -677,9 +677,9 @@ assert(/noindex/i.test(redirect) && /\/story-types\//.test(redirect), 'legacy pr
 const notFound = await text('404.html');
 assert(/noindex/i.test(notFound) && /href="\/works\/"/.test(notFound), '404 page is not index-safe or navigable');
 
+// Portfolio limits from the agency years are gone (the user's call, 2026-10): any credited work may be named.
+// Still kept: the \uD574\uBD04 case story (permission pending) and personal phone numbers.
 const forbidden = [
-  ['5', '30'].join(''),
-  ['LI', 'LPA'].join(''),
   '\uCE58\uC5B4\uB9AC\uB529',
   ['J-', 'ROCK'].join(''),
   '\uBCF5\uC2DD',
