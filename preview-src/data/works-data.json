@@ -1730,7 +1730,7 @@
           "description": "",
           "credits": "제3회 미스 오르카 · 이터니티 트랙\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n총괄 프로듀싱 : N4ML",
           "image": "assets/works/images/last-origin-miss-orca-2-cover-1024.webp",
-          "audio": "assets/works/audio/last-origin-miss-orca-02.mp3",
+          "audio": "assets/works/audio/last-origin-miss-orca-02b.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
@@ -2922,7 +2922,7 @@
         "peak": 0,
         "gain": -7.1
       },
-      "assets/works/audio/last-origin-miss-orca-02.mp3": {
+      "assets/works/audio/last-origin-miss-orca-02b.mp3": {
         "lufs": -11.2,
         "peak": -0.4,
         "gain": -2.8
