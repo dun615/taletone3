@@ -2881,6 +2881,16 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
 
+/* Official covers in a record's popup: two small videos side by side */
+.tt-shelf-covers {margin-top:22px}
+.tt-shelf-covers-title {margin:0 0 10px;font:800 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#8decfc}
+.tt-shelf-covers ul {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tt-shelf-covers li {min-width:0}
+.tt-shelf-covers .tt-shelf-yt {border-radius:10px}
+.tt-shelf-covers .tt-shelf-yt-play span {width:40px;height:40px;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.tt-shelf-covers .tt-shelf-yt-play span::before {margin-left:3px;border-left-width:12px;border-top-width:7px;border-bottom-width:7px}
+.tt-shelf-covers p {margin:6px 0 0;font:700 12px/1.35 var(--tt-noto-primary),sans-serif;color:inherit;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 /* The rack: songs newest first; an album sits at its release date as a block with its own name band */
 .tt-crate-rack .tt-rack-grid.tt-rack-shelves {display:block}
 .tt-shelf-block + .tt-shelf-block {margin-top:28px}
