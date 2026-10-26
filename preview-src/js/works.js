@@ -217,9 +217,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', engineer: '엔지니어링', leadTitle: '작곡부터 마스터링까지', leadText: '엔지니어링까지 직접 맡은 곡 {n}곡 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', engineer: 'Engineering', leadTitle: 'From writing to mastering', leadText: 'See the {n} songs I also engineered', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', engineer: 'エンジニアリング', leadTitle: '作曲からマスタリングまで', leadText: 'エンジニアリングまで手がけた {n}曲を見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -231,7 +231,7 @@
     return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'artist';
   }
   function isAlbum(work) { var k = itemKind(work); return k === 'album' || k === 'ep'; }
-  var ROLE_FILTERS = ['all', 'produce', 'compose', 'arrange'];
+  var ROLE_FILTERS = ['all', 'produce', 'compose', 'arrange', 'engineer'];
   function hasRole(unit, role) { return !!(unit && Array.isArray(unit.roles) && unit.roles.indexOf(role) !== -1); }
   function matchesFilter(work, filter) {
     if (filter === 'all') return true;
@@ -610,7 +610,7 @@
     var lang = pageLangKey();
     return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
       '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
-      '<ul class="tt-mix-row">' + items.map(function (it) {
+      '<ul class="tt-mix-row">' + (key === 'mixWorks' ? engineerLeadHtml() : '') + items.map(function (it) {
         var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
         var media = it.youtube
           ? '<div class="tt-shelf-yt" data-yt="' + esc(String(it.youtube)) + '"><img src="https://i.ytimg.com/vi/' + esc(String(it.youtube)) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
@@ -631,6 +631,15 @@
     if (isFinite(gain) && gain > 0) el.volume = Math.min(1, gain);
     document.querySelectorAll('.tt-mix-audio audio').forEach(function (other) { if (other !== el && !other.paused) other.pause(); });
   }, true);
+
+  // the head of SOUND ENGINEERING: my own songs I also engineered, a click away on the rack
+  function engineerLeadHtml() {
+    var labels = L(), n = entriesFor('engineer').length;
+    if (!n || !labels.leadTitle) return '';
+    return '<li class="tt-mix-card tt-mix-lead"><button type="button" data-works-action="engineer-jump">' +
+      '<span class="tt-mix-lead-title">' + esc(labels.leadTitle) + '</span>' +
+      '<span class="tt-mix-lead-text">' + esc(labels.leadText.replace('{n}', n)) + ' <span aria-hidden="true">&#8593;</span></span></button></li>';
+  }
 
   function bookRects() {
     var rects = {};
@@ -1178,7 +1187,14 @@
     var action = button.getAttribute('data-works-action');
     // the full career history lives in the profile sheet the app renders
     if (action === 'history') { window.dispatchEvent(new CustomEvent('TALETONE_OPEN_HISTORY')); return; }
-    if (action === 'filter') {
+    if (action === 'engineer-jump') {
+      var beforeJump = bookRects();
+      state.filter = 'engineer';
+      render(beforeJump);
+      var rackEl = root && root.querySelector('.tt-crate-rack');
+      if (rackEl) rackEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var chipEl = root && root.querySelector('[data-filter="engineer"]'); if (chipEl) chipEl.focus({ preventScroll: true });
+    } else if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
       render(before);

@@ -84,7 +84,8 @@
       },
       "roles": [
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -172,7 +173,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -216,7 +218,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -258,7 +261,8 @@
         }
       },
       "roles": [
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -302,7 +306,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -346,7 +351,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -390,7 +396,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -439,7 +446,8 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -468,7 +476,8 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -497,7 +506,8 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -525,7 +535,9 @@
               "description": "眠れない悲しみの夜に、残された心を静かに抱きしめる物語です。"
             }
           },
-          "roles": []
+          "roles": [
+            "engineer"
+          ]
         }
       ],
       "kind": "album",
@@ -588,7 +600,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -632,7 +645,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -729,7 +743,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -762,7 +777,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -795,7 +811,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -826,7 +843,8 @@
             }
           },
           "roles": [
-            "produce"
+            "produce",
+            "engineer"
           ]
         }
       ],
@@ -890,7 +908,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1034,7 +1053,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1136,7 +1156,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1181,7 +1202,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1225,7 +1247,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1270,7 +1293,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -1355,7 +1379,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -1420,7 +1445,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -1516,7 +1542,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -1613,7 +1640,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -1646,7 +1674,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         }
       ],
@@ -1719,7 +1748,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -1752,7 +1782,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -2056,7 +2087,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         },
         {
@@ -2088,7 +2120,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "engineer"
           ]
         }
       ],
@@ -2153,7 +2186,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2239,7 +2273,8 @@
         }
       },
       "roles": [
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2368,7 +2403,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ],
       "officialCovers": [
         {
@@ -2484,7 +2520,8 @@
         }
       },
       "roles": [
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2528,7 +2565,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2572,7 +2610,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2616,7 +2655,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2660,7 +2700,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     },
     {
@@ -2704,7 +2745,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "engineer"
       ]
     }
   ],
