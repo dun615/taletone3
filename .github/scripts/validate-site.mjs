@@ -105,7 +105,7 @@ for (const requiredGuard of [
   'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
   'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
   'network.worksDataRequests === 0',
-  "dataset.ttMediaPlayback === 'paused'", 'members-keyboard-dialog', 'news-language-dialog',
+  "dataset.ttMediaPlayback === 'paused'", 'history-dialog', 'language-switch',
   'unexpectedThirdPartyUrls.length === 0',
 ]) {
   assert(runtimePerformanceValidator.includes(requiredGuard), `runtime performance validator is missing guard: ${requiredGuard}`);
