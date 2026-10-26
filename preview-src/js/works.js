@@ -212,15 +212,14 @@
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
-    engaged: false,   // the reader has played something
-    open: {}          // albums opened as folders in the 전체 view (by works index)
+    engaged: false    // the reader has played something
   };
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', folder: '수록곡', folderOpen: '수록곡 펼치기', folderClose: '수록곡 접기', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', folder: 'Tracks', folderOpen: 'Show the tracks', folderClose: 'Hide the tracks', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', folder: '収録曲', folderOpen: '収録曲をひらく', folderClose: '収録曲をとじる', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -241,22 +240,19 @@
   }
   // newest first (dates are YYYY.MM.DD, so they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
-  function entriesFor(filter, withOpenFolders) {
+  function entriesFor(filter) {
     var list = works.map(function (work, index) { return { work: work, index: index }; })
       .sort(function (a, b) { return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index; });
     var out = [];
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
-      if (filter === 'all') {
-        out.push(entry);
-        if (withOpenFolders && tracks.length && state.open[entry.index]) tracks.forEach(function (track, i) { out.push({ work: entry.work, index: entry.index, track: i, child: true }); });
-      } else if (tracks.length) {
-        tracks.forEach(function (track, i) { if (hasRole(track, filter)) out.push({ work: entry.work, index: entry.index, track: i }); });
-      } else if (hasRole(entry.work, filter)) out.push(entry);
+      if (tracks.length) {
+        tracks.forEach(function (track, i) { if (filter === 'all' || hasRole(track, filter)) out.push({ work: entry.work, index: entry.index, track: i }); });
+      } else if (filter === 'all' || hasRole(entry.work, filter)) out.push(entry);
     });
     return out;
   }
-  function visibleWorks() { return entriesFor(state.filter, true); }
+  function visibleWorks() { return entriesFor(state.filter); }
   function entryKey(entry) { return entry.track == null ? String(entry.index) : entry.index + '-' + entry.track; }
   // phones get the compact deck and the sideways rack (see works.css "Works on phones")
   function isPhone() { return window.innerWidth <= 760; }
@@ -311,7 +307,7 @@
   function filtersHtml() {
     var labels = L();
     return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + ROLE_FILTERS.map(function (key) {
-      var count = entriesFor(key, false).length;
+      var count = entriesFor(key).length;
       if (!count) return '';
       var on = state.filter === key;
       return '<button type="button" class="tt-shelf-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="filter" data-filter="' + key + '">' + esc(labels[key]) + '<span class="tt-shelf-chip-count">' + count + '</span></button>';
@@ -348,7 +344,7 @@
     if (!pick || !root || !root.contains(pick)) return;
     var picks = Array.prototype.slice.call(root.querySelectorAll('.tt-rack-pick'));
     var at = picks.indexOf(pick);
-    var grid = root.querySelector('.tt-rack-grid');
+    var grid = pick.closest('.tt-shelf-row') || root.querySelector('.tt-rack-grid');
     var columnFlow = grid && getComputedStyle(grid).gridAutoFlow.indexOf('column') === 0;
     var rows = columnFlow ? getComputedStyle(grid).gridTemplateRows.split(' ').length : 1;
     var cols = grid && !columnFlow ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 4;
@@ -369,17 +365,17 @@
     var track = work.tracks[entry.track] || {};
     var unit = localizedUnit(track), album = localizedUnit(work);
     var title = plainRichText(unit.title || track.title || '');
-    var from = plainRichText(String(album.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
+    var from = rolesText(track);
     var image = unit.image || track.image || work.thumb || work.image || '';
     var current = state.current === index && state.track === entry.track;
     var no = String(entry.track + 1).padStart(2, '0');
-    var cls = 'tt-rack-item is-track' + (entry.child ? ' is-child' : '') + (isPhone() ? ' tt-m-card' : '') + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '');
-    var pickButton = '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" data-track="' + entry.track + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + ' — ' + from) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">';
+    var cls = 'tt-rack-item is-track' + (isPhone() ? ' tt-m-card' : '') + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '');
+    var pickButton = '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" data-track="' + entry.track + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">';
     var art = '<img ' + (order < 8 ? 'src' : 'data-src') + '="' + esc(image) + '" alt="" loading="' + (order < 8 ? 'eager' : 'lazy') + '" decoding="async" style="' + coverStyle(unit) + '">';
     if (isPhone()) {
       return '<li class="' + cls + '" data-works-book="' + entryKey(entry) + '">' + pickButton +
           '<span class="tt-m-card-art">' + art + '<span class="tt-rack-trackno" aria-hidden="true">' + no + '</span><span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
-          '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(from) + '</span>' +
+          '<span class="tt-rack-name">' + esc(title) + '</span>' + (from ? '<span class="tt-rack-artist tt-rack-roles">' + esc(from) + '</span>' : '') +
         '</button></li>';
     }
     return '<li class="' + cls + '" data-works-book="' + entryKey(entry) + '" style="--i:' + order + '">' + pickButton +
@@ -387,14 +383,12 @@
         '<span class="tt-rack-trackno" aria-hidden="true">' + no + '</span>' +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
-      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3><p class="tt-rack-artist">' + esc(from) + '</p></div>' +
+      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (from ? '<p class="tt-rack-artist tt-rack-roles">' + esc(from) + '</p>' : '') + '</div>' +
     '</li>';
   }
-  function folderButton(entry) {
-    var work = entry.work, labels = L(), open = !!state.open[entry.index];
-    if (state.filter !== 'all' || !isAlbum(work) || !(work.tracks || []).length) return '';
-    return '<button type="button" class="tt-rack-folder' + (open ? ' is-open' : '') + '" data-works-action="folder" data-index="' + entry.index + '" aria-expanded="' + open + '" aria-label="' + esc(open ? labels.folderClose : labels.folderOpen) + '">' +
-      esc(labels.folder) + ' ' + work.tracks.length + '<span aria-hidden="true"></span></button>';
+  function rolesText(unit) {
+    var labels = L();
+    return (unit && Array.isArray(unit.roles) ? unit.roles : []).map(function (role) { return labels[role] || role; }).join(' · ');
   }
   function rackItemHtml(entry, order) {
     if (entry.track != null) return trackItemHtml(entry, order);
@@ -405,20 +399,20 @@
     var current = state.current === index;
     if (isPhone()) {
       var thumb = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
-      return '<li class="tt-rack-item tt-m-card' + (folderButton(entry) ? ' is-album' + (state.open[index] ? ' is-open' : '') : '') + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
+      return '<li class="tt-rack-item tt-m-card' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
         '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
           '<span class="tt-m-card-art"><img ' + (order < 4 ? 'src' : 'data-src') + '="' + esc(thumb) + '" alt="" decoding="async" style="' + coverStyle(unit) + '">' +
             '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
           '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span>' +
-        '</button>' + folderButton(entry) +
+        '</button>' +
       '</li>';
     }
-    return '<li class="tt-rack-item' + (folderButton(entry) ? ' is-album' + (state.open[index] ? ' is-open' : '') : '') + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
+    return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + (artist ? ' — ' + artist : '')) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
         sleeveHtml(work, order < 8) +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
-      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + folderButton(entry) + '</div>' +
+      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + '</div>' +
     '</li>';
   }
 
@@ -653,7 +647,33 @@
 
   // phones: every song in one sideways carousel; elsewhere the rack grid
   function rackListHtml(list) {
-    return '<ul class="tt-rack-grid' + (isPhone() ? ' tt-m-carousel' : '') + '">' + list.map(rackItemHtml).join('') + '</ul>';
+    var labels = L(), singles = [], albums = [], byAlbum = {};
+    list.forEach(function (entry) {
+      if (entry.track == null) { singles.push(entry); return; }
+      if (!byAlbum[entry.index]) { byAlbum[entry.index] = []; albums.push(entry.index); }
+      byAlbum[entry.index].push(entry);
+    });
+    var order = 0;
+    var row = function (entries) {
+      return '<ul class="tt-shelf-row' + (isPhone() ? ' tt-m-carousel' : '') + '">' + entries.map(function (entry) { return rackItemHtml(entry, order++); }).join('') + '</ul>';
+    };
+    var html = '';
+    if (singles.length) {
+      html += '<section class="tt-shelf-unit is-singles"><div class="tt-shelf-plate"><span class="tt-shelf-plate-name">' + esc(labels.singles) + '</span><span class="tt-shelf-plate-count">' + singles.length + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs) + '</span></div>' + row(singles) + '</section>';
+    }
+    albums.forEach(function (index) {
+      var work = works[index], unit = localizedUnit(work);
+      var name = plainRichText(String(unit.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
+      var artist = plainRichText(unit.artist || work.artist || '');
+      var current = state.current === index;
+      html += '<section class="tt-shelf-unit is-album" aria-label="' + esc(name) + '">' +
+        '<div class="tt-shelf-plate' + (current ? ' is-current' : '') + '" data-works-book="' + index + '">' +
+          '<button type="button" class="tt-shelf-plate-cover" data-works-action="pick" data-index="' + index + '" tabindex="-1" aria-label="' + esc(name + ' — ' + labels.albumPick) + '"><img src="' + esc(work.thumb || work.image || '') + '" alt="" loading="lazy" decoding="async"></button>' +
+          '<span class="tt-shelf-plate-text"><span class="tt-shelf-plate-name">' + esc(name) + '</span><span class="tt-shelf-plate-artist">' + esc(artist) + '</span></span>' +
+          '<span class="tt-shelf-plate-count">' + byAlbum[index].length + (byAlbum[index].length !== (work.tracks || []).length ? ' / ' + work.tracks.length : '') + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs) + '</span>' +
+        '</div>' + row(byAlbum[index]) + '</section>';
+    });
+    return '<div class="tt-rack-grid tt-rack-shelves">' + html + '</div>';
   }
 
   function render(before) {
@@ -1149,12 +1169,7 @@
       var chip = root && root.querySelector('[data-filter="' + state.filter + '"]'); if (chip) chip.focus({ preventScroll: true });
     } else if (action === 'pick') {
       pick(Number(button.getAttribute('data-index')), button.hasAttribute('data-track') ? Number(button.getAttribute('data-track')) : null);
-    } else if (action === 'folder') {
-      var folderAt = Number(button.getAttribute('data-index'));
-      var beforeFolder = bookRects();
-      state.open[folderAt] = !state.open[folderAt];
-      render(beforeFolder);
-      var again = root && root.querySelector('[data-works-action="folder"][data-index="' + folderAt + '"]'); if (again) again.focus({ preventScroll: true });
+
     } else if (action === 'open') {
       event.preventDefault();
       openModal(Number(button.getAttribute('data-index')), button);

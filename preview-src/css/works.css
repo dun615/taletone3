@@ -2881,22 +2881,28 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
 
-/* Albums as folders in the rack: a stacked sleeve with a "tracks" toggle; open, its tracks follow it as numbered sleeves */
-.tt-rack-item.is-album .tt-sleeve {box-shadow:6px -6px 0 -1px rgba(141,236,252,.28),12px -12px 0 -2px rgba(141,236,252,.13)}
-.tt-rack-item.is-album.is-current .tt-sleeve {box-shadow:0 0 0 2px #8decfc,6px -6px 0 -1px rgba(141,236,252,.28),12px -12px 0 -2px rgba(141,236,252,.13)}
-.tt-rack-folder {display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 11px;border:1px solid rgba(141,236,252,.55);border-radius:999px;
-  background:rgba(4,37,44,.45);color:#8decfc;font:800 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.06em;cursor:pointer;transition:background-color .2s ease}
-.tt-rack-folder span::before {content:'';display:inline-block;width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .25s ease}
-.tt-rack-folder.is-open {background:#8decfc;color:#05303a}
-.tt-rack-folder.is-open span::before {transform:translateY(1px) rotate(-135deg)}
-.tt-rack-folder:hover,.tt-rack-folder:focus-visible {background:rgba(141,236,252,.22)}
-.tt-rack-folder.is-open:hover,.tt-rack-folder.is-open:focus-visible {background:#b6f3fd}
+/* The rack as shelves: SINGLES, then one shelf per album with a name plate (cover, album, number of songs) */
+.tt-crate-rack .tt-rack-grid.tt-rack-shelves {display:block}
+.tt-shelf-unit + .tt-shelf-unit {margin-top:30px}
+.tt-shelf-plate {display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:8px 12px 8px 10px;border-left:3px solid #8decfc;border-radius:4px 10px 10px 4px;
+  background:linear-gradient(90deg,rgba(141,236,252,.18),rgba(141,236,252,.03) 85%)}
+.tt-shelf-unit.is-singles .tt-shelf-plate {padding:8px 12px}
+.tt-shelf-plate.is-current {border-left-color:#fbffff;background:linear-gradient(90deg,rgba(141,236,252,.3),rgba(141,236,252,.06) 85%)}
+.tt-shelf-plate-cover {flex:none;width:44px;height:44px;padding:0;border:0;border-radius:6px;overflow:hidden;cursor:pointer;background:rgba(8,24,40,.45);box-shadow:0 6px 14px -6px rgba(2,10,22,.8)}
+.tt-shelf-plate-cover img {display:block;width:100%;height:100%;object-fit:cover}
+.tt-shelf-plate-text {display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.tt-shelf-plate-name {font:800 13.5px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-shelf-unit.is-singles .tt-shelf-plate-name {flex:1;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.tt-shelf-plate-artist {font:600 11.5px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-shelf-plate-count {flex:none;padding:5px 9px;border:1px solid rgba(141,236,252,.45);border-radius:999px;font:800 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.06em;color:#8decfc}
+.tt-shelf-row {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px}
+@media (max-width:1100px){.tt-shelf-row {grid-template-columns:repeat(3,minmax(0,1fr))}}
 .tt-rack-trackno {position:absolute;left:6px;top:6px;z-index:2;padding:4px 7px;border-radius:999px;background:rgba(5,30,38,.82);color:#8decfc;
   font:800 10.5px/1 'Quicksand',sans-serif;letter-spacing:.06em;pointer-events:none}
-.tt-rack-item.is-child .tt-sleeve {outline:1px dashed rgba(141,236,252,.55);outline-offset:4px}
-.tt-rack-item.is-child .tt-rack-artist {color:#8decfc}
+.tt-rack-roles {color:#8decfc!important}
 @media (max-width:760px){
-  html body .tt-m-card .tt-rack-folder {margin:6px 0 0;padding:5px 10px;font-size:11px}
-  html body .tt-m-card.is-child .tt-m-card-art {outline:1px dashed rgba(141,236,252,.6);outline-offset:3px}
+  html body .tt-crate-rack .tt-rack-grid.tt-rack-shelves {max-height:none!important;overflow:visible!important;padding:0;margin:0}
+  .tt-shelf-unit + .tt-shelf-unit {margin-top:18px}
+  .tt-shelf-plate {margin-bottom:10px}
   html body .tt-m-card .tt-rack-trackno {left:8px;top:8px}
 }
