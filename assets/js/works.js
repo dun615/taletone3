@@ -589,6 +589,7 @@
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
     var items = Array.isArray(mix.items) ? mix.items.filter(function (it) { return it && (it.youtube || it.audio); }) : [];
+    items.sort(function (x, y) { return String(y.date || '').localeCompare(String(x.date || '')); }); // newest first
     if (!items.length) return '';
     var t = Object.assign({}, mix, (mix.translations && mix.translations[pageLangKey()]) || {});
     var lang = pageLangKey();

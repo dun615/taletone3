@@ -1684,109 +1684,239 @@
     },
     "items": [
       {
+        "title": "...사랑했잖아...",
+        "artist": "정승환",
+        "cover": true,
+        "roles": "Inst Mix",
+        "youtube": "_mj7WSYFccU",
+        "date": "2026-09-18"
+      },
+      {
+        "title": "좋은 밤 좋은 꿈",
+        "artist": "정승환",
+        "cover": true,
+        "roles": "Inst Mix",
+        "youtube": "PfiIRJP8mN4",
+        "date": "2026-08-07"
+      },
+      {
+        "title": "SHINE",
+        "titleEn": "SHINE",
+        "titleJp": "SHINE",
+        "artist": "비쥬 (라테일 OST)",
+        "cover": true,
+        "roles": "Mix",
+        "youtube": "kz3QqmVPTyw",
+        "date": "2026-07-22"
+      },
+      {
+        "title": "out of the things i loved, i hate you most.",
+        "artist": "언제 (unjae)",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "cdiqd7EJxtc",
+        "date": "2026-07-21"
+      },
+      {
         "title": "SNAKE EYES",
         "artist": "HEXIA_EDEN",
         "cover": true,
         "roles": "Tune · Mix · Master",
-        "youtube": "x5jXQY67p40"
+        "youtube": "x5jXQY67p40",
+        "date": "2026-05-02"
       },
       {
         "title": "계절범죄",
         "artist": "Eryn",
         "cover": true,
         "roles": "Rec · Tune · Mix · Master",
-        "youtube": "xxDox1kfbyQ"
+        "youtube": "xxDox1kfbyQ",
+        "date": "2026-04-15"
+      },
+      {
+        "title": "그대 위로가 필요하다 느낄 때",
+        "titleEn": "When You Need Comfort",
+        "artist": "준성 (JUNSUNG)",
+        "cover": false,
+        "roles": "Mix · Master",
+        "youtube": "mTNrjY6XDjk",
+        "date": "2026-02-12"
+      },
+      {
+        "title": "기다릴게",
+        "artist": "아리사",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "rQmWo4hNTTc",
+        "date": "2024-07-14"
+      },
+      {
+        "title": "첫사랑의 시작 소리",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "-TYQADItRqA",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "Love this Memory",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "F_mIfVgIq5s",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "Dream Star",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "MhD5YI32pz4",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "허둥지둥 오리라도 사랑이 하고싶어~!",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "S660QnydnlE",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "죄인과 세계의 마침표",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "Wxm4rGgaJM8",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "Disallowed",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "YFVAUm8TJ9U",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "사무치는 누군가의 위로",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "bUGQoJ4CyR0",
+        "date": "2023-06-11"
+      },
+      {
+        "title": "I Love Me",
+        "artist": "POCOTONE × Sixtar Gate",
+        "cover": false,
+        "roles": "Mix",
+        "youtube": "yb6dRXdPyWE",
+        "date": "2023-06-11"
       },
       {
         "title": "IDOL",
         "artist": "히요코",
         "cover": true,
         "roles": "Vocal Edit · Mix · Master",
-        "youtube": "odY5ZpGJdwE"
+        "youtube": "odY5ZpGJdwE",
+        "date": "2023-04-29"
       },
       {
         "title": "강풍 올백",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "5CZGWim9alU"
+        "youtube": "5CZGWim9alU",
+        "date": "2023-04-26"
       },
       {
         "title": "QUEEN",
         "artist": "얌",
         "cover": true,
         "roles": "Vocal Edit · Mix · Master",
-        "youtube": "foOXEV6sEGE"
+        "youtube": "foOXEV6sEGE",
+        "date": "2023-04-07"
       },
       {
         "title": "새삥",
         "artist": "레볼루션 하트",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "uhpi9NvoW7I"
+        "youtube": "uhpi9NvoW7I",
+        "date": "2023-03-31"
       },
       {
         "title": "나의 X에게",
         "artist": "히요코",
         "cover": true,
         "roles": "Vocal Edit · Mix · Master",
-        "youtube": "el1DXyPlMqU"
+        "youtube": "el1DXyPlMqU",
+        "date": "2023-03-17"
       },
       {
         "title": "KING",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "eCnadYqdN14"
+        "youtube": "eCnadYqdN14",
+        "date": "2023-03-10"
       },
       {
         "title": "Rain Drop",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "T0kCFUbp_vY"
+        "youtube": "T0kCFUbp_vY",
+        "date": "2023-03-01"
       },
       {
         "title": "방해쟁이",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "FWwFZLDnzI8"
+        "youtube": "FWwFZLDnzI8",
+        "date": "2023-02-08"
       },
       {
         "title": "귀여워서 미안해",
         "artist": "히요코",
         "cover": true,
         "roles": "Vocal Edit · Mix · Master",
-        "youtube": "5u-sa-Al8Ik"
+        "youtube": "5u-sa-Al8Ik",
+        "date": "2023-01-22"
       },
       {
         "title": "Eight",
         "artist": "얌",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "lhHj0qhMOJU"
-      },
-      {
-        "title": "POCOTONE Pack",
-        "artist": "Sixtar Gate: STARTRAIL",
-        "cover": false,
-        "roles": "Mix (all tracks)",
-        "youtube": "uZM1wMO8LTA"
+        "youtube": "lhHj0qhMOJU",
+        "date": "2023-01-16"
       },
       {
         "title": "흰 눈이 내려와",
         "artist": "REVOLUTION HEART",
         "cover": false,
         "roles": "Mix · Master",
-        "youtube": "jwPoEaqb3NI"
+        "youtube": "jwPoEaqb3NI",
+        "date": "2022-12-15"
+      },
+      {
+        "title": "Always with you",
+        "artist": "릴파",
+        "cover": true,
+        "roles": "Mix",
+        "youtube": "JwEEIHzZNuQ",
+        "date": "2022-12-09"
       },
       {
         "title": "Panda Hero",
         "artist": "레볼루션 하트",
         "cover": true,
         "roles": "Mix · Master",
-        "youtube": "0wflo2ye0vg"
+        "youtube": "0wflo2ye0vg",
+        "date": "2022-11-30"
       }
     ]
   },
@@ -1813,48 +1943,72 @@
     },
     "items": [
       {
-        "title": "판타지 타운 광고음악",
-        "titleEn": "Fantasy Town · Ad music",
-        "titleJp": "ファンタジータウン 広告音楽",
-        "artist": "Arumgames",
-        "cover": false,
-        "roles": "BGM",
-        "audio": "assets/works/audio/fantasy-town-ad.mp3"
+        "title": "千鳥 (물떼새)",
+        "titleEn": "Chidori",
+        "titleJp": "千鳥",
+        "artist": "Beru (원곡 ヨルシカ)",
+        "cover": true,
+        "roles": "Arr · Vocal Edit · Mix",
+        "youtube": "mcu-7ceV5IQ",
+        "date": "2026-09-13"
       },
       {
         "title": "BLUE",
         "artist": "수니문",
         "cover": true,
         "roles": "Arr",
-        "youtube": "N2mrzZTXHkw"
+        "youtube": "N2mrzZTXHkw",
+        "date": "2026-02-21"
       },
       {
         "title": "Gravity",
         "artist": "수니문",
         "cover": true,
         "roles": "Arr · Mix · Master",
-        "youtube": "Jox8iNRZXz0"
+        "youtube": "Jox8iNRZXz0",
+        "date": "2025-12-07"
+      },
+      {
+        "title": "I'm Not A Cat!",
+        "artist": "티그리스 카닌 (V-llage)",
+        "cover": false,
+        "roles": "BGM",
+        "youtube": "W9xU8SRglZc",
+        "date": "2024-11-19"
       },
       {
         "title": "Remember",
         "artist": "휴복",
         "cover": true,
         "roles": "Arr",
-        "youtube": "9LLHOFDmfi4"
+        "youtube": "9LLHOFDmfi4",
+        "date": "2021-05-08"
+      },
+      {
+        "title": "판타지 타운 광고음악",
+        "titleEn": "Fantasy Town · Ad music",
+        "titleJp": "ファンタジータウン 広告音楽",
+        "artist": "Arumgames",
+        "cover": false,
+        "roles": "BGM",
+        "audio": "assets/works/audio/fantasy-town-ad.mp3",
+        "date": "2021"
       },
       {
         "title": "点描の唄",
         "artist": "휴복 × 연하리",
         "cover": true,
         "roles": "Arr",
-        "youtube": "JAGKJwSgz2Y"
+        "youtube": "JAGKJwSgz2Y",
+        "date": "2020-05-09"
       },
       {
         "title": "アイネクライネ",
         "artist": "휴복",
         "cover": true,
         "roles": "Arr",
-        "youtube": "HoM6oOgvfUM"
+        "youtube": "HoM6oOgvfUM",
+        "date": "2019-10-12"
       }
     ]
   }
