@@ -160,6 +160,23 @@ var ComponentContent = {
       return id !== 'home-translation' && id !== 'home_translation' && id !== 'hometranslation';
     });
     this.BRIDGES = bridgeData.map((b)=>this._localizedObject(b, b && b.translations));
+    // Home's featured song: the work card comes from the build (listenWork), the label and context from home.listen
+    var listen = this.HOME.listen || {}, listenWork = cfg.listenWork ? this._localizedObject(cfg.listenWork, cfg.listenWork.translations) : {};
+    this.HOME_LISTEN = listenWork.slug && listen.slug === listenWork.slug ? Object.assign({}, listenWork, {
+      label: listen.label || '', context: listen.context || listenWork.artist || '',
+      ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
+    }) : {};
+    // HOW WE WORK: one comparison, reference-led against story-led (story, tone, music: the name itself), and one real
+    // case with its record (the cover comes from the build: caseWork); the case is written for some languages only
+    this.PROOF = this.PROJECTS_META.proof || {};
+    var caseData = this.PROOF.case || {}, caseWork = cfg.caseWork && cfg.caseWork.slug === caseData.slug ? cfg.caseWork : {};
+    this.CASE = caseData.title ? Object.assign({}, caseData, { thumb: caseWork.thumb || '', href: '/works/?work=' + caseData.slug }) : {};
+    // Blocks written only for some languages (the client voices, the inquiry form) are empty elsewhere
+    var voicesData = cfg.voices || {};
+    this.VOICES = this._localizedObject(voicesData, voicesData.translations);
+    var contactExtra = this.CONTACT || {};
+    this.CONTACT_FORM = contactExtra.form || {};
+    this.CONTACT_CHANNELS = (Array.isArray(contactExtra.channels) ? contactExtra.channels : []).filter((c)=>c && c.url);
   },
 
   _normalizeNumber(value, fallback){
@@ -253,7 +270,7 @@ var ComponentContent = {
 
   togglePartner(){var open=!this.state.partnerOpen;document.body.classList.toggle('tt-network-open',open);this.setState({partnerOpen:open});},
 
-  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'',role:'',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||''});},
+  _normalizePartner(p,i){var src=p||{};return Object.assign({id:'p'+(i+1),name:'',role:'',image:'',link:'',brightness:100,saturation:100,lightness:100,textColor:'#ffffff'},src,{id:src.id||('p'+(i+1)),brightness:Number.isFinite(Number(src.brightness))?Number(src.brightness):100,saturation:Number.isFinite(Number(src.saturation))?Number(src.saturation):100,lightness:Number.isFinite(Number(src.lightness))?Number(src.lightness):100,textColor:src.textColor||'#ffffff',link:src.link||'',linkState:src.link?'on':'off',tabIndex:src.link?0:-1});},
 
   _normalizePartners(){this.PARTNERS=(this.PARTNERS||[]).map((p,i)=>this._normalizePartner(p,i));},
 
@@ -280,6 +297,20 @@ var ComponentContent = {
       if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.pauseAll){ window.TALETONE_WORKS_API.pauseAll(); return; }
       document.querySelectorAll('#c-works audio,audio[data-works-audio]').forEach(function(a){ a.pause(); });
     }catch(_e){}
+  },
+
+  // The inquiry form. Until a form service is connected it writes the answers into a mail to the contact address.
+  sendInquiry(e){
+    if(e && e.preventDefault) e.preventDefault();
+    var formEl = e && e.currentTarget, contact = this.CONTACT || {}, f = this.CONTACT_FORM || {};
+    if(!formEl || !contact.email) return;
+    var data = new FormData(formEl), value = (name)=>String(data.get(name) || '').trim();
+    var lines = [
+      [f.nameLabel, value('name')], [f.contactLabel, value('reply')], [f.projectLabel, value('project')],
+      [f.songLabel, data.getAll('song').join(', ')], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')]
+    ].filter((row)=>row[0]).map((row)=>row[0] + ': ' + (row[1] || '-'));
+    var subject = (contact.mailSubject || '') + (value('project') ? ' — ' + value('project') : '');
+    window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
   },
 
   async copyContactEmail(e){

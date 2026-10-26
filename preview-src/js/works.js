@@ -539,24 +539,37 @@
       logos.map(function (logo) { return '<img src="' + esc(logo.src) + '" alt="' + esc(logo.alt) + '" loading="lazy">'; }).join('') + '</div></div>';
   }
 
-  // mixing and mastering credits: watched on YouTube, not pressed as records
-  function mixHtml() {
+  // engineering, arrangement and BGM credits: watched on YouTube (or heard from a small player), not pressed as records
+  function mixHtml(key) {
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
-    var mix = content.mixWorks || {};
-    var items = Array.isArray(mix.items) ? mix.items.filter(function (it) { return it && it.youtube; }) : [];
+    var mix = content[key] || {};
+    var items = Array.isArray(mix.items) ? mix.items.filter(function (it) { return it && (it.youtube || it.audio); }) : [];
     if (!items.length) return '';
     var t = Object.assign({}, mix, (mix.translations && mix.translations[pageLangKey()]) || {});
+    var lang = pageLangKey();
     return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
       '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
       '<ul class="tt-mix-row">' + items.map(function (it) {
-        var id = String(it.youtube);
-        return '<li class="tt-mix-card">' +
-          '<div class="tt-shelf-yt" data-yt="' + esc(id) + '"><img src="https://i.ytimg.com/vi/' + esc(id) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
-          '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(it.title + ' — ' + it.artist) + '"><span aria-hidden="true"></span></button></div>' +
-          '<div class="tt-mix-copy"><strong>' + esc(it.title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + '</span><small>' + esc(it.roles) + '</small></div>' +
+        var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
+        var media = it.youtube
+          ? '<div class="tt-shelf-yt" data-yt="' + esc(String(it.youtube)) + '"><img src="https://i.ytimg.com/vi/' + esc(String(it.youtube)) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
+            '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + it.artist) + '"><span aria-hidden="true"></span></button></div>'
+          : '<div class="tt-mix-audio"><span class="tt-mix-audio-tag" aria-hidden="true">' + esc(it.roles) + '</span>' +
+            '<audio controls preload="none" src="' + esc(audioUrl(it.audio)) + '" data-gain="' + loudnessGain(it.audio) + '" aria-label="' + esc(title) + '"></audio></div>';
+        return '<li class="tt-mix-card">' + media +
+          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + '</span><small>' + esc(it.roles) + '</small></div>' +
         '</li>';
       }).join('') + '</ul></section>';
   }
+
+  document.addEventListener('play', function (event) {
+    var el = event.target;
+    if (!el || el.tagName !== 'AUDIO' || !el.closest || !el.closest('.tt-mix-audio')) return;
+    pauseAll();
+    var gain = Number(el.getAttribute('data-gain'));
+    if (isFinite(gain) && gain > 0) el.volume = Math.min(1, gain);
+    document.querySelectorAll('.tt-mix-audio audio').forEach(function (other) { if (other !== el && !other.paused) other.pause(); });
+  }, true);
 
   function bookRects() {
     var rects = {};
@@ -600,7 +613,7 @@
       '<div class="tt-crate-stage">' +
         '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
         '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
-      '</div>' + mixHtml() + clientsHtml() +
+      '</div>' + mixHtml('mixWorks') + mixHtml('bgmWorks') + clientsHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);

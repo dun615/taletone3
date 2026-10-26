@@ -31,7 +31,6 @@ var ComponentRouting = {
         { key:'projects', label:'Story Types', path:'/story-types/', sectionId:'c-projects', title:'Story Types | TALETONE MUSIC', description:'TALETONE MUSIC의 세계관 프로젝트와 음악 기반 스토리텔링 작업을 소개합니다.' },
         { key:'members', label:'Members', path:'/members/', sectionId:'c-members', title:'Members | TALETONE MUSIC', description:'TALETONE MUSIC을 함께 만드는 프로듀서, 보컬, 아트 디렉터와 크리에이터 멤버들을 소개합니다.' },
         { key:'works', label:'Works', path:'/works/', sectionId:'c-works', title:'Works | TALETONE MUSIC', description:'TALETONE MUSIC이 제작하고 참여한 음악, 앨범, OST, 프로젝트 아카이브를 확인할 수 있습니다.' },
-        { key:'news', label:'News', path:'/news/', sectionId:'c-news', title:'News | TALETONE MUSIC', description:'TALETONE MUSIC의 새로운 소식, 릴리즈, 프로젝트 업데이트를 전합니다.' },
         { key:'contact', label:'Contact', path:'/contact/', sectionId:'c-contact', title:'Contact | TALETONE MUSIC', description:'음악 제작, 프로젝트 협업, 스토리텔링 사운드 작업을 TALETONE MUSIC에 문의하세요.' }
       ]
     };
@@ -80,12 +79,11 @@ var ComponentRouting = {
 
   _seoPageKeyFromLocation(){
     var hash = String((location && location.hash) || '').replace(/^#/,'').replace(/^c-/,'').toLowerCase();
-    if(hash && ['projects','members','works','news','contact'].indexOf(hash) !== -1) return hash;
+    if(hash && ['projects','members','works','contact'].indexOf(hash) !== -1) return hash;
     var path = String((location && location.pathname) || '/').toLowerCase().replace(/\/index\.html$/,'/');
     if(path.indexOf('/story-types/') !== -1 || path.indexOf('/projects/') !== -1) return 'projects';
     if(path.indexOf('/members/') !== -1) return 'members';
     if(path.indexOf('/works/') !== -1) return 'works';
-    if(path.indexOf('/news/') !== -1) return 'news';
     if(path.indexOf('/contact/') !== -1) return 'contact';
     return 'home';
   },

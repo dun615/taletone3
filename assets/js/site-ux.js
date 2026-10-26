@@ -76,7 +76,6 @@
       projects: 'c-projects',
       members: 'c-members',
       works: 'c-works',
-      news: 'c-news',
       contact: 'c-contact'
     }[chapter] || 'c-home';
   }
@@ -430,12 +429,67 @@
     activateSiteDialog(found);
   }
 
+  // Placeholders: every "[TODO: …]" on screen is wrapped in a yellow mark so it is easy to find.
+  var todoPattern = /\[TODO[^\]]*\]/g;
+  function markTodos() {
+    var root = document.body;
+    if (!root || root.textContent.indexOf('[TODO') === -1) return;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (node) {
+        var parent = node.parentNode;
+        if (!parent || /^(SCRIPT|STYLE|TEXTAREA|TITLE|OPTION)$/.test(parent.nodeName) || (parent.classList && parent.classList.contains('tt-todo'))) return NodeFilter.FILTER_REJECT;
+        return node.nodeValue.indexOf('[TODO') !== -1 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+      }
+    });
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (node) {
+      var text = node.nodeValue, last = 0, fragment = document.createDocumentFragment();
+      text.replace(todoPattern, function (match, offset) {
+        if (offset > last) fragment.appendChild(document.createTextNode(text.slice(last, offset)));
+        var mark = document.createElement('mark');
+        mark.className = 'tt-todo';
+        mark.textContent = match;
+        fragment.appendChild(mark);
+        last = offset + match.length;
+        return match;
+      });
+      if (last < text.length) fragment.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(fragment, node);
+    });
+  }
+  // Images further down (img[data-defer-src]: client logos, the planning sheet) wait for the reader's first input,
+  // or for a page opened on a chapter other than home, so the opening view fetches no more than before.
+  // Scrolling alone does not count: the intro glide scrolls #content by itself.
+  var deferredReady = false;
+  function loadDeferredImages() {
+    if (!deferredReady && /\/(story-types|members|works|news|contact)\/?$/.test(location.pathname)) deferredReady = true;
+    if (!deferredReady) return;
+    document.querySelectorAll('img[data-defer-src]').forEach(function (image) {
+      image.src = image.getAttribute('data-defer-src');
+      image.removeAttribute('data-defer-src');
+    });
+  }
+  function releaseDeferredImages() {
+    if (deferredReady) return;
+    deferredReady = true;
+    loadDeferredImages();
+  }
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (type) { window.addEventListener(type, releaseDeferredImages, { passive: true, once: true }); });
+  var markTimer = 0;
+  new MutationObserver(function () {
+    clearTimeout(markTimer);
+    markTimer = setTimeout(function () { markTodos(); loadDeferredImages(); }, 120);
+  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+
   function refreshGlobalUx() {
     refreshChapterControls();
     ensureSkipLink();
     patchNewsPreviews();
     patchInteractiveCards();
     refreshSiteDialog();
+    markTodos();
+    loadDeferredImages();
   }
 
   function onGlobalUxKeydown(event) {
@@ -528,8 +582,8 @@
       '<button type="button" class="tt-dock-chapter" aria-haspopup="menu" aria-controls="tt-mobile-chapter-menu"><span class="tt-dock-num"></span><span class="tt-dock-name"></span><i aria-hidden="true"></i></button>' +
       '<button type="button" class="tt-dock-cta"></button>';
     document.body.appendChild(dock);
-    var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', news: 'nav-5', contact: 'nav-6' };
-    var order = ['home', 'projects', 'members', 'works', 'news', 'contact'];
+    var names = { home: 'nav-0', projects: 'nav-2', members: 'nav-3', works: 'nav-4', contact: 'nav-6' };
+    var order = ['home', 'members', 'projects', 'works', 'contact'];
     var sync = function () {
       var chapter = document.body.getAttribute('data-active-chapter') || 'home';
       var nav = document.getElementById(names[chapter] || 'nav-0');

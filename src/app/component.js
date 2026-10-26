@@ -78,7 +78,7 @@ class Component extends DCLogic {
       }
     };
     this.enforceMobileFxLayer();
-    this.sections = ['c-home','c-projects','c-members','c-works','c-news','c-contact']
+    this.sections = ['c-home','c-members','c-projects','c-works','c-contact']
       .map(id=>document.getElementById(id)).filter(Boolean);
     this.pxEls = Array.from(document.querySelectorAll('[data-px]'));
     this.pxEls.forEach(el=>{ el._base = el.style.transform || ''; });
@@ -198,7 +198,7 @@ class Component extends DCLogic {
     if(this._chapterTarget||this._bridgeNavTarget||performance.now()-(this._userScrollAt||-1e9)>1200) return;
     var done=this._preloadedChapters||(this._preloadedChapters={});
     var view=this.scroller?this.scroller.clientHeight:window.innerHeight;
-    ['projects','members','works','news','contact'].forEach((chapter)=>{
+    ['members','projects','works','contact'].forEach((chapter)=>{
       if(done[chapter]) return;
       var section=document.getElementById('c-'+chapter);
       if(!section||section.getBoundingClientRect().top>view*2.5) return;
@@ -220,10 +220,11 @@ class Component extends DCLogic {
   }
   // Escape closes dialogs; taps and clicks spawn ink in the water.
   _mountPointerInput(){
-    this.newsSec = document.getElementById('c-news');
 
     this._escapeHandler=(e)=>{ if(e.key==='Escape') this.closeAll(); };
     window.addEventListener('keydown', this._escapeHandler);
+    this._historyHandler=()=>{ if((this.MEMBERS||[]).length) this.openMember(0); };
+    window.addEventListener('TALETONE_OPEN_HISTORY', this._historyHandler);
     this._lastInkSpawn = 0;
     this._spawnInkFromEvent = (e)=>{
       var point = e && ((e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]) || e);
@@ -273,7 +274,7 @@ class Component extends DCLogic {
         if(e.preventDefault) e.preventDefault();
         if(e.stopPropagation) e.stopPropagation();
         var href = this._routePath(a.getAttribute('href') || '/');
-        var map = {'/':'c-home','/story-types/':'c-projects','/projects/':'c-projects','/members/':'c-members','/works/':'c-works','/news/':'c-news','/contact/':'c-contact'};
+        var map = {'/':'c-home','/story-types/':'c-projects','/projects/':'c-projects','/members/':'c-members','/works/':'c-works','/contact/':'c-contact'};
         this.navigateChapter(e, map[href] || 'c-home', href);
       };
       document.addEventListener('click', this._chapterLinkClick, true);
@@ -335,6 +336,7 @@ class Component extends DCLogic {
     }
     window.removeEventListener('message', this._siteDataListener);
     if(this._escapeHandler) window.removeEventListener('keydown',this._escapeHandler);
+    if(this._historyHandler) window.removeEventListener('TALETONE_OPEN_HISTORY',this._historyHandler);
     if(this._spawnInkFromEvent){
       var inkEvents = this._inkEvents && this._inkEvents.length ? this._inkEvents : ['pointerdown','touchstart','click'];
       for(var ie=0; ie<inkEvents.length; ie++) window.removeEventListener(inkEvents[ie], this._spawnInkFromEvent);
@@ -567,7 +569,7 @@ class Component extends DCLogic {
     if(sceneDirty){
       // active section and progress are scroll-derived; keep their last values while idle.
       if(!this.sections||!this.sections.length){
-        this.sections=['c-home','c-projects','c-members','c-works','c-news','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
+        this.sections=['c-home','c-members','c-projects','c-works','c-contact'].map(id=>document.getElementById(id)).filter(Boolean);
       }
       // A chapter becomes current when its title passes 60% of the screen height (its section box starts much
       // higher, above a tall top padding, so the counter used to lag behind what the reader sees).
@@ -579,7 +581,7 @@ class Component extends DCLogic {
         if(anchor.getBoundingClientRect().top <= line) act=k;
       }
       if(act!==this.lastActive){
-        var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-news':5,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
+        var navFor={'c-home':0,'c-projects':2,'c-members':3,'c-works':4,'c-contact':6}, actNav=navFor[(this.sections[act]||{}).id];
         for(var j=0;j<7;j++){
           var nb=document.getElementById('nav-'+j); if(!nb) continue;
           var on=j===actNav;
@@ -625,7 +627,7 @@ class Component extends DCLogic {
     return {
       nav0:(e)=>this.navigateChapter(e, 'c-home', '/'),
       nav2:(e)=>this.navigateChapter(e, 'c-projects', '/story-types/'), nav3:(e)=>this.navigateChapter(e, 'c-members', '/members/'),
-      nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav5:(e)=>this.navigateChapter(e, 'c-news', '/news/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
+      nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
       langKR:()=>this.setLang('kr'), langEN:()=>this.setLang('en'), langJP:()=>this.setLang('jp'),
       HOME: this.HOME || {},
       LATEST_WORK: this.LATEST_WORK || {},
@@ -633,7 +635,6 @@ class Component extends DCLogic {
       BRIDGE_1: (this.BRIDGES||[])[1] || {},
       BRIDGE_2: (this.BRIDGES||[])[2] || {},
       BRIDGE_3: (this.BRIDGES||[])[3] || {},
-      BRIDGE_4: (this.BRIDGES||[])[4] || {},
       CHAPTER_PROLOGUE: (this.CHAPTER_LABELS||{}).prologue || {},
       CHAPTER_TALE: (this.CHAPTER_LABELS||{}).tale || {},
       CHAPTER_TONE: (this.CHAPTER_LABELS||{}).tone || {},
@@ -645,6 +646,10 @@ class Component extends DCLogic {
       CONTACT: this.CONTACT || {},
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
+      sendInquiry:(e)=>this.sendInquiry(e),
+      // the featured song, How We Work's steps, client voices and the short inquiry form
+      HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, CASE: this.CASE || {}, VOICES: this.VOICES || {},
+      CONTACT_FORM: this.CONTACT_FORM || {}, CONTACT_NO_FORM: !(this.CONTACT_FORM || {}).title, CONTACT_CHANNELS: this.CONTACT_CHANNELS || [],
       TRACK_RECORD: this.TRACK_RECORD || [],
       NEWS_META: this.NEWS_META || {},
       PARTNERS_META: this.PARTNERS_META || {},

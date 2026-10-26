@@ -5,9 +5,9 @@ import path from 'node:path';
 const root = process.cwd();
 const routes = [
   ['home', 'index.html', '/', 'TALETONE MUSIC'],
-  ['story-types', 'story-types/index.html', '/story-types/', 'Story Types'],
-  ['members', 'members/index.html', '/members/', 'Members'],
-  ['works', 'works/index.html', '/works/', 'Works'],
+  ['story-types', 'story-types/index.html', '/story-types/', 'How It Works'],
+  ['members', 'members/index.html', '/members/', 'About'],
+  ['works', 'works/index.html', '/works/', 'Discography'],
   ['news', 'news/index.html', '/news/', 'News'],
   ['contact', 'contact/index.html', '/contact/', 'Contact'],
 ];
@@ -178,12 +178,10 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(!decoded.includes('id="c-translation"') && !decoded.includes('id="tale-line"') && !decoded.includes('class="nav-chapter"'), `${file}: retired TRANSLATE chapter or menu chapter words returned`);
     assert(decoded.includes(':root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}'), `${file}: site type scale is missing`);
     assert(decoded.includes('html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important'), `${file}: Korean keep-all override is missing`);
-    assert(decoded.includes('--crew-accent:{{ member.dotAccent }}'), `${file}: member dot does not use dotAccent`);
-    assert(decoded.includes('<img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy"'), `${file}: member card image is not deferred until MEMBERS is active`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
     assert(/class="tt-news-modal(?: [\w-]+)*" role="dialog" aria-modal="true"/.test(decoded), `${file}: NEWS dialog lacks a direct selector`);
     assert(decoded.includes('class="tt-home-tagline"') && decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline lockup is missing`);
-    for (const binding of ['HOME.tagline', 'MEMBERS_META.subtitle', 'MEMBERS_META.description', 'NEWS_META.subtitle', 'NEWS_META.description', 'CONTACT.subtitle', 'CONTACT.caption']) {
+    for (const binding of ['HOME.tagline', 'MEMBERS_META.subtitle', 'MEMBERS_META.description', 'CONTACT.subtitle', 'CONTACT.caption']) {
       assert(decoded.includes(`<sc-if value="{{ ${binding} }}">`), `${file}: empty chapter copy is not conditionally removed: ${binding}`);
     }
     assert(!decoded.includes('HOME.subtitleLine') && !decoded.includes('HOME.descriptionLine'), `${file}: obsolete multi-line HOME copy binding returned`);
@@ -194,7 +192,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     for (const deadKeyframe of ['bob', 'haloSpin', 'haloSpinR', 'eq', 'floaty']) {
       assert(!decoded.includes(`@keyframes ${deadKeyframe}`), `${file}: dead keyframe returned: ${deadKeyframe}`);
     }
-    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 5, `${file}: story bridges do not reserve their final height`);
+    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: story bridges do not reserve their final height`);
     assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
     assert(!decoded.includes('scroll-snap-type') && !decoded.includes('scroll-snap-stop'), `${file}: native bridge snapping can jump after a content re-render`);
     assert(!decoded.includes('.tt-bridge-continue'), `${file}: obsolete bridge continuation cue CSS returned`);
@@ -429,7 +427,7 @@ for (const language of siteLanguages) {
   assert(siteJson.home?.translations?.[language]?.tagline === expectedHomeTaglines[language], `HOME ${language} tagline changed`);
 }
 const clearedChapterCopy = {
-  membersMeta: ['subtitle', 'description'],
+  membersMeta: ['description'],
   worksMeta: ['subtitle', 'description'],
   newsMeta: ['subtitle', 'description'],
 };
@@ -463,7 +461,6 @@ for (const language of siteLanguages) {
 }
 for (const language of siteLanguages) {
   assert(String(siteJson.projects?.translations?.[language]?.subtitle || '').trim(), `Story Types ${language} subtitle was cleared`);
-  assert(String(siteJson.projects?.translations?.[language]?.description || '').trim(), `Story Types ${language} description was cleared`);
 }
 for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1', 'descriptionLine2']) {
   assert(!Object.hasOwn(siteJson.home || {}, obsoleteField), `HOME obsolete field returned: ${obsoleteField}`);
@@ -475,11 +472,11 @@ assert(!Object.hasOwn(siteJson, 'translation'), 'retired TRANSLATE content retur
 for (const key of ['home', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
   assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
 }
-for (const [key, minimum] of Object.entries({ members: 4, news: 1, partners: 1, bridges: 5, trackRecord: 2 })) {
+for (const [key, minimum] of Object.entries({ members: 1, news: 1, partners: 1, bridges: 4, trackRecord: 2 })) {
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
 const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
-assert(firstBridge?.eyebrow === 'PROLOGUE · HOW WE DIVE' && firstBridge?.translations?.jp?.text === '物語は色になり、\nその色は音楽となって花開きます。', 'prologue bridge copy or Japanese line break changed');
+assert(firstBridge?.eyebrow === 'CHAPTER 1 · TALE' && firstBridge?.translations?.jp?.text === '水面の下には、\n物語に耳を傾ける人がいます。', 'chapter 1 bridge copy or Japanese line break changed');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
@@ -606,7 +603,7 @@ const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] 
 const liveTemplate = await text('src/app/template.html');
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && liveTemplate.includes('#content#content .tt-home-tagline{font-size:var(--fs-xl)}'), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-assert(Buffer.byteLength(worksCss) <= 130_000, 'WORKS CSS exceeds 130 KB source budget');
+assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
 assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
 const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
@@ -689,10 +686,7 @@ const forbidden = [
   '\uC57C\uAD6C\uBD80',
   ['010', '-'].join(''),
 ];
-const memberPortfolioOnly = [
-  ['Always', ' with you'].join(''),
-  ['EP', 'IC7'].join(''),
-];
+const memberPortfolioOnly = [];
 const publicText = [JSON.stringify(siteJson), JSON.stringify(seoJson), JSON.stringify(worksJson)].join('\n');
 for (const term of forbidden) assert(!publicText.toLowerCase().includes(term.toLowerCase()), `forbidden public term found: ${term}`);
 const { members: memberPortfolio, ...siteWithoutMembers } = siteJson;

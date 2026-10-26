@@ -10,6 +10,8 @@ const errors = [];
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const assert = (condition, message) => { if (!condition) errors.push(message); };
 const isGoogleFontRequest = (url) => /^https:\/\/fonts\.(?:googleapis|gstatic)\.com(?:\/|$)/i.test(url);
+// DISCOGRAPHY's video rows show YouTube's own thumbnails (lazy; no player until a click)
+const isVideoThumbRequest = (url) => /^https:\/\/i\.ytimg\.com\/vi\/[\w-]{11}\/hqdefault\.jpg$/i.test(url);
 
 const viewports = [
   { key: 'desktop', width: 1440, height: 900, dpr: 1, mobile: false },
@@ -45,7 +47,6 @@ const functionalRoutes = [
   { key: 'story-types', path: '/story-types/', chapter: 'projects', section: '#c-projects' },
   { key: 'members', path: '/members/', chapter: 'members', section: '#c-members' },
   { key: 'works', path: '/works/', chapter: 'works', section: '#c-works' },
-  { key: 'news', path: '/news/', chapter: 'news', section: '#c-news' },
   { key: 'contact', path: '/contact/', chapter: 'contact', section: '#c-contact' },
 ];
 const functionalLanguages = { kr: 'ko', en: 'en', jp: 'ja' };
@@ -297,7 +298,7 @@ function capturePhase(client, origin) {
       const googleFontTransferBytes = list.reduce((sum, request) => sum + (!request.fromCache && isGoogleFontRequest(request.url) ? request.bytes : 0), 0);
       const firstPartyUncachedRequests = uncachedRequests.filter((request) => request.url.startsWith(origin));
       const unexpectedThirdPartyUrls = [...new Set(list
-        .filter((request) => !request.url.startsWith(origin) && !isGoogleFontRequest(request.url))
+        .filter((request) => !request.url.startsWith(origin) && !isGoogleFontRequest(request.url) && !isVideoThumbRequest(request.url))
         .map((request) => request.url))];
       return {
         requestCount: list.length,
@@ -496,11 +497,6 @@ async function runFunctionalMatrix(chrome, origin) {
           assert(state.langButton, `${key}: language button is missing`);
           assert(network.sameOriginFailures.length === 0, `${key}: network errors: ${network.sameOriginFailures.join(', ')}`);
           assert(network.runtimeErrors.length === 0 && state.observerErrors.length === 0, `${key}: runtime errors: ${[...network.runtimeErrors, ...state.observerErrors].join(' | ')}`);
-          if (route.key === 'members') {
-            assert(state.memberImagesAssigned === 5 && state.memberImagesDeferred === 0, `${key}: member images were not activated on entry`);
-          } else {
-            assert(state.memberImagesAssigned === 0 && state.memberImagesDeferred === 5, `${key}: hidden member images were activated`);
-          }
           if (route.key === 'works') {
             assert(state.worksCards >= 6, `${key}: expected the first WORKS shelf, found ${state.worksCards} books`);
             assert(network.worksDataRequests === 1, `${key}: expected one WORKS data request, found ${network.worksDataRequests}`);
@@ -602,51 +598,43 @@ async function runInteractionSmoke(chrome, origin) {
     await clickSelector(client, '[data-works-action="filter"][data-filter="ost"]');
     await sleep(700);
     const osts = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(osts === 3, `interaction: OST filter expected 3 sleeves, found ${osts}`);
+    assert(osts === 9, `interaction: OST filter expected 9 sleeves, found ${osts}`);
     await clickSelector(client, '[data-works-action="filter"][data-filter="original"]');
     await sleep(700);
     const originals = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(originals === 3, `interaction: Original filter expected 3 sleeves, found ${originals}`);
+    assert(originals === 7, `interaction: Original filter expected 7 sleeves, found ${originals}`);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, `document.querySelectorAll('[data-works-book]').length`);
-    assert(all === 21, `interaction: whole rack expected 21 sleeves, found ${all}`);
+    assert(all === 34, `interaction: whole rack expected 34 sleeves, found ${all}`);
     passed.push('works-filter-shelf');
 
     // leaving the WORKS chapter stops the music
     await clickSelector(client, '.tt-deck-toggle');
     await sleep(800);
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'playing'`), 'interaction: turntable play button did not resume');
-    await clickSelector(client, '#nav-5');
+    await clickSelector(client, '#nav-6');
     let leftWorks = false;
-    for (let n = 0; n < 40 && !leftWorks; n++) { await sleep(100); leftWorks = await evaluate(client, `document.body.getAttribute('data-active-chapter') === 'news'`); }
-    assert(leftWorks, 'interaction: chapter menu did not move from WORKS to NEWS');
+    for (let n = 0; n < 40 && !leftWorks; n++) { await sleep(100); leftWorks = await evaluate(client, `document.body.getAttribute('data-active-chapter') === 'contact'`); }
+    assert(leftWorks, 'interaction: chapter menu did not move from WORKS to CONTACT');
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback !== 'playing'`), 'interaction: WORKS music kept playing after leaving the chapter');
     passed.push('works-leave-pause');
 
-    await navigateForInteraction(client, `${origin}/members/?lang=kr&runtime-interaction=1`);
-    const memberFocused = await evaluate(client, `(() => {
-      const trigger = document.querySelector('#c-members .tt-crew-row[data-tt-dialog-trigger="true"]');
-      trigger?.focus();
-      return !!trigger && document.activeElement === trigger;
-    })()`);
-    assert(memberFocused, 'interaction: MEMBERS keyboard trigger is not focusable');
-    await pressKey(client, 'Enter', 'Enter', 13);
-    await sleep(220);
-    const memberOpen = await evaluate(client, `(() => ({
+    await navigateForInteraction(client, `${origin}/works/?lang=kr&runtime-interaction=1`);
+    for (let n = 0; n < 40; n++) { if (await evaluate(client, `!!document.querySelector('.tt-shelf-history')`)) break; await sleep(100); }
+    await clickSelector(client, '.tt-shelf-history');
+    await sleep(400);
+    const historyOpen = await evaluate(client, `(() => ({
       dialog: !!document.querySelector('.tt-member-modal[role="dialog"][aria-modal="true"]'),
-      closeFocused: document.activeElement?.matches('.tt-member-close') || false,
-      focusVisible: document.activeElement?.matches(':focus-visible') || false,
-      photoReady: (() => { const image = document.querySelector('.tt-member-modal #m-photo'); return !!(image?.currentSrc && image.complete && image.naturalWidth > 0); })()
+      credits: (document.querySelector('.tt-sheet-credits')?.innerText || '').length
     }))()`);
-    assert(memberOpen.dialog && memberOpen.closeFocused && memberOpen.focusVisible && memberOpen.photoReady, 'interaction: MEMBERS keyboard dialog or photo is invalid');
+    assert(historyOpen.dialog && historyOpen.credits > 200, 'interaction: DISCOGRAPHY history button did not open the profile sheet');
     await pressKey(client, 'Escape', 'Escape', 27);
-    await sleep(120);
-    const memberClosed = await evaluate(client, `!document.querySelector('.tt-member-modal[role="dialog"]') && document.activeElement?.matches('#c-members .tt-crew-row[data-tt-dialog-trigger="true"]')`);
-    assert(memberClosed, 'interaction: MEMBERS Escape did not close and restore trigger focus');
-    passed.push('members-keyboard-dialog');
+    await sleep(200);
+    assert(await evaluate(client, `!document.querySelector('.tt-member-modal[role="dialog"]')`), 'interaction: profile sheet did not close on Escape');
+    passed.push('history-dialog');
 
-    await navigateForInteraction(client, `${origin}/news/?lang=kr&runtime-interaction=1`);
+    await navigateForInteraction(client, `${origin}/contact/?lang=kr&runtime-interaction=1`);
     for (const [language, htmlLanguage] of [['en', 'en'], ['jp', 'ja']]) {
       await clickSelector(client, `#lang-${language}`);
       await sleep(180);
@@ -656,28 +644,16 @@ async function runInteractionSmoke(chrome, origin) {
       }))()`);
       assert(languageState.lang === htmlLanguage && languageState.pressed === 'true', `interaction: ${language.toUpperCase()} language switch failed`);
     }
-    await clickSelector(client, '#c-news .lift[data-tt-dialog-trigger="true"]');
-    await sleep(120);
-    const newsOpen = await evaluate(client, `!!document.querySelector('.tt-news-modal[role="dialog"][aria-modal="true"]') && document.body.classList.contains('tt-site-dialog-open')`);
-    assert(newsOpen, 'interaction: NEWS dialog did not open');
-    // The page is in Japanese here, so the close button carries the localized label.
-    await clickSelector(client, '.tt-news-modal button[aria-label="閉じる"]');
-    await sleep(120);
-    const newsClosed = await evaluate(client, `!document.querySelector('.tt-news-modal[role="dialog"]') && !document.body.classList.contains('tt-site-dialog-open')`);
-    assert(newsClosed, 'interaction: NEWS dialog did not close cleanly');
-    passed.push('news-language-dialog');
+    passed.push('language-switch');
 
     await navigateForInteraction(client, `${origin}/story-types/?lang=kr&runtime-interaction=1`);
-    const beforeSkippedMembers = await evaluate(client, `document.querySelectorAll('#c-members .tt-crew-row img[src]').length`);
     await clickSelector(client, '#nav-4');
     await sleep(1_800);
     const chapterTransition = await evaluate(client, `(() => ({
       path: location.pathname,
       chapter: document.body.getAttribute('data-active-chapter'),
-      cards: document.querySelectorAll('[data-works-book]').length,
-      memberImages: document.querySelectorAll('#c-members .tt-crew-row img[src]').length
+      cards: document.querySelectorAll('[data-works-book]').length
     }))()`);
-    assert(beforeSkippedMembers === 0 && chapterTransition.memberImages === 0, 'interaction: skipped MEMBERS chapter loaded hidden member images');
     assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards >= 6, 'interaction: STORY TYPES to WORKS transition did not settle');
     passed.push('chapter-transition-preload');
 
@@ -695,8 +671,8 @@ async function runInteractionSmoke(chrome, origin) {
 
 async function runBridgeSmoke(chrome, origin) {
   const passed = [];
-  const destinations = ['c-projects','c-members','c-works','c-news','c-contact'];
-  const paths = ['/story-types/','/members/','/works/','/news/','/contact/'];
+  const destinations = ['c-members','c-projects','c-works','c-contact'];
+  const paths = ['/members/','/story-types/','/works/','/contact/'];
   const bridgeViewports=[...functionalViewports,
     {key:'small-phone-reduced',width:320,height:568,mobile:true,reduced:true},
     {key:'phone-landscape',width:844,height:390,mobile:true}];
@@ -715,7 +691,7 @@ async function runBridgeSmoke(chrome, origin) {
       // Legacy ?lang= links land on the language's own URL prefix.
       const langPrefix=['','/en','/ja'][caseIndex%3];
       await navigateForInteraction(client, `${origin}/?lang=${['kr','en','jp'][caseIndex%3]}&bridge-check=1`, 2000);
-      for (let index=0; index<5; index++) {
+      for (let index=0; index<4; index++) {
         const label = `bridge/${viewport.key}/${index+1}`;
         // WORKS mounts on demand after chapter entry. Do not aim at its stale placeholder boundary.
         if(index===3){
@@ -784,10 +760,10 @@ async function runBridgeSmoke(chrome, origin) {
             await writeFile(path.join(process.env.BRIDGE_SCREENSHOTS,`${viewport.key}-bridge.png`),Buffer.from(shot.data,'base64'));
           }
           await sleep(100);
-          if(n===10 && index>=1 && index<=3){
+          if(n===10 && index===2){
             const ready = await evaluate(client, `(() => {
               const section=document.getElementById('${destinations[index]}');
-              const images=${index===3?"Array.from(section.querySelectorAll('image-slot')).map(slot=>slot.shadowRoot?.querySelector('img[part=\"image\"]'))":index===2?"Array.from(section.querySelectorAll('.tt-rack-item img[src]'))":"Array.from(section.querySelectorAll('.tt-crew-row img'))"};
+              const images=Array.from(section.querySelectorAll('.tt-rack-item img[src]'));
               return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
             })()`);
             assert(ready, `${label}: next chapter images were not ready during playback`);
@@ -822,7 +798,7 @@ async function runBridgeSmoke(chrome, origin) {
       // Completed bridges stay final and scroll freely, including after chapter/language changes.
       await evaluate(client, `document.getElementById('nav-0').click()`);
       await sleep(1800);
-      for(let index=0;index<5;index++){
+      for(let index=0;index<4;index++){
         const selector=`document.querySelectorAll('[data-story-bridge-wrap]')[${index}]`;
         await evaluate(client, `(() => {const s=document.getElementById('content'),b=${selector};s.scrollTo({top:b.offsetTop,behavior:'instant'});})()`);
         await sleep(400);
@@ -846,7 +822,7 @@ async function runBridgeSmoke(chrome, origin) {
       await evaluate(client, `document.getElementById('content').scrollTo({top:document.querySelector('[data-story-bridge-wrap]').offsetTop,behavior:'instant'})`);
       await sleep(500);
       const restored=await evaluate(client, `({seen:JSON.parse(sessionStorage.getItem('tt_bridge_seen_v2')||'[]'),phase:document.getElementById('content').dataset.bridgePhase||''})`);
-      assert(restored.seen.length===5&&!restored.phase,`bridge/${viewport.key}: reload forgot bridge completion`);
+      assert(restored.seen.length===4&&!restored.phase,`bridge/${viewport.key}: reload forgot bridge completion`);
       passed.push(`bridge/${viewport.key}/session-reload`);
       // A skipped/cancelled animation must not be recorded as watched.
       await evaluate(client, `sessionStorage.removeItem('tt_bridge_seen_v2')`);
@@ -928,7 +904,6 @@ function validateResult(result) {
   assert(cold.runtimeErrors.length === 0 && warm.runtimeErrors.length === 0, `${key}: runtime errors: ${[...cold.runtimeErrors, ...warm.runtimeErrors].join(' | ')}`);
   assert(cold.observerErrors.length === 0 && warm.observerErrors.length === 0, `${key}: window errors: ${[...cold.observerErrors, ...warm.observerErrors].join(' | ')}`);
   assert(cold.audioRequests === 0 && warm.audioRequests === 0, `${key}: MP3 requested before user playback`);
-  assert(cold.memberImagesAssigned === 0 && warm.memberImagesAssigned === 0, `${key}: hidden member images were assigned outside MEMBERS`);
   assert(warm.firstPartyTransferBytes <= page.maxWarmFirstPartyTransferBytes, `${key}: warm first-party transfer ${warm.firstPartyTransferBytes} > ${page.maxWarmFirstPartyTransferBytes}: ${JSON.stringify(warm.firstPartyUncachedRequests.slice(0, 8))}`);
   if (page.key === 'home') {
     assert(cold.worksDataRequests === 0 && warm.worksDataRequests === 0, `${key}: HOME requested works-data.json`);

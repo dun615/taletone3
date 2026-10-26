@@ -211,7 +211,7 @@
     language: 'KR',
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
-    volume: 0.5,      // linear amplitude: 0.5 = 20·log10(0.5) = -6.02 dB (the default)
+    volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false    // the reader has played something
   };
   var audio = null;
@@ -528,6 +528,7 @@
       '<div class="tt-section-chapter">' + preserve(music.label || meta.eyebrow) + '</div>' +
       (music.note ? '<div class="tt-section-note">' + esc(music.note) + '</div>' : '') +
       '<h2 class="tt-shelf-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' +
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') +
     '</header>';
   }
 
@@ -537,6 +538,38 @@
     return '<div class="tt-shelf-clients"><span class="tt-shelf-clients-label">' + esc(plainRichText(meta.collaborationLabel)) + '</span><div class="tt-shelf-clients-row">' +
       logos.map(function (logo) { return '<img src="' + esc(logo.src) + '" alt="' + esc(logo.alt) + '" loading="lazy">'; }).join('') + '</div></div>';
   }
+
+  // engineering, arrangement and BGM credits: watched on YouTube (or heard from a small player), not pressed as records
+  function mixHtml(key) {
+    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var mix = content[key] || {};
+    var items = Array.isArray(mix.items) ? mix.items.filter(function (it) { return it && (it.youtube || it.audio); }) : [];
+    if (!items.length) return '';
+    var t = Object.assign({}, mix, (mix.translations && mix.translations[pageLangKey()]) || {});
+    var lang = pageLangKey();
+    return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
+      '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
+      '<ul class="tt-mix-row">' + items.map(function (it) {
+        var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
+        var media = it.youtube
+          ? '<div class="tt-shelf-yt" data-yt="' + esc(String(it.youtube)) + '"><img src="https://i.ytimg.com/vi/' + esc(String(it.youtube)) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
+            '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + it.artist) + '"><span aria-hidden="true"></span></button></div>'
+          : '<div class="tt-mix-audio"><span class="tt-mix-audio-tag" aria-hidden="true">' + esc(it.roles) + '</span>' +
+            '<audio controls preload="none" src="' + esc(audioUrl(it.audio)) + '" data-gain="' + loudnessGain(it.audio) + '" aria-label="' + esc(title) + '"></audio></div>';
+        return '<li class="tt-mix-card">' + media +
+          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + '</span><small>' + esc(it.roles) + '</small></div>' +
+        '</li>';
+      }).join('') + '</ul></section>';
+  }
+
+  document.addEventListener('play', function (event) {
+    var el = event.target;
+    if (!el || el.tagName !== 'AUDIO' || !el.closest || !el.closest('.tt-mix-audio')) return;
+    pauseAll();
+    var gain = Number(el.getAttribute('data-gain'));
+    if (isFinite(gain) && gain > 0) el.volume = Math.min(1, gain);
+    document.querySelectorAll('.tt-mix-audio audio').forEach(function (other) { if (other !== el && !other.paused) other.pause(); });
+  }, true);
 
   function bookRects() {
     var rects = {};
@@ -580,7 +613,7 @@
       '<div class="tt-crate-stage">' +
         '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
         '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
-      '</div>' + clientsHtml() +
+      '</div>' + mixHtml('mixWorks') + mixHtml('bgmWorks') + clientsHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
@@ -701,13 +734,23 @@
   // ---- playback: one audio element for a record; its language versions play together (below) ----
   // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
   // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
-  var gainCtx = null, gainNode = null, elementRouted = false;
+  var gainCtx = null, gainNode = null, trackNode = null, elementRouted = false;
+  // Every record plays at the same loudness: scripts/measure-loudness.mjs measures each file (BS.1770 integrated,
+  // target -14 LUFS) and writes the gain it needs into the works data (`loudness.files[path].gain`, dB). The file
+  // is left as it is; the gain is applied here, before the volume.
+  var loudness = {}, elementGain = 1;
+  function loudnessGain(path) {
+    var entry = path && loudness[path];
+    return entry && isFinite(entry.gain) ? Math.pow(10, entry.gain / 20) : 1;
+  }
   function volumeText(v) {
     return Math.round(v * 100) + '% (' + (v > 0 ? (20 * Math.log10(v)).toFixed(1) + ' dB' : '-∞ dB') + ')';
   }
   function applyVolume() {
     if (gainNode) gainNode.gain.value = state.volume;
-    if (audio && !elementRouted) audio.volume = state.volume;
+    if (trackNode) trackNode.gain.value = elementGain;
+    // without Web Audio the element's own volume carries both (it cannot go above 1)
+    if (audio && !elementRouted) audio.volume = Math.min(1, state.volume * elementGain);
   }
   // the audio clock and the master volume every source plays through
   function ensureCtx() {
@@ -718,14 +761,16 @@
       gainCtx = new AC();
       gainNode = gainCtx.createGain();
       gainNode.connect(gainCtx.destination);
-    } catch (_e) { gainCtx = null; gainNode = null; }
+      trackNode = gainCtx.createGain();
+      trackNode.connect(gainNode);
+    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; }
     applyVolume();
     return gainCtx;
   }
   function ensureGain() {
     if (elementRouted || !audio || !ensureCtx()) return;
     try {
-      gainCtx.createMediaElementSource(audio).connect(gainNode);
+      gainCtx.createMediaElementSource(audio).connect(trackNode);
       audio.volume = 1;
       elementRouted = true;
     } catch (_e) {}
@@ -743,7 +788,7 @@
   var layerToken = 0, layerLoading = false, layerFailed = {};
   function layeredEntries() {
     var work = works[state.current]; if (!work) return [];
-    var list = variantsFor(work, state.track).map(function (version, i) { return { language: languageLabel(version, i), url: audioUrl(version.audio) }; })
+    var list = variantsFor(work, state.track).map(function (version, i) { return { language: languageLabel(version, i), url: audioUrl(version.audio), level: loudnessGain(version.audio) }; })
       .filter(function (entry) { return entry.url; });
     return list.length > 1 ? list : [];
   }
@@ -777,7 +822,7 @@
       var g = layer.sources[lang].gain.gain;
       g.cancelScheduledValues(now);
       g.setValueAtTime(g.value, now);
-      g.linearRampToValueAtTime(lang === state.language ? 1 : 0, now + 0.015);
+      g.linearRampToValueAtTime(lang === state.language ? layer.sources[lang].level : 0, now + 0.015);
     });
   }
   // Plays the current record's language versions together. Returns false when it has none to layer (or
@@ -800,11 +845,11 @@
       entries.forEach(function (entry, i) {
         var source = gainCtx.createBufferSource(), gain = gainCtx.createGain();
         source.buffer = buffers[i];
-        gain.gain.value = entry.language === state.language ? 1 : 0;
+        gain.gain.value = entry.language === state.language ? entry.level : 0;
         source.connect(gain);
         gain.connect(gainNode);
         source.start(when, offset);
-        sources[entry.language] = { source: source, gain: gain };
+        sources[entry.language] = { source: source, gain: gain, level: entry.level };
       });
       layer = { key: key, sources: sources, startedAt: when, offset: offset, duration: duration };
       // the end of the shortest version ends the record
@@ -849,6 +894,8 @@
     var unit = playableUnit(work, state.track, state.language);
     var src = audioUrl(unit.audio);
     var el = ensureAudioEl();
+    elementGain = loudnessGain(unit.audio);
+    applyVolume();
     var time = keepTime ? el.currentTime : 0;
     if (src && el.getAttribute('src') !== src) {
       el.setAttribute('src', src);
@@ -1031,6 +1078,8 @@
     var section = document.getElementById('c-works');
     if (!button || !section || !section.contains(button)) return;
     var action = button.getAttribute('data-works-action');
+    // the full career history lives in the profile sheet the app renders
+    if (action === 'history') { window.dispatchEvent(new CustomEvent('TALETONE_OPEN_HISTORY')); return; }
     if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
@@ -1115,6 +1164,7 @@
     bindWorksInteractions();
     works = json.works || [];
     logos = json.clientLogos || [];
+    loudness = (json.loudness && json.loudness.files) || {};
     if (works.length) { state.current = 0; state.track = titleTrackIndex(works[0]); state.language = defaultLanguage(works[0], state.track); }
     // a link opened in a new tab (/works/?work=<slug>) selects that record; it plays if the browser allows
     var asked = pendingSlug || new URLSearchParams(location.search).get('work') || '';
@@ -1127,6 +1177,7 @@
     stopAll();
     works = json.works || [];
     logos = json.clientLogos || [];
+    loudness = (json.loudness && json.loudness.files) || {};
     state.modal = -1;
     render();
   }

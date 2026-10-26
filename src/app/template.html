@@ -90,15 +90,13 @@ p,li{text-wrap:pretty}
 #tt-bridge-progress b{display:block;height:100%;width:calc(var(--bridge-p,0)*100%);background:var(--accent,#0E6E7D)}
 #tt-bridge-progress span{font-weight:700;font-size:12px;letter-spacing:.04em;white-space:nowrap}
 /* 메뉴에도 본문과 같은 챕터 이름(TALE·TONE·MUSIC·ECHO·EPILOGUE)을 붙여 두 이름 체계를 하나로 */
-/* 한글·일본어에는 기울임 글꼴이 없어 브라우저가 억지로 눕힌다: 문장은 바로 세운다 */
-html:is(:lang(ko),:lang(ja)) :is(.tt-contact-caption,.tt-contact-title span,[data-bridge],[data-bridge] span,.tt-bridge-desktop-text){font-style:normal!important}
 /* 자간: 영문 대문자 라벨용 넓은 자간이 한글·일본어에 걸리지 않게 */
 html:is(:lang(ko),:lang(ja)) .tt-section-note{letter-spacing:.02em;text-transform:none}
 .tt-section-chapter-block{margin:0 0 20px}
 .tt-section-note{margin-top:8px;font-size:13px;font-weight:600;opacity:.9}
 .tt-chapter-title{font-size:clamp(48px,6.6vw,108px)!important;line-height:.9!important;letter-spacing:-.02em!important;text-shadow:var(--halo,none)}
 html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(40px,5.6vw,88px)!important;line-height:1.12!important;letter-spacing:-.03em!important}
-.tt-contact-caption{font-style:normal!important;opacity:1!important}
+.tt-contact-caption{opacity:1!important}
 .tt-chapter-lead{max-width:min(720px,88vw);margin-left:auto!important;margin-right:auto!important;font-weight:500!important;line-height:1.6;color:var(--soft,#44505F)!important;text-shadow:var(--halo,none)}
 @media (max-width:760px){.tt-section-note{font-size:11px}.tt-chapter-title{font-size:clamp(40px,12vw,64px)!important}html:is(:lang(ko),:lang(ja)) .tt-contact-title{font-size:clamp(34px,10vw,52px)!important}}
 /* ===== The Book (redesign, preview only) ===== */
@@ -329,11 +327,17 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* R7: partners, named */
 #content#content .tt-network-summary{display:flex;align-items:center;gap:20px;min-height:64px}
 #content#content .tt-network-title{font-size:var(--fs-l);white-space:nowrap}
-.tt-network-people{flex:1 1 auto;display:flex;flex-wrap:wrap;gap:10px 18px;min-width:0}
+.tt-network-people{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 18px;min-width:0}
 .tt-network-person{display:inline-flex;align-items:center;gap:10px;text-align:left}
 .tt-network-person img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
 .tt-network-person strong{display:block;font-size:var(--fs-s);line-height:1.2}
 .tt-network-person small{display:block;font-size:var(--fs-xs);line-height:1.3;opacity:.7}
+/* a former name, small beside the brand */
+.tt-aka{white-space:nowrap;font-size:var(--fs-xs);font-weight:600;letter-spacing:.04em;color:#5a6678;text-transform:none}.tt-aka:empty{display:none}
+/* a partner without a page: a plain card, no arrow */
+.tt-network-card[data-link="off"]{cursor:default}.tt-network-card[data-link="off"]::after{visibility:hidden}.tt-network-card[data-link="off"]:hover{transform:none;border-color:rgba(20,28,48,.12);background:rgba(255,255,255,.82)}
+/* phones: the title and arrow on one line, the partners on the next */
+@media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}}
 #content#content .tt-network-arrow{font-size:var(--fs-l)}
 /* R8: news cards hold their edge on dark water; thumbnails share one tone */
 #content#content #c-news .lift{border:1px solid rgba(232,246,250,.14)!important;position:relative}
@@ -684,10 +688,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- RIGHT CHAPTER NAV -->
 <div id="chapnav" style="position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
   <a id="nav-0" href="/" onclick="{{ nav0 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navHome }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-3" href="/members/" onclick="{{ nav3 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navMembers }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
+  <a id="nav-2" href="/story-types/" onclick="{{ nav2 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navProjects }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-4" href="/works/" onclick="{{ nav4 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navWorks }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
-  <a id="nav-5" href="/news/" onclick="{{ nav5 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navNews }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
   <a id="nav-6" href="/contact/" onclick="{{ nav6 }}" style="display:flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;font-weight:800;font-size:11px;letter-spacing:.15em;color:var(--ink,#141C30);opacity:.4;transition:.3s;text-decoration:none" class="navbtn tt-s-color-var-ink-f97e tt-s-font-size-11px-8b68"><span class="nav-label">{{ UI_LABELS.navContact }}</span><span class="nav-dot" style="width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor;flex:none"></span></a>
 </div>
 
@@ -712,7 +715,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <div class="tt-sheet-disc"><img id="m-photo" src="{{ m.photo }}" alt="{{ m.name }}" decoding="async"></div>
       <div class="tt-sheet-id">
         <div class="tt-sheet-role">{{ m.role }}</div>
-        <div class="tt-sheet-nameline"><h3 class="tt-member-brand tt-sheet-name">{{ m.brand }}</h3><span class="tt-sheet-tag">#{{ m.animal }}</span></div>
+        <div class="tt-sheet-nameline"><h3 class="tt-member-brand tt-sheet-name">{{ m.brand }}</h3><span class="tt-aka">{{ m.aka }}</span><span class="tt-sheet-tag">#{{ m.animal }}</span></div>
         <sc-if value="{{ m.tagline }}"><p class="tt-sheet-tagline">{{ m.tagline }}</p></sc-if>
       </div>
     </header>
@@ -788,7 +791,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <a class="is-primary" href="/works/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
     <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
   </div>
-  <sc-if value="{{ LATEST_WORK.slug }}"><a class="tt-home-latest" href="/works/?work={{ LATEST_WORK.slug }}" aria-label="{{ LATEST_WORK.ariaLabel }}"><img src="{{ LATEST_WORK.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ LATEST_WORK.label }}</small><b>{{ LATEST_WORK.title }}</b><em>{{ LATEST_WORK.artist }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
+  <sc-if value="{{ HOME_LISTEN.slug }}"><a class="tt-home-latest" href="/works/?work={{ HOME_LISTEN.slug }}" aria-label="{{ HOME_LISTEN.ariaLabel }}"><img src="{{ HOME_LISTEN.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ HOME_LISTEN.label }}</small><b>{{ HOME_LISTEN.title }}</b><em>{{ HOME_LISTEN.context }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
   <div data-px="-0.04" style="position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:min(880px,82vw);opacity:.55;pointer-events:none">
     <svg data-drift="" viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
       <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.6">
@@ -811,42 +814,26 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 </section>
 
 
-<!-- ================= 01B TRACK RECORD ================= -->
-<section id="c-track-record" data-screen-label="Track Record" aria-label="TALETONE MUSIC Track Record" style="min-height:52vh;display:flex;align-items:center;justify-content:center;position:relative;padding:76px 6vw 92px;text-align:center">
-  <div data-reveal="" style="width:min(1040px,92vw);opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_PROLOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_PROLOGUE.note }}</div></div>
-    <div class="tt-s-color-var-accent-9aa3" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.24em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:20px">TRACK RECORD</div>
-    <div class="tt-s-grid-template-columns-0466" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;align-items:stretch">
-      <sc-for list="{{ TRACK_RECORD }}" as="record" hint-placeholder-count="2">
-      <article class="lift" style="border-radius:18px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.08);padding:28px 24px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:180px">
-        <div class="tt-s-color-var-ink-f97e" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:800;font-size:var(--fs-4xl);letter-spacing:-.03em;line-height:.9;color:var(--ink,#141C30)">{{ record.value }}</div>
-        <div class="tt-s-color-var-ink-f97e" style="font-weight:800;font-size:var(--fs-l);line-height:1.35;color:var(--ink,#141C30)">{{ record.label }}</div>
-        <div style="font-weight:600;font-size:var(--fs-s);line-height:1.5;color:var(--soft,#44505F);max-width:26em">{{ record.note }}</div>
-      </article>
-      </sc-for>
-    </div>
-  </div>
-</section>
-
 
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div class="tt-bridge-label">{{ BRIDGE_0.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_0.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
+  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_0.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); max-width: none; opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_0.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.0.indent }}">{{ BRIDGE_0.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.1.indent }}">{{ BRIDGE_0.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_0.mobileLines.2.indent }}">{{ BRIDGE_0.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
-<!-- ================= 03 STORY TYPES (soraniwa + TALETONES) ================= -->
-<section id="c-projects" data-screen-label="03 Story Types" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
-  <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+<!-- ================= 02 ABOUT US (c-members) ================= -->
+<section id="c-members" data-screen-label="02 About Us" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="font-style:italic;color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
-    <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
-    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
-  <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-24px 0 34px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
+  <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
+  <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-18px 0 40px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
     <article class="tt-audience">
       <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
@@ -857,68 +844,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <p class="tt-audience-hook">{{ a.hook }}</p>
     </article>
     </sc-for>
-  </div>
-  <div class="tt-s-grid-template-columns-0466" data-reveal="" style="width:min(1180px,94vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
-    <sc-for list="{{ PROJECTS }}" as="p" hint-placeholder-count="2">
-    <article class="lift" style="position:relative;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 16px 40px rgba(8,22,38,.1);padding:34px 32px 32px;display:flex;flex-direction:column;gap:22px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
-        <div>
-          <div class="tt-s-color-var-accent-9aa3" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.18em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:10px">{{ p.label }}</div>
-          <div class="tt-project-title tt-s-color-var-ink-f97e" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-3xl);letter-spacing:-.01em;line-height:1.05;color:var(--ink,#141C30)">{{ p.title }}</div>
-        </div>
-        <div class="tt-s-place-items-center-9906" style="position:relative;width:74px;height:74px;flex:none;display:grid;place-items:center">
-          <div data-spin="16" style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--accent,#0E6E7D);opacity:.5"></div>
-          <div data-spin="-26" style="position:absolute;inset:11px;border-radius:50%;border:1px solid var(--accent2,#3d8a98);opacity:.6"></div>
-          <div data-float="" style="width:11px;height:11px;border-radius:50%;background:var(--accent,#0E6E7D)"></div>
-        </div>
-      </div>
-      <div data-float="" style="border-radius:20px;overflow:hidden">
-        <image-slot id="{{ p.slotId }}" src="{{ p.image }}" fit="{{ p.fit }}" position="{{ p.position }}" style="width:100%;height:230px;filter:{{ p.filter }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot>
-      </div>
-      <p style="margin:0;font-weight:600;font-size:var(--fs-m);line-height:1.6;color:var(--soft,#44505F)">{{ p.description }}</p>
-      <sc-if value="{{ p.hasLink }}"><a href="{{ p.link }}" target="{{ p.linkTarget }}" rel="{{ p.linkRel }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:{{ p.buttonColor }};color:{{ p.buttonTextColor }};padding:14px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.14)"><span>{{ p.buttonLabel }}</span> <span>&#8594;</span></a></sc-if><sc-if value="{{ p.isPending }}"><span class="tt-s-color-var-accent-9aa3" aria-disabled="true" style="align-self:flex-start;display:inline-flex;align-items:center;gap:9px;background:rgba(14,110,125,.12);color:var(--accent,#0E6E7D);padding:12px 22px;border-radius:999px;border:1px solid rgba(14,110,125,.18);font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:none"><span>{{ p.buttonLabel }}</span></span></sc-if>
-    </article>
-    </sc-for>
-  </div>
-</section>
-
-
-<!-- bridge -->
-<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
-  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
-  <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
-  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
-</div>
-
-<!-- ================= 04 MEMBERS ================= -->
-<section id="c-members" data-screen-label="04 Members" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
-  <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }}</h2>
-    <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
-    <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
-  </div>
-  <div class="tt-crew" data-reveal="" data-featured="01" style="opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .12s,transform 1.1s cubic-bezier(.2,.8,.2,1) .12s">
-    <div class="tt-crew-stage" aria-hidden="true">
-      <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="5">
-      <figure class="tt-crew-feature" data-i="{{ member.number }}" data-animal="{{ member.animal }}" style="--crew-accent:{{ member.dotAccent }}">
-        <span class="tt-crew-disc"><img data-member-src="{{ member.photo }}" alt="" loading="lazy" decoding="async"></span>
-        <figcaption><span class="tt-crew-feature-name">{{ member.name }}</span><span class="tt-crew-feature-role">{{ member.role }}</span></figcaption>
-      </figure>
-      </sc-for>
-    </div>
-    <ol class="tt-crew-list">
-      <sc-for list="{{ MEMBER_CARDS }}" as="member" hint-placeholder-count="5">
-      <li class="tt-crew-item"><div onclick="{{ member.open }}" class="tt-crew-row" data-i="{{ member.number }}" data-animal="{{ member.animal }}" data-no-detail="{{ member.noDetailFlag }}">
-        <span class="tt-crew-no">{{ member.number }}</span>
-        <img data-member-src="{{ member.photo }}" alt="{{ member.name }}" loading="lazy" decoding="async">
-        <span class="tt-crew-text"><span class="tt-crew-head"><span class="tt-crew-name">{{ member.name }}</span><span class="tt-crew-tag">#{{ member.animal }}</span></span><span class="tt-crew-role">{{ member.role }}</span></span>
-        <span class="tt-crew-go" aria-hidden="true"></span>
-      </div></li>
-      </sc-for>
-    </ol>
   </div>
   <div class="tt-network-directory" data-reveal="">
     <button type="button" class="tt-network-summary" onclick="{{ togglePartner }}" aria-expanded="{{ partnerOpen }}" aria-controls="tt-network-panel">
@@ -947,7 +872,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
         <div class="tt-network-scroll">
           <div class="tt-network-grid">
             <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1">
-              <a class="tt-network-card" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
+              <a class="tt-network-card" data-link="{{ p.linkState }}" tabindex="{{ p.tabIndex }}" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
                 <image-slot id="{{ 'partner-' + p.id }}" class="tt-network-card-image" style="filter:brightness({{ p.brightness }}%) saturate({{ p.saturation }}%) contrast({{ p.lightness }}%)" shape="rounded" radius="8" placeholder="{{ UI_LABELS.photoPlaceholder }}" src="{{ p.image }}"></image-slot>
                 <span class="tt-network-card-shade"></span>
                 <span class="tt-network-card-copy"><span class="tt-network-card-role">{{ p.role }}</span><strong class="tt-network-card-name">{{ p.name }}</strong></span>
@@ -964,9 +889,53 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
+  <div class="tt-bridge-label">{{ BRIDGE_1.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_1.text }}</span>
+  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_1.text }}" style="font-family: 'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_1.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.0.indent }}">{{ BRIDGE_1.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.1.indent }}">{{ BRIDGE_1.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_1.mobileLines.2.indent }}">{{ BRIDGE_1.mobileLines.2.text }}</span></span></div>
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
+</div>
+
+<!-- ================= 03 HOW WE WORK (c-projects) ================= -->
+<section id="c-projects" data-screen-label="03 How We Work" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
+  <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
+    <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
+    <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
+    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+  </div>
+  <div class="tt-cmp" data-reveal="">
+    <sc-for list="{{ PROOF.rows }}" as="row" hint-placeholder-count="2">
+    <div class="tt-cmp-card" data-ours="{{ row.ours }}">
+      <div class="tt-cmp-head"><span class="tt-cmp-label">{{ row.label }}</span><sc-if value="{{ row.badge }}"><span class="tt-cmp-badge">{{ row.badge }}</span></sc-if></div>
+      <ol class="tt-cmp-flow"><sc-for list="{{ row.steps }}" as="st" hint-placeholder-count="3"><li><b>{{ st.text }}</b><sc-if value="{{ st.en }}"><small>{{ st.en }}</small></sc-if></li></sc-for></ol>
+      <p class="tt-cmp-result">{{ row.result }}</p>
+    </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ PROOF.closing }}"><p class="tt-cmp-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
+  <sc-if value="{{ CASE.title }}">
+  <div class="tt-case" data-reveal="">
+    <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true"></span></a>
+    <div class="tt-case-body">
+      <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
+      <h3 class="tt-case-title">{{ CASE.title }}</h3>
+      <p class="tt-case-meta">{{ CASE.meta }}</p>
+      <ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
+      <p class="tt-case-lesson">{{ CASE.lesson }}</p>
+      <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ PROOF.ctaLabel }}"><a class="tt-dive-cta" href="/contact/" data-reveal="">{{ PROOF.ctaLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
+</section>
+
+
+<!-- bridge -->
+<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
+  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
   <div class="tt-bridge-label">{{ BRIDGE_2.eyebrow }}</div>
   <span class="tt-bridge-readable">{{ BRIDGE_2.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
+  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_2.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_2.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.0.indent }}">{{ BRIDGE_2.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.1.indent }}">{{ BRIDGE_2.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_2.mobileLines.2.indent }}">{{ BRIDGE_2.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -976,45 +945,22 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div id="tt-gh-works-app"></div>
   
 </section>
-<div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
-  <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
-  <span class="tt-bridge-readable">{{ BRIDGE_3.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif; font-style: italic; font-weight: 500; font-size:var(--fs-3xl); line-height: 1.32; color: var(--ink,#141C30); opacity: 0; white-space: pre; word-break: keep-all; overflow-wrap: normal; text-wrap: nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
-</div>
-
-<!-- ================= 06 NEWS ================= -->
-<section id="c-news" data-screen-label="06 News" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 6vw">
-  <div data-reveal="" style="width:min(1060px,94vw);opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div style="text-align:center;margin-bottom:38px">
-      <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_RESURFACE.label }}</div><div class="tt-section-note">{{ CHAPTER_RESURFACE.note }}</div></div>
-      <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D);font-style:italic">{{ NEWS_META.titleAccent }}</span></h2>
-      <sc-if value="{{ NEWS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:18px 0 2px;font-weight:700;font-size:var(--fs-xl);color:var(--ink,#141C30);white-space:pre-wrap">{{ NEWS_META.subtitle }}</p></sc-if>
-      <sc-if value="{{ NEWS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);white-space:pre-wrap">{{ NEWS_META.description }}</p></sc-if>
-    </div>
-    <div class="tt-s-grid-template-columns-0466" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
-      <sc-for list="{{ NEWS }}" as="n" hint-placeholder-count="2">
-      <div onclick="{{ n.open }}" class="lift" style="cursor:pointer;border-radius:20px;overflow:hidden;background:var(--card,rgba(255,255,255,.5));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 12px 32px rgba(8,22,38,.12)">
-        <image-slot id="{{ n.slotId }}" src="{{ n.cardImage }}" fit="{{ n.fit }}" position="{{ n.position }}" style="width:100%;height:188px;filter:{{ n.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
-        <div style="padding:22px 24px 24px">
-          <div class="tt-s-color-var-accent-9aa3" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ n.tag }} &middot; {{ n.date }}</div>
-          <div class="tt-news-title tt-s-color-var-ink-f97e" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:var(--fs-xl);letter-spacing:-.02em;color:var(--ink,#141C30);margin:8px 0 8px">{{ n.title }}</div>
-          <p style="margin:0;font-weight:500;font-size:var(--fs-m);line-height:1.55;color:var(--soft,#44505F)">{{ n.summary }}</p>
-          <div class="tt-s-color-var-accent-9aa3" style="margin-top:14px;font-weight:800;font-size:var(--fs-s);letter-spacing:.04em;color:var(--accent,#0E6E7D)">{{ NEWS_META.readMoreLabel }}</div>
-        </div>
-      </div>
-      </sc-for>
-    </div>
+  <sc-if value="{{ VOICES.title }}">
+  <div class="tt-voices" data-reveal="">
+    <h3 class="tt-voices-title">{{ VOICES.title }}</h3>
+    <ul class="tt-voices-list">
+      <sc-for list="{{ VOICES.items }}" as="v" hint-placeholder-count="3"><li class="tt-voice"><blockquote>{{ v.quote }}</blockquote><p class="tt-voice-by"><b>{{ v.name }}</b><span>{{ v.role }}</span></p></li></sc-for>
+    </ul>
   </div>
-</section>
+  </sc-if>
 
 
 <!-- bridge -->
 <div data-story-bridge-wrap="" style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:0 8vw;position:relative;z-index:3">
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:bottom;transform:scaleY(0);opacity:0"></div>
-  <div class="tt-bridge-label">{{ BRIDGE_4.eyebrow }}</div>
-  <span class="tt-bridge-readable">{{ BRIDGE_4.text }}</span>
-  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_4.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:var(--fs-3xl);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_4.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.0.indent }}">{{ BRIDGE_4.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.1.indent }}">{{ BRIDGE_4.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_4.mobileLines.2.indent }}">{{ BRIDGE_4.mobileLines.2.text }}</span></span></div>
+  <div class="tt-bridge-label">{{ BRIDGE_3.eyebrow }}</div>
+  <span class="tt-bridge-readable">{{ BRIDGE_3.text }}</span>
+  <div class="tt-s-color-var-ink-f97e" data-bridge="" aria-label="{{ BRIDGE_3.text }}" style="font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-3xl);line-height:1.32;color:var(--ink,#141C30);max-width:none;opacity:0;white-space:pre;word-break:keep-all;overflow-wrap:normal;text-wrap:nowrap"><span class="tt-bridge-desktop-text">{{ BRIDGE_3.text }}</span><span class="tt-bridge-mobile-text" aria-hidden="true"><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.0.indent }}">{{ BRIDGE_3.mobileLines.0.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.1.indent }}">{{ BRIDGE_3.mobileLines.1.text }}</span><span class="tt-mobile-bridge-line" data-indent="{{ BRIDGE_3.mobileLines.2.indent }}">{{ BRIDGE_3.mobileLines.2.text }}</span></span></div>
   <div data-bridge-line="" style="width:1px;height:54px;background:var(--accent,#0E6E7D);transform-origin:top;transform:scaleY(0);opacity:0"></div>
 </div>
 
@@ -1032,16 +978,18 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   </div>
   <div data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-contact-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D);font-style:italic">{{ CONTACT.titleAccent }}</span></h2>
+    <h2 class="tt-chapter-title tt-contact-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ CONTACT.titleAccent }}</span></h2>
     <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
-    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-style:italic;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
+    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
 
     <div style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
       <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
       <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
     </div>
     <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
+    <sc-if value="{{ CONTACT.replyNote }}"><p class="tt-contact-promise">{{ CONTACT.replyNote }}<sc-if value="{{ CONTACT.timelineNote }}"><br>{{ CONTACT.timelineNote }}</sc-if></p></sc-if>
     <div class="tt-s-color-var-accent-9aa3" id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
+    <sc-if value="{{ CONTACT_NO_FORM }}">
     <sc-if value="{{ CONTACT.guideTitle }}">
     <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
       <p class="tt-s-color-var-ink-f97e" style="margin:0 0 10px;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
@@ -1050,8 +998,30 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       </ul>
     </div>
     </sc-if>
+    </sc-if>
   </div>
 
+  <sc-if value="{{ CONTACT_FORM.title }}">
+  <form class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
+    <p class="tt-inquiry-title">{{ CONTACT_FORM.title }}</p>
+    <div class="tt-inquiry-grid">
+      <label><span>{{ CONTACT_FORM.nameLabel }}</span><input name="name" type="text" autocomplete="organization"></label>
+      <label><span>{{ CONTACT_FORM.contactLabel }}</span><input name="reply" type="email" autocomplete="email" required></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.projectLabel }}</span><input name="project" type="text" placeholder="{{ CONTACT_FORM.projectPlaceholder }}" required></label>
+      <fieldset class="is-wide"><legend>{{ CONTACT_FORM.songLabel }}</legend><div class="tt-inquiry-chips"><sc-for list="{{ CONTACT_FORM.songOptions }}" as="opt" hint-placeholder-count="5"><label class="tt-inquiry-chip"><input type="checkbox" name="song" value="{{ opt }}"><span>{{ opt }}</span></label></sc-for></div></fieldset>
+      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><select name="budget"><option value=""></option><sc-for list="{{ CONTACT_FORM.budgetOptions }}" as="opt" hint-placeholder-count="4"><option value="{{ opt }}">{{ opt }}</option></sc-for></select></label>
+      <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text"></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
+    </div>
+    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
+    <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
+  </form>
+  <div class="tt-contact-channels" data-reveal="">
+    <span>{{ CONTACT.channelsLabel }}</span>
+    <sc-for list="{{ CONTACT_CHANNELS }}" as="ch" hint-placeholder-count="2"><a href="{{ ch.url }}" target="_blank" rel="noopener">{{ ch.label }} ↗</a></sc-for>
+    <sc-if value="{{ CONTACT.channelsTodo }}"><em>{{ CONTACT.channelsTodo }}</em></sc-if>
+  </div>
+  </sc-if>
     <!-- the book rests on the sea floor at the very bottom of the page, in the water -->
     <div style="margin-top:clamp(40px,8vh,120px);position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center">
 <div data-float="" style="position:relative;z-index:2;width:min(800px,92vw);overflow:visible">

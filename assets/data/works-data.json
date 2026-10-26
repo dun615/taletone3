@@ -51,7 +51,7 @@
       "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
       "thumb": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381-w320.webp",
       "ogImage": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381-og.jpg",
-      "audio": "assets/works/audio/asset-mq5x2xsj-659vp-4824_-New-AR.mp3-9e7642774047.mp3",
+      "audio": "assets/works/audio/heart-score-mixed-by-n4ml-797bb778a3c9.mp3",
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
@@ -114,45 +114,6 @@
           "title": "Drawing Summer",
           "type": "ゼンレスゾーンゼロ HoYoFair Album \"Random Play\" Anniversary",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
-        }
-      }
-    },
-    {
-      "id": "work-parable",
-      "slug": "love-dopamine",
-      "artist": "해봄",
-      "title": "Love Dopamine",
-      "date": "2025.08.30",
-      "type": "'해봄' 3rd Single",
-      "description": "좋아한다고 말하고 싶은 마음이 도파민처럼 터져버린 '해봄'의 이야기",
-      "credits": "Composed by N4ML (TONALIE)\nLyrics by 유상희\nArranged by N4ML (TONALIE)\n\nGuitar by BlueArpeggio\nBass by 윤재하\nPiano by N4ML (TONALIE)\nSynth by N4ML (TONALIE)\nDrum Designed by N4ML (TONALIE)\n\nRecorded by 스튜디오엠랩\nDirected by 유상희, N4ML (TONALIE)\nEdited by N4ML (TONALIE)\nTuned by N4ML (TONALIE)\nMixed by 신용식@스테이튠드\nMastered by 장태인@seoul archive studio\n\nExecutive Producer - 패러블엔터테인먼트\nManagement Director - 함정훈\nArtist Management - 한유선\nArtist Production - 송윤석\nVisual Contents - 한유선, 이진우\n\nProduction of PARABLE ENTERTAINMENT Inc.\n\nAll Rights Reserved by PARABLE ENTERTAINMENT Inc.",
-      "image": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae.webp",
-      "thumb": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae-w320.webp",
-      "ogImage": "assets/works/images/asset-mq63g0w1-cb8m-.jpg-f0e9424567ae-og.jpg",
-      "audio": "assets/works/audio/asset-mq81ygf9-gsou9-_Love-Dopamine-Mastered-320K-.mp3-bd6f9b3eb40f.mp3",
-      "fit": "cover",
-      "posX": "50%",
-      "posY": "50%",
-      "brightness": 0.6,
-      "index": 4,
-      "versions": [],
-      "tracks": [],
-      "kind": "single",
-      "titleTrackIndex": 0,
-      "youtube": "https://www.youtube.com/watch?v=Atgold7UdnY",
-      "format": "Single",
-      "translations": {
-        "en": {
-          "artist": "Haebom",
-          "title": "Love Dopamine",
-          "type": "'Haebom' 3rd Single",
-          "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
-        },
-        "jp": {
-          "artist": "HAEBOM",
-          "title": "Love Dopamine",
-          "type": "HAEBOM 3rd Single",
-          "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すHAEBOMの物語。"
         }
       }
     },
@@ -539,7 +500,7 @@
       "slug": "new-year-syndrome",
       "artist": "MAIMATSU",
       "title": "새해결심 작심삼일",
-      "date": "2024.12.27",
+      "date": "2025.04.02",
       "type": "MAIMATSU 3rd Single",
       "description": "올해도 지켜지지 않을 신년 계획을 세운 네 소녀의 이야기",
       "credits": "기획 : 피피아이프로덕션\n투자 : 피피아이프로덕션\n총괄 프로듀싱 : N4ML(TONALIE)\n\n작곡 : N4ML(TONALIE)\n편곡 : N4ML(TONALIE)\n작사 : N4ML(TONALIE)\n\n노래 : 미카, 치세, 키나코, 나나치\n악기 연주 및 프로그래밍 : N4ML(TONALIE)\n\n보컬 보정 : N4ML(TONALIE)\n보컬 디렉팅 : N4ML(TONALIE)\n레코딩 : N4ML(TONALIE)\n믹싱 : N4ML(TONALIE)\n마스터링 : 이준용 (U-il SoundWorks)",
@@ -1153,6 +1114,1286 @@
           "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
         }
       }
+    },
+    {
+      "id": "work-tt-project-connect-season-1-12",
+      "slug": "project-connect-season-1",
+      "artist": "프로젝트 커넥트",
+      "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
+      "date": "2022.10.28",
+      "type": "PROJECT CONNECT 'SEASON 1'",
+      "description": "",
+      "credits": "Executive Producer - N4ML (DREAMSCAPEY)",
+      "image": "assets/works/images/project-connect-season-1-cover-1024.webp",
+      "thumb": "assets/works/images/project-connect-season-1-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/project-connect-season-1-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-tt-project-connect-season-1-track-1",
+          "title": "Intro (Teaser)",
+          "date": "2022.10.28",
+          "type": "PROJECT CONNECT 'SEASON 1' 1st Track",
+          "description": "",
+          "credits": "Composition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/project-connect-season-1-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-01.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=nbTzAphMvbY",
+          "translations": {
+            "en": {
+              "title": "Intro (Teaser)",
+              "description": ""
+            },
+            "jp": {
+              "title": "Intro (Teaser)",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-2",
+          "title": "CONNECT, to World!",
+          "date": "2023.03.18",
+          "type": "PROJECT CONNECT 'SEASON 1' 2nd Track (Title)",
+          "description": "",
+          "credits": "Song - 밍턴, 도롱챠, 오맑음, 오리꿍, 먀릴리, 얌, 달체솜, 고유사\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 순백, N4ML (DREAMSCAPEY)\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK (DREAMSCAPEY)\nVocal Edit - N4ML (DREAMSCAPEY), 비쥬\nRecording - 박문수 (U-il SoundWorks), RME Studio\nMastering - 이준용 (U-il SoundWorks)\nDirector - 밍턴, N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/project-connect-season-1-2-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-02.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": true,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=O4kHRkVERdQ",
+          "translations": {
+            "en": {
+              "title": "CONNECT, to World!",
+              "description": ""
+            },
+            "jp": {
+              "title": "CONNECT, to World!",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-3",
+          "title": "Party Night",
+          "date": "2022.11.08",
+          "type": "PROJECT CONNECT 'SEASON 1' 3rd Track",
+          "description": "",
+          "credits": "Song - 밍턴\nComposition - STELLAR (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY), STELLAR (DREAMSCAPEY)\nLyrics - 밍턴, 순백\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK (DREAMSCAPEY)\nVocal Edit - 비쥬\nRecording - 박문수 (U-il SoundWorks)\nMixing - 이준용 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-3-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-03.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 3,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=DFzAGS3nLCs",
+          "translations": {
+            "en": {
+              "title": "Party Night",
+              "description": ""
+            },
+            "jp": {
+              "title": "Party Night",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-4",
+          "title": "별 사이 우리 (Altair and Vega)",
+          "date": "2022.11.11",
+          "type": "PROJECT CONNECT 'SEASON 1' 4th Track",
+          "description": "",
+          "credits": "Song - 도롱챠\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 도롱챠, 유시, N4ML (DREAMSCAPEY)\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK (DREAMSCAPEY)\nVocal Edit - N4ML (DREAMSCAPEY), 화평\nRecording - 박문수 (U-il SoundWorks)\nMixing - 박문수 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-4-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-04.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 4,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=gZPk0lxvOng",
+          "translations": {
+            "en": {
+              "title": "Altair and Vega",
+              "description": ""
+            },
+            "jp": {
+              "title": "Altair and Vega",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-5",
+          "title": "남겨진 자의 염원",
+          "date": "2022.11.18",
+          "type": "PROJECT CONNECT 'SEASON 1' 5th Track",
+          "description": "",
+          "credits": "Song - 고유사\nComposition - STELLAR (DREAMSCAPEY)\nArrangement - STELLAR (DREAMSCAPEY)\nLyrics - 고유사\nVocal Edit - 비쥬\nRecording - 박문수 (U-il SoundWorks)\nMixing - 박문수 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)\nExecutive Producer - N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/project-connect-season-1-5-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-05.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 5,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=sotEommmk78",
+          "translations": {
+            "en": {
+              "title": "Wish of the One Left Behind",
+              "description": ""
+            },
+            "jp": {
+              "title": "残された者の願い",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-6",
+          "title": "CHERRY POP",
+          "date": "2022.11.15",
+          "type": "PROJECT CONNECT 'SEASON 1' 6th Track",
+          "description": "",
+          "credits": "Song - 달체솜\nComposition - C.COSETTE (DREAMSCAPEY)\nArrangement - C.COSETTE (DREAMSCAPEY), N4ML (DREAMSCAPEY)\nLyrics - 순백\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK (DREAMSCAPEY)\nRecording - 박문수 (U-il SoundWorks)\nMixing - 이준용 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-6-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-06.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 6,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=aj3qDtxndDQ",
+          "translations": {
+            "en": {
+              "title": "CHERRY POP",
+              "description": ""
+            },
+            "jp": {
+              "title": "CHERRY POP",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-7",
+          "title": "맑음 FANFARE!",
+          "date": "2022.11.22",
+          "type": "PROJECT CONNECT 'SEASON 1' 7th Track",
+          "description": "",
+          "credits": "Song - 오맑음\nComposition - PoDoDan (DREAMSCAPEY), N4ML (DREAMSCAPEY)\nLyrics - 순백\nVocal Edit - N4ML (DREAMSCAPEY)\nRecording - 박문수 (U-il SoundWorks)\nMixing - 이준용 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-7-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-07.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 7,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=Zuy13RmN47Y",
+          "translations": {
+            "en": {
+              "title": "맑음 FANFARE!",
+              "description": ""
+            },
+            "jp": {
+              "title": "맑음 FANFARE!",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-8",
+          "title": "Luvvy Luvvy",
+          "date": "2022.11.25",
+          "type": "PROJECT CONNECT 'SEASON 1' 8th Track",
+          "description": "",
+          "credits": "Song - 먀릴리\nComposition - STELLAR (DREAMSCAPEY)\nArrangement - STELLAR (DREAMSCAPEY)\nLyrics - 순백\nVocal Edit - 비쥬\nRecording - RME Studio\nMixing - 박문수 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)\nDirector - 먀릴리, N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/project-connect-season-1-8-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-08.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 8,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=w4NC8jcnswc",
+          "translations": {
+            "en": {
+              "title": "Luvvy Luvvy",
+              "description": ""
+            },
+            "jp": {
+              "title": "Luvvy Luvvy",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-9",
+          "title": "blank",
+          "date": "2022.11.29",
+          "type": "PROJECT CONNECT 'SEASON 1' 9th Track",
+          "description": "",
+          "credits": "Song - 얌 (YAM)\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 유시\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - Akikawa Yoshizumi\nVocal Edit - 화평\nMixing - 박문수 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-9-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-09.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 9,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=5Z8-hE38dzU",
+          "translations": {
+            "en": {
+              "title": "blank",
+              "description": ""
+            },
+            "jp": {
+              "title": "blank",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-10",
+          "title": "꿍차GAME",
+          "date": "2022.12.02",
+          "type": "PROJECT CONNECT 'SEASON 1' 10th Track",
+          "description": "",
+          "credits": "Song - 오리꿍\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 유시\nGuitar - PoDoDan (DREAMSCAPEY)\nVocal Edit - N4ML (DREAMSCAPEY)\nRecording - 박문수 (U-il SoundWorks)\nMixing - 이준용 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)",
+          "image": "assets/works/images/project-connect-season-1-10-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-10.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 10,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=Guo69H0z1SM",
+          "translations": {
+            "en": {
+              "title": "꿍차GAME",
+              "description": ""
+            },
+            "jp": {
+              "title": "꿍차GAME",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-project-connect-season-1-track-11",
+          "title": "샛길 (ED)",
+          "date": "2023.04.18",
+          "type": "PROJECT CONNECT 'SEASON 1' 11th Track",
+          "description": "",
+          "credits": "Song - 밍턴, 도롱챠, 달체솜, 고유사, 오맑음, 먀릴리, 얌, 오리꿍\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 유시\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK\nVocal Tune - N4ML (DREAMSCAPEY)\nRecording - 박문수 (U-il SoundWorks)\nMixing - 박문수 (U-il SoundWorks)\nMastering - 이준용 (U-il SoundWorks)\nDirector - N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/project-connect-season-1-11-cover-1024.webp",
+          "audio": "assets/works/audio/project-connect-season-1-11.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 11,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=MybIyEksk3A",
+          "translations": {
+            "en": {
+              "title": "Shortcut (ED)",
+              "description": ""
+            },
+            "jp": {
+              "title": "抜け道 (ED)",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 1,
+      "youtube": "https://www.youtube.com/watch?v=O4kHRkVERdQ",
+      "format": "Album",
+      "category": "artist",
+      "translations": {
+        "en": {
+          "artist": "PROJECT CONNECT",
+          "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
+          "type": "PROJECT CONNECT 'SEASON 1'",
+          "description": ""
+        },
+        "jp": {
+          "artist": "プロジェクトコネクト",
+          "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
+          "type": "PROJECT CONNECT『SEASON 1』",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-last-origin-miss-orca-17",
+      "slug": "last-origin-miss-orca",
+      "artist": "라스트오리진",
+      "title": "Last Origin Miss ORCA [ALBUM]",
+      "date": "2022.11.01",
+      "type": "게임 '라스트오리진' 미스 오르카",
+      "description": "",
+      "credits": "총괄 프로듀싱 : N4ML (1기·3기)",
+      "image": "assets/works/images/last-origin-miss-orca-cover-1024.webp",
+      "thumb": "assets/works/images/last-origin-miss-orca-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/last-origin-miss-orca-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-tt-last-origin-miss-orca-track-13",
+          "title": "주인님 Overdose",
+          "date": "2022.11.01",
+          "type": "게임 '라스트오리진' 미스 오르카 1st Track (Title)",
+          "description": "",
+          "credits": "제3회 미스 오르카 · 블랙 리리스 트랙\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n총괄 프로듀싱 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-01.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": true,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
+          "translations": {
+            "en": {
+              "title": "Master Overdose",
+              "description": ""
+            },
+            "jp": {
+              "title": "ご主人様 Overdose",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-miss-orca-track-14",
+          "title": "북극성",
+          "date": "2022.11.01",
+          "type": "게임 '라스트오리진' 미스 오르카 2nd Track",
+          "description": "",
+          "credits": "제3회 미스 오르카 · 이터니티 트랙\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n총괄 프로듀싱 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-2-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-02.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=S1Nv3KTNO-s",
+          "translations": {
+            "en": {
+              "title": "Polaris",
+              "description": ""
+            },
+            "jp": {
+              "title": "北極星",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-miss-orca-track-15",
+          "title": "New Page",
+          "date": "2022.11.01",
+          "type": "게임 '라스트오리진' 미스 오르카 3rd Track",
+          "description": "",
+          "credits": "제1회 미스 오르카 · 뽀끄루 대마왕 트랙\n\n작곡 : N4ML\n편곡 : N4ML\n총괄 프로듀싱 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-3-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-03.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 3,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=Hh2cWKGjGO8",
+          "translations": {
+            "en": {
+              "title": "New Page",
+              "description": ""
+            },
+            "jp": {
+              "title": "New Page",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-miss-orca-track-16",
+          "title": "FLIGHT AGAIN",
+          "date": "2021.11.15",
+          "type": "게임 '라스트오리진' 미스 오르카 4th Track",
+          "description": "",
+          "credits": "제2회 미스 오르카 · B-11 나이트 앤젤 트랙\n\n작곡 : N4ML\n편곡 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-4-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-04.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 4,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=al2KUW6Tt80",
+          "translations": {
+            "en": {
+              "title": "FLIGHT AGAIN",
+              "description": ""
+            },
+            "jp": {
+              "title": "FLIGHT AGAIN",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
+      "format": "Album",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "Last Origin",
+          "title": "Last Origin Miss ORCA [ALBUM]",
+          "type": "Game 'Last Origin' Miss ORCA",
+          "description": ""
+        },
+        "jp": {
+          "artist": "ラストオリジン",
+          "title": "Last Origin Miss ORCA [ALBUM]",
+          "type": "ゲーム『ラストオリジン』ミスオルカ",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-last-origin-cafe-amor-22",
+      "slug": "last-origin-cafe-amor",
+      "artist": "라스트오리진",
+      "title": "Last Origin Café Amor × Horizon [ALBUM]",
+      "date": "2022.01.20",
+      "type": "게임 '라스트오리진' Café Amor × Horizon",
+      "description": "",
+      "credits": "",
+      "image": "assets/works/images/last-origin-cafe-amor-cover-1024.webp",
+      "thumb": "assets/works/images/last-origin-cafe-amor-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/last-origin-cafe-amor-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-tt-last-origin-cafe-amor-track-18",
+          "title": "GO UP!",
+          "date": "2022.01.20",
+          "type": "게임 '라스트오리진' Café Amor × Horizon 1st Track (Title)",
+          "description": "",
+          "credits": "노래 : 해체자 아자즈, 로열 아스널, CS페로\n\n작곡 : N4ML\n편곡 : N4ML",
+          "image": "assets/works/images/last-origin-cafe-amor-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-cafe-amor-01.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": true,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=Fph1MIh8JKU",
+          "translations": {
+            "en": {
+              "title": "GO UP!",
+              "description": ""
+            },
+            "jp": {
+              "title": "GO UP!",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-cafe-amor-track-19",
+          "title": "Gray Clouds",
+          "date": "2022.01.20",
+          "type": "게임 '라스트오리진' Café Amor × Horizon 2nd Track",
+          "description": "",
+          "credits": "노래 : 로열 아스널\n\n작곡 : N4ML\n편곡 : N4ML",
+          "image": "assets/works/images/last-origin-cafe-amor-2-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-cafe-amor-02.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=6cBLGWYG_Iw",
+          "translations": {
+            "en": {
+              "title": "Gray Clouds",
+              "description": ""
+            },
+            "jp": {
+              "title": "Gray Clouds",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-cafe-amor-track-20",
+          "title": "사랑은 파르페처럼",
+          "date": "2022.01.20",
+          "type": "게임 '라스트오리진' Café Amor × Horizon 3rd Track",
+          "description": "",
+          "credits": "노래 : CS페로\n\n편곡 : N4ML",
+          "image": "assets/works/images/last-origin-cafe-amor-3-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-cafe-amor-03.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 3,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=B4M-c_n2Fic",
+          "translations": {
+            "en": {
+              "title": "Love Is Like a Parfait",
+              "description": ""
+            },
+            "jp": {
+              "title": "恋はパフェのように",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-last-origin-cafe-amor-track-21",
+          "title": "어서오세요, 라스트 파라다이스!",
+          "date": "2022.01.20",
+          "type": "게임 '라스트오리진' Café Amor × Horizon 4th Track",
+          "description": "",
+          "credits": "작곡 : N4ML\n편곡 : N4ML",
+          "image": "assets/works/images/last-origin-cafe-amor-4-cover-1024.webp",
+          "audio": "assets/works/audio/last-origin-cafe-amor-04.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 4,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=_lGpNSYn53I",
+          "translations": {
+            "en": {
+              "title": "Welcome to Last Paradise!",
+              "description": ""
+            },
+            "jp": {
+              "title": "ようこそ、ラストパラダイス！",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=zkbG0DDjncY",
+      "format": "Album",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "Last Origin",
+          "title": "Last Origin Café Amor × Horizon [ALBUM]",
+          "type": "Game 'Last Origin' Café Amor × Horizon",
+          "description": ""
+        },
+        "jp": {
+          "artist": "ラストオリジン",
+          "title": "Last Origin Café Amor × Horizon [ALBUM]",
+          "type": "ゲーム『ラストオリジン』Café Amor × Horizon",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-pocotone-sixtar-gate-25",
+      "slug": "pocotone-sixtar-gate",
+      "artist": "포코톤",
+      "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
+      "date": "2023.04.01",
+      "type": "리듬게임 'Sixtar Gate: STARTRAIL' POCOTONE Pack",
+      "description": "",
+      "credits": "프로젝트 매니지먼트 : N4ML\n전곡 믹싱 : N4ML",
+      "image": "assets/works/images/pocotone-sixtar-gate-cover-1024.webp",
+      "thumb": "assets/works/images/pocotone-sixtar-gate-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/pocotone-sixtar-gate-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [
+        {
+          "id": "work-tt-pocotone-sixtar-gate-track-23",
+          "title": "코스믹 텔레파시",
+          "date": "2023.04.01",
+          "type": "리듬게임 'Sixtar Gate: STARTRAIL' POCOTONE Pack 1st Track (Title)",
+          "description": "",
+          "credits": "작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML",
+          "image": "assets/works/images/pocotone-sixtar-gate-cover-1024.webp",
+          "audio": "assets/works/audio/pocotone-sixtar-gate-01.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 1,
+          "isTitle": true,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=e395Bz8ZRq8",
+          "translations": {
+            "en": {
+              "title": "Cosmic Telepathy",
+              "description": ""
+            },
+            "jp": {
+              "title": "コズミックテレパシー",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-pocotone-sixtar-gate-track-24",
+          "title": "Flower Garden",
+          "date": "2023.04.01",
+          "type": "리듬게임 'Sixtar Gate: STARTRAIL' POCOTONE Pack 2nd Track",
+          "description": "",
+          "credits": "Artist : STELLAR\n편곡 : STELLAR, N4ML\n코드 작곡·피아노 : N4ML\n믹싱 : N4ML",
+          "image": "assets/works/images/pocotone-sixtar-gate-2-cover-1024.webp",
+          "audio": "assets/works/audio/pocotone-sixtar-gate-02.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 2,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=9_kzThVik1c",
+          "translations": {
+            "en": {
+              "title": "Flower Garden",
+              "description": ""
+            },
+            "jp": {
+              "title": "Flower Garden",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "kind": "album",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=uZM1wMO8LTA",
+      "format": "Album",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "POCOTONE",
+          "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
+          "type": "Rhythm game 'Sixtar Gate: STARTRAIL' POCOTONE Pack",
+          "description": ""
+        },
+        "jp": {
+          "artist": "POCOTONE",
+          "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
+          "type": "リズムゲーム『Sixtar Gate: STARTRAIL』POCOTONE Pack",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-with-me-26",
+      "slug": "with-me",
+      "artist": "포코톤 (POCOTONE)",
+      "title": "With Me",
+      "date": "2022.12.22",
+      "type": "POCOTONE Single",
+      "description": "",
+      "credits": "총괄 프로듀서 - N4ML (DREAMSCAPEY)\n노래 - 오리꿍, 얌, 히요코\n작곡 - RoA, N4ML (DREAMSCAPEY)\n편곡 - N4ML (DREAMSCAPEY)\n작사 - RoA\n보컬 편집 - N4ML (DREAMSCAPEY)\n보컬 디렉팅 - 얌\n믹싱 - N4ML (DREAMSCAPEY)\n마스터링 - 이준용 (U-il SoundWorks)\n영상 편집 - TEMACA",
+      "image": "assets/works/images/with-me-cover-1024.webp",
+      "thumb": "assets/works/images/with-me-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/with-me-cover-1024-og.jpg",
+      "audio": "assets/works/audio/with-me.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=XK2iGkdNxQU",
+      "format": "Single",
+      "category": "artist",
+      "translations": {
+        "en": {
+          "artist": "POCOTONE",
+          "title": "With Me",
+          "type": "POCOTONE Single",
+          "description": ""
+        },
+        "jp": {
+          "artist": "POCOTONE",
+          "title": "With Me",
+          "type": "POCOTONE Single",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-paradise-27",
+      "slug": "paradise",
+      "artist": "V-LUP 1기생 선발대 (Eclipse)",
+      "title": "Paradise",
+      "date": "2022.07.30",
+      "type": "V-LUP 'Eclipse' Original Song",
+      "description": "",
+      "credits": "Producer : V-LUP (무르)\nComposition : N4ML (DREAMSCAPEY), RoA\nArrangement : N4ML (DREAMSCAPEY)\nLyrics : RoA\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : Akikawa Yoshizumi\nRecording : 박문수 (U-il SoundWorks)\nMix : 이준용 (U-il SoundWorks)\nMaster : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/paradise-cover-1024.webp",
+      "thumb": "assets/works/images/paradise-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/paradise-cover-1024-og.jpg",
+      "audio": "assets/works/audio/paradise.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=SXToWUCLLUA",
+      "format": "Single",
+      "category": "artist",
+      "translations": {
+        "en": {
+          "artist": "V-LUP Eclipse",
+          "title": "Paradise",
+          "type": "V-LUP 'Eclipse' Original Song",
+          "description": ""
+        },
+        "jp": {
+          "artist": "V-LUP Eclipse",
+          "title": "Paradise",
+          "type": "V-LUP『Eclipse』Original Song",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-shining-day-28",
+      "slug": "shining-day",
+      "artist": "이주인 (V-LUP)",
+      "title": "Shining Day!",
+      "date": "2022.07.19",
+      "type": "V-LUP '이주인' Original Song",
+      "description": "",
+      "credits": "Vocal : 이주인\nProducer : V-LUP (무르)\nComposition : 마감요정 (DREAMSCAPEY)\nLyrics : 마감요정 (DREAMSCAPEY)\nArrangement : N4ML (DREAMSCAPEY)\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nVocal Edit : N4ML (DREAMSCAPEY)\nRecording : 박문수 (U-il SoundWorks)\nMix : 박문수 (U-il SoundWorks)\nMaster : 이준용 (U-il SoundWorks)",
+      "image": "assets/works/images/shining-day-cover-1024.webp",
+      "thumb": "assets/works/images/shining-day-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/shining-day-cover-1024-og.jpg",
+      "audio": "assets/works/audio/shining-day.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=1wAAhXVKEZg",
+      "format": "Single",
+      "category": "artist",
+      "translations": {
+        "en": {
+          "artist": "Lee Jooin (V-LUP)",
+          "title": "Shining Day!",
+          "type": "V-LUP 'Lee Jooin' Original Song",
+          "description": ""
+        },
+        "jp": {
+          "artist": "イ・ジュイン (V-LUP)",
+          "title": "Shining Day!",
+          "type": "V-LUP『イ・ジュイン』Original Song",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-always-with-you-32",
+      "slug": "always-with-you",
+      "artist": "에픽세븐 (EPIC SEVEN)",
+      "title": "7th world: Always with you",
+      "date": "2022.11.10",
+      "type": "게임 '에픽세븐' OST 프로젝트 #5",
+      "description": "",
+      "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+      "image": "assets/works/images/always-with-you-cover-1024.webp",
+      "thumb": "assets/works/images/always-with-you-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/always-with-you-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [
+        {
+          "id": "work-tt-always-with-you-kr-29",
+          "title": "7th world: Always with you",
+          "date": "2022.11.10",
+          "type": "게임 '에픽세븐' OST 프로젝트 #5",
+          "description": "",
+          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "image": "assets/works/images/always-with-you-cover-1024.webp",
+          "audio": "assets/works/audio/always-with-you-kr.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "KR",
+          "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
+          "translations": {
+            "en": {
+              "title": "7th world: Always with you",
+              "type": "Game 'Epic Seven' OST Project #5",
+              "description": ""
+            },
+            "jp": {
+              "title": "7th world: Always with you",
+              "type": "ゲーム『エピックセブン』OST プロジェクト #5",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-always-with-you-en-30",
+          "title": "7th world: Always with you",
+          "date": "2022.11.10",
+          "type": "게임 '에픽세븐' OST 프로젝트 #5",
+          "description": "",
+          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "image": "assets/works/images/always-with-you-cover-1024.webp",
+          "audio": "assets/works/audio/always-with-you-en.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "EN",
+          "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
+          "translations": {
+            "en": {
+              "title": "7th world: Always with you",
+              "type": "Game 'Epic Seven' OST Project #5",
+              "description": ""
+            },
+            "jp": {
+              "title": "7th world: Always with you",
+              "type": "ゲーム『エピックセブン』OST プロジェクト #5",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-always-with-you-jp-31",
+          "title": "7th world: Always with you",
+          "date": "2022.11.10",
+          "type": "게임 '에픽세븐' OST 프로젝트 #5",
+          "description": "",
+          "credits": "노래 : 조경이, 여윤미, 남도형, 이경태\n\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML\n프로듀싱 : N4ML",
+          "image": "assets/works/images/always-with-you-cover-1024.webp",
+          "audio": "assets/works/audio/always-with-you-jp.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "JP",
+          "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
+          "translations": {
+            "en": {
+              "title": "7th world: Always with you",
+              "type": "Game 'Epic Seven' OST Project #5",
+              "description": ""
+            },
+            "jp": {
+              "title": "7th world: Always with you",
+              "type": "ゲーム『エピックセブン』OST プロジェクト #5",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "tracks": [],
+      "kind": "multilingual",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
+      "format": "Single",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "Epic Seven",
+          "title": "7th world: Always with you",
+          "type": "Game 'Epic Seven' OST Project #5",
+          "description": ""
+        },
+        "jp": {
+          "artist": "エピックセブン",
+          "title": "7th world: Always with you",
+          "type": "ゲーム『エピックセブン』OST プロジェクト #5",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-unmyeong-35",
+      "slug": "unmyeong",
+      "artist": "웹툰 '이웃집 남동생이 초등학생인데 너무 잘해!'",
+      "title": "운명",
+      "date": "2021.12.30",
+      "type": "웹툰 엔딩곡",
+      "description": "",
+      "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+      "image": "assets/works/images/unmyeong-cover-1024.webp",
+      "thumb": "assets/works/images/unmyeong-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/unmyeong-cover-1024-og.jpg",
+      "audio": "",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [
+        {
+          "id": "work-tt-unmyeong-kr-33",
+          "title": "운명",
+          "date": "2021.12.30",
+          "type": "웹툰 엔딩곡",
+          "description": "",
+          "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/unmyeong-cover-1024.webp",
+          "audio": "assets/works/audio/unmyeong-kr.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "KR",
+          "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
+          "translations": {
+            "en": {
+              "title": "Unmyeong (Fate)",
+              "type": "Webtoon ending theme",
+              "description": ""
+            },
+            "jp": {
+              "title": "運命",
+              "type": "SNSコミック エンディング",
+              "description": ""
+            }
+          }
+        },
+        {
+          "id": "work-tt-unmyeong-jp-34",
+          "title": "운명",
+          "date": "2021.12.30",
+          "type": "웹툰 엔딩곡",
+          "description": "",
+          "credits": "Track Making : N4ML\n편곡 : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nMix / Mastering : N4ML (DREAMSCAPEY)",
+          "image": "assets/works/images/unmyeong-cover-1024.webp",
+          "audio": "assets/works/audio/unmyeong-jp.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "language": "JP",
+          "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
+          "translations": {
+            "en": {
+              "title": "Unmyeong (Fate)",
+              "type": "Webtoon ending theme",
+              "description": ""
+            },
+            "jp": {
+              "title": "運命",
+              "type": "SNSコミック エンディング",
+              "description": ""
+            }
+          }
+        }
+      ],
+      "tracks": [],
+      "kind": "multilingual",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
+      "format": "Single",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "Webtoon ending theme",
+          "title": "Unmyeong (Fate)",
+          "type": "Webtoon ending theme",
+          "description": ""
+        },
+        "jp": {
+          "artist": "お隣の煉くんは小学生なのにとても上手！",
+          "title": "運命",
+          "type": "SNSコミック エンディング",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-run-into-galaxy-36",
+      "slug": "run-into-galaxy",
+      "artist": "GXG 게임음악 경연대회",
+      "title": "Run into Galaxy",
+      "date": "2024.07.01",
+      "type": "1st GXG 게임음악 경연대회 금상",
+      "description": "",
+      "credits": "총괄 프로듀싱 : N4ML\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML",
+      "image": "assets/works/images/run-into-galaxy-cover-1024.webp",
+      "thumb": "assets/works/images/run-into-galaxy-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/run-into-galaxy-cover-1024-og.jpg",
+      "audio": "assets/works/audio/run-into-galaxy.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "",
+      "format": "Single",
+      "category": "ost",
+      "translations": {
+        "en": {
+          "artist": "GXG Game Music Competition",
+          "title": "Run into Galaxy",
+          "type": "1st GXG Game Music Competition · Gold Prize",
+          "description": ""
+        },
+        "jp": {
+          "artist": "GXG ゲーム音楽コンペティション",
+          "title": "Run into Galaxy",
+          "type": "第1回 GXG ゲーム音楽コンペティション 金賞",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-we-are-sia-37",
+      "slug": "we-are-sia",
+      "artist": "서울예술대학교 실용음악과",
+      "title": "WE ARE SIA!",
+      "date": "2021.10.01",
+      "type": "서울예술대학교 실용음악과 홍보영상",
+      "description": "",
+      "credits": "프로듀싱 : N4ML\n작곡 : N4ML 외\n편곡 및 믹싱 : N4ML 외\n마스터링 : N4ML\n보컬 튠 : N4ML",
+      "image": "assets/works/images/we-are-sia-cover-1024.webp",
+      "thumb": "assets/works/images/we-are-sia-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/we-are-sia-cover-1024-og.jpg",
+      "audio": "assets/works/audio/we-are-sia.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://youtu.be/aXeQgpFzfgE?t=252",
+      "format": "Single",
+      "category": "original",
+      "translations": {
+        "en": {
+          "artist": "Seoul Institute of the Arts",
+          "title": "WE ARE SIA!",
+          "type": "Seoul Institute of the Arts, Applied Music · Promotional film",
+          "description": ""
+        },
+        "jp": {
+          "artist": "ソウル芸術大学",
+          "title": "WE ARE SIA!",
+          "type": "ソウル芸術大学 実用音楽科 プロモーション映像",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-sejong-arts-anthem-38",
+      "slug": "sejong-arts-anthem",
+      "artist": "세종예술고등학교",
+      "title": "세종예술고등학교 교가",
+      "date": "2018.03.01",
+      "type": "교가",
+      "description": "",
+      "credits": "총괄 프로듀싱 : N4ML\n작곡 : N4ML\n편곡 : N4ML\n작사 : N4ML\n믹싱 : N4ML",
+      "image": "assets/works/images/sejong-arts-anthem-cover-1024.webp",
+      "thumb": "assets/works/images/sejong-arts-anthem-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/sejong-arts-anthem-cover-1024-og.jpg",
+      "audio": "assets/works/audio/sejong-arts-anthem.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "",
+      "format": "Single",
+      "category": "original",
+      "translations": {
+        "en": {
+          "artist": "Sejong Arts High School",
+          "title": "Sejong Arts High School Anthem",
+          "type": "School anthem",
+          "description": ""
+        },
+        "jp": {
+          "artist": "世宗芸術高等学校",
+          "title": "世宗芸術高等学校 校歌",
+          "type": "校歌",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-growing-39",
+      "slug": "growing",
+      "artist": "N4ML",
+      "title": "Growing!",
+      "date": "2019.02.21",
+      "type": "N4ML Original",
+      "description": "",
+      "credits": "작곡, 편곡, 프로듀싱 : N4ML\n작사 : 순백\n보컬 : 도레미, 타마, oldfox, SHAO\n일러스트 : 미츠",
+      "image": "assets/works/images/growing-cover-1024.webp",
+      "thumb": "assets/works/images/growing-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/growing-cover-1024-og.jpg",
+      "audio": "assets/works/audio/growing.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=rY7kp3_NbaI",
+      "format": "Single",
+      "category": "original",
+      "translations": {
+        "en": {
+          "artist": "N4ML",
+          "title": "Growing!",
+          "type": "N4ML Original",
+          "description": ""
+        },
+        "jp": {
+          "artist": "N4ML",
+          "title": "Growing!",
+          "type": "N4ML Original",
+          "description": ""
+        }
+      }
+    },
+    {
+      "id": "work-tt-tomorrow-40",
+      "slug": "tomorrow",
+      "artist": "N4ML",
+      "title": "TOMORROW!",
+      "date": "2018.09.08",
+      "type": "N4ML Original",
+      "description": "",
+      "credits": "작편곡 / 믹싱 : N4ML\n작사 : Quet\n보컬 : 반카포, 설도, 별달, 박솔, 이구, 빈혈여우\n일러스트 / 디자인 : 뱨뱨\n영상 : 테마카",
+      "image": "assets/works/images/tomorrow-cover-1024.webp",
+      "thumb": "assets/works/images/tomorrow-cover-1024-w320.webp",
+      "ogImage": "assets/works/images/tomorrow-cover-1024-og.jpg",
+      "audio": "assets/works/audio/tomorrow.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=J4NMMHSf5Og",
+      "format": "Single",
+      "category": "original",
+      "translations": {
+        "en": {
+          "artist": "N4ML",
+          "title": "TOMORROW!",
+          "type": "N4ML Original",
+          "description": ""
+        },
+        "jp": {
+          "artist": "N4ML",
+          "title": "TOMORROW!",
+          "type": "N4ML Original",
+          "description": ""
+        }
+      }
     }
   ],
   "clientLogos": [
@@ -1165,10 +2406,6 @@
       "alt": "STELLIVE"
     },
     {
-      "src": "assets/bundle/parable-horizontal-2026.png",
-      "alt": "Parable"
-    },
-    {
       "src": "assets/bundle/b52c4df3-a761-4ff7-9943-9d3d954f44ef.png",
       "alt": "creatorbus"
     },
@@ -1176,5 +2413,326 @@
       "src": "assets/bundle/61a4a056-186b-4263-b655-8d34e244e748.png",
       "alt": "Devmate"
     }
-  ]
+  ],
+  "loudness": {
+    "target": -14,
+    "ceiling": -1,
+    "files": {
+      "assets\\works\\audio\\Fix-Bubblesweet.mp3": {
+        "lufs": -6.4,
+        "peak": 0,
+        "gain": -7.6
+      },
+      "assets/works/audio/heart-score-mixed-by-n4ml-797bb778a3c9.mp3": {
+        "lufs": -7.2,
+        "peak": 0,
+        "gain": -6.8
+      },
+      "assets/works/audio/asset-mq81ynzj-nj4v3-AR-Master-MP3-320Kbps.mp3-457831b8463e.mp3": {
+        "lufs": -6.7,
+        "peak": -0.1,
+        "gain": -7.3
+      },
+      "assets/works/audio/asset-mq5zk93v-vu5l7-Love-Novel-AR-Master-MP3-320Kbps.mp3-edf40a3c3052.mp3": {
+        "lufs": -8,
+        "peak": 0,
+        "gain": -6
+      },
+      "assets/works/audio/asset-mq81xsz8-sddpk-Fallen-Leaves-AR-Master-MP3-320Kbps.mp3-4f6b5de501fb.mp3": {
+        "lufs": -8.4,
+        "peak": -0.3,
+        "gain": -5.6
+      },
+      "assets/works/audio/asset-mq81zrrk-ioubn-AR-mp3-320-.mp3-632ff56e7922.mp3": {
+        "lufs": -7.7,
+        "peak": -0.3,
+        "gain": -6.3
+      },
+      "assets/works/audio/asset-mq81zybf-4pbw9-The-Run-Catch.mp3-3a8ea14a4e49.mp3": {
+        "lufs": -10.3,
+        "peak": -0.5,
+        "gain": -3.7
+      },
+      "assets/works/audio/asset-mq820ahk-xmfq0-Floris-Waltz-AR-Master-MP3-320Kbps.mp3-4bace4847ca9.mp3": {
+        "lufs": -6.9,
+        "peak": -0.1,
+        "gain": -7.1
+      },
+      "assets/works/audio/asset-mq831c7o-xr7t-1.-August-AR-Master-MP3-320Kbps.mp3-00ff38b5763c.mp3": {
+        "lufs": -9.7,
+        "peak": -0.4,
+        "gain": -4.3
+      },
+      "assets/works/audio/asset-mq831hlf-77vl-2.-Early-Spring-AR-Master-MP3-320Kbps.mp3-5e53cab084f1.mp3": {
+        "lufs": -7.7,
+        "peak": -0.1,
+        "gain": -6.3
+      },
+      "assets/works/audio/asset-mq831lri-sgpr-3.-Balloon-AR-Master-MP3-320Kbps.mp3-468cb598921f.mp3": {
+        "lufs": -11.1,
+        "peak": -0.5,
+        "gain": -2.9
+      },
+      "assets/works/audio/asset-mq831qw9-n91b-4.-Lullaby-for-AR-Master-MP3-320Kbps.mp3-7cb4cbe81d8d.mp3": {
+        "lufs": -15.8,
+        "peak": -0.5,
+        "gain": -0.5
+      },
+      "assets/works/audio/asset-mq820mko-a7z2e-Pompous.mp3-cd03c3ed6d91.mp3": {
+        "lufs": -10.2,
+        "peak": -0.1,
+        "gain": -3.8
+      },
+      "assets/works/audio/asset-mq820qqw-gd2v5-Short-AR-Master-MP3-320Kbps.mp3-4421598762c0.mp3": {
+        "lufs": -4.5,
+        "peak": 0,
+        "gain": -9.5
+      },
+      "assets/works/audio/asset-mq820ymo-przok-RoA_Wrap-Up-MASTER-4416.mp3-d2e1d0ab6f8d.mp3": {
+        "lufs": -7.1,
+        "peak": -0.2,
+        "gain": -6.9
+      },
+      "assets/works/audio/asset-mq7kl9jh-5uvq4-3.-Cloudnine-AR-Master-MP3-320Kbps.mp3-5cb301829f7e.mp3": {
+        "lufs": -8.1,
+        "peak": -0.2,
+        "gain": -5.9
+      },
+      "assets/works/audio/asset-mq7kmpgo-130s-1.-Silverline-AR-Master-MP3-320Kbps.mp3-3ef1ed131b38.mp3": {
+        "lufs": -6.6,
+        "peak": -0.2,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq7kku33-pi6c-2.-RATATA-AR-Master-MP3-320Kbps.mp3-4737a1b7a54e.mp3": {
+        "lufs": -7.2,
+        "peak": -0.2,
+        "gain": -6.8
+      },
+      "assets/works/audio/asset-mq7klqup-ywxi-4.-The-Night-Over-Sky-AR-Master-MP3-320Kbps.mp3-b93274da633e.mp3": {
+        "lufs": -7.4,
+        "peak": -0.6,
+        "gain": -6.6
+      },
+      "assets\\works\\audio\\Master-Fix-My-Village-AR-MP3-320Kbps.mp3": {
+        "lufs": -6.6,
+        "peak": -0.1,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq821nh8-7hfun-KR-AR-Master-4824.mp3-7a50684d859a.mp3": {
+        "lufs": -6.6,
+        "peak": 0.2,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq83zj6q-sxn4-JP-AR-Master-4824.mp3-50c13ec12658.mp3": {
+        "lufs": -6.6,
+        "peak": 0,
+        "gain": -7.4
+      },
+      "assets/works/audio/asset-mq8224r7-3gctx-Back-Stage-AR-Master-MP3-320Kbps.mp3-ab607ce8004e.mp3": {
+        "lufs": -6,
+        "peak": -0.1,
+        "gain": -8
+      },
+      "assets/works/audio/asset-mq7ky3ls-nj7w-N4ML-KR-AR-Master-4824.mp3-f7b3919c6f5f.mp3": {
+        "lufs": -6.8,
+        "peak": 0.3,
+        "gain": -7.2
+      },
+      "assets/works/audio/asset-mq7kygdn-gdh7-N4ML-JP-AR-Master-4824.mp3-52075a11f99f.mp3": {
+        "lufs": -7,
+        "peak": 0.1,
+        "gain": -7
+      },
+      "assets/works/audio/asset-mq822cze-3ceem-N4ML-STAR-to-STAR-AR-Master-MP3-320Kbps.mp3-5f7abf7b5c30.mp3": {
+        "lufs": -7.1,
+        "peak": 0,
+        "gain": -6.9
+      },
+      "assets\\works\\audio\\Night-Sky.mp3": {
+        "lufs": -11.5,
+        "peak": 0,
+        "gain": -2.5
+      },
+      "assets/works/audio/asset-mq823oq8-9ne18-Sailing-StarS-Remastered-.mp3-10aadd13c352.mp3": {
+        "lufs": -7.7,
+        "peak": -0.3,
+        "gain": -6.3
+      },
+      "assets/works/audio/project-connect-season-1-01.mp3": {
+        "lufs": -14,
+        "peak": -0.3,
+        "gain": -0.7
+      },
+      "assets/works/audio/project-connect-season-1-02.mp3": {
+        "lufs": -6.8,
+        "peak": 0,
+        "gain": -7.2
+      },
+      "assets/works/audio/project-connect-season-1-03.mp3": {
+        "lufs": -8,
+        "peak": 0,
+        "gain": -6
+      },
+      "assets/works/audio/project-connect-season-1-04.mp3": {
+        "lufs": -7.1,
+        "peak": 0,
+        "gain": -6.9
+      },
+      "assets/works/audio/project-connect-season-1-05.mp3": {
+        "lufs": -7.3,
+        "peak": 0,
+        "gain": -6.7
+      },
+      "assets/works/audio/project-connect-season-1-06.mp3": {
+        "lufs": -7.8,
+        "peak": 0,
+        "gain": -6.2
+      },
+      "assets/works/audio/project-connect-season-1-07.mp3": {
+        "lufs": -7.6,
+        "peak": 0,
+        "gain": -6.4
+      },
+      "assets/works/audio/project-connect-season-1-08.mp3": {
+        "lufs": -8.5,
+        "peak": 0,
+        "gain": -5.5
+      },
+      "assets/works/audio/project-connect-season-1-09.mp3": {
+        "lufs": -7.2,
+        "peak": 0,
+        "gain": -6.8
+      },
+      "assets/works/audio/project-connect-season-1-10.mp3": {
+        "lufs": -7.9,
+        "peak": 0,
+        "gain": -6.1
+      },
+      "assets/works/audio/project-connect-season-1-11.mp3": {
+        "lufs": -6.3,
+        "peak": 0,
+        "gain": -7.7
+      },
+      "assets/works/audio/last-origin-miss-orca-01.mp3": {
+        "lufs": -6.9,
+        "peak": 0,
+        "gain": -7.1
+      },
+      "assets/works/audio/last-origin-miss-orca-02.mp3": {
+        "lufs": -11.2,
+        "peak": -0.4,
+        "gain": -2.8
+      },
+      "assets/works/audio/last-origin-miss-orca-03.mp3": {
+        "lufs": -7.4,
+        "peak": 0,
+        "gain": -6.6
+      },
+      "assets/works/audio/last-origin-miss-orca-04.mp3": {
+        "lufs": -6.6,
+        "peak": 0,
+        "gain": -7.4
+      },
+      "assets/works/audio/last-origin-cafe-amor-01.mp3": {
+        "lufs": -7.7,
+        "peak": 0,
+        "gain": -6.3
+      },
+      "assets/works/audio/last-origin-cafe-amor-02.mp3": {
+        "lufs": -8.9,
+        "peak": 0,
+        "gain": -5.1
+      },
+      "assets/works/audio/last-origin-cafe-amor-03.mp3": {
+        "lufs": -7.8,
+        "peak": 0,
+        "gain": -6.2
+      },
+      "assets/works/audio/last-origin-cafe-amor-04.mp3": {
+        "lufs": -7.8,
+        "peak": 0,
+        "gain": -6.2
+      },
+      "assets/works/audio/pocotone-sixtar-gate-01.mp3": {
+        "lufs": -5.8,
+        "peak": 0,
+        "gain": -8.2
+      },
+      "assets/works/audio/pocotone-sixtar-gate-02.mp3": {
+        "lufs": -6.6,
+        "peak": 0,
+        "gain": -7.4
+      },
+      "assets/works/audio/with-me.mp3": {
+        "lufs": -7.7,
+        "peak": 0,
+        "gain": -6.3
+      },
+      "assets/works/audio/paradise.mp3": {
+        "lufs": -6.5,
+        "peak": 0,
+        "gain": -7.5
+      },
+      "assets/works/audio/shining-day.mp3": {
+        "lufs": -6.2,
+        "peak": 0,
+        "gain": -7.8
+      },
+      "assets/works/audio/always-with-you-kr.mp3": {
+        "lufs": -10.7,
+        "peak": -0.1,
+        "gain": -3.3
+      },
+      "assets/works/audio/always-with-you-en.mp3": {
+        "lufs": -8.9,
+        "peak": 0,
+        "gain": -5.1
+      },
+      "assets/works/audio/always-with-you-jp.mp3": {
+        "lufs": -9.3,
+        "peak": -0.3,
+        "gain": -4.7
+      },
+      "assets/works/audio/unmyeong-kr.mp3": {
+        "lufs": -10.5,
+        "peak": -0.2,
+        "gain": -3.5
+      },
+      "assets/works/audio/unmyeong-jp.mp3": {
+        "lufs": -10.1,
+        "peak": -0.1,
+        "gain": -3.9
+      },
+      "assets/works/audio/run-into-galaxy.mp3": {
+        "lufs": -5.5,
+        "peak": 0,
+        "gain": -8.5
+      },
+      "assets/works/audio/we-are-sia.mp3": {
+        "lufs": -7.7,
+        "peak": 0.3,
+        "gain": -6.3
+      },
+      "assets/works/audio/sejong-arts-anthem.mp3": {
+        "lufs": -6.9,
+        "peak": 0.4,
+        "gain": -7.1
+      },
+      "assets/works/audio/growing.mp3": {
+        "lufs": -5.6,
+        "peak": 0,
+        "gain": -8.4
+      },
+      "assets/works/audio/tomorrow.mp3": {
+        "lufs": -4.4,
+        "peak": 0,
+        "gain": -9.6
+      },
+      "assets/works/audio/fantasy-town-ad.mp3": {
+        "lufs": -9.7,
+        "peak": 0,
+        "gain": -4.3
+      }
+    }
+  }
 }

@@ -14,71 +14,71 @@
       "key": "home",
       "label": "Home",
       "path": "/",
-      "title": "TALETONE MUSIC (테일톤 뮤직) — 스토리 기반 IP 음악 프로덕션",
-      "description": "TALETONE MUSIC(테일톤 뮤직)은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송, BGM을 기획·제작하는 스토리 기반 음악 프로덕션입니다.",
+      "title": "TALETONE MUSIC (테일톤 뮤직) — 스토리 기반 IP 음악 프로듀서",
+      "description": "TALETONE MUSIC(테일톤 뮤직)은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송을 기획·제작하는 스토리 기반 음악 프로듀서입니다.",
       "sectionId": "c-home",
       "translations": {
         "en": {
-          "title": "TALETONE MUSIC — Story-Based IP Music Production",
-          "description": "TALETONE MUSIC is a story-based music production team that plans and produces original songs, OSTs, character songs, and BGM for IPs with living worlds: subculture games, VTubers, and animation."
+          "title": "TALETONE MUSIC — Story-Based IP Music Producer",
+          "description": "TALETONE MUSIC is a story-based music producer who plans and produces original songs, OSTs, and character songs for IPs with living worlds: subculture games, VTubers, and animation."
         },
         "jp": {
-          "title": "TALETONE MUSIC（テイルトーン ミュージック）— ストーリーベースIP音楽プロダクション",
-          "description": "TALETONE MUSICは、サブカルチャーゲーム、VTuber、アニメーションなど世界観のあるIPのオリジナルソング、OST、キャラクターソング、BGMを企画・制作するストーリーベースの音楽プロダクションです。"
+          "title": "TALETONE MUSIC（テイルトーン ミュージック）— ストーリーベースIP音楽プロデューサー",
+          "description": "TALETONE MUSICは、サブカルチャーゲーム、VTuber、アニメーションなど世界観のあるIPのオリジナルソング、OST、キャラクターソングを企画・制作するストーリーベースの音楽プロデューサーです。"
         }
       }
     },
     {
       "key": "projects",
-      "label": "Story Types",
+      "label": "How It Works",
       "path": "/story-types/",
-      "title": "Story Types | TALETONE MUSIC — 스토리 IP를 위한 음악",
-      "description": "서브컬처 게임, 버튜버·아티스트, 애니메이션·웹툰·웹소설 IP를 위한 TALETONE MUSIC(테일톤 뮤직)의 음악 제작 방향과 여름을 그리다, 마음악보 등 대표 프로젝트를 소개합니다.",
+      "title": "How It Works | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
+      "description": "레퍼런스가 아니라 이야기에서 출발하는 TALETONE MUSIC(테일톤 뮤직)의 음악 제작 방식과, 여름을 그리다·마음악보 등 대표 작업을 소개합니다.",
       "sectionId": "c-projects",
       "translations": {
         "en": {
-          "title": "Story Types | TALETONE MUSIC — Music for Story-Driven IP",
-          "description": "How TALETONE MUSIC shapes music for subculture games, VTubers and artists, and animation, webtoon, and web novel IP, with selected projects such as Drawing Summer and Heart Score."
+          "title": "How It Works | TALETONE MUSIC — Starting from the Story",
+          "description": "How TALETONE MUSIC makes music starting from the story, not a reference, with selected work such as Drawing Summer and Heart Score."
         },
         "jp": {
-          "title": "Story Types | TALETONE MUSIC — 物語のあるIPのための音楽",
-          "description": "サブカルチャーゲーム、VTuber・アーティスト、アニメ・Webtoon・Web小説IPのための音楽制作の方向性と、「Drawing Summer」「Heart Score」などの代表プロジェクトを紹介します。"
+          "title": "How It Works | TALETONE MUSIC — 物語から始まる制作",
+          "description": "リファレンスではなく物語から始まるTALETONE MUSICの制作方法と、「Drawing Summer」「Heart Score」などの代表作品を紹介します。"
         }
       }
     },
     {
       "key": "members",
-      "label": "Members",
+      "label": "About",
       "path": "/members/",
-      "title": "Members | TALETONE MUSIC — 제작 멤버",
-      "description": "TALETONE MUSIC(테일톤 뮤직)의 프로듀서, 프로젝트 매니저, 보컬 디렉터, 아트 디렉터 등 스토리 기반 음악 제작 멤버를 소개합니다.",
+      "title": "About | TALETONE MUSIC — 소개",
+      "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤 뮤직)과 함께하는 파트너를 소개합니다.",
       "sectionId": "c-members",
       "translations": {
         "en": {
-          "title": "Members | TALETONE MUSIC — Production Team",
-          "description": "Meet the producers, project manager, vocal director, and art director behind TALETONE MUSIC’s story-based music production."
+          "title": "About | TALETONE MUSIC",
+          "description": "TALETONE MUSIC is a subculture music producer who reads the story first, then writes the song. Meet the partners who work alongside."
         },
         "jp": {
-          "title": "Members | TALETONE MUSIC — 制作メンバー",
-          "description": "TALETONE MUSICのプロデューサー、プロジェクトマネージャー、ボーカルディレクター、アートディレクターなど、ストーリーベースの音楽制作メンバーを紹介します。"
+          "title": "About | TALETONE MUSIC — 紹介",
+          "description": "物語を先に読んでから歌をつくるサブカルチャー音楽プロデューサー TALETONE MUSICと、ともに制作するパートナーを紹介します。"
         }
       }
     },
     {
       "key": "works",
-      "label": "Works",
+      "label": "Discography",
       "path": "/works/",
-      "title": "Works | TALETONE MUSIC — 공개 작업물 포트폴리오",
-      "description": "TALETONE MUSIC(테일톤 뮤직)의 공개 작업물 포트폴리오입니다. 마음악보, 여름을 그리다, Love Dopamine 등 오리지널송, OST, 캐릭터송, BGM 제작 기록을 소개합니다.",
+      "title": "Discography | TALETONE MUSIC — 디스코그래피",
+      "description": "TALETONE MUSIC(테일톤 뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
       "sectionId": "c-works",
       "translations": {
         "en": {
-          "title": "Works | TALETONE MUSIC — Portfolio",
-          "description": "The public portfolio of TALETONE MUSIC: original songs, OSTs, character songs, and BGM, including Heart Score, Drawing Summer, and Love Dopamine."
+          "title": "Discography | TALETONE MUSIC",
+          "description": "The discography of TALETONE MUSIC: original songs, OSTs, and character songs, including Heart Score, Drawing Summer, and Bubble Sweet, plus sound engineering work."
         },
         "jp": {
-          "title": "Works | TALETONE MUSIC — 制作実績",
-          "description": "TALETONE MUSICの公開制作実績です。Heart Score、Drawing Summer、Love Dopamineなど、オリジナルソング、OST、キャラクターソング、BGMの制作記録を紹介します。"
+          "title": "Discography | TALETONE MUSIC — ディスコグラフィー",
+          "description": "TALETONE MUSICのディスコグラフィーです。Heart Score、Drawing Summer、Bubble Sweetなど、オリジナルソング、OST、キャラクターソングの制作記録とサウンドエンジニアリング作品を紹介します。"
         }
       }
     },
