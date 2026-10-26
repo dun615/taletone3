@@ -1875,23 +1875,23 @@
     }
   },
   "mixWorks": {
-    "label": "MIX & ENGINEERING",
-    "note": "믹싱·마스터링으로 참여한 작업",
+    "label": "COVERS & MIX",
+    "note": "커버 편곡과 믹싱·마스터링으로 참여한 작업",
     "coverTag": "커버",
     "translations": {
       "kr": {
-        "label": "MIX & ENGINEERING",
-        "note": "믹싱·마스터링으로 참여한 작업",
+        "label": "COVERS & MIX",
+        "note": "커버 편곡과 믹싱·마스터링으로 참여한 작업",
         "coverTag": "커버"
       },
       "en": {
-        "label": "MIX & ENGINEERING",
-        "note": "Mixing and mastering work",
+        "label": "COVERS & MIX",
+        "note": "Cover arrangements, mixing and mastering",
         "coverTag": "Cover"
       },
       "jp": {
-        "label": "MIX & ENGINEERING",
-        "note": "ミキシング・マスタリングで参加した作品",
+        "label": "COVERS & MIX",
+        "note": "カバー編曲・ミキシング・マスタリングで参加した作品",
         "coverTag": "カバー"
       }
     },
@@ -1909,6 +1909,20 @@
         "cover": true,
         "roles": "Rec · Tune · Mix · Master",
         "youtube": "xxDox1kfbyQ"
+      },
+      {
+        "title": "BLUE",
+        "artist": "수니문",
+        "cover": true,
+        "roles": "Arrange",
+        "youtube": "N2mrzZTXHkw"
+      },
+      {
+        "title": "Gravity",
+        "artist": "수니문",
+        "cover": true,
+        "roles": "Arrange · Mix · Master",
+        "youtube": "Jox8iNRZXz0"
       },
       {
         "title": "IDOL",
@@ -2000,6 +2014,27 @@
         "cover": true,
         "roles": "Mix · Master",
         "youtube": "0wflo2ye0vg"
+      },
+      {
+        "title": "Remember",
+        "artist": "휴복",
+        "cover": true,
+        "roles": "Arrange",
+        "youtube": "9LLHOFDmfi4"
+      },
+      {
+        "title": "点描の唄",
+        "artist": "휴복 × 연하리",
+        "cover": true,
+        "roles": "Arrange",
+        "youtube": "JAGKJwSgz2Y"
+      },
+      {
+        "title": "アイネクライネ",
+        "artist": "휴복",
+        "cover": true,
+        "roles": "Arrange",
+        "youtube": "HoM6oOgvfUM"
       }
     ]
   }
