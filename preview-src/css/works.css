@@ -2881,12 +2881,26 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
 
-/* SOUND ENGINEERING's lead card: my songs I also engineered (turns the rack to that filter) */
-.tt-mix-lead {display:flex;background:linear-gradient(150deg,rgba(141,236,252,.32),rgba(4,37,44,.6) 70%);border-color:rgba(141,236,252,.5)}
-.tt-mix-lead button {flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:100%;padding:18px;border:0;background:none;color:#fbffff;text-align:left;cursor:pointer}
-.tt-mix-lead-title {font:800 19px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif}
-.tt-mix-lead-text {font:700 12.5px/1.4 var(--tt-noto-primary),sans-serif;color:#8decfc}
-.tt-mix-lead button:hover .tt-mix-lead-text,.tt-mix-lead button:focus-visible .tt-mix-lead-text {text-decoration:underline}
+/* WORKS by service: tabs under the title; the mixing and arrangement tabs are grids of video cards */
+.tt-works-tabs {display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:0 auto clamp(26px,4vh,40px);padding:5px;width:max-content;max-width:100%;
+  border:1px solid rgba(141,236,252,.35);border-radius:999px;background:rgba(4,37,44,.45)}
+.tt-works-tab {padding:10px 20px;border:0;border-radius:999px;background:none;color:#cfeef4;font:800 14px/1 var(--tt-noto-primary),sans-serif;letter-spacing:.02em;cursor:pointer;transition:background-color .2s ease,color .2s ease}
+.tt-works-tab:hover,.tt-works-tab:focus-visible {color:#fbffff;background:rgba(141,236,252,.14)}
+.tt-works-tab.is-on {background:#8decfc;color:#05303a}
+.tt-crate:not(.is-tab-songs) .tt-mix {margin-top:0}
+.tt-mix-row.tt-mix-grid {grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;scroll-snap-type:none;gap:20px 18px}
+@media (max-width:1100px){.tt-mix-row.tt-mix-grid {grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+  .tt-works-tabs {width:auto}
+  .tt-works-tab {padding:9px 14px;font-size:13px}
+  .tt-mix-row.tt-mix-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;margin:0;padding:0}
+  .tt-mix-grid .tt-mix-copy {padding:10px 10px 12px}
+  .tt-mix-grid .tt-mix-copy strong {font-size:13.5px}
+}
+.tt-mix-more {display:flex;align-items:center;gap:8px;margin:22px auto 0;padding:11px 22px;border:1px solid rgba(141,236,252,.55);border-radius:999px;background:rgba(4,37,44,.45);
+  color:#fbffff;font:700 14px/1 var(--tt-noto-primary),sans-serif;cursor:pointer}
+.tt-mix-more span {color:#8decfc}
+.tt-mix-more:hover,.tt-mix-more:focus-visible {background:rgba(141,236,252,.18)}
 
 /* Official covers in a record's popup: two small videos side by side */
 .tt-shelf-covers {margin-top:22px}
