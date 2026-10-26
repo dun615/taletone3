@@ -647,32 +647,40 @@
 
   // phones: every song in one sideways carousel; elsewhere the rack grid
   function rackListHtml(list) {
-    var labels = L(), singles = [], albums = [], byAlbum = {};
+    var labels = L(), years = [], byYear = {};
+    // list is newest first with each album's tracks together (entriesFor); split it into years, then into runs of
+    // singles and album blocks
     list.forEach(function (entry) {
-      if (entry.track == null) { singles.push(entry); return; }
-      if (!byAlbum[entry.index]) { byAlbum[entry.index] = []; albums.push(entry.index); }
-      byAlbum[entry.index].push(entry);
+      var year = String(entry.work.date || '').slice(0, 4) || '—';
+      if (!byYear[year]) { byYear[year] = { year: year, count: 0, blocks: [] }; years.push(byYear[year]); }
+      var shelf = byYear[year], last = shelf.blocks[shelf.blocks.length - 1];
+      var kind = entry.track == null ? 'singles' : 'album:' + entry.index;
+      if (!last || last.kind !== kind) { last = { kind: kind, index: entry.index, entries: [] }; shelf.blocks.push(last); }
+      last.entries.push(entry);
+      shelf.count++;
     });
     var order = 0;
     var row = function (entries) {
       return '<ul class="tt-shelf-row' + (isPhone() ? ' tt-m-carousel' : '') + '">' + entries.map(function (entry) { return rackItemHtml(entry, order++); }).join('') + '</ul>';
     };
-    var html = '';
-    if (singles.length) {
-      html += '<section class="tt-shelf-unit is-singles"><div class="tt-shelf-plate"><span class="tt-shelf-plate-name">' + esc(labels.singles) + '</span><span class="tt-shelf-plate-count">' + singles.length + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs) + '</span></div>' + row(singles) + '</section>';
-    }
-    albums.forEach(function (index) {
-      var work = works[index], unit = localizedUnit(work);
-      var name = plainRichText(String(unit.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
-      var artist = plainRichText(unit.artist || work.artist || '');
-      var current = state.current === index;
-      html += '<section class="tt-shelf-unit is-album" aria-label="' + esc(name) + '">' +
-        '<div class="tt-shelf-plate' + (current ? ' is-current' : '') + '" data-works-book="' + index + '">' +
-          '<button type="button" class="tt-shelf-plate-cover" data-works-action="pick" data-index="' + index + '" tabindex="-1" aria-label="' + esc(name + ' — ' + labels.albumPick) + '"><img src="' + esc(work.thumb || work.image || '') + '" alt="" loading="lazy" decoding="async"></button>' +
-          '<span class="tt-shelf-plate-text"><span class="tt-shelf-plate-name">' + esc(name) + '</span><span class="tt-shelf-plate-artist">' + esc(artist) + '</span></span>' +
-          '<span class="tt-shelf-plate-count">' + byAlbum[index].length + (byAlbum[index].length !== (work.tracks || []).length ? ' / ' + work.tracks.length : '') + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs) + '</span>' +
-        '</div>' + row(byAlbum[index]) + '</section>';
-    });
+    var count = function (n) { return n + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs); };
+    var html = years.map(function (shelf) {
+      return '<section class="tt-shelf-unit tt-year-shelf" aria-label="' + esc(shelf.year) + '">' +
+        '<div class="tt-year-plate"><span class="tt-year-plate-year">' + esc(shelf.year) + '</span><span class="tt-shelf-plate-count">' + count(shelf.count) + '</span></div>' +
+        shelf.blocks.map(function (block) {
+          if (block.kind === 'singles') return '<div class="tt-shelf-block">' + row(block.entries) + '</div>';
+          var work = works[block.index], unit = localizedUnit(work);
+          var name = plainRichText(String(unit.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
+          var artist = plainRichText(unit.artist || work.artist || '');
+          var total = (work.tracks || []).length, shown = block.entries.length;
+          return '<div class="tt-shelf-block tt-shelf-album" aria-label="' + esc(name) + '">' +
+            '<div class="tt-shelf-plate' + (state.current === block.index ? ' is-current' : '') + '" data-works-book="' + block.index + '">' +
+              '<button type="button" class="tt-shelf-plate-cover" data-works-action="pick" data-index="' + block.index + '" tabindex="-1" aria-label="' + esc(name + ' — ' + labels.albumPick) + '"><img src="' + esc(work.thumb || work.image || '') + '" alt="" loading="lazy" decoding="async"></button>' +
+              '<span class="tt-shelf-plate-text"><span class="tt-shelf-plate-name">' + esc(name) + '</span><span class="tt-shelf-plate-artist">' + esc(artist) + '</span></span>' +
+              '<span class="tt-shelf-plate-count">' + (shown !== total ? shown + ' / ' : '') + count(total) + '</span>' +
+            '</div>' + row(block.entries) + '</div>';
+        }).join('') + '</section>';
+    }).join('');
     return '<div class="tt-rack-grid tt-rack-shelves">' + html + '</div>';
   }
 
@@ -781,7 +789,8 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
+      // on phones the year shelves stack in the page (each one a sideways row), so covers wait for the screen
+    }, { root: isPhone() ? null : root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {

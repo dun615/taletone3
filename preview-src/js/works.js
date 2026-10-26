@@ -789,7 +789,8 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-    }, { root: root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
+      // on phones the year shelves stack in the page (each one a sideways row), so covers wait for the screen
+    }, { root: isPhone() ? null : root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {

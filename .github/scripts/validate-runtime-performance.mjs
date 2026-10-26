@@ -597,7 +597,7 @@ async function runInteractionSmoke(chrome, origin) {
     passed.push('works-pause');
 
     // the rack lists songs by what N4ML did on them; album shelves carry a name plate (also a [data-works-book])
-    const rackState = `(() => ({ songs: document.querySelectorAll('.tt-rack-item').length, plates: document.querySelectorAll('.tt-shelf-unit.is-album').length }))()`;
+    const rackState = `(() => ({ songs: document.querySelectorAll('.tt-rack-item').length, plates: document.querySelectorAll('.tt-shelf-album').length }))()`;
     await clickSelector(client, '[data-works-action="filter"][data-filter="produce"]');
     await sleep(700);
     const produced = await evaluate(client, rackState);
