@@ -596,16 +596,19 @@ async function runInteractionSmoke(chrome, origin) {
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: turntable play button did not pause');
     passed.push('works-pause');
 
-    // the rack lists songs by what N4ML did on them; album shelves carry a name plate (also a [data-works-book])
+    // the rack lists songs by field; album shelves carry a name plate (also a [data-works-book])
     const rackState = `(() => ({ songs: document.querySelectorAll('.tt-rack-item').length, plates: document.querySelectorAll('.tt-shelf-album').length }))()`;
-    await clickSelector(client, '[data-works-action="filter"][data-filter="produce"]');
+    await clickSelector(client, '[data-works-action="filter"][data-filter="game"]');
     await sleep(700);
-    const produced = await evaluate(client, rackState);
-    assert(produced.songs === 42 && produced.plates === 3, `interaction: Producing filter expected 42 songs on 3 album shelves, found ${JSON.stringify(produced)}`);
-    await clickSelector(client, '[data-works-action="filter"][data-filter="arrange"]');
-    await sleep(700);
-    const arranged = await evaluate(client, rackState);
-    assert(arranged.songs === 54, `interaction: Arranging filter expected 54 songs, found ${JSON.stringify(arranged)}`);
+    const games = await evaluate(client, rackState);
+    assert(games.songs === 15 && games.plates === 3, `interaction: game filter expected 15 songs on 3 album shelves, found ${JSON.stringify(games)}`);
+    // the service tabs: mixing & mastering is a video grid shown twelve at a time
+    await clickSelector(client, '[data-works-action="tab"][data-tab="mix"]');
+    await sleep(500);
+    const mixTab = await evaluate(client, `({ cards: document.querySelectorAll('.tt-mix-grid .tt-mix-card').length, more: !!document.querySelector('.tt-mix-more'), rack: document.querySelectorAll('.tt-rack-item').length })`);
+    assert(mixTab.cards === 12 && mixTab.more && mixTab.rack === 0, `interaction: mixing tab expected 12 video cards and a more button, found ${JSON.stringify(mixTab)}`);
+    await clickSelector(client, '[data-works-action="tab"][data-tab="songs"]');
+    await sleep(500);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, rackState);

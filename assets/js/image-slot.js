@@ -73,19 +73,6 @@
   let loaded = false;
   let loadP = null;
 
-  function shouldLoadNewsImage(slot) {
-    if (!slot.isConnected) return false;
-    if (slot.closest('[data-chapter-preloaded]')) return true;
-    if (!slot.closest('#c-news')) return true;
-    const activeChapter = document.body && document.body.getAttribute('data-active-chapter');
-    if (activeChapter) return activeChapter === 'news';
-    return /^(?:\/(?:en|ja))?\/news(?:\/index\.html)?\/?$/i.test(location.pathname);
-  }
-
-  function refreshNewsImages() {
-    document.querySelectorAll('#c-news image-slot').forEach((slot) => slot._render());
-  }
-
   function load() {
     if (loadP) return loadP;
     if (!window.omelette) {
@@ -640,7 +627,7 @@
       const rawSrcAttr = this.getAttribute('src') || '';
       const srcAttr = /\{\{/.test(rawSrcAttr) ? '' : rawSrcAttr;
       this._userUrl = (stored && stored.u) || null;
-      const url = shouldLoadNewsImage(this) ? (this._userUrl || srcAttr) : '';
+      const url = this.isConnected ? (this._userUrl || srcAttr) : '';
       // Don't clobber an in-flight reframe with a store-triggered re-render.
       if (!this.hasAttribute('data-reframe')) {
         this._view = {
@@ -677,7 +664,6 @@
   if (!customElements.get('image-slot')) {
     customElements.define('image-slot', ImageSlot);
   }
-  window.addEventListener('TALETONE_CHAPTER_CHANGE', refreshNewsImages);
   window.addEventListener('TALETONE_CHAPTER_PRELOAD', (event) => {
     const section = document.getElementById('c-' + event.detail?.chapter);
     if (!section) return;

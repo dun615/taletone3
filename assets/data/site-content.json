@@ -6,7 +6,6 @@
       "brand": "TALETONE",
       "role": "Executive Producer",
       "accent": "#a8caff",
-      "dotAccent": "#a8caff",
       "photo": "assets/members/member-cd-01.svg",
       "animal": "otter",
       "tagline": "들은 이야기를 한 올씩 엮어, 노래로 짜 냅니다.",
@@ -515,6 +514,36 @@
             }
           ],
           "closing": "TALETONE이라는 이름이 곧, 노래가 만들어지는 순서입니다.",
+          "case": {
+            "slug": "love-dopamine",
+            "eyebrow": "CASE STORY",
+            "title": "해봄 「Love Dopamine」",
+            "meta": "HAEBOM · 3rd Single",
+            "steps": [
+              {
+                "label": "요청",
+                "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+                "kind": "request"
+              },
+              {
+                "label": "강점",
+                "text": "뮤지컬을 전공하며 단련된 파워풀한 복식 발성",
+                "kind": "strength"
+              },
+              {
+                "label": "TALETONE의 질문",
+                "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
+                "kind": "question"
+              },
+              {
+                "label": "답",
+                "text": "치어리딩. 고교 야구부 선배를 짝사랑해 치어리딩부를 만들고 응원하는 이야기",
+                "kind": "answer"
+              }
+            ],
+            "lesson": "강한 목소리는 더 이상 덜어 내야 할 점이 아니라, 이 곡이 존재할 이유가 되었습니다.",
+            "listenLabel": "Love Dopamine 듣기"
+          },
           "ctaLabel": "프로젝트 상담하기"
         }
       },
@@ -599,6 +628,36 @@
             }
           ],
           "closing": "The name TALETONE is the order in which a song is made.",
+          "case": {
+            "slug": "love-dopamine",
+            "eyebrow": "CASE STORY",
+            "title": "HAEBOM “Love Dopamine”",
+            "meta": "HAEBOM · 3rd Single",
+            "steps": [
+              {
+                "label": "Request",
+                "text": "“I want to try a bright, pretty J-rock song.”",
+                "kind": "request"
+              },
+              {
+                "label": "Strength",
+                "text": "A powerful, diaphragm-driven voice trained in musical theatre",
+                "kind": "strength"
+              },
+              {
+                "label": "TALETONE's question",
+                "text": "What story turns a strong voice into a weapon?",
+                "kind": "question"
+              },
+              {
+                "label": "Answer",
+                "text": "Cheerleading. A girl with a crush on a senior on the high-school baseball team starts a cheer squad to root for him.",
+                "kind": "answer"
+              }
+            ],
+            "lesson": "Her strong voice stopped being something to hold back. It became the reason the song exists.",
+            "listenLabel": "Listen to Love Dopamine"
+          },
           "ctaLabel": "Start a project with TALETONE"
         }
       },
@@ -683,6 +742,36 @@
             }
           ],
           "closing": "TALETONEという名前そのものが、歌が生まれる順番です。",
+          "case": {
+            "slug": "love-dopamine",
+            "eyebrow": "CASE STORY",
+            "title": "HAEBOM「Love Dopamine」",
+            "meta": "HAEBOM · 3rd Single",
+            "steps": [
+              {
+                "label": "ご要望",
+                "text": "「爽やかでかわいいJ-ROCKを歌ってみたい」",
+                "kind": "request"
+              },
+              {
+                "label": "強み",
+                "text": "ミュージカル専攻で鍛えた、パワフルな腹式発声",
+                "kind": "strength"
+              },
+              {
+                "label": "TALETONEの問い",
+                "text": "強い発声が武器になる物語とは？",
+                "kind": "question"
+              },
+              {
+                "label": "答え",
+                "text": "チアリーディング。高校野球部の先輩に片思いして、チアリーディング部をつくって応援する物語",
+                "kind": "answer"
+              }
+            ],
+            "lesson": "強い声は、もう抑えるべき点ではなく、この曲が存在する理由になりました。",
+            "listenLabel": "Love Dopamine を聴く"
+          },
           "ctaLabel": "プロジェクトのご相談"
         }
       }
@@ -746,6 +835,36 @@
         }
       ],
       "closing": "TALETONE이라는 이름이 곧, 노래가 만들어지는 순서입니다.",
+      "case": {
+        "slug": "love-dopamine",
+        "eyebrow": "CASE STORY",
+        "title": "해봄 「Love Dopamine」",
+        "meta": "HAEBOM · 3rd Single",
+        "steps": [
+          {
+            "label": "요청",
+            "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+            "kind": "request"
+          },
+          {
+            "label": "강점",
+            "text": "뮤지컬을 전공하며 단련된 파워풀한 복식 발성",
+            "kind": "strength"
+          },
+          {
+            "label": "TALETONE의 질문",
+            "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
+            "kind": "question"
+          },
+          {
+            "label": "답",
+            "text": "치어리딩. 고교 야구부 선배를 짝사랑해 치어리딩부를 만들고 응원하는 이야기",
+            "kind": "answer"
+          }
+        ],
+        "lesson": "강한 목소리는 더 이상 덜어 내야 할 점이 아니라, 이 곡이 존재할 이유가 되었습니다.",
+        "listenLabel": "Love Dopamine 듣기"
+      },
       "ctaLabel": "프로젝트 상담하기"
     }
   },
@@ -1705,7 +1824,7 @@
         "titleJp": "SHINE",
         "artist": "비쥬 (라테일 OST)",
         "cover": true,
-        "roles": "Mix",
+        "roles": "Tune · Mix · Master",
         "youtube": "kz3QqmVPTyw",
         "date": "2026-07-22"
       },
@@ -1738,7 +1857,7 @@
         "titleEn": "When You Need Comfort",
         "artist": "준성 (JUNSUNG)",
         "cover": false,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "mTNrjY6XDjk",
         "date": "2026-02-12"
       },
@@ -1746,7 +1865,7 @@
         "title": "기다릴게",
         "artist": "아리사",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "rQmWo4hNTTc",
         "date": "2024-07-14"
       },
@@ -1754,7 +1873,7 @@
         "title": "첫사랑의 시작 소리",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "-TYQADItRqA",
         "date": "2023-06-11"
       },
@@ -1762,7 +1881,7 @@
         "title": "Love this Memory",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "F_mIfVgIq5s",
         "date": "2023-06-11"
       },
@@ -1770,7 +1889,7 @@
         "title": "Dream Star",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "MhD5YI32pz4",
         "date": "2023-06-11"
       },
@@ -1778,7 +1897,7 @@
         "title": "허둥지둥 오리라도 사랑이 하고싶어~!",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "S660QnydnlE",
         "date": "2023-06-11"
       },
@@ -1786,7 +1905,7 @@
         "title": "죄인과 세계의 마침표",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "Wxm4rGgaJM8",
         "date": "2023-06-11"
       },
@@ -1794,7 +1913,7 @@
         "title": "Disallowed",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "YFVAUm8TJ9U",
         "date": "2023-06-11"
       },
@@ -1802,7 +1921,7 @@
         "title": "사무치는 누군가의 위로",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "bUGQoJ4CyR0",
         "date": "2023-06-11"
       },
@@ -1810,7 +1929,7 @@
         "title": "I Love Me",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Mix",
+        "roles": "Tune · Mix",
         "youtube": "yb6dRXdPyWE",
         "date": "2023-06-11"
       },
@@ -1818,7 +1937,7 @@
         "title": "IDOL",
         "artist": "히요코",
         "cover": true,
-        "roles": "Vocal Edit · Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "odY5ZpGJdwE",
         "date": "2023-04-29"
       },
@@ -1826,7 +1945,7 @@
         "title": "강풍 올백",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "5CZGWim9alU",
         "date": "2023-04-26"
       },
@@ -1834,7 +1953,7 @@
         "title": "QUEEN",
         "artist": "얌",
         "cover": true,
-        "roles": "Vocal Edit · Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "foOXEV6sEGE",
         "date": "2023-04-07"
       },
@@ -1842,7 +1961,7 @@
         "title": "새삥",
         "artist": "레볼루션 하트",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "uhpi9NvoW7I",
         "date": "2023-03-31"
       },
@@ -1850,7 +1969,7 @@
         "title": "나의 X에게",
         "artist": "히요코",
         "cover": true,
-        "roles": "Vocal Edit · Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "el1DXyPlMqU",
         "date": "2023-03-17"
       },
@@ -1858,7 +1977,7 @@
         "title": "KING",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "eCnadYqdN14",
         "date": "2023-03-10"
       },
@@ -1866,7 +1985,7 @@
         "title": "Rain Drop",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "T0kCFUbp_vY",
         "date": "2023-03-01"
       },
@@ -1874,7 +1993,7 @@
         "title": "방해쟁이",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "FWwFZLDnzI8",
         "date": "2023-02-08"
       },
@@ -1882,7 +2001,7 @@
         "title": "귀여워서 미안해",
         "artist": "히요코",
         "cover": true,
-        "roles": "Vocal Edit · Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "5u-sa-Al8Ik",
         "date": "2023-01-22"
       },
@@ -1890,7 +2009,7 @@
         "title": "Eight",
         "artist": "얌",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "lhHj0qhMOJU",
         "date": "2023-01-16"
       },
@@ -1898,7 +2017,7 @@
         "title": "흰 눈이 내려와",
         "artist": "REVOLUTION HEART",
         "cover": false,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "jwPoEaqb3NI",
         "date": "2022-12-15"
       },
@@ -1906,7 +2025,7 @@
         "title": "Panda Hero",
         "artist": "레볼루션 하트",
         "cover": true,
-        "roles": "Mix · Master",
+        "roles": "Tune · Mix · Master",
         "youtube": "0wflo2ye0vg",
         "date": "2022-11-30"
       }
@@ -1940,7 +2059,7 @@
         "titleJp": "千鳥",
         "artist": "Beru (원곡 ヨルシカ)",
         "cover": true,
-        "roles": "Arr · Vocal Edit · Mix",
+        "roles": "Arr · Tune · Mix",
         "youtube": "mcu-7ceV5IQ",
         "date": "2026-09-13"
       },

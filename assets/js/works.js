@@ -212,14 +212,16 @@
     modal: -1,        // index of the work open in the popup
     settled: false,   // the rack has made its entrance once
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
-    engaged: false    // the reader has played something
+    engaged: false,   // the reader has played something
+    tab: 'songs',     // songs (곡 제작) | mix (믹싱·마스터링) | arr (편곡·BGM)
+    mixShown: 12      // video cards shown in the mixing tab before "more"
   };
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '아티스트', original: '오리지널', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Artists', original: 'Originals', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'アーティスト', original: 'オリジナル', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', rec: '레코딩', tune: '튠', mix: '믹스', master: '마스터', tabSongs: '곡 제작', tabMix: '믹싱·마스터링', tabArr: '편곡·BGM', tabs: '작업 종류', game: '게임', anime: '애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Producing', compose: 'Composing', arrange: 'Arranging', rec: 'Recording', tune: 'Tuning', mix: 'Mixing', master: 'Mastering', tabSongs: 'Songs', tabMix: 'Mixing & Mastering', tabArr: 'Arrangement & BGM', tabs: 'Kinds of work', game: 'Games', anime: 'Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', rec: 'レコーディング', tune: 'チューニング', mix: 'ミックス', master: 'マスター', tabSongs: '楽曲制作', tabMix: 'ミキシング・マスタリング', tabArr: '編曲・BGM', tabs: '作品の種類', game: 'ゲーム', anime: 'アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -231,13 +233,12 @@
     return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'artist';
   }
   function isAlbum(work) { var k = itemKind(work); return k === 'album' || k === 'ep'; }
-  var ROLE_FILTERS = ['all', 'produce', 'compose', 'arrange'];
+  var FIELD_FILTERS = ['all', 'game', 'artist', 'anime', 'original'];
+  var ROLE_ORDER = ['produce', 'compose', 'arrange', 'rec', 'tune', 'mix', 'master'];
+  var POST_ROLES = { rec: 'Rec', tune: 'Tune', mix: 'Mix', master: 'Master' };
   function hasRole(unit, role) { return !!(unit && Array.isArray(unit.roles) && unit.roles.indexOf(role) !== -1); }
-  function matchesFilter(work, filter) {
-    if (filter === 'all') return true;
-    if (isAlbum(work) && work.tracks && work.tracks.length) return work.tracks.some(function (track) { return hasRole(track, filter); });
-    return hasRole(work, filter);
-  }
+  function fieldOf(work) { return (work && work.field) || 'artist'; }
+  function matchesFilter(work, filter) { return filter === 'all' || fieldOf(work) === filter; }
   // newest first (dates are YYYY.MM.DD, so they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
   function entriesFor(filter) {
@@ -246,9 +247,9 @@
     var out = [];
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
-      if (tracks.length) {
-        tracks.forEach(function (track, i) { if (filter === 'all' || hasRole(track, filter)) out.push({ work: entry.work, index: entry.index, track: i }); });
-      } else if (filter === 'all' || hasRole(entry.work, filter)) out.push(entry);
+      if (!matchesFilter(entry.work, filter)) return;
+      if (tracks.length) tracks.forEach(function (track, i) { out.push({ work: entry.work, index: entry.index, track: i }); });
+      else out.push(entry);
     });
     return out;
   }
@@ -304,9 +305,16 @@
     return '<button type="button" class="tt-shelf-play' + (extraClass ? ' ' + extraClass : '') + (on ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '" aria-label="' + esc((on ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-eq" aria-hidden="true"><i></i><i></i><i></i></span></button>';
   }
 
+  function tabsHtml() {
+    var labels = L();
+    return '<div class="tt-works-tabs" role="tablist" aria-label="' + esc(labels.tabs) + '">' + [['songs', labels.tabSongs], ['mix', labels.tabMix], ['arr', labels.tabArr]].map(function (tab) {
+      var on = state.tab === tab[0];
+      return '<button type="button" role="tab" class="tt-works-tab' + (on ? ' is-on' : '') + '" aria-selected="' + on + '" data-works-action="tab" data-tab="' + tab[0] + '">' + esc(tab[1]) + '</button>';
+    }).join('') + '</div>';
+  }
   function filtersHtml() {
     var labels = L();
-    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + ROLE_FILTERS.map(function (key) {
+    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + FIELD_FILTERS.map(function (key) {
       var count = entriesFor(key).length;
       if (!count) return '';
       var on = state.filter === key;
@@ -388,7 +396,8 @@
   }
   function rolesText(unit) {
     var labels = L();
-    return (unit && Array.isArray(unit.roles) ? unit.roles : []).map(function (role) { return labels[role] || role; }).join(' · ');
+    var roles = unit && Array.isArray(unit.roles) ? unit.roles : [];
+    return ROLE_ORDER.filter(function (role) { return roles.indexOf(role) !== -1; }).map(function (role) { return labels[role]; }).join(' · ');
   }
   function rackItemHtml(entry, order) {
     if (entry.track != null) return trackItemHtml(entry, order);
@@ -403,7 +412,7 @@
         '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
           '<span class="tt-m-card-art"><img ' + (order < 4 ? 'src' : 'data-src') + '="' + esc(thumb) + '" alt="" decoding="async" style="' + coverStyle(unit) + '">' +
             '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
-          '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span>' +
+          '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span>' + (rolesText(work) ? '<span class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</span>' : '') +
         '</button>' +
       '</li>';
     }
@@ -412,7 +421,7 @@
         sleeveHtml(work, order < 8) +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
-      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + '</div>' +
+      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + (rolesText(work) ? '<p class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</p>' : '') + '</div>' +
     '</li>';
   }
 
@@ -600,17 +609,39 @@
   }
 
   // engineering, arrangement and BGM credits: watched on YouTube (or heard from a small player), not pressed as records
-  function mixHtml(key) {
+  // my own songs where I also recorded, tuned, mixed or mastered, as video cards for the mixing tab
+  function ownPostItems() {
+    var out = [];
+    works.forEach(function (work) {
+      var album = localizedUnit(work);
+      (isAlbum(work) && work.tracks && work.tracks.length ? work.tracks : [work]).forEach(function (unit) {
+        var post = Object.keys(POST_ROLES).filter(function (role) { return hasRole(unit, role); });
+        var id = youtubeId(unit.youtube || (unit === work ? work.youtube : ''));
+        if (!post.length || !id) return;
+        var u = localizedUnit(unit);
+        out.push({ title: plainRichText(u.title || unit.title || ''), artist: plainRichText(album.artist || work.artist || ''), roles: post.map(function (role) { return POST_ROLES[role]; }).join(' · '),
+          youtube: id, date: String(unit.date || work.date || '').replace(/\./g, '-'), own: true });
+      });
+    });
+    return out;
+  }
+  function mixHtml(key, extra, paged) {
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
-    var items = Array.isArray(mix.items) ? mix.items.filter(function (it) { return it && (it.youtube || it.audio); }) : [];
+    var seen = {};
+    var items = (Array.isArray(mix.items) ? mix.items : []).concat(extra || []).filter(function (it) {
+      if (!it || !(it.youtube || it.audio)) return false;
+      var k = it.youtube || it.audio; if (seen[k]) return false; seen[k] = true; return true;
+    });
     items.sort(function (x, y) { return String(y.date || '').localeCompare(String(x.date || '')); }); // newest first
+    var total = items.length;
+    if (paged) items = items.slice(0, state.mixShown);
     if (!items.length) return '';
     var t = Object.assign({}, mix, (mix.translations && mix.translations[pageLangKey()]) || {});
     var lang = pageLangKey();
     return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
       '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
-      '<ul class="tt-mix-row">' + items.map(function (it) {
+      '<ul class="tt-mix-row tt-mix-grid">' + items.map(function (it) {
         var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
         var media = it.youtube
           ? '<div class="tt-shelf-yt" data-yt="' + esc(String(it.youtube)) + '"><img src="https://i.ytimg.com/vi/' + esc(String(it.youtube)) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async">' +
@@ -618,9 +649,11 @@
           : '<div class="tt-mix-audio"><span class="tt-mix-audio-tag" aria-hidden="true">' + esc(it.roles) + '</span>' +
             '<audio controls preload="none" src="' + esc(audioUrl(it.audio)) + '" data-gain="' + loudnessGain(it.audio) + '" aria-label="' + esc(title) + '"></audio></div>';
         return '<li class="tt-mix-card">' + media +
-          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + '</span><small>' + esc(it.roles) + '</small></div>' +
+          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + (it.own ? ' · ' + esc(L().ownSong) : '') + '</span><small>' + esc(it.roles) + '</small></div>' +
         '</li>';
-      }).join('') + '</ul></section>';
+      }).join('') + '</ul>' +
+      (paged && total > items.length ? '<button type="button" class="tt-mix-more" data-works-action="more">' + esc(L().more) + ' <span>' + (total - items.length) + '</span></button>' : '') +
+      '</section>';
   }
 
   document.addEventListener('play', function (event) {
@@ -696,11 +729,14 @@
     if (!root) root = ensureRoot();
     if (!root) return;
     var list = visibleWorks();
-    root.innerHTML = '<div class="tt-shelf tt-crate' + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() +
-      '<div class="tt-crate-stage">' +
-        '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
-        '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
-      '</div>' + mixHtml('mixWorks') + mixHtml('bgmWorks') + clientsHtml() +
+    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true)
+      : state.tab === 'arr' ? mixHtml('bgmWorks')
+      : '<div class="tt-crate-stage">' +
+          '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
+          '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
+        '</div>';
+    root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + tabsHtml() +
+      body + clientsHtml() +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
@@ -1178,7 +1214,14 @@
     var action = button.getAttribute('data-works-action');
     // the full career history lives in the profile sheet the app renders
     if (action === 'history') { window.dispatchEvent(new CustomEvent('TALETONE_OPEN_HISTORY')); return; }
-    if (action === 'filter') {
+    if (action === 'tab') {
+      state.tab = button.getAttribute('data-tab') || 'songs';
+      render();
+      var tabEl = root && root.querySelector('[data-works-action="tab"][data-tab="' + state.tab + '"]'); if (tabEl) tabEl.focus({ preventScroll: true });
+    } else if (action === 'more') {
+      state.mixShown += 12;
+      render();
+    } else if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
       render(before);

@@ -27,7 +27,6 @@ var ComponentBridges = {
       'home-projects': 'prologue',
       'projects-members': 'gather',
       'members-works': 'bloom',
-      'works-news': 'rise',
       'news-contact': 'page'
     };
     return byId[id] || ['prologue','gather','bloom','rise','page'][i] || 'gather';

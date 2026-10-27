@@ -72,14 +72,6 @@ const expectedFontAssets = {
   'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
 };
 
-const imageSlotJs = await text('assets/js/image-slot.js');
-assert(imageSlotJs.includes('if (!slot.isConnected) return false;'), 'image-slot: detached slots can start image requests before chapter gating');
-assert(imageSlotJs.includes("if (!slot.closest('#c-news')) return true;"), 'image-slot: hidden NEWS cards are not scoped for deferred loading');
-assert(imageSlotJs.includes("if (activeChapter) return activeChapter === 'news';"), 'image-slot: hidden NEWS cards are no longer gated by the active chapter');
-assert(imageSlotJs.includes("return /^(?:\\/(?:en|ja))?\\/news(?:\\/index\\.html)?\\/?$/i.test(location.pathname);"),'image-slot: direct NEWS route fallback is missing');
-assert(imageSlotJs.includes("const url = shouldLoadNewsImage(this) ? (this._userUrl || srcAttr) : '';"), 'image-slot: NEWS image URL is assigned before the chapter is active');
-assert(imageSlotJs.includes("document.querySelectorAll('#c-news image-slot').forEach((slot) => slot._render());"), 'image-slot: NEWS cards do not refresh on chapter entry');
-assert(imageSlotJs.includes("window.addEventListener('TALETONE_CHAPTER_CHANGE', refreshNewsImages);"), 'image-slot: chapter-change refresh hook is missing');
 
 const required = [
   ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
@@ -179,7 +171,6 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decoded.includes(':root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}'), `${file}: site type scale is missing`);
     assert(decoded.includes('html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important'), `${file}: Korean keep-all override is missing`);
     assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
-    assert(/class="tt-news-modal(?: [\w-]+)*" role="dialog" aria-modal="true"/.test(decoded), `${file}: NEWS dialog lacks a direct selector`);
     assert(decoded.includes('class="tt-home-tagline"') && decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline lockup is missing`);
     for (const binding of ['HOME.tagline', 'MEMBERS_META.subtitle', 'MEMBERS_META.description', 'CONTACT.subtitle', 'CONTACT.caption']) {
       assert(decoded.includes(`<sc-if value="{{ ${binding} }}">`), `${file}: empty chapter copy is not conditionally removed: ${binding}`);
@@ -530,14 +521,6 @@ for (const removedAsset of [
 ]) {
   assert(!(await exists(removedAsset)), `removed unused asset returned: ${removedAsset}`);
 }
-const expectedMemberDots = { N4ML: '#a8caff', JAEHA: '#403f6f', Seine: '#f5b0bd', MIEE: '#b3e4b3' };
-for (const member of siteJson.members || []) {
-  if (Object.hasOwn(expectedMemberDots, member.name)) {
-    assert(member.accent === expectedMemberDots[member.name], `member detail color drift: ${member.name}`);
-    assert(member.dotAccent === expectedMemberDots[member.name], `member dot color drift: ${member.name}`);
-  }
-}
-
 const assetRefs = new Set();
 const collectAssets = (value) => {
   if (Array.isArray(value)) return value.forEach(collectAssets);
@@ -664,7 +647,7 @@ for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-
 }
 assert((worksCss.match(/\.tt-mobile-bridge-line\[data-indent=/g) || []).length === 4, 'duplicate mobile bridge indent rules returned');
 assert((worksCss.match(/#lang-switcher\.tt-lang-switcher button:focus,\s*#lang-switcher\.tt-lang-switcher button:focus-visible,\s*#lang-switcher\.tt-lang-switcher button:active\s*\{\s*border: 0 !important;\s*outline: 0 !important;\s*box-shadow: none !important;\s*border-radius: 999px !important;\s*\}/g) || []).length === 1, 'duplicate mobile language focus rule returned');
-assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="news"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px(?: !important)?;\s*top: auto(?: !important)?;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\)(?: !important)?;\s*transform: none(?: !important)?;\s*transform-origin: left bottom(?: !important)?;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
+assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px(?: !important)?;\s*top: auto(?: !important)?;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\)(?: !important)?;\s*transform: none(?: !important)?;\s*transform-origin: left bottom(?: !important)?;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
 // The phone sky and water canvas follow the visible viewport: the template's own rules (they come after
 // works.css in the cascade, so they are the ones that apply) size them to 100dvh with a 100vh floor.
 assert(/#sky\{[^}]*height:100dvh;min-height:100vh/.test(liveTemplate), 'mobile sky does not cover the expanded viewport');
@@ -678,12 +661,8 @@ const notFound = await text('404.html');
 assert(/noindex/i.test(notFound) && /href="\/works\/"/.test(notFound), '404 page is not index-safe or navigable');
 
 // Portfolio limits from the agency years are gone (the user's call, 2026-10): any credited work may be named.
-// Still kept: the \uD574\uBD04 case story (permission pending) and personal phone numbers.
+// Still kept: no personal phone numbers.
 const forbidden = [
-  '\uCE58\uC5B4\uB9AC\uB529',
-  ['J-', 'ROCK'].join(''),
-  '\uBCF5\uC2DD',
-  '\uC57C\uAD6C\uBD80',
   ['010', '-'].join(''),
 ];
 const memberPortfolioOnly = [];

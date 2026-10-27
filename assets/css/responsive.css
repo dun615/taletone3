@@ -16,14 +16,14 @@
   #lang-switcher.tt-lang-switcher button:focus-visible { outline: 2px solid #0e6e7d !important; outline-offset: -3px !important; }
   #progress, body[data-active-chapter] #progress { right: var(--tt-gutter) !important; top: max(76px, calc(env(safe-area-inset-top) + 76px)) !important; }
   #tt-mobile-chapter-menu { right: var(--tt-gutter) !important; top: max(128px, calc(env(safe-area-inset-top) + 128px)) !important; max-height: calc(100vh - 148px); max-height: calc(100dvh - 148px - env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; }
-  #c-projects, #c-members, #c-news, #c-contact, #c-works.tt-gh-works {
+  #c-projects, #c-members, #c-contact, #c-works.tt-gh-works {
     width: 100% !important; max-width: 100% !important; box-sizing: border-box;
     padding-top: max(144px, calc(144px + env(safe-area-inset-top))) !important;
     padding-left: var(--tt-gutter) !important; padding-right: var(--tt-gutter) !important;
     justify-content: flex-start !important; align-items: center !important;
   }
-  #c-projects, #c-members, #c-news, #c-works.tt-gh-works { padding-bottom: 80px !important; }
-  #c-projects > [data-reveal], #c-members > [data-reveal], #c-news > [data-reveal], #c-contact > [data-reveal] {
+  #c-projects, #c-members, #c-works.tt-gh-works { padding-bottom: 80px !important; }
+  #c-projects > [data-reveal], #c-members > [data-reveal], #c-contact > [data-reveal] {
     width: min(100%, 960px) !important; max-width: 100% !important;
     margin-left: auto !important; margin-right: auto !important;
   }
@@ -63,11 +63,6 @@
   #c-projects article.lift > :last-child { margin-top: auto !important; }
   #c-members > [data-reveal][style*="grid-template-columns"] { width: min(720px, 100%) !important; align-items: stretch !important; }
   
-  #c-news .lift { background: #fffdf8 !important; transform: none !important; }
-  #c-news .lift > :last-child { padding: 24px !important; color: #141c30 !important; }
-  #c-news .lift > :last-child * { color: #141c30 !important; text-shadow: none !important; }
-  #c-news .lift > :last-child > :first-child, #c-news .lift > :last-child > :last-child { color: #0e6e7d !important; }
-  #c-news .tt-news-card-preview { color: #44505f !important; font-size: 14px !important; line-height: 1.6 !important; opacity: 1 !important; }
 }
 
 @media (max-width: 760px) {
@@ -76,7 +71,7 @@
   #c-home > [data-reveal]:first-of-type { max-width: 100%; }
   #c-home [data-bob] { opacity: .85 !important; }
   .tt-home-quick-actions { width: 100%; }
-  #c-projects h2, #c-members h2, #c-news h2 { font-size: clamp(42px, 12vw, 64px) !important; line-height: .98 !important; }
+  #c-projects h2, #c-members h2 { font-size: clamp(42px, 12vw, 64px) !important; line-height: .98 !important; }
   #c-projects > [data-reveal]:first-child > p:last-of-type { font-size: 14px !important; }
   #c-projects > [data-public-audience][data-reveal] { padding: 4px 0 !important; transform: none !important; }
   #c-projects [data-public-audience] article { padding: 16px 18px 16px 30px !important; }
@@ -90,9 +85,6 @@
   #c-projects article.lift > :first-child { min-height: 0 !important; }
   #c-projects article.lift p { font-size: 14px !important; line-height: 1.6 !important; }
 
-  #c-news .lift { transform: none !important; }
-  #c-news .lift > :last-child { padding: 20px !important; min-height: 220px !important; }
-  #c-news .tt-news-card-preview { font-size: 13px !important; line-height: 1.55 !important; -webkit-line-clamp: 2 !important; max-height: 3.1em !important; opacity: .9 !important; }
   #c-contact h2 { width: 100% !important; font-size: clamp(28px, 8.7vw, 40px) !important; }
   #email-link, #email-copy-button { padding: 14px 20px !important; font-size: 14px !important; }
 }
@@ -112,7 +104,7 @@
 @media (max-width: 1180px) and (max-height: 540px) {
   #c-home { min-height: 100svh !important; padding: 144px var(--tt-gutter) 130px !important; }
   #c-home h1 { font-size: 64px !important; }
-  #c-projects h2, #c-members h2, #c-news h2{ font-size: 48px !important; }
+  #c-projects h2, #c-members h2{ font-size: 48px !important; }
   #c-contact h2 { font-size: 42px !important; }
   #tt-mobile-chapter-menu { top: 72px !important; max-height: calc(100dvh - 88px - env(safe-area-inset-bottom)) !important; }
   .tt-bridge-pin-stage [data-bridge] { font-size: 28px !important; }

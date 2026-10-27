@@ -10,10 +10,8 @@
 }
 
 body[data-active-chapter="works"] #chapnav .navbtn,
-body[data-active-chapter="news"] #chapnav .navbtn,
 body[data-active-chapter="contact"] #chapnav .navbtn,
 body[data-active-chapter="works"] #chapnav .nav-label,
-body[data-active-chapter="news"] #chapnav .nav-label,
 body[data-active-chapter="contact"] #chapnav .nav-label {
   color: rgba(239, 250, 255, .92) !important;
   text-shadow:
@@ -22,7 +20,6 @@ body[data-active-chapter="contact"] #chapnav .nav-label {
 }
 
 body[data-active-chapter="works"] #chapnav .nav-dot,
-body[data-active-chapter="news"] #chapnav .nav-dot,
 body[data-active-chapter="contact"] #chapnav .nav-dot {
   background: rgba(255, 255, 255, .10) !important;
 }
@@ -71,8 +68,7 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 @media (max-width: 760px) {
 
   #c-projects > [data-reveal]:last-child,
-#c-members > [data-reveal]:not(:first-child),
-#c-news > [data-reveal] > div:last-child {
+#c-members > [data-reveal]:not(:first-child) {
     min-width: 0;
   }
 
@@ -130,7 +126,6 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 @media (min-width: 761px) and (max-width: 1180px) {
   #c-projects,
 #c-members,
-#c-news,
 #c-contact {
     padding-left: clamp(44px, 7vw, 76px) !important;
     padding-right: clamp(44px, 7vw, 76px) !important;
@@ -139,7 +134,6 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 
   #c-projects > [data-reveal],
 #c-members > [data-reveal],
-#c-news > [data-reveal],
 #c-contact > [data-reveal] {
     width: min(1180px, 100%) !important;
     max-width: min(1180px, 100%);
@@ -157,7 +151,6 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 @media (max-width: 760px) {
   #c-projects,
 #c-members,
-#c-news,
 #c-contact {
     padding-left: clamp(20px, 6vw, 30px) !important;
     padding-right: clamp(20px, 6vw, 30px) !important;
@@ -166,7 +159,6 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 
   #c-projects > [data-reveal],
 #c-members > [data-reveal],
-#c-news > [data-reveal],
 #c-contact > [data-reveal] {
     width: min(100%, 540px) !important;
     max-width: min(100%, 540px);
@@ -182,7 +174,6 @@ body[data-active-chapter="contact"] #chapnav .nav-dot {
 
   body[data-active-chapter="projects"] #progress,
 body[data-active-chapter="members"] #progress,
-body[data-active-chapter="news"] #progress,
 body[data-active-chapter="contact"] #progress {
     left: 16px !important;
     top: auto;
@@ -241,16 +232,13 @@ body[data-active-chapter="contact"] #progress {
 @media (max-width: 900px) and (orientation: portrait) {
   #c-projects [data-reveal],
 #c-members [data-reveal],
-#c-news [data-reveal],
 #c-contact [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
   }
 
-  #c-projects > div.tt-s-grid-template-columns-0466,
-#c-news > div.tt-s-grid-template-columns-0466,
-#c-news > div > div.tt-s-grid-template-columns-0466 {
+  #c-projects > div.tt-s-grid-template-columns-0466 {
     grid-template-columns: minmax(0, min(560px, 100%)) !important;
     justify-content: center;
     justify-items: stretch;
@@ -258,9 +246,7 @@ body[data-active-chapter="contact"] #progress {
     margin-right: auto !important;
   }
 
-  #c-projects > div.tt-s-grid-template-columns-0466 > *,
-#c-news > div.tt-s-grid-template-columns-0466 > *,
-#c-news > div > div.tt-s-grid-template-columns-0466 > * {
+  #c-projects > div.tt-s-grid-template-columns-0466 > * {
     width: 100%;
     max-width: 560px;
     justify-self: center;
@@ -277,9 +263,7 @@ body[data-active-chapter="contact"] #progress {
 }
 
 @media (max-width: 760px) {
-  #c-projects > div.tt-s-grid-template-columns-0466,
-#c-news > div.tt-s-grid-template-columns-0466,
-#c-news > div > div.tt-s-grid-template-columns-0466 {
+  #c-projects > div.tt-s-grid-template-columns-0466 {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
@@ -461,7 +445,6 @@ body[data-active-chapter] #progress,
 body[data-active-chapter="projects"] #progress,
 body[data-active-chapter="members"] #progress,
 body[data-active-chapter="works"] #progress,
-body[data-active-chapter="news"] #progress,
 body[data-active-chapter="contact"] #progress {
     position: fixed !important;
     visibility: visible !important;
@@ -496,8 +479,7 @@ body[data-active-chapter] #progress {
     box-shadow: 0 0 10px rgba(14, 125, 136, .20);
   }
 
-  #c-projects [data-reveal].tt-s-grid-template-columns-0466,
-#c-news .tt-s-grid-template-columns-0466 {
+  #c-projects [data-reveal].tt-s-grid-template-columns-0466 {
     justify-content: center;
     justify-items: stretch;
     align-items: start;
@@ -507,25 +489,14 @@ body[data-active-chapter] #progress {
     margin-right: auto !important;
   }
 
-  #c-news > div > div.tt-s-grid-template-columns-0466,
-#c-news > [data-reveal] > div.tt-s-grid-template-columns-0466,
-#c-news [data-reveal] > div.tt-s-grid-template-columns-0466 {
-    max-width: 100%;
-  }
-
-  #c-projects [data-reveal].tt-s-grid-template-columns-0466 > *,
-#c-news .tt-s-grid-template-columns-0466 > *,
-#c-news > div > div.tt-s-grid-template-columns-0466 > *,
-#c-news > [data-reveal] > div.tt-s-grid-template-columns-0466 > *,
-#c-news [data-reveal] > div.tt-s-grid-template-columns-0466 > * {
+  #c-projects [data-reveal].tt-s-grid-template-columns-0466 > * {
     min-width: 0;
     width: 100%;
     max-width: none !important;
     justify-self: stretch !important;
   }
 
-  #c-projects image-slot,
-#c-news image-slot {
+  #c-projects image-slot {
     min-height: 0;
   }
 
@@ -564,42 +535,6 @@ body[data-active-chapter] #progress {
     line-height: 1.15;
   }
 
-  #c-news > div.tt-s-grid-template-columns-0466,
-#c-news > div > div.tt-s-grid-template-columns-0466,
-#c-news > [data-reveal] > div.tt-s-grid-template-columns-0466,
-#c-news [data-reveal] > div.tt-s-grid-template-columns-0466,
-#c-news .tt-s-grid-template-columns-0466 {
-    grid-template-columns: minmax(0, min(520px, 100%)) !important;
-    justify-items: stretch;
-  }
-
-  #c-news .lift {    grid-template-columns: clamp(96px, 30vw, 132px) minmax(0, 1fr);
-    gap: 14px !important;
-    align-items: stretch;}
-
-  #c-news .lift > :first-child {
-    min-width: 0;
-  }
-
-  #c-news .lift > :last-child {
-    min-width: 0;
-  }
-
-  #c-news p{
-    font-size: clamp(12px, 3.3vw, 14px) !important;
-    line-height: 1.42 !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  #c-news a {
-    min-height: 44px !important;
-    padding: 10px 12px !important;
-    font-size: clamp(12px, 3.3vw, 14px) !important;
-    line-height: 1.15 !important;
-  }
 }
 
 /* ===== Final mobile depth + ink FX restore ===== */
@@ -1119,54 +1054,6 @@ body.tt-network-open #content {
     font-size: clamp(12.5px, 3.2vw, 14px) !important;
   }
 
-  #c-news .lift {
-    display: flex;
-    flex-direction: column;
-    padding: 0 !important;
-    border-radius: 24px !important;
-    overflow: hidden !important;
-    isolation: isolate;
-  }
-
-  #c-news .lift::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(8, 18, 35, .74) 0%, rgba(8, 18, 35, .78) 48%, rgba(8, 18, 35, .92) 100%),
-      radial-gradient(circle at 28% 18%, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 46%);
-  }
-
-  #c-news .lift > image-slot:first-child,
-#c-news .lift > :first-child {
-    z-index: 0;
-    width: 100% !important;
-    max-height: none !important;
-    border-radius: inherit !important;
-    overflow: hidden;
-  }
-
-  #c-news .lift > :last-child {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    color: #fffdf8;
-  }
-
-  #c-news .lift > :last-child *,
-#c-news .lift p,
-  #c-news .lift .tt-s-color-var-ink-f97e{
-    color: #fffdf8 !important;
-  }
-
-  #c-news .lift a,
-  #c-news .lift .tt-s-color-var-accent-9aa3 {
-    color: #8ddde5 !important;
-  }
 }
 
 @media (min-width: 901px) {
@@ -1504,9 +1391,7 @@ body[data-active-chapter="members"] #chapnav * {
 }
 
 .tt-member-modal,
-.tt-news-modal,
-.tt-member-modal > *,
-.tt-news-modal > * {
+.tt-member-modal > * {
   overscroll-behavior: contain;
 }
 
@@ -1520,11 +1405,6 @@ body[data-active-chapter="members"] #chapnav * {
 /* ===== P0 UX stabilization: navigation, fixed UI and balanced member grids ===== */
 #tt-mobile-chapter-menu {
   display: none;
-}
-
-#c-news .lift[role="button"]:focus-visible {
-  outline: 3px solid #F0A634 !important;
-  outline-offset: 4px !important;
 }
 
 @media (min-width: 761px) and (max-width: 1366px) {
@@ -1596,7 +1476,6 @@ body[data-active-chapter="members"] #chapnav * {
 #chapnav #nav-2.navbtn[aria-current="page"] .nav-label,
 #chapnav #nav-3.navbtn[aria-current="page"] .nav-label,
 #chapnav #nav-4.navbtn[aria-current="page"] .nav-label,
-#chapnav #nav-5.navbtn[aria-current="page"] .nav-label,
 #chapnav #nav-6.navbtn[aria-current="page"] .nav-label {
     color: rgba(244, 250, 255, .98) !important;
     text-shadow: none !important;
@@ -1605,8 +1484,7 @@ body[data-active-chapter="members"] #chapnav * {
 
 @media (max-width: 1180px) {
   /* Compact navigation also serves tablets and landscape phones. */
-  body.tt-mobile-scroll-active #c-contact .tt-book-light-stage > *,
-body:not([data-active-chapter="news"]):not([data-active-chapter="contact"]) #c-contact .tt-book-light-stage > * {
+  body.tt-mobile-scroll-active #c-contact .tt-book-light-stage > * {
     animation-play-state: paused;
   }
 
@@ -1742,74 +1620,6 @@ body.tt-network-open #progress,
 body.tt-network-open #tt-mobile-chapter-menu {
   visibility: hidden !important;
   pointer-events: none !important;
-}
-
-/* NEWS previews always come from the localized article body. The card decides
-   how many lines fit; editors no longer maintain a separate excerpt. */
-#c-news .tt-news-card-preview {
-  --tt-news-preview-lines: 3;
-    text-overflow: ellipsis;
-  overflow-wrap: anywhere !important;
-}
-
-@media (min-width: 761px) and (max-height: 720px) {
-  #c-news .tt-news-card-preview {
-    --tt-news-preview-lines: 2;
-  }
-}
-
-@media (max-width: 760px) and (orientation: portrait) {
-  #c-news .tt-news-card-preview {
-    --tt-news-preview-lines: 4;
-  }
-}
-
-@media (max-width: 760px) and (orientation: landscape),
-       (max-width: 420px) and (max-height: 740px) {
-  #c-news .tt-news-card-preview {
-    --tt-news-preview-lines: 2;
-  }
-}
-
-/* ===== Member detail: selected credits first, full career on demand ===== */
-
-/* NEWS previews are generated from the localized article body. Keep the
-   excerpt subordinate to the title at every viewport size. */
-#c-news .tt-news-card-preview {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  max-height: 4.5em;
-  overflow: hidden;
-  margin-top: 10px !important;
-  line-height: 1.5 !important;
-  font-weight: 500 !important;
-  opacity: .76;
-}
-
-@media (min-width: 761px) and (max-height: 720px) {
-  #c-news .tt-news-card-preview {
-    -webkit-line-clamp: 2 !important;
-    max-height: 3em !important;
-  }
-}
-
-@media (max-width: 760px) and (orientation: portrait) {
-  #c-news .tt-news-card-preview {
-    -webkit-line-clamp: 2;
-    max-height: 3em;
-    margin-top: 8px !important;
-    line-height: 1.5 !important;
-    opacity: .72;
-  }
-}
-
-@media (max-width: 760px) and (orientation: landscape),
-       (max-width: 420px) and (max-height: 740px) {
-  #c-news .tt-news-card-preview {
-    -webkit-line-clamp: 1 !important;
-    max-height: 1.5em !important;
-  }
 }
 
 /* ===== 타이포그래피·위계 정리 (Works·내비) ===== */
@@ -2306,7 +2116,7 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body .tt-contact-address a::after {content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}
 }
 
-/* Phones: the featured songs and the news cards show their artwork on top instead of a faded backdrop under
+/* Phones: the featured songs show their artwork on top instead of a faded backdrop under
    the text (REVIEW-mobile M12, M17) */
 @media (max-width:760px){
   html body #c-projects article.lift {min-height:0;background:rgba(255,253,248,.94)!important}
@@ -2318,17 +2128,10 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body #c-projects article.lift > :not(:nth-child(2)) {max-width:none!important;}
   html body #c-projects article.lift > :nth-child(1) > :nth-child(2) {display:none!important}
 
-  html body #c-news .lift {justify-content:flex-start;min-height:0;background:#111c31!important}
-  html body #c-news .lift::after {display:none}
-  html body #c-news .lift > :first-child {position:relative;inset:auto;height:auto!important;aspect-ratio:16/9!important;border-radius:24px 24px 0 0!important;
-    filter:none!important;pointer-events:auto}
-  html body #c-news .lift > :last-child {padding:16px 20px 20px!important;justify-content:flex-start;text-shadow:none}
 }
 
-/* Landscape phones (REVIEW-mobile M18): the news picture takes at most 35% of the sheet, and the Works popup
-   keeps its two panes so the facts are not pushed below a screen-high video */
+/* Landscape phones (REVIEW-mobile M18): the Works popup keeps its two panes so the facts are not pushed below a screen-high video */
 @media (orientation:landscape) and (max-height:500px){
-  html body .tt-news-modal image-slot {height:35vh!important}
   html body .tt-shelf-modal-panel {display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);height:auto;max-height:calc(100vh - 32px);overflow:hidden}
   html body .tt-shelf-modal {padding:16px;align-items:center}
   html body .tt-shelf-modal-media,
@@ -2413,7 +2216,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 
   /* chapter starts are resting points (bridges are not: they play only on the way down) */
   html body #content {scroll-snap-type:y proximity}
-  html body #content :is(#c-home,#c-projects,#c-members,#c-works,#c-news,#c-contact) {scroll-snap-align:start}
 }
 /* /preview/ only: this screen's CSS size, for tuning layouts on a given phone; a tap folds it */
 .tt-screen-badge {position:fixed;left:0;top:40%;z-index:400;padding:6px 8px;border:0;border-radius:0 8px 8px 0;background:#f6c343;color:#141c30;
@@ -2478,27 +2280,13 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-now-eq i {animation:none}}
 
-/* News, phone layout of its own: the newest item as a large card, the rest as compact rows (thumbnail, tag and
-   date, title) like a news app. The whole row opens the article sheet as before. */
+/* Phones: the partnership bar as a soft card */
 @media (max-width:760px){
-  #content#content #c-news .tt-s-grid-template-columns-0466 {display:flex!important;flex-direction:column;gap:0!important}
-  #content#content #c-news .lift:first-child {margin-bottom:10px}
-  #content#content #c-news .lift:not(:first-child) {display:grid!important;grid-template-columns:96px minmax(0,1fr);align-items:center;
-    min-height:0!important;padding:14px 4px!important;border-radius:0!important;background:none!important;box-shadow:none!important;border:0!important;
-    border-top:1px solid rgba(251,255,255,.12)!important;overflow:visible!important}
-  #content#content #c-news .lift:not(:first-child) > :first-child {position:relative!important;inset:auto!important;width:96px!important;height:96px!important;aspect-ratio:1!important;
-    border-radius:14px!important;overflow:hidden}
-  #content#content #c-news .lift:not(:first-child) > :last-child {padding:0!important;min-height:0!important;display:flex;flex-direction:column;gap:6px}
-  #content#content #c-news .lift:not(:first-child) > :last-child > :first-child {font-size:12px!important}
-  #content#content #c-news .lift:not(:first-child) .tt-news-title {margin:0!important;font-size:16px!important;line-height:1.35!important;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  #content#content #c-news .lift:not(:first-child) p,
-  #content#content #c-news .lift:not(:first-child) > :last-child > :last-child:not(.tt-news-title) {display:none!important}
   #content#content #c-members .tt-network-summary {min-height:72px;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
 }
 
-/* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) and a
-   smaller newest-news card (wide picture, two-line summary) — both were taller than a screen half */
+/* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) — they
+   were taller than a screen half */
 @media (max-width:760px){
   #content#content #c-projects article.lift {display:grid!important;grid-template-columns:104px minmax(0,1fr);grid-template-areas:"media head" "media copy" "button button";
     column-gap:14px!important;row-gap:4px!important;align-items:start;padding:14px!important;border-radius:20px!important}
@@ -2510,13 +2298,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
     display:-webkit-box!important;overflow:hidden!important}
   #content#content #c-projects article.lift > :nth-child(4) {grid-area:button;justify-self:stretch;justify-content:center;margin:12px 0 0!important}
 
-  #content#content #c-news .lift:first-child > :first-child {aspect-ratio:21/9!important}
-  #content#content #c-news .lift:first-child > :last-child > :last-child:not(.tt-news-title) {display:none!important}
   /* an older rule kept a 220px minimum under the text (about 95px of empty card): the card now ends with its text */
-  #content#content #c-news .lift:first-child {gap:0!important}
-  #content#content #c-news .lift:first-child > :last-child {min-height:0!important;margin:0!important;padding:12px 16px 14px!important;gap:5px}
-  #content#content #c-news .lift:first-child .tt-news-title {margin:4px 0!important;font-size:18px!important;line-height:1.3!important}
-  #content#content #c-news .lift:first-child p {font-size:13.5px!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
 
 /* Brand pill (tablet and desktop): the mark already switches from ink to white at depth 0.5 (component.js);
@@ -2537,93 +2319,12 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body #brand, html body #brand > div, html body #brand > div > span {transition:none!important}
 }
 
-/* =====================================================================
-   Members as an album's credits (fresh markup: .tt-crew, nothing older styles it).
-   One panel. Desktop/tablet: the featured member's CD on the left, the five members as a tracklist on the
-   right; the row under the pointer or focus puts its disc on the stage (site-ux.js featureCrewMember).
-   Phones: the tracklist alone, each row with a small disc. Rows are name and job title only - the rest lives
-   in the member's sheet. The creative director (data-no-detail) has no sheet and no arrow.
-   ===================================================================== */
-#c-members .tt-crew {box-sizing:border-box;width:min(1080px,90vw)!important;max-width:none!important;margin:0!important;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;
-  gap:clamp(28px,4.4vw,72px);padding:clamp(24px,3.2vw,44px) clamp(24px,3.6vw,52px);border-radius:32px;
-  background:rgba(255,253,248,.74);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 70px rgba(8,22,38,.16);
-  -webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1)}
-
-/* the stage: five discs stacked, the featured one shown */
-#c-members .tt-crew-stage {display:grid;justify-items:center}
-#c-members .tt-crew-feature {grid-area:1/1;margin:0;display:flex;flex-direction:column;align-items:center;width:100%;
-  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
-#c-members .tt-crew-disc {position:relative;display:block;width:min(100%,300px,33vh);aspect-ratio:1;border-radius:50%}
-#c-members .tt-crew-disc::before {content:"";position:absolute;inset:-12px;border-radius:50%;
-  background:rgba(255,255,255,.55)}
-#c-members .tt-crew-disc img {position:relative;display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;
-  filter:drop-shadow(0 22px 34px rgba(8,22,38,.26));transform:rotate(-24deg) scale(.94);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-#c-members .tt-crew-feature figcaption {margin-top:clamp(16px,2.6vh,26px);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
-#c-members .tt-crew-feature-name {font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;
-  font-size:clamp(28px,2.6vw,38px);line-height:1;color:#141c30}
-#c-members .tt-crew-feature-role {font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3a4656}
-#c-members .tt-crew-feature-role::before {content:"";display:inline-block;width:8px;height:8px;margin-right:9px;border-radius:50%;
-  background:var(--crew-accent,#6fe9f8);vertical-align:1px;box-shadow:0 0 0 1px rgba(20,28,48,.12)}
-#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"],
-#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"],
-#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"],
-#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"],
-#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"] {opacity:1;visibility:visible;transition:opacity .45s ease}
-#c-members .tt-crew[data-featured="01"] .tt-crew-feature[data-i="01"] img,
-#c-members .tt-crew[data-featured="02"] .tt-crew-feature[data-i="02"] img,
-#c-members .tt-crew[data-featured="03"] .tt-crew-feature[data-i="03"] img,
-#c-members .tt-crew[data-featured="04"] .tt-crew-feature[data-i="04"] img,
-#c-members .tt-crew[data-featured="05"] .tt-crew-feature[data-i="05"] img {transform:none}
-
-/* the tracklist */
-#c-members .tt-crew-list {list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-#c-members .tt-crew-item + .tt-crew-item {border-top:1px solid rgba(20,28,48,.1)}
-#c-members .tt-crew-row {display:grid;grid-template-columns:28px 48px minmax(0,1fr) 18px;align-items:center;column-gap:16px;
-  padding:clamp(9px,1.4vh,13px) 14px;margin:3px 0;border-radius:16px;cursor:pointer;transition:background-color .25s ease}
-#c-members .tt-crew-row[data-no-detail="true"] {cursor:default}
-#c-members .tt-crew-no {font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;color:#7a8794;font-variant-numeric:tabular-nums}
-#c-members .tt-crew-row > img {width:48px;height:48px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 5px 10px rgba(8,22,38,.18));
-  transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-#c-members .tt-crew-text {display:flex;justify-content:space-between;min-width:0}
-#c-members .tt-crew-name {font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:22px;line-height:1.15;color:#141c30;white-space:nowrap}
-#c-members .tt-crew-role {font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a5868;}
-#c-members .tt-crew-go {justify-self:center;width:8px;height:8px;border-top:2px solid #8a96a3;border-right:2px solid #8a96a3;transform:rotate(45deg);
-  transition:transform .25s ease,border-color .25s ease}
-#c-members .tt-crew-row[data-no-detail="true"] .tt-crew-go {visibility:hidden}
-#c-members .tt-crew[data-featured="01"] .tt-crew-row[data-i="01"],
-#c-members .tt-crew[data-featured="02"] .tt-crew-row[data-i="02"],
-#c-members .tt-crew[data-featured="03"] .tt-crew-row[data-i="03"],
-#c-members .tt-crew[data-featured="04"] .tt-crew-row[data-i="04"],
-#c-members .tt-crew[data-featured="05"] .tt-crew-row[data-i="05"] {background:rgba(255,255,255,.78)}
-#c-members .tt-crew-row:not([data-no-detail="true"]):hover .tt-crew-go {transform:translateX(3px) rotate(45deg);border-color:#141c30}
-#c-members .tt-crew-row:hover > img {transform:rotate(-14deg)}
-#c-members .tt-crew-row:focus-visible {outline:2px solid var(--accent,#0e6e7d);outline-offset:2px}
-
 /* the partnership bar lines up with the panel */
 #c-members .tt-network-directory {width:min(1080px,90vw)!important;max-width:none!important;margin-top:clamp(14px,2.2vh,24px)!important}
 
-/* narrower panels: the role goes under the name */
-@media (max-width:900px) and (min-width:761px){
-  #c-members .tt-crew {grid-template-columns:minmax(0,4fr) minmax(0,6fr)}
-  #c-members .tt-crew-row {grid-template-columns:40px minmax(0,1fr) 16px}
-  #c-members .tt-crew-no {display:none}
-}
-
-/* phones: the tracklist alone */
+/* phones */
 @media (max-width:760px){
-  #c-members .tt-crew {display:block;padding:6px 8px;border-radius:24px;box-shadow:0 14px 34px rgba(8,22,38,.12)}
-  #c-members .tt-crew-stage {display:none}
-  #c-members .tt-crew-row {grid-template-columns:56px minmax(0,1fr) 18px;padding:11px 10px;margin:2px 0}
-  #c-members .tt-crew-no {display:none}
-  #c-members .tt-crew-row > img {width:56px;height:56px}
-  #c-members .tt-crew-name {font-size:20px}
-  #c-members .tt-crew-role {letter-spacing:.08em}
-  #c-members .tt-crew[data-featured] .tt-crew-row {background:none}
-  #c-members .tt-crew-row:active {background:rgba(255,255,255,.78)}
   #c-members .tt-network-directory {width:100%!important}
-}
-@media (prefers-reduced-motion:reduce){
-  #c-members .tt-crew-feature, #c-members .tt-crew-disc img, #c-members .tt-crew-row > img {transition:none}
 }
 
 /* the sheet shows the member's disc where the photo was */
@@ -2633,14 +2334,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   #content#content #c-members {padding-top:clamp(76px,11vh,130px)!important;padding-bottom:clamp(40px,7vh,96px)!important}
   #content#content #c-members > [data-reveal]:first-child {margin-bottom:clamp(22px,3.6vh,44px)!important}
 }
-
-/* TALE is also a tail: each member's animal as a small hashtag beside the name (data: members[].animal) */
-#c-members .tt-crew-head {display:inline-flex;align-items:baseline;gap:9px;min-width:0}
-#c-members .tt-crew-tag {font-size:12px;font-weight:700;letter-spacing:.01em;color:#0e6e7d;opacity:.85;white-space:nowrap}
-@media (max-width:760px){#c-members .tt-crew-tag {font-size:11.5px}}
-/* with the hashtag beside the name, the role sits under it at every width */
-#c-members .tt-crew-text {flex-direction:column;align-items:flex-start;gap:4px}
-#c-members .tt-crew-role {text-align:left;font-size:11px}
 
 /* =====================================================================
    Member sheet as liner notes (fresh markup: .tt-sheet-*). A header band in the member's colour with the
@@ -2880,6 +2573,27 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-case-steps > li[data-kind=strength]::before, .tt-case-steps > li[data-kind=question]::before {left:50%;top:-17px;transform:translateX(-50%)}
   .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
 }
+
+/* WORKS by service: tabs under the title; the mixing and arrangement tabs are grids of video cards */
+.tt-works-tabs {display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:0 auto clamp(26px,4vh,40px);padding:5px;width:max-content;max-width:100%;
+  border:1px solid rgba(141,236,252,.35);border-radius:999px;background:rgba(4,37,44,.45)}
+.tt-works-tab {padding:10px 20px;border:0;border-radius:999px;background:none;color:#cfeef4;font:800 14px/1 var(--tt-noto-primary),sans-serif;letter-spacing:.02em;cursor:pointer;transition:background-color .2s ease,color .2s ease}
+.tt-works-tab:hover,.tt-works-tab:focus-visible {color:#fbffff;background:rgba(141,236,252,.14)}
+.tt-works-tab.is-on {background:#8decfc;color:#05303a}
+.tt-crate:not(.is-tab-songs) .tt-mix {margin-top:0}
+.tt-mix-row.tt-mix-grid {grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;scroll-snap-type:none;gap:20px 18px}
+@media (max-width:1100px){.tt-mix-row.tt-mix-grid {grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+  .tt-works-tabs {width:auto}
+  .tt-works-tab {padding:9px 14px;font-size:13px}
+  .tt-mix-row.tt-mix-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;margin:0;padding:0}
+  .tt-mix-grid .tt-mix-copy {padding:10px 10px 12px}
+  .tt-mix-grid .tt-mix-copy strong {font-size:13.5px}
+}
+.tt-mix-more {display:flex;align-items:center;gap:8px;margin:22px auto 0;padding:11px 22px;border:1px solid rgba(141,236,252,.55);border-radius:999px;background:rgba(4,37,44,.45);
+  color:#fbffff;font:700 14px/1 var(--tt-noto-primary),sans-serif;cursor:pointer}
+.tt-mix-more span {color:#8decfc}
+.tt-mix-more:hover,.tt-mix-more:focus-visible {background:rgba(141,236,252,.18)}
 
 /* Official covers in a record's popup: two small videos side by side */
 .tt-shelf-covers {margin-top:22px}

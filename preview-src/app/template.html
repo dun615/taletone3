@@ -299,7 +299,6 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 #content#content .tt-prologue-hint{font-size:var(--fs-s)}
 #content#content .tt-scroll-hint{font-size:var(--fs-s);letter-spacing:.12em!important}
 #content#content #c-home :is(.is-primary,.is-secondary){font-size:var(--fs-s);min-height:44px}
-#content#content .tt-news-card-preview{font-size:var(--fs-s)!important}
 #content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
 .tt-project-title{font-size:var(--fs-2xl)!important}
 /* R4: who we write for, as a quiet list; the two stories stay the only cards */
@@ -339,16 +338,11 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* phones: the title and arrow on one line, the partners on the next */
 @media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}}
 #content#content .tt-network-arrow{font-size:var(--fs-l)}
-/* R8: news cards hold their edge on dark water; thumbnails share one tone */
-#content#content #c-news .lift{border:1px solid rgba(232,246,250,.14)!important;position:relative}
-#c-news .lift > image-slot{position:relative}
-#c-news .lift > image-slot::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,18,32,0) 45%,rgba(6,18,32,.38));pointer-events:none}
 /* ===== Line breaks (revision 2) ===== */
 /* Korean never breaks inside a word; outranks the older word-break:normal resets in responsive.css */
 html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important;overflow-wrap:break-word}
 /* running text never ends on a lone word; headings and short notes are balanced */
 #content{text-wrap:pretty}
-#content :is(h2,h3,h4,.tt-news-title,.tt-section-note,.tt-prologue-hint,.tt-chapter-lead){text-wrap:balance}
 /* short titles stay on one line */
 .tt-project-title{white-space:nowrap;font-size:var(--fs-2xl)!important}
 .tb-title{white-space:nowrap}
@@ -508,16 +502,13 @@ body[data-active-chapter="members"] #chapnav .nav-dot{
   box-shadow:0 0 0 1px rgba(255,255,255,.62),0 2px 10px rgba(15,57,70,.20);
 }
 body[data-active-chapter="works"] #chapnav .navbtn,
-body[data-active-chapter="news"] #chapnav .navbtn,
 body[data-active-chapter="contact"] #chapnav .navbtn,
 body[data-active-chapter="works"] #chapnav .nav-label,
-body[data-active-chapter="news"] #chapnav .nav-label,
 body[data-active-chapter="contact"] #chapnav .nav-label{
   color:rgba(239,250,255,.92);
   text-shadow:0 1px 8px rgba(0,0,0,.50),0 0 2px rgba(4,18,30,.86);
 }
 body[data-active-chapter="works"] #chapnav .nav-dot,
-body[data-active-chapter="news"] #chapnav .nav-dot,
 body[data-active-chapter="contact"] #chapnav .nav-dot{
   background:rgba(255,255,255,.10);
   box-shadow:0 0 0 1px rgba(3,18,30,.48),0 2px 10px rgba(0,0,0,.26);
@@ -532,7 +523,6 @@ body[data-active-chapter="home"] #chapnav #nav-0.navbtn,
 body[data-active-chapter="projects"] #chapnav #nav-2.navbtn,
 body[data-active-chapter="members"] #chapnav #nav-3.navbtn,
 body[data-active-chapter="works"] #chapnav #nav-4.navbtn,
-body[data-active-chapter="news"] #chapnav #nav-5.navbtn,
 body[data-active-chapter="contact"] #chapnav #nav-6.navbtn{
   opacity:1 !important;
 }
@@ -540,7 +530,6 @@ body[data-active-chapter="home"] #nav-0,
 body[data-active-chapter="projects"] #nav-2,
 body[data-active-chapter="members"] #nav-3,
 body[data-active-chapter="works"] #nav-4,
-body[data-active-chapter="news"] #nav-5,
 body[data-active-chapter="contact"] #nav-6{
   opacity:1 !important;
 }
@@ -566,7 +555,7 @@ body[data-active-chapter="contact"] #nav-6{
   }
   #sky{display:block;visibility:visible;opacity:1;position:fixed!important;inset:0!important;width:100vw;height:100dvh;min-height:100vh;z-index:0!important;pointer-events:none}
   #content,x-dc{background:none!important;background-color:transparent!important;background-image:none!important;overscroll-behavior-y:none}
-  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="news"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
+  #fx,canvas#fx,body[data-active-chapter] #fx,body[data-active-chapter="home"] #fx,body[data-active-chapter="projects"] #fx,body[data-active-chapter="members"] #fx,body[data-active-chapter="works"] #fx,body[data-active-chapter="contact"] #fx{display:block!important;visibility:visible!important;opacity:.82!important;position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:2!important;pointer-events:none!important;mix-blend-mode:normal!important;transform:translateZ(0)!important}
   #lang-switcher.tt-lang-switcher{right:max(12px,env(safe-area-inset-right))!important;top:max(14px,env(safe-area-inset-top))!important;max-width:calc(100vw - 132px);z-index:340!important}
   #lang-switcher.tt-lang-switcher>div{width:clamp(168px,46vw,196px);max-width:100%;justify-content:space-between;gap:0!important;padding:3px!important;overflow:hidden;border-radius:999px!important;background-clip:padding-box!important}
   #lang-switcher.tt-lang-switcher button{appearance:none!important;-webkit-appearance:none!important;border:0!important;outline:0!important;box-shadow:none!important;-webkit-tap-highlight-color:transparent!important;flex:1 1 0;min-width:44px!important;min-height:44px!important;padding:0 5px!important;font-size:12px!important;line-height:1;display:inline-grid;place-items:center;border-radius:999px!important;overflow:hidden!important;background-clip:padding-box!important}
@@ -760,18 +749,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 </div>
 </sc-if>
 
-<!-- ===== NEWS DETAIL MODAL ===== -->
-<sc-if value="{{ nOpen }}" hint-placeholder-val="{{ false }}">
-<div class="tt-news-modal tt-s-z-index-300-daaf tt-s-place-items-center-9906" role="dialog" aria-modal="true" onclick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(14px,3vw,40px);background:rgba(10,14,30,.55);backdrop-filter:blur(10px)">
-  <div class="tt-s-width-min-760px-96vw-9f63" onclick="{{ stop }}" style="position:relative;width:min(760px,96vw);max-height:92vh;overflow-y:auto;scrollbar-width:none;border-radius:20px;background:rgba(255,253,248,.96);border:1px solid rgba(255,255,255,.7);box-shadow:0 50px 120px rgba(8,12,30,.5)">
-    <button type="button" class="tt-news-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ UI_LABELS.close }}" title="{{ UI_LABELS.close }}" style="position:absolute;right:18px;top:18px;z-index:3"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-    <image-slot id="{{ nk.slotId }}" src="{{ nk.image }}" fit="{{ nk.fit }}" position="{{ nk.position }}" style="width:100%;height:clamp(220px,34vh,320px);filter:{{ nk.filter }}" shape="rect" placeholder="{{ UI_LABELS.thumbnailPlaceholder }}"></image-slot>
-    <div style="padding:clamp(26px,3.4vw,44px)">
-      <div style="font-weight:800;font-size:13px;letter-spacing:.05em;                  ">{{ nk.tag }} &middot; {{ nk.date }}</div>
-      <h3 style="margin:10px 0 18px;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,46px);letter-spacing:-.02em;line-height:1.04;color:#16202e">{{ nk.title }}</h3>
-      <div style="white-space:pre-wrap;font-weight:500;font-size:16px;line-height:1.72;color:#46505f">{{ nk.body }}</div>
-      <sc-if value="{{ nk.pageUrl }}"><a class="tt-s-font-size-14px-0cf0" href="{{ nk.pageUrl }}" style="display:inline-flex;align-items:center;gap:8px;margin-top:26px;padding:12px 20px;border-radius:999px;background:#141c30;color:#fffdf8;font-weight:800;font-size:14px;text-decoration:none">{{ nk.pageLabel }} <span aria-hidden="true">&#8594;</span></a></sc-if>
-    </div>
+   </div>
   </div>
 </div>
 </sc-if>

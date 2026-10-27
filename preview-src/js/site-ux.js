@@ -1,6 +1,5 @@
-// Site-wide UX that every chapter uses: the skip link, the compact chapter menu, accessible names for
-// member/news cards, dialog focus handling (inert siblings, focus return), and small content patches for
-// news previews and member credits. It used to live inside works.js; it has nothing to do with Works.
+// Site-wide UX that every chapter uses: the skip link, the compact chapter menu, dialog focus handling (inert
+// siblings, focus return), and small content patches for member credits. It used to live inside works.js; it has nothing to do with Works.
 (function () {
   function pageLangKey() {
     var lang = (document.documentElement && document.documentElement.lang) || '';
@@ -12,31 +11,6 @@
       if (saved === 'kr' || saved === 'en' || saved === 'jp') return saved;
     } catch (_e) {}
     return 'kr';
-  }
-  function plainNewsPreviewText(value) {
-    var source = String(value == null ? '' : value);
-    if (!source) return '';
-    var template = document.createElement('template');
-    template.innerHTML = source;
-    return String(template.content.textContent || '').replace(/\s+/g, ' ').trim();
-  }
-  function localizedNewsItem(item) {
-    var result = Object.assign({}, item || {});
-    var translated = item && item.translations && item.translations[pageLangKey()];
-    if (translated && typeof translated === 'object') Object.assign(result, translated);
-    return result;
-  }
-  function patchNewsPreviews() {
-    var content = window.TALETONE_CONTENT;
-    if (!content || !Array.isArray(content.news)) return;
-    document.querySelectorAll('#c-news .lift').forEach(function (card, index) {
-      var item = localizedNewsItem(content.news[index]);
-      var preview = card.querySelector('p');
-      if (!preview) return;
-      var text = plainNewsPreviewText(item.summary || item.body || '');
-      preview.classList.add('tt-news-card-preview');
-      if (text && preview.textContent !== text) preview.textContent = text;
-    });
   }
   var globalUxState = {
     dialog: null,
@@ -52,11 +26,9 @@
     var chapter = (document.body && document.body.getAttribute('data-active-chapter')) || 'home';
     return {
       home: 'nav-0',
-      translation: 'nav-0',
       projects: 'nav-2',
       members: 'nav-3',
       works: 'nav-4',
-      news: 'nav-5',
       contact: 'nav-6'
     }[chapter] || 'nav-0';
   }
@@ -72,7 +44,6 @@
     var chapter = (document.body && document.body.getAttribute('data-active-chapter')) || 'home';
     return {
       home: 'c-home',
-      translation: 'c-translation',
       projects: 'c-projects',
       members: 'c-members',
       works: 'c-works',
@@ -240,46 +211,8 @@
     });
   }
 
-  function interactiveCardLabel(card, kind) {
-    var image = card.querySelector('img[alt]');
-    var name = image && image.getAttribute('alt');
-    if (!name) {
-      var heading = card.querySelector('h2,h3,[style*="font-size:21px"],[style*="font-size: 21px"]');
-      name = heading && heading.textContent.trim();
-    }
-    name = name || card.textContent.trim().split(/\n+/)[0] || 'TALETONE';
-    if (kind === 'member') return name + localizedUiLabel(' 멤버 상세', ' member details', ' メンバー詳細');
-    return name + localizedUiLabel(' 기사 상세', ' article details', ' 記事詳細');
-  }
-
-  function patchInteractiveCards() {
-    document.querySelectorAll('#c-members .tt-crew-row, #c-news .lift').forEach(function (card) {
-      var kind = card.classList.contains('tt-crew-row') ? 'member' : 'news';
-      // a member without a detail sheet is plain content, not a button
-      if (card.getAttribute('data-no-detail') === 'true') {
-        ['role', 'tabindex', 'aria-haspopup', 'aria-label'].forEach(function (name) { card.removeAttribute(name); });
-        delete card.dataset.ttDialogTrigger;
-        return;
-      }
-      card.setAttribute('role', 'button');
-      card.setAttribute('tabindex', '0');
-      card.setAttribute('aria-haspopup', 'dialog');
-      card.setAttribute('aria-label', interactiveCardLabel(card, kind));
-      card.dataset.ttDialogTrigger = 'true';
-    });
-  }
-
-  // Members: the row under the pointer or focus puts that member's disc on the stage
-  function featureCrewMember(event) {
-    var row = event.target && event.target.closest && event.target.closest('#c-members .tt-crew-row');
-    var crew = row && row.closest('.tt-crew');
-    if (crew) crew.setAttribute('data-featured', row.getAttribute('data-i'));
-  }
-  document.addEventListener('pointerover', featureCrewMember);
-  document.addEventListener('focusin', featureCrewMember);
-
   function findSiteDialog() {
-    return document.querySelector('.tt-shelf-modal[role="dialog"], .tt-member-modal, .tt-news-modal');
+    return document.querySelector('.tt-shelf-modal[role="dialog"], .tt-member-modal');
   }
 
   function setSiblingsInert(dialog) {
@@ -396,7 +329,7 @@
     }
     var panel = dialog.querySelector('.tt-member-panel, .tt-shelf-modal-panel') || dialog.firstElementChild;
     if (panel) panel.setAttribute('role', 'document');
-    var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-news-close, .tt-x-close, :scope > div > button');
+    var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-x-close, :scope > div > button');
     if (close) {
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
@@ -485,8 +418,6 @@
   function refreshGlobalUx() {
     refreshChapterControls();
     ensureSkipLink();
-    patchNewsPreviews();
-    patchInteractiveCards();
     refreshSiteDialog();
     markTodos();
     loadDeferredImages();
@@ -513,7 +444,7 @@
     var dialog = globalUxState.dialog;
     if (!dialog) return;
     if (event.key === 'Escape') {
-      var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-news-close, .tt-x-close, :scope > div > button');
+      var close = dialog.querySelector('.tt-member-close, .tt-shelf-modal-close, .tt-x-close, :scope > div > button');
       if (close) {
         event.preventDefault();
         close.click();

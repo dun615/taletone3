@@ -42,7 +42,8 @@
         "produce",
         "compose",
         "arrange"
-      ]
+      ],
+      "field": "artist"
     },
     {
       "id": "work-soraniwa",
@@ -84,8 +85,10 @@
       },
       "roles": [
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-run-galaxy",
@@ -129,7 +132,8 @@
         "produce",
         "compose",
         "arrange"
-      ]
+      ],
+      "field": "game"
     },
     {
       "id": "work-taletones",
@@ -172,8 +176,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-stellive",
@@ -216,8 +222,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-zzz",
@@ -258,8 +266,12 @@
         }
       },
       "roles": [
-        "arrange"
-      ]
+        "arrange",
+        "tune",
+        "mix",
+        "master"
+      ],
+      "field": "anime"
     },
     {
       "id": "work-parable",
@@ -302,8 +314,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-bubble-sweet",
@@ -346,8 +360,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-ocd",
@@ -390,8 +406,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-mq82acph-nd1j",
@@ -439,7 +457,9 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "tune",
+            "mix"
           ]
         },
         {
@@ -468,7 +488,9 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "tune",
+            "mix"
           ]
         },
         {
@@ -497,7 +519,10 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "rec",
+            "tune",
+            "mix"
           ]
         },
         {
@@ -525,7 +550,11 @@
               "description": "眠れない悲しみの夜に、残された心を静かに抱きしめる物語です。"
             }
           },
-          "roles": []
+          "roles": [
+            "rec",
+            "tune",
+            "mix"
+          ]
         }
       ],
       "kind": "album",
@@ -545,7 +574,8 @@
           "type": "Dear my heroes 1st EP",
           "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
         }
-      }
+      },
+      "field": "artist"
     },
     {
       "id": "work-can-you-stay",
@@ -588,8 +618,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune",
+        "mix"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-watercolor",
@@ -632,8 +665,12 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "rec",
+        "tune",
+        "mix"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-client-a",
@@ -677,7 +714,8 @@
         "produce",
         "compose",
         "arrange"
-      ]
+      ],
+      "field": "artist"
     },
     {
       "id": "work-client-b",
@@ -729,7 +767,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "rec"
           ]
         },
         {
@@ -762,7 +801,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "rec"
           ]
         },
         {
@@ -795,7 +835,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "rec"
           ]
         },
         {
@@ -826,7 +867,8 @@
             }
           },
           "roles": [
-            "produce"
+            "produce",
+            "rec"
           ]
         }
       ],
@@ -847,7 +889,8 @@
           "type": "SilverLine [ALBUM]",
           "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
         }
-      }
+      },
+      "field": "artist"
     },
     {
       "id": "work-mq82ashm-1ju7",
@@ -890,8 +933,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "rec",
+        "mix"
+      ],
+      "field": "game"
     },
     {
       "id": "work-mix-archive-01",
@@ -991,7 +1037,8 @@
       "roles": [
         "compose",
         "arrange"
-      ]
+      ],
+      "field": "artist"
     },
     {
       "id": "work-master-archive",
@@ -1034,8 +1081,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "rec",
+        "mix"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-mix-archive-02",
@@ -1136,8 +1186,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "rec",
+        "mix"
+      ],
+      "field": "original"
     },
     {
       "id": "work-arrange-work",
@@ -1181,8 +1234,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix",
+        "master"
+      ],
+      "field": "game"
     },
     {
       "id": "work-selected-demo",
@@ -1225,8 +1281,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-archive-21",
@@ -1270,8 +1328,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "original"
     },
     {
       "id": "work-tt-project-connect-season-1-12",
@@ -1355,7 +1415,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "tune"
           ]
         },
         {
@@ -1420,7 +1481,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "tune"
           ]
         },
         {
@@ -1516,7 +1578,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "tune"
           ]
         },
         {
@@ -1613,7 +1676,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "tune"
           ]
         },
         {
@@ -1646,7 +1710,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "tune"
           ]
         }
       ],
@@ -1668,7 +1733,8 @@
           "type": "PROJECT CONNECT『SEASON 1』",
           "description": ""
         }
-      }
+      },
+      "field": "artist"
     },
     {
       "id": "work-tt-last-origin-miss-orca-17",
@@ -1719,7 +1785,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "mix"
           ]
         },
         {
@@ -1752,7 +1819,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "mix"
           ]
         },
         {
@@ -1839,7 +1907,8 @@
           "type": "ゲーム『ラストオリジン』ミスオルカ",
           "description": ""
         }
-      }
+      },
+      "field": "game"
     },
     {
       "id": "work-tt-last-origin-cafe-amor-22",
@@ -2006,7 +2075,8 @@
           "type": "ゲーム『ラストオリジン』Café Amor × Horizon",
           "description": ""
         }
-      }
+      },
+      "field": "game"
     },
     {
       "id": "work-tt-pocotone-sixtar-gate-25",
@@ -2056,7 +2126,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "mix"
           ]
         },
         {
@@ -2088,7 +2159,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "mix"
           ]
         }
       ],
@@ -2110,7 +2182,8 @@
           "type": "リズムゲーム『Sixtar Gate: STARTRAIL』POCOTONE Pack",
           "description": ""
         }
-      }
+      },
+      "field": "game"
     },
     {
       "id": "work-tt-with-me-26",
@@ -2153,8 +2226,11 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune",
+        "mix"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-tt-paradise-27",
@@ -2198,7 +2274,8 @@
         "produce",
         "compose",
         "arrange"
-      ]
+      ],
+      "field": "artist"
     },
     {
       "id": "work-tt-shining-day-28",
@@ -2239,8 +2316,10 @@
         }
       },
       "roles": [
-        "arrange"
-      ]
+        "arrange",
+        "tune"
+      ],
+      "field": "artist"
     },
     {
       "id": "work-tt-always-with-you-32",
@@ -2368,7 +2447,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "mix"
       ],
       "officialCovers": [
         {
@@ -2386,7 +2466,8 @@
           "artist": "Takanashi Kiara × Ouro Kronii (hololive)",
           "youtube": "kJ0hczPwSnM"
         }
-      ]
+      ],
+      "field": "game"
     },
     {
       "id": "work-tt-unmyeong-35",
@@ -2484,8 +2565,11 @@
         }
       },
       "roles": [
-        "arrange"
-      ]
+        "arrange",
+        "mix",
+        "master"
+      ],
+      "field": "anime"
     },
     {
       "id": "work-tt-run-into-galaxy-36",
@@ -2528,8 +2612,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "game"
     },
     {
       "id": "work-tt-we-are-sia-37",
@@ -2572,8 +2658,12 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "tune",
+        "mix",
+        "master"
+      ],
+      "field": "original"
     },
     {
       "id": "work-tt-sejong-arts-anthem-38",
@@ -2616,8 +2706,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "original"
     },
     {
       "id": "work-tt-growing-39",
@@ -2660,8 +2752,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "original"
     },
     {
       "id": "work-tt-tomorrow-40",
@@ -2704,8 +2798,10 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
-      ]
+        "arrange",
+        "mix"
+      ],
+      "field": "original"
     }
   ],
   "clientLogos": [

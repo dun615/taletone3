@@ -1,7 +1,7 @@
 // Component core: state, lifecycle, the animation loop and the values the template renders.
 // Everything else lives in src/app/parts/*.js and is attached to Component.prototype by the build.
 class Component extends DCLogic {
-  state = { mOpen:false, nOpen:false, partnerOpen:false, mi:0, ni:0, contactCopyMessage:'' };
+  state = { mOpen:false, partnerOpen:false, mi:0, contactCopyMessage:'' };
 
   ensureDataReady(){
     if(this._dataReady) return;
@@ -651,7 +651,6 @@ class Component extends DCLogic {
       HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, CASE: this.CASE || {}, VOICES: this.VOICES || {},
       CONTACT_FORM: this.CONTACT_FORM || {}, CONTACT_NO_FORM: !(this.CONTACT_FORM || {}).title, CONTACT_CHANNELS: this.CONTACT_CHANNELS || [],
       TRACK_RECORD: this.TRACK_RECORD || [],
-      NEWS_META: this.NEWS_META || {},
       PARTNERS_META: this.PARTNERS_META || {},
       FOOTER_META: this.FOOTER_META || {},
       UI_LABELS: this.UI_LABELS || {},
@@ -662,15 +661,13 @@ class Component extends DCLogic {
         noDetailFlag: m.noDetail ? 'true' : 'false',
         open: m.noDetail ? ()=>{} : ()=>this.openMember(i)
       })),
-      mOpen: this.state.mOpen, nOpen: this.state.nOpen,
+      mOpen: this.state.mOpen,
       m: (this.MEMBERS||[])[this.state.mi] || {},
       M_SHEET: this.memberSheet((this.MEMBERS||[])[this.state.mi] || {}),
-      nk: (this.NEWS||[])[this.state.ni] || {},
       partnerOpen: this.state.partnerOpen,
       togglePartner:()=>this.togglePartner(),
       PARTNERS: this.PARTNERS || [],
       partnerClick: (e)=>{ var href=e.currentTarget.getAttribute('href'); if(!href || href==='#'){ if(e && e.preventDefault) e.preventDefault(); } },
-      NEWS: (this.NEWS||[]).map((n,i)=>Object.assign({}, n, { cardImage:n.cardImage||n.image, open:()=>this.openNews(i) })),
       closeModal:()=>this.closeAll(),
       stop:(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); }
     };
