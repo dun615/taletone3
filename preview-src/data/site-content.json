@@ -1782,22 +1782,22 @@
   },
   "mixWorks": {
     "label": "SOUND ENGINEERING",
-    "note": "튠·믹싱·마스터링으로 참여한 작업",
+    "note": "레코딩·에디트·믹싱·마스터링으로 참여한 작업",
     "coverTag": "커버",
     "translations": {
       "kr": {
         "label": "SOUND ENGINEERING",
-        "note": "튠·믹싱·마스터링으로 참여한 작업",
+        "note": "레코딩·에디트·믹싱·마스터링으로 참여한 작업",
         "coverTag": "커버"
       },
       "en": {
         "label": "SOUND ENGINEERING",
-        "note": "Tuning, mixing and mastering work",
+        "note": "Recording, editing, mixing and mastering work",
         "coverTag": "Cover"
       },
       "jp": {
         "label": "SOUND ENGINEERING",
-        "note": "チューニング・ミキシング・マスタリングで参加した作品",
+        "note": "レコーディング・エディット・ミキシング・マスタリングで参加した作品",
         "coverTag": "カバー"
       }
     },
@@ -1824,7 +1824,7 @@
         "titleJp": "SHINE",
         "artist": "비쥬 (라테일 OST)",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "kz3QqmVPTyw",
         "date": "2026-07-22"
       },
@@ -1832,7 +1832,7 @@
         "title": "out of the things i loved, i hate you most.",
         "artist": "언제 (unjae)",
         "cover": false,
-        "roles": "Rec · Tune · Mix",
+        "roles": "Rec · Edit · Mix",
         "youtube": "cdiqd7EJxtc",
         "date": "2026-07-21"
       },
@@ -1840,7 +1840,7 @@
         "title": "SNAKE EYES",
         "artist": "HEXIA_EDEN",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "x5jXQY67p40",
         "date": "2026-05-02"
       },
@@ -1848,7 +1848,7 @@
         "title": "계절범죄",
         "artist": "Eryn",
         "cover": true,
-        "roles": "Rec · Tune · Mix · Master",
+        "roles": "Rec · Edit · Mix · Master",
         "youtube": "xxDox1kfbyQ",
         "date": "2026-04-15"
       },
@@ -1857,7 +1857,7 @@
         "titleEn": "When You Need Comfort",
         "artist": "준성 (JUNSUNG)",
         "cover": false,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "mTNrjY6XDjk",
         "date": "2026-02-12"
       },
@@ -1865,7 +1865,7 @@
         "title": "기다릴게",
         "artist": "아리사",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "rQmWo4hNTTc",
         "date": "2024-07-14"
       },
@@ -1873,7 +1873,7 @@
         "title": "첫사랑의 시작 소리",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "-TYQADItRqA",
         "date": "2023-06-11"
       },
@@ -1881,7 +1881,7 @@
         "title": "Love this Memory",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "F_mIfVgIq5s",
         "date": "2023-06-11"
       },
@@ -1889,7 +1889,7 @@
         "title": "Dream Star",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "MhD5YI32pz4",
         "date": "2023-06-11"
       },
@@ -1897,7 +1897,7 @@
         "title": "허둥지둥 오리라도 사랑이 하고싶어~!",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "S660QnydnlE",
         "date": "2023-06-11"
       },
@@ -1905,7 +1905,7 @@
         "title": "죄인과 세계의 마침표",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "Wxm4rGgaJM8",
         "date": "2023-06-11"
       },
@@ -1913,7 +1913,7 @@
         "title": "Disallowed",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "YFVAUm8TJ9U",
         "date": "2023-06-11"
       },
@@ -1921,7 +1921,7 @@
         "title": "사무치는 누군가의 위로",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "bUGQoJ4CyR0",
         "date": "2023-06-11"
       },
@@ -1929,7 +1929,7 @@
         "title": "I Love Me",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
-        "roles": "Tune · Mix",
+        "roles": "Edit · Mix",
         "youtube": "yb6dRXdPyWE",
         "date": "2023-06-11"
       },
@@ -1937,7 +1937,7 @@
         "title": "IDOL",
         "artist": "히요코",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "odY5ZpGJdwE",
         "date": "2023-04-29"
       },
@@ -1945,7 +1945,7 @@
         "title": "강풍 올백",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "5CZGWim9alU",
         "date": "2023-04-26"
       },
@@ -1953,7 +1953,7 @@
         "title": "QUEEN",
         "artist": "얌",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "foOXEV6sEGE",
         "date": "2023-04-07"
       },
@@ -1961,7 +1961,7 @@
         "title": "새삥",
         "artist": "레볼루션 하트",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "uhpi9NvoW7I",
         "date": "2023-03-31"
       },
@@ -1969,7 +1969,7 @@
         "title": "나의 X에게",
         "artist": "히요코",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "el1DXyPlMqU",
         "date": "2023-03-17"
       },
@@ -1977,7 +1977,7 @@
         "title": "KING",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "eCnadYqdN14",
         "date": "2023-03-10"
       },
@@ -1985,7 +1985,7 @@
         "title": "Rain Drop",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "T0kCFUbp_vY",
         "date": "2023-03-01"
       },
@@ -1993,7 +1993,7 @@
         "title": "방해쟁이",
         "artist": "오리꿍",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "FWwFZLDnzI8",
         "date": "2023-02-08"
       },
@@ -2001,7 +2001,7 @@
         "title": "귀여워서 미안해",
         "artist": "히요코",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "5u-sa-Al8Ik",
         "date": "2023-01-22"
       },
@@ -2009,7 +2009,7 @@
         "title": "Eight",
         "artist": "얌",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "lhHj0qhMOJU",
         "date": "2023-01-16"
       },
@@ -2017,7 +2017,7 @@
         "title": "흰 눈이 내려와",
         "artist": "REVOLUTION HEART",
         "cover": false,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "jwPoEaqb3NI",
         "date": "2022-12-15"
       },
@@ -2025,7 +2025,7 @@
         "title": "Panda Hero",
         "artist": "레볼루션 하트",
         "cover": true,
-        "roles": "Tune · Mix · Master",
+        "roles": "Edit · Mix · Master",
         "youtube": "0wflo2ye0vg",
         "date": "2022-11-30"
       }
@@ -2059,7 +2059,7 @@
         "titleJp": "千鳥",
         "artist": "Beru (원곡 ヨルシカ)",
         "cover": true,
-        "roles": "Arr · Tune · Mix",
+        "roles": "Arr · Edit · Mix",
         "youtube": "mcu-7ceV5IQ",
         "date": "2026-09-13"
       },
