@@ -219,9 +219,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임', anime: '애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games', anime: 'Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム', anime: 'アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임', anime: '애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games', anime: 'Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム', anime: 'アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -239,7 +239,7 @@
   // the rack is pre-production; recording, editing, mixing and mastering show in Sound Engineering
   var PRE_ROLES = ['produce', 'compose', 'arrange'];
   // credit words on the video cards (written in English in site-content) → the page language
-  var CARD_ROLES = { 'Rec': 'rec', 'Edit': 'edit', 'Mix': 'mix', 'Master': 'master', 'Arr': 'arrange', 'Inst Mix': 'instMix', 'BGM': 'bgm' };
+  var CARD_ROLES = { 'Rec': 'rec', 'Edit': 'edit', 'Mix': 'mix', 'Master': 'master', 'Arr': 'arrange', 'Inst Mix': 'instMix', 'BGM': 'bgm', 'Piano': 'piano' };
   function hasRole(unit, role) { return !!(unit && Array.isArray(unit.roles) && unit.roles.indexOf(role) !== -1); }
   function fieldOf(work) { return (work && work.field) || 'artist'; }
   function matchesFilter(work, filter) { return filter === 'all' || fieldOf(work) === filter; }
@@ -633,6 +633,17 @@
     });
     return out;
   }
+  // the day a card's video went up on YouTube (KST); a card without a video keeps its own date
+  function cardDate(it, content) {
+    var dates = content.videoDates || {};
+    return String((it.youtube && dates[it.youtube]) || it.date || '');
+  }
+  function cardDateText(date) {
+    var m = String(date).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return String(date);
+    if (pageLangKey() === 'en') return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1];
+    return m[1] + '.' + m[2] + '.' + m[3];
+  }
   function mixHtml(key, extra, paged) {
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
@@ -641,7 +652,8 @@
       if (!it || !(it.youtube || it.audio)) return false;
       var k = it.youtube || it.audio; if (seen[k]) return false; seen[k] = true; return true;
     });
-    items.sort(function (x, y) { return String(y.date || '').localeCompare(String(x.date || '')); }); // newest first
+    items.forEach(function (it) { it.shown = cardDate(it, content); });
+    items.sort(function (x, y) { return y.shown.localeCompare(x.shown); }); // newest first
     var total = items.length;
     if (paged) items = items.slice(0, state.mixShown);
     if (!items.length) return '';
@@ -657,7 +669,8 @@
           : '<div class="tt-mix-audio"><span class="tt-mix-audio-tag" aria-hidden="true">' + esc(cardRolesText(it.roles)) + '</span>' +
             '<audio controls preload="none" src="' + esc(audioUrl(it.audio)) + '" data-gain="' + loudnessGain(it.audio) + '" aria-label="' + esc(title) + '"></audio></div>';
         return '<li class="tt-mix-card">' + media +
-          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + (it.own ? ' · ' + esc(L().ownSong) : '') + '</span><small>' + esc(cardRolesText(it.roles)) + '</small></div>' +
+          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + (it.own ? ' · ' + esc(L().ownSong) : '') + '</span><small>' + esc(cardRolesText(it.roles)) + '</small>' +
+          (it.shown ? '<time class="tt-mix-date" datetime="' + esc(it.shown) + '">' + esc(cardDateText(it.shown)) + '</time>' : '') + '</div>' +
         '</li>';
       }).join('') + '</ul>' +
       (paged && total > items.length ? '<button type="button" class="tt-mix-more" data-works-action="more">' + esc(L().more) + ' <span>' + (total - items.length) + '</span></button>' : '') +
