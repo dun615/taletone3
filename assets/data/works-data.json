@@ -42,6 +42,7 @@
         "produce",
         "compose",
         "arrange",
+        "lyrics",
         "edit"
       ],
       "field": "artist"
@@ -668,6 +669,7 @@
         "produce",
         "compose",
         "arrange",
+        "lyrics",
         "rec",
         "edit",
         "mix"
@@ -771,6 +773,7 @@
             "produce",
             "compose",
             "arrange",
+            "lyrics",
             "edit"
           ]
         },
@@ -805,6 +808,7 @@
             "produce",
             "compose",
             "arrange",
+            "lyrics",
             "edit"
           ]
         },
@@ -839,6 +843,7 @@
             "produce",
             "compose",
             "arrange",
+            "lyrics",
             "edit"
           ]
         },
@@ -1288,6 +1293,7 @@
         "produce",
         "compose",
         "arrange",
+        "lyrics",
         "edit",
         "mix"
       ],
@@ -1426,6 +1432,7 @@
             "produce",
             "compose",
             "arrange",
+            "lyrics",
             "edit"
           ]
         },
@@ -1493,6 +1500,7 @@
             "produce",
             "compose",
             "arrange",
+            "lyrics",
             "edit"
           ]
         },
@@ -2735,6 +2743,7 @@
         "produce",
         "compose",
         "arrange",
+        "lyrics",
         "edit",
         "mix"
       ],

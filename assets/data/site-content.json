@@ -1780,6 +1780,24 @@
     },
     "title": ""
   },
+  "productionWorks": {
+    "label": "MUSIC PRODUCTION",
+    "note": "프로듀싱·작곡·편곡·작사로 참여한 창작 작업",
+    "translations": {
+      "kr": {
+        "label": "MUSIC PRODUCTION",
+        "note": "프로듀싱·작곡·편곡·작사로 참여한 창작 작업"
+      },
+      "en": {
+        "label": "MUSIC PRODUCTION",
+        "note": "Creative work in production, composition, arrangement and lyrics"
+      },
+      "jp": {
+        "label": "MUSIC PRODUCTION",
+        "note": "プロデュース・作曲・編曲・作詞で参加した創作作品"
+      }
+    }
+  },
   "mixWorks": {
     "label": "SOUND ENGINEERING",
     "note": "레코딩·편집·믹싱·마스터링으로 참여한 작업",
@@ -2155,23 +2173,23 @@
     ]
   },
   "bgmWorks": {
-    "label": "BGM & INSTRUMENTAL",
-    "note": "편곡·BGM·연주 작업",
+    "label": "OTHER WORKS",
+    "note": "편곡·BGM·연주 등 그 밖의 의뢰 작업",
     "coverTag": "커버",
     "translations": {
       "kr": {
-        "label": "BGM & INSTRUMENTAL",
-        "note": "편곡·BGM·연주 작업",
+        "label": "OTHER WORKS",
+        "note": "편곡·BGM·연주 등 그 밖의 의뢰 작업",
         "coverTag": "커버"
       },
       "en": {
-        "label": "BGM & INSTRUMENTAL",
-        "note": "Arrangements, BGM and performances",
+        "label": "OTHER WORKS",
+        "note": "Arrangement, BGM, performance and other commissions",
         "coverTag": "Cover"
       },
       "jp": {
-        "label": "BGM & INSTRUMENTAL",
-        "note": "編曲・BGM・演奏の作品",
+        "label": "OTHER WORKS",
+        "note": "編曲・BGM・演奏などその他の依頼作品",
         "coverTag": "カバー"
       }
     },
