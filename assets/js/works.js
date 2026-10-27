@@ -619,7 +619,8 @@
     if (!logos.length) return '';
     var meta = localizedMeta();
     return '<div class="tt-shelf-clients"><span class="tt-shelf-clients-label">' + esc(plainRichText(meta.collaborationLabel)) + '</span><div class="tt-shelf-clients-row">' +
-      logos.map(function (logo) { return '<img src="' + esc(logo.src) + '" alt="' + esc(logo.alt) + '" loading="lazy">'; }).join('') + '</div></div>';
+      // the pixel size reserves each logo's width before the lazy image arrives, so the row never rewraps late
+      logos.map(function (logo) { return '<img src="' + esc(logo.src) + '" alt="' + esc(logo.alt) + '"' + (logo.width && logo.height ? ' width="' + logo.width + '" height="' + logo.height + '"' : '') + ' loading="lazy">'; }).join('') + '</div></div>';
   }
 
   // engineering, arrangement and BGM credits: watched on YouTube (or heard from a small player), not pressed as records

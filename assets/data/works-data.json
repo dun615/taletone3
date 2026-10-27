@@ -2894,23 +2894,33 @@
   "clientLogos": [
     {
       "src": "assets/bundle/de0afd49-77a8-4cab-af06-e84ed6bc8fd4.png",
-      "alt": "HoYoverse"
+      "alt": "HoYoverse",
+      "width": 760,
+      "height": 120
     },
     {
       "src": "assets/bundle/9133ff2a-73ad-4a44-b280-378ea9a114f5.png",
-      "alt": "STELLIVE"
+      "alt": "STELLIVE",
+      "width": 888,
+      "height": 180
     },
     {
       "src": "assets/bundle/parable-horizontal-2026.png",
-      "alt": "Parable"
+      "alt": "Parable",
+      "width": 909,
+      "height": 316
     },
     {
       "src": "assets/bundle/b52c4df3-a761-4ff7-9943-9d3d954f44ef.png",
-      "alt": "creatorbus"
+      "alt": "creatorbus",
+      "width": 670,
+      "height": 127
     },
     {
       "src": "assets/bundle/61a4a056-186b-4263-b655-8d34e244e748.png",
-      "alt": "Devmate"
+      "alt": "Devmate",
+      "width": 296,
+      "height": 65
     }
   ],
   "loudness": {
