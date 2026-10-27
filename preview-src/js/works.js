@@ -633,6 +633,17 @@
     });
     return out;
   }
+  // the day a card's video went up on YouTube (KST); a card without a video keeps its own date
+  function cardDate(it, content) {
+    var dates = content.videoDates || {};
+    return String((it.youtube && dates[it.youtube]) || it.date || '');
+  }
+  function cardDateText(date) {
+    var m = String(date).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return String(date);
+    if (pageLangKey() === 'en') return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1];
+    return m[1] + '.' + m[2] + '.' + m[3];
+  }
   function mixHtml(key, extra, paged) {
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
@@ -641,7 +652,8 @@
       if (!it || !(it.youtube || it.audio)) return false;
       var k = it.youtube || it.audio; if (seen[k]) return false; seen[k] = true; return true;
     });
-    items.sort(function (x, y) { return String(y.date || '').localeCompare(String(x.date || '')); }); // newest first
+    items.forEach(function (it) { it.shown = cardDate(it, content); });
+    items.sort(function (x, y) { return y.shown.localeCompare(x.shown); }); // newest first
     var total = items.length;
     if (paged) items = items.slice(0, state.mixShown);
     if (!items.length) return '';
@@ -657,7 +669,8 @@
           : '<div class="tt-mix-audio"><span class="tt-mix-audio-tag" aria-hidden="true">' + esc(cardRolesText(it.roles)) + '</span>' +
             '<audio controls preload="none" src="' + esc(audioUrl(it.audio)) + '" data-gain="' + loudnessGain(it.audio) + '" aria-label="' + esc(title) + '"></audio></div>';
         return '<li class="tt-mix-card">' + media +
-          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + (it.own ? ' · ' + esc(L().ownSong) : '') + '</span><small>' + esc(cardRolesText(it.roles)) + '</small></div>' +
+          '<div class="tt-mix-copy"><strong>' + esc(title) + '</strong><span>' + esc(it.artist) + (it.cover ? ' · ' + esc(t.coverTag || 'Cover') : '') + (it.own ? ' · ' + esc(L().ownSong) : '') + '</span><small>' + esc(cardRolesText(it.roles)) + '</small>' +
+          (it.shown ? '<time class="tt-mix-date" datetime="' + esc(it.shown) + '">' + esc(cardDateText(it.shown)) + '</time>' : '') + '</div>' +
         '</li>';
       }).join('') + '</ul>' +
       (paged && total > items.length ? '<button type="button" class="tt-mix-more" data-works-action="more">' + esc(L().more) + ' <span>' + (total - items.length) + '</span></button>' : '') +
