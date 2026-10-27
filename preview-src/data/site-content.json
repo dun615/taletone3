@@ -2060,7 +2060,7 @@
         "cover": true,
         "roles": "Edit · Mix · Master",
         "youtube": "ptufT_bSE3U",
-        "date": "2023"
+        "date": "2023-04-21"
       },
       {
         "title": "취기",
@@ -2068,7 +2068,7 @@
         "cover": true,
         "roles": "Edit · Mix · Master",
         "youtube": "33CAlUq4pn4",
-        "date": "2023"
+        "date": "2023-04-14"
       },
       {
         "title": "Stellar Stellar",
@@ -2076,7 +2076,7 @@
         "cover": true,
         "roles": "Edit · Mix · Master",
         "youtube": "PnTl0aSgAfM",
-        "date": "2023"
+        "date": "2023-02-17"
       },
       {
         "title": "변하지 않는 것",
@@ -2085,7 +2085,36 @@
         "cover": true,
         "roles": "Edit · Mix · Master",
         "youtube": "ldHAnhwvJXc",
-        "date": "2022"
+        "date": "2022-12-29"
+      },
+      {
+        "title": "YOU (쓰르라미 울 적에)",
+        "titleJp": "YOU (ひぐらしのなく頃に)",
+        "artist": "아리사",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "NMLKoKQOlp0",
+        "date": "2024-11-24"
+      },
+      {
+        "title": "逆光 (역광)",
+        "titleEn": "Gyakkou",
+        "titleJp": "逆光",
+        "artist": "에리스 × 카린",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "vbngiLufHeM",
+        "date": "2023-08-19"
+      },
+      {
+        "title": "踊 (춤)",
+        "titleEn": "Odo",
+        "titleJp": "踊",
+        "artist": "에리스",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "SnAtqeZ5UP8",
+        "date": "2023-08-25"
       }
     ]
   },
@@ -2209,6 +2238,7 @@
     "GwKXPt9Kkqc": "2025-03-06",
     "hgRS_eGvyII": "2025-03-06",
     "CRWN3Ro8hFg": "2025-01-27",
+    "NMLKoKQOlp0": "2024-11-24",
     "w9nvZhBc4O0": "2024-11-22",
     "W9xU8SRglZc": "2024-11-19",
     "DH1ArTgpNsw": "2024-09-07",
@@ -2224,6 +2254,8 @@
     "Hh2cWKGjGO8": "2024-01-24",
     "S1Nv3KTNO-s": "2024-01-24",
     "VWiC3twzVyA": "2024-01-24",
+    "SnAtqeZ5UP8": "2023-08-25",
+    "vbngiLufHeM": "2023-08-19",
     "_lGpNSYn53I": "2023-07-06",
     "6cBLGWYG_Iw": "2023-07-06",
     "B4M-c_n2Fic": "2023-07-06",
@@ -2241,17 +2273,21 @@
     "YFVAUm8TJ9U": "2023-06-11",
     "odY5ZpGJdwE": "2023-04-29",
     "5CZGWim9alU": "2023-04-26",
+    "ptufT_bSE3U": "2023-04-21",
     "MybIyEksk3A": "2023-04-18",
+    "33CAlUq4pn4": "2023-04-14",
     "foOXEV6sEGE": "2023-04-07",
     "uhpi9NvoW7I": "2023-03-31",
     "O4kHRkVERdQ": "2023-03-18",
     "el1DXyPlMqU": "2023-03-17",
     "eCnadYqdN14": "2023-03-10",
     "T0kCFUbp_vY": "2023-03-01",
+    "PnTl0aSgAfM": "2023-02-17",
     "FWwFZLDnzI8": "2023-02-08",
     "al2KUW6Tt80": "2023-01-24",
     "5u-sa-Al8Ik": "2023-01-22",
     "lhHj0qhMOJU": "2023-01-16",
+    "ldHAnhwvJXc": "2022-12-29",
     "XK2iGkdNxQU": "2022-12-22",
     "jwPoEaqb3NI": "2022-12-15",
     "Guo69H0z1SM": "2022-12-02",
