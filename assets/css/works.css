@@ -2163,7 +2163,7 @@ html body .tt-home-latest img {width:56px;height:56px;flex:none;border-radius:12
 html body .tt-home-latest-copy {flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 html body .tt-home-latest small {font:800 12px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#0e6e7d}
 html body .tt-home-latest b {font:700 16px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-html body .tt-home-latest em {font:600 13px/1.25 var(--tt-noto-primary),sans-serif;font-style:normal;color:#44505f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .tt-home-latest em {font:600 13px/1.25 var(--tt-noto-primary),sans-serif;font-style:normal;color:#44505f;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;text-wrap:balance} /* a full album name (e.g. HoYoFair Album "…") gets up to three lines */
 html body .tt-home-latest-play {flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#0e6e7d;color:#fff}
 html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:12px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
 /* Home and Track Record on phones (REVIEW-mobile phase 2, M10/M11): no ghost "TALE TONE" behind the title, and the two numbers on one row */
