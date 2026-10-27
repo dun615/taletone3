@@ -41,7 +41,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "edit"
       ],
       "field": "artist"
     },
@@ -86,7 +87,7 @@
       "roles": [
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -131,7 +132,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "edit"
       ],
       "field": "game"
     },
@@ -177,7 +179,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -223,7 +225,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -267,7 +269,7 @@
       },
       "roles": [
         "arrange",
-        "tune",
+        "edit",
         "mix",
         "master"
       ],
@@ -315,7 +317,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -361,7 +363,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -407,7 +409,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -458,7 +460,7 @@
           },
           "roles": [
             "arrange",
-            "tune",
+            "edit",
             "mix"
           ]
         },
@@ -489,7 +491,7 @@
           },
           "roles": [
             "arrange",
-            "tune",
+            "edit",
             "mix"
           ]
         },
@@ -521,7 +523,7 @@
           "roles": [
             "arrange",
             "rec",
-            "tune",
+            "edit",
             "mix"
           ]
         },
@@ -552,7 +554,7 @@
           },
           "roles": [
             "rec",
-            "tune",
+            "edit",
             "mix"
           ]
         }
@@ -619,7 +621,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune",
+        "edit",
         "mix"
       ],
       "field": "artist"
@@ -667,7 +669,7 @@
         "compose",
         "arrange",
         "rec",
-        "tune",
+        "edit",
         "mix"
       ],
       "field": "artist"
@@ -713,7 +715,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "edit"
       ],
       "field": "artist"
     },
@@ -768,7 +771,7 @@
             "produce",
             "compose",
             "arrange",
-            "rec"
+            "edit"
           ]
         },
         {
@@ -802,7 +805,7 @@
             "produce",
             "compose",
             "arrange",
-            "rec"
+            "edit"
           ]
         },
         {
@@ -836,7 +839,7 @@
             "produce",
             "compose",
             "arrange",
-            "rec"
+            "edit"
           ]
         },
         {
@@ -868,7 +871,7 @@
           },
           "roles": [
             "produce",
-            "rec"
+            "edit"
           ]
         }
       ],
@@ -934,7 +937,7 @@
         "produce",
         "compose",
         "arrange",
-        "rec",
+        "edit",
         "mix"
       ],
       "field": "game"
@@ -1036,7 +1039,8 @@
       },
       "roles": [
         "compose",
-        "arrange"
+        "arrange",
+        "edit"
       ],
       "field": "artist"
     },
@@ -1082,7 +1086,7 @@
         "produce",
         "compose",
         "arrange",
-        "rec",
+        "edit",
         "mix"
       ],
       "field": "artist"
@@ -1188,6 +1192,7 @@
         "compose",
         "arrange",
         "rec",
+        "edit",
         "mix"
       ],
       "field": "original"
@@ -1235,6 +1240,7 @@
         "produce",
         "compose",
         "arrange",
+        "edit",
         "mix",
         "master"
       ],
@@ -1282,6 +1288,7 @@
         "produce",
         "compose",
         "arrange",
+        "edit",
         "mix"
       ],
       "field": "artist"
@@ -1329,7 +1336,9 @@
         "produce",
         "compose",
         "arrange",
-        "mix"
+        "edit",
+        "mix",
+        "master"
       ],
       "field": "original"
     },
@@ -1382,7 +1391,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1416,7 +1426,7 @@
             "produce",
             "compose",
             "arrange",
-            "tune"
+            "edit"
           ]
         },
         {
@@ -1448,7 +1458,8 @@
           },
           "roles": [
             "produce",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1482,7 +1493,7 @@
             "produce",
             "compose",
             "arrange",
-            "tune"
+            "edit"
           ]
         },
         {
@@ -1513,7 +1524,8 @@
             }
           },
           "roles": [
-            "produce"
+            "produce",
+            "edit"
           ]
         },
         {
@@ -1545,7 +1557,8 @@
           },
           "roles": [
             "produce",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1579,7 +1592,7 @@
             "produce",
             "compose",
             "arrange",
-            "tune"
+            "edit"
           ]
         },
         {
@@ -1610,7 +1623,8 @@
             }
           },
           "roles": [
-            "produce"
+            "produce",
+            "edit"
           ]
         },
         {
@@ -1643,7 +1657,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1677,7 +1692,7 @@
             "produce",
             "compose",
             "arrange",
-            "tune"
+            "edit"
           ]
         },
         {
@@ -1711,7 +1726,7 @@
             "produce",
             "compose",
             "arrange",
-            "tune"
+            "edit"
           ]
         }
       ],
@@ -1786,6 +1801,7 @@
             "produce",
             "compose",
             "arrange",
+            "edit",
             "mix"
           ]
         },
@@ -1820,6 +1836,7 @@
             "produce",
             "compose",
             "arrange",
+            "edit",
             "mix"
           ]
         },
@@ -1853,7 +1870,8 @@
           "roles": [
             "produce",
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1885,7 +1903,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         }
       ],
@@ -1958,7 +1977,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -1990,7 +2010,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -2021,7 +2042,8 @@
             }
           },
           "roles": [
-            "arrange"
+            "arrange",
+            "edit"
           ]
         },
         {
@@ -2053,7 +2075,8 @@
           },
           "roles": [
             "compose",
-            "arrange"
+            "arrange",
+            "edit"
           ]
         }
       ],
@@ -2127,6 +2150,7 @@
           "roles": [
             "compose",
             "arrange",
+            "edit",
             "mix"
           ]
         },
@@ -2160,6 +2184,7 @@
           "roles": [
             "compose",
             "arrange",
+            "edit",
             "mix"
           ]
         }
@@ -2227,7 +2252,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune",
+        "edit",
         "mix"
       ],
       "field": "artist"
@@ -2273,7 +2298,8 @@
       "roles": [
         "produce",
         "compose",
-        "arrange"
+        "arrange",
+        "edit"
       ],
       "field": "artist"
     },
@@ -2317,7 +2343,7 @@
       },
       "roles": [
         "arrange",
-        "tune"
+        "edit"
       ],
       "field": "artist"
     },
@@ -2448,6 +2474,7 @@
         "produce",
         "compose",
         "arrange",
+        "edit",
         "mix"
       ],
       "officialCovers": [
@@ -2566,6 +2593,7 @@
       },
       "roles": [
         "arrange",
+        "edit",
         "mix",
         "master"
       ],
@@ -2613,6 +2641,7 @@
         "produce",
         "compose",
         "arrange",
+        "edit",
         "mix"
       ],
       "field": "game"
@@ -2659,7 +2688,7 @@
         "produce",
         "compose",
         "arrange",
-        "tune",
+        "edit",
         "mix",
         "master"
       ],
@@ -2707,6 +2736,7 @@
         "produce",
         "compose",
         "arrange",
+        "edit",
         "mix"
       ],
       "field": "original"
@@ -2753,7 +2783,9 @@
         "produce",
         "compose",
         "arrange",
-        "mix"
+        "edit",
+        "mix",
+        "master"
       ],
       "field": "original"
     },
@@ -2799,7 +2831,9 @@
         "produce",
         "compose",
         "arrange",
-        "mix"
+        "edit",
+        "mix",
+        "master"
       ],
       "field": "original"
     }
