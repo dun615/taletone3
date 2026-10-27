@@ -231,6 +231,48 @@
       "field": "artist"
     },
     {
+      "id": "work-daisy-in-eternity",
+      "slug": "daisy-in-eternity",
+      "artist": "TOVE",
+      "title": "Daisy In Eternity (Fairy Tale Ver.)",
+      "date": "2025.12.25",
+      "type": "TOVE Single",
+      "description": "",
+      "credits": "작사 : TOVE\n작곡 : TOVE\n편곡 : TOVE, N4ML\n\n스트링 : N4ML\n피아노 : N4ML\n미디 프로그래밍 : TOVE, N4ML\n코러스 : TOVE\n\n믹싱·마스터링 : TOVE",
+      "image": "assets/works/images/daisy-in-eternity-art-1024.webp",
+      "thumb": "assets/works/images/daisy-in-eternity-art-1024-w320.webp",
+      "ogImage": "assets/works/images/daisy-in-eternity-art-1024-og.jpg",
+      "audio": "assets/works/audio/daisy-in-eternity-fairy-tale-ver.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "index": 7,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "format": "Single",
+      "translations": {
+        "en": {
+          "artist": "TOVE",
+          "title": "Daisy In Eternity (Fairy Tale Ver.)",
+          "type": "TOVE Single",
+          "description": ""
+        },
+        "jp": {
+          "artist": "TOVE",
+          "title": "Daisy In Eternity (Fairy Tale Ver.)",
+          "type": "TOVE Single",
+          "description": ""
+        }
+      },
+      "roles": [
+        "arrange"
+      ],
+      "field": "artist"
+    },
+    {
       "id": "work-zzz",
       "slug": "gangchi-island-op",
       "artist": "SEION",
@@ -247,7 +289,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 7,
+      "index": 8,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -339,7 +381,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 8,
+      "index": 9,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -385,7 +427,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 9,
+      "index": 10,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -431,7 +473,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 10,
+      "index": 11,
       "versions": [],
       "tracks": [
         {
@@ -597,7 +639,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 11,
+      "index": 12,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -644,7 +686,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 12,
+      "index": 13,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -693,7 +735,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 13,
+      "index": 14,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -739,7 +781,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 14,
+      "index": 15,
       "versions": [],
       "tracks": [
         {
@@ -917,7 +959,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 15,
+      "index": 16,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -964,7 +1006,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 16,
+      "index": 17,
       "versions": [
         {
           "id": "work-mix-archive-01",
@@ -1066,7 +1108,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 17,
+      "index": 18,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1114,7 +1156,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 18,
+      "index": 19,
       "versions": [
         {
           "id": "work-mix-archive-02",
@@ -1220,7 +1262,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 19,
+      "index": 20,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1268,7 +1310,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.6,
-      "index": 20,
+      "index": 21,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1317,7 +1359,7 @@
       "posX": "50%",
       "posY": "50%",
       "brightness": 0.5,
-      "index": 21,
+      "index": 22,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -2897,6 +2939,11 @@
         "peak": -0.3,
         "gain": -5.6
       },
+      "assets/works/audio/daisy-in-eternity-fairy-tale-ver.mp3": {
+        "lufs": -8.4,
+        "peak": -0.1,
+        "gain": -5.6
+      },
       "assets/works/audio/asset-mq81zrrk-ioubn-AR-mp3-320-.mp3-632ff56e7922.mp3": {
         "lufs": -7.7,
         "peak": -0.3,
@@ -3186,11 +3233,6 @@
         "lufs": -4.4,
         "peak": 0,
         "gain": -9.6
-      },
-      "assets/works/audio/fantasy-town-ad.mp3": {
-        "lufs": -9.7,
-        "peak": 0,
-        "gain": -4.3
       }
     }
   }
