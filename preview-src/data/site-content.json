@@ -2120,22 +2120,22 @@
   },
   "bgmWorks": {
     "label": "BGM & INSTRUMENTAL",
-    "note": "편곡과 BGM 작업",
+    "note": "편곡·BGM·연주 작업",
     "coverTag": "커버",
     "translations": {
       "kr": {
         "label": "BGM & INSTRUMENTAL",
-        "note": "편곡과 BGM 작업",
+        "note": "편곡·BGM·연주 작업",
         "coverTag": "커버"
       },
       "en": {
         "label": "BGM & INSTRUMENTAL",
-        "note": "Arrangements and BGM",
+        "note": "Arrangements, BGM and performances",
         "coverTag": "Cover"
       },
       "jp": {
         "label": "BGM & INSTRUMENTAL",
-        "note": "編曲・BGM の作品",
+        "note": "編曲・BGM・演奏の作品",
         "coverTag": "カバー"
       }
     },
@@ -2207,6 +2207,25 @@
         "roles": "Arr",
         "youtube": "HoM6oOgvfUM",
         "date": "2019-10-12"
+      },
+      {
+        "title": "고음주역테스트",
+        "titleEn": "高音厨音域テスト",
+        "titleJp": "高音厨音域テスト",
+        "artist": "비쥬",
+        "cover": true,
+        "roles": "Arr",
+        "youtube": "c3hg8tGce_o",
+        "date": "2026-04-06"
+      },
+      {
+        "title": "메이 트랙",
+        "titleEn": "May Track",
+        "titleJp": "メイ・トラック",
+        "artist": "라스트오리진 (제2회 미스 오르카)",
+        "roles": "Piano",
+        "youtube": "x__gIBqOU28",
+        "date": "2023-01-24"
       }
     ]
   },
@@ -2222,6 +2241,7 @@
     "x5jXQY67p40": "2026-05-02",
     "xxDox1kfbyQ": "2026-04-15",
     "Gzoftos25Uo": "2026-04-11",
+    "c3hg8tGce_o": "2026-04-06",
     "eNK5ERAl6BA": "2026-03-08",
     "N2mrzZTXHkw": "2026-02-21",
     "mTNrjY6XDjk": "2026-02-12",
@@ -2285,6 +2305,7 @@
     "PnTl0aSgAfM": "2023-02-17",
     "FWwFZLDnzI8": "2023-02-08",
     "al2KUW6Tt80": "2023-01-24",
+    "x__gIBqOU28": "2023-01-24",
     "5u-sa-Al8Ik": "2023-01-22",
     "lhHj0qhMOJU": "2023-01-16",
     "ldHAnhwvJXc": "2022-12-29",
