@@ -90,7 +90,8 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "pinned": 1
     },
     {
       "id": "work-run-galaxy",
@@ -136,7 +137,8 @@
         "arrange",
         "edit"
       ],
-      "field": "game"
+      "field": "game",
+      "pinned": 2
     },
     {
       "id": "work-taletones",
@@ -2543,7 +2545,8 @@
           "youtube": "kJ0hczPwSnM"
         }
       ],
-      "field": "game"
+      "field": "game",
+      "pinned": 3
     },
     {
       "id": "work-tt-unmyeong-35",

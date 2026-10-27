@@ -243,11 +243,17 @@
   function hasRole(unit, role) { return !!(unit && Array.isArray(unit.roles) && unit.roles.indexOf(role) !== -1); }
   function fieldOf(work) { return (work && work.field) || 'artist'; }
   function matchesFilter(work, filter) { return filter === 'all' || fieldOf(work) === filter; }
-  // newest first (dates are YYYY.MM.DD, so they sort as text); the data order breaks ties.
+  // featured records (`pinned`: 1, 2, 3 …) lead in that order; the rest newest first (dates are YYYY.MM.DD, so
+  // they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
+  function pinRank(work) { var n = Number(work && work.pinned); return n > 0 ? n : Infinity; }
   function entriesFor(filter) {
     var list = works.map(function (work, index) { return { work: work, index: index }; })
-      .sort(function (a, b) { return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index; });
+      .sort(function (a, b) {
+        var pa = pinRank(a.work), pb = pinRank(b.work);
+        if (pa !== pb) return pa < pb ? -1 : 1;
+        return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index;
+      });
     var out = [];
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
@@ -1335,7 +1341,10 @@
     works = json.works || [];
     logos = json.clientLogos || [];
     loudness = (json.loudness && json.loudness.files) || {};
-    if (works.length) { state.current = 0; state.track = titleTrackIndex(works[0]); state.language = defaultLanguage(works[0], state.track); }
+    if (works.length) { // the turntable starts on the rack's first record (a featured one when any is pinned)
+      var lead = entriesFor('all')[0] || { index: 0 };
+      state.current = lead.index; state.track = titleTrackIndex(works[lead.index]); state.language = defaultLanguage(works[lead.index], state.track);
+    }
     // a link opened in a new tab (/works/?work=<slug>) selects that record; it plays if the browser allows
     var asked = pendingSlug || new URLSearchParams(location.search).get('work') || '';
     if (asked) queueWork(asked);
