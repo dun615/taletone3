@@ -120,13 +120,13 @@
       "translations": {
         "en": {
           "artist": "Zenless Zone Zero",
-          "title": "Drawing Summer",
+          "title": "여름을 그리다",
           "type": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\"",
           "description": "The story of the Cunning Hares setting off on a summer vacation."
         },
         "jp": {
           "artist": "ゼンレスゾーンゼロ",
-          "title": "Drawing Summer",
+          "title": "여름을 그리다",
           "type": "ゼンレスゾーンゼロ HoYoFair Album \"Random Play Anniversary\"",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
         }
@@ -301,15 +301,15 @@
       "translations": {
         "en": {
           "artist": "SEION",
-          "title": "Gangchi Island (OP)",
-          "type": "Animation 'Gangchi Island' 1st OP (Produced by Jang Junho)",
-          "description": "A story of friends growing their dreams and friendships on Gangchi Island."
+          "title": "강치 아일랜드(OP)",
+          "type": "Animation '강치 아일랜드' 1st OP (Produced by Jang Junho)",
+          "description": "A story of friends growing their dreams and friendships on 강치 아일랜드."
         },
         "jp": {
           "artist": "SEION",
-          "title": "Gangchi Island (OP)",
-          "type": "アニメーション『Gangchi Island』1st OP（Produced by Jang Junho）",
-          "description": "Gangchi Islandで夢と友情を育んでいく仲間たちの物語。"
+          "title": "강치 아일랜드(OP)",
+          "type": "アニメーション『강치 아일랜드』1st OP（Produced by Jang Junho）",
+          "description": "강치 아일랜드で夢と友情を育んでいく仲間たちの物語。"
         }
       },
       "roles": [
@@ -1026,12 +1026,12 @@
           "youtube": "https://www.youtube.com/watch?v=70gNtWaxef8",
           "translations": {
             "jp": {
-              "title": "Kanism☆Holic",
+              "title": "かにずむ☆ほりっく",
               "type": "V-llage『Tygris Kanin』1st Single",
               "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
             },
             "en": {
-              "title": "Kanism☆Holic",
+              "title": "카니즘☆홀릭",
               "type": "V-llage 'Tygris Kanin' 1st Single",
               "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
             }
@@ -1054,12 +1054,12 @@
           "youtube": "https://www.youtube.com/watch?v=31bBvgfuzT8",
           "translations": {
             "jp": {
-              "title": "Kanism☆Holic",
+              "title": "かにずむ☆ほりっく",
               "type": "V-llage『Tygris Kanin』1st Single",
               "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
             },
             "en": {
-              "title": "Kanism☆Holic",
+              "title": "카니즘☆홀릭",
               "type": "V-llage 'Tygris Kanin' 1st Single",
               "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
             }
@@ -1076,13 +1076,13 @@
           "artist": "Tygris Kanin",
           "type": "V-llage 'Tygris Kanin' 1st Single",
           "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
-          "title": "Kanism☆Holic"
+          "title": "카니즘☆홀릭"
         },
         "jp": {
-          "artist": "Tygris Kanin",
+          "artist": "ティグリス・カニン",
           "type": "V-llage『Tygris Kanin』1st Single",
           "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
-          "title": "Kanism☆Holic"
+          "title": "かにずむ☆ほりっく"
         }
       },
       "roles": [
@@ -1181,7 +1181,7 @@
               "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
             },
             "jp": {
-              "title": "Watercolour",
+              "title": "水絵",
               "type": "soraniwa Project 1st Single",
               "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
             }
@@ -1209,7 +1209,7 @@
               "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
             },
             "jp": {
-              "title": "Watercolour",
+              "title": "水絵",
               "type": "soraniwa Project 1st Single",
               "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語。"
             }
@@ -1230,7 +1230,7 @@
         },
         "jp": {
           "artist": "soraniwa",
-          "title": "Watercolour",
+          "title": "水絵",
           "type": "soraniwa Project 1st Single",
           "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
         }
@@ -1531,11 +1531,11 @@
           "youtube": "https://www.youtube.com/watch?v=gZPk0lxvOng",
           "translations": {
             "en": {
-              "title": "Altair and Vega",
+              "title": "별 사이 우리 (Altair and Vega)",
               "description": ""
             },
             "jp": {
-              "title": "Altair and Vega",
+              "title": "별 사이 우리 (Altair and Vega)",
               "description": ""
             }
           },
@@ -1566,11 +1566,11 @@
           "youtube": "https://www.youtube.com/watch?v=sotEommmk78",
           "translations": {
             "en": {
-              "title": "Wish of the One Left Behind",
+              "title": "남겨진 자의 염원",
               "description": ""
             },
             "jp": {
-              "title": "残された者の願い",
+              "title": "남겨진 자의 염원",
               "description": ""
             }
           },
@@ -1765,11 +1765,11 @@
           "youtube": "https://www.youtube.com/watch?v=MybIyEksk3A",
           "translations": {
             "en": {
-              "title": "Shortcut (ED)",
+              "title": "샛길 (ED)",
               "description": ""
             },
             "jp": {
-              "title": "抜け道 (ED)",
+              "title": "샛길 (ED)",
               "description": ""
             }
           },
@@ -1874,11 +1874,11 @@
           "youtube": "https://www.youtube.com/watch?v=S1Nv3KTNO-s",
           "translations": {
             "en": {
-              "title": "Polaris",
+              "title": "북극성",
               "description": ""
             },
             "jp": {
-              "title": "北極星",
+              "title": "북극성",
               "description": ""
             }
           },
@@ -1910,11 +1910,11 @@
           "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
           "translations": {
             "en": {
-              "title": "Master Overdose",
+              "title": "주인님 Overdose",
               "description": ""
             },
             "jp": {
-              "title": "ご主人様 Overdose",
+              "title": "주인님 Overdose",
               "description": ""
             }
           },
@@ -1946,11 +1946,11 @@
           "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
           "translations": {
             "en": {
-              "title": "A Story I Want to Tell",
+              "title": "들려주고픈 이야기",
               "description": ""
             },
             "jp": {
-              "title": "聞かせたい物語",
+              "title": "들려주고픈 이야기",
               "description": ""
             }
           },
@@ -2129,11 +2129,11 @@
           "youtube": "https://www.youtube.com/watch?v=B4M-c_n2Fic",
           "translations": {
             "en": {
-              "title": "Love Is Like a Parfait",
+              "title": "사랑은 파르페처럼",
               "description": ""
             },
             "jp": {
-              "title": "恋はパフェのように",
+              "title": "사랑은 파르페처럼",
               "description": ""
             }
           },
@@ -2161,11 +2161,11 @@
           "youtube": "https://www.youtube.com/watch?v=_lGpNSYn53I",
           "translations": {
             "en": {
-              "title": "Welcome to Last Paradise!",
+              "title": "어서오세요, 라스트 파라다이스!",
               "description": ""
             },
             "jp": {
-              "title": "ようこそ、ラストパラダイス！",
+              "title": "어서오세요, 라스트 파라다이스!",
               "description": ""
             }
           },
@@ -2627,7 +2627,7 @@
           "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
           "translations": {
             "en": {
-              "title": "Unmyeong (Fate)",
+              "title": "운명",
               "type": "Webtoon ending theme",
               "description": ""
             },
@@ -2655,7 +2655,7 @@
           "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
           "translations": {
             "en": {
-              "title": "Unmyeong (Fate)",
+              "title": "운명",
               "type": "Webtoon ending theme",
               "description": ""
             },
@@ -2675,8 +2675,8 @@
       "category": "ost",
       "translations": {
         "en": {
-          "artist": "Webtoon ending theme",
-          "title": "Unmyeong (Fate)",
+          "artist": "웹툰 '이웃집 남동생이 초등학생인데 너무 잘해!'",
+          "title": "운명",
           "type": "Webtoon ending theme",
           "description": ""
         },
@@ -2817,13 +2817,13 @@
       "translations": {
         "en": {
           "artist": "Sejong Arts High School",
-          "title": "Sejong Arts High School Anthem",
+          "title": "세종예술고등학교 교가",
           "type": "School anthem",
           "description": ""
         },
         "jp": {
           "artist": "世宗芸術高等学校",
-          "title": "世宗芸術高等学校 校歌",
+          "title": "세종예술고등학교 교가",
           "type": "校歌",
           "description": ""
         }
