@@ -807,7 +807,8 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
-    <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><sc-if value="{{ MEMBERS_META.leadPlain }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadPlain }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.leadSplit }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadBefore }}<ruby style="ruby-position:under">TALETONE<rt style="font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F);padding-top:4px">{{ MEMBERS_META.aka }}</rt></ruby>{{ MEMBERS_META.leadAfter }}</p></sc-if></sc-if>
     <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
   <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
@@ -993,6 +994,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </div>
     <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
     <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
+    <p class="tt-inquiry-note" aria-live="polite" style="min-height:1.4em;color:var(--accent-soft,#8decfc)">{{ INQUIRY_MESSAGE }}</p>
   </form>
   <div class="tt-contact-channels" data-reveal="">
     <span>{{ CONTACT.channelsLabel }}</span>

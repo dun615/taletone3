@@ -133,6 +133,12 @@ var ComponentContent = {
     this.CONTACT = this._localizedObject(contactData, contactData.translations);
     var membersMetaData = cfg.membersMeta || {};
     this.MEMBERS_META = this._localizedObject(membersMetaData, membersMetaData.translations);
+    // the "aka" line sits right under the TALETONE in the lead sentence, so the sentence is split around it
+    var lead = String(this.MEMBERS_META.subtitle || ''), at = this.MEMBERS_META.aka ? lead.indexOf('TALETONE') : -1;
+    this.MEMBERS_META.leadPlain = at < 0 ? lead : '';
+    this.MEMBERS_META.leadBefore = at < 0 ? '' : lead.slice(0, at);
+    this.MEMBERS_META.leadAfter = at < 0 ? '' : lead.slice(at + 8);
+    this.MEMBERS_META.leadSplit = at < 0 ? '' : '1';
     var worksMetaData = cfg.worksMeta || {};
     this.WORKS_META = this._localizedObject(worksMetaData, worksMetaData.translations);
     var partnersMetaData = cfg.partnersMeta || {};
@@ -303,7 +309,23 @@ var ComponentContent = {
       [f.songLabel, data.getAll('song').join(', ')], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')]
     ].filter((row)=>row[0]).map((row)=>row[0] + ': ' + (row[1] || '-'));
     var subject = (contact.mailSubject || '') + (value('project') ? ' — ' + value('project') : '');
-    window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+    var mailto = ()=>{ window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n')); };
+    if(!contact.formKey) return mailto();
+    if(this._inquirySending) return;
+    // Web3Forms mails the answers to the inbox behind the key; if it can't be reached, the visitor's mail app takes over
+    this._inquirySending = true;
+    this.setState({ inquiryMessage: f.sendingNote || '' });
+    fetch('https://api.web3forms.com/submit', {
+      method:'POST', headers:{ 'Content-Type':'application/json', Accept:'application/json' },
+      body: JSON.stringify({ access_key: contact.formKey, subject: subject, from_name: value('name') || value('reply'), replyto: value('reply'), message: lines.join('\n') })
+    }).then((r)=>r.json()).then((res)=>{
+      if(!res || !res.success) throw new Error((res && res.message) || 'send failed');
+      formEl.reset();
+      this.setState({ inquiryMessage: f.sentNote || '' });
+    }).catch(()=>{
+      this.setState({ inquiryMessage: f.failNote || '' });
+      mailto();
+    }).finally(()=>{ this._inquirySending = false; });
   },
 
   async copyContactEmail(e){
