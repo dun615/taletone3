@@ -988,7 +988,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <label><span>{{ CONTACT_FORM.contactLabel }}</span><input name="reply" type="email" autocomplete="email" required></label>
       <label class="is-wide"><span>{{ CONTACT_FORM.projectLabel }}</span><input name="project" type="text" placeholder="{{ CONTACT_FORM.projectPlaceholder }}" required></label>
       <fieldset class="is-wide"><legend>{{ CONTACT_FORM.songLabel }}</legend><div class="tt-inquiry-chips"><sc-for list="{{ CONTACT_FORM.songOptions }}" as="opt" hint-placeholder-count="5"><label class="tt-inquiry-chip"><input type="checkbox" name="song" value="{{ opt }}"><span>{{ opt }}</span></label></sc-for></div></fieldset>
-      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><select name="budget"><option value=""></option><sc-for list="{{ CONTACT_FORM.budgetOptions }}" as="opt" hint-placeholder-count="4"><option value="{{ opt }}">{{ opt }}</option></sc-for></select></label>
+      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><input name="budget" type="text"></label>
       <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text"></label>
       <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
     </div>

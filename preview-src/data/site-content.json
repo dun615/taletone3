@@ -912,12 +912,6 @@
             "기타"
           ],
           "budgetLabel": "예산 범위 (곡당)",
-          "budgetOptions": [
-            "500만~800만 원",
-            "800만~1,500만 원",
-            "1,500만 원 이상",
-            "협의"
-          ],
           "scheduleLabel": "희망 일정·공개 시점",
           "messageLabel": "하고 싶은 이야기 (선택)",
           "submitLabel": "문의 보내기",
@@ -973,12 +967,6 @@
             "Other"
           ],
           "budgetLabel": "Budget (per song)",
-          "budgetOptions": [
-            "KRW 5M–8M",
-            "KRW 8M–15M",
-            "KRW 15M+",
-            "Negotiable"
-          ],
           "scheduleLabel": "Preferred timeline · release date",
           "messageLabel": "Anything else to share (optional)",
           "submitLabel": "Send inquiry",
@@ -1023,12 +1011,6 @@
             "その他"
           ],
           "budgetLabel": "ご予算（1曲あたり）",
-          "budgetOptions": [
-            "500万〜800万ウォン",
-            "800万〜1,500万ウォン",
-            "1,500万ウォン以上",
-            "ご相談"
-          ],
           "scheduleLabel": "ご希望のスケジュール・公開時期",
           "messageLabel": "その他ご要望（任意）",
           "submitLabel": "お問い合わせを送る",
