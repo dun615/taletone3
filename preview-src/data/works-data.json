@@ -2405,7 +2405,7 @@
       "date": "2022.07.19",
       "type": "V-LUP '이주인' Original Song",
       "description": "",
-      "credits": "Vocal : 이주인\nProducer : V-LUP (무르)\nComposition : 마감요정 (DREAMSCAPEY)\nLyrics : 마감요정 (DREAMSCAPEY)\nArrangement : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nChorus Arrangement : N4ML\nVocal Edit : N4ML\nRecording : 박문수 (U-il SoundWorks)\nMix : 박문수 (U-il SoundWorks)\nMaster : 이준용 (U-il SoundWorks)",
+      "credits": "Vocal : 이주인\nProducer : V-LUP (무르)\nComposition : 마감요정 (DREAMSCAPEY), N4ML\nLyrics : 마감요정 (DREAMSCAPEY)\nArrangement : N4ML\nGuitar : PoDoDan (DREAMSCAPEY)\nBass : CK (DREAMSCAPEY)\nChorus Arrangement : N4ML\nVocal Edit : N4ML\nRecording : 박문수 (U-il SoundWorks)\nMix : 박문수 (U-il SoundWorks)\nMaster : 이준용 (U-il SoundWorks)",
       "image": "assets/works/images/shining-day-art-1024.webp",
       "thumb": "assets/works/images/shining-day-art-1024-w320.webp",
       "ogImage": "assets/works/images/shining-day-art-1024-og.jpg",
@@ -2436,6 +2436,7 @@
         }
       },
       "roles": [
+        "compose",
         "arrange",
         "edit"
       ],
