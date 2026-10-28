@@ -318,7 +318,7 @@
         "mix",
         "master"
       ],
-      "field": "anime"
+      "field": "game"
     },
     {
       "id": "work-parable",
@@ -1293,7 +1293,7 @@
         "mix",
         "master"
       ],
-      "field": "game"
+      "field": "original"
     },
     {
       "id": "work-selected-demo",
@@ -2649,7 +2649,7 @@
         "mix",
         "master"
       ],
-      "field": "anime"
+      "field": "game"
     },
     {
       "id": "work-tt-run-into-galaxy-36",
@@ -2696,7 +2696,7 @@
         "edit",
         "mix"
       ],
-      "field": "game"
+      "field": "original"
     },
     {
       "id": "work-tt-we-are-sia-37",
