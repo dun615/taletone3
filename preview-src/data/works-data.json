@@ -1822,29 +1822,29 @@
       "versions": [],
       "tracks": [
         {
-          "id": "work-tt-last-origin-miss-orca-track-13",
-          "title": "주인님 Overdose",
+          "id": "work-tt-last-origin-miss-orca-track-15",
+          "title": "New Page",
           "date": "2022.11.01",
-          "type": "게임 '라스트오리진' 미스 오르카 1st Track (Title)",
+          "type": "게임 '라스트오리진' 미스 오르카 1st Track",
           "description": "",
-          "credits": "제3회 미스 오르카 · 블랙 리리스 트랙\n\n노래 : 블랙 리리스\n작곡 : STELLAR, N4ML, RoA\n편곡 : STELLAR, N4ML\n작사 : 유시\n기타 연주 : PoDoDan\n베이스 연주 : Akikawa Yoshizumi\n가이드/화음제작 : RoA\n보컬 편집 : N4ML\n녹음 : Kyle Park, N4ML\n믹스 : N4ML\n마스터 : 이준용 (U-il SoundWorks)\n총괄 프로듀싱 : N4ML",
+          "credits": "제1회 미스 오르카 · 뽀끄루 대마왕 트랙\n\n노래 : 뽀끄루 대마왕\n작곡 : N4ML\n편곡 : N4ML\n작사 : 유시\n가이드/화음제작 : JeeE\n믹스 : 박문수 (U-il SoundWorks)\n마스터 : 이준용 (U-il SoundWorks)\n총괄 프로듀싱 : N4ML",
           "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
-          "audio": "assets/works/audio/last-origin-miss-orca-01.mp3",
+          "audio": "assets/works/audio/last-origin-miss-orca-03.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
           "brightness": 0.6,
           "trackNo": 1,
-          "isTitle": true,
+          "isTitle": false,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
+          "youtube": "https://www.youtube.com/watch?v=Hh2cWKGjGO8",
           "translations": {
             "en": {
-              "title": "Master Overdose",
+              "title": "New Page",
               "description": ""
             },
             "jp": {
-              "title": "ご主人様 Overdose",
+              "title": "New Page",
               "description": ""
             }
           },
@@ -1852,9 +1852,7 @@
             "produce",
             "compose",
             "arrange",
-            "rec",
-            "edit",
-            "mix"
+            "edit"
           ]
         },
         {
@@ -1894,29 +1892,29 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-miss-orca-track-15",
-          "title": "New Page",
+          "id": "work-tt-last-origin-miss-orca-track-13",
+          "title": "주인님 Overdose",
           "date": "2022.11.01",
-          "type": "게임 '라스트오리진' 미스 오르카 3rd Track",
+          "type": "게임 '라스트오리진' 미스 오르카 3rd Track (Title)",
           "description": "",
-          "credits": "제1회 미스 오르카 · 뽀끄루 대마왕 트랙\n\n노래 : 뽀끄루 대마왕\n작곡 : N4ML\n편곡 : N4ML\n작사 : 유시\n가이드/화음제작 : JeeE\n믹스 : 박문수 (U-il SoundWorks)\n마스터 : 이준용 (U-il SoundWorks)\n총괄 프로듀싱 : N4ML",
+          "credits": "제3회 미스 오르카 · 블랙 리리스 트랙\n\n노래 : 블랙 리리스\n작곡 : STELLAR, N4ML, RoA\n편곡 : STELLAR, N4ML\n작사 : 유시\n기타 연주 : PoDoDan\n베이스 연주 : Akikawa Yoshizumi\n가이드/화음제작 : RoA\n보컬 편집 : N4ML\n녹음 : Kyle Park, N4ML\n믹스 : N4ML\n마스터 : 이준용 (U-il SoundWorks)\n총괄 프로듀싱 : N4ML",
           "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
-          "audio": "assets/works/audio/last-origin-miss-orca-03.mp3",
+          "audio": "assets/works/audio/last-origin-miss-orca-01.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
           "brightness": 0.6,
           "trackNo": 3,
-          "isTitle": false,
+          "isTitle": true,
           "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=Hh2cWKGjGO8",
+          "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
           "translations": {
             "en": {
-              "title": "New Page",
+              "title": "Master Overdose",
               "description": ""
             },
             "jp": {
-              "title": "New Page",
+              "title": "ご主人様 Overdose",
               "description": ""
             }
           },
@@ -1924,7 +1922,9 @@
             "produce",
             "compose",
             "arrange",
-            "edit"
+            "rec",
+            "edit",
+            "mix"
           ]
         },
         {
@@ -1961,7 +1961,7 @@
         }
       ],
       "kind": "album",
-      "titleTrackIndex": 0,
+      "titleTrackIndex": 2,
       "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
       "format": "Album",
       "category": "ost",
