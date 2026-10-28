@@ -911,7 +911,7 @@
             "앨범",
             "기타"
           ],
-          "budgetLabel": "예산 범위 (곡당)",
+          "budgetLabel": "예산 (곡당)",
           "scheduleLabel": "희망 일정·공개 시점",
           "messageLabel": "하고 싶은 이야기 (선택)",
           "submitLabel": "문의 보내기",

@@ -2485,8 +2485,8 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-inquiry-grid > .is-wide {grid-column:1 / -1}
 .tt-inquiry-grid > label, .tt-inquiry-grid > fieldset {display:flex;flex-direction:column;gap:6px;min-width:0;margin:0;padding:0;border:0}
 .tt-inquiry-grid > label > span, .tt-inquiry-grid legend {padding:0;font-weight:800;font-size:12.5px;letter-spacing:.02em;color:var(--soft,#44505F)}
-.tt-inquiry input[type=text], .tt-inquiry input[type=email], .tt-inquiry select, .tt-inquiry textarea {box-sizing:border-box;width:100%;padding:11px 13px;border-radius:12px;border:1px solid rgba(20,28,48,.16);background:rgba(255,255,255,.86);color:#141c30;font:500 15px/1.4 var(--tt-noto-primary),sans-serif;outline:none}
-.tt-inquiry input:focus, .tt-inquiry select:focus, .tt-inquiry textarea:focus {border-color:#0E6E7D;box-shadow:0 0 0 3px rgba(14,110,125,.18)}
+.tt-inquiry input[type=text], .tt-inquiry input[type=email], .tt-inquiry textarea {box-sizing:border-box;width:100%;padding:11px 13px;border-radius:12px;border:1px solid rgba(20,28,48,.16);background:rgba(255,255,255,.86);color:#141c30;font:500 15px/1.4 var(--tt-noto-primary),sans-serif;outline:none}
+.tt-inquiry input:focus, .tt-inquiry textarea:focus {border-color:#0E6E7D;box-shadow:0 0 0 3px rgba(14,110,125,.18)}
 .tt-inquiry textarea {resize:vertical;min-height:80px}
 .tt-inquiry-chips {display:flex;flex-wrap:wrap;gap:8px}
 .tt-inquiry-chip {position:relative;cursor:pointer}
