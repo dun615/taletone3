@@ -759,7 +759,6 @@
         }
       },
       "roles": [
-        "produce",
         "compose",
         "arrange",
         "edit"
@@ -1807,7 +1806,7 @@
       "id": "work-tt-last-origin-miss-orca-17",
       "slug": "last-origin-miss-orca",
       "artist": "라스트오리진",
-      "title": "Last Origin Miss ORCA [ALBUM]",
+      "title": "Last Origin 제1회, 3회 Miss ORCA [ALBUM]",
       "date": "2022.11.01",
       "type": "게임 '라스트오리진' 미스 오르카",
       "description": "",
@@ -1927,52 +1926,19 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-miss-orca-track-16",
-          "title": "FLIGHT AGAIN",
-          "date": "2021.11.10",
-          "type": "게임 '라스트오리진' 미스 오르카 4th Track",
-          "description": "",
-          "credits": "제2회 미스 오르카 · B-11 나이트 앤젤 트랙\n\n작곡 : N4ML\n편곡 : N4ML",
-          "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
-          "audio": "assets/works/audio/last-origin-miss-orca-04.mp3",
-          "fit": "cover",
-          "posX": "50%",
-          "posY": "50%",
-          "brightness": 0.6,
-          "trackNo": 4,
-          "isTitle": false,
-          "versions": [],
-          "youtube": "https://www.youtube.com/watch?v=al2KUW6Tt80",
-          "translations": {
-            "en": {
-              "title": "FLIGHT AGAIN",
-              "description": ""
-            },
-            "jp": {
-              "title": "FLIGHT AGAIN",
-              "description": ""
-            }
-          },
-          "roles": [
-            "compose",
-            "arrange",
-            "edit"
-          ]
-        },
-        {
           "id": "work-tt-last-origin-miss-orca-track-18",
           "title": "들려주고픈 이야기",
           "date": "2022.11.01",
-          "type": "게임 '라스트오리진' 미스 오르카 5th Track",
+          "type": "게임 '라스트오리진' 미스 오르카 4th Track",
           "description": "",
-          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n믹싱 : N4ML",
+          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n믹싱 : N4ML\n총괄 프로듀싱 : N4ML",
           "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
           "audio": "assets/works/audio/last-origin-miss-orca-05.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
           "brightness": 0.6,
-          "trackNo": 5,
+          "trackNo": 4,
           "isTitle": false,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
@@ -1987,6 +1953,7 @@
             }
           },
           "roles": [
+            "produce",
             "mix"
           ]
         }
@@ -1999,17 +1966,61 @@
       "translations": {
         "en": {
           "artist": "Last Origin",
-          "title": "Last Origin Miss ORCA [ALBUM]",
+          "title": "Last Origin 1st & 3rd Miss ORCA [ALBUM]",
           "type": "Game 'Last Origin' Miss ORCA",
           "description": ""
         },
         "jp": {
           "artist": "ラストオリジン",
-          "title": "Last Origin Miss ORCA [ALBUM]",
+          "title": "Last Origin 第1回・第3回 Miss ORCA [ALBUM]",
           "type": "ゲーム『ラストオリジン』ミスオルカ",
           "description": ""
         }
       },
+      "field": "game"
+    },
+    {
+      "id": "work-flight-again",
+      "slug": "flight-again",
+      "artist": "라스트오리진",
+      "title": "FLIGHT AGAIN",
+      "date": "2021.11.10",
+      "type": "게임 '라스트오리진' 제2회 미스 오르카",
+      "description": "",
+      "credits": "제2회 미스 오르카 · B-11 나이트 앤젤 트랙\n\n작곡 : N4ML\n편곡 : N4ML",
+      "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
+      "thumb": "assets/works/images/last-origin-miss-orca-art-1024-w320.webp",
+      "ogImage": "assets/works/images/last-origin-miss-orca-art-1024-og.jpg",
+      "audio": "assets/works/audio/last-origin-miss-orca-04.mp3",
+      "fit": "cover",
+      "posX": "50%",
+      "posY": "50%",
+      "brightness": 0.6,
+      "versions": [],
+      "tracks": [],
+      "kind": "single",
+      "titleTrackIndex": 0,
+      "youtube": "https://www.youtube.com/watch?v=al2KUW6Tt80",
+      "format": "Single",
+      "translations": {
+        "en": {
+          "artist": "Last Origin",
+          "title": "FLIGHT AGAIN",
+          "type": "Game 'Last Origin' 2nd Miss ORCA",
+          "description": ""
+        },
+        "jp": {
+          "artist": "ラストオリジン",
+          "title": "FLIGHT AGAIN",
+          "type": "ゲーム『ラストオリジン』第2回ミスオルカ",
+          "description": ""
+        }
+      },
+      "roles": [
+        "compose",
+        "arrange",
+        "edit"
+      ],
       "field": "game"
     },
     {
