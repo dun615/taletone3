@@ -1965,7 +1965,7 @@
           "date": "2022.11.01",
           "type": "게임 '라스트오리진' 미스 오르카 5th Track",
           "description": "",
-          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n총괄 프로듀싱 : N4ML",
+          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n믹싱 : N4ML",
           "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
           "audio": "assets/works/audio/last-origin-miss-orca-05.mp3",
           "fit": "cover",
@@ -1987,7 +1987,7 @@
             }
           },
           "roles": [
-            "produce"
+            "mix"
           ]
         }
       ],
