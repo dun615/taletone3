@@ -420,7 +420,7 @@
     var title = plainRichText(unit.title || work.title || '');
     var artist = plainRichText(unit.artist || work.artist || '');
     var current = state.current === index;
-    var pin = pinRank(work) < Infinity ? '<span class="tt-rack-trackno" aria-hidden="true">PINNED</span>' : '';
+    var pin = pinRank(work) < Infinity ? '<span class="tt-rack-trackno" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:block"><path d="M16 9V4h1a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2h1v5a3 3 0 0 1-3 3v2h5.97v7l1 1 1-1v-7H19v-2a3 3 0 0 1-3-3z"/></svg></span>' : '';
     if (isPhone()) {
       var thumb = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
       return '<li class="tt-rack-item tt-m-card' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
