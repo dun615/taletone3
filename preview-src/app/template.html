@@ -808,6 +808,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
     <sc-if value="{{ MEMBERS_META.subtitle }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.subtitle }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.aka }}"><p style="margin:0 0 4px;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F)">{{ MEMBERS_META.aka }}</p></sc-if>
     <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
   <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
