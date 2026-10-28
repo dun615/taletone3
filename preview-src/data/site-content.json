@@ -290,9 +290,9 @@
         "worksCtaLabel": "디스코그래피 바로가기",
         "contactCtaLabel": "프로젝트 문의",
         "listen": {
-          "slug": "drawing-summer",
+          "slug": "heart-score",
           "label": "대표곡 듣기",
-          "context": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\""
+          "context": "STELLIVE 'Universe' 2nd Single"
         }
       },
       "en": {
@@ -306,9 +306,9 @@
         "worksCtaLabel": "Go to Discography",
         "contactCtaLabel": "Project Inquiry",
         "listen": {
-          "slug": "drawing-summer",
+          "slug": "heart-score",
           "label": "Listen",
-          "context": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\""
+          "context": "STELLIVE 'Universe' 2nd Single"
         }
       },
       "jp": {
@@ -322,9 +322,9 @@
         "worksCtaLabel": "Discographyへ",
         "contactCtaLabel": "プロジェクトのご相談",
         "listen": {
-          "slug": "drawing-summer",
+          "slug": "heart-score",
           "label": "代表曲を聴く",
-          "context": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\""
+          "context": "STELLIVE『Universe』2nd Single"
         }
       }
     },
@@ -333,9 +333,9 @@
     "backgroundLine1": "TALE",
     "backgroundLine2": "TONE",
     "listen": {
-      "slug": "drawing-summer",
+      "slug": "heart-score",
       "label": "대표곡 듣기",
-      "context": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\""
+      "context": "STELLIVE 'Universe' 2nd Single"
     }
   },
   "projects": {
