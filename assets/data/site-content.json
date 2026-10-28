@@ -1068,7 +1068,8 @@
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "이런 이야기에 노래를 짓습니다",
-        "teamLabel": "만드는 사람"
+        "teamLabel": "만드는 사람",
+        "aka": "aka 노사무엘 (N4ML)"
       },
       "en": {
         "eyebrow": "The Storytellers",
@@ -1077,7 +1078,8 @@
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "Stories TALETONE writes songs for",
-        "teamLabel": "The maker"
+        "teamLabel": "The maker",
+        "aka": "aka 노사무엘 (N4ML)"
       },
       "jp": {
         "eyebrow": "The Storytellers",
@@ -1086,12 +1088,14 @@
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "こんな物語に歌をつくります",
-        "teamLabel": "つくる人"
+        "teamLabel": "つくる人",
+        "aka": "aka 노사무엘 (N4ML)"
       }
     },
     "titleAccent": "ABOUT",
     "typesLabel": "이런 이야기에 노래를 짓습니다",
-    "teamLabel": "만드는 사람"
+    "teamLabel": "만드는 사람",
+    "aka": "aka 노사무엘 (N4ML)"
   },
   "bridges": [
     {
