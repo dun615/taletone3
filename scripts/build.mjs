@@ -399,15 +399,13 @@ function workPage(work, index, lang, list = worksByDate, preview = false) {
   const id = youtubeId(work.youtube);
   // the video already shows the art and plays the song: the side card keeps only the facts
   const factsOnly = Boolean(id);
-  // shortcut: per-track video links and credit headings are preview-only until go-live, then drop perTrack
-  const perTrack = preview;
   const pageOf = (l, item) => `${preview ? '/preview' : ''}${workPath(l, item)}`;
   const trackList = (items, numberOf, titleFor, extra) => `<ol class="tt-d-tracks">
 ${items.map((item, i) => `<li><span class="no">${esc(numberOf(item, i))}</span><span class="title">${esc(titleFor(item))}${extra(item)}</span>${item.audio ? `<audio controls preload="none" src="${esc(assetPath(item.audio))}" aria-label="${esc(d.listen)}: ${esc(titleFor(item))}"></audio>` : ''}</li>`).join('\n')}
 </ol>`;
-  const tracks = isAlbum ? `<section class="tt-d-section"><h2>${esc(d.tracks)}</h2><div class="tt-d-card">${trackList(work.tracks, (t, i) => String(t.trackNo || i + 1).padStart(2, '0'), (t) => localized(t, lang.key).title, (t) => { const desc = localized(t, lang.key).description; return (desc ? `<small>${esc(String(desc).trim())}</small>` : '') + (perTrack && t.youtube ? ` <small><a href="${esc(t.youtube)}" rel="noopener">${esc(d.youtube)} &#8599;</a></small>` : ''); })}</div></section>` : '';
+  const tracks = isAlbum ? `<section class="tt-d-section"><h2>${esc(d.tracks)}</h2><div class="tt-d-card">${trackList(work.tracks, (t, i) => String(t.trackNo || i + 1).padStart(2, '0'), (t) => localized(t, lang.key).title, (t) => { const desc = localized(t, lang.key).description; return (desc ? `<small>${esc(String(desc).trim())}</small>` : '') + (t.youtube ? ` <small><a href="${esc(t.youtube)}" rel="noopener">${esc(d.youtube)} &#8599;</a></small>` : ''); })}</div></section>` : '';
   const versions = Array.isArray(work.versions) && work.versions.length ? `<section class="tt-d-section"><h2>${esc(d.versions)}</h2><div class="tt-d-card">${trackList(work.versions, (v) => v.language || '', (v) => localized(v, lang.key).title, (v) => v.youtube ? ` <small><a href="${esc(v.youtube)}" rel="noopener">${esc(d.youtube)} &#8599;</a></small>` : '')}</div></section>` : '';
-  const credits = isAlbum ? work.tracks.map((t, i) => t.credits && (perTrack ? `[${String(t.trackNo || i + 1).padStart(2, '0')} ${localized(t, lang.key).title}]\n${String(t.credits).trim()}` : t.credits)).filter(Boolean).join('\n\n') || work.credits : work.credits;
+  const credits = isAlbum ? work.tracks.map((t, i) => t.credits && (`[${String(t.trackNo || i + 1).padStart(2, '0')} ${localized(t, lang.key).title}]\n${String(t.credits).trim()}`)).filter(Boolean).join('\n\n') || work.credits : work.credits;
   const description = String(w.description || '').trim() || `${w.title} — ${w.artist}`;
   const body = `<article class="tt-d-work">
 <div class="tt-d-stage">${id ? liteYouTube(id, w.title, watchLabel[lang.key]) : `<figure class="tt-d-cover"><img src="${esc(assetPath(work.image))}" alt="${esc(w.title)}" width="1024" height="1024"></figure>`}</div>

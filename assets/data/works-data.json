@@ -794,7 +794,7 @@
           "description": "먹구름에 가려진 도시에 빛을 되찾아 주는 일곱 소녀의 이야기",
           "credits": "기획 : N4ML\n투자 : V-llage\n총괄 프로듀싱 : N4ML\n\n1. SilverLine\n노래 : 플로리스 로에, 요나, 에피오네 나시아, 아스테리 에프타, 쿠로가미 사샤, 티그리스 카닌, 코오리 세라\n작곡 : N4ML, RoA\n작사 : RoA, N4ML\n편곡 : N4ML\n어쿠스틱 기타 연주 : 김재중\n피아노 연주 : N4ML\n신디사이저 연주 : N4ML\n녹음 : 박문수 (U-il SoundWorks)\n녹음 오퍼레이팅 : N4ML\n믹싱 : 이준용 (U-il SoundWorks)\n마스터링 : 이준용 (U-il SoundWorks)",
           "image": "assets/works/images/asset-mq68mm66-c53c-Silverline.jpg-811202ccef43.webp",
-          "audio": "assets/works/audio/asset-mq7kmpgo-130s-1.-Silverline-AR-Master-MP3-320Kbps.mp3-3ef1ed131b38.mp3",
+          "audio": "assets/works/audio/silverline-01-fade.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
@@ -1453,7 +1453,7 @@
           "description": "",
           "credits": "Song - 밍턴, 도롱챠, 오맑음, 오리꿍, 먀릴리, 얌, 달체솜, 고유사\nComposition - N4ML (DREAMSCAPEY)\nArrangement - N4ML (DREAMSCAPEY)\nLyrics - 순백, N4ML (DREAMSCAPEY)\nGuitar - PoDoDan (DREAMSCAPEY)\nBass - CK (DREAMSCAPEY)\nVocal Edit - N4ML (DREAMSCAPEY), 비쥬\nRecording - 박문수 (U-il SoundWorks), RME Studio\nMastering - 이준용 (U-il SoundWorks)\nDirector - 밍턴, N4ML (DREAMSCAPEY)",
           "image": "assets/works/images/project-connect-season-1-art-1024.webp",
-          "audio": "assets/works/audio/project-connect-season-1-02.mp3",
+          "audio": "assets/works/audio/project-connect-season-1-02-fade.mp3",
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
@@ -1929,7 +1929,7 @@
         {
           "id": "work-tt-last-origin-miss-orca-track-16",
           "title": "FLIGHT AGAIN",
-          "date": "2021.11.15",
+          "date": "2021.11.10",
           "type": "게임 '라스트오리진' 미스 오르카 4th Track",
           "description": "",
           "credits": "제2회 미스 오르카 · B-11 나이트 앤젤 트랙\n\n작곡 : N4ML\n편곡 : N4ML",
@@ -1957,6 +1957,37 @@
             "compose",
             "arrange",
             "edit"
+          ]
+        },
+        {
+          "id": "work-tt-last-origin-miss-orca-track-18",
+          "title": "들려주고픈 이야기",
+          "date": "2022.11.01",
+          "type": "게임 '라스트오리진' 미스 오르카 5th Track",
+          "description": "",
+          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n믹싱 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-05.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 5,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
+          "translations": {
+            "en": {
+              "title": "A Story I Want to Tell",
+              "description": ""
+            },
+            "jp": {
+              "title": "聞かせたい物語",
+              "description": ""
+            }
+          },
+          "roles": [
+            "mix"
           ]
         }
       ],
@@ -2710,7 +2741,7 @@
       "image": "assets/works/images/we-are-sia-art-1024.webp",
       "thumb": "assets/works/images/we-are-sia-art-1024-w320.webp",
       "ogImage": "assets/works/images/we-are-sia-art-1024-og.jpg",
-      "audio": "assets/works/audio/we-are-sia.mp3",
+      "audio": "assets/works/audio/we-are-sia-fade.mp3",
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
@@ -3017,10 +3048,10 @@
         "peak": -0.2,
         "gain": -5.9
       },
-      "assets/works/audio/asset-mq7kmpgo-130s-1.-Silverline-AR-Master-MP3-320Kbps.mp3-3ef1ed131b38.mp3": {
-        "lufs": -6.6,
-        "peak": -0.2,
-        "gain": -7.4
+      "assets/works/audio/silverline-01-fade.mp3": {
+        "lufs": -5.9,
+        "peak": 0,
+        "gain": -8.1
       },
       "assets/works/audio/asset-mq7kku33-pi6c-2.-RATATA-AR-Master-MP3-320Kbps.mp3-4737a1b7a54e.mp3": {
         "lufs": -7.2,
@@ -3082,7 +3113,7 @@
         "peak": -0.3,
         "gain": -0.7
       },
-      "assets/works/audio/project-connect-season-1-02.mp3": {
+      "assets/works/audio/project-connect-season-1-02-fade.mp3": {
         "lufs": -6.8,
         "peak": 0,
         "gain": -7.2
@@ -3151,6 +3182,11 @@
         "lufs": -6.6,
         "peak": 0,
         "gain": -7.4
+      },
+      "assets/works/audio/last-origin-miss-orca-05.mp3": {
+        "lufs": -8,
+        "peak": 0,
+        "gain": -6
       },
       "assets/works/audio/last-origin-cafe-amor-01.mp3": {
         "lufs": -7.7,
@@ -3227,9 +3263,9 @@
         "peak": 0,
         "gain": -8.5
       },
-      "assets/works/audio/we-are-sia.mp3": {
+      "assets/works/audio/we-are-sia-fade.mp3": {
         "lufs": -7.7,
-        "peak": 0.3,
+        "peak": 0,
         "gain": -6.3
       },
       "assets/works/audio/sejong-arts-anthem.mp3": {

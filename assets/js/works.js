@@ -538,10 +538,16 @@
   // An album shows the credits of one track at a time: the one playing, else its title track. The heading
   // names the track; picking another track in the popup switches them (refreshPlaying). Language versions
   // of a single keep the work's own credits.
+  function shownTrack(work, index) { return state.current === index ? state.track : titleTrackIndex(work); }
+  // the popup's video follows the same track; a track without its own video shows the album's
+  function videoFor(work, index) {
+    var track = work.tracks && work.tracks.length > 1 ? work.tracks[shownTrack(work, index)] : null;
+    return youtubeId((track && track.youtube) || work.youtube);
+  }
   function creditsFor(work, index) {
     var unit = localizedUnit(work), labels = L();
     if (work.tracks && work.tracks.length > 1) {
-      var i = state.current === index ? state.track : titleTrackIndex(work);
+      var i = shownTrack(work, index);
       var track = localizedUnit(work.tracks[i] || {});
       return { text: String(track.credits || unit.credits || work.credits || '').trim(), label: labels.credits + ' · ' + pad(i + 1) + ' ' + plainRichText(track.title || '') };
     }
@@ -555,7 +561,7 @@
     var title = plainRichText(unit.title || work.title || '');
     var image = unit.image || work.image || '';
     var credit = creditsFor(work, index);
-    var id = youtubeId(work.youtube);
+    var id = videoFor(work, index);
     var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
       .filter(function (row) { return row[1]; })
       .map(function (row) { return '<div><dt>' + esc(plainRichText(row[0] || '')) + '</dt><dd>' + esc(row[1]) + '</dd></div>'; }).join('');
@@ -1233,6 +1239,11 @@
       if (!old || old.getAttribute('aria-label') !== credit.label) {
         var holder = document.createElement('div'); holder.innerHTML = credit.text ? creditsHtml(credit.text, credit.label) : '';
         if (old && holder.firstChild) old.replaceWith(holder.firstChild); else if (old) old.remove(); else if (holder.firstChild) info.appendChild(holder.firstChild);
+      }
+      var stage = root.querySelector('.tt-shelf-modal-stage'), yt = stage && stage.querySelector('[data-yt]'), want = videoFor(shown, state.modal);
+      if (yt && want && yt.getAttribute('data-yt') !== want) {
+        var fresh = document.createElement('div'); fresh.innerHTML = modalHtml(state.modal);
+        var next = fresh.querySelector('.tt-shelf-modal-stage'); if (next) stage.replaceWith(next);
       }
     }
   }
