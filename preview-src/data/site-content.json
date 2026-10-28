@@ -2292,16 +2292,6 @@
         "date": "2021-05-08"
       },
       {
-        "title": "판타지 타운 광고음악",
-        "titleEn": "Fantasy Town · Ad music",
-        "titleJp": "ファンタジータウン 広告音楽",
-        "artist": "Arumgames",
-        "cover": false,
-        "roles": "BGM",
-        "audio": "assets/works/audio/fantasy-town-ad.mp3",
-        "date": "2021"
-      },
-      {
         "title": "点描の唄",
         "artist": "휴복 × 연하리",
         "cover": true,
