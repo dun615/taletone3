@@ -994,6 +994,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </div>
     <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
     <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
+    <p class="tt-inquiry-note" aria-live="polite" style="min-height:1.4em;color:var(--accent-soft,#8decfc)">{{ INQUIRY_MESSAGE }}</p>
   </form>
   <div class="tt-contact-channels" data-reveal="">
     <span>{{ CONTACT.channelsLabel }}</span>

@@ -1,7 +1,7 @@
 // Component core: state, lifecycle, the animation loop and the values the template renders.
 // Everything else lives in src/app/parts/*.js and is attached to Component.prototype by the build.
 class Component extends DCLogic {
-  state = { mOpen:false, partnerOpen:false, mi:0, contactCopyMessage:'' };
+  state = { mOpen:false, partnerOpen:false, mi:0, contactCopyMessage:'', inquiryMessage:'' };
 
   ensureDataReady(){
     if(this._dataReady) return;
@@ -645,6 +645,7 @@ class Component extends DCLogic {
       AUDIENCES: this._audiences(),
       CONTACT: this.CONTACT || {},
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
+      INQUIRY_MESSAGE: this.state.inquiryMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
       sendInquiry:(e)=>this.sendInquiry(e),
       // the featured song, How We Work's steps, client voices and the short inquiry form

@@ -921,7 +921,10 @@
           "scheduleLabel": "희망 일정·공개 시점",
           "messageLabel": "하고 싶은 이야기 (선택)",
           "submitLabel": "문의 보내기",
-          "mailNote": "메일로 직접 보내셔도 좋습니다."
+          "mailNote": "메일로 직접 보내셔도 좋습니다.",
+          "sendingNote": "보내는 중…",
+          "sentNote": "문의가 전송됐어요. 확인 후 메일로 답장드릴게요.",
+          "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다."
         },
         "channelsLabel": "다른 채널로도 연락할 수 있어요",
         "channels": [
@@ -979,7 +982,10 @@
           "scheduleLabel": "Preferred timeline · release date",
           "messageLabel": "Anything else to share (optional)",
           "submitLabel": "Send inquiry",
-          "mailNote": "You can also email us directly."
+          "mailNote": "You can also email us directly.",
+          "sendingNote": "Sending…",
+          "sentNote": "Your inquiry was sent. We will reply by email.",
+          "failNote": "Sending failed, so your mail app will open instead."
         }
       },
       "jp": {
@@ -1026,7 +1032,10 @@
           "scheduleLabel": "ご希望のスケジュール・公開時期",
           "messageLabel": "その他ご要望（任意）",
           "submitLabel": "お問い合わせを送る",
-          "mailNote": "メールで直接お送りいただいても構いません。"
+          "mailNote": "メールで直接お送りいただいても構いません。",
+          "sendingNote": "送信中…",
+          "sentNote": "お問い合わせを送信しました。確認後メールでご返信します。",
+          "failNote": "送信に失敗したため、メールアプリで続けてお送りします。"
         }
       }
     },
@@ -1043,7 +1052,8 @@
       "참고 레퍼런스 링크"
     ],
     "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
-    "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:"
+    "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:",
+    "formKey": "0e2fc060-8216-4f7d-9cc7-770b2842df69"
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",

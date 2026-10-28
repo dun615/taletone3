@@ -309,7 +309,23 @@ var ComponentContent = {
       [f.songLabel, data.getAll('song').join(', ')], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')]
     ].filter((row)=>row[0]).map((row)=>row[0] + ': ' + (row[1] || '-'));
     var subject = (contact.mailSubject || '') + (value('project') ? ' — ' + value('project') : '');
-    window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+    var mailto = ()=>{ window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n')); };
+    if(!contact.formKey) return mailto();
+    if(this._inquirySending) return;
+    // Web3Forms mails the answers to the inbox behind the key; if it can't be reached, the visitor's mail app takes over
+    this._inquirySending = true;
+    this.setState({ inquiryMessage: f.sendingNote || '' });
+    fetch('https://api.web3forms.com/submit', {
+      method:'POST', headers:{ 'Content-Type':'application/json', Accept:'application/json' },
+      body: JSON.stringify({ access_key: contact.formKey, subject: subject, from_name: value('name') || value('reply'), replyto: value('reply'), message: lines.join('\n') })
+    }).then((r)=>r.json()).then((res)=>{
+      if(!res || !res.success) throw new Error((res && res.message) || 'send failed');
+      formEl.reset();
+      this.setState({ inquiryMessage: f.sentNote || '' });
+    }).catch(()=>{
+      this.setState({ inquiryMessage: f.failNote || '' });
+      mailto();
+    }).finally(()=>{ this._inquirySending = false; });
   },
 
   async copyContactEmail(e){
