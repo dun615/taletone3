@@ -771,6 +771,8 @@
     if (!root) root = ensureRoot();
     if (!root) return;
     var list = visibleWorks();
+    // a re-render (a language switch, a pick) keeps the rack and the open popup where the visitor left them
+    var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
     var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true)
       : state.tab === 'arr' ? mixHtml('bgmWorks')
       : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
@@ -785,6 +787,7 @@
     bindLazyCovers();
     watchDeck();
     sizeRack();
+    kept.forEach(function (k) { var el = root.querySelector(k[0]); if (el) { el.scrollTop = k[1]; el.scrollLeft = k[2]; } });
     handOffRackScroll();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);

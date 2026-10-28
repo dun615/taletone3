@@ -215,12 +215,12 @@
     return document.querySelector('.tt-shelf-modal[role="dialog"], .tt-member-modal');
   }
 
-  function setSiblingsInert(dialog) {
+  function setSiblingsInert(dialog, kept) {
     globalUxState.inerted = [];
     var current = dialog;
     while (current && current.parentElement && current.parentElement !== document.body) {
       Array.prototype.forEach.call(current.parentElement.children, function (sibling) {
-        if (sibling === current || sibling.nodeType !== 1 || sibling.tagName === 'SCRIPT' || sibling.tagName === 'STYLE') return;
+        if (sibling === current || sibling === kept || sibling.nodeType !== 1 || sibling.tagName === 'SCRIPT' || sibling.tagName === 'STYLE') return;
         globalUxState.inerted.push({
           node: sibling,
           inert: !!sibling.inert,
@@ -243,10 +243,16 @@
     globalUxState.inerted = [];
   }
 
-  function setDialogChromeHidden(hidden) {
+  // on desktop a works popup leaves the language switcher usable, so the popup can be read in another language
+  function keptChrome(dialog) {
+    var keep = dialog && dialog.matches('.tt-shelf-modal') && window.matchMedia('(min-width: 861px)').matches;
+    return keep ? document.getElementById('lang-switcher') : null;
+  }
+
+  function setDialogChromeHidden(hidden, kept) {
     ['brand', 'lang-switcher', 'chapnav', 'progress', 'tt-mobile-chapter-menu'].forEach(function (id) {
       var node = document.getElementById(id);
-      if (!node) return;
+      if (!node || (hidden && node === kept)) return;
 
       if (hidden) {
         if (node.dataset.ttDialogChromeHidden !== 'true') {
@@ -334,8 +340,9 @@
       close.setAttribute('type', 'button');
       if (!close.getAttribute('aria-label')) close.setAttribute('aria-label', close.textContent.trim() || 'Close');
     }
-    setDialogChromeHidden(true);
-    setSiblingsInert(dialog);
+    var kept = keptChrome(dialog);
+    setDialogChromeHidden(true, kept);
+    setSiblingsInert(dialog, kept);
     if (document.body) document.body.classList.add('tt-site-dialog-open');
     setTimeout(function () {
       var target = close || dialogFocusable(dialog)[0] || dialog;
