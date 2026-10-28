@@ -420,19 +420,20 @@
     var title = plainRichText(unit.title || work.title || '');
     var artist = plainRichText(unit.artist || work.artist || '');
     var current = state.current === index;
+    var pin = pinRank(work) < Infinity ? '<span class="tt-rack-trackno" aria-hidden="true">PINNED</span>' : '';
     if (isPhone()) {
       var thumb = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
       return '<li class="tt-rack-item tt-m-card' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
         '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
           '<span class="tt-m-card-art"><img ' + (order < 4 ? 'src' : 'data-src') + '="' + esc(thumb) + '" alt="" decoding="async" style="' + coverStyle(unit) + '">' +
-            '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
+            pin + '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
           '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span>' + (rolesText(work) ? '<span class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</span>' : '') +
         '</button>' +
       '</li>';
     }
     return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
       '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + (artist ? ' — ' + artist : '')) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
-        sleeveHtml(work, order < 8) +
+        sleeveHtml(work, order < 8) + pin +
         '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '</button>' +
       '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + (rolesText(work) ? '<p class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</p>' : '') + '</div>' +
