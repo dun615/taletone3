@@ -2630,3 +2630,8 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
   .tt-shelf-plate {margin-bottom:10px}
   html body .tt-m-card .tt-rack-trackno {left:8px;top:8px}
 }
+
+/* desktop: the language switcher stays above an open works popup, so the popup can be read in another language */
+@media (min-width: 861px) {
+  body.tt-site-dialog-open:has(.tt-shelf-modal) #lang-switcher.tt-lang-switcher {z-index:90 !important;visibility:visible !important;pointer-events:auto !important}
+}
