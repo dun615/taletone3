@@ -5,8 +5,10 @@
 //   CHROME_PATH=/path/to/chrome node scripts/measure-loudness.mjs [works-data.json ...]
 //
 // Default file: preview-src/data/works-data.json. Writes `loudness`: { target, ceiling, files: { <audio path>:
-// { lufs, peak, gain } } }, gain in dB = target - lufs, lowered when a quiet file would push its sample peak above
-// the ceiling. Run it again after adding or replacing an audio file. The browser decodes only, muted.
+// { lufs, peak, trim?, gain } } }, gain in dB = target - lufs + trim, lowered when a quiet file would push its sample
+// peak above the ceiling. `trim` (dB) is a by-ear correction kept across runs: LUFS (and the ISO 532-1 loudness
+// checked against it) leave about ±1 dB that tone alone makes a record feel louder or smaller. Run it again after
+// adding or replacing an audio file. The browser decodes only, muted.
 import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
@@ -104,13 +106,14 @@ const browser = await launch();
 try {
   for (const file of files) {
     const data = JSON.parse((await readFile(file, 'utf8')).replace(/^﻿/, ''));
-    const measured = {};
+    const measured = {}, previous = (data.loudness && data.loudness.files) || {};
     for (const audio of audioPaths(data)) {
       const base64 = (await readFile(audio)).toString('base64');
       const { lufs, peak, seconds } = await browser.evaluate(`(${analyse.toString()})(${JSON.stringify(base64)})`);
-      let gain = TARGET - lufs;
+      const trim = Number(previous[audio] && previous[audio].trim) || 0;
+      let gain = TARGET - lufs + trim;
       if (peak + gain > CEILING) gain = CEILING - peak;
-      measured[audio] = { lufs: round(lufs), peak: round(peak), gain: round(gain) };
+      measured[audio] = Object.assign({ lufs: round(lufs), peak: round(peak) }, trim ? { trim } : {}, { gain: round(gain) });
       console.log(`${round(lufs).toFixed(1).padStart(6)} LUFS  peak ${round(peak).toFixed(1).padStart(5)} dBFS  gain ${round(gain).toFixed(1).padStart(5)} dB  ${seconds.toFixed(0)}s  ${path.basename(audio)}`);
     }
     data.loudness = { target: TARGET, ceiling: CEILING, files: measured };

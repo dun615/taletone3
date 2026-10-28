@@ -61,7 +61,7 @@ npm install
 
 - `node scripts/optimize-assets.mjs webp --max=1024 <이미지...>`: JPEG/PNG 옆에 WebP를 만듭니다. 데이터 파일의 경로를 `.webp`로 바꾸고 원본은 지우면 됩니다.
 - `node scripts/prune-css.mjs assets/css/works.css`: 뒤의 규칙에 덮여 적용되지 않는 선언을 찾습니다(`--write`로 정리).
-- `CHROME_PATH=<브라우저> node scripts/measure-loudness.mjs [works-data.json...]`: 모든 음원의 Integrated LUFS(BS.1770)를 재서 -14 LUFS로 맞추는 게인값을 works-data의 `loudness`에 기록합니다. 음원 파일은 그대로 두고 Works 재생 때 이 값이 적용됩니다. 음원을 추가·교체하면 다시 실행하세요(기본 대상: `preview-src/data/works-data.json`, npm install 불필요).
+- `CHROME_PATH=<브라우저> node scripts/measure-loudness.mjs [works-data.json...]`: 모든 음원의 Integrated LUFS(BS.1770)를 재서 -14 LUFS로 맞추는 게인값을 works-data의 `loudness`에 기록합니다. 음원 파일은 그대로 두고 Works 재생 때 이 값이 적용됩니다. 곡별로 귀로 맞춘 보정값은 `loudness.files[경로].trim`(dB)에 넣으면 다시 측정해도 유지되고 게인에 더해집니다. 음원을 추가·교체하면 다시 실행하세요(기본 대상: `preview-src/data/works-data.json`, npm install 불필요).
 
 `support.js`는 템플릿 런타임입니다. 원래 Claude Design(dc-runtime)에서 생성됐지만 그 소스가 저장소에 없어서 여기서 직접 관리합니다. 사이트 전용 코드는 넣지 말고 `src/app/`에 두세요.
 
