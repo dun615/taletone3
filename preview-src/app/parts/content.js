@@ -133,6 +133,12 @@ var ComponentContent = {
     this.CONTACT = this._localizedObject(contactData, contactData.translations);
     var membersMetaData = cfg.membersMeta || {};
     this.MEMBERS_META = this._localizedObject(membersMetaData, membersMetaData.translations);
+    // the "aka" line sits right under the TALETONE in the lead sentence, so the sentence is split around it
+    var lead = String(this.MEMBERS_META.subtitle || ''), at = this.MEMBERS_META.aka ? lead.indexOf('TALETONE') : -1;
+    this.MEMBERS_META.leadPlain = at < 0 ? lead : '';
+    this.MEMBERS_META.leadBefore = at < 0 ? '' : lead.slice(0, at);
+    this.MEMBERS_META.leadAfter = at < 0 ? '' : lead.slice(at + 8);
+    this.MEMBERS_META.leadSplit = at < 0 ? '' : '1';
     var worksMetaData = cfg.worksMeta || {};
     this.WORKS_META = this._localizedObject(worksMetaData, worksMetaData.translations);
     var partnersMetaData = cfg.partnersMeta || {};
