@@ -1929,7 +1929,7 @@
         {
           "id": "work-tt-last-origin-miss-orca-track-16",
           "title": "FLIGHT AGAIN",
-          "date": "2021.11.15",
+          "date": "2021.11.10",
           "type": "게임 '라스트오리진' 미스 오르카 4th Track",
           "description": "",
           "credits": "제2회 미스 오르카 · B-11 나이트 앤젤 트랙\n\n작곡 : N4ML\n편곡 : N4ML",
@@ -1957,6 +1957,37 @@
             "compose",
             "arrange",
             "edit"
+          ]
+        },
+        {
+          "id": "work-tt-last-origin-miss-orca-track-18",
+          "title": "들려주고픈 이야기",
+          "date": "2022.11.01",
+          "type": "게임 '라스트오리진' 미스 오르카 5th Track",
+          "description": "",
+          "credits": "제3회 미스 오르카 · 세크메트 트랙\n\n총괄 프로듀싱 : N4ML",
+          "image": "assets/works/images/last-origin-miss-orca-art-1024.webp",
+          "audio": "assets/works/audio/last-origin-miss-orca-05.mp3",
+          "fit": "cover",
+          "posX": "50%",
+          "posY": "50%",
+          "brightness": 0.6,
+          "trackNo": 5,
+          "isTitle": false,
+          "versions": [],
+          "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
+          "translations": {
+            "en": {
+              "title": "A Story I Want to Tell",
+              "description": ""
+            },
+            "jp": {
+              "title": "聞かせたい物語",
+              "description": ""
+            }
+          },
+          "roles": [
+            "produce"
           ]
         }
       ],
@@ -3151,6 +3182,11 @@
         "lufs": -6.6,
         "peak": 0,
         "gain": -7.4
+      },
+      "assets/works/audio/last-origin-miss-orca-05.mp3": {
+        "lufs": -8,
+        "peak": 0,
+        "gain": -6
       },
       "assets/works/audio/last-origin-cafe-amor-01.mp3": {
         "lufs": -7.7,
