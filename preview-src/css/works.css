@@ -2772,8 +2772,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 @media (min-width:861px) {
   #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
   .tt-shelf-head {margin-bottom:22px}
-  .tt-shelf-head > .tt-shelf-history {margin-top:12px}
-  .tt-shelf > .tt-works-tabs {display:flex;width:fit-content;margin:0 auto}
+  .tt-works-bar > .tt-works-tabs {display:flex;width:fit-content}
   .tt-shelf > .tt-mix-head, .tt-mix > .tt-mix-head {justify-content:center;text-align:center;margin:10px auto 22px}
 }
 /* the record player: a little narrower than before (about 420px), so on a 1440 x 900 screen the whole player,
@@ -2839,3 +2838,22 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 }
 /* one scroll: the record list runs in the page and the turntable stays beside it (sticky), no box inside a box */
 @media (min-width:761px) {.tt-crate-rack .tt-rack-grid {max-height:none!important;overflow:visible!important}}
+
+/* Under the title: the studios this work was made with, then one bar for the ways to look at the work
+   (the three tabs, and the full history beside them) */
+.tt-shelf > .tt-shelf-clients {margin:0 auto clamp(26px,4vh,36px)}
+.tt-shelf > .tt-shelf-clients .tt-shelf-clients-label {margin-bottom:14px}
+.tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img {height:clamp(18px,1.8vw,24px)}
+.tt-works-bar {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 16px}
+.tt-works-bar > .tt-works-tabs {margin:0}
+.tt-works-bar > .tt-shelf-history {margin:0}
+/* record card text, three clear levels: the song (larger, full white), who it is for (muted), what I did (accent, light) */
+@media (min-width:761px) {
+  #c-works .tt-rack-meta .tt-rack-name {font:800 15px/1.3 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;letter-spacing:-.01em}
+  #c-works .tt-rack-meta .tt-rack-artist {margin-top:4px;font:500 13px/1.35 var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.68)!important}
+  #c-works .tt-rack-meta .tt-rack-roles {margin-top:6px;font:600 13px/1.35 var(--tt-noto-primary),sans-serif;color:#8decfc!important;opacity:.9}
+}
+@media (max-width:760px) {
+  .tt-works-bar {gap:10px}
+  .tt-works-bar + .tt-mix-head, .tt-mix > .tt-mix-head {margin-top:14px}
+}

@@ -336,10 +336,12 @@
 
   function tabsHtml() {
     var labels = L();
-    return '<div class="tt-works-tabs" role="tablist" aria-label="' + esc(labels.tabs) + '">' + [['songs', labels.tabSongs], ['mix', labels.tabMix], ['arr', labels.tabArr]].map(function (tab) {
+    var meta = localizedMeta();
+    return '<div class="tt-works-bar"><div class="tt-works-tabs" role="tablist" aria-label="' + esc(labels.tabs) + '">' + [['songs', labels.tabSongs], ['mix', labels.tabMix], ['arr', labels.tabArr]].map(function (tab) {
       var on = state.tab === tab[0];
       return '<button type="button" role="tab" class="tt-works-tab' + (on ? ' is-on' : '') + '" aria-selected="' + on + '" data-works-action="tab" data-tab="' + tab[0] + '">' + esc(tab[1]) + '</button>';
-    }).join('') + '</div>';
+    }).join('') + '</div>' +
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') + '</div>';
   }
   function filtersHtml() {
     var labels = L();
@@ -646,7 +648,6 @@
       '<div class="tt-section-chapter">' + preserve(music.label || meta.eyebrow) + '</div>' +
       (music.note ? '<div class="tt-section-note">' + esc(music.note) + '</div>' : '') +
       '<h2 class="tt-shelf-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' +
-      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') +
     '</header>';
   }
 
@@ -911,17 +912,24 @@
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
           '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
         '</div>';
-    root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + tabsHtml() +
-      body + clientsHtml() + '<div class="tt-mini-host">' + miniHtml() + '</div>' +
+    root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + clientsHtml() + tabsHtml() +
+      body + '<div class="tt-mini-host">' + miniHtml() + '</div>' +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
     watchDeck();
+    placeDeck();
     kept.forEach(function (k) { var el = root.querySelector(k[0]); if (el) { el.scrollTop = k[1]; el.scrollLeft = k[2]; } });
     if (before) shuffleFrom(before);
     playPending();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
+  }
+
+  function placeDeck() {
+    var deck = root && root.querySelector('.tt-crate-deck');
+    if (!deck) return;
+    deck.style.top = window.innerWidth > 760 ? Math.max(88, Math.round((window.innerHeight - deck.offsetHeight) / 2)) + 'px' : '';
   }
 
   var deckObserver = null;
@@ -1516,6 +1524,7 @@
 
   var lastWidthStep = 0;
   function onResize() {
+    placeDeck();
     var step = shelfStep() + (isPhone() ? 100 : 0);
     if (mounted && step !== lastWidthStep) { lastWidthStep = step; render(); }
   }
