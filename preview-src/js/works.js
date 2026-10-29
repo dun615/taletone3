@@ -593,7 +593,7 @@
         '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + labels.video) + '"><span aria-hidden="true"></span></button></div>'
       : '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '"><span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' + (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') + '</div>';
     var links = (hasAudio(work) ? listenButton(index) : '') +
-      '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>';
+      '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + '</a>';
     return '<div class="tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
       '<div class="tt-shelf-modal-panel">' +
         '<button type="button" class="tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
@@ -641,7 +641,7 @@
       '<div class="tt-section-chapter">' + preserve(music.label || meta.eyebrow) + '</div>' +
       (music.note ? '<div class="tt-section-note">' + esc(music.note) + '</div>' : '') +
       '<h2 class="tt-shelf-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' +
-      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') +
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + '</button>' : '') +
     '</header>';
   }
 

@@ -2,15 +2,15 @@
 // Methods of Component (src/app/component.js); the build attaches them with Object.assign.
 var ComponentIntro = {
   initStars(){
-    // suspended plankton / light specks
+    // suspended plankton / light specks (kept sparse: ambient motion should not compete with the content)
     var mobile=this.isMobileMotion();
     // low-memory or few-core phones draw about half the specks (REVIEW-mobile M20)
     var nav=window.navigator||{}, low=mobile&&((nav.deviceMemory&&nav.deviceMemory<=4)||(nav.hardwareConcurrency&&nav.hardwareConcurrency<=4));
     var n=(count)=>low?Math.ceil(count/2):count;
-    this.stars = Array.from({length:n(mobile?60:120)},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+0.3,ph:Math.random()*6.28,sp:Math.random()*1.6+0.4}));
+    this.stars = Array.from({length:n(mobile?40:70)},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+0.3,ph:Math.random()*6.28,sp:Math.random()*1.6+0.4}));
     // story fragments rising from the deep ??glyphs of music & story (notes, letters, kana)
     var glyphs=['\u266a','\u266b','\u266a','\u266c','\u2669','A','S','T','\u3042','\u306e','\u304b','\uac00','\u2026','&','\u00a7'];
-    this.parts = Array.from({length:n(mobile?36:90)},(_,i)=>({
+    this.parts = Array.from({length:n(mobile?18:40)},(_,i)=>({
       life:Math.random(),                                   // 0 at book ??1 at surface (Home)
       speed:Math.random()*0.04+0.018,                       // life units / sec
       col:(Math.random()*2-1),                              // base column position -1..1
@@ -20,8 +20,8 @@ var ComponentIntro = {
       drop:Math.random()<0.22                               // some are water droplets
     }));
     this.dapples = Array.from({length:mobile?5:8},()=>({x:Math.random(),y:Math.random(),r:Math.random()*0.18+0.16,sp:Math.random()*0.25+0.12,ph:Math.random()*6.28}));
-    this.motes = Array.from({length:n(mobile?8:14)},()=>({col:Math.random()*2-1,r:Math.random()*7+5,sp:Math.random()*0.035+0.025,ph:Math.random()}));
-    this.bubbles = Array.from({length:mobile?0:22},()=>({x:Math.random(),y:Math.random(),r:Math.random()*4+1.5,sp:Math.random()*0.7+0.5,ph:Math.random()*6.28}));
+    this.motes = Array.from({length:n(mobile?4:6)},()=>({col:Math.random()*2-1,r:Math.random()*7+5,sp:Math.random()*0.035+0.025,ph:Math.random()}));
+    this.bubbles = Array.from({length:mobile?0:8},()=>({x:Math.random(),y:Math.random(),r:Math.random()*4+1.5,sp:Math.random()*0.7+0.5,ph:Math.random()*6.28}));
     this.bio = Array.from({length:n(mobile?14:30)},()=>({x:Math.random(),y:Math.random(),ph:Math.random()*6.28,sp:Math.random()*0.9+0.35,r:Math.random()*16+8,c:Math.random()<0.62?0:(Math.random()<0.6?1:2),dx:(Math.random()-0.5)*0.012}));
     this.inks = [];
   },
