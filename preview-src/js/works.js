@@ -904,42 +904,66 @@
     var labels = L(); roles = Array.isArray(roles) ? roles : [];
     return ROLE_ORDER.filter(function (role) { return roles.indexOf(role) !== -1; }).map(function (role) { return labels[role]; }).join(' · ');
   }
-  // the records along the current, as nodes: a single is one disc; an album is its disc followed by a chain of
-  // smaller discs, one per track, on the same bank, tied together by a line
-  // sizes match works.css (.tt-float, .is-featured, .is-track); TIE is the line between two discs of a chain
-  var DISC = 124, DISC_FEATURED = 160, TRACK_DISC = 84, TIE = 18;
+  // the records along the current, as nodes: a single is one disc on a bank of the main current; an album is its
+  // disc there, and a branch current splits off it and runs sideways across the sea with one smaller disc per
+  // track on it (meandering back on a lower lane when the tracks do not fit one crossing). x is % of the width.
+  // Sizes match works.css (.tt-float, .is-featured, .is-track).
+  var DISC = 124, DISC_FEATURED = 160, TRACK_DISC = 84, TRACK_STEP = 136, LANE = 196;
   function currentNodes() {
-    var nodes = [], y = CURRENT_TOP, bank = 0;
+    var width = Math.min(1180, window.innerWidth - 48), pct = function (px) { return px / width * 100; };
+    var nodes = [], branches = [], y = CURRENT_TOP, bank = 0;
     seaRecords().forEach(function (entry) {
       var work = entry.work, side = bank++ % 2 ? 1 : -1;
       var tracks = isAlbum(work) && work.tracks && work.tracks.length > 1 ? work.tracks : null;
-      var x = currentX(y) + side * 10; // a chain hangs straight down from its album disc
-      nodes.push({ entry: entry, side: side, y: y, x: x, album: !!tracks });
+      var x = currentX(y) + side * 10;
+      // the branch leaves the album disc toward the wider half of the sea; the album's name sits on the other side
+      var dir = x < 50 ? 1 : -1;
+      nodes.push({ entry: entry, side: side, y: y, x: x, album: !!tracks, nameLeft: tracks ? dir > 0 : side < 0 });
       if (!tracks) { y += CURRENT_STEP; return; }
-      y += (pinRank(work) < Infinity ? DISC_FEATURED - 18 : DISC) + TIE;
-      tracks.forEach(function (track, t) { nodes.push({ entry: entry, side: side, y: y, x: x, track: t, last: t === tracks.length - 1 }); y += TRACK_DISC + TIE; });
-      y += 30;
+      var size = pinRank(work) < Infinity ? DISC_FEATURED : DISC, cy = y + size / 2;
+      var first = x + dir * pct(size / 2 + 56 + TRACK_DISC / 2), edge = dir > 0 ? 100 - pct(70) : pct(70);
+      var perLane = Math.max(1, Math.floor(Math.abs(edge - first) / pct(TRACK_STEP)) + 1);
+      var points = [[x, cy]];
+      tracks.forEach(function (track, t) {
+        var lane = Math.floor(t / perLane), col = t % perLane, way = lane % 2 ? -dir : dir;
+        var tx = (lane % 2 ? first + dir * pct(TRACK_STEP) * (perLane - 1) : first) + way * pct(TRACK_STEP) * col;
+        var ty = cy + lane * LANE + Math.sin((t + 1) * 1.3) * 16; // a little swell along the branch
+        points.push([tx, ty]);
+        nodes.push({ entry: entry, side: side, y: Math.round(ty - TRACK_DISC / 2), x: tx, track: t, lanes: lane });
+      });
+      branches.push(points);
+      var lanes = Math.ceil(tracks.length / perLane);
+      y = Math.max(y + size + 40, cy + (lanes - 1) * LANE + TRACK_DISC / 2 + 110);
     });
-    return { nodes: nodes, height: y + 160 };
+    return { nodes: nodes, branches: branches, height: y + 160 };
+  }
+  // a branch drawn through its discs with soft bends (a horizontal tangent at every disc)
+  function branchPath(points) {
+    var d = 'M' + points[0][0].toFixed(2) + ' ' + Math.round(points[0][1]);
+    for (var i = 1; i < points.length; i++) {
+      var p0 = points[i - 1], p1 = points[i], mx = (p0[0] + p1[0]) / 2;
+      d += ' C' + mx.toFixed(2) + ' ' + Math.round(p0[1]) + ' ' + mx.toFixed(2) + ' ' + Math.round(p1[1]) + ' ' + p1[0].toFixed(2) + ' ' + Math.round(p1[1]);
+    }
+    return d;
   }
   function flotsamHtml() {
     var labels = L(), laid = currentNodes(), height = laid.height, path = [];
     for (var py = 0; py <= height; py += 40) path.push((py ? 'L' : 'M') + currentX(py).toFixed(2) + ' ' + py);
     return '<div class="tt-flotsam" style="height:' + height + 'px">' +
-      '<svg class="tt-current" viewBox="0 0 100 ' + height + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + path.join(' ') + '"/></svg>' +
+      '<svg class="tt-current" viewBox="0 0 100 ' + height + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + path.join(' ') + '"/>' +
+        laid.branches.map(function (points) { return '<path class="tt-branch" d="' + branchPath(points) + '"/>'; }).join('') + '</svg>' +
       '<ul class="tt-current-list">' + laid.nodes.map(function (node, i) {
         var work = node.entry.work, index = node.entry.index, unit = localizedUnit(work);
         var isTrack = node.track != null, track = isTrack ? work.tracks[node.track] : null, tUnit = isTrack ? localizedUnit(track) : null;
         var title = plainRichText((isTrack ? tUnit.title : unit.title) || (isTrack ? '' : work.title) || '');
         var artist = plainRichText(unit.artist || work.artist || '');
-        var x = node.x;
         var lit = isTrack ? matchesFilter(work, state.filter) && matchesRoles((track && track.roles) || [], PRE_ROLES) : litEntry(work);
         var roles = isTrack ? allRolesText(track && track.roles) : node.album ? '' : allRolesText(work.roles);
         var key = isTrack ? index + '-' + node.track : String(index);
         var on = isTrack ? state.current === index && state.track === node.track : state.current === index;
-        return '<li class="tt-float' + (node.side < 0 ? ' is-left' : '') + (isTrack ? ' is-track' + (node.last ? ' is-last' : '') : '') + (node.album ? ' is-album' : '') +
+        return '<li class="tt-float' + (isTrack ? ' is-track' : node.nameLeft ? ' is-left' : '') + (node.album ? ' is-album' : '') +
           (!isTrack && pinRank(work) < Infinity ? ' is-featured' : '') + (lit ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + key + '"' +
-          ' style="--x:' + x.toFixed(2) + ';--y:' + node.y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
+          ' style="--x:' + node.x.toFixed(2) + ';--y:' + node.y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
           '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '"' + (isTrack ? ' data-track="' + node.track + '"' : '') + ' aria-label="' + esc(title + ', ' + artist) + '">' +
             discHtml(work, 'tt-disc--float', i < 18) +
             (isTrack ? '<span class="tt-float-no" aria-hidden="true">' + (node.track < 9 ? '0' : '') + (node.track + 1) + '</span>' : '') +

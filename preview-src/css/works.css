@@ -2993,12 +2993,14 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-lamps {margin-top:10px}
 /* my roles on a record or a track, under its name */
 .tt-float-label i {font:600 13px/1.35 var(--tt-noto-primary),sans-serif;font-style:normal;color:#8decfc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* an album is a chain: its disc, then one smaller disc per track hanging from it on the same bank, tied by a line */
+/* an album: a branch current splits off at its disc and runs sideways, one smaller disc per track on it,
+   each named under its disc */
+.tt-current .tt-branch {stroke:rgba(141,236,252,.3);stroke-width:2px}
 .tt-float.is-track {--s:84px}
-.tt-float.is-track::before {content:'';position:absolute;left:50%;bottom:100%;width:2px;height:18px;margin-left:-1px;background:rgba(141,236,252,.4);border-radius:2px}
-.tt-float.is-track .tt-float-pick {animation:none}
+.tt-float.is-track .tt-float-label {top:calc(100% + 10px);left:50%;translate:-50% 0;width:128px;text-align:center;justify-items:center}
+.tt-float.is-track .tt-float-label b {white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.tt-float.is-track .tt-float-label i {white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:13px}
 .tt-float.is-album .tt-float-pick, .tt-float.is-track .tt-float-pick {animation:none}
 .tt-float-no {position:absolute;top:-4px;left:-4px;padding:3px 6px;border-radius:999px;background:rgba(2,18,28,.88);color:#8decfc;font:700 12px/1 'Quicksand',sans-serif;box-shadow:0 0 0 1px rgba(141,236,252,.35)}
-.tt-float.is-left .tt-float-no {left:auto;right:-4px}
 .tt-float.is-track.is-current .tt-float-no {background:#ffd98c;color:#2a1d05}
 .tt-float.is-track .tt-float-label b {font-size:14px}
