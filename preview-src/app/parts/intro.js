@@ -61,14 +61,16 @@ var ComponentIntro = {
     if(this.introEl) this.introEl.style.display='none';
     var cv=document.createElement('canvas');
     cv.id='intro-v2'; cv.setAttribute('aria-hidden','true');
-    cv.style.cssText='position:fixed;left:0;top:0;width:100vw;height:100lvh;z-index:1000;pointer-events:auto';
+    // behind the page (under #content, z 3): the name, the line under it and the featured song are readable
+    // from the first frame, and the dive plays around them
+    cv.style.cssText='position:fixed;left:0;top:0;width:100vw;height:100lvh;z-index:2;pointer-events:none';
     document.body.appendChild(cv);
     var W=window.innerWidth, H=window.innerHeight, mobile=W<=760;
     var dpr=Math.min(window.devicePixelRatio||1, mobile?1.5:2);
     cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
     var c=cv.getContext('2d');
     // timeline (ms): lean toward the sea, the waterline sweeps up through the frame, look up from below, Home settles
-    var T={cross0:900, cross1:1380, reveal:1800, settled:mobile?3400:3700};
+    var T={cross0:350, cross1:800, reveal:1000, settled:1700};
     var homeSky=this.skyColors(this.P[this.mood].stops,0.2);
     var hex=function(h){ h=String(h); var m=h.match(/\d+/g); if(h.indexOf('rgb')===0&&m) return m.slice(0,3).map(Number); h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; };
     var waterTop=hex(homeSky[0]), waterBot=hex(homeSky[1]);
@@ -95,19 +97,7 @@ var ComponentIntro = {
     var R=[]; for(var ri=0;ri<4;ri++) R.push({x:0.14+ri*0.24+Math.random()*0.06, w:0.12+Math.random()*0.08, ph:Math.random()*6.28});
     var shaftSprite=document.createElement('canvas'); shaftSprite.width=64; shaftSprite.height=256;
     (function(){ var sc=shaftSprite.getContext('2d'); var hg=sc.createLinearGradient(0,0,64,0); hg.addColorStop(0,'rgba(220,246,250,0)'); hg.addColorStop(0.5,'rgba(220,246,250,1)'); hg.addColorStop(1,'rgba(220,246,250,0)'); sc.fillStyle=hg; sc.fillRect(0,0,64,256); sc.globalCompositeOperation='destination-in'; var vg=sc.createLinearGradient(0,0,0,256); vg.addColorStop(0,'rgba(0,0,0,1)'); vg.addColorStop(1,'rgba(0,0,0,0)'); sc.fillStyle=vg; sc.fillRect(0,0,64,256); })();
-    // the real Home starts below us, soft and out of focus, and the chrome waits
-    var home=document.getElementById('c-home');
-    var chrome=['brand','lang-switcher','chapnav','progress'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
-    chrome.forEach(function(el){ el.style.opacity='0'; el.style.transition='opacity .9s ease'; });
-    var setHome=function(k){ // k: 0 = far below and blurred, 1 = in place
-      if(!home) return;
-      if(k>=1){ home.style.transform=''; home.style.filter=''; home.style.willChange=''; return; }
-      home.style.willChange='transform,filter';
-      home.style.transform='translateY('+((1-k)*H*0.32).toFixed(1)+'px) scale('+(0.94+0.06*k).toFixed(4)+')';
-      home.style.filter='blur('+((1-k)*12).toFixed(2)+'px)';
-    };
-    setHome(0);
-    var released=false, finished=false, chromeShown=false, skipShift=0;
+    var released=false, finished=false, skipShift=0;
     // the waterline: a gently tilted, rippling edge; trace it left to right
     function lineY(x,base,ts,amp){ return base+(x-W/2)*0.06+Math.sin(x*0.012+ts*3.1)*amp+Math.sin(x*0.031-ts*2.2)*amp*0.45; }
     function traceLine(base,ts,amp){ for(var x=0;x<=W+20;x+=20){ var y=lineY(x,base,ts,amp); if(x===0) c.moveTo(x,y); else c.lineTo(x,y); } }
@@ -225,14 +215,10 @@ var ComponentIntro = {
         released=true;
         self.sky.style.background='linear-gradient(180deg,'+homeSky[0]+' 0%,'+homeSky[1]+' 100%)';
         self._layoutGeometryDirty=true; self._sceneDirty=true; self.introDone=true;
-        cv.style.pointerEvents='none';
       }
-      if(released) setHome(ease((t-T.reveal)/(T.settled-T.reveal)));
-      if(!chromeShown&&t>=T.settled-900){ chromeShown=true; chrome.forEach(function(el){ el.style.opacity=''; }); }
       if(t>=T.settled){
-        finished=true; setHome(1); cv.remove();
-        setTimeout(function(){ chrome.forEach(function(el){ el.style.transition=''; }); },1000);
-        window.removeEventListener('wheel',skip); window.removeEventListener('touchstart',skip); window.removeEventListener('keydown',skip); cv.removeEventListener('pointerdown',skip);
+        finished=true; cv.remove();
+        window.removeEventListener('wheel',skip); window.removeEventListener('touchstart',skip); window.removeEventListener('keydown',skip); 
         try{ sessionStorage.setItem('tt_intro_home_v5','1'); }catch(e){}
         return;
       }
@@ -240,8 +226,9 @@ var ComponentIntro = {
     }
     // any input: jump straight to the dive
     var skip=function(){ var t=performance.now()-self._introV2Start+skipShift; if(t<T.cross0-150) skipShift+=T.cross0-150-t; };
-    window.addEventListener('wheel',skip,{passive:true}); window.addEventListener('touchstart',skip,{passive:true}); window.addEventListener('keydown',skip); cv.addEventListener('pointerdown',skip);
-    this.introDone=false;
+    window.addEventListener('wheel',skip,{passive:true}); window.addEventListener('touchstart',skip,{passive:true}); window.addEventListener('keydown',skip);
+    // the page runs from the first frame; the dive is only the backdrop it plays on
+    this.introDone=true;
     this._introV2Start=performance.now();
     requestAnimationFrame(frame);
   },

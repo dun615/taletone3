@@ -2760,14 +2760,42 @@ body.tt-works-arrive #c-works .tt-deck-table {box-shadow:0 0 90px 6px rgba(120, 
 #c-works .tt-shelf-head, #c-works .tt-works-tabs, #c-works .tt-mix-head, #c-works .tt-crate-rack, #c-works .tt-shelf-clients {transition:opacity 1.2s ease}
 body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt-crate-rack, .tt-shelf-clients):not(:hover):not(:focus-within) {opacity:.32}
 
-/* Cuts between chapter and bridge line (bridges.js playCut): one dip per cut, coloured by the act of the story */
-.tt-cut {position:fixed;inset:0;z-index:85;pointer-events:none;opacity:0}
-.tt-cut[data-cut=splash] {background:radial-gradient(120% 90% at 50% 100%,#fff 0 40%,rgba(225,248,255,.9) 70%,rgba(200,240,250,.6))}
-.tt-cut[data-cut=deep] {background:radial-gradient(120% 100% at 50% 50%,rgba(6,40,60,.75),#021320)}
-.tt-cut[data-cut=blackout] {background:#01060d}
-.tt-cut[data-cut=gold] {background:radial-gradient(110% 90% at 50% 110%,rgba(255,226,160,.95),rgba(255,200,120,.55) 55%,rgba(40,24,8,.2))}
-.tt-cut.is-on {animation:tt-cut .9s cubic-bezier(.3,.7,.3,1) both}
-.tt-cut.is-on[data-cut=blackout] {animation:tt-cut-hold 2.2s cubic-bezier(.4,0,.2,1) both}
-@keyframes tt-cut {0% {opacity:0} 18% {opacity:1} 100% {opacity:0}}
-@keyframes tt-cut-hold {0% {opacity:0} 12% {opacity:1} 55% {opacity:1} 100% {opacity:0}}
+/* The one cut (bridges.js playCut): a short blackout before the Discography's bridge line */
+.tt-cut {position:fixed;inset:0;z-index:85;pointer-events:none;opacity:0;background:#01060d}
+.tt-cut.is-on {animation:tt-cut-hold 1.1s cubic-bezier(.4,0,.2,1) both}
+@keyframes tt-cut-hold {0% {opacity:0} 15% {opacity:1} 45% {opacity:1} 100% {opacity:0}}
 @media (prefers-reduced-motion: reduce) {.tt-cut {display:none}}
+
+/* Discography first screen (desktop): the title shares its line with the history link and the tabs share
+   theirs with the section note, so the turntable and the first row of records fit on the first screen */
+@media (min-width:861px) {
+  #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
+  .tt-shelf {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px}
+  .tt-shelf > * {flex:0 0 100%}
+  .tt-shelf > .tt-works-tabs, .tt-shelf > .tt-mix-head {flex:0 0 auto;margin-top:0;margin-bottom:24px}
+  .tt-shelf > .tt-mix-head {justify-content:flex-start;text-align:left;max-width:560px}
+  .tt-shelf-head {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:24px;margin-bottom:24px}
+  .tt-shelf-head > .tt-section-chapter, .tt-shelf-head > .tt-section-note {flex:0 0 100%}
+  .tt-shelf-head > .tt-shelf-history {margin-top:16px}
+}
+/* tablet: the turntable leaves room for the records below it */
+@media (min-width:761px) and (max-width:860px) {.tt-crate-deck {max-width:400px}}
+
+/* Readable floor: nothing meant to be read below 13px */
+#chapnav .nav-label, #lang-switcher button {font-size:13px!important}
+#chapnav .nav-label {letter-spacing:.12em!important}
+#content .tt-section-chapter, #content .tt-bridge-label {font-size:13px;letter-spacing:.18em}
+#c-home > .tt-s-color-var-accent-9aa3[data-reveal]:first-of-type {font-size:15px!important;letter-spacing:.16em!important}
+.tt-audience-kicker, .tt-network-directory small, .tt-home-latest small, .tt-cmp-badge, .tt-cmp-flow small, .tt-case-eyebrow,
+.tt-case-steps > li > span, .tt-shelf-format, .tt-mix-label, .tt-mix-audio-tag, .tt-shelf-clients-label, .tt-shelf-modal-label, .tt-shelf-covers-title {font-size:13px!important}
+.tt-rack-artist {font-size:13px}
+#tt-bridge-progress span {font-size:13px}
+/* the inquiry form at the bottom of the sea: fields one tone up from the card instead of pale slabs */
+.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:14px}
+.tt-inquiry-note {font-size:13.5px}
+#c-contact .tt-inquiry input[type=text], #c-contact .tt-inquiry input[type=email], #c-contact .tt-inquiry textarea {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#f4fbff}
+#c-contact .tt-inquiry input::placeholder, #c-contact .tt-inquiry textarea::placeholder {color:rgba(232,244,248,.55)}
+#c-contact .tt-inquiry-chip > span {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#eaf6fa}
+#c-contact .tt-inquiry-chip > input:checked + span {background:#0E6E7D;border-color:#4fc3d4;color:#fff}
+.tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
+#content footer, #content footer * {font-size:13px}

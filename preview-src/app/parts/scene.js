@@ -219,7 +219,6 @@ var ComponentScene = {
     var lastTop=this._sceneLastTop==null?scTop:this._sceneLastTop; this._sceneLastTop=scTop;
     this._vel=(this._vel||0)*0.7+(scTop-lastTop)*0.3;
     var streak=this._reduceMotion?0:this.cl((Math.abs(this._vel)-3)/40,0,1);
-    this.cameraCuts(H);
     c.save();
     // 1) the surface seen from just below: a bright, rippling ceiling with a shimmering window of sky
     if(surf>0.01){
@@ -455,93 +454,7 @@ var ComponentScene = {
     } else {
       this.drawInk(time);
     }
-    this.drawSurfaceBreak(H,W,scTop,time);
-    this.drawFinale(H,W);
     this.drawRail(n, pal, time);
-  },
-
-  // 起: going under. As Home leaves, the bright surface sweeps up past the camera and a burst of bubbles follows
-  drawSurfaceBreak(H,W,scTop,time){
-    if(this._reduceMotion) return;
-    var c=this.ctx, ps=this.smooth(H*0.15,H*1.05,scTop);
-    if(ps>0.12&&!this._burstFired&&this._vel>2){ this._burstFired=true; this._burstAt=performance.now();
-      this._burst=Array.from({length:70},function(){ return {x:Math.random(),r:Math.random()*5+2,sp:Math.random()*0.9+0.6,wob:Math.random()*6.28}; }); }
-    if(scTop<H*0.05) this._burstFired=false;
-    if(ps>0.001&&ps<0.999){
-      var ly=H*(1.1-ps*1.35), a=Math.sin(ps*Math.PI);
-      var band=c.createLinearGradient(0,ly-H*0.5,0,ly+30);
-      band.addColorStop(0,'rgba(255,255,255,0)'); band.addColorStop(0.75,'rgba(240,252,255,'+(0.55*a).toFixed(3)+')'); band.addColorStop(1,'rgba(255,255,255,'+(0.95*a).toFixed(3)+')');
-      c.fillStyle=band; c.fillRect(0,ly-H*0.5,W,H*0.5+30);
-      c.strokeStyle='rgba(255,255,255,'+(0.9*a).toFixed(3)+')'; c.lineWidth=4; c.beginPath();
-      for(var x=0;x<=W+24;x+=24){ var y=ly+28+Math.sin(x*0.02+time*3)*9+Math.sin(x*0.055-time*2)*4; if(x===0)c.moveTo(x,y); else c.lineTo(x,y); }
-      c.stroke();
-    }
-    if(this._burst){
-      var age=(performance.now()-this._burstAt)/1000;
-      if(age>2.2){ this._burst=null; return; }
-      c.lineWidth=1.4;
-      for(var i=0;i<this._burst.length;i++){
-        var b=this._burst[i], by=H*(1.05-age*b.sp*0.9)-b.r, bx=b.x*W+Math.sin(age*5+b.wob)*10;
-        var fade=this.cl(1-age/2.2,0,1);
-        c.strokeStyle='rgba(255,255,255,'+(0.85*fade).toFixed(3)+')'; c.fillStyle='rgba(255,255,255,'+(0.2*fade).toFixed(3)+')';
-        c.beginPath(); c.arc(bx,by,b.r*(1+age*0.4),0,6.283); c.fill(); c.stroke();
-      }
-    }
-  },
-
-  // 結: arriving at the last chapter, warm light from the book floods the sea once
-  drawFinale(H,W){
-    var el=this._contactEl&&this._contactEl.isConnected?this._contactEl:(this._contactEl=document.getElementById('c-contact'));
-    if(!el) return;
-    var t=el.getBoundingClientRect().top/H;
-    if(t>=0.85&&t<1.6) this._finaleArmed=true;
-    else if(this._finaleArmed&&t<=0.2&&t>-0.5){ this._finaleArmed=false; this._finaleAt=performance.now(); }
-    if(!this._finaleAt||this._reduceMotion) return;
-    var k=this.cl(1-(performance.now()-this._finaleAt)/2600,0,1);
-    if(k<=0) return;
-    var c=this.ctx, R=Math.max(W,H), e=k*k;
-    var g=c.createRadialGradient(W*0.5,H*1.05,0,W*0.5,H*1.05,R*(0.6+0.6*(1-k)));
-    g.addColorStop(0,'rgba(255,226,160,'+(0.85*e).toFixed(3)+')'); g.addColorStop(0.5,'rgba(255,214,140,'+(0.35*e).toFixed(3)+')'); g.addColorStop(1,'rgba(255,214,140,0)');
-    c.save(); c.globalCompositeOperation='screen'; c.fillStyle=g; c.fillRect(0,0,W,H); c.restore();
-  },
-
-  // the camera: a chapter far below is small, soft and faint, and comes up to meet you; one you pass
-  // grows past the lens and blurs away. Children take the individual scale/translate properties (the reveal
-  // pass owns their transform, opacity and filter); fade and blur go on the section, except the Discography,
-  // whose fixed popup and mini player must not get a filtered ancestor, so there the shelf rows blur instead.
-  cameraCuts(H){
-    var now=performance.now();
-    if(!this._cutList||now-this._cutListAt>600){
-      this._cutListAt=now;
-      var phone=this.isMobileMotion();
-      // how hard each cut lands: going under (起) and the turn (轉) hit hardest
-      var force={'c-home':1.4,'c-members':1,'c-projects':1,'c-works':1.25,'c-contact':1.1};
-      this._cutList=Object.keys(force).map(function(id){
-        var sec=document.getElementById(id); if(!sec) return null;
-        var kids=Array.prototype.slice.call(id==='c-works'?sec.querySelectorAll('.tt-shelf > *'):sec.children).filter(function(el){
-          var pos=getComputedStyle(el).position; return pos!=='fixed'&&pos!=='absolute'&&!el.hasAttribute('data-px');
-        });
-        return {sec:sec,kids:kids,force:force[id],phone:phone,works:id==='c-works'};
-      }).filter(Boolean);
-    }
-    for(var i=0;i<this._cutList.length;i++){
-      var it=this._cutList[i], r=it.sec.getBoundingClientRect(), k=0, dir=0;
-      if(r.top>0){ k=this.cl(r.top/H,0,1); dir=1; } else if(r.bottom<H){ k=this.cl((H-r.bottom)/H,0,1); dir=-1; }
-      if(this._reduceMotion) k=0;
-      var e=k*k*(3-2*k), f=it.force;
-      var key=(dir*Math.round(e*200));
-      if(it.key===key) continue; it.key=key;
-      var sc=dir>0?1-0.16*f*e:1+0.22*f*e, ty=dir>0?8*f*e:-6*f*e, blur=it.phone?0:Math.max(0,e-0.15)*16*f;
-      var op=1-Math.min(1,e*1.15), fl=blur>0.3?'blur('+blur.toFixed(1)+'px)':'';
-      it.sec.style.opacity=e<0.002?'':op.toFixed(3);
-      if(!it.works) it.sec.style.filter=e<0.002?'':fl;
-      for(var j=0;j<it.kids.length;j++){
-        var st=it.kids[j].style;
-        if(e<0.002){ st.scale=''; st.translate=''; if(it.works) st.filter=''; continue; }
-        st.scale=sc.toFixed(4); st.translate='0 '+ty.toFixed(2)+'vh';
-        if(it.works) st.filter=fl;
-      }
-    }
   },
 
   // cyan, violet and amber glows, drawn once

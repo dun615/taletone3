@@ -279,13 +279,11 @@ var ComponentBridges = {
     window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['members','projects','works','contact'][index]}}));
   },
 
-  // The cut into each bridge line hides the jump with a dip, coloured by where the story is:
-  // 0 going under (a white splash), 1 deeper (blue), 2 the turn (a full blackout that holds), 3 the book (gold).
+  // The turn of the story gets the one cut on the page: a short blackout before the Discography's bridge line
   playCut(index){
-    if(this._reduceMotion) return;
+    if(this._reduceMotion||index!==2) return;
     var el=this._cutEl;
     if(!el){ el=this._cutEl=document.createElement('div'); el.className='tt-cut'; el.setAttribute('aria-hidden','true'); document.body.appendChild(el); }
-    el.dataset.cut=['splash','deep','blackout','gold'][index]||'deep';
     el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on');
   },
 
