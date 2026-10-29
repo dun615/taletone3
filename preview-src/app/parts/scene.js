@@ -501,7 +501,9 @@ var ComponentScene = {
     if(!this._worksEl||!this._worksEl.isConnected) this._worksEl=document.getElementById('c-works');
     var el=this._worksEl;
     if(!el) return {t:Infinity,inside:false,deck:null};
-    if(!this._deckEl||!this._deckEl.isConnected) this._deckEl=el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck');
+    // the light source: the record that is playing (a floating disc on desktop), else the turntable
+    var now=performance.now();
+    if(!this._deckEl||!this._deckEl.isConnected||now-(this._deckAt||0)>300){ this._deckAt=now; this._deckEl=el.querySelector('.tt-float.is-current .tt-disc')||el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck'); }
     var r=el.getBoundingClientRect();
     return {t:r.top/H,inside:r.top<H*0.5&&r.bottom>H*0.5,deck:this._deckEl};
   },
