@@ -1043,6 +1043,7 @@
   var gainCtx = null, gainNode = null, trackNode = null, elementRouted = false;
   // the scene reads how loud the song is right now, so the deep sea can light up with it
   var analyser = null, levelBuf = null;
+  window.TALETONE_AUDIO_PLAYING = function () { return !!state.playing; };
   window.TALETONE_AUDIO_LEVEL = function () {
     if (!analyser || !state.playing || state.volume < 0.02) return 0;
     analyser.getFloatTimeDomainData(levelBuf);

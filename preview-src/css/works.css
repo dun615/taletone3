@@ -2756,3 +2756,18 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 #c-works .tt-m-now.is-playing {box-shadow:inset 0 0 0 1px rgba(141,236,252,.18),0 0 calc(18px + 50px * var(--tt-lvl, 0)) calc(3px * var(--tt-lvl, 0)) rgba(120, 232, 255, calc(.12 + .4 * var(--tt-lvl, 0)))}
 #c-works .tt-deck.is-playing .tt-deck-platter {box-shadow:0 0 0 3px rgba(141,236,252,.16),0 18px 36px rgba(0,16,22,.6),0 0 calc(14px + 40px * var(--tt-lvl, 0)) rgba(255, 214, 140, calc(.08 + .45 * var(--tt-lvl, 0)))}
 body.tt-works-arrive #c-works .tt-deck-table {box-shadow:0 0 90px 6px rgba(120, 232, 255, .4)}
+/* listening: everything but the record player steps back while a song plays (hover or focus brings it back) */
+#c-works .tt-shelf-head, #c-works .tt-works-tabs, #c-works .tt-mix-head, #c-works .tt-crate-rack, #c-works .tt-shelf-clients {transition:opacity 1.2s ease}
+body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt-crate-rack, .tt-shelf-clients):not(:hover):not(:focus-within) {opacity:.32}
+
+/* Cuts between chapter and bridge line (bridges.js playCut): one dip per cut, coloured by the act of the story */
+.tt-cut {position:fixed;inset:0;z-index:85;pointer-events:none;opacity:0}
+.tt-cut[data-cut=splash] {background:radial-gradient(120% 90% at 50% 100%,#fff 0 40%,rgba(225,248,255,.9) 70%,rgba(200,240,250,.6))}
+.tt-cut[data-cut=deep] {background:radial-gradient(120% 100% at 50% 50%,rgba(6,40,60,.75),#021320)}
+.tt-cut[data-cut=blackout] {background:#01060d}
+.tt-cut[data-cut=gold] {background:radial-gradient(110% 90% at 50% 110%,rgba(255,226,160,.95),rgba(255,200,120,.55) 55%,rgba(40,24,8,.2))}
+.tt-cut.is-on {animation:tt-cut .9s cubic-bezier(.3,.7,.3,1) both}
+.tt-cut.is-on[data-cut=blackout] {animation:tt-cut-hold 2.2s cubic-bezier(.4,0,.2,1) both}
+@keyframes tt-cut {0% {opacity:0} 18% {opacity:1} 100% {opacity:0}}
+@keyframes tt-cut-hold {0% {opacity:0} 12% {opacity:1} 55% {opacity:1} 100% {opacity:0}}
+@media (prefers-reduced-motion: reduce) {.tt-cut {display:none}}
