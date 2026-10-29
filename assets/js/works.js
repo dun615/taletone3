@@ -248,7 +248,7 @@
   // role toggles: with every role of a group on nothing is hidden; otherwise a unit shows when it has any on role
   function rolesAllOn(group) { return group.every(function (role) { return state.roles[role]; }); }
   function matchesRoles(roles, group) {
-    return rolesAllOn(group) || group.some(function (role) { return state.roles[role] && roles.indexOf(role) !== -1; });
+    return rolesAllOn(group) || group.every(function (role) { return !state.roles[role] || roles.indexOf(role) !== -1; }); // every picked role must be credited
   }
   function cardRoleKeys(text) {
     return String(text || '').split(/\s*·\s*/).map(function (word) { var key = CARD_ROLES[word.replace(/\s*\(.*\)$/, '')]; return key === 'instMix' ? 'mix' : key; }).filter(Boolean);
