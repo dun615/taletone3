@@ -214,14 +214,15 @@
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false,   // the reader has played something
     tab: 'songs',     // songs (곡 제작) | mix (믹싱·마스터링) | arr (편곡·BGM)
-    mixShown: 12      // video cards shown in the mixing tab before "more"
+    mixShown: 12,     // video cards shown in the mixing tab before "more"
+    roles: { produce: true, compose: true, arrange: true, lyrics: true, rec: true, edit: true, mix: true, master: true } // role toggles (any of the on ones)
   };
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { volume: 'Volume', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -243,6 +244,21 @@
   function hasRole(unit, role) { return !!(unit && Array.isArray(unit.roles) && unit.roles.indexOf(role) !== -1); }
   function fieldOf(work) { return (work && work.field) || 'artist'; }
   function matchesFilter(work, filter) { return filter === 'all' || fieldOf(work) === filter; }
+  // role toggles: with every role of a group on nothing is hidden; otherwise a unit shows when it has any on role
+  function rolesAllOn(group) { return group.every(function (role) { return state.roles[role]; }); }
+  function matchesRoles(roles, group) {
+    return rolesAllOn(group) || group.some(function (role) { return state.roles[role] && roles.indexOf(role) !== -1; });
+  }
+  function cardRoleKeys(text) {
+    return String(text || '').split(/\s*·\s*/).map(function (word) { var key = CARD_ROLES[word.replace(/\s*\(.*\)$/, '')]; return key === 'instMix' ? 'mix' : key; }).filter(Boolean);
+  }
+  function roleChipsHtml(group) {
+    var labels = L();
+    return '<div class="tt-role-chips" role="group" aria-label="' + esc(labels.roleFilter) + '">' + group.map(function (role) {
+      var on = !!state.roles[role];
+      return '<button type="button" class="tt-role-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="role" data-role="' + role + '">' + esc(labels[role]) + '</button>';
+    }).join('') + '</div>';
+  }
   // featured records (`pinned`: 1, 2, 3 …) lead in that order; the rest newest first (dates are YYYY.MM.DD, so
   // they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
@@ -258,8 +274,9 @@
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
       if (!matchesFilter(entry.work, filter)) return;
-      if (tracks.length) tracks.forEach(function (track, i) { out.push({ work: entry.work, index: entry.index, track: i }); });
-      else out.push(entry);
+      var roleOk = function (unit) { return matchesRoles((unit && unit.roles) || entry.work.roles || [], PRE_ROLES); };
+      if (tracks.length) tracks.forEach(function (track, i) { if (roleOk(track)) out.push({ work: entry.work, index: entry.index, track: i }); });
+      else if (roleOk(entry.work)) out.push(entry);
     });
     return out;
   }
@@ -326,10 +343,10 @@
     var labels = L();
     return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + FIELD_FILTERS.map(function (key) {
       var count = entriesFor(key).length;
-      if (!count) return '';
       var on = state.filter === key;
+      if (!count && !on) return '';
       return '<button type="button" class="tt-shelf-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="filter" data-filter="' + key + '">' + esc(labels[key]) + '<span class="tt-shelf-chip-count">' + count + '</span></button>';
-    }).join('') + '</div>';
+    }).join('') + '</div>' + roleChipsHtml(PRE_ROLES);
   }
 
   // ---- a record: the cover art pressed into a picture disc; it spins while it plays ----
@@ -669,7 +686,7 @@
     if (!t.label && !t.note) return '';
     return '<div class="tt-mix-head tt-tab-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>';
   }
-  function mixHtml(key, extra, paged) {
+  function mixHtml(key, extra, paged, roleGroup) {
     var content = liveSiteContent || window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
     var seen = {};
@@ -677,15 +694,17 @@
       if (!it || !(it.youtube || it.audio)) return false;
       var k = it.youtube || it.audio; if (seen[k]) return false; seen[k] = true; return true;
     });
+    if (roleGroup) items = items.filter(function (it) { return matchesRoles(cardRoleKeys(it.roles), roleGroup); });
     items.forEach(function (it) { it.shown = cardDate(it, content); });
     items.sort(function (x, y) { return y.shown.localeCompare(x.shown); }); // newest first
     var total = items.length;
     if (paged) items = items.slice(0, state.mixShown);
-    if (!items.length) return '';
+    if (!items.length && !roleGroup) return '';
     var t = Object.assign({}, mix, (mix.translations && mix.translations[pageLangKey()]) || {});
     var lang = pageLangKey();
     return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
       '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
+      (roleGroup ? roleChipsHtml(roleGroup) : '') +
       '<ul class="tt-mix-row tt-mix-grid">' + items.map(function (it) {
         var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
         var media = it.youtube
@@ -777,7 +796,7 @@
     var list = visibleWorks();
     // a re-render (a language switch, a pick) keeps the rack and the open popup where the visitor left them
     var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
-    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true)
+    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true, Object.keys(POST_ROLES))
       : state.tab === 'arr' ? mixHtml('bgmWorks')
       : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
@@ -1131,7 +1150,11 @@
     var index = indexOfSlug(pendingSlug);
     pendingSlug = '';
     if (index < 0) return;
-    if (!matchesFilter(works[index], state.filter)) { state.filter = 'all'; render(); }
+    if (!visibleWorks().some(function (entry) { return entry.index === index; })) {
+      state.filter = 'all';
+      PRE_ROLES.forEach(function (role) { state.roles[role] = true; });
+      render();
+    }
     closeModal(false);
     state.current = index;
     state.track = titleTrackIndex(works[index]);
@@ -1275,6 +1298,16 @@
     } else if (action === 'more') {
       state.mixShown += 12;
       render();
+    } else if (action === 'role') {
+      var role = button.getAttribute('data-role');
+      var group = PRE_ROLES.indexOf(role) !== -1 ? PRE_ROLES : Object.keys(POST_ROLES);
+      // at least one role stays on, so the list never empties by accident
+      if (state.roles[role] && group.filter(function (r) { return state.roles[r]; }).length === 1) return;
+      var rects = state.tab === 'songs' ? bookRects() : null;
+      state.roles[role] = !state.roles[role];
+      render(rects);
+      announce(L()[role] + ' · ' + (state.roles[role] ? 'on' : 'off'));
+      var roleChip = root && root.querySelector('[data-works-action="role"][data-role="' + role + '"]'); if (roleChip) roleChip.focus({ preventScroll: true });
     } else if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';

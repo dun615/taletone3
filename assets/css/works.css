@@ -2636,3 +2636,12 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 @media (min-width: 861px) {
   body.tt-site-dialog-open:has(.tt-shelf-modal) #lang-switcher.tt-lang-switcher {z-index:90 !important;visibility:visible !important;pointer-events:auto !important}
 }
+
+/* role toggles: several can be on at once (unlike the one-of category chips), so they read as checkboxes */
+.tt-role-chips {display:flex;flex-wrap:wrap;gap:6px;margin:-14px 0 24px}
+.tt-mix .tt-role-chips {margin:0 0 18px}
+.tt-role-chip {appearance:none;display:inline-flex;align-items:center;gap:6px;padding:7px 12px 7px 10px;border-radius:999px;border:1px dashed color-mix(in srgb,currentColor 35%,transparent);background:transparent;color:inherit;font:600 12px/1 var(--tt-noto-primary),sans-serif;opacity:.6;cursor:pointer;transition:opacity .2s,border-color .2s,background .2s}
+.tt-role-chip::before {content:'';width:12px;height:12px;border-radius:3px;border:1.5px solid currentColor;box-sizing:border-box}
+.tt-role-chip.is-on {opacity:1;border-style:solid;border-color:color-mix(in srgb,currentColor 55%,transparent)}
+.tt-role-chip.is-on::before {background:currentColor;box-shadow:inset 0 0 0 2px var(--paper,#fffdf8)}
+.tt-role-chip:hover {opacity:1}
