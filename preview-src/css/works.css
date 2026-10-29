@@ -2991,3 +2991,14 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-lampbtn.is-lit::before {background:#ffd98c;box-shadow:0 0 10px rgba(255,217,140,.9)}
 .tt-console-lampbtn[aria-expanded=true] {background:rgba(244,249,255,.12)}
 .tt-console-lamps {margin-top:10px}
+/* an album on the current: its name at the top of the bank, its tracks listed under it, each playable */
+.tt-float.is-album .tt-float-label {top:6px;translate:none}
+.tt-float-tracks {position:absolute;top:60px;left:calc(100% + 16px);width:240px;margin:0;padding:0;list-style:none;display:grid;gap:2px}
+.tt-float.is-left .tt-float-tracks {left:auto;right:calc(100% + 16px)}
+.tt-float-track {appearance:none;display:flex;align-items:baseline;gap:8px;width:100%;padding:4px 0;border:0;background:none;color:rgba(232,246,250,.82);font:600 14px/1.35 var(--tt-noto-primary),sans-serif;text-align:left;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tt-float.is-left .tt-float-track {flex-direction:row-reverse;text-align:right}
+.tt-float-track-no {flex:none;font:700 12px/1 'Quicksand',sans-serif;color:rgba(141,236,252,.7);font-variant-numeric:tabular-nums}
+.tt-float-track:hover, .tt-float-track:focus-visible {color:#fbffff}
+.tt-float-tracks li.is-current .tt-float-track {color:#ffe2a6}
+.tt-float-tracks li.is-current .tt-float-track-no {color:#ffd98c}
+.tt-float.is-dark .tt-float-tracks {pointer-events:none}

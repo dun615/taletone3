@@ -900,7 +900,12 @@
   var CURRENT_STEP = 104, CURRENT_TOP = 70;
   function currentX(y) { return 50 + 20 * Math.sin(y / 1100 * Math.PI); }
   function flotsamHtml() {
-    var list = seaRecords(), height = CURRENT_TOP + list.length * CURRENT_STEP + 160, labels = L();
+    var list = seaRecords(), labels = L();
+    // an album takes as much of the current as its track list needs
+    var tracksOf = function (work) { return isAlbum(work) && work.tracks && work.tracks.length > 1 ? work.tracks : null; };
+    var ys = [], at = CURRENT_TOP;
+    list.forEach(function (entry) { ys.push(at); var t = tracksOf(entry.work); at += t ? Math.max(CURRENT_STEP, 74 + t.length * 30) : CURRENT_STEP; });
+    var height = at + 160;
     var path = [];
     for (var y = 0; y <= height; y += 40) path.push((y ? 'L' : 'M') + currentX(y).toFixed(2) + ' ' + y);
     return '<div class="tt-flotsam" style="height:' + height + 'px">' +
@@ -908,13 +913,18 @@
       '<ul class="tt-current-list">' + list.map(function (entry, i) {
         var work = entry.work, index = entry.index, unit = localizedUnit(work);
         var title = plainRichText(unit.title || work.title || ''), artist = plainRichText(unit.artist || work.artist || '');
-        var y = CURRENT_TOP + i * CURRENT_STEP, side = i % 2 ? 1 : -1, x = currentX(y) + side * 10;
-        var on = state.current === index;
-        return '<li class="tt-float' + (side < 0 ? ' is-left' : '') + (pinRank(work) < Infinity ? ' is-featured' : '') + (litEntry(work) ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '"' +
+        var y = ys[i], side = i % 2 ? 1 : -1, x = currentX(y) + side * 10;
+        var on = state.current === index, tracks = tracksOf(work);
+        return '<li class="tt-float' + (side < 0 ? ' is-left' : '') + (tracks ? ' is-album' : '') + (pinRank(work) < Infinity ? ' is-featured' : '') + (litEntry(work) ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '"' +
           ' style="--x:' + x.toFixed(2) + ';--y:' + y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
           '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ', ' + artist) + '">' +
             discHtml(work, 'tt-disc--float', i < 16) + '<span class="tt-float-label"><b>' + esc(title) + '</b><span>' + esc(artist) + '</span></span>' +
           '</button>' +
+          (tracks ? '<ol class="tt-float-tracks">' + tracks.map(function (track, t) {
+            var tOn = on && state.track === t;
+            return '<li data-works-book="' + index + '-' + t + '"' + (tOn ? ' class="is-current' + (state.playing ? ' is-playing' : '') + '"' : '') + '>' +
+              '<button type="button" class="tt-float-track" data-works-action="pick" data-index="' + index + '" data-track="' + t + '"><span class="tt-float-track-no">' + (t < 9 ? '0' : '') + (t + 1) + '</span>' + esc(plainRichText(localizedUnit(track).title || '')) + '</button></li>';
+          }).join('') + '</ol>' : '') +
           (i === 0 && !state.engaged ? '<span class="tt-float-hint" aria-hidden="true">' + esc(labels.hint) + '</span>' : '') +
         '</li>';
       }).join('') + '</ul></div>';
