@@ -2224,6 +2224,171 @@
         "cover": true,
         "roles": "Edit",
         "date": "2023-03-24"
+      },
+      {
+        "title": "그게 나의 전부란 걸",
+        "artist": "박영준 × 황문경 (뮤지컬 번지점프를 하다)",
+        "cover": true,
+        "roles": "Rec · Edit · Mix · Master",
+        "youtube": "WRjLV1DR5Sw",
+        "date": "2024-04-30"
+      },
+      {
+        "title": "길에서",
+        "artist": "황문경 (원곡 유성은)",
+        "cover": true,
+        "roles": "Rec · Edit · Mix · Master",
+        "youtube": "9bmmhEyswmg",
+        "date": "2024-04-30"
+      },
+      {
+        "title": "Love wins all",
+        "artist": "황문경 (원곡 아이유)",
+        "cover": true,
+        "roles": "Rec · Edit · Mix · Master",
+        "youtube": "VIUE-wZo1U8",
+        "date": "2024-02-14"
+      },
+      {
+        "title": "ANIMAL",
+        "artist": "이주인 (V-LUP)",
+        "cover": true,
+        "roles": "Edit",
+        "youtube": "acNVhGUNGQ0",
+        "date": "2022-04-25"
+      },
+      {
+        "title": "Twinkle Star (별나라 요정 코미 ED)",
+        "artist": "이정은",
+        "cover": true,
+        "roles": "Mix",
+        "youtube": "JAM5sGOERQs",
+        "date": "2020-11-29"
+      },
+      {
+        "title": "완전 귀여워",
+        "titleJp": "超絶かわいい",
+        "artist": "얌 (POCOTONE)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "gwYI_-RBXBU",
+        "date": "2023-07-21"
+      },
+      {
+        "title": "Love letter",
+        "artist": "Dear my heroes (원곡 Anthony Lazaro)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "MXZ7ezpFXNM",
+        "date": "2024-11-21"
+      },
+      {
+        "title": "Soft spot (Acoustic ver.)",
+        "artist": "Dear my heroes (원곡 Keshi)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "N05pNOysfgw",
+        "date": "2024-12-06"
+      },
+      {
+        "title": "I'm Hungry (Suhr Demo)",
+        "artist": "김재중 (Music Force)",
+        "roles": "Mix",
+        "youtube": "iD747DDj4o4",
+        "date": "2024-08-17"
+      },
+      {
+        "title": "네모네모",
+        "artist": "Eryn (HEXIA)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "KvQaWwmhuO0",
+        "date": "2026-04-30"
+      },
+      {
+        "title": "운명의 태피스트리 (feat. 힐리아)",
+        "artist": "백색설화",
+        "roles": "Edit",
+        "youtube": "bhfjlLcaHoY",
+        "date": "2026-10-28"
+      },
+      {
+        "title": "ライラック",
+        "artist": "삿땅 (HEXIA_EDEN, 원곡 Mrs. GREEN APPLE)",
+        "cover": true,
+        "roles": "Rec (Eryn)",
+        "youtube": "wE1ZPLujdkU",
+        "date": "2026-04-22"
+      },
+      {
+        "title": "가을아침",
+        "artist": "도롱챠 (원곡 아이유)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "N2WrfQZJqOE",
+        "date": "2024-02-14"
+      },
+      {
+        "title": "김고양이 + Walkin' the walk",
+        "artist": "서울예대 21 장독대",
+        "roles": "Edit",
+        "youtube": "902lcqTc9OM",
+        "date": "2022-01-29"
+      },
+      {
+        "title": "크러쉬 메들리",
+        "artist": "와이키키 참다랑어 (서울예대 장독대)",
+        "cover": true,
+        "roles": "Edit",
+        "youtube": "bLCN4Oc6if0",
+        "date": "2022-02-01"
+      },
+      {
+        "title": "We Are The Champions",
+        "artist": "프레디 철큐리 (서울예대 21 장독대)",
+        "cover": true,
+        "roles": "Edit",
+        "youtube": "WKBhXQlMbVI",
+        "date": "2022-01-28"
+      },
+      {
+        "title": "서울예대 베이스 입시곡",
+        "artist": "이주영",
+        "roles": "Edit · Mix · Master",
+        "youtube": "pqjFCdl9CVY",
+        "date": "2021-03-30"
+      },
+      {
+        "title": "Disco Yes",
+        "artist": "루이스 Louis (원곡 Tom Misch)",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "KG-uM82qlY0",
+        "date": "2021-10-27"
+      },
+      {
+        "title": "나를 아는 사람",
+        "artist": "서울예대 21학번 보컬 (원곡 MSG워너비)",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "q0CfMdOUK28",
+        "date": "2021-11-03"
+      },
+      {
+        "title": "クインティプル☆すまいる",
+        "artist": "시애 외 7인",
+        "cover": true,
+        "roles": "Edit · Mix · Master",
+        "youtube": "Kzqh7yzjokk",
+        "date": "2018-08-23"
+      },
+      {
+        "title": "And July",
+        "artist": "이하린 & 천용주 (세종예술고 예술제 2020)",
+        "cover": true,
+        "roles": "Mix · Master",
+        "youtube": "Cfu5MLJY4Go",
+        "date": "2021-01-29"
       }
     ]
   },
@@ -2396,6 +2561,21 @@
         "roles": "BGM · Mix · Master",
         "youtube": "5caghJlhBvA",
         "date": "2021-12-27"
+      },
+      {
+        "title": "방정리",
+        "artist": "HAEBIN",
+        "roles": "Piano Arr",
+        "youtube": "q89CylU49kE",
+        "date": "2025-12-09"
+      },
+      {
+        "title": "마음악보 (밴드 편곡)",
+        "artist": "WASABI BUSTERS",
+        "cover": true,
+        "roles": "Arr",
+        "youtube": "XsKj--Qsg_U",
+        "date": "2026-10-05"
       }
     ]
   },
