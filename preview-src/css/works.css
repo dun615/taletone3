@@ -2791,7 +2791,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-rack-artist {font-size:13px}
 #tt-bridge-progress span {font-size:13px}
 /* the inquiry form at the bottom of the sea: fields one tone up from the card instead of pale slabs */
-.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:14px}
+.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:15px}
 .tt-inquiry-note {font-size:13.5px}
 #c-contact .tt-inquiry input[type=text], #c-contact .tt-inquiry input[type=email], #c-contact .tt-inquiry textarea {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#f4fbff}
 #c-contact .tt-inquiry input::placeholder, #c-contact .tt-inquiry textarea::placeholder {color:rgba(232,244,248,.55)}
@@ -2799,3 +2799,35 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 #c-contact .tt-inquiry-chip > input:checked + span {background:#0E6E7D;border-color:#4fc3d4;color:#fff}
 .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
 #content footer, #content footer * {font-size:13px}
+
+/* Discography controls, one panel: the tab says what the list is (its English label repeated it and goes),
+   then two labelled rows, field and role, in one chip style, sitting on the list they filter */
+.tt-mix-head .tt-mix-label {display:none}
+.tt-filter-panel {display:grid;gap:10px;margin:0 0 26px}
+.tt-filter-row {display:flex;align-items:center;gap:12px;min-width:0}
+.tt-filter-caption {flex:none;min-width:2.6em;font:700 13px/1 var(--tt-noto-primary),sans-serif;opacity:.7}
+.tt-filter-row > .tt-shelf-filters, .tt-filter-row > .tt-role-chips {margin:0;min-width:0;row-gap:8px}
+.tt-role-chip {padding:10px 14px;border:1px solid rgba(244,249,255,.24);border-style:solid;font-size:13px;opacity:1}
+.tt-role-chip::before {content:none}
+.tt-role-chip:hover {border-color:rgba(244,249,255,.5)}
+.tt-role-chip.is-on {background:#f4f9ff;border-color:#f4f9ff;color:#0b1330}
+.tt-role-chip.is-on::before {content:none}
+@media (max-width:760px) {
+  .tt-filter-panel {gap:8px;margin-bottom:14px}
+  .tt-filter-row {gap:8px}
+  .tt-filter-caption {min-width:2.2em;font-size:13px}
+  .tt-role-chips .tt-role-chip {padding:8px 11px;font-size:13px}
+  .tt-filter-row > .tt-shelf-filters {margin-right:-16px}
+}
+/* the type scale, folded onto a few steps: 13 · 15 · 18 · 24 · 38 · display */
+[data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
+.tt-inquiry-chip > span {font-size:15px}
+.tt-audience-num {font-size:38px!important}
+.tb-title {font-size:24px!important}
+
+/* tablet: turntable and records side by side, so the list starts on the first screen */
+@media (min-width:761px) and (max-width:860px) {
+  .tt-crate-stage {grid-template-columns:minmax(240px,.85fr) minmax(0,1fr);gap:24px}
+  .tt-crate-deck {position:sticky;top:96px;max-width:none;margin:0}
+  .tt-rack-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
