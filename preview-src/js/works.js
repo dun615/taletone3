@@ -214,6 +214,7 @@
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false,   // the reader has played something
     tab: 'songs',     // songs (곡 제작) | mix (믹싱·마스터링) | arr (편곡·BGM)
+    lampsOpen: false, // desktop console: the field and role lamps unfolded
     view: 'stage',    // songs tab: stage (the turntable and a crate of featured records) | catalog (every record, filters)
     mixShown: 12,     // video cards shown in the mixing tab before "more"
     openAlbums: {},   // phones: albums whose track list is open in the sleeve list
@@ -222,9 +223,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { console: '음반 조작판', viewList: '목록', viewFloat: '바다', viewCredits: '크레딧 목록으로 보기', viewSea: '바다로 돌아가기', lanterns: '등불', colTitle: '곡', colArtist: '아티스트', colRoles: '참여', viewCatalog: '전체 목록·필터로 보기', viewStage: '대표작으로 돌아가기', cratePrev: '이전 레코드', crateNext: '다음 레코드', crate: '대표작', volume: '볼륨', fieldCaption: '분야', roleCaption: '역할', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { console: 'Record console', viewList: 'List', viewFloat: 'Sea', viewCredits: 'Credits as a list', viewSea: 'Back to the sea', lanterns: 'Lanterns', colTitle: 'Song', colArtist: 'Artist', colRoles: 'Role', viewCatalog: 'All records and filters', viewStage: 'Back to the featured records', cratePrev: 'Previous records', crateNext: 'Next records', crate: 'Featured records', volume: 'Volume', fieldCaption: 'Field', roleCaption: 'Role', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { console: 'レコード操作盤', viewList: '一覧', viewFloat: '海', viewCredits: 'クレジット一覧', viewSea: '海に戻る', lanterns: '灯り', colTitle: '曲', colArtist: 'アーティスト', colRoles: '担当', viewCatalog: '全作品・絞り込み', viewStage: '代表作に戻る', cratePrev: '前のレコード', crateNext: '次のレコード', crate: '代表作', volume: '音量', fieldCaption: '分野', roleCaption: '担当', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { hint: '눌러서 들어 보세요', lampsButton: '등불', console: '음반 조작판', viewList: '목록', viewFloat: '바다', viewCredits: '크레딧 목록으로 보기', viewSea: '바다로 돌아가기', lanterns: '등불', colTitle: '곡', colArtist: '아티스트', colRoles: '참여', viewCatalog: '전체 목록·필터로 보기', viewStage: '대표작으로 돌아가기', cratePrev: '이전 레코드', crateNext: '다음 레코드', crate: '대표작', volume: '볼륨', fieldCaption: '분야', roleCaption: '역할', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { hint: 'Tap a record to listen', lampsButton: 'Lanterns', console: 'Record console', viewList: 'List', viewFloat: 'Sea', viewCredits: 'Credits as a list', viewSea: 'Back to the sea', lanterns: 'Lanterns', colTitle: 'Song', colArtist: 'Artist', colRoles: 'Role', viewCatalog: 'All records and filters', viewStage: 'Back to the featured records', cratePrev: 'Previous records', crateNext: 'Next records', crate: 'Featured records', volume: 'Volume', fieldCaption: 'Field', roleCaption: 'Role', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { hint: 'タップして聴く', lampsButton: '灯り', console: 'レコード操作盤', viewList: '一覧', viewFloat: '海', viewCredits: 'クレジット一覧', viewSea: '海に戻る', lanterns: '灯り', colTitle: '曲', colArtist: 'アーティスト', colRoles: '担当', viewCatalog: '全作品・絞り込み', viewStage: '代表作に戻る', cratePrev: '前のレコード', crateNext: '次のレコード', crate: '代表作', volume: '音量', fieldCaption: '分野', roleCaption: '担当', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -858,8 +859,6 @@
     host.classList.toggle('is-on', !!host.firstChild && state.tab === 'songs' && inWorks && deckAway);
     var consoleHost = root.querySelector('.tt-console-host');
     if (consoleHost) consoleHost.classList.toggle('is-on', state.tab === 'songs' && box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.6);
-    var sea = root.querySelector('.tt-flotsam');
-    if (sea) sea.style.setProperty('--sy', Math.round(Math.max(0, -sea.getBoundingClientRect().top + window.innerHeight * 0.3)) + 'px');
   }
   function updateMini() {
     var host = root && root.querySelector('.tt-mini-host');
@@ -874,9 +873,10 @@
   })();
 
   // tablets and up: the rack grid with album shelves
-  // ---- desktop: the records float in the sea like flotsam, each its own size, depth and drift, and you pick
-  // the one you want to hear. A console comes with you while you are in the Discography: what is playing, play,
-  // volume, and the lamps for field and role, which light the matching records and let the others sink. ----
+  // ---- desktop: the records drift down one current, a slow S through the sea, featured ones first, each named
+  // beside it; you follow it down and pick the one you want to hear. A console comes with you while you are in
+  // the Discography: what is playing, play, volume, and (unfolded) the lamps for field and role, which light the
+  // matching records and let the others sink. ----
   function litEntry(work) {
     if (!matchesFilter(work, state.filter)) return false;
     var units = isAlbum(work) && work.tracks && work.tracks.length ? work.tracks : [work];
@@ -896,27 +896,28 @@
         PRE_ROLES.map(function (role) { return lamp('data-works-action="role" data-role="' + role + '" data-group="' + PRE_ROLES[0] + '"', !all && !!state.roles[role], labels[role]); }).join('') + '</div>' +
     '</div>';
   }
-  // fixed scatter, so a record is always found in the same place: a loose grid, each record nudged off its cell
-  function scatter(i, k) { var x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); }
-  var FLOAT_ROW = 250;
+  // the current: a centreline swinging slowly left and right; records sit alternately on either bank of it
+  var CURRENT_STEP = 104, CURRENT_TOP = 70;
+  function currentX(y) { return 50 + 20 * Math.sin(y / 1100 * Math.PI); }
   function flotsamHtml() {
-    var list = seaRecords(), cols = window.innerWidth > 1300 ? 6 : window.innerWidth > 1000 ? 5 : 4;
-    var rows = Math.ceil(list.length / cols);
-    return '<ul class="tt-flotsam" style="height:' + (rows * FLOAT_ROW + 120) + 'px">' + list.map(function (entry, i) {
-      var work = entry.work, index = entry.index, unit = localizedUnit(work);
-      var title = plainRichText(unit.title || work.title || ''), artist = plainRichText(unit.artist || work.artist || '');
-      var featured = pinRank(work) < Infinity, depth = featured ? 2 : scatter(i, 1) < 0.34 ? 0 : scatter(i, 1) < 0.78 ? 1 : 2;
-      var size = featured ? 184 : [104, 132, 160][depth];
-      var col = i % cols, row = Math.floor(i / cols);
-      var x = ((col + 0.5) / cols * 100) + (scatter(i, 2) - 0.5) * (100 / cols) * 0.35;
-      var y = row * FLOAT_ROW + 40 + (col % 2 ? FLOAT_ROW * 0.3 : 0) + (scatter(i, 3) - 0.5) * FLOAT_ROW * 0.35;
-      var on = state.current === index;
-      return '<li class="tt-float d' + depth + (litEntry(work) ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '"' +
-        ' style="--x:' + x.toFixed(2) + ';--y:' + Math.round(y) + 'px;--s:' + size + 'px;--r:' + ((scatter(i, 4) - 0.5) * 16).toFixed(1) + 'deg;--p:' + [0.03, -0.05, -0.12][depth] + ';--d:' + (-scatter(i, 5) * 8).toFixed(2) + 's">' +
-        '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ', ' + artist) + '">' +
-          discHtml(work, 'tt-disc--float', i < 18) + '<span class="tt-float-label"><b>' + esc(title) + '</b><span>' + esc(artist) + '</span></span>' +
-        '</button></li>';
-    }).join('') + '</ul>';
+    var list = seaRecords(), height = CURRENT_TOP + list.length * CURRENT_STEP + 160, labels = L();
+    var path = [];
+    for (var y = 0; y <= height; y += 40) path.push((y ? 'L' : 'M') + currentX(y).toFixed(2) + ' ' + y);
+    return '<div class="tt-flotsam" style="height:' + height + 'px">' +
+      '<svg class="tt-current" viewBox="0 0 100 ' + height + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + path.join(' ') + '"/></svg>' +
+      '<ul class="tt-current-list">' + list.map(function (entry, i) {
+        var work = entry.work, index = entry.index, unit = localizedUnit(work);
+        var title = plainRichText(unit.title || work.title || ''), artist = plainRichText(unit.artist || work.artist || '');
+        var y = CURRENT_TOP + i * CURRENT_STEP, side = i % 2 ? 1 : -1, x = currentX(y) + side * 10;
+        var on = state.current === index;
+        return '<li class="tt-float' + (side < 0 ? ' is-left' : '') + (pinRank(work) < Infinity ? ' is-featured' : '') + (litEntry(work) ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '"' +
+          ' style="--x:' + x.toFixed(2) + ';--y:' + y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
+          '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ', ' + artist) + '">' +
+            discHtml(work, 'tt-disc--float', i < 16) + '<span class="tt-float-label"><b>' + esc(title) + '</b><span>' + esc(artist) + '</span></span>' +
+          '</button>' +
+          (i === 0 && !state.engaged ? '<span class="tt-float-hint" aria-hidden="true">' + esc(labels.hint) + '</span>' : '') +
+        '</li>';
+      }).join('') + '</ul></div>';
   }
   function consoleHtml() {
     if (isPhone() || state.tab !== 'songs') return '';
@@ -929,13 +930,14 @@
         '<div class="tt-console-text"><p class="tt-console-title">' + esc(trackUnit ? plainRichText(trackUnit.title || '') : title) + '</p>' +
           '<p class="tt-console-artist">' + esc(work ? plainRichText(unit.artist || work.artist || '') : '') + (trackUnit ? ' · ' + esc(title) : '') + '</p>' +
           (story ? '<p class="tt-console-story">' + esc(plainRichText(story)) + '</p>' : '') + '</div>' +
+        (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
         (work && hasAudio(work) ? '<button type="button" class="tt-console-play tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
         '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
         (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' : '') +
+        '<button type="button" class="tt-console-lampbtn' + (state.filter !== 'all' || !rolesAllOn(PRE_ROLES) || state.view === 'credits' ? ' is-lit' : '') + '" data-works-action="lamps" aria-expanded="' + state.lampsOpen + '" aria-controls="tt-console-lamps">' + esc(labels.lampsButton) + '</button>' +
       '</div>' +
-      (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
-      '<div class="tt-console-lamps">' + lanternsHtml() +
-        '<button type="button" class="tt-console-view" data-works-action="view" data-view="' + (state.view === 'credits' ? 'stage' : 'credits') + '">' + esc(state.view === 'credits' ? labels.viewFloat : labels.viewList) + '</button></div>' +
+      (state.lampsOpen ? '<div class="tt-console-lamps" id="tt-console-lamps">' + lanternsHtml() +
+        '<button type="button" class="tt-console-view" data-works-action="view" data-view="' + (state.view === 'credits' ? 'stage' : 'credits') + '">' + esc(state.view === 'credits' ? labels.viewFloat : labels.viewList) + '</button></div>' : '') +
     '</div>';
   }
   function creditsTableHtml() {
@@ -1448,6 +1450,7 @@
     if (deckHost && rebuild) deckHost.innerHTML = deckHtml();
     var consoleHost = root.querySelector('.tt-console-host');
     if (consoleHost) consoleHost.innerHTML = consoleHtml();
+    if (state.engaged) root.querySelectorAll('.tt-float-hint').forEach(function (hint) { hint.remove(); });
     updateMini();
     var deck = root.querySelector('.tt-deck');
     if (deck) {
@@ -1500,6 +1503,11 @@
       state.view = button.getAttribute('data-view') || 'stage';
       render();
       var back = root && root.querySelector('[data-works-action="view"]'); if (back) back.focus({ preventScroll: true });
+    } else if (action === 'lamps') {
+      state.lampsOpen = !state.lampsOpen;
+      var lampsHost = root.querySelector('.tt-console-host');
+      if (lampsHost) lampsHost.innerHTML = consoleHtml();
+      var lampsBtn = root.querySelector('[data-works-action="lamps"]'); if (lampsBtn) lampsBtn.focus({ preventScroll: true });
     } else if (action === 'crate-scroll') {
       var row = root && root.querySelector('.tt-crate-row');
       if (row) row.scrollBy({ left: Number(button.getAttribute('data-dir')) * row.clientWidth * 0.8, behavior: 'smooth' });
