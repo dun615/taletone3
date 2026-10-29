@@ -918,59 +918,10 @@
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
     watchDeck();
-    sizeRack();
     kept.forEach(function (k) { var el = root.querySelector(k[0]); if (el) { el.scrollTop = k[1]; el.scrollLeft = k[2]; } });
-    handOffRackScroll();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
     playPending();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
-  }
-
-  // The rack is as tall as the turntable column with Early Spring on it (turntable, its details and the
-  // track buttons), so the rack and the deck end on the same line whatever is playing
-  var RACK_REFERENCE = 'early-spring';
-  function sizeRack() {
-    var deckHost = root && root.querySelector('.tt-crate-deck');
-    var rack = root && root.querySelector('.tt-crate-rack');
-    var grid = rack && rack.querySelector('.tt-rack-grid');
-    if (!deckHost || !grid) return;
-    if (window.innerWidth <= 860) { grid.style.maxHeight = ''; return; } // stacked: the screen sets it (CSS)
-    var ref = works.findIndex(function (work) { return work.slug === RACK_REFERENCE; });
-    if (ref < 0) ref = state.current;
-    var keep = { current: state.current, track: state.track, language: state.language };
-    state.current = ref;
-    state.track = titleTrackIndex(works[ref]);
-    state.language = defaultLanguage(works[ref], state.track);
-    var probe = document.createElement('div');
-    probe.setAttribute('aria-hidden', 'true');
-    probe.style.cssText = 'position:absolute;left:0;top:0;width:' + deckHost.clientWidth + 'px;visibility:hidden;pointer-events:none';
-    probe.innerHTML = deckHtml();
-    state.current = keep.current; state.track = keep.track; state.language = keep.language;
-    deckHost.appendChild(probe);
-    var height = probe.offsetHeight;
-    probe.remove();
-    // the rack box is display:contents on the desktop grid (works.css); then the list starts level with the deck
-    var base = rack.getClientRects().length ? rack : deckHost;
-    var offset = grid.getBoundingClientRect().top - base.getBoundingClientRect().top;
-    grid.style.maxHeight = Math.max(240, Math.round(height - offset)) + 'px';
-  }
-
-  // At either end of the rack the wheel moves the page on, even within one continuous gesture
-  // (browsers keep a gesture latched to the inner scroller, which would hold the page in place)
-  function handOffRackScroll() {
-    var grid = root && root.querySelector('.tt-rack-grid');
-    var page = document.getElementById('content');
-    if (!grid || !page || grid.__ttHandOff) return;
-    grid.__ttHandOff = true;
-    grid.addEventListener('wheel', function (event) {
-      if (event.ctrlKey || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return;
-      var atTop = grid.scrollTop <= 0, atEnd = grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
-      if ((event.deltaY > 0 && atEnd) || (event.deltaY < 0 && atTop)) {
-        event.preventDefault();
-        page.scrollBy({ top: event.deltaMode === 1 ? event.deltaY * 40 : event.deltaY, behavior: 'instant' });
-      }
-    }, { passive: false });
   }
 
   var deckObserver = null;
@@ -1012,8 +963,8 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-      // on phones the year shelves stack in the page (each one a sideways row), so covers wait for the screen
-    }, { root: isPhone() ? null : root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
+      // the list runs in the page itself (one scroll, the turntable stays beside it), so covers wait for the screen
+    }, { rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
   }
   function loadCover(img) {
@@ -1565,7 +1516,6 @@
 
   var lastWidthStep = 0;
   function onResize() {
-    sizeRack();
     var step = shelfStep() + (isPhone() ? 100 : 0);
     if (mounted && step !== lastWidthStep) { lastWidthStep = step; render(); }
   }

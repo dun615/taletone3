@@ -2771,10 +2771,15 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
    tab; the field and role rows filter the list, so they are the list's own header (works.css .tt-filter-panel). */
 @media (min-width:861px) {
   #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
-  .tt-shelf-head {margin-bottom:28px}
-  .tt-shelf-head > .tt-shelf-history {margin-top:14px}
+  .tt-shelf-head {margin-bottom:22px}
+  .tt-shelf-head > .tt-shelf-history {margin-top:12px}
   .tt-shelf > .tt-works-tabs {display:flex;width:fit-content;margin:0 auto}
-  .tt-shelf > .tt-mix-head, .tt-mix > .tt-mix-head {justify-content:center;text-align:center;margin:12px auto 28px}
+  .tt-shelf > .tt-mix-head, .tt-mix > .tt-mix-head {justify-content:center;text-align:center;margin:10px auto 22px}
+}
+/* the record player: a little narrower than before (about 420px), so on a 1440 x 900 screen the whole player,
+   its title and its story line show on arrival; the list takes the width it gives up */
+@media (min-width:1101px) {
+  .tt-crate-stage {grid-template-columns:minmax(320px,.8fr) minmax(0,1.3fr)}
 }
 /* record cards (tablet and up): text on the cover's left edge, artist and roles one line each */
 @media (min-width:761px) {
@@ -2832,3 +2837,5 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-crate-deck {position:sticky;top:96px;max-width:none;margin:0}
   .tt-rack-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* one scroll: the record list runs in the page and the turntable stays beside it (sticky), no box inside a box */
+@media (min-width:761px) {.tt-crate-rack .tt-rack-grid {max-height:none!important;overflow:visible!important}}
