@@ -581,16 +581,19 @@ const previewTemplate = pTemplate
   .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
 const previewApp = makeAppBundle(previewTemplate, pComponent);
 const previewSiteScript = dataScript({ ...JSON.parse(pSiteText), ...siteExtras(JSON.parse(pSiteText), JSON.parse(pWorksText)) }, 'TALETONE_CONTENT');
+const previewNanum = nanumUrl(await nanumCharacters(root, PREVIEW_SOURCES));
+// every route of the live site exists under /preview/ too, so a reload or a shared link stays in the preview
+const previewPage = (page, lang) => renderPage(page, lang, {
+  APP_VERSION: version(previewApp),
+  SITE_VERSION: version(previewSiteScript),
+  NANUM_FONT_URL: previewNanum,
+}).replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
+  .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
+  .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
+  .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
+  .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(pSupport)}`);
 const previewOutputs = [
-  ['preview/index.html', renderPage(seo.pages.find((p) => p.key === 'home'), languages[0], {
-    APP_VERSION: version(previewApp),
-    SITE_VERSION: version(previewSiteScript),
-    NANUM_FONT_URL: nanumUrl(await nanumCharacters(root, PREVIEW_SOURCES)),
-  }).replace('<html lang="ko">', '<html lang="ko" data-intro-v2>')
-    .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
-    .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
-    .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
-    .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(pSupport)}`)],
+  ...seo.pages.flatMap((page) => languages.map((lang) => [`preview/${fileFor(lang, page.path)}`, previewPage(page, lang)])),
   ['preview/support.js', pSupport],
   ['preview/assets/app/app.js', previewApp],
   ['preview/assets/data/site-content.js', previewSiteScript],
