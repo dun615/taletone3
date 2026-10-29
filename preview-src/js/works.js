@@ -254,10 +254,11 @@
   }
   function roleChipsHtml(group) {
     var labels = L();
-    return '<div class="tt-role-chips" role="group" aria-label="' + esc(labels.roleFilter) + '">' + group.map(function (role) {
-      var on = !!state.roles[role];
-      return '<button type="button" class="tt-role-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="role" data-role="' + role + '">' + esc(labels[role]) + '</button>';
-    }).join('') + '</div>';
+    // every role on reads as "전체" alone; picking a role from there narrows to just that role
+    var all = rolesAllOn(group);
+    var chip = function (role, on, text) { return '<button type="button" class="tt-role-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="role" data-role="' + role + '" data-group="' + group[0] + '">' + esc(text) + '</button>'; };
+    return '<div class="tt-role-chips" role="group" aria-label="' + esc(labels.roleFilter) + '">' + chip('all', all, labels.all) +
+      group.map(function (role) { return chip(role, !all && !!state.roles[role], labels[role]); }).join('') + '</div>';
   }
   // featured records (`pinned`: 1, 2, 3 …) lead in that order; the rest newest first (dates are YYYY.MM.DD, so
   // they sort as text); the data order breaks ties.
@@ -1300,14 +1301,18 @@
       render();
     } else if (action === 'role') {
       var role = button.getAttribute('data-role');
-      var group = PRE_ROLES.indexOf(role) !== -1 ? PRE_ROLES : Object.keys(POST_ROLES);
-      // at least one role stays on, so the list never empties by accident
-      if (state.roles[role] && group.filter(function (r) { return state.roles[r]; }).length === 1) return;
+      var group = button.getAttribute('data-group') === PRE_ROLES[0] ? PRE_ROLES : Object.keys(POST_ROLES);
       var rects = state.tab === 'songs' ? bookRects() : null;
-      state.roles[role] = !state.roles[role];
+      var setAll = function (on) { group.forEach(function (r) { state.roles[r] = on; }); };
+      if (role === 'all') setAll(true);
+      else if (rolesAllOn(group)) { setAll(false); state.roles[role] = true; } // from 전체, keep only the picked role
+      else {
+        state.roles[role] = !state.roles[role];
+        if (!group.some(function (r) { return state.roles[r]; })) setAll(true); // nothing left: back to 전체
+      }
       render(rects);
-      announce(L()[role] + ' · ' + (state.roles[role] ? 'on' : 'off'));
-      var roleChip = root && root.querySelector('[data-works-action="role"][data-role="' + role + '"]'); if (roleChip) roleChip.focus({ preventScroll: true });
+      announce(L()[role] + ' · ' + (role === 'all' || state.roles[role] ? 'on' : 'off'));
+      var roleChip = root && root.querySelector('[data-works-action="role"][data-group="' + group[0] + '"][data-role="' + role + '"]'); if (roleChip) roleChip.focus({ preventScroll: true });
     } else if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
