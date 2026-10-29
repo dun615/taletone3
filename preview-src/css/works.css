@@ -2766,18 +2766,32 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 @keyframes tt-cut-hold {0% {opacity:0} 15% {opacity:1} 45% {opacity:1} 100% {opacity:0}}
 @media (prefers-reduced-motion: reduce) {.tt-cut {display:none}}
 
-/* Discography first screen (desktop): the title shares its line with the history link and the tabs share
-   theirs with the section note, so the turntable and the first row of records fit on the first screen */
+/* Discography first screen (desktop). Everything hangs on the two columns below it: the tabs (and the line
+   that explains them) sit over the turntable, the field and role rows over the records they filter, so the
+   page has two left edges instead of six; the title and the history link stay centred as the one centred moment. */
 @media (min-width:861px) {
   #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
-  .tt-shelf {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:28px}
-  .tt-shelf > * {flex:0 0 100%}
-  .tt-shelf > .tt-works-tabs, .tt-shelf > .tt-mix-head {flex:0 0 auto;margin-top:0;margin-bottom:24px}
-  .tt-shelf > .tt-mix-head {justify-content:flex-start;text-align:left;max-width:560px}
-  .tt-shelf-head {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:24px;margin-bottom:24px}
-  .tt-shelf-head > .tt-section-chapter, .tt-shelf-head > .tt-section-note {flex:0 0 100%}
-  .tt-shelf-head > .tt-shelf-history {margin-top:16px}
+  .tt-shelf.is-tab-songs {display:grid;grid-template-columns:minmax(340px,.95fr) minmax(0,1.25fr);column-gap:clamp(36px,5vw,72px);
+    grid-template-areas:"head head" "tabs filt" "note filt" "deck list" "clients clients";align-items:start}
+  .tt-shelf.is-tab-songs > .tt-crate-stage, .tt-shelf.is-tab-songs .tt-crate-rack {display:contents}
+  .tt-shelf.is-tab-songs > .tt-shelf-head {grid-area:head}
+  .tt-shelf.is-tab-songs > .tt-works-tabs {grid-area:tabs;justify-self:stretch;margin:0}
+  .tt-shelf.is-tab-songs > .tt-works-tabs {display:flex;width:100%;box-sizing:border-box}
+  .tt-shelf.is-tab-songs > .tt-works-tabs > .tt-works-tab {flex:1 1 auto;white-space:nowrap}
+  .tt-shelf.is-tab-songs > .tt-mix-head {grid-area:note;justify-content:flex-start;text-align:left;margin:12px 0 0}
+  .tt-shelf.is-tab-songs .tt-filter-panel {grid-area:filt;margin:0;align-self:start}
+  .tt-shelf.is-tab-songs .tt-crate-deck {grid-area:deck;margin-top:28px}
+  .tt-shelf.is-tab-songs .tt-rack-grid {grid-area:list;margin-top:28px}
+  .tt-shelf.is-tab-songs > .tt-shelf-clients {grid-area:clients}
+  .tt-shelf-head {margin-bottom:28px}
+  .tt-shelf-head > .tt-shelf-history {margin-top:14px}
+  .tt-filter-caption {opacity:.9;font-weight:800}
+  /* record cards: same height in every row, text on the cover's left edge */
+  .tt-rack-meta {text-align:left;padding-top:14px}
+  .tt-rack-meta .tt-rack-name {-webkit-line-clamp:2;min-height:2.7em}
+  .tt-rack-meta .tt-rack-artist {-webkit-line-clamp:1;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
+@media (min-width:861px) and (max-width:1100px) {.tt-shelf.is-tab-songs {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
 /* tablet: the turntable leaves room for the records below it */
 @media (min-width:761px) and (max-width:860px) {.tt-crate-deck {max-width:400px}}
 

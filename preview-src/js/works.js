@@ -950,7 +950,9 @@
     deckHost.appendChild(probe);
     var height = probe.offsetHeight;
     probe.remove();
-    var offset = grid.getBoundingClientRect().top - rack.getBoundingClientRect().top;
+    // the rack box is display:contents on the desktop grid (works.css); then the list starts level with the deck
+    var base = rack.getClientRects().length ? rack : deckHost;
+    var offset = grid.getBoundingClientRect().top - base.getBoundingClientRect().top;
     grid.style.maxHeight = Math.max(240, Math.round(height - offset)) + 'px';
   }
 
