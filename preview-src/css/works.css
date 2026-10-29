@@ -2797,8 +2797,17 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-shelf:not(.is-tab-songs) > * {grid-column:1 / -1}
   .tt-shelf:not(.is-tab-songs) > .tt-works-tabs {grid-column:1;display:flex;width:100%;box-sizing:border-box;margin:0 0 28px}
   .tt-shelf:not(.is-tab-songs) > .tt-works-tabs > .tt-works-tab {flex:1 1 auto;white-space:nowrap}
-  /* the line that explains the tab sits under it, as on the first tab */
-  .tt-shelf:not(.is-tab-songs) .tt-mix-head {justify-content:flex-start;text-align:left;margin:-16px 0 24px}
+  /* as on the first tab: the tab's note under the tabs, the role row in the right column beside them,
+     then the cards across both columns */
+  .tt-shelf:not(.is-tab-songs) {grid-template-areas:"head head" "tabs filt" "note filt" "body body" "more more" "clients clients";align-items:start}
+  .tt-shelf:not(.is-tab-songs) > .tt-shelf-head {grid-area:head}
+  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs {grid-area:tabs;margin:0}
+  .tt-shelf:not(.is-tab-songs) > .tt-mix {display:contents}
+  .tt-shelf:not(.is-tab-songs) .tt-mix-head {grid-area:note;justify-content:flex-start;text-align:left;margin:12px 0 0}
+  .tt-shelf:not(.is-tab-songs) .tt-filter-panel {grid-area:filt;margin:0}
+  .tt-shelf:not(.is-tab-songs) .tt-mix-grid {grid-area:body;margin-top:28px}
+  .tt-shelf:not(.is-tab-songs) .tt-mix-more {grid-area:more;justify-self:center}
+  .tt-shelf:not(.is-tab-songs) > .tt-shelf-clients {grid-area:clients}
 }
 @media (min-width:861px) and (max-width:1100px) {.tt-shelf.is-tab-songs, .tt-shelf:not(.is-tab-songs) {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
 /* tablet: the turntable leaves room for the records below it */
