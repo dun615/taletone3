@@ -386,7 +386,7 @@ var ComponentScene = {
         c.beginPath(); c.ellipse(0,0,sz*0.32,sz*0.46,0,0,6.283); c.fill(); c.shadowBlur=0;
       } else {
         c.rotate(Math.sin(time*0.5+p.sway)*0.12+p.rot);
-        c.font='600 '+sz.toFixed(0)+"px 'Hanken Grotesk','Noto Sans JP',sans-serif";
+        c.font='600 '+sz.toFixed(0)+"px 'Quicksand','Noto Sans JP',sans-serif";
         c.globalAlpha=glow*0.55; c.shadowColor='rgba('+base[0]+','+base[1]+','+base[2]+',0.9)'; c.shadowBlur=10;
         c.fillStyle='rgba('+base[0]+','+base[1]+','+base[2]+','+Math.min(1,glow+0.25)+')';
         c.fillText(p.glyph,0,0); c.shadowBlur=0;
@@ -489,9 +489,9 @@ var ComponentScene = {
     // depth readout: metres below the surface and the water zone, trailing the crosshair
     var metres=this._depthMeters!=null?this._depthMeters:0;
     c.fillStyle='rgb('+ncs+')'; c.textAlign='left'; c.textBaseline='middle';
-    c.font='700 12px "Hanken Grotesk","Nanum Gothic","Noto Sans JP",sans-serif';
+    c.font='700 12px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
     c.globalAlpha=0.95; c.fillText(Math.round(metres).toLocaleString('en-US')+'m', railX+20, py-7);
-    c.font='600 10px "Hanken Grotesk","Nanum Gothic","Noto Sans JP",sans-serif';
+    c.font='600 10px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
     c.globalAlpha=0.7; c.fillText(this._depthZone(metres)+' · '+Math.round((this.scrollP||0)*100)+'%', railX+20, py+9); c.globalAlpha=1;
   },
 };
