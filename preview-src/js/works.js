@@ -899,32 +899,52 @@
   // the current: a centreline swinging slowly left and right; records sit alternately on either bank of it
   var CURRENT_STEP = 104, CURRENT_TOP = 70;
   function currentX(y) { return 50 + 20 * Math.sin(y / 1100 * Math.PI); }
+  // every role I took on a record or a track, in the usual order (creative, then engineering)
+  function allRolesText(roles) {
+    var labels = L(); roles = Array.isArray(roles) ? roles : [];
+    return ROLE_ORDER.filter(function (role) { return roles.indexOf(role) !== -1; }).map(function (role) { return labels[role]; }).join(' · ');
+  }
+  // the records along the current, as nodes: a single is one disc; an album is its disc followed by a chain of
+  // smaller discs, one per track, on the same bank, tied together by a line
+  // sizes match works.css (.tt-float, .is-featured, .is-track); TIE is the line between two discs of a chain
+  var DISC = 124, DISC_FEATURED = 160, TRACK_DISC = 84, TIE = 18;
+  function currentNodes() {
+    var nodes = [], y = CURRENT_TOP, bank = 0;
+    seaRecords().forEach(function (entry) {
+      var work = entry.work, side = bank++ % 2 ? 1 : -1;
+      var tracks = isAlbum(work) && work.tracks && work.tracks.length > 1 ? work.tracks : null;
+      var x = currentX(y) + side * 10; // a chain hangs straight down from its album disc
+      nodes.push({ entry: entry, side: side, y: y, x: x, album: !!tracks });
+      if (!tracks) { y += CURRENT_STEP; return; }
+      y += (pinRank(work) < Infinity ? DISC_FEATURED - 18 : DISC) + TIE;
+      tracks.forEach(function (track, t) { nodes.push({ entry: entry, side: side, y: y, x: x, track: t, last: t === tracks.length - 1 }); y += TRACK_DISC + TIE; });
+      y += 30;
+    });
+    return { nodes: nodes, height: y + 160 };
+  }
   function flotsamHtml() {
-    var list = seaRecords(), labels = L();
-    // an album takes as much of the current as its track list needs
-    var tracksOf = function (work) { return isAlbum(work) && work.tracks && work.tracks.length > 1 ? work.tracks : null; };
-    var ys = [], at = CURRENT_TOP;
-    list.forEach(function (entry) { ys.push(at); var t = tracksOf(entry.work); at += t ? Math.max(CURRENT_STEP, 74 + t.length * 30) : CURRENT_STEP; });
-    var height = at + 160;
-    var path = [];
-    for (var y = 0; y <= height; y += 40) path.push((y ? 'L' : 'M') + currentX(y).toFixed(2) + ' ' + y);
+    var labels = L(), laid = currentNodes(), height = laid.height, path = [];
+    for (var py = 0; py <= height; py += 40) path.push((py ? 'L' : 'M') + currentX(py).toFixed(2) + ' ' + py);
     return '<div class="tt-flotsam" style="height:' + height + 'px">' +
       '<svg class="tt-current" viewBox="0 0 100 ' + height + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + path.join(' ') + '"/></svg>' +
-      '<ul class="tt-current-list">' + list.map(function (entry, i) {
-        var work = entry.work, index = entry.index, unit = localizedUnit(work);
-        var title = plainRichText(unit.title || work.title || ''), artist = plainRichText(unit.artist || work.artist || '');
-        var y = ys[i], side = i % 2 ? 1 : -1, x = currentX(y) + side * 10;
-        var on = state.current === index, tracks = tracksOf(work);
-        return '<li class="tt-float' + (side < 0 ? ' is-left' : '') + (tracks ? ' is-album' : '') + (pinRank(work) < Infinity ? ' is-featured' : '') + (litEntry(work) ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '"' +
-          ' style="--x:' + x.toFixed(2) + ';--y:' + y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
-          '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '" aria-label="' + esc(title + ', ' + artist) + '">' +
-            discHtml(work, 'tt-disc--float', i < 16) + '<span class="tt-float-label"><b>' + esc(title) + '</b><span>' + esc(artist) + '</span></span>' +
+      '<ul class="tt-current-list">' + laid.nodes.map(function (node, i) {
+        var work = node.entry.work, index = node.entry.index, unit = localizedUnit(work);
+        var isTrack = node.track != null, track = isTrack ? work.tracks[node.track] : null, tUnit = isTrack ? localizedUnit(track) : null;
+        var title = plainRichText((isTrack ? tUnit.title : unit.title) || (isTrack ? '' : work.title) || '');
+        var artist = plainRichText(unit.artist || work.artist || '');
+        var x = node.x;
+        var lit = isTrack ? matchesFilter(work, state.filter) && matchesRoles((track && track.roles) || [], PRE_ROLES) : litEntry(work);
+        var roles = isTrack ? allRolesText(track && track.roles) : node.album ? '' : allRolesText(work.roles);
+        var key = isTrack ? index + '-' + node.track : String(index);
+        var on = isTrack ? state.current === index && state.track === node.track : state.current === index;
+        return '<li class="tt-float' + (node.side < 0 ? ' is-left' : '') + (isTrack ? ' is-track' + (node.last ? ' is-last' : '') : '') + (node.album ? ' is-album' : '') +
+          (!isTrack && pinRank(work) < Infinity ? ' is-featured' : '') + (lit ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + key + '"' +
+          ' style="--x:' + x.toFixed(2) + ';--y:' + node.y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
+          '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '"' + (isTrack ? ' data-track="' + node.track + '"' : '') + ' aria-label="' + esc(title + ', ' + artist) + '">' +
+            discHtml(work, 'tt-disc--float', i < 18) +
+            (isTrack ? '<span class="tt-float-no" aria-hidden="true">' + (node.track < 9 ? '0' : '') + (node.track + 1) + '</span>' : '') +
+            '<span class="tt-float-label"><b>' + esc(title) + '</b>' + (isTrack ? '' : '<span>' + esc(artist) + '</span>') + (roles ? '<i>' + esc(roles) + '</i>' : '') + '</span>' +
           '</button>' +
-          (tracks ? '<ol class="tt-float-tracks">' + tracks.map(function (track, t) {
-            var tOn = on && state.track === t;
-            return '<li data-works-book="' + index + '-' + t + '"' + (tOn ? ' class="is-current' + (state.playing ? ' is-playing' : '') + '"' : '') + '>' +
-              '<button type="button" class="tt-float-track" data-works-action="pick" data-index="' + index + '" data-track="' + t + '"><span class="tt-float-track-no">' + (t < 9 ? '0' : '') + (t + 1) + '</span>' + esc(plainRichText(localizedUnit(track).title || '')) + '</button></li>';
-          }).join('') + '</ol>' : '') +
           (i === 0 && !state.engaged ? '<span class="tt-float-hint" aria-hidden="true">' + esc(labels.hint) + '</span>' : '') +
         '</li>';
       }).join('') + '</ul></div>';
