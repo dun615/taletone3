@@ -2841,7 +2841,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 
 /* Under the title: the studios this work was made with, then one bar for the ways to look at the work
    (the three tabs, and the full history beside them) */
-.tt-shelf > .tt-shelf-clients {margin:0 auto clamp(26px,4vh,36px)}
 .tt-shelf > .tt-shelf-clients .tt-shelf-clients-label {margin-bottom:14px}
 .tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img {height:clamp(18px,1.8vw,24px)}
 .tt-works-bar {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 16px}
@@ -2857,3 +2856,44 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-works-bar {gap:10px}
   .tt-works-bar + .tt-mix-head, .tt-mix > .tt-mix-head {margin-top:14px}
 }
+
+/* =====================================================================
+   Discography stage (songs tab, first view). The turntable is the scene: large and centred, its story under it,
+   and below one row of featured records to flip through like a record bin. Every record and the filters live
+   one step away, in the catalog view (the switch under the bin).
+   ===================================================================== */
+.tt-stage {display:grid;justify-items:center;gap:clamp(26px,4vh,40px);margin-top:6px}
+.tt-stage .tt-crate-deck {position:static;width:100%;max-width:none;margin:0}
+/* desktop: the record player and its story side by side, as one centred scene */
+@media (min-width:861px) {
+  .tt-stage .tt-deck {display:grid;grid-template-columns:minmax(0,440px) minmax(0,420px);justify-content:center;align-items:center;gap:clamp(32px,4vw,56px)}
+  .tt-stage .tt-deck-info {margin:0}
+  .tt-stage .tt-deck-title {font-size:clamp(32px,3vw,44px);line-height:1.15}
+  .tt-stage .tt-deck-story {font-size:17px;line-height:1.75;-webkit-line-clamp:5}
+}
+/* the studios close the chapter, under the bin */
+.tt-shelf > .tt-shelf-clients {margin:clamp(48px,7vh,72px) auto 0}
+.tt-crate-bin {position:relative;width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:10px}
+.tt-crate-row {display:flex;gap:clamp(14px,1.6vw,22px);margin:0;padding:12px 24px 16px;scroll-padding:0 24px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent)}
+.tt-crate-row::-webkit-scrollbar {display:none}
+.tt-crate-item {flex:0 0 clamp(120px,10.5vw,148px);scroll-snap-align:start}
+.tt-crate-pick {appearance:none;display:grid;gap:6px;width:100%;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer;border-radius:6px}
+.tt-crate-pick .tt-sleeve {margin-bottom:6px}
+.tt-crate-pick:hover .tt-sleeve, .tt-crate-pick:focus-visible .tt-sleeve {transform:translateY(-8px) rotate(-1.5deg)}
+.tt-crate-item.is-current .tt-sleeve {box-shadow:0 0 0 2px #8decfc,0 0 24px rgba(141,236,252,.35),0 18px 30px -16px rgba(2,10,22,.8)}
+.tt-crate-name {font:800 15px/1.3 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tt-crate-artist {font:500 13px/1.3 var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.68);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tt-crate-nav {appearance:none;width:44px;height:44px;border-radius:50%;border:1px solid rgba(244,249,255,.28);background:rgba(2,22,34,.4);color:#f4f9ff;font:400 26px/1 sans-serif;cursor:pointer;margin-top:-40px}
+.tt-crate-nav:hover, .tt-crate-nav:focus-visible {background:rgba(2,22,34,.7);border-color:rgba(244,249,255,.6)}
+.tt-view-switch {appearance:none;justify-self:center;padding:12px 22px;border-radius:999px;border:1px solid rgba(244,249,255,.45);background:transparent;color:#f4f9ff;font:700 14px/1 var(--tt-noto-primary),sans-serif;cursor:pointer}
+.tt-view-switch:hover, .tt-view-switch:focus-visible {background:rgba(244,249,255,.12)}
+.tt-view-switch.is-back {display:block;margin:0 auto 22px}
+@media (max-width:760px) {
+  .tt-stage {gap:18px}
+  .tt-crate-bin {grid-template-columns:minmax(0,1fr)}
+  .tt-crate-nav {display:none}
+  .tt-crate-row {margin:0 -16px;padding:6px 16px 12px;scroll-padding:0 16px;-webkit-mask-image:none;mask-image:none}
+  .tt-crate-item {flex-basis:116px}
+}
+@media (prefers-reduced-motion: reduce) {.tt-crate-row {scroll-behavior:auto}.tt-crate-pick:hover .tt-sleeve {transform:none}}

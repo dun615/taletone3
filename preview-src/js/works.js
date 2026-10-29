@@ -214,6 +214,7 @@
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false,   // the reader has played something
     tab: 'songs',     // songs (곡 제작) | mix (믹싱·마스터링) | arr (편곡·BGM)
+    view: 'stage',    // songs tab: stage (the turntable and a crate of featured records) | catalog (every record, filters)
     mixShown: 12,     // video cards shown in the mixing tab before "more"
     openAlbums: {},   // phones: albums whose track list is open in the sleeve list
     roles: { produce: true, compose: true, arrange: true, lyrics: true, rec: true, edit: true, mix: true, master: true } // role toggles (any of the on ones)
@@ -221,9 +222,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', fieldCaption: '분야', roleCaption: '역할', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', fieldCaption: 'Field', roleCaption: 'Role', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', fieldCaption: '分野', roleCaption: '担当', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { viewCatalog: '전체 목록·필터로 보기', viewStage: '대표작으로 돌아가기', cratePrev: '이전 레코드', crateNext: '다음 레코드', crate: '대표작', volume: '볼륨', fieldCaption: '분야', roleCaption: '역할', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { viewCatalog: 'All records and filters', viewStage: 'Back to the featured records', cratePrev: 'Previous records', crateNext: 'Next records', crate: 'Featured records', volume: 'Volume', fieldCaption: 'Field', roleCaption: 'Role', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { viewCatalog: '全作品・絞り込み', viewStage: '代表作に戻る', cratePrev: '前のレコード', crateNext: '次のレコード', crate: '代表作', volume: '音量', fieldCaption: '分野', roleCaption: '担当', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -265,13 +266,13 @@
   // they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
   function pinRank(work) { var n = Number(work && work.pinned); return n > 0 ? n : Infinity; }
+  function byFeatured(a, b) {
+    var pa = pinRank(a.work), pb = pinRank(b.work);
+    if (pa !== pb) return pa < pb ? -1 : 1;
+    return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index;
+  }
   function entriesFor(filter) {
-    var list = works.map(function (work, index) { return { work: work, index: index }; })
-      .sort(function (a, b) {
-        var pa = pinRank(a.work), pb = pinRank(b.work);
-        if (pa !== pb) return pa < pb ? -1 : 1;
-        return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index;
-      });
+    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured);
     var out = [];
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
@@ -869,6 +870,26 @@
   })();
 
   // tablets and up: the rack grid with album shelves
+  var CRATE_SIZE = 12;
+  function crateHtml() {
+    var labels = L();
+    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured).slice(0, CRATE_SIZE);
+    return '<div class="tt-crate-bin">' +
+      '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="-1" aria-label="' + esc(labels.cratePrev) + '"><span aria-hidden="true">&#8249;</span></button>' +
+      '<ul class="tt-crate-row" aria-label="' + esc(labels.crate) + '">' + list.map(function (entry) {
+        var unit = localizedUnit(entry.work);
+        var title = plainRichText(unit.title || entry.work.title || ''), artist = plainRichText(unit.artist || entry.work.artist || '');
+        var on = state.current === entry.index;
+        return '<li class="tt-crate-item' + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + entry.index + '">' +
+          '<button type="button" class="tt-crate-pick" data-works-action="pick" data-index="' + entry.index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
+            sleeveHtml(entry.work, true) + '<span class="tt-crate-name">' + esc(title) + '</span><span class="tt-crate-artist">' + esc(artist) + '</span>' +
+          '</button></li>';
+      }).join('') + '</ul>' +
+      '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="1" aria-label="' + esc(labels.crateNext) + '"><span aria-hidden="true">&#8250;</span></button>' +
+    '</div>' +
+    '<button type="button" class="tt-view-switch" data-works-action="view" data-view="catalog">' + esc(labels.viewCatalog) + '</button>';
+  }
+
   function rackListHtml(list) {
     var labels = L(), blocks = [];
     // list is newest first with each album's tracks together (entriesFor): runs of singles and album blocks, in order
@@ -908,12 +929,16 @@
     var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
     var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems().concat(etcPostItems()), true, Object.keys(POST_ROLES))
       : state.tab === 'arr' ? mixHtml('bgmWorks')
-      : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
+      : state.view === 'stage'
+      ? tabHeadHtml('productionWorks') + '<div class="tt-stage"><div class="tt-crate-deck">' + deckHtml() + '</div>' + crateHtml() + '</div>'
+      : tabHeadHtml('productionWorks') +
+        '<button type="button" class="tt-view-switch is-back" data-works-action="view" data-view="stage"><span aria-hidden="true">&#8592;</span> ' + esc(L().viewStage) + '</button>' +
+        '<div class="tt-crate-stage">' +
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
           '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
         '</div>';
-    root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + clientsHtml() + tabsHtml() +
-      body + '<div class="tt-mini-host">' + miniHtml() + '</div>' +
+    root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + tabsHtml() +
+      body + clientsHtml() + '<div class="tt-mini-host">' + miniHtml() + '</div>' +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
@@ -1385,6 +1410,13 @@
       state.tab = button.getAttribute('data-tab') || 'songs';
       render();
       var tabEl = root && root.querySelector('[data-works-action="tab"][data-tab="' + state.tab + '"]'); if (tabEl) tabEl.focus({ preventScroll: true });
+    } else if (action === 'view') {
+      state.view = button.getAttribute('data-view') === 'catalog' ? 'catalog' : 'stage';
+      render();
+      var back = root && root.querySelector('[data-works-action="view"]'); if (back) back.focus({ preventScroll: true });
+    } else if (action === 'crate-scroll') {
+      var row = root && root.querySelector('.tt-crate-row');
+      if (row) row.scrollBy({ left: Number(button.getAttribute('data-dir')) * row.clientWidth * 0.8, behavior: 'smooth' });
     } else if (action === 'more') {
       state.mixShown += 12;
       render();
