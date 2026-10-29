@@ -2791,7 +2791,16 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-rack-meta .tt-rack-name {-webkit-line-clamp:2;min-height:2.7em}
   .tt-rack-meta .tt-rack-artist {-webkit-line-clamp:1;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
-@media (min-width:861px) and (max-width:1100px) {.tt-shelf.is-tab-songs {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
+/* the other tabs keep the same grid, so the tab bar never moves when you switch */
+@media (min-width:861px) {
+  .tt-shelf:not(.is-tab-songs) {display:grid;grid-template-columns:minmax(340px,.95fr) minmax(0,1.25fr);column-gap:clamp(36px,5vw,72px)}
+  .tt-shelf:not(.is-tab-songs) > * {grid-column:1 / -1}
+  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs {grid-column:1;display:flex;width:100%;box-sizing:border-box;margin:0 0 28px}
+  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs > .tt-works-tab {flex:1 1 auto;white-space:nowrap}
+  /* the line that explains the tab sits under it, as on the first tab */
+  .tt-shelf:not(.is-tab-songs) .tt-mix-head {justify-content:flex-start;text-align:left;margin:-16px 0 24px}
+}
+@media (min-width:861px) and (max-width:1100px) {.tt-shelf.is-tab-songs, .tt-shelf:not(.is-tab-songs) {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
 /* tablet: the turntable leaves room for the records below it */
 @media (min-width:761px) and (max-width:860px) {.tt-crate-deck {max-width:400px}}
 
