@@ -661,13 +661,22 @@
       (isAlbum(work) && work.tracks && work.tracks.length ? work.tracks : [work]).forEach(function (unit) {
         var post = Object.keys(POST_ROLES).filter(function (role) { return hasRole(unit, role); });
         var id = youtubeId(unit.youtube || (unit === work ? work.youtube : ''));
-        if (!post.length || !id) return;
+        // a record without a video shows as an audio card
+        if (!post.length || !(id || unit.audio)) return;
         var u = localizedUnit(unit);
         out.push({ title: plainRichText(u.title || unit.title || ''), artist: plainRichText(album.artist || work.artist || ''), roles: post.map(function (role) { return POST_ROLES[role]; }).join(' · '),
-          youtube: id, date: String(unit.date || work.date || '').replace(/\./g, '-'), own: true });
+          youtube: id || undefined, audio: id ? undefined : unit.audio, date: String(unit.date || work.date || '').replace(/\./g, '-'), own: true });
       });
     });
     return out;
+  }
+  // ETC cards that also credit recording, editing, mixing or mastering show in Sound Engineering too
+  function etcPostItems() {
+    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var post = Object.keys(POST_ROLES);
+    return ((content.bgmWorks && content.bgmWorks.items) || []).filter(function (it) {
+      return cardRoleKeys(it && it.roles).some(function (key) { return post.indexOf(key) !== -1; });
+    });
   }
   // the day a card's video went up on YouTube (KST); a card without a video keeps its own date
   function cardDate(it, content) {
@@ -797,7 +806,7 @@
     var list = visibleWorks();
     // a re-render (a language switch, a pick) keeps the rack and the open popup where the visitor left them
     var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
-    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true, Object.keys(POST_ROLES))
+    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems().concat(etcPostItems()), true, Object.keys(POST_ROLES))
       : state.tab === 'arr' ? mixHtml('bgmWorks')
       : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
