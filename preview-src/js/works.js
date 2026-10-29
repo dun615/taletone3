@@ -501,6 +501,7 @@
           '</div>' +
         '</div>' +
         (tracks || langs ? '<div class="tt-m-now-actions">' + tracks + langs + '</div>' : '') +
+        (unit.description ? '<p class="tt-deck-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
       '</section>';
     }
     return '<section class="tt-deck' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
@@ -1040,6 +1041,17 @@
   // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
   // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
   var gainCtx = null, gainNode = null, trackNode = null, elementRouted = false;
+  // the scene reads how loud the song is right now, so the deep sea can light up with it
+  var analyser = null, levelBuf = null;
+  window.TALETONE_AUDIO_LEVEL = function () {
+    if (!analyser || !state.playing || state.volume < 0.02) return 0;
+    analyser.getFloatTimeDomainData(levelBuf);
+    var sum = 0;
+    for (var i = 0; i < levelBuf.length; i++) sum += levelBuf[i] * levelBuf[i];
+    // RMS after the volume knob, divided back out: the light follows the music, not the volume setting
+    var rms = Math.sqrt(sum / levelBuf.length) / state.volume;
+    return Math.min(1, Math.pow(rms / 0.32, 1.3));
+  };
   // Every record plays at the same loudness: scripts/measure-loudness.mjs measures each file (BS.1770 integrated,
   // target -14 LUFS) and writes the gain it needs into the works data (`loudness.files[path].gain`, dB). The file
   // is left as it is; the gain is applied here, before the volume.
@@ -1068,7 +1080,13 @@
       gainNode.connect(gainCtx.destination);
       trackNode = gainCtx.createGain();
       trackNode.connect(gainNode);
-    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; }
+      if (gainCtx.createAnalyser) {
+        analyser = gainCtx.createAnalyser();
+        analyser.fftSize = 1024;
+        levelBuf = new Float32Array(analyser.fftSize);
+        gainNode.connect(analyser);
+      }
+    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; analyser = null; }
     applyVolume();
     return gainCtx;
   }

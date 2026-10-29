@@ -209,6 +209,12 @@ var ComponentScene = {
     var shallow=1-this.smooth(0,800,metres);            // sunlight zone: caustics + god rays
     var deep=this.smooth(500,2600,metres);              // twilight -> midnight: vignette + bioluminescence
     var surf=1-this.smooth(0,H*1.1,scTop);              // the surface itself, only over Home
+    // the turn of the journey: the sea falls quiet over the last bridge, then the music lights the deep
+    var works=this.worksBox(H);
+    var hush=this._reduceMotion?0:this.smooth(1.9,1.1,works.t)*(1-this.smooth(0.7,0.15,works.t));
+    var calm=1-0.85*hush;
+    var lvl=this.audioLevel();
+    this.noteWorksArrival(works.t);
     c.save();
     // 1) the surface seen from just below: a bright, rippling ceiling with a shimmering window of sky
     if(surf>0.01){
@@ -238,13 +244,13 @@ var ComponentScene = {
         var dpx=(dp.x+Math.sin(tw*0.05+dp.ph)*0.04)*W, dpy=dp.y*H*0.6-scTop*0.2;
         if(dpy<-H*0.3) continue;
         var dpr=dp.r*Math.min(W,H)*(0.85+0.15*breath);
-        c.globalAlpha=0.16*shallow*breath;
+        c.globalAlpha=0.16*shallow*breath*calm;
         c.drawImage(this._softLight,dpx-dpr,dpy-dpr*0.6,dpr*2,dpr*1.2);
       }
       c.globalAlpha=1;
     }
     // 3) god rays: slanted shafts of sun that sway, strongest near the surface
-    var rays=Math.max(shallow,surf*0.9);
+    var rays=Math.max(shallow,surf*0.9)*calm;
     if(rays>0.02){
       var rayN=fastMobile?4:7;
       for(var rr=0;rr<rayN;rr++){
@@ -275,7 +281,7 @@ var ComponentScene = {
       var s=this.stars[i];
       var twk=0.55+0.45*Math.sin(time*s.sp+s.ph);
       var syy=((s.y*H-scTop*(0.32+s.r*0.22)+time*6*s.sp)%H+H)%H;
-      c.globalAlpha=snowA*twk;
+      c.globalAlpha=snowA*twk*calm*(1+0.8*lvl);
       c.beginPath(); c.arc(s.x*W+Math.sin(time*0.3+s.ph)*6, syy, s.r*(1+deep*0.6), 0, 6.283); c.fill();
     }
     c.globalAlpha=1;
@@ -288,22 +294,15 @@ var ComponentScene = {
     }
     // 6) bioluminescence: creatures of light drifting in the midnight zone
     if(deep>0.05&&this.bio){
-      if(!this._bioSprites){
-        this._bioSprites=[[120,232,255],[168,140,255],[255,214,140]].map(function(rgb){
-          var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
-          var gg=g.createRadialGradient(32,32,0,32,32,32);
-          gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.22,'rgba('+rgb+',.55)'); gg.addColorStop(1,'rgba('+rgb+',0)');
-          g.fillStyle=gg; g.fillRect(0,0,64,64); return cv;
-        });
-      }
+      this.bioSprites();
       c.globalCompositeOperation='lighter';
       var bioN=fastMobile?Math.min(this.bio.length,12):this.bio.length;
       for(var b=0;b<bioN;b++){
         var o=this.bio[b];
         var pulse=Math.pow(0.5+0.5*Math.sin(time*o.sp+o.ph),2.2);
         var bx=((o.x+time*o.dx)%1+1)%1*W, by=((o.y*H-scTop*0.12+Math.sin(time*0.2+o.ph)*24)%H+H)%H;
-        c.globalAlpha=deep*(0.25+0.75*pulse);
-        var rad=o.r*(0.7+0.5*pulse);
+        c.globalAlpha=Math.min(1,deep*(0.25+0.75*pulse)*calm*(1+1.4*lvl));
+        var rad=o.r*(0.7+0.5*pulse)*(1+0.6*lvl);
         c.drawImage(this._bioSprites[o.c],bx-rad,by-rad,rad*2,rad*2);
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
@@ -317,15 +316,34 @@ var ComponentScene = {
         var life=((tw*mo.sp+mo.ph)%1+1)%1;
         var mx=(0.5+mo.col*0.32)*W+Math.sin(tw*0.6+mo.ph*6)*14, my=H*(1.02-life*0.95);
         var mr=mo.r*(1-life*0.4);
-        c.globalAlpha=echo*0.7*Math.sin(life*Math.PI);
+        c.globalAlpha=echo*0.7*Math.sin(life*Math.PI)*calm;
         c.drawImage(this._softLight,mx-mr,my-mr,mr*2,mr*2);
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
+    }
+    // 6c) the record's light: arriving at the Discography lights the turntable once, and while a song plays
+    //     the light around it follows the music, a cool halo with a warm core
+    var arrive=this._worksArrivedAt?this.cl(1-(performance.now()-this._worksArrivedAt)/2400,0,1):0;
+    var deckK=Math.max(lvl,arrive*0.8);
+    // the record player's own glow (works.css) reads the same level
+    var deckBox=works.deck&&works.deck.closest('.tt-deck');
+    if(deckBox&&Math.abs((this._deckLvl||0)-deckK)>0.01){ this._deckLvl=deckK; deckBox.style.setProperty('--tt-lvl',deckK.toFixed(3)); }
+    if(deckK>0.01&&works.deck){
+      var dr=works.deck.getBoundingClientRect();
+      if(dr.bottom>0&&dr.top<H&&dr.width>0){
+        var sprites=this.bioSprites(), dcx=dr.left+dr.width/2, dcy=dr.top+dr.height/2, dw=Math.max(dr.width,dr.height);
+        c.globalCompositeOperation='lighter';
+        c.globalAlpha=Math.min(1,0.8*deckK); c.drawImage(sprites[0],dcx-dw*1.8,dcy-dw*1.8,dw*3.6,dw*3.6);
+        c.globalAlpha=Math.min(1,0.45*deckK); c.drawImage(sprites[2],dcx-dw*1.1,dcy-dw*1.1,dw*2.2,dw*2.2);
+        c.globalAlpha=1; c.globalCompositeOperation='source-over';
+      }
     }
     // 7) the book's light far below: from the first screen, growing as you descend, until the real book takes over
     var bookG=this._deepBookGeometry;
     var bookScreenY=(bookG?bookG.docY:(this.scroller?this.scroller.scrollHeight:H))-scTop;
     var calling=(0.32+0.38*dd)*(1-this.smooth(H*1.5,H*0.85,bookScreenY))*(0.84+0.16*Math.sin(tw*0.9));
+    // in the Discography the book answers the music: its light breathes a little brighter with each song
+    calling=calling*(1+0.9*lvl)+(works.inside?0.08:0);
     if(calling>0.01){
       var gr=H*(0.45+0.5*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.26;
       var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
@@ -376,7 +394,7 @@ var ComponentScene = {
       // tight column at the source, fanning gently wider as it rises toward the surface
       var x = cx + p.col*(16 + dl*W*0.17) + Math.sin(time*0.5+p.sway)*p.swayAmp;
       var twk = 0.6+0.4*Math.sin(time*1.3+p.sway);
-      var glow = (0.92 - 0.66*dl) * twk;               // bright near book, faint near Home
+      var glow = (0.92 - 0.66*dl) * twk * calm;               // bright near book, faint near Home
       if(glow<=0.03) continue;
       var sz = p.sz*(1-0.34*dl);
       c.save(); c.translate(x,y);
@@ -401,6 +419,53 @@ var ComponentScene = {
       this.drawInk(time);
     }
     this.drawRail(n, pal, time);
+  },
+
+  // cyan, violet and amber glows, drawn once
+  bioSprites(){
+    if(!this._bioSprites){
+      this._bioSprites=[[120,232,255],[168,140,255],[255,214,140]].map(function(rgb){
+        var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
+        var gg=g.createRadialGradient(32,32,0,32,32,32);
+        gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.22,'rgba('+rgb+',.55)'); gg.addColorStop(1,'rgba('+rgb+',0)');
+        g.fillStyle=gg; g.fillRect(0,0,64,64); return cv;
+      });
+    }
+    return this._bioSprites;
+  },
+
+  // where the Discography sits: t = its top in screen heights (1 while the last bridge holds, 0 on arrival)
+  worksBox(H){
+    if(!this._worksEl||!this._worksEl.isConnected) this._worksEl=document.getElementById('c-works');
+    var el=this._worksEl;
+    if(!el) return {t:Infinity,inside:false,deck:null};
+    if(!this._deckEl||!this._deckEl.isConnected) this._deckEl=el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck');
+    var r=el.getBoundingClientRect();
+    return {t:r.top/H,inside:r.top<H*0.5&&r.bottom>H*0.5,deck:this._deckEl};
+  },
+
+  // the playing song's loudness (0..1) from the record player, eased so the light swells and settles
+  audioLevel(){
+    var f=window.TALETONE_AUDIO_LEVEL, raw=0;
+    try{ raw=f?(+f()||0):0; }catch(_e){}
+    var cur=this._lvl||0, k=this._reduceMotion?0.04:(raw>cur?0.3:0.06);
+    this._lvl=cur+(raw-cur)*k;
+    return this._lvl;
+  },
+
+  // scrolling down from the last bridge into the Discography counts as arriving
+  noteWorksArrival(t){
+    // armed while the last bridge holds the screen, fired once the Discography reaches the top
+    if(t>=0.85&&t<1.6){ this._worksArmed=true; return; }
+    if(!this._worksArmed||t>0.2) return;
+    if(t<-0.5){ this._worksArmed=false; return; }
+    this._worksArmed=false;
+    this._worksArrivedAt=performance.now();
+    if(this._reduceMotion) return;
+    document.body.classList.remove('tt-works-arrive'); void document.body.offsetWidth;
+    document.body.classList.add('tt-works-arrive');
+    clearTimeout(this._worksArriveTimer);
+    this._worksArriveTimer=setTimeout(function(){ document.body.classList.remove('tt-works-arrive'); },2600);
   },
 
   // A bespoke luminous motif behind each bridge line ??each visualizes its sentence's meaning.
