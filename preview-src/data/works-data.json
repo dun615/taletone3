@@ -2798,7 +2798,7 @@
       "date": "2018.03.01",
       "type": "교가",
       "description": "",
-      "credits": "총괄 프로듀싱 : N4ML\n작곡 : N4ML\n편곡 : N4ML\n작사 : N4ML\n믹싱 : N4ML",
+      "credits": "총괄 프로듀싱 : N4ML\n작곡 : N4ML\n편곡 : N4ML\n작사 : N4ML\n믹싱 : N4ML\n마스터링 : N4ML",
       "image": "assets/works/images/sejong-arts-anthem-art-1024.webp",
       "thumb": "assets/works/images/sejong-arts-anthem-art-1024-w320.webp",
       "ogImage": "assets/works/images/sejong-arts-anthem-art-1024-og.jpg",
@@ -2834,7 +2834,8 @@
         "arrange",
         "lyrics",
         "edit",
-        "mix"
+        "mix",
+        "master"
       ],
       "field": "original"
     },

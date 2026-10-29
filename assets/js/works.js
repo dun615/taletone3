@@ -254,10 +254,11 @@
   }
   function roleChipsHtml(group) {
     var labels = L();
-    return '<div class="tt-role-chips" role="group" aria-label="' + esc(labels.roleFilter) + '">' + group.map(function (role) {
-      var on = !!state.roles[role];
-      return '<button type="button" class="tt-role-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="role" data-role="' + role + '">' + esc(labels[role]) + '</button>';
-    }).join('') + '</div>';
+    // every role on reads as "전체" alone; picking a role from there narrows to just that role
+    var all = rolesAllOn(group);
+    var chip = function (role, on, text) { return '<button type="button" class="tt-role-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="role" data-role="' + role + '" data-group="' + group[0] + '">' + esc(text) + '</button>'; };
+    return '<div class="tt-role-chips" role="group" aria-label="' + esc(labels.roleFilter) + '">' + chip('all', all, labels.all) +
+      group.map(function (role) { return chip(role, !all && !!state.roles[role], labels[role]); }).join('') + '</div>';
   }
   // featured records (`pinned`: 1, 2, 3 …) lead in that order; the rest newest first (dates are YYYY.MM.DD, so
   // they sort as text); the data order breaks ties.
@@ -660,13 +661,22 @@
       (isAlbum(work) && work.tracks && work.tracks.length ? work.tracks : [work]).forEach(function (unit) {
         var post = Object.keys(POST_ROLES).filter(function (role) { return hasRole(unit, role); });
         var id = youtubeId(unit.youtube || (unit === work ? work.youtube : ''));
-        if (!post.length || !id) return;
+        // a record without a video shows as an audio card
+        if (!post.length || !(id || unit.audio)) return;
         var u = localizedUnit(unit);
         out.push({ title: plainRichText(u.title || unit.title || ''), artist: plainRichText(album.artist || work.artist || ''), roles: post.map(function (role) { return POST_ROLES[role]; }).join(' · '),
-          youtube: id, date: String(unit.date || work.date || '').replace(/\./g, '-'), own: true });
+          youtube: id || undefined, audio: id ? undefined : unit.audio, date: String(unit.date || work.date || '').replace(/\./g, '-'), own: true });
       });
     });
     return out;
+  }
+  // ETC cards that also credit recording, editing, mixing or mastering show in Sound Engineering too
+  function etcPostItems() {
+    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var post = Object.keys(POST_ROLES);
+    return ((content.bgmWorks && content.bgmWorks.items) || []).filter(function (it) {
+      return cardRoleKeys(it && it.roles).some(function (key) { return post.indexOf(key) !== -1; });
+    });
   }
   // the day a card's video went up on YouTube (KST); a card without a video keeps its own date
   function cardDate(it, content) {
@@ -796,7 +806,7 @@
     var list = visibleWorks();
     // a re-render (a language switch, a pick) keeps the rack and the open popup where the visitor left them
     var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
-    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems(), true, Object.keys(POST_ROLES))
+    var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems().concat(etcPostItems()), true, Object.keys(POST_ROLES))
       : state.tab === 'arr' ? mixHtml('bgmWorks')
       : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
@@ -1300,14 +1310,18 @@
       render();
     } else if (action === 'role') {
       var role = button.getAttribute('data-role');
-      var group = PRE_ROLES.indexOf(role) !== -1 ? PRE_ROLES : Object.keys(POST_ROLES);
-      // at least one role stays on, so the list never empties by accident
-      if (state.roles[role] && group.filter(function (r) { return state.roles[r]; }).length === 1) return;
+      var group = button.getAttribute('data-group') === PRE_ROLES[0] ? PRE_ROLES : Object.keys(POST_ROLES);
       var rects = state.tab === 'songs' ? bookRects() : null;
-      state.roles[role] = !state.roles[role];
+      var setAll = function (on) { group.forEach(function (r) { state.roles[r] = on; }); };
+      if (role === 'all') setAll(true);
+      else if (rolesAllOn(group)) { setAll(false); state.roles[role] = true; } // from 전체, keep only the picked role
+      else {
+        state.roles[role] = !state.roles[role];
+        if (!group.some(function (r) { return state.roles[r]; })) setAll(true); // nothing left: back to 전체
+      }
       render(rects);
-      announce(L()[role] + ' · ' + (state.roles[role] ? 'on' : 'off'));
-      var roleChip = root && root.querySelector('[data-works-action="role"][data-role="' + role + '"]'); if (roleChip) roleChip.focus({ preventScroll: true });
+      announce(L()[role] + ' · ' + (role === 'all' || state.roles[role] ? 'on' : 'off'));
+      var roleChip = root && root.querySelector('[data-works-action="role"][data-group="' + group[0] + '"][data-role="' + role + '"]'); if (roleChip) roleChip.focus({ preventScroll: true });
     } else if (action === 'filter') {
       var before = bookRects();
       state.filter = button.getAttribute('data-filter') || 'all';
