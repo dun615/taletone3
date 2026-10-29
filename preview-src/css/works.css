@@ -2766,53 +2766,22 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 @keyframes tt-cut-hold {0% {opacity:0} 15% {opacity:1} 45% {opacity:1} 100% {opacity:0}}
 @media (prefers-reduced-motion: reduce) {.tt-cut {display:none}}
 
-/* Discography first screen (desktop). Everything hangs on the two columns below it: the tabs (and the line
-   that explains them) sit over the turntable, the field and role rows over the records they filter, so the
-   page has two left edges instead of six; the title and the history link stay centred as the one centred moment. */
+/* Discography (desktop). Two levels of control, each where it acts: the tabs switch the whole chapter, so they
+   sit centred under the title with the line that says what the tab holds right below them, identical on every
+   tab; the field and role rows filter the list, so they are the list's own header (works.css .tt-filter-panel). */
 @media (min-width:861px) {
   #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
-  .tt-shelf.is-tab-songs {display:grid;grid-template-columns:minmax(340px,.95fr) minmax(0,1.25fr);column-gap:clamp(36px,5vw,72px);
-    grid-template-areas:"head head" "tabs filt" "note filt" "deck list" "clients clients";align-items:start}
-  .tt-shelf.is-tab-songs > .tt-crate-stage, .tt-shelf.is-tab-songs .tt-crate-rack {display:contents}
-  .tt-shelf.is-tab-songs > .tt-shelf-head {grid-area:head}
-  .tt-shelf.is-tab-songs > .tt-works-tabs {grid-area:tabs;justify-self:stretch;margin:0}
-  .tt-shelf.is-tab-songs > .tt-works-tabs {display:flex;width:100%;box-sizing:border-box}
-  .tt-shelf.is-tab-songs > .tt-works-tabs > .tt-works-tab {flex:1 1 auto;white-space:nowrap}
-  .tt-shelf.is-tab-songs > .tt-mix-head {grid-area:note;justify-content:flex-start;text-align:left;margin:12px 0 0}
-  .tt-shelf.is-tab-songs .tt-filter-panel {grid-area:filt;margin:0;align-self:start}
-  .tt-shelf.is-tab-songs .tt-crate-deck {grid-area:deck;margin-top:28px}
-  .tt-shelf.is-tab-songs .tt-rack-grid {grid-area:list;margin-top:28px}
-  .tt-shelf.is-tab-songs > .tt-shelf-clients {grid-area:clients}
   .tt-shelf-head {margin-bottom:28px}
   .tt-shelf-head > .tt-shelf-history {margin-top:14px}
-  .tt-filter-caption {opacity:.9;font-weight:800}
-  /* record cards: same height in every row, text on the cover's left edge */
+  .tt-shelf > .tt-works-tabs {display:flex;width:fit-content;margin:0 auto}
+  .tt-shelf > .tt-mix-head, .tt-mix > .tt-mix-head {justify-content:center;text-align:center;margin:12px auto 28px}
+}
+/* record cards (tablet and up): text on the cover's left edge, artist and roles one line each */
+@media (min-width:761px) {
   .tt-rack-meta {text-align:left;padding-top:14px}
-  .tt-rack-meta .tt-rack-name {-webkit-line-clamp:2;min-height:2.7em}
+  .tt-rack-meta .tt-rack-name {-webkit-line-clamp:2}
   .tt-rack-meta .tt-rack-artist {-webkit-line-clamp:1;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
-/* the other tabs keep the same grid, so the tab bar never moves when you switch */
-@media (min-width:861px) {
-  .tt-shelf:not(.is-tab-songs) {display:grid;grid-template-columns:minmax(340px,.95fr) minmax(0,1.25fr);column-gap:clamp(36px,5vw,72px)}
-  .tt-shelf:not(.is-tab-songs) > * {grid-column:1 / -1}
-  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs {grid-column:1;display:flex;width:100%;box-sizing:border-box;margin:0 0 28px}
-  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs > .tt-works-tab {flex:1 1 auto;white-space:nowrap}
-  /* as on the first tab: the tab's note under the tabs, the role row in the right column beside them,
-     then the cards across both columns */
-  .tt-shelf:not(.is-tab-songs) {grid-template-areas:"head head" "tabs filt" "note filt" "body body" "more more" "clients clients";align-items:start}
-  .tt-shelf:not(.is-tab-songs) > .tt-shelf-head {grid-area:head}
-  .tt-shelf:not(.is-tab-songs) > .tt-works-tabs {grid-area:tabs;margin:0}
-  .tt-shelf:not(.is-tab-songs) > .tt-mix {display:contents}
-  .tt-shelf:not(.is-tab-songs) .tt-mix-head {grid-area:note;justify-content:flex-start;text-align:left;margin:12px 0 0}
-  .tt-shelf:not(.is-tab-songs) .tt-filter-panel {grid-area:filt;margin:0}
-  .tt-shelf:not(.is-tab-songs) .tt-mix-grid {grid-area:body;margin-top:28px}
-  .tt-shelf:not(.is-tab-songs) .tt-mix-more {grid-area:more;justify-self:center}
-  .tt-shelf:not(.is-tab-songs) > .tt-shelf-clients {grid-area:clients}
-}
-@media (min-width:861px) and (max-width:1100px) {.tt-shelf.is-tab-songs, .tt-shelf:not(.is-tab-songs) {grid-template-columns:minmax(300px,.95fr) minmax(0,1.1fr)}}
-/* tablet: the turntable leaves room for the records below it */
-@media (min-width:761px) and (max-width:860px) {.tt-crate-deck {max-width:400px}}
-
 /* Readable floor: nothing meant to be read below 13px */
 #chapnav .nav-label, #lang-switcher button {font-size:13px!important}
 #chapnav .nav-label {letter-spacing:.12em!important}
@@ -2832,24 +2801,24 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
 #content footer, #content footer * {font-size:13px}
 
-/* Discography controls, one panel: the tab says what the list is (its English label repeated it and goes),
-   then two labelled rows, field and role, in one chip style, sitting on the list they filter */
+/* Discography filters: the list's own header, a panel one tone down from the sea, so the field and role rows read
+   as controls of the list under them; captions sit in their own column, every chip is the same height */
 .tt-mix-head .tt-mix-label {display:none}
-.tt-filter-panel {display:grid;gap:10px;margin:0 0 26px}
-.tt-filter-row {display:flex;align-items:center;gap:12px;min-width:0}
-.tt-filter-caption {flex:none;min-width:2.6em;font:700 13px/1 var(--tt-noto-primary),sans-serif;opacity:.7}
-.tt-filter-row > .tt-shelf-filters, .tt-filter-row > .tt-role-chips {margin:0;min-width:0;row-gap:8px}
-.tt-role-chip {padding:10px 14px;border:1px solid rgba(244,249,255,.24);border-style:solid;font-size:13px;opacity:1}
+.tt-filter-panel {display:grid;gap:10px;margin:0 0 20px;padding:14px 16px;border-radius:18px;background:rgba(2,22,34,.34)}
+.tt-filter-row {display:grid;grid-template-columns:3.2em minmax(0,1fr);align-items:center;gap:10px}
+.tt-filter-caption {font:800 13px/1 var(--tt-noto-primary),sans-serif;color:#bfe9f2}
+.tt-filter-row > .tt-shelf-filters, .tt-filter-row > .tt-role-chips {margin:0;min-width:0;row-gap:8px;gap:8px}
+.tt-filter-row .tt-shelf-chip, .tt-filter-row .tt-role-chip {box-sizing:border-box;height:36px;padding:0 14px;font-size:13px}
+.tt-role-chip {border:1px solid rgba(244,249,255,.24);border-style:solid;opacity:1}
 .tt-role-chip::before {content:none}
 .tt-role-chip:hover {border-color:rgba(244,249,255,.5)}
 .tt-role-chip.is-on {background:#f4f9ff;border-color:#f4f9ff;color:#0b1330}
 .tt-role-chip.is-on::before {content:none}
 @media (max-width:760px) {
-  .tt-filter-panel {gap:8px;margin-bottom:14px}
-  .tt-filter-row {gap:8px}
-  .tt-filter-caption {min-width:2.2em;font-size:13px}
-  .tt-role-chips .tt-role-chip {padding:8px 11px;font-size:13px}
-  .tt-filter-row > .tt-shelf-filters {margin-right:-16px}
+  .tt-filter-panel {gap:8px;margin-bottom:14px;padding:12px 0 12px 12px;border-radius:16px}
+  .tt-filter-row {grid-template-columns:2.6em minmax(0,1fr);gap:6px}
+  .tt-filter-row .tt-shelf-chip, .tt-filter-row .tt-role-chips .tt-role-chip {height:32px;padding:0 11px;font-size:13px;gap:6px}
+  .tt-filter-row > .tt-shelf-filters, .tt-filter-row > .tt-role-chips {margin:0;padding:0 12px 0 0;-webkit-mask-image:none;mask-image:none}
 }
 /* the type scale, folded onto a few steps: 13 · 15 · 18 · 24 · 38 · display */
 [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
