@@ -1005,7 +1005,7 @@
   var CRATE_SIZE = 12;
   function crateHtml() {
     var labels = L();
-    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured).slice(0, CRATE_SIZE);
+    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured).slice(0, CRATE_SIZE), crateOrder = 0;
     return '<div class="tt-crate-bin">' +
       '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="-1" aria-label="' + esc(labels.cratePrev) + '"><span aria-hidden="true">&#8249;</span></button>' +
       '<ul class="tt-crate-row" aria-label="' + esc(labels.crate) + '">' + list.map(function (entry) {
@@ -1014,7 +1014,7 @@
         var on = state.current === entry.index;
         return '<li class="tt-crate-item' + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + entry.index + '">' +
           '<button type="button" class="tt-crate-pick" data-works-action="pick" data-index="' + entry.index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
-            sleeveHtml(entry.work, true) + '<span class="tt-crate-name">' + esc(title) + '</span><span class="tt-crate-artist">' + esc(artist) + '</span>' +
+            sleeveHtml(entry.work, crateOrder++ < 4) + '<span class="tt-crate-name">' + esc(title) + '</span><span class="tt-crate-artist">' + esc(artist) + '</span>' +
           '</button></li>';
       }).join('') + '</ul>' +
       '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="1" aria-label="' + esc(labels.crateNext) + '"><span aria-hidden="true">&#8250;</span></button>' +

@@ -65,7 +65,7 @@ const routeDocumentBudgetBytes = 40_000;
 // 118 KB: inline-style attribute selectors became tt-s-* classes on the template elements (+~0.7 KB)
 const decodedTemplateBudgetBytes = 118_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 150_000;
+const decodedScriptBudgetBytes = 162_000; // raised from 150 KB for the Discography's light and sound response (scene.js)
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap';
 const expectedFontAssets = {
   'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
@@ -275,7 +275,8 @@ assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synch
 assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
-assert(decodedScriptApp.includes('var T={cross0:900, cross1:1380, reveal:1800, settled:mobile?3400:3700};'), 'dive intro timeline changed');
+// the dive plays behind Home (the name reads from the first frame) and settles in 1.7 s
+assert(decodedScriptApp.includes('var T={cross0:350, cross1:800, reveal:1000, settled:1700};'), 'dive intro timeline changed');
 assert((decodedApp.match(/\.tt-book-light-stage\{position:absolute/g) || []).length === 1, 'duplicate deep-book CSS returned');
 assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length >= 6, 'deep-book CSS animations are not fully tied to viewport lifecycle');
 assert(!decodedApp.includes('WORK DETAIL MODAL') && !decodedApp.includes('{{ wOpen }}'), 'removed legacy WORK detail modal returned');
@@ -586,8 +587,9 @@ const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] 
 const liveTemplate = await text('src/app/template.html');
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && liveTemplate.includes('#content#content .tt-home-tagline{font-size:var(--fs-xl)}'), 'HOME tagline is no longer visually grouped with the title');
 assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-assert(Buffer.byteLength(worksCss) <= 140_000, 'WORKS CSS exceeds 140 KB source budget');
-assert(Buffer.byteLength(worksJs) <= 110_000, 'WORKS JavaScript exceeds 110 KB source budget');
+// raised from 140 KB / 110 KB for the Discography's sea of records, console and coloured vinyl (2026-10-30)
+assert(Buffer.byteLength(worksCss) <= 165_000, 'WORKS CSS exceeds 165 KB source budget');
+assert(Buffer.byteLength(worksJs) <= 120_000, 'WORKS JavaScript exceeds 120 KB source budget');
 assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
 const setEditorDataSource = worksJs.match(/function setEditorData\(json\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(setEditorDataSource.includes('bindWorksInteractions();'), 'editor-supplied WORKS data does not bind interactions');

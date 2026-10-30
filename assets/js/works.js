@@ -214,6 +214,7 @@
     volume: 1,        // linear amplitude, 100 % by default: each record is already brought to the same loudness (below)
     engaged: false,   // the reader has played something
     tab: 'songs',     // songs (곡 제작) | mix (믹싱·마스터링) | arr (편곡·BGM)
+    view: 'stage',    // songs tab: stage (the turntable and a crate of featured records) | catalog (every record, filters)
     mixShown: 12,     // video cards shown in the mixing tab before "more"
     openAlbums: {},   // phones: albums whose track list is open in the sleeve list
     roles: { produce: true, compose: true, arrange: true, lyrics: true, rec: true, edit: true, mix: true, master: true } // role toggles (any of the on ones)
@@ -221,9 +222,9 @@
   var audio = null;
 
   var shelfLabels = {
-    kr: { volume: '볼륨', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
-    en: { volume: 'Volume', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
-    jp: { volume: '音量', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
+    kr: { hint: '눌러서 들어 보세요', console: '음반 조작판', viewList: '목록', viewFloat: '바다', viewCredits: '크레딧 목록으로 보기', viewSea: '바다로 돌아가기', lanterns: '등불', colTitle: '곡', colArtist: '아티스트', colRoles: '참여', viewCatalog: '전체 목록·필터로 보기', viewStage: '대표작으로 돌아가기', cratePrev: '이전 레코드', crateNext: '다음 레코드', crate: '대표작', volume: '볼륨', fieldCaption: '분야', roleCaption: '역할', all: '전체', produce: '프로듀싱', compose: '작곡', arrange: '편곡', lyrics: '작사', rec: '레코딩', edit: '편집', mix: '믹싱', master: '마스터링', instMix: '인스트 믹싱', bgm: 'BGM', piano: '피아노 연주', pianoArr: '피아노 편곡',tabSongs: '음악 제작', tabMix: '사운드 엔지니어링', tabArr: 'ETC', tabs: '작업 종류', game: '게임·애니·웹툰', ownSong: '직접 만든 곡', more: '더 보기', singles: '싱글', album: '앨범', songs: '곡', albumPick: '앨범 재생', ost: 'OST', artist: '버추얼·아티스트', original: '오리지널·기타', play: '재생', pause: '일시정지', detail: '자세히', open: '이야기 펼치기', nowPlaying: '지금 흐르는 노래', close: '닫기', tracks: '트랙', filters: '작업 분류', roleFilter: '참여 역할', mv: 'MV 보기', page: '작업 페이지', credits: '크레딧', covers: '공식 버전 · 커버', listen: '음원 듣기', youtube: 'YouTube에서 보기', video: '영상 재생', pick: '턴테이블에 올리기' },
+    en: { hint: 'Tap a record to listen', console: 'Record console', viewList: 'List', viewFloat: 'Sea', viewCredits: 'Credits as a list', viewSea: 'Back to the sea', lanterns: 'Lanterns', colTitle: 'Song', colArtist: 'Artist', colRoles: 'Role', viewCatalog: 'All records and filters', viewStage: 'Back to the featured records', cratePrev: 'Previous records', crateNext: 'Next records', crate: 'Featured records', volume: 'Volume', fieldCaption: 'Field', roleCaption: 'Role', all: 'All', produce: 'Production', compose: 'Composition', arrange: 'Arrangement', lyrics: 'Lyrics', rec: 'Recording', edit: 'Editing', mix: 'Mixing', master: 'Mastering', instMix: 'Instrumental Mix', bgm: 'BGM', piano: 'Piano', pianoArr: 'Piano Arrangement',tabSongs: 'Music Production', tabMix: 'Sound Engineering', tabArr: 'ETC', tabs: 'Kinds of work', game: 'Games, Anime & Webtoon', ownSong: 'My own song', more: 'Show more', singles: 'Singles', album: 'Album', songs: 'songs', albumPick: 'Play the album', ost: 'OST', artist: 'Virtual & Artists', original: 'Originals & more', play: 'Play', pause: 'Pause', detail: 'Details', open: 'Open the story', nowPlaying: 'Now playing', close: 'Close', tracks: 'Tracks', filters: 'Work categories', roleFilter: 'My role', mv: 'Watch MV', page: 'Work page', credits: 'Credits', covers: 'Official versions & covers', listen: 'Listen', youtube: 'Watch on YouTube', video: 'Play video', pick: 'Put on the turntable' },
+    jp: { hint: 'タップして聴く', console: 'レコード操作盤', viewList: '一覧', viewFloat: '海', viewCredits: 'クレジット一覧', viewSea: '海に戻る', lanterns: '灯り', colTitle: '曲', colArtist: 'アーティスト', colRoles: '担当', viewCatalog: '全作品・絞り込み', viewStage: '代表作に戻る', cratePrev: '前のレコード', crateNext: '次のレコード', crate: '代表作', volume: '音量', fieldCaption: '分野', roleCaption: '担当', all: 'すべて', produce: 'プロデュース', compose: '作曲', arrange: '編曲', lyrics: '作詞', rec: 'レコーディング', edit: 'エディット', mix: 'ミックス', master: 'マスタリング', instMix: 'インストミックス', bgm: 'BGM', piano: 'ピアノ演奏', pianoArr: 'ピアノ編曲',tabSongs: '音楽制作', tabMix: 'サウンドエンジニアリング', tabArr: 'ETC', tabs: '作品の種類', game: 'ゲーム・アニメ・Webtoon', ownSong: '自作曲', more: 'もっと見る', singles: 'シングル', album: 'アルバム', songs: '曲', albumPick: 'アルバムを再生', ost: 'OST', artist: 'バーチャル・アーティスト', original: 'オリジナル・その他', play: '再生', pause: '一時停止', detail: '詳しく', open: '物語をひらく', nowPlaying: '再生中', close: '閉じる', tracks: 'トラック', filters: '作品の分類', roleFilter: '担当', mv: 'MVを見る', page: '作品ページ', credits: 'クレジット', covers: '公式バージョン・カバー', listen: '音源を聴く', youtube: 'YouTubeで見る', video: '動画を再生', pick: 'ターンテーブルに乗せる' }
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
@@ -265,13 +266,13 @@
   // they sort as text); the data order breaks ties.
   // An entry is a record ({work, index}) or one album track ({work, index, track}).
   function pinRank(work) { var n = Number(work && work.pinned); return n > 0 ? n : Infinity; }
+  function byFeatured(a, b) {
+    var pa = pinRank(a.work), pb = pinRank(b.work);
+    if (pa !== pb) return pa < pb ? -1 : 1;
+    return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index;
+  }
   function entriesFor(filter) {
-    var list = works.map(function (work, index) { return { work: work, index: index }; })
-      .sort(function (a, b) {
-        var pa = pinRank(a.work), pb = pinRank(b.work);
-        if (pa !== pb) return pa < pb ? -1 : 1;
-        return String(b.work.date || '').localeCompare(String(a.work.date || '')) || a.index - b.index;
-      });
+    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured);
     var out = [];
     list.forEach(function (entry) {
       var tracks = isAlbum(entry.work) ? (entry.work.tracks || []) : [];
@@ -336,19 +337,25 @@
 
   function tabsHtml() {
     var labels = L();
-    return '<div class="tt-works-tabs" role="tablist" aria-label="' + esc(labels.tabs) + '">' + [['songs', labels.tabSongs], ['mix', labels.tabMix], ['arr', labels.tabArr]].map(function (tab) {
+    var meta = localizedMeta();
+    return '<div class="tt-works-bar"><div class="tt-works-tabs" role="tablist" aria-label="' + esc(labels.tabs) + '">' + [['songs', labels.tabSongs], ['mix', labels.tabMix], ['arr', labels.tabArr]].map(function (tab) {
       var on = state.tab === tab[0];
       return '<button type="button" role="tab" class="tt-works-tab' + (on ? ' is-on' : '') + '" aria-selected="' + on + '" data-works-action="tab" data-tab="' + tab[0] + '">' + esc(tab[1]) + '</button>';
-    }).join('') + '</div>';
+    }).join('') + '</div>' +
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') + '</div>';
   }
   function filtersHtml() {
     var labels = L();
-    return '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + FIELD_FILTERS.map(function (key) {
+    return '<div class="tt-filter-panel"><div class="tt-filter-row"><span class="tt-filter-caption" aria-hidden="true">' + esc(labels.fieldCaption) + '</span>' +
+      '<div class="tt-shelf-filters" role="group" aria-label="' + esc(labels.filters) + '">' + FIELD_FILTERS.map(function (key) {
       var count = entriesFor(key).length;
       var on = state.filter === key;
       if (!count && !on) return '';
       return '<button type="button" class="tt-shelf-chip' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" data-works-action="filter" data-filter="' + key + '">' + esc(labels[key]) + '<span class="tt-shelf-chip-count">' + count + '</span></button>';
-    }).join('') + '</div>' + roleChipsHtml(PRE_ROLES);
+    }).join('') + '</div></div>' + roleRowHtml(PRE_ROLES) + '</div>';
+  }
+  function roleRowHtml(group) {
+    return '<div class="tt-filter-row"><span class="tt-filter-caption" aria-hidden="true">' + esc(L().roleCaption) + '</span>' + roleChipsHtml(group) + '</div>';
   }
 
   // ---- a record: the cover art pressed into a picture disc; it spins while it plays ----
@@ -501,6 +508,7 @@
           '</div>' +
         '</div>' +
         (tracks || langs ? '<div class="tt-m-now-actions">' + tracks + langs + '</div>' : '') +
+        (unit.description ? '<p class="tt-deck-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
       '</section>';
     }
     return '<section class="tt-deck' + (state.playing ? ' is-playing' : '') + '" aria-label="' + esc(labels.nowPlaying) + '">' +
@@ -641,7 +649,6 @@
       '<div class="tt-section-chapter">' + preserve(music.label || meta.eyebrow) + '</div>' +
       (music.note ? '<div class="tt-section-note">' + esc(music.note) + '</div>' : '') +
       '<h2 class="tt-shelf-title">' + preserve(meta.title) + ' <span>' + preserve(meta.titleAccent) + '</span></h2>' +
-      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') +
     '</header>';
   }
 
@@ -715,7 +722,7 @@
     var lang = pageLangKey();
     return '<section class="tt-mix" aria-label="' + esc(t.label || '') + '">' +
       '<div class="tt-mix-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>' +
-      (roleGroup ? roleChipsHtml(roleGroup) : '') +
+      (roleGroup ? '<div class="tt-filter-panel">' + roleRowHtml(roleGroup) + '</div>' : '') +
       '<ul class="tt-mix-row tt-mix-grid">' + items.map(function (it) {
         var title = (lang === 'en' && it.titleEn) || (lang === 'jp' && it.titleJp) || it.title;
         var media = it.youtube
@@ -849,6 +856,8 @@
     var inWorks = box.top < window.innerHeight * 0.6 && box.bottom > window.innerHeight * 0.4;
     var deckAway = !!deck && deck.getBoundingClientRect().bottom < 0;
     host.classList.toggle('is-on', !!host.firstChild && state.tab === 'songs' && inWorks && deckAway);
+    var consoleHost = root.querySelector('.tt-console-host');
+    if (consoleHost) consoleHost.classList.toggle('is-on', state.tab === 'songs' && box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.6);
   }
   function updateMini() {
     var host = root && root.querySelector('.tt-mini-host');
@@ -863,6 +872,156 @@
   })();
 
   // tablets and up: the rack grid with album shelves
+  // ---- desktop: the records drift down one current, a slow S through the sea, featured ones first, each named
+  // beside it; you follow it down and pick the one you want to hear. A console comes with you while you are in
+  // the Discography: what is playing, play, volume, and (unfolded) the lamps for field and role, which light the
+  // matching records and let the others sink. ----
+  function litEntry(work) {
+    if (!matchesFilter(work, state.filter)) return false;
+    var units = isAlbum(work) && work.tracks && work.tracks.length ? work.tracks : [work];
+    return units.some(function (unit) { return matchesRoles((unit && unit.roles) || work.roles || [], PRE_ROLES); });
+  }
+  function seaRecords() {
+    return works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured);
+  }
+  function lanternsHtml() {
+    var labels = L(), all = rolesAllOn(PRE_ROLES);
+    var lamp = function (attrs, on, text) { return '<button type="button" class="tt-lamp' + (on ? ' is-on' : '') + '" aria-pressed="' + on + '" ' + attrs + '>' + esc(text) + '</button>'; };
+    return '<div class="tt-lanterns" role="group" aria-label="' + esc(labels.lanterns) + '">' +
+      '<div class="tt-lantern-row"><span class="tt-filter-caption" aria-hidden="true">' + esc(labels.fieldCaption) + '</span>' +
+        FIELD_FILTERS.map(function (key) { return lamp('data-works-action="filter" data-filter="' + key + '"', state.filter === key, labels[key]); }).join('') + '</div>' +
+      '<div class="tt-lantern-row"><span class="tt-filter-caption" aria-hidden="true">' + esc(labels.roleCaption) + '</span>' +
+        lamp('data-works-action="role" data-role="all" data-group="' + PRE_ROLES[0] + '"', all, labels.all) +
+        PRE_ROLES.map(function (role) { return lamp('data-works-action="role" data-role="' + role + '" data-group="' + PRE_ROLES[0] + '"', !all && !!state.roles[role], labels[role]); }).join('') + '</div>' +
+    '</div>';
+  }
+  // the current: a centreline swinging slowly left and right; records sit alternately on either bank of it
+  var CURRENT_STEP = 104, CURRENT_TOP = 70;
+  function currentX(y) { return 50 + 20 * Math.sin(y / 1100 * Math.PI); }
+  // the records along the current, as nodes: a single is one disc on a bank of the main current; an album is its
+  // disc there, and a branch current splits off it and runs sideways across the sea with one smaller disc per
+  // track on it (meandering back on a lower lane when the tracks do not fit one crossing). x is % of the width.
+  // Sizes match works.css (.tt-float, .is-featured, .is-track).
+  var DISC = 124, DISC_FEATURED = 160, TRACK_DISC = 84, TRACK_STEP = 132, LANE = 168;
+  function currentNodes() {
+    var width = Math.min(1180, window.innerWidth - 48), pct = function (px) { return px / width * 100; };
+    var nodes = [], branches = [], y = CURRENT_TOP, bank = 0;
+    seaRecords().forEach(function (entry) {
+      var work = entry.work, side = bank++ % 2 ? 1 : -1;
+      var tracks = isAlbum(work) && work.tracks && work.tracks.length > 1 ? work.tracks : null;
+      var x = currentX(y) + side * 10;
+      // the branch leaves the album disc toward the wider half of the sea; the album's name sits on the other side
+      var dir = x < 50 ? 1 : -1;
+      nodes.push({ entry: entry, side: side, y: y, x: x, album: !!tracks, nameLeft: tracks ? dir > 0 : side < 0 });
+      if (!tracks) { y += CURRENT_STEP; return; }
+      var size = pinRank(work) < Infinity ? DISC_FEATURED : DISC, cy = y + size / 2;
+      var first = x + dir * pct(size / 2 + 48 + TRACK_DISC / 2), edge = dir > 0 ? 100 - pct(66) : pct(66);
+      // as many tracks as fit one crossing; when it takes several lanes, they share the tracks evenly so no lane
+      // ends with one stray disc
+      var fit = Math.max(1, Math.floor(Math.abs(edge - first) / pct(TRACK_STEP)) + 1);
+      var lanes = Math.ceil(tracks.length / fit), perLane = Math.ceil(tracks.length / lanes);
+      var points = [[x, cy]];
+      tracks.forEach(function (track, t) {
+        var lane = Math.floor(t / perLane), col = t % perLane, way = lane % 2 ? -dir : dir;
+        var tx = (lane % 2 ? first + dir * pct(TRACK_STEP) * (perLane - 1) : first) + way * pct(TRACK_STEP) * col;
+        var ty = cy + lane * LANE + Math.sin((t + 1) * 1.3) * 16; // a little swell along the branch
+        points.push([tx, ty]);
+        nodes.push({ entry: entry, side: side, y: Math.round(ty - TRACK_DISC / 2), x: tx, track: t, lanes: lane });
+      });
+      branches.push(points);
+      // the next record starts under the album's name or under the last lane's names, whichever is lower
+      y = Math.max(y + size + 40, cy + (lanes - 1) * LANE + TRACK_DISC / 2 + 86);
+    });
+    return { nodes: nodes, branches: branches, height: y + 160 };
+  }
+  // a branch drawn through its discs with soft bends (a horizontal tangent at every disc)
+  function branchPath(points) {
+    var d = 'M' + points[0][0].toFixed(2) + ' ' + Math.round(points[0][1]);
+    for (var i = 1; i < points.length; i++) {
+      var p0 = points[i - 1], p1 = points[i], mx = (p0[0] + p1[0]) / 2;
+      d += ' C' + mx.toFixed(2) + ' ' + Math.round(p0[1]) + ' ' + mx.toFixed(2) + ' ' + Math.round(p1[1]) + ' ' + p1[0].toFixed(2) + ' ' + Math.round(p1[1]);
+    }
+    return d;
+  }
+  function flotsamHtml() {
+    var labels = L(), laid = currentNodes(), height = laid.height, path = [];
+    for (var py = 0; py <= height; py += 40) path.push((py ? 'L' : 'M') + currentX(py).toFixed(2) + ' ' + py);
+    return '<div class="tt-flotsam" style="height:' + height + 'px">' +
+      '<svg class="tt-current" viewBox="0 0 100 ' + height + '" preserveAspectRatio="none" aria-hidden="true"><path d="' + path.join(' ') + '"/>' +
+        laid.branches.map(function (points) { return '<path class="tt-branch" d="' + branchPath(points) + '"/>'; }).join('') + '</svg>' +
+      '<ul class="tt-current-list">' + laid.nodes.map(function (node, i) {
+        var work = node.entry.work, index = node.entry.index, unit = localizedUnit(work);
+        var isTrack = node.track != null, track = isTrack ? work.tracks[node.track] : null, tUnit = isTrack ? localizedUnit(track) : null;
+        var title = plainRichText((isTrack ? tUnit.title : unit.title) || (isTrack ? '' : work.title) || '');
+        var artist = plainRichText(unit.artist || work.artist || '');
+        var lit = isTrack ? matchesFilter(work, state.filter) && matchesRoles((track && track.roles) || [], PRE_ROLES) : litEntry(work);
+        var key = isTrack ? index + '-' + node.track : String(index);
+        var on = isTrack ? state.current === index && state.track === node.track : state.current === index;
+        return '<li class="tt-float' + (isTrack ? ' is-track' : node.nameLeft ? ' is-left' : '') + (node.album ? ' is-album' : '') +
+          (!isTrack && pinRank(work) < Infinity ? ' is-featured' : '') + (lit ? '' : ' is-dark') + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + key + '"' +
+          ' style="--x:' + node.x.toFixed(2) + ';--y:' + node.y + 'px;--d:' + (-(i % 7) * 1.3).toFixed(1) + 's">' +
+          '<button type="button" class="tt-float-pick" data-works-action="pick" data-index="' + index + '"' + (isTrack ? ' data-track="' + node.track + '"' : '') + ' aria-label="' + esc(title + ', ' + artist) + '">' +
+            discHtml(isTrack && (tUnit.image || track.image) ? track : work, 'tt-disc--float', i < 18) +
+            (isTrack ? '<span class="tt-float-no" aria-hidden="true">' + (node.track < 9 ? '0' : '') + (node.track + 1) + '</span>' : '') +
+            '<span class="tt-float-label"><b>' + esc(title) + '</b>' + (isTrack ? '' : '<span>' + esc(artist) + '</span>') + '</span>' +
+          '</button>' +
+          (i === 0 && !state.engaged ? '<span class="tt-float-hint" aria-hidden="true">' + esc(labels.hint) + '</span>' : '') +
+        '</li>';
+      }).join('') + '</ul></div>';
+  }
+  function consoleHtml() {
+    if (isPhone() || state.tab !== 'songs') return '';
+    var labels = L(), work = works[state.current];
+    var unit = work ? localizedUnit(work) : {}, tracks = work && work.tracks && work.tracks.length > 1 ? work.tracks : null;
+    var trackUnit = tracks ? localizedUnit(tracks[state.track] || {}) : null;
+    var title = work ? plainRichText(unit.title || work.title || '') : '', story = trackUnit && trackUnit.description || unit.description || '';
+    return '<div class="tt-console' + (state.playing ? ' is-playing' : '') + '" role="region" aria-label="' + esc(labels.console) + '">' +
+      '<div class="tt-console-now">' + (work ? discHtml(trackUnit && (trackUnit.image || tracks[state.track].image) ? tracks[state.track] : work, 'tt-disc--console') : '') +
+        '<div class="tt-console-text"><p class="tt-console-title">' + esc(trackUnit ? plainRichText(trackUnit.title || '') : title) + '</p>' +
+          '<p class="tt-console-artist">' + esc(work ? plainRichText(unit.artist || work.artist || '') : '') + (trackUnit ? ' · ' + esc(title) : '') + '</p>' +
+          (story ? '<p class="tt-console-story">' + esc(plainRichText(story)) + '</p>' : '') + '</div>' +
+        (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
+        (work && hasAudio(work) ? '<button type="button" class="tt-console-play tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
+        '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
+        (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' : '') +
+      '</div>' +
+      '<div class="tt-console-lamps">' + lanternsHtml() +
+        '<button type="button" class="tt-console-view" data-works-action="view" data-view="' + (state.view === 'credits' ? 'stage' : 'credits') + '">' + esc(state.view === 'credits' ? labels.viewFloat : labels.viewList) + '</button></div>' +
+    '</div>';
+  }
+  function creditsTableHtml() {
+    var labels = L();
+    return '<table class="tt-credit-table"><thead><tr><th scope="col">' + esc(labels.colTitle) + '</th><th scope="col">' + esc(labels.colArtist) + '</th><th scope="col">' + esc(labels.colRoles) + '</th></tr></thead><tbody>' +
+      seaRecords().filter(function (entry) { return litEntry(entry.work); }).map(function (entry) {
+        var work = entry.work, unit = localizedUnit(work);
+        var title = plainRichText(unit.title || work.title || ''), artist = plainRichText(unit.artist || work.artist || '');
+        // an album credits the roles of its tracks
+        return '<tr data-works-book="' + entry.index + '"' + (state.current === entry.index ? ' class="is-current"' : '') + '>' +
+          '<td><button type="button" class="tt-credit-play" data-works-action="pick" data-index="' + entry.index + '">' + esc(title) + '</button></td>' +
+          '<td>' + esc(artist) + '</td><td>' + esc(rolesText(isAlbum(work) && work.tracks ? { roles: [].concat.apply([], work.tracks.map(function (t) { return t.roles || []; })) } : work)) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+
+  var CRATE_SIZE = 12;
+  function crateHtml() {
+    var labels = L();
+    var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured).slice(0, CRATE_SIZE), crateOrder = 0;
+    return '<div class="tt-crate-bin">' +
+      '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="-1" aria-label="' + esc(labels.cratePrev) + '"><span aria-hidden="true">&#8249;</span></button>' +
+      '<ul class="tt-crate-row" aria-label="' + esc(labels.crate) + '">' + list.map(function (entry) {
+        var unit = localizedUnit(entry.work);
+        var title = plainRichText(unit.title || entry.work.title || ''), artist = plainRichText(unit.artist || entry.work.artist || '');
+        var on = state.current === entry.index;
+        return '<li class="tt-crate-item' + (on ? ' is-current' : '') + (on && state.playing ? ' is-playing' : '') + '" data-works-book="' + entry.index + '">' +
+          '<button type="button" class="tt-crate-pick" data-works-action="pick" data-index="' + entry.index + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
+            sleeveHtml(entry.work, crateOrder++ < 4) + '<span class="tt-crate-name">' + esc(title) + '</span><span class="tt-crate-artist">' + esc(artist) + '</span>' +
+          '</button></li>';
+      }).join('') + '</ul>' +
+      '<button type="button" class="tt-crate-nav" data-works-action="crate-scroll" data-dir="1" aria-label="' + esc(labels.crateNext) + '"><span aria-hidden="true">&#8250;</span></button>' +
+    '</div>' +
+    '<button type="button" class="tt-view-switch" data-works-action="view" data-view="catalog">' + esc(labels.viewCatalog) + '</button>';
+  }
+
   function rackListHtml(list) {
     var labels = L(), blocks = [];
     // list is newest first with each album's tracks together (entriesFor): runs of singles and album blocks, in order
@@ -902,68 +1061,36 @@
     var kept = ['.tt-rack-grid', '.tt-shelf-modal-panel'].map(function (sel) { var el = root.querySelector(sel); return el && [sel, el.scrollTop, el.scrollLeft]; }).filter(Boolean);
     var body = state.tab === 'mix' ? mixHtml('mixWorks', ownPostItems().concat(etcPostItems()), true, Object.keys(POST_ROLES))
       : state.tab === 'arr' ? mixHtml('bgmWorks')
-      : tabHeadHtml('productionWorks') + '<div class="tt-crate-stage">' +
+      : !isPhone()
+      ? tabHeadHtml('productionWorks') + (state.view === 'credits' ? '<div class="tt-credit-wrap">' + creditsTableHtml() + '</div>' : flotsamHtml())
+      : state.view === 'stage'
+      ? tabHeadHtml('productionWorks') + '<div class="tt-stage"><div class="tt-crate-deck">' + deckHtml() + '</div>' + crateHtml() + '</div>'
+      : tabHeadHtml('productionWorks') +
+        '<button type="button" class="tt-view-switch is-back" data-works-action="view" data-view="stage"><span aria-hidden="true">&#8592;</span> ' + esc(L().viewStage) + '</button>' +
+        '<div class="tt-crate-stage">' +
           '<div class="tt-crate-deck">' + deckHtml() + '</div>' +
           '<div class="tt-crate-rack">' + filtersHtml() + rackListHtml(list) + '</div>' +
         '</div>';
     root.innerHTML = '<div class="tt-shelf tt-crate is-tab-' + state.tab + (state.settled ? ' is-settled' : '') + (state.engaged ? ' is-engaged' : '') + '">' + headHtml() + tabsHtml() +
-      body + clientsHtml() + '<div class="tt-mini-host">' + miniHtml() + '</div>' +
+      body + clientsHtml() + '<div class="tt-mini-host">' + miniHtml() + '</div><div class="tt-console-host">' + consoleHtml() + '</div>' +
       (state.modal >= 0 ? modalHtml(state.modal) : '') + '</div>';
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
+    tintVinyls();
     watchDeck();
-    sizeRack();
+    placeDeck();
     kept.forEach(function (k) { var el = root.querySelector(k[0]); if (el) { el.scrollTop = k[1]; el.scrollLeft = k[2]; } });
-    handOffRackScroll();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeRack);
     if (before) shuffleFrom(before);
     playPending();
+    syncMini();
     window.dispatchEvent(new Event('TALETONE_UI_UPDATED'));
   }
 
-  // The rack is as tall as the turntable column with Early Spring on it (turntable, its details and the
-  // track buttons), so the rack and the deck end on the same line whatever is playing
-  var RACK_REFERENCE = 'early-spring';
-  function sizeRack() {
-    var deckHost = root && root.querySelector('.tt-crate-deck');
-    var rack = root && root.querySelector('.tt-crate-rack');
-    var grid = rack && rack.querySelector('.tt-rack-grid');
-    if (!deckHost || !grid) return;
-    if (window.innerWidth <= 860) { grid.style.maxHeight = ''; return; } // stacked: the screen sets it (CSS)
-    var ref = works.findIndex(function (work) { return work.slug === RACK_REFERENCE; });
-    if (ref < 0) ref = state.current;
-    var keep = { current: state.current, track: state.track, language: state.language };
-    state.current = ref;
-    state.track = titleTrackIndex(works[ref]);
-    state.language = defaultLanguage(works[ref], state.track);
-    var probe = document.createElement('div');
-    probe.setAttribute('aria-hidden', 'true');
-    probe.style.cssText = 'position:absolute;left:0;top:0;width:' + deckHost.clientWidth + 'px;visibility:hidden;pointer-events:none';
-    probe.innerHTML = deckHtml();
-    state.current = keep.current; state.track = keep.track; state.language = keep.language;
-    deckHost.appendChild(probe);
-    var height = probe.offsetHeight;
-    probe.remove();
-    var offset = grid.getBoundingClientRect().top - rack.getBoundingClientRect().top;
-    grid.style.maxHeight = Math.max(240, Math.round(height - offset)) + 'px';
-  }
-
-  // At either end of the rack the wheel moves the page on, even within one continuous gesture
-  // (browsers keep a gesture latched to the inner scroller, which would hold the page in place)
-  function handOffRackScroll() {
-    var grid = root && root.querySelector('.tt-rack-grid');
-    var page = document.getElementById('content');
-    if (!grid || !page || grid.__ttHandOff) return;
-    grid.__ttHandOff = true;
-    grid.addEventListener('wheel', function (event) {
-      if (event.ctrlKey || Math.abs(event.deltaY) < Math.abs(event.deltaX)) return;
-      var atTop = grid.scrollTop <= 0, atEnd = grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
-      if ((event.deltaY > 0 && atEnd) || (event.deltaY < 0 && atTop)) {
-        event.preventDefault();
-        page.scrollBy({ top: event.deltaMode === 1 ? event.deltaY * 40 : event.deltaY, behavior: 'instant' });
-      }
-    }, { passive: false });
+  function placeDeck() {
+    var deck = root && root.querySelector('.tt-crate-deck');
+    if (!deck) return;
+    deck.style.top = window.innerWidth > 760 ? Math.max(88, Math.round((window.innerHeight - deck.offsetHeight) / 2)) + 'px' : '';
   }
 
   var deckObserver = null;
@@ -1005,9 +1132,33 @@
     if (coverObserver) coverObserver.disconnect();
     coverObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { loadCover(entry.target); coverObserver.unobserve(entry.target); } });
-      // on phones the year shelves stack in the page (each one a sideways row), so covers wait for the screen
-    }, { root: isPhone() ? null : root.querySelector('.tt-rack-grid'), rootMargin: '160px 160px' });
+      // the list runs in the page itself (one scroll, the turntable stays beside it), so covers wait for the screen
+    }, { rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
+  }
+  // coloured vinyl: each disc is pressed in the colour of its own cover (the average, leaning to its most saturated
+  // pixels, lifted so it glows in the dark sea); sampled once the cover has loaded
+  function tintVinyls() {
+    if (!root) return;
+    root.querySelectorAll('.tt-disc--float img, .tt-disc--console img').forEach(function (img) {
+      if (img.__ttTint) return;
+      img.__ttTint = true;
+      var apply = function () {
+        try {
+          var cv = document.createElement('canvas'); cv.width = cv.height = 10;
+          var g = cv.getContext('2d'); g.drawImage(img, 0, 0, 10, 10);
+          var d = g.getImageData(0, 0, 10, 10).data, r = 0, gr = 0, b = 0, n = 0;
+          for (var i = 0; i < d.length; i += 4) { var w = 1 + (Math.max(d[i], d[i + 1], d[i + 2]) - Math.min(d[i], d[i + 1], d[i + 2])) / 24; r += d[i] * w; gr += d[i + 1] * w; b += d[i + 2] * w; n += w; }
+          r /= n; gr /= n; b /= n;
+          // a touch more saturated than the plain average, so pale covers still press a coloured disc
+          var grey = (r + gr + b) / 3, rgb = [r, gr, b].map(function (v) { return grey + (v - grey) * 1.45; });
+          var lift = 205 / Math.max(rgb[0], rgb[1], rgb[2], 1);
+          var disc = img.closest('.tt-disc');
+          if (disc) disc.style.setProperty('--vinyl', rgb.map(function (v) { return Math.round(Math.max(0, Math.min(255, v * lift))); }).join(' '));
+        } catch (_e) {}
+      };
+      if (img.complete && img.naturalWidth) apply(); else img.addEventListener('load', apply, { once: true });
+    });
   }
   function loadCover(img) {
     if (!img.dataset.src) return;
@@ -1040,6 +1191,18 @@
   // Volume is linear amplitude, so 50% is exactly -6.02 dB. It runs through a Web Audio gain node where
   // possible, because iOS Safari ignores audio.volume; elsewhere audio.volume is the fallback.
   var gainCtx = null, gainNode = null, trackNode = null, elementRouted = false;
+  // the scene reads how loud the song is right now, so the deep sea can light up with it
+  var analyser = null, levelBuf = null;
+  window.TALETONE_AUDIO_PLAYING = function () { return !!state.playing; };
+  window.TALETONE_AUDIO_LEVEL = function () {
+    if (!analyser || !state.playing || state.volume < 0.02) return 0;
+    analyser.getFloatTimeDomainData(levelBuf);
+    var sum = 0;
+    for (var i = 0; i < levelBuf.length; i++) sum += levelBuf[i] * levelBuf[i];
+    // RMS after the volume knob, divided back out: the light follows the music, not the volume setting
+    var rms = Math.sqrt(sum / levelBuf.length) / state.volume;
+    return Math.min(1, Math.pow(rms / 0.32, 1.3));
+  };
   // Every record plays at the same loudness: scripts/measure-loudness.mjs measures each file (BS.1770 integrated,
   // target -14 LUFS) and writes the gain it needs into the works data (`loudness.files[path].gain`, dB). The file
   // is left as it is; the gain is applied here, before the volume.
@@ -1068,7 +1231,13 @@
       gainNode.connect(gainCtx.destination);
       trackNode = gainCtx.createGain();
       trackNode.connect(gainNode);
-    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; }
+      if (gainCtx.createAnalyser) {
+        analyser = gainCtx.createAnalyser();
+        analyser.fftSize = 1024;
+        levelBuf = new Float32Array(analyser.fftSize);
+        gainNode.connect(analyser);
+      }
+    } catch (_e) { gainCtx = null; gainNode = null; trackNode = null; analyser = null; }
     applyVolume();
     return gainCtx;
   }
@@ -1353,6 +1522,9 @@
     });
     var deckHost = root.querySelector('.tt-crate-deck');
     if (deckHost && rebuild) deckHost.innerHTML = deckHtml();
+    var consoleHost = root.querySelector('.tt-console-host');
+    if (consoleHost) { consoleHost.innerHTML = consoleHtml(); tintVinyls(); }
+    if (state.engaged) root.querySelectorAll('.tt-float-hint').forEach(function (hint) { hint.remove(); });
     updateMini();
     var deck = root.querySelector('.tt-deck');
     if (deck) {
@@ -1401,6 +1573,13 @@
       state.tab = button.getAttribute('data-tab') || 'songs';
       render();
       var tabEl = root && root.querySelector('[data-works-action="tab"][data-tab="' + state.tab + '"]'); if (tabEl) tabEl.focus({ preventScroll: true });
+    } else if (action === 'view') {
+      state.view = button.getAttribute('data-view') || 'stage';
+      render();
+      var back = root && root.querySelector('[data-works-action="view"]'); if (back) back.focus({ preventScroll: true });
+    } else if (action === 'crate-scroll') {
+      var row = root && root.querySelector('.tt-crate-row');
+      if (row) row.scrollBy({ left: Number(button.getAttribute('data-dir')) * row.clientWidth * 0.8, behavior: 'smooth' });
     } else if (action === 'more') {
       state.mixShown += 12;
       render();
@@ -1540,7 +1719,7 @@
 
   var lastWidthStep = 0;
   function onResize() {
-    sizeRack();
+    placeDeck();
     var step = shelfStep() + (isPhone() ? 100 : 0);
     if (mounted && step !== lastWidthStep) { lastWidthStep = step; render(); }
   }

@@ -140,18 +140,20 @@ var ComponentRouting = {
 
   // Language lives in the URL: KR at the root, EN under /en/, JP under /ja/.
   _routeLang(){
-    var m = /^\/(en|ja)(?:\/|$)/.exec(location.pathname || '/');
+    var m = /^(?:\/preview)?\/(en|ja)(?:\/|$)/.exec(location.pathname || '/');
     return m ? (m[1] === 'ja' ? 'jp' : 'en') : 'kr';
   },
 
   _routePath(pathname){
-    var p = String(pathname == null ? location.pathname : pathname).replace(/^\/(?:en|ja)(?=\/|$)/, '').replace(/\/index\.html$/, '/');
+    var p = String(pathname == null ? location.pathname : pathname).replace(/^\/preview(?=\/|$)/, '').replace(/^\/(?:en|ja)(?=\/|$)/, '').replace(/\/index\.html$/, '/');
     return p || '/';
   },
 
   _langPath(path, lang){
     var l = lang || this.lang || 'kr';
-    return (l === 'en' ? '/en' : (l === 'jp' ? '/ja' : '')) + (path || '/');
+    // the preview keeps its own prefix, so moving through it never lands on the live site
+    var preview = /^\/preview(?:\/|$)/.test(location.pathname || '') ? '/preview' : '';
+    return preview + (l === 'en' ? '/en' : (l === 'jp' ? '/ja' : '')) + (path || '/');
   },
 
   // Point the address bar at the current language's URL (also drops the legacy ?lang= parameter).

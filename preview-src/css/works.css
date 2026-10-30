@@ -2948,8 +2948,9 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float-hint {position:absolute;bottom:calc(100% + 10px);left:50%;translate:-50% 0;padding:7px 12px;border-radius:999px;background:#ffd98c;color:#2a1d05;font:800 13px/1 var(--tt-noto-primary),sans-serif;white-space:nowrap;pointer-events:none}
 .tt-float-hint::after {content:'';position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#ffd98c}
 @media (prefers-reduced-motion: no-preference) {
-  .tt-float-pick {animation:tt-float-bob 8s ease-in-out infinite;animation-delay:var(--d,0s)}
-  @keyframes tt-float-bob {0%,100% {translate:0 0} 50% {translate:0 -7px}}
+  /* every record drifts on its own slow swell: up and down, a little sideways, a slight tilt */
+  .tt-float-pick {animation:tt-float-drift var(--t,9s) ease-in-out infinite;animation-delay:var(--d,0s)}
+  @keyframes tt-float-drift {0%,100% {translate:0 0;rotate:0deg} 25% {translate:2px -4px;rotate:.7deg} 50% {translate:0 -7px;rotate:0deg} 75% {translate:-2px -3px;rotate:-.7deg}}
 }
 .tt-credit-wrap {max-width:900px;margin:24px auto 0;padding-bottom:200px}
 
@@ -2993,7 +2994,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float.is-track {--s:84px}
 .tt-float.is-track .tt-float-label {top:calc(100% + 10px);left:50%;translate:-50% 0;width:128px;text-align:center;justify-items:center}
 .tt-float.is-track .tt-float-label b {white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-.tt-float.is-album .tt-float-pick, .tt-float.is-track .tt-float-pick {animation:none}
 .tt-float-no {position:absolute;top:-4px;left:-4px;padding:3px 6px;border-radius:999px;background:rgba(2,18,28,.88);color:#8decfc;font:700 12px/1 'Quicksand',sans-serif;box-shadow:0 0 0 1px rgba(141,236,252,.35)}
 .tt-float.is-track.is-current .tt-float-no {background:#ffd98c;color:#2a1d05}
 .tt-float.is-track .tt-float-label b {font-size:14px}

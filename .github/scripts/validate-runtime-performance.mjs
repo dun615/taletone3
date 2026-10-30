@@ -34,9 +34,8 @@ const pages = [
   },
   {
     key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
-    // The record rack shows two-plus rows of small 320px thumbnails (about 18 KB each) and preloads the next rows
-    // as the rack scrolls: measured 37 requests but only ~1 MB cold, well under the byte budget. Phones stack the
-    // album shelves (each with a small plate cover and its first sleeves), measured 45.
+    // Desktop: the sea of records loads its first discs' covers at once and the rest as they near the screen
+    // (measured 39 locally). Phones: the stage and the record bin (first four sleeves eager), measured 33.
     maxFirstPartyRequests: 50, maxGoogleFontRequests: 30,
     maxTransferBytes: 2_800_000, maxWarmFirstPartyTransferBytes: 20_000, maxCls: 0.08,
     maxFcpMs: 2_000, maxLcpMs: 3_000, maxLongTasks: 12, maxDomNodes: 2_000,
@@ -563,24 +562,25 @@ async function runInteractionSmoke(chrome, origin) {
     const worksReady = await evaluate(client, `(() => ({
       chapter: document.body.getAttribute('data-active-chapter'),
       books: document.querySelectorAll('[data-works-book]').length,
-      play: !!document.querySelector('[data-works-book="0"] .tt-rack-pick') && !!document.querySelector('.tt-deck-toggle'),
+      play: !!document.querySelector('[data-works-book="0"] .tt-float-pick') && !!document.querySelector('.tt-console-host'),
       playback: document.body.dataset.ttMediaPlayback || 'paused'
     }))()`);
     assert(worksReady.chapter === 'works' && worksReady.books >= 6 && worksReady.play, `interaction: WORKS record shop did not initialize: ${JSON.stringify(worksReady)}`);
     assert(worksReady.playback !== 'playing', 'interaction: WORKS audio started without user playback');
 
-    await clickSelector(client, '[data-works-book="0"] .tt-rack-pick');
+    // desktop: the records float in the sea; picking one plays it and the console follows
+    await clickSelector(client, '[data-works-book="0"] .tt-float-pick');
     await sleep(1_000);
     const playing = await evaluate(client, `(() => ({
       playback: document.body.dataset.ttMediaPlayback,
       button: document.querySelector('[data-works-book="0"]')?.classList.contains('is-playing'),
-      player: !!document.querySelector('.tt-deck.is-playing .tt-deck-toggle.is-playing')
+      player: !!document.querySelector('.tt-console.is-playing .tt-deck-toggle.is-playing')
     }))()`);
     assert(playing.playback === 'playing', `interaction: WORKS playback state is ${playing.playback || 'missing'}`);
-    assert(playing.button && playing.player, 'interaction: playing sleeve or turntable did not show its state');
+    assert(playing.button && playing.player, 'interaction: playing disc or console did not show its state');
     passed.push('works-play');
 
-    await clickSelector(client, '.tt-deck-more');
+    await clickSelector(client, '.tt-console-more');
     await sleep(200);
     const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback,permalink:!!document.querySelector('.tt-shelf-modal a[href*="/works/"]')})`);
     assert(popup.permalink, 'interaction: WORKS popup has no permalink to the work page');
@@ -593,32 +593,32 @@ async function runInteractionSmoke(chrome, origin) {
 
     await clickSelector(client, '.tt-deck-toggle');
     await sleep(120);
-    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: turntable play button did not pause');
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'paused'`), 'interaction: console play button did not pause');
     passed.push('works-pause');
 
-    // the rack lists songs by field; album shelves carry a name plate (also a [data-works-book])
-    const rackState = `(() => ({ songs: document.querySelectorAll('.tt-rack-item').length, plates: document.querySelectorAll('.tt-shelf-album').length }))()`;
+    // the field lamps light the matching songs (singles and album tracks) and their albums; the rest sink
+    const rackState = `(() => ({ songs: document.querySelectorAll('.tt-float:not(.is-album):not(.is-dark)').length, plates: document.querySelectorAll('.tt-float.is-album:not(.is-dark)').length }))()`;
     await clickSelector(client, '[data-works-action="filter"][data-filter="game"]');
     await sleep(700);
     const games = await evaluate(client, rackState);
-    assert(games.songs === 15 && games.plates === 3, `interaction: game filter expected 15 songs on 3 album shelves, found ${JSON.stringify(games)}`);
+    assert(games.songs === 16 && games.plates === 3, `interaction: game lamp expected 16 songs and 3 albums lit, found ${JSON.stringify(games)}`);
     // the service tabs: mixing & mastering is a video grid shown twelve at a time
     await clickSelector(client, '[data-works-action="tab"][data-tab="mix"]');
     await sleep(500);
-    const mixTab = await evaluate(client, `({ cards: document.querySelectorAll('.tt-mix-grid .tt-mix-card').length, more: !!document.querySelector('.tt-mix-more'), rack: document.querySelectorAll('.tt-rack-item').length })`);
+    const mixTab = await evaluate(client, `({ cards: document.querySelectorAll('.tt-mix-grid .tt-mix-card').length, more: !!document.querySelector('.tt-mix-more'), rack: document.querySelectorAll('.tt-float').length })`);
     assert(mixTab.cards === 12 && mixTab.more && mixTab.rack === 0, `interaction: mixing tab expected 12 video cards and a more button, found ${JSON.stringify(mixTab)}`);
     await clickSelector(client, '[data-works-action="tab"][data-tab="songs"]');
     await sleep(500);
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, rackState);
-    assert(all.songs === 60 && all.plates === 6, `interaction: whole rack expected 60 songs on 6 album shelves, found ${JSON.stringify(all)}`);
+    assert(all.songs === 60 && all.plates === 6, `interaction: whole sea expected 60 songs and 6 albums lit, found ${JSON.stringify(all)}`);
     passed.push('works-filter-shelf');
 
     // leaving the WORKS chapter stops the music
     await clickSelector(client, '.tt-deck-toggle');
     await sleep(800);
-    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'playing'`), 'interaction: turntable play button did not resume');
+    assert(await evaluate(client, `document.body.dataset.ttMediaPlayback === 'playing'`), 'interaction: console play button did not resume');
     await clickSelector(client, '#nav-6');
     let leftWorks = false;
     for (let n = 0; n < 40 && !leftWorks; n++) { await sleep(100); leftWorks = await evaluate(client, `document.body.getAttribute('data-active-chapter') === 'contact'`); }
@@ -769,7 +769,7 @@ async function runBridgeSmoke(chrome, origin) {
           if(n===10 && index===2){
             const ready = await evaluate(client, `(() => {
               const section=document.getElementById('${destinations[index]}');
-              const images=Array.from(section.querySelectorAll('.tt-rack-item img[src]'));
+              const images=Array.from(section.querySelectorAll('.tt-float img[src], .tt-crate-item img[src], .tt-rack-item img[src]'));
               return images.length>0 && images.every(img=>img && img.complete && img.naturalWidth>0);
             })()`);
             assert(ready, `${label}: next chapter images were not ready during playback`);

@@ -272,10 +272,19 @@ var ComponentBridges = {
     clearTimeout(this._chapterNavCorrect1); clearTimeout(this._chapterNavCorrect2);
     clearTimeout(this._routeLandingCorrect1); clearTimeout(this._routeLandingCorrect2); clearTimeout(this._routeLandingCorrect3);
     document.body.classList.remove('tt-mobile-scroll-active'); this._fastMobileState=false;
+    this.playCut(index);
     this.scroller.scrollTo({top:outer.offsetTop,behavior:'auto'});
     this._bridgeScrollTop=this.scroller.scrollTop;
     this._sceneDirty=true;
     window.dispatchEvent(new CustomEvent('TALETONE_CHAPTER_PRELOAD',{detail:{chapter:['members','projects','works','contact'][index]}}));
+  },
+
+  // The turn of the story gets the one cut on the page: a short blackout before the Discography's bridge line
+  playCut(index){
+    if(this._reduceMotion||index!==2) return;
+    var el=this._cutEl;
+    if(!el){ el=this._cutEl=document.createElement('div'); el.className='tt-cut'; el.setAttribute('aria-hidden','true'); document.body.appendChild(el); }
+    el.classList.remove('is-on'); void el.offsetWidth; el.classList.add('is-on');
   },
 
   // Momentum (touch flicks, trackpad inertia, a wheel smooth-scroll already in flight) can keep
@@ -355,11 +364,13 @@ var ComponentBridges = {
       }
     }
     // Keep the lock through the handoff; input must not interrupt a native smooth scroll.
-    var p=this._reduceMotion?1:this.cl((now-run.advanceAt)/450,0,1), eased=1-Math.pow(1-p,3);
+    // the hand-off is the camera move of the cut: slow in, slow out, long enough to be seen
+    var glide=this.isMobileMotion()?800:1100;
+    var p=this._reduceMotion?1:this.cl((now-run.advanceAt)/glide,0,1), eased=p<0.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
     var nextTop=run.from+(target.offsetTop-run.from)*eased;
     if(Math.abs(this.scroller.scrollTop-nextTop)>0.5) this.scroller.scrollTo({top:nextTop,behavior:'auto'});
     this._sceneDirty=true;
-    if(p>=1 && now-run.advanceAt>=(this._reduceMotion?350:650) && now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();
+    if(p>=1 && now-run.advanceAt>=(this._reduceMotion?350:glide+200) && now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();
   },
 
   // The reading direction bridges follow (see updateBridges). The scroll handler feeds it too: phones skip

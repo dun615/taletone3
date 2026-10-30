@@ -209,6 +209,16 @@ var ComponentScene = {
     var shallow=1-this.smooth(0,800,metres);            // sunlight zone: caustics + god rays
     var deep=this.smooth(500,2600,metres);              // twilight -> midnight: vignette + bioluminescence
     var surf=1-this.smooth(0,H*1.1,scTop);              // the surface itself, only over Home
+    // the turn of the journey: the sea falls quiet over the last bridge, then the music lights the deep
+    var works=this.worksBox(H);
+    var hush=this._reduceMotion?0:this.smooth(1.9,1.1,works.t)*(1-this.smooth(0.7,0.15,works.t));
+    var calm=1-0.85*hush;
+    var lvl=this.audioLevel();
+    this.noteWorksArrival(works.t);
+    // the reader's own descent: scroll speed (px per frame, eased) drives the streaks and the camera
+    var lastTop=this._sceneLastTop==null?scTop:this._sceneLastTop; this._sceneLastTop=scTop;
+    this._vel=(this._vel||0)*0.7+(scTop-lastTop)*0.3;
+    var streak=this._reduceMotion?0:this.cl((Math.abs(this._vel)-3)/40,0,1);
     c.save();
     // 1) the surface seen from just below: a bright, rippling ceiling with a shimmering window of sky
     if(surf>0.01){
@@ -238,13 +248,13 @@ var ComponentScene = {
         var dpx=(dp.x+Math.sin(tw*0.05+dp.ph)*0.04)*W, dpy=dp.y*H*0.6-scTop*0.2;
         if(dpy<-H*0.3) continue;
         var dpr=dp.r*Math.min(W,H)*(0.85+0.15*breath);
-        c.globalAlpha=0.16*shallow*breath;
+        c.globalAlpha=0.16*shallow*breath*calm;
         c.drawImage(this._softLight,dpx-dpr,dpy-dpr*0.6,dpr*2,dpr*1.2);
       }
       c.globalAlpha=1;
     }
     // 3) god rays: slanted shafts of sun that sway, strongest near the surface
-    var rays=Math.max(shallow,surf*0.9);
+    var rays=Math.max(shallow,surf*0.9)*calm;
     if(rays>0.02){
       var rayN=fastMobile?4:7;
       for(var rr=0;rr<rayN;rr++){
@@ -275,8 +285,14 @@ var ComponentScene = {
       var s=this.stars[i];
       var twk=0.55+0.45*Math.sin(time*s.sp+s.ph);
       var syy=((s.y*H-scTop*(0.32+s.r*0.22)+time*6*s.sp)%H+H)%H;
-      c.globalAlpha=snowA*twk;
-      c.beginPath(); c.arc(s.x*W+Math.sin(time*0.3+s.ph)*6, syy, s.r*(1+deep*0.6), 0, 6.283); c.fill();
+      c.globalAlpha=snowA*twk*calm*(1+0.8*lvl);
+      var sxx=s.x*W+Math.sin(time*0.3+s.ph)*6;
+      if(streak>0.02){
+        // falling fast, the specks stretch into lines rushing past: you are the one moving
+        var len=this._vel*(0.8+s.r)*1.6*streak;
+        c.strokeStyle=c.fillStyle; c.lineWidth=s.r*(1+deep*0.6)*1.4; c.lineCap='round';
+        c.beginPath(); c.moveTo(sxx,syy); c.lineTo(sxx,syy+len); c.stroke();
+      } else { c.beginPath(); c.arc(sxx, syy, s.r*(1+deep*0.6), 0, 6.283); c.fill(); }
     }
     c.globalAlpha=1;
     // 5) the dark: edges close in as the light from above runs out
@@ -288,22 +304,15 @@ var ComponentScene = {
     }
     // 6) bioluminescence: creatures of light drifting in the midnight zone
     if(deep>0.05&&this.bio){
-      if(!this._bioSprites){
-        this._bioSprites=[[120,232,255],[168,140,255],[255,214,140]].map(function(rgb){
-          var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
-          var gg=g.createRadialGradient(32,32,0,32,32,32);
-          gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.22,'rgba('+rgb+',.55)'); gg.addColorStop(1,'rgba('+rgb+',0)');
-          g.fillStyle=gg; g.fillRect(0,0,64,64); return cv;
-        });
-      }
+      this.bioSprites();
       c.globalCompositeOperation='lighter';
       var bioN=fastMobile?Math.min(this.bio.length,12):this.bio.length;
       for(var b=0;b<bioN;b++){
         var o=this.bio[b];
         var pulse=Math.pow(0.5+0.5*Math.sin(time*o.sp+o.ph),2.2);
         var bx=((o.x+time*o.dx)%1+1)%1*W, by=((o.y*H-scTop*0.12+Math.sin(time*0.2+o.ph)*24)%H+H)%H;
-        c.globalAlpha=deep*(0.25+0.75*pulse);
-        var rad=o.r*(0.7+0.5*pulse);
+        c.globalAlpha=Math.min(1,deep*(0.25+0.75*pulse)*calm*(1+1.4*lvl));
+        var rad=o.r*(0.7+0.5*pulse)*(1+0.6*lvl);
         c.drawImage(this._bioSprites[o.c],bx-rad,by-rad,rad*2,rad*2);
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
@@ -317,15 +326,61 @@ var ComponentScene = {
         var life=((tw*mo.sp+mo.ph)%1+1)%1;
         var mx=(0.5+mo.col*0.32)*W+Math.sin(tw*0.6+mo.ph*6)*14, my=H*(1.02-life*0.95);
         var mr=mo.r*(1-life*0.4);
-        c.globalAlpha=echo*0.7*Math.sin(life*Math.PI);
+        c.globalAlpha=echo*0.7*Math.sin(life*Math.PI)*calm;
         c.drawImage(this._softLight,mx-mr,my-mr,mr*2,mr*2);
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
+    }
+    // 6b2) listening: while a song plays with the record player in view, the sea around it goes to midnight
+    //      (and over the last bridge it already falls dark), so the record is the only light left
+    var playing=false; try{ playing=!!(window.TALETONE_AUDIO_PLAYING&&window.TALETONE_AUDIO_PLAYING()); }catch(_e){}
+    var deckSeen=false;
+    var dsr=works.deckRect;
+    if(dsr) deckSeen=dsr.top<H*0.8&&dsr.bottom>H*0.2;
+    this._listen=(this._listen||0)+(((playing&&deckSeen)?1:0)-(this._listen||0))*0.045;
+    var listen=this._listen;
+    var listening=listen>(this._listening?0.3:0.6);
+    if(this._listening!==listening){ this._listening=listening; document.body.classList.toggle('tt-listening',listening); }
+    var dark=Math.max(0.82*hush,0.78*listen);
+    if(dark>0.01){ c.fillStyle='rgba(2,8,20,'+dark.toFixed(3)+')'; c.fillRect(0,0,W,H); }
+    var tint=this.coverTint(works.deck);
+    // light from the record: slow beams in the colour of its cover, swelling with the music
+    if(listen>0.02&&works.deckRect&&!this._reduceMotion){
+      var br2=works.deckRect, bcx=br2.left+br2.width/2, bcy=br2.top+br2.height/2, blen=Math.max(W,H)*1.1;
+      c.save(); c.globalCompositeOperation='lighter'; c.translate(bcx,bcy);
+      for(var bi=0;bi<6;bi++){
+        var ang=tw*0.07+bi*(Math.PI*2/6)+Math.sin(tw*0.3+bi)*0.15, spread=0.11+0.05*Math.sin(tw*0.5+bi*1.7);
+        var bg=c.createRadialGradient(0,0,br2.width*0.3,0,0,blen);
+        var ba=(0.05+0.22*lvl)*listen;
+        bg.addColorStop(0,'rgba('+tint+','+ba.toFixed(3)+')'); bg.addColorStop(1,'rgba('+tint+',0)');
+        c.fillStyle=bg; c.beginPath(); c.moveTo(0,0); c.arc(0,0,blen,ang-spread,ang+spread); c.closePath(); c.fill();
+      }
+      c.restore();
+    }
+    // 6c) the record's light: arriving at the Discography lights the turntable once, and while a song plays
+    //     the light around it follows the music, a cool halo with a warm core
+    var arrive=this._worksArrivedAt?this.cl(1-(performance.now()-this._worksArrivedAt)/2400,0,1):0;
+    var deckK=Math.max(lvl,arrive);
+    // the record player's own glow (works.css) reads the same level
+    var deckBox=works.deck&&works.deck.closest('.tt-deck');
+    if(deckBox&&Math.abs((this._deckLvl||0)-deckK)>0.01){ this._deckLvl=deckK; deckBox.style.setProperty('--tt-lvl',deckK.toFixed(3)); }
+    if(Math.max(deckK,listen)>0.01&&works.deck){
+      var dr=works.deckRect;
+      if(dr&&dr.bottom>0&&dr.top<H){
+        var sprites=this.bioSprites(), dcx=dr.left+dr.width/2, dcy=dr.top+dr.height/2, dw=Math.max(dr.width,dr.height);
+        c.globalCompositeOperation='lighter';
+        var halo=this.tintSprite(tint), hk=Math.max(deckK,0.55*listen);
+        c.globalAlpha=Math.min(1,0.9*hk); c.drawImage(halo,dcx-dw*(1.6+0.8*arrive),dcy-dw*(1.6+0.8*arrive),dw*(3.2+1.6*arrive),dw*(3.2+1.6*arrive));
+        c.globalAlpha=Math.min(1,0.45*deckK); c.drawImage(sprites[2],dcx-dw*1.1,dcy-dw*1.1,dw*2.2,dw*2.2);
+        c.globalAlpha=1; c.globalCompositeOperation='source-over';
+      }
     }
     // 7) the book's light far below: from the first screen, growing as you descend, until the real book takes over
     var bookG=this._deepBookGeometry;
     var bookScreenY=(bookG?bookG.docY:(this.scroller?this.scroller.scrollHeight:H))-scTop;
     var calling=(0.32+0.38*dd)*(1-this.smooth(H*1.5,H*0.85,bookScreenY))*(0.84+0.16*Math.sin(tw*0.9));
+    // in the Discography the book answers the music: its light breathes a little brighter with each song
+    calling=calling*(1+0.9*lvl)+(works.inside?0.08:0);
     if(calling>0.01){
       var gr=H*(0.45+0.5*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.26;
       var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
@@ -376,7 +431,7 @@ var ComponentScene = {
       // tight column at the source, fanning gently wider as it rises toward the surface
       var x = cx + p.col*(16 + dl*W*0.17) + Math.sin(time*0.5+p.sway)*p.swayAmp;
       var twk = 0.6+0.4*Math.sin(time*1.3+p.sway);
-      var glow = (0.92 - 0.66*dl) * twk;               // bright near book, faint near Home
+      var glow = (0.92 - 0.66*dl) * twk * calm;               // bright near book, faint near Home
       if(glow<=0.03) continue;
       var sz = p.sz*(1-0.34*dl);
       c.save(); c.translate(x,y);
@@ -401,6 +456,88 @@ var ComponentScene = {
       this.drawInk(time);
     }
     this.drawRail(n, pal, time);
+  },
+
+  // cyan, violet and amber glows, drawn once
+  bioSprites(){
+    if(!this._bioSprites){
+      this._bioSprites=[[120,232,255],[168,140,255],[255,214,140]].map(function(rgb){
+        var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
+        var gg=g.createRadialGradient(32,32,0,32,32,32);
+        gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.22,'rgba('+rgb+',.55)'); gg.addColorStop(1,'rgba('+rgb+',0)');
+        g.fillStyle=gg; g.fillRect(0,0,64,64); return cv;
+      });
+    }
+    return this._bioSprites;
+  },
+
+  // the average colour of the record's cover (brightened), sampled once per cover: each song lights the sea in its own colour
+  coverTint(deck){
+    var img=deck&&deck.querySelector('img');
+    if(!img||!img.complete||!img.naturalWidth) return this._tint||'120,232,255';
+    if(this._tintSrc===img.currentSrc) return this._tint;
+    this._tintSrc=img.currentSrc;
+    try{
+      var cv=document.createElement('canvas'); cv.width=cv.height=12; var g=cv.getContext('2d');
+      g.drawImage(img,0,0,12,12); var d=g.getImageData(0,0,12,12).data, r=0,gg=0,b=0,n=0;
+      for(var i=0;i<d.length;i+=4){ var mx=Math.max(d[i],d[i+1],d[i+2]), mn=Math.min(d[i],d[i+1],d[i+2]); var wgt=1+(mx-mn)/32; r+=d[i]*wgt; gg+=d[i+1]*wgt; b+=d[i+2]*wgt; n+=wgt; }
+      r/=n; gg/=n; b/=n; var top=Math.max(r,gg,b,1), k=235/top;
+      this._tint=[r,gg,b].map(function(v){ return Math.round(Math.min(255,v*k*0.85+40)); }).join(',');
+    }catch(_e){ this._tint='120,232,255'; }
+    return this._tint;
+  },
+  tintSprite(rgb){
+    this._tintSprites=this._tintSprites||{};
+    if(!this._tintSprites[rgb]){
+      var cv=document.createElement('canvas'); cv.width=cv.height=64; var g=cv.getContext('2d');
+      var gg=g.createRadialGradient(32,32,0,32,32,32);
+      gg.addColorStop(0,'rgba('+rgb+',1)'); gg.addColorStop(0.25,'rgba('+rgb+',.5)'); gg.addColorStop(1,'rgba('+rgb+',0)');
+      g.fillStyle=gg; g.fillRect(0,0,64,64); this._tintSprites[rgb]=cv;
+    }
+    return this._tintSprites[rgb];
+  },
+
+  // where the Discography sits: t = its top in screen heights (1 while the last bridge holds, 0 on arrival)
+  // Positions are kept in page (scroll) coordinates and re-measured only every 400 ms or when the layout is
+  // marked dirty, so the frame itself never forces a layout read; deckRect is the light source in screen terms.
+  worksBox(H){
+    if(!this._worksEl||!this._worksEl.isConnected) this._worksEl=document.getElementById('c-works');
+    var el=this._worksEl;
+    if(!el) return {t:Infinity,inside:false,deck:null,deckRect:null};
+    var now=performance.now(), sc=this.scroller?this.scroller.scrollTop:0, m=this._worksMeasure;
+    if(!m||now-m.at>400||this._layoutGeometryDirty||!(m.deck&&m.deck.isConnected)){
+      // the light source: the record that is playing (a floating disc on desktop), else the turntable
+      var deck=el.querySelector('.tt-float.is-current .tt-disc')||el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck');
+      var r=el.getBoundingClientRect(), d=deck?deck.getBoundingClientRect():null;
+      m=this._worksMeasure={at:now,top:r.top+sc,bottom:r.bottom+sc,deck:deck,
+        dRect:d&&d.width?{left:d.left,top:d.top+sc,width:d.width,height:d.height}:null};
+    }
+    var dr=m.dRect?{left:m.dRect.left,top:m.dRect.top-sc,width:m.dRect.width,height:m.dRect.height}:null;
+    if(dr) dr.bottom=dr.top+dr.height;
+    return {t:(m.top-sc)/H,inside:m.top-sc<H*0.5&&m.bottom-sc>H*0.5,deck:m.deck,deckRect:dr};
+  },
+  // the playing song's loudness (0..1) from the record player, eased so the light swells and settles
+  audioLevel(){
+    var f=window.TALETONE_AUDIO_LEVEL, raw=0;
+    try{ raw=f?(+f()||0):0; }catch(_e){}
+    var cur=this._lvl||0, k=this._reduceMotion?0.04:(raw>cur?0.3:0.06);
+    this._lvl=cur+(raw-cur)*k;
+    return this._lvl;
+  },
+
+  // scrolling down from the last bridge into the Discography counts as arriving
+  noteWorksArrival(t){
+    // armed while the last bridge holds the screen, fired once the Discography reaches the top
+    if(t>=0.85&&t<1.6){ this._worksArmed=true; return; }
+    if(!this._worksArmed||t>0.2) return;
+    if(t<-0.5){ this._worksArmed=false; return; }
+    this._worksArmed=false;
+    this._worksArrivedAt=performance.now();
+    if(this._reduceMotion) return;
+    document.body.classList.remove('tt-works-arrive'); void document.body.offsetWidth;
+    document.body.classList.add('tt-works-arrive');
+    clearTimeout(this._worksArriveTimer);
+    this._worksArriveTimer=setTimeout(function(){ document.body.classList.remove('tt-works-arrive'); },2600);
   },
 
   // A bespoke luminous motif behind each bridge line ??each visualizes its sentence's meaning.

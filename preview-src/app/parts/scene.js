@@ -335,7 +335,8 @@ var ComponentScene = {
     //      (and over the last bridge it already falls dark), so the record is the only light left
     var playing=false; try{ playing=!!(window.TALETONE_AUDIO_PLAYING&&window.TALETONE_AUDIO_PLAYING()); }catch(_e){}
     var deckSeen=false;
-    if(works.deck){ var dsr=works.deck.getBoundingClientRect(); deckSeen=dsr.width>0&&dsr.top<H*0.8&&dsr.bottom>H*0.2; }
+    var dsr=works.deckRect;
+    if(dsr) deckSeen=dsr.top<H*0.8&&dsr.bottom>H*0.2;
     this._listen=(this._listen||0)+(((playing&&deckSeen)?1:0)-(this._listen||0))*0.045;
     var listen=this._listen;
     var listening=listen>(this._listening?0.3:0.6);
@@ -344,8 +345,8 @@ var ComponentScene = {
     if(dark>0.01){ c.fillStyle='rgba(2,8,20,'+dark.toFixed(3)+')'; c.fillRect(0,0,W,H); }
     var tint=this.coverTint(works.deck);
     // light from the record: slow beams in the colour of its cover, swelling with the music
-    if(listen>0.02&&works.deck&&!this._reduceMotion){
-      var br2=works.deck.getBoundingClientRect(), bcx=br2.left+br2.width/2, bcy=br2.top+br2.height/2, blen=Math.max(W,H)*1.1;
+    if(listen>0.02&&works.deckRect&&!this._reduceMotion){
+      var br2=works.deckRect, bcx=br2.left+br2.width/2, bcy=br2.top+br2.height/2, blen=Math.max(W,H)*1.1;
       c.save(); c.globalCompositeOperation='lighter'; c.translate(bcx,bcy);
       for(var bi=0;bi<6;bi++){
         var ang=tw*0.07+bi*(Math.PI*2/6)+Math.sin(tw*0.3+bi)*0.15, spread=0.11+0.05*Math.sin(tw*0.5+bi*1.7);
@@ -364,8 +365,8 @@ var ComponentScene = {
     var deckBox=works.deck&&works.deck.closest('.tt-deck');
     if(deckBox&&Math.abs((this._deckLvl||0)-deckK)>0.01){ this._deckLvl=deckK; deckBox.style.setProperty('--tt-lvl',deckK.toFixed(3)); }
     if(Math.max(deckK,listen)>0.01&&works.deck){
-      var dr=works.deck.getBoundingClientRect();
-      if(dr.bottom>0&&dr.top<H&&dr.width>0){
+      var dr=works.deckRect;
+      if(dr&&dr.bottom>0&&dr.top<H){
         var sprites=this.bioSprites(), dcx=dr.left+dr.width/2, dcy=dr.top+dr.height/2, dw=Math.max(dr.width,dr.height);
         c.globalCompositeOperation='lighter';
         var halo=this.tintSprite(tint), hk=Math.max(deckK,0.55*listen);
@@ -497,17 +498,24 @@ var ComponentScene = {
   },
 
   // where the Discography sits: t = its top in screen heights (1 while the last bridge holds, 0 on arrival)
+  // Positions are kept in page (scroll) coordinates and re-measured only every 400 ms or when the layout is
+  // marked dirty, so the frame itself never forces a layout read; deckRect is the light source in screen terms.
   worksBox(H){
     if(!this._worksEl||!this._worksEl.isConnected) this._worksEl=document.getElementById('c-works');
     var el=this._worksEl;
-    if(!el) return {t:Infinity,inside:false,deck:null};
-    // the light source: the record that is playing (a floating disc on desktop), else the turntable
-    var now=performance.now();
-    if(!this._deckEl||!this._deckEl.isConnected||now-(this._deckAt||0)>300){ this._deckAt=now; this._deckEl=el.querySelector('.tt-float.is-current .tt-disc')||el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck'); }
-    var r=el.getBoundingClientRect();
-    return {t:r.top/H,inside:r.top<H*0.5&&r.bottom>H*0.5,deck:this._deckEl};
+    if(!el) return {t:Infinity,inside:false,deck:null,deckRect:null};
+    var now=performance.now(), sc=this.scroller?this.scroller.scrollTop:0, m=this._worksMeasure;
+    if(!m||now-m.at>400||this._layoutGeometryDirty||!(m.deck&&m.deck.isConnected)){
+      // the light source: the record that is playing (a floating disc on desktop), else the turntable
+      var deck=el.querySelector('.tt-float.is-current .tt-disc')||el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck');
+      var r=el.getBoundingClientRect(), d=deck?deck.getBoundingClientRect():null;
+      m=this._worksMeasure={at:now,top:r.top+sc,bottom:r.bottom+sc,deck:deck,
+        dRect:d&&d.width?{left:d.left,top:d.top+sc,width:d.width,height:d.height}:null};
+    }
+    var dr=m.dRect?{left:m.dRect.left,top:m.dRect.top-sc,width:m.dRect.width,height:m.dRect.height}:null;
+    if(dr) dr.bottom=dr.top+dr.height;
+    return {t:(m.top-sc)/H,inside:m.top-sc<H*0.5&&m.bottom-sc>H*0.5,deck:m.deck,deckRect:dr};
   },
-
   // the playing song's loudness (0..1) from the record player, eased so the light swells and settles
   audioLevel(){
     var f=window.TALETONE_AUDIO_LEVEL, raw=0;
