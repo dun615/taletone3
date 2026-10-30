@@ -3003,3 +3003,23 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float-label b, .tt-float-label span, .tt-float-label i {white-space:normal;overflow:visible;text-overflow:clip;word-break:keep-all;overflow-wrap:anywhere}
 .tt-float.is-track .tt-float-label {width:124px}
 .tt-float.is-track .tt-float-label b, .tt-float.is-track .tt-float-label i {display:block;-webkit-line-clamp:unset}
+
+/* Coloured vinyl (the sea's records and the console): a translucent disc pressed in its cover's colour (--vinyl,
+   set by works.js tintVinyls), fine grooves, the cover as a large centre label, and a light catching the surface.
+   Playing, the disc glows in its own colour. */
+.tt-float-pick .tt-disc.tt-disc--float, .tt-console .tt-disc.tt-disc--console {
+  --vinyl:120 200 220;
+  background:
+    repeating-radial-gradient(circle, rgb(255 255 255 / .07) 0 .6px, transparent .6px 2.6px),
+    radial-gradient(circle, rgb(var(--vinyl) / .9) 0 33%, rgb(var(--vinyl) / .55) 52%, rgb(var(--vinyl) / .42) 80%, rgb(var(--vinyl) / .7) 97%, rgb(255 255 255 / .55) 100%);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .28),inset 0 0 22px rgb(var(--vinyl) / .45),0 0 26px rgb(var(--vinyl) / .28),0 20px 32px -20px rgba(0,8,16,.9);
+  transition:box-shadow .6s ease,scale .45s cubic-bezier(.2,.75,.2,1)}
+.tt-disc--float .tt-disc-spin, .tt-disc--console .tt-disc-spin {inset:20%;box-shadow:0 0 0 2px rgb(255 255 255 / .18),0 0 0 4px rgb(0 0 0 / .18)}
+.tt-disc--float .tt-disc-sheen, .tt-disc--console .tt-disc-sheen {position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 210deg, transparent 0 6%, rgb(255 255 255 / .28) 10%, transparent 15% 52%, rgb(255 255 255 / .18) 57%, transparent 62%);mix-blend-mode:screen}
+.tt-disc--float .tt-disc-hole, .tt-disc--console .tt-disc-hole {width:6%;height:6%;background:rgba(2,12,20,.85)}
+.tt-float-pick:hover .tt-disc.tt-disc--float, .tt-float-pick:focus-visible .tt-disc.tt-disc--float {box-shadow:inset 0 0 0 1px rgb(255 255 255 / .4),inset 0 0 26px rgb(var(--vinyl) / .6),0 0 44px rgb(var(--vinyl) / .5),0 22px 34px -20px rgba(0,8,16,.9)}
+.tt-float.is-current .tt-disc.tt-disc--float {box-shadow:inset 0 0 0 1px rgb(255 255 255 / .45),inset 0 0 30px rgb(var(--vinyl) / .7),0 0 0 2px #ffd98c,0 0 56px rgb(var(--vinyl) / .7)}
+.tt-float.is-playing .tt-disc.tt-disc--float {animation:tt-vinyl-glow 2.4s ease-in-out infinite}
+@keyframes tt-vinyl-glow {50% {box-shadow:inset 0 0 0 1px rgb(255 255 255 / .5),inset 0 0 36px rgb(var(--vinyl) / .85),0 0 0 2px #ffd98c,0 0 80px rgb(var(--vinyl) / .9)}}
+@media (prefers-reduced-motion: reduce) {.tt-float.is-playing .tt-disc.tt-disc--float {animation:none}}

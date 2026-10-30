@@ -1077,6 +1077,7 @@
     mounted = true;
     if (!state.settled) setTimeout(function () { state.settled = true; var shelf = root && root.querySelector('.tt-shelf'); if (shelf) shelf.classList.add('is-settled'); }, 1400);
     bindLazyCovers();
+    tintVinyls();
     watchDeck();
     placeDeck();
     kept.forEach(function (k) { var el = root.querySelector(k[0]); if (el) { el.scrollTop = k[1]; el.scrollLeft = k[2]; } });
@@ -1134,6 +1135,30 @@
       // the list runs in the page itself (one scroll, the turntable stays beside it), so covers wait for the screen
     }, { rootMargin: '160px 160px' });
     pending.forEach(function (img) { coverObserver.observe(img); });
+  }
+  // coloured vinyl: each disc is pressed in the colour of its own cover (the average, leaning to its most saturated
+  // pixels, lifted so it glows in the dark sea); sampled once the cover has loaded
+  function tintVinyls() {
+    if (!root) return;
+    root.querySelectorAll('.tt-disc--float img, .tt-disc--console img').forEach(function (img) {
+      if (img.__ttTint) return;
+      img.__ttTint = true;
+      var apply = function () {
+        try {
+          var cv = document.createElement('canvas'); cv.width = cv.height = 10;
+          var g = cv.getContext('2d'); g.drawImage(img, 0, 0, 10, 10);
+          var d = g.getImageData(0, 0, 10, 10).data, r = 0, gr = 0, b = 0, n = 0;
+          for (var i = 0; i < d.length; i += 4) { var w = 1 + (Math.max(d[i], d[i + 1], d[i + 2]) - Math.min(d[i], d[i + 1], d[i + 2])) / 24; r += d[i] * w; gr += d[i + 1] * w; b += d[i + 2] * w; n += w; }
+          r /= n; gr /= n; b /= n;
+          // a touch more saturated than the plain average, so pale covers still press a coloured disc
+          var grey = (r + gr + b) / 3, rgb = [r, gr, b].map(function (v) { return grey + (v - grey) * 1.45; });
+          var lift = 205 / Math.max(rgb[0], rgb[1], rgb[2], 1);
+          var disc = img.closest('.tt-disc');
+          if (disc) disc.style.setProperty('--vinyl', rgb.map(function (v) { return Math.round(Math.max(0, Math.min(255, v * lift))); }).join(' '));
+        } catch (_e) {}
+      };
+      if (img.complete && img.naturalWidth) apply(); else img.addEventListener('load', apply, { once: true });
+    });
   }
   function loadCover(img) {
     if (!img.dataset.src) return;
@@ -1498,7 +1523,7 @@
     var deckHost = root.querySelector('.tt-crate-deck');
     if (deckHost && rebuild) deckHost.innerHTML = deckHtml();
     var consoleHost = root.querySelector('.tt-console-host');
-    if (consoleHost) consoleHost.innerHTML = consoleHtml();
+    if (consoleHost) { consoleHost.innerHTML = consoleHtml(); tintVinyls(); }
     if (state.engaged) root.querySelectorAll('.tt-float-hint').forEach(function (hint) { hint.remove(); });
     updateMini();
     var deck = root.querySelector('.tt-deck');
