@@ -472,7 +472,6 @@ function sitemap() {
   ].join('\n'));
   const urls = [
     ...seo.pages.flatMap((page) => entry((lang) => `${lang.prefix}${page.path}`)),
-    ...worksByDate.flatMap((work) => entry((lang) => workPath(lang, work))),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">

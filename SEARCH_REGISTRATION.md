@@ -16,7 +16,7 @@
 | Discography | https://taletone.net/discography/ |
 | Contact | https://taletone.net/contact/ |
 
-영어는 /en, 일본어는 /ja 접두사를 사용합니다. 모든 언어의 canonical/hreflang 및 개별 작업 페이지는 사이트맵에 포함됩니다.
+영어는 /en, 일본어는 /ja 접두사를 사용합니다. 사이트맵에는 5개 챕터의 3개 언어 주소만 포함합니다(총 15개). 개별 곡 상세 페이지는 사이트에서 계속 열리지만 사이트맵에서는 제외합니다.
 
 공식 안내:
 - Google: https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap

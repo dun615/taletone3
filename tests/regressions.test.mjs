@@ -87,7 +87,7 @@ test("runtime route normalization keeps every configured route", async () => {
     );
 });
 
-test("all language metadata exposes exactly five navigation entries and 126 sitemap URLs", async () => {
+test("all language metadata exposes exactly five navigation entries and 15 chapter-only sitemap URLs", async () => {
   const labels = ["Home", "About", "Approach", "Discography", "Contact"];
   for (const prefix of ["", "en/", "ja/"]) {
     const html = await read(prefix + "index.html");
@@ -110,7 +110,13 @@ test("all language metadata exposes exactly five navigation entries and 126 site
     );
     assert.ok(!html.includes("/news/"));
   }
-  assert.equal((await read("sitemap.xml")).match(/<loc>/g).length, 126);
+  const sitemap=await read('sitemap.xml');
+  const actual=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
+  const seo=JSON.parse(await read('assets/data/seo-content.json'));
+  const expected=seo.pages.flatMap(page=>['','/en','/ja'].map(prefix=>'https://taletone.net'+prefix+page.path));
+  assert.deepEqual(actual,expected);
+  assert.equal(actual.length,15);
+  assert.ok(!actual.some(url=>/\/discography\/[^/]+\/$/.test(url)));
 });
 
 test("legacy URLs redirect directly and preserve queries and fragments", async () => {

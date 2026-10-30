@@ -12,7 +12,7 @@ GitHub Pages static site: https://taletone.net
 | Discography | /discography/ | /en/discography/, /ja/discography/ |
 | Contact | /contact/ | /en/contact/, /ja/contact/ |
 
-Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projects/ and /works/ URLs (including individual works) redirect directly to the new URLs in all languages and preview. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains these five chapters and individual works in all three languages. Retired content is kept in archive/ and never staged for publication.
+Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projects/ and /works/ URLs (including individual works) redirect directly to the new URLs in all languages and preview. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains only the five chapters in all three languages (15 URLs). Individual work pages remain available through the site but are excluded from the sitemap. Retired content is kept in archive/ and never staged for publication.
 
 ## Sources and checks
 
