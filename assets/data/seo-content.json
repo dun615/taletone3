@@ -31,7 +31,7 @@
     {
       "key": "members",
       "label": "About",
-      "path": "/members/",
+      "path": "/about/",
       "title": "About | TALETONE MUSIC — 소개",
       "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤 뮤직)과 함께하는 파트너를 소개합니다.",
       "sectionId": "c-members",
@@ -48,18 +48,18 @@
     },
     {
       "key": "projects",
-      "label": "How It Works",
-      "path": "/story-types/",
-      "title": "How It Works | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
+      "label": "Approach",
+      "path": "/approach/",
+      "title": "Approach | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
       "description": "이야기(TALE)에서 톤(TONE)을 찾고 음악(MUSIC)으로 완성하는 TALETONE MUSIC의 제작 방식입니다. 해봄 「Love Dopamine」 사례와 함께 곡의 기획 의도와 제작 과정을 소개합니다.",
       "sectionId": "c-projects",
       "translations": {
         "en": {
-          "title": "How It Works | TALETONE MUSIC — Starting from the Story",
+          "title": "Approach | TALETONE MUSIC — Starting from the Story",
           "description": "From TALE to TONE to MUSIC: how TALETONE MUSIC turns a story into a song. Explore the creative process through HAEBOM’s Love Dopamine and selected work."
         },
         "jp": {
-          "title": "How It Works | TALETONE MUSIC — 物語から始まる制作",
+          "title": "Approach | TALETONE MUSIC — 物語から始まる制作",
           "description": "物語（TALE）からトーン（TONE）を見つけ、音楽（MUSIC）に仕上げるTALETONE MUSICの制作方法。HAEBOM「Love Dopamine」の事例とともに企画意図と制作過程を紹介します。"
         }
       }
@@ -67,7 +67,7 @@
     {
       "key": "works",
       "label": "Discography",
-      "path": "/works/",
+      "path": "/discography/",
       "title": "Discography | TALETONE MUSIC — 디스코그래피",
       "description": "TALETONE MUSIC(테일톤 뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
       "sectionId": "c-works",

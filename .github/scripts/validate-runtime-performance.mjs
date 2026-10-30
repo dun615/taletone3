@@ -33,7 +33,7 @@ const pages = [
     maxFcpMs: 2_000, maxLcpMs: 6_000, maxLongTasks: 45, maxDomNodes: 1_500,
   },
   {
-    key: 'works', path: '/works/', coldWaitMs: 3_500, warmWaitMs: 2_000,
+    key: 'works', path: '/discography/', coldWaitMs: 3_500, warmWaitMs: 2_000,
     // Desktop: the sea of records loads its first discs' covers at once and the rest as they near the screen
     // (measured 39 locally). Phones: the stage and the record bin (first four sleeves eager), measured 33.
     maxFirstPartyRequests: 50, maxGoogleFontRequests: 30,
@@ -44,9 +44,9 @@ const pages = [
 
 const functionalRoutes = [
   { key: 'home', path: '/', chapter: 'home', section: '#c-home' },
-  { key: 'story-types', path: '/story-types/', chapter: 'projects', section: '#c-projects' },
-  { key: 'members', path: '/members/', chapter: 'members', section: '#c-members' },
-  { key: 'works', path: '/works/', chapter: 'works', section: '#c-works' },
+  { key: 'approach', path: '/approach/', chapter: 'projects', section: '#c-projects' },
+  { key: 'members', path: '/about/', chapter: 'members', section: '#c-members' },
+  { key: 'works', path: '/discography/', chapter: 'works', section: '#c-works' },
   { key: 'contact', path: '/contact/', chapter: 'contact', section: '#c-contact' },
 ];
 const functionalLanguages = { kr: 'ko', en: 'en', jp: 'ja' };
@@ -549,6 +549,11 @@ async function runRegressionChecks(chrome, origin){
     await Promise.all([client.send('Page.enable'),client.send('Runtime.enable')]);
     await client.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
     await client.send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.setItem('tt_intro_home_v5','1')}catch{}"});
+    for(const [oldPath,newPath] of [['/members/','/about/'],['/story-types/','/approach/'],['/works/','/discography/'],['/ja/works/heart-score/','/ja/discography/heart-score/']]){
+      await navigateForInteraction(client,origin+oldPath+'?ref=legacy#migration',1100);
+      const moved=await evaluate(client,`({path:location.pathname,query:location.search,hash:location.hash,canonical:document.querySelector('link[rel=canonical]')?.href})`);
+      assert(moved.path===newPath&&moved.query==='?ref=legacy'&&moved.hash==='#migration'&&moved.canonical.endsWith(newPath),'legacy migration: '+JSON.stringify(moved));
+    }
     await navigateForInteraction(client,origin+'/news/');
     assert(await evaluate(client,`!document.querySelector('x-dc') && !document.querySelector('article.tt-d-card')`),'retired news must not render a collection');
     await navigateForInteraction(client,origin+'/?lang=kr');
@@ -560,7 +565,7 @@ async function runRegressionChecks(chrome, origin){
     assert(await evaluate(client,'window.__rebuilds===1'),'language switch must rebuild Works once');
     await clickSelector(client,'#nav-6');await sleep(1900);await evaluate(client,'history.back()');await sleep(900);
     const back=await evaluate(client,`({path:location.pathname,chapter:document.body.getAttribute('data-active-chapter'),canonical:document.querySelector('link[rel=canonical]').href,ld:JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent)['@graph'].find(n=>n['@type']==='WebPage').url})`);
-    assert(back.path==='/en/works/'&&back.chapter==='works'&&back.ld===back.canonical,'history restoration: '+JSON.stringify(back));
+    assert(back.path==='/en/discography/'&&back.chapter==='works'&&back.ld===back.canonical,'history restoration: '+JSON.stringify(back));
     await evaluate(client,'history.forward()'); await sleep(900);
     const forward=await evaluate(client,`({path:location.pathname,chapter:document.body.getAttribute('data-active-chapter'),canonical:document.querySelector('link[rel=canonical]').href})`);
     assert(forward.path==='/en/contact/'&&forward.chapter==='contact'&&forward.canonical.endsWith('/en/contact/'),'history forward: '+JSON.stringify(forward));
@@ -584,7 +589,7 @@ async function runInteractionSmoke(chrome, origin) {
     await client.send('Network.setCacheDisabled', { cacheDisabled: false });
     const capture = capturePhase(client, origin);
 
-    await navigateForInteraction(client, `${origin}/works/?lang=kr&runtime-interaction=1`, 1_300);
+    await navigateForInteraction(client, `${origin}/discography/?lang=kr&runtime-interaction=1`, 1_300);
     const worksReady = await evaluate(client, `(() => ({
       chapter: document.body.getAttribute('data-active-chapter'),
       books: document.querySelectorAll('[data-works-book]').length,
@@ -608,7 +613,7 @@ async function runInteractionSmoke(chrome, origin) {
 
     await clickSelector(client, '.tt-console-more');
     await sleep(200);
-    const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback,permalink:!!document.querySelector('.tt-shelf-modal a[href*="/works/"]')})`);
+    const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback,permalink:!!document.querySelector('.tt-shelf-modal a[href*="/discography/"]')})`);
     assert(popup.permalink, 'interaction: WORKS popup has no permalink to the work page');
     assert(popup.open && popup.dialog && popup.playback === 'playing', `interaction: WORKS popup did not open over playing music: ${JSON.stringify(popup)}`);
     await clickSelector(client, '.tt-shelf-modal-close');
@@ -652,7 +657,7 @@ async function runInteractionSmoke(chrome, origin) {
     assert(await evaluate(client, `document.body.dataset.ttMediaPlayback !== 'playing'`), 'interaction: WORKS music kept playing after leaving the chapter');
     passed.push('works-leave-pause');
 
-    await navigateForInteraction(client, `${origin}/works/?lang=kr&runtime-interaction=1`);
+    await navigateForInteraction(client, `${origin}/discography/?lang=kr&runtime-interaction=1`);
     for (let n = 0; n < 40; n++) { if (await evaluate(client, `!!document.querySelector('.tt-shelf-history')`)) break; await sleep(100); }
     await clickSelector(client, '.tt-shelf-history');
     await sleep(400);
@@ -678,7 +683,7 @@ async function runInteractionSmoke(chrome, origin) {
     }
     passed.push('language-switch');
 
-    await navigateForInteraction(client, `${origin}/story-types/?lang=kr&runtime-interaction=1`);
+    await navigateForInteraction(client, `${origin}/approach/?lang=kr&runtime-interaction=1`);
     await clickSelector(client, '#nav-4');
     await sleep(1_800);
     const chapterTransition = await evaluate(client, `(() => ({
@@ -686,7 +691,7 @@ async function runInteractionSmoke(chrome, origin) {
       chapter: document.body.getAttribute('data-active-chapter'),
       cards: document.querySelectorAll('[data-works-book]').length
     }))()`);
-    assert(chapterTransition.path === '/works/' && chapterTransition.chapter === 'works' && chapterTransition.cards >= 6, 'interaction: STORY TYPES to WORKS transition did not settle');
+    assert(chapterTransition.path === '/discography/' && chapterTransition.chapter === 'works' && chapterTransition.cards >= 6, 'interaction: STORY TYPES to WORKS transition did not settle');
     passed.push('chapter-transition-preload');
 
     const network = capture.finish();
@@ -704,7 +709,7 @@ async function runInteractionSmoke(chrome, origin) {
 async function runBridgeSmoke(chrome, origin) {
   const passed = [];
   const destinations = ['c-members','c-projects','c-works','c-contact'];
-  const paths = ['/members/','/story-types/','/works/','/contact/'];
+  const paths = ['/about/','/approach/','/discography/','/contact/'];
   const bridgeViewports=[...functionalViewports,
     {key:'small-phone-reduced',width:320,height:568,mobile:true,reduced:true},
     {key:'phone-landscape',width:844,height:390,mobile:true}];

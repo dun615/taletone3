@@ -290,7 +290,7 @@
   }
   function workHref(work) {
     var base = /^\/preview(\/|$)/.test(location.pathname) ? '/preview' : '';
-    return work && work.slug ? base + langPrefix() + '/works/' + encodeURIComponent(work.slug) + '/' : '#c-works';
+    return work && work.slug ? base + langPrefix() + '/discography/' + encodeURIComponent(work.slug) + '/' : '#c-works';
   }
   function yearOf(work) {
     var match = String((work && work.date) || '').match(/(\d{4})/);
@@ -1312,7 +1312,7 @@
     resume();
   }
   var playAttempt = 0;
-  // A "listen in Works" link (/works/?work=<slug>) asks for a record before Works is on screen. Browsers
+  // A "listen in Works" link (/discography/?work=<slug>) asks for a record before Works is on screen. Browsers
   // only allow sound that starts from a click, so the click starts the audio element silently and stops it;
   // the real play() follows once the Works chapter is reached.
   var pendingSlug = '', priming = false;
@@ -1484,7 +1484,7 @@
   function isWorksChapterActive() {
     var activeChapter = (document.body && document.body.getAttribute('data-active-chapter')) || '';
     if (activeChapter) return activeChapter === 'works';
-    return /^(?:\/(?:en|ja))?\/works(?:\/index\.html)?\/?$/i.test(location.pathname) || location.hash === '#c-works';
+    return /^(?:\/(?:en|ja))?\/discography(?:\/index\.html)?\/?$/i.test(location.pathname) || location.hash === '#c-works';
   }
 
   function onClick(event) {
@@ -1620,7 +1620,7 @@
       var lead = entriesFor('all')[0] || { index: 0 };
       state.current = lead.index; state.track = titleTrackIndex(works[lead.index]); state.language = defaultLanguage(works[lead.index], state.track);
     }
-    // a link opened in a new tab (/works/?work=<slug>) selects that record; it plays if the browser allows
+    // a link opened in a new tab (/discography/?work=<slug>) selects that record; it plays if the browser allows
     var asked = pendingSlug || new URLSearchParams(location.search).get('work') || '';
     if (asked) queueWork(asked);
     setTimeout(function () { waitForHost(0); }, 120);

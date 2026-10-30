@@ -348,7 +348,7 @@ var ComponentBridges = {
   advanceBridge(now){
     var run=this._bridgeRun;
     if(!run) return;
-    var targets=[['c-members','/members/'],['c-projects','/story-types/'],['c-works','/works/'],['c-contact','/contact/']];
+    var targets=[['c-members','/about/'],['c-projects','/approach/'],['c-works','/discography/'],['c-contact','/contact/']];
     var route=targets[run.index], target=route&&document.getElementById(route[0]);
     if(!target){ this.releaseBridge(); return; }
     if(run.phase!=='advancing'){

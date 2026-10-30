@@ -5,9 +5,9 @@ import path from 'node:path';
 const root = process.cwd();
 const routes = [
   ['home', 'index.html', '/', 'TALETONE MUSIC'],
-  ['story-types', 'story-types/index.html', '/story-types/', 'How It Works'],
-  ['members', 'members/index.html', '/members/', 'About'],
-  ['works', 'works/index.html', '/works/', 'Discography'],
+  ['approach', 'approach/index.html', '/approach/', 'Approach'],
+  ['members', 'about/index.html', '/about/', 'About'],
+  ['works', 'discography/index.html', '/discography/', 'Discography'],
   ['contact', 'contact/index.html', '/contact/', 'Contact'],
 ];
 const errors = [];
@@ -327,7 +327,7 @@ for (const [, file] of routes) inspectHtmlReferences(await text(file), file, '/'
 inspectHtmlReferences(await text('projects/index.html'), 'projects/index.html', '/');
 inspectHtmlReferences(await text('404.html'), '404.html', '/');
 // Generated Works detail pages: real assets, self canonical, valid JSON-LD.
-const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?works\/[a-z0-9-]+\/index\.html$/.test(file));
+const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?discography\/[a-z0-9-]+\/index\.html$/.test(file));
 assert(detailPageFiles.length >= 3 * 37, `expected Works detail pages for every language, found ${detailPageFiles.length}`);
 for (const file of detailPageFiles) {
   const html = await text(file);
@@ -607,7 +607,7 @@ const removedImagePreloadSymbols = [
 for (const symbol of removedImagePreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager image preload returned: ${symbol}`);
 const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
 assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
-assert(worksChapterGateSource.includes("return /^(?:\\/(?:en|ja))?\\/works(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
+assert(worksChapterGateSource.includes("return /^(?:\\/(?:en|ja))?\\/discography(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
 assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME chapter can trigger hidden WORKS cover requests');
 for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
 assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
@@ -644,9 +644,9 @@ assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\
 assert(!worksCss.includes('ttIntroOverlayHandoff'), 'obsolete CSS-only intro handoff is still present');
 
 const redirect = await text('projects/index.html');
-assert(/noindex/i.test(redirect) && /\/story-types\//.test(redirect), 'legacy projects redirect is invalid');
+assert(/noindex/i.test(redirect) && /\/approach\//.test(redirect), 'legacy projects redirect is invalid');
 const notFound = await text('404.html');
-assert(/noindex/i.test(notFound) && /href="\/works\/"/.test(notFound), '404 page is not index-safe or navigable');
+assert(/noindex/i.test(notFound) && /href="\/discography\/"/.test(notFound), '404 page is not index-safe or navigable');
 
 // Portfolio limits from the agency years are gone (the user's call, 2026-10): any credited work may be named.
 // Still kept: no personal phone numbers.

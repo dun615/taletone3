@@ -28,9 +28,9 @@ var ComponentRouting = {
       baseUrl: 'https://taletone.net',
       pages: [
         { key:'home', label:'Home', path:'/', sectionId:'c-home', title:'TALETONE MUSIC — Stories become sound', description:'이야기는 소리가 됩니다. TALETONE MUSIC은 이야기를 소리와 장면으로 빚는 음악 프로덕션입니다.' },
-        { key:'projects', label:'How It Works', path:'/story-types/', sectionId:'c-projects', title:'How It Works | TALETONE MUSIC', description:'TALETONE MUSIC의 세계관 프로젝트와 음악 기반 스토리텔링 작업을 소개합니다.' },
-        { key:'members', label:'About', path:'/members/', sectionId:'c-members', title:'About | TALETONE MUSIC', description:'TALETONE MUSIC을 함께 만드는 프로듀서, 보컬, 아트 디렉터와 크리에이터 멤버들을 소개합니다.' },
-        { key:'works', label:'Discography', path:'/works/', sectionId:'c-works', title:'Discography | TALETONE MUSIC', description:'TALETONE MUSIC이 제작하고 참여한 음악, 앨범, OST, 프로젝트 아카이브를 확인할 수 있습니다.' },
+        { key:'projects', label:'Approach', path:'/approach/', sectionId:'c-projects', title:'Approach | TALETONE MUSIC', description:'TALETONE MUSIC의 세계관 프로젝트와 음악 기반 스토리텔링 작업을 소개합니다.' },
+        { key:'members', label:'About', path:'/about/', sectionId:'c-members', title:'About | TALETONE MUSIC', description:'TALETONE MUSIC을 함께 만드는 프로듀서, 보컬, 아트 디렉터와 크리에이터 멤버들을 소개합니다.' },
+        { key:'works', label:'Discography', path:'/discography/', sectionId:'c-works', title:'Discography | TALETONE MUSIC', description:'TALETONE MUSIC이 제작하고 참여한 음악, 앨범, OST, 프로젝트 아카이브를 확인할 수 있습니다.' },
         { key:'contact', label:'Contact', path:'/contact/', sectionId:'c-contact', title:'Contact | TALETONE MUSIC', description:'음악 제작, 프로젝트 협업, 스토리텔링 사운드 작업을 TALETONE MUSIC에 문의하세요.' }
       ]
     };
@@ -81,9 +81,9 @@ var ComponentRouting = {
     var hash = String((location && location.hash) || '').replace(/^#/,'').replace(/^c-/,'').toLowerCase();
     if(hash && ['projects','members','works','contact'].indexOf(hash) !== -1) return hash;
     var path = String((location && location.pathname) || '/').toLowerCase().replace(/\/index\.html$/,'/');
-    if(path.indexOf('/story-types/') !== -1 || path.indexOf('/projects/') !== -1) return 'projects';
-    if(path.indexOf('/members/') !== -1) return 'members';
-    if(path.indexOf('/works/') !== -1) return 'works';
+    if(path.indexOf('/approach/') !== -1 || path.indexOf('/projects/') !== -1) return 'projects';
+    if(path.indexOf('/about/') !== -1) return 'members';
+    if(path.indexOf('/discography/') !== -1) return 'works';
     if(path.indexOf('/contact/') !== -1) return 'contact';
     return 'home';
   },
@@ -181,7 +181,7 @@ var ComponentRouting = {
     var links = document.querySelectorAll('a[href^="/"]');
     for(var i = 0; i < links.length; i++){
       var href = links[i].getAttribute('href');
-      if(!/^\/(?:(?:en|ja)(?:\/|$))?(?:(?:story-types|members|works|contact)\/)?$/.test(href)) continue;
+      if(!/^\/(?:(?:en|ja)(?:\/|$))?(?:(?:approach|about|discography|contact)\/)?$/.test(href)) continue;
       var next = this._langPath(this._routePath(href));
       if(next !== href) links[i].setAttribute('href', next);
     }

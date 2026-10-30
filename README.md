@@ -7,12 +7,12 @@ GitHub Pages static site: https://taletone.net
 | Chapter | Korean URL | English / Japanese |
 | --- | --- | --- |
 | Home | / | /en/, /ja/ |
-| About | /members/ | /en/members/, /ja/members/ |
-| How It Works | /story-types/ | /en/story-types/, /ja/story-types/ |
-| Discography | /works/ | /en/works/, /ja/works/ |
+| About | /about/ | /en/about/, /ja/about/ |
+| Approach | /approach/ | /en/approach/, /ja/approach/ |
+| Discography | /discography/ | /en/discography/, /ja/discography/ |
 | Contact | /contact/ | /en/contact/, /ja/contact/ |
 
-Existing URLs are retained. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains these five chapters and individual works in all three languages. Retired content is kept in archive/ and never staged for publication.
+Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projects/ and /works/ URLs (including individual works) redirect directly to the new URLs in all languages and preview. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains these five chapters and individual works in all three languages. Retired content is kept in archive/ and never staged for publication.
 
 ## Sources and checks
 

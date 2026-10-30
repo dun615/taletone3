@@ -277,22 +277,22 @@ class Component extends DCLogic {
         if(e.preventDefault) e.preventDefault();
         if(e.stopPropagation) e.stopPropagation();
         var href = this._routePath(a.getAttribute('href') || '/');
-        var map = {'/':'c-home','/story-types/':'c-projects','/projects/':'c-projects','/members/':'c-members','/works/':'c-works','/contact/':'c-contact'};
+        var map = {'/':'c-home','/approach/':'c-projects','/projects/':'c-projects','/about/':'c-members','/discography/':'c-works','/contact/':'c-contact'};
         this.navigateChapter(e, map[href] || 'c-home', href);
       };
       document.addEventListener('click', this._chapterLinkClick, true);
     }
-    // "Listen in Works" links (/works/?work=<slug>) stay on the page: Works gets the request inside the click
+    // "Listen in Works" links (/discography/?work=<slug>) stay on the page: Works gets the request inside the click
     // (so its audio may start) and the page travels to the Works chapter.
     this._workLinkClick = (e)=>{
       var a = e && e.target && e.target.closest ? e.target.closest('a[href*="work="]') : null;
       if(!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var url; try{ url = new URL(a.getAttribute('href'), location.href); }catch(_e){ return; }
       var slug = url.searchParams.get('work');
-      if(!slug || url.origin !== location.origin || this._routePath(url.pathname) !== '/works/') return;
+      if(!slug || url.origin !== location.origin || this._routePath(url.pathname) !== '/discography/') return;
       var api = window.TALETONE_WORKS_API;
       if(api && api.queue) api.queue(slug);
-      this.navigateChapter(e, 'c-works', '/works/');
+      this.navigateChapter(e, 'c-works', '/discography/');
     };
     document.addEventListener('click', this._workLinkClick, true);
   }
@@ -633,8 +633,8 @@ class Component extends DCLogic {
     this.ensureDataReady();
     return {
       nav0:(e)=>this.navigateChapter(e, 'c-home', '/'),
-      nav2:(e)=>this.navigateChapter(e, 'c-projects', '/story-types/'), nav3:(e)=>this.navigateChapter(e, 'c-members', '/members/'),
-      nav4:(e)=>this.navigateChapter(e, 'c-works', '/works/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
+      nav2:(e)=>this.navigateChapter(e, 'c-projects', '/approach/'), nav3:(e)=>this.navigateChapter(e, 'c-members', '/about/'),
+      nav4:(e)=>this.navigateChapter(e, 'c-works', '/discography/'), nav6:(e)=>this.navigateChapter(e, 'c-contact', '/contact/'),
       langKR:()=>this.setLang('kr'), langEN:()=>this.setLang('en'), langJP:()=>this.setLang('jp'),
       HOME: this.HOME || {},
       LATEST_WORK: this.LATEST_WORK || {},

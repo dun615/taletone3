@@ -65,7 +65,7 @@ test("only the current five chapters are indexed", async () => {
   const seo = JSON.parse(await read("assets/data/seo-content.json"));
   assert.deepEqual(
     seo.pages.map((p) => p.label),
-    ["Home", "About", "How It Works", "Discography", "Contact"],
+    ["Home", "About", "Approach", "Discography", "Contact"],
   );
   const sitemap = await read("sitemap.xml");
   assert.ok(!sitemap.includes("/news/"));
@@ -88,7 +88,7 @@ test("runtime route normalization keeps every configured route", async () => {
 });
 
 test("all language metadata exposes exactly five navigation entries and 126 sitemap URLs", async () => {
-  const labels = ["Home", "About", "How It Works", "Discography", "Contact"];
+  const labels = ["Home", "About", "Approach", "Discography", "Contact"];
   for (const prefix of ["", "en/", "ja/"]) {
     const html = await read(prefix + "index.html");
     const data = JSON.parse(
@@ -111,4 +111,49 @@ test("all language metadata exposes exactly five navigation entries and 126 site
     assert.ok(!html.includes("/news/"));
   }
   assert.equal((await read("sitemap.xml")).match(/<loc>/g).length, 126);
+});
+
+test("legacy URLs redirect directly and preserve queries and fragments", async () => {
+  const data = JSON.parse(await read("assets/data/works-data.json"));
+  const sitemap = await read("sitemap.xml");
+  for (const prefix of [
+    "",
+    "en/",
+    "ja/",
+    "preview/",
+    "preview/en/",
+    "preview/ja/",
+  ]) {
+    const pairs = [
+      ["members/", "about/"],
+      ["story-types/", "approach/"],
+      ["projects/", "approach/"],
+      ["works/", "discography/"],
+      ...data.works.map((w) => [
+        "works/" + w.slug + "/",
+        "discography/" + w.slug + "/",
+      ]),
+    ];
+    for (const [oldPath, newPath] of pairs) {
+      const html = await read(prefix + oldPath + "index.html");
+      const target = "/" + prefix + newPath;
+      assert.ok(html.includes('content="0; url=' + target + '"'));
+      assert.ok(html.includes('href="https://taletone.net' + target + '"'));
+      let destination = "";
+      const context = vm.createContext({
+        location: {
+          search: "?work=heart-score",
+          hash: "#c-works",
+          replace: (url) => (destination = url),
+        },
+      });
+      vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], context);
+      assert.equal(destination, target + "?work=heart-score#c-works");
+      assert.ok(
+        !sitemap.includes(
+          "<loc>https://taletone.net/" + prefix + oldPath + "</loc>",
+        ),
+      );
+    }
+  }
 });

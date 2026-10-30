@@ -167,8 +167,8 @@
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
-    "title": "HOW IT",
-    "titleAccent": "WORKS",
+    "title": "",
+    "titleAccent": "APPROACH",
     "subtitle": "레퍼런스가 아니라, 이야기에서 출발합니다.",
     "description": "",
     "cards": [
@@ -179,8 +179,8 @@
         "title": "여름을 그리다",
         "placeholder": "여름을 그리다 앨범 아트",
         "description": "'⁠교활한 토끼굴'⁠이 떠난 여름 바캉스를, 햇살처럼 청량한 밴드 사운드로 그려 냈습니다.",
-        "buttonLabel": "Works에서 들어보기",
-        "link": "/works/?work=drawing-summer",
+        "buttonLabel": "디스코그래피에서 듣기",
+        "link": "/discography/?work=drawing-summer",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
         "image": "assets/works/images/asset-mq65f4gg-5crh-.png-30105540541b.webp",
@@ -196,14 +196,14 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 album artwork",
             "description": "The summer getaway of the Cunning Hares, painted in a band sound as bright as sunlight.",
-            "buttonLabel": "Listen in Works"
+            "buttonLabel": "Listen in Discography"
           },
           "jp": {
             "label": "GAME IP",
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 アルバムアート",
             "description": "「邪兎屋」の夏のバカンスを、陽ざしのように爽やかなバンドサウンドで描きました。",
-            "buttonLabel": "Worksで聴く"
+            "buttonLabel": "Discographyで聴く"
           }
         },
         "openInNewTab": false
@@ -215,8 +215,8 @@
         "title": "마음악보",
         "placeholder": "마음악보 앨범 아트",
         "description": "서로 다른 색의 네 소녀가 하나의 밴드가 되기까지. 그 짧고 눈부신 청춘을 한 곡 안에 담았습니다.",
-        "buttonLabel": "Works에서 들어보기",
-        "link": "/works/?work=heart-score",
+        "buttonLabel": "디스코그래피에서 듣기",
+        "link": "/discography/?work=heart-score",
         "buttonColor": "var(--ink,#141C30)",
         "buttonTextColor": "var(--paper,#fffdf8)",
         "image": "assets/works/images/asset-mq5x4pqt-a1nz-.png-dbd67de3c381.webp",
@@ -232,14 +232,14 @@
             "title": "Heart Score",
             "placeholder": "Heart Score album artwork",
             "description": "Four girls of different colors, becoming one band. That short, dazzling youth, held in a single song.",
-            "buttonLabel": "Listen in Works"
+            "buttonLabel": "Listen in Discography"
           },
           "jp": {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score アルバムアート",
             "description": "違う色を持つ4人の少女が、ひとつのバンドになるまで。その短くまぶしい青春を、一曲に込めました。",
-            "buttonLabel": "Worksで聴く"
+            "buttonLabel": "Discographyで聴く"
           }
         },
         "openInNewTab": false
@@ -253,21 +253,23 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 앨범 아트",
             "description": "'⁠교활한 토끼굴'⁠이 떠난 여름 바캉스를, 햇살처럼 청량한 밴드 사운드로 그려 냈습니다.",
-            "buttonLabel": "Works에서 들어보기"
+            "buttonLabel": "디스코그래피에서 듣기"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "마음악보",
             "placeholder": "마음악보 앨범 아트",
             "description": "서로 다른 색의 네 소녀가 하나의 밴드가 되기까지. 그 짧고 눈부신 청춘을 한 곡 안에 담았습니다.",
-            "buttonLabel": "Works에서 들어보기"
+            "buttonLabel": "디스코그래피에서 듣기"
           }
-        ]
+        ],
+        "title": "",
+        "titleAccent": "APPROACH"
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "HOW IT",
-        "titleAccent": "WORKS",
+        "title": "",
+        "titleAccent": "APPROACH",
         "subtitle": "TALETONE starts from the story, not a reference.",
         "description": "",
         "cards": [
@@ -276,14 +278,14 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 album artwork",
             "description": "The summer getaway of the Cunning Hares, painted in a band sound as bright as sunlight.",
-            "buttonLabel": "Listen in Works"
+            "buttonLabel": "Listen in Discography"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score album artwork",
             "description": "Four girls of different colors, becoming one band. That short, dazzling youth, held in a single song.",
-            "buttonLabel": "Listen in Works"
+            "buttonLabel": "Listen in Discography"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
@@ -380,8 +382,8 @@
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
-        "title": "HOW IT",
-        "titleAccent": "WORKS",
+        "title": "",
+        "titleAccent": "APPROACH",
         "subtitle": "リファレンスではなく、物語から出発します。",
         "description": "",
         "cards": [
@@ -390,14 +392,14 @@
             "title": "여름을 그리다",
             "placeholder": "여름을 그리다 アルバムアート",
             "description": "「邪兎屋」の夏のバカンスを、陽ざしのように爽やかなバンドサウンドで描きました。",
-            "buttonLabel": "Worksで聴く"
+            "buttonLabel": "Discographyで聴く"
           },
           {
             "label": "VTUBER / ARTIST",
             "title": "Heart Score",
             "placeholder": "Heart Score アルバムアート",
             "description": "違う色を持つ4人の少女が、ひとつのバンドになるまで。その短くまぶしい青春を、一曲に込めました。",
-            "buttonLabel": "Worksで聴く"
+            "buttonLabel": "Discographyで聴く"
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
@@ -1082,7 +1084,7 @@
     "langEn": "EN",
     "langJp": "JP",
     "navHome": "HOME",
-    "navProjects": "HOW IT WORKS",
+    "navProjects": "APPROACH",
     "navMembers": "ABOUT",
     "navWorks": "DISCOGRAPHY",
     "navContact": "CONTACT",
@@ -1116,7 +1118,7 @@
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "HOW IT WORKS",
+        "navProjects": "APPROACH",
         "navMembers": "ABOUT",
         "navWorks": "DISCOGRAPHY",
         "navContact": "CONTACT",
@@ -1150,7 +1152,7 @@
         "langEn": "EN",
         "langJp": "JP",
         "navHome": "HOME",
-        "navProjects": "HOW IT WORKS",
+        "navProjects": "APPROACH",
         "navMembers": "ABOUT",
         "navWorks": "DISCOGRAPHY",
         "navContact": "CONTACT",

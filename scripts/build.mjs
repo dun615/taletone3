@@ -32,9 +32,9 @@ const languages = [
 ];
 
 const labels = {
-  kr: { nav: '주요 페이지', languages: '언어', storyTypes: 'How It Works', trackRecord: 'Track Record', members: '소개', works: '디스코그래피', contact: '프로젝트 문의' },
-  en: { nav: 'Main pages', languages: 'Language', storyTypes: 'How It Works', trackRecord: 'Track Record', members: 'About', works: 'Discography', contact: 'Project Inquiry' },
-  jp: { nav: '主要ページ', languages: '言語', storyTypes: 'How It Works', trackRecord: 'Track Record', members: '紹介', works: 'ディスコグラフィー', contact: 'プロジェクトのご相談' },
+  kr: { nav: '주요 페이지', languages: '언어', storyTypes: 'Approach', trackRecord: 'Track Record', members: '소개', works: '디스코그래피', contact: '프로젝트 문의' },
+  en: { nav: 'Main pages', languages: 'Language', storyTypes: 'Approach', trackRecord: 'Track Record', members: 'About', works: 'Discography', contact: 'Project Inquiry' },
+  jp: { nav: '主要ページ', languages: '言語', storyTypes: 'Approach', trackRecord: 'Track Record', members: '紹介', works: 'ディスコグラフィー', contact: 'プロジェクトのご相談' },
 };
 
 const [shell, template, component, siteJsonText, seoJsonText, works] = await Promise.all([
@@ -281,7 +281,7 @@ const detailLabels = {
 const worksByDate = [...works.works].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 const assetPath = (value) => `/${String(value || '').replace(/\\/g, '/').replace(/^\/+/, '')}`;
 const isoDate = (value) => String(value || '').replace(/\./g, '-');
-const workPath = (lang, work) => `${lang.prefix}/works/${work.slug}/`;
+const workPath = (lang, work) => `${lang.prefix}/discography/${work.slug}/`;
 const detailCss = await read('assets/css/detail.css');
 const missingSlug = works.works.find((item) => !/^[a-z0-9-]+$/.test(item.slug || ''));
 if (missingSlug) throw new Error(`Every work needs a lowercase "slug": ${missingSlug.id || missingSlug.slotId}`);
@@ -414,7 +414,7 @@ ${items.map((item, i) => `<li><span class="no">${esc(numberOf(item, i))}</span><
 ${description ? `<p class="tt-d-lead">${esc(description)}</p>` : ''}
 <div class="tt-d-actions">
 ${work.youtube ? `<a class="tt-d-button" href="${esc(work.youtube)}" rel="noopener">${esc(d.youtube)} <span aria-hidden="true">&#8599;</span></a>` : ''}
-<a class="tt-d-button is-ghost" href="${lang.prefix}/works/">${esc(d.allWorks)}</a>
+<a class="tt-d-button is-ghost" href="${lang.prefix}/discography/">${esc(d.allWorks)}</a>
 </div>
 </div>
 <aside class="tt-d-record${factsOnly ? ' is-facts' : ''}">
@@ -452,7 +452,7 @@ ${pager(lang, list[index - 1], list[index + 1], pageOf, titleOf)}`;
     ogType: isAlbum ? 'music.album' : 'music.song',
     image: assetPath(work.ogImage || work.image),
     schema,
-    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/works/`], [w.title, pageOf(lang, work)]],
+    crumbs: [[d.home, `${lang.prefix}/`], [d.works, `${lang.prefix}/discography/`], [w.title, pageOf(lang, work)]],
     body,
     preview,
   });
@@ -506,7 +506,7 @@ const previewPage = (page, lang) => renderPage(page, lang, {
   APP_VERSION: version(previewApp),
   SITE_VERSION: version(previewSiteScript),
   NANUM_FONT_URL: previewNanum,
-}).replace(/href="(\/(?:en\/|ja\/)?works\/[^"]*)"/g,'href="/preview$1"').replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
+}).replace(/href="(\/(?:en\/|ja\/)?discography\/[^"]*)"/g,'href="/preview$1"').replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
   .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
   .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
   .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
@@ -534,7 +534,22 @@ if (!check && !listOnly) {
     }
   }
 }
+// GitHub Pages serves static files: preserve legacy links with immediate HTML redirects.
+// These aliases never appear in the sitemap or internal navigation.
+const redirectPage = (target, lang) => `<!DOCTYPE html>
+<html lang="${lang.html}"><head><meta charset="utf-8"><meta name="robots" content="noindex, follow">
+<title>Page moved | TALETONE MUSIC</title><link rel="canonical" href="${baseUrl}${target}">
+<meta http-equiv="refresh" content="0; url=${target}">
+<script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script>
+</head><body><a href="${target}">Continue to TALETONE MUSIC</a></body></html>`;
+const legacyOutputs = ['', '/preview'].flatMap(preview => languages.flatMap(lang => {
+  const prefix=preview+lang.prefix;
+  const pairs=[['/members/','/about/'],['/story-types/','/approach/'],['/projects/','/approach/'],['/works/','/discography/'],
+    ...worksByDate.map(work=>['/works/'+work.slug+'/','/discography/'+work.slug+'/'])];
+  return pairs.map(([from,to])=>[(prefix+from+'index.html').slice(1),redirectPage(prefix+to,lang)]);
+}));
 const outputs = [
+  ...legacyOutputs,
   ...seo.pages.flatMap((page) => languages.map((lang) => [fileFor(lang, page.path), renderPage(page, lang)])),
   ...detailPages,
   ['assets/app/app.js', appBundle],

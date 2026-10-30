@@ -374,7 +374,7 @@
   // Scrolling alone does not count: the intro glide scrolls #content by itself.
   var deferredReady = false;
   function loadDeferredImages() {
-    if (!deferredReady && /\/(story-types|members|works|news|contact)\/?$/.test(location.pathname)) deferredReady = true;
+    if (!deferredReady && /\/(approach|about|discography|contact)\/?$/.test(location.pathname)) deferredReady = true;
     if (!deferredReady) return;
     document.querySelectorAll('img[data-defer-src]').forEach(function (image) {
       image.src = image.getAttribute('data-defer-src');
