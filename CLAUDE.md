@@ -8,4 +8,4 @@ See README.md for which file to edit for each kind of change.
 - Korean text uses Nanum Gothic via the `--tt-noto-primary` CSS variable (JP pages swap in Noto Sans JP); don't add other Korean font names to font stacks.
 - `npm install` is only needed for the optional tools in `scripts/optimize-assets.mjs` (sharp); build and checks have no dependencies.
 
-Styles: edit src/styles/site-and-dialogs.css and src/styles/discography.css. assets/css/works.css is generated. Preview shares live sources; do not recreate duplicate preview-src code. The News index uses the existing static detail-page layout.
+Styles: edit src/styles/site-and-dialogs.css and src/styles/discography.css. assets/css/works.css is generated. Preview shares live sources; do not recreate duplicate preview-src code. News and RSS are retired; the five chapter routes in seo-content.json are the indexable navigation source.

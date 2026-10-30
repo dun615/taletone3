@@ -8,7 +8,6 @@ const routes = [
   ['story-types', 'story-types/index.html', '/story-types/', 'How It Works'],
   ['members', 'members/index.html', '/members/', 'About'],
   ['works', 'works/index.html', '/works/', 'Discography'],
-  ['news', 'news/index.html', '/news/', 'News'],
   ['contact', 'contact/index.html', '/contact/', 'Contact'],
 ];
 const errors = [];
@@ -134,7 +133,6 @@ for (const [key, file, route, expectedTitle] of routes) {
   }
   assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
   assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
-  if(key==='news'){ assert(html.includes('tt-d-card') && !html.includes('<x-dc>'), 'News must be a static collection'); continue; }
   assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
   assert(!html.includes('assets/data/track-record.js'), `${file}: standalone track-record request returned`);
   assert(!html.includes('assets/icons/favicon.svg'), `${file}: PNG-wrapped SVG favicon returned`);
@@ -273,7 +271,7 @@ for (const [key, file, route, expectedTitle] of routes) {
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
 assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synchronized');
-assert(new Set(fallbackHashes.values()).size === routes.filter(([key])=>key!=='news').length, 'route fallback content is not unique');
+assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
 // the dive plays behind Home (the name reads from the first frame) and settles in 1.7 s
@@ -328,9 +326,9 @@ const inspectHtmlReferences = (html, source, basePath) => {
 for (const [, file] of routes) inspectHtmlReferences(await text(file), file, '/');
 inspectHtmlReferences(await text('projects/index.html'), 'projects/index.html', '/');
 inspectHtmlReferences(await text('404.html'), '404.html', '/');
-// Generated Works/News detail pages: real assets, self canonical, valid JSON-LD.
-const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?(?:works|news)\/[a-z0-9-]+\/index\.html$/.test(file));
-assert(detailPageFiles.length >= 3 * (21 + 3), `expected Works/News detail pages for every language, found ${detailPageFiles.length}`);
+// Generated Works detail pages: real assets, self canonical, valid JSON-LD.
+const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?works\/[a-z0-9-]+\/index\.html$/.test(file));
+assert(detailPageFiles.length >= 3 * 37, `expected Works detail pages for every language, found ${detailPageFiles.length}`);
 for (const file of detailPageFiles) {
   const html = await text(file);
   const route = `/${file.replace(/index\.html$/, '')}`;
@@ -357,15 +355,11 @@ const sitemap = await text('sitemap.xml');
 assert(/Sitemap:\s*https:\/\/taletone\.net\/sitemap\.xml/i.test(robots), 'robots.txt: sitemap declaration missing');
 for (const [, , route] of routes) assert(sitemap.includes(`<loc>https://taletone.net${route}</loc>`), `sitemap.xml: missing ${route}`);
 
-// News feeds, one per language, each listing every news item and linked from the pages of its language.
-const newsItems = JSON.parse(await text('assets/data/site-content.json')).news;
-for (const [prefix] of [[''], ['/en'], ['/ja']]) {
-  const feed = await text(`${prefix.slice(1)}${prefix ? '/' : ''}rss.xml`);
-  assert(feed.startsWith('<?xml') && feed.includes('<rss version="2.0"'), `${prefix}/rss.xml: not an RSS 2.0 feed`);
-  for (const item of newsItems) assert(feed.includes(`<link>https://taletone.net${prefix}/news/${item.slug}/</link>`), `${prefix}/rss.xml: missing ${item.slug}`);
-  assert(!/⁠/.test(feed), `${prefix}/rss.xml: invisible word joiners left in the text`);
-  const home = await text(`${prefix.slice(1)}${prefix ? '/' : ''}index.html`);
-  assert(home.includes(`type="application/rss+xml"`) && home.includes(`href="https://taletone.net${prefix}/rss.xml"`), `${prefix || '/'} page: news feed link missing`);
+assert(!sitemap.includes('/news/'), 'retired News must not appear in sitemap');
+for(const prefix of ['', 'en/', 'ja/']) {
+  assert(!await exists(prefix+'news/index.html'), 'retired News route was generated');
+  assert(!await exists(prefix+'rss.xml'), 'retired RSS was generated');
+  assert(!(await text(prefix+'index.html')).includes('application/rss+xml'), 'retired RSS discovery link returned');
 }
 
 // Localized routes: same app, own URL, language-specific head and fallback content.
@@ -382,7 +376,7 @@ for (const [prefix, htmlLang] of [['', 'ko'], ['/en', 'en'], ['/ja', 'ja']]) {
       assert(html.includes(`<link rel="alternate" hreflang="${lang}" href="https://taletone.net${langPrefix}${route}">`), `${localFile}: hreflang ${lang} does not point at its language URL`);
     }
     assert(sitemap.includes(`<loc>${url}</loc>`), `sitemap.xml: missing ${prefix}${route}`);
-    assert(cleanText(route === '/news/' ? html : attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
+    assert(cleanText(attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
   }
 }
 const manifest = JSON.parse(await text('site.webmanifest'));
@@ -423,7 +417,6 @@ for (const language of siteLanguages) {
 const clearedChapterCopy = {
   membersMeta: ['description'],
   worksMeta: ['subtitle', 'description'],
-  newsMeta: ['subtitle', 'description'],
 };
 for (const [section, fields] of Object.entries(clearedChapterCopy)) {
   for (const field of fields) {
@@ -463,10 +456,10 @@ for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1
   }
 }
 assert(!Object.hasOwn(siteJson, 'translation'), 'retired TRANSLATE content returned');
-for (const key of ['home', 'projects', 'contact', 'membersMeta', 'worksMeta', 'newsMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
+for (const key of ['home', 'projects', 'contact', 'membersMeta', 'worksMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
   assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
 }
-for (const [key, minimum] of Object.entries({ members: 1, news: 1, partners: 1, bridges: 4, trackRecord: 2 })) {
+for (const [key, minimum] of Object.entries({ members: 1, partners: 1, bridges: 4, trackRecord: 2 })) {
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
 const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
@@ -477,16 +470,7 @@ for (const [index, item] of (siteJson.trackRecord || []).entries()) {
 }
 // site-content.json has no typography block any more (nothing read it); fonts come from the template's CSS variables
 assert(!('typography' in siteJson), 'site-content.json typography returned: nothing reads it');
-const optimizedNewsImagePath = 'assets/works/images/bubblesweet-news-1920.webp';
-const legacyNewsImagePath = 'assets/works/images/4K.mp4_20260711_020133.397.png';
-const optimizedNewsEntry = (siteJson.news || []).find((item) => item.slotId === 'news-3');
-assert(optimizedNewsEntry?.image === optimizedNewsImagePath, 'news-3 does not use the optimized WebP image');
-assert(!JSON.stringify(siteJson).replace(/\\/g, '/').includes(legacyNewsImagePath), 'legacy 8.94 MB NEWS PNG is still referenced');
-assert(!(await exists(legacyNewsImagePath)), 'removed legacy NEWS source image returned');
-const optimizedNewsImage = await readFile(path.join(root, optimizedNewsImagePath));
-assert(optimizedNewsImage.toString('ascii', 0, 4) === 'RIFF' && optimizedNewsImage.toString('ascii', 8, 16) === 'WEBPVP8 ', 'optimized NEWS image is not lossy WebP');
-assert((optimizedNewsImage.readUInt16LE(26) & 0x3fff) === 1920 && (optimizedNewsImage.readUInt16LE(28) & 0x3fff) === 1080, 'optimized NEWS image must be 1920x1080');
-assert(optimizedNewsImage.byteLength <= 300_000, `optimized NEWS image exceeds 300 KB budget: ${optimizedNewsImage.byteLength} bytes`);
+
 assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
 assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
 const normalizedWorksSource = JSON.stringify(worksJson).replace(/\\/g, '/');

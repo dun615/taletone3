@@ -2,7 +2,7 @@
 //   src/page.html + assets/data/*.json             -> route pages for KR (/), EN (/en/) and JP (/ja/)
 //   src/app/template.html, src/app/component.js + src/app/parts/*.js -> assets/app/app.js (shared by every route page)
 //   assets/data/*-content.json                     -> assets/data/*-content.js
-//   assets/data/works-data.json, site-content.json -> works/<slug>/, news/<slug>/ detail pages per language
+//   assets/data/works-data.json, site-content.json -> works/<slug>/ detail pages per language
 //   assets/data/seo-content.json + the above       -> sitemap.xml
 //
 //   node scripts/build.mjs          rewrite generated files
@@ -12,7 +12,7 @@
 // Pages load the app from assets/app/app.js and the data as window globals
 // from the .js files. Edit the sources, never the generated output.
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { nanumCharacters, PREVIEW_SOURCES } from './font-coverage.mjs';
@@ -32,9 +32,9 @@ const languages = [
 ];
 
 const labels = {
-  kr: { nav: '주요 페이지', languages: '언어', storyTypes: '어떤 이야기와 일하는가', trackRecord: 'Track Record', latestNews: '최신 소식', members: '멤버', works: '작업물', news: '소식', contact: '프로젝트 문의' },
-  en: { nav: 'Main pages', languages: 'Language', storyTypes: 'Stories we work with', trackRecord: 'Track Record', latestNews: 'Latest News', members: 'Members', works: 'Works', news: 'News', contact: 'Project Inquiry' },
-  jp: { nav: '主要ページ', languages: '言語', storyTypes: '私たちが向き合う物語', trackRecord: 'Track Record', latestNews: '最新ニュース', members: 'メンバー', works: '制作実績', news: 'ニュース', contact: 'プロジェクトのご相談' },
+  kr: { nav: '주요 페이지', languages: '언어', storyTypes: 'How It Works', trackRecord: 'Track Record', members: '소개', works: '디스코그래피', contact: '프로젝트 문의' },
+  en: { nav: 'Main pages', languages: 'Language', storyTypes: 'How It Works', trackRecord: 'Track Record', members: 'About', works: 'Discography', contact: 'Project Inquiry' },
+  jp: { nav: '主要ページ', languages: '言語', storyTypes: 'How It Works', trackRecord: 'Track Record', members: '紹介', works: 'ディスコグラフィー', contact: 'プロジェクトのご相談' },
 };
 
 const [shell, template, component, siteJsonText, seoJsonText, works] = await Promise.all([
@@ -149,7 +149,7 @@ function jsonLd(page, lang) {
     alternateName: seo.alternateNames,
     url: rootUrl,
     logo: `${rootUrl}assets/icons/icon-512.png`,
-    email: 'contact@taletone.net',
+    email: site.contact.email,
     description: home.description,
   };
   const website = {
@@ -171,7 +171,8 @@ function jsonLd(page, lang) {
     isPartOf: { '@id': `${rootUrl}#website` },
     about: { '@id': `${rootUrl}#organization` },
   };
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [organization, website, webPage] }).replace(/</g, '\\u003c');
+  const navigation = seo.pages.map((entry,index)=>({'@type':'SiteNavigationElement',position:index+1,name:entry.label,url:urlFor(lang,entry.path)}));
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [organization, website, webPage, ...navigation] }).replace(/</g, '\\u003c');
 }
 
 function noscriptBody(page, lang) {
@@ -184,19 +185,24 @@ function noscriptBody(page, lang) {
   if (page.key === 'home') {
     const projects = localized(site.projects, lang.key);
     section(t.storyTypes, `<p>${esc(projects.subtitle)}</p>\n<p>${esc(projects.description)}</p>`);
+    const featured=works.works.find(work=>work.slug===home.listen?.slug);
+    if(featured){const work=localized(featured,lang.key);section(home.listen.label, '<p><a href="'+workPath(lang,featured)+'">'+esc(work.title)+'</a> — '+esc(work.artist)+'</p>');}
     section(t.trackRecord, `<ul>\n${site.trackRecord.map((item) => localized(item, lang.key))
       .map((item) => `<li>${esc(item.value)} · ${esc(item.label)} (${esc(item.note)})</li>`).join('\n')}\n</ul>`);
-    section(t.latestNews, `<ul>\n${site.news.map((item) => localized(item, lang.key))
-      .map((item) => `<li>${esc(item.date)} · <a href="${newsPath(lang, item)}">${esc(item.title)}</a></li>`).join('\n')}\n</ul>`);
   }
   if (page.key === 'projects') {
     const projects = localized(site.projects, lang.key);
     section(t.storyTypes, `<p>${esc(projects.subtitle)}</p>\n<p>${esc(projects.description)}</p>`);
+    const proof=projects.proof||{};
+    for(const row of proof.rows||[]) section(row.label, '<p>'+esc((row.steps||[]).map(step=>step.text).join(' → '))+'</p>'+paragraphs(row.result));
+    if(proof.closing) sections.push(paragraphs(proof.closing));
+    if(proof.case?.title){ const item=proof.case;section(item.title,'<dl>'+(item.steps||[]).map(step=>'<dt>'+esc(step.label)+'</dt><dd>'+esc(step.text)+'</dd>').join('')+'</dl>'+paragraphs(item.lesson)); }
     for (const card of projects.cards.map((item) => localized(item, lang.key))) {
       sections.push(`<article>\n<h3>${esc(card.label)} · ${esc(card.title)}</h3>\n<p>${esc(card.description)}</p>\n</article>`);
     }
   }
   if (page.key === 'members') {
+    const about=localized(site.membersMeta,lang.key);section(about.titleAccent,paragraphs(about.subtitle));
     for (const member of site.members.map((item) => localized(item, lang.key))) {
       sections.push(`<article>\n<h2>${esc(member.name)} — ${esc(member.role)}</h2>\n${member.tagline ? `<p>${esc(member.tagline)}</p>\n` : ''}${paragraphs(member.creditsText)}\n</article>`);
     }
@@ -207,14 +213,10 @@ function noscriptBody(page, lang) {
       .map((item) => `<li><strong><a href="${workPath(lang, item)}">${esc(item.title)}</a></strong> — ${esc(item.artist)} · ${esc(item.type)} (${esc(item.date)})${item.description ? `<br>${esc(String(item.description).trim())}` : ''}</li>`)
       .join('\n')}\n</ul>`);
   }
-  if (page.key === 'news') {
-    for (const item of site.news.map((news) => localized(news, lang.key))) {
-      sections.push(`<article>\n<h2>${esc(item.date)} · <a href="${newsPath(lang, item)}">${esc(item.title)}</a></h2>\n${paragraphs(item.body || item.summary)}\n</article>`);
-    }
-  }
+
   if (page.key === 'contact') {
     const contact = localized(site.contact, lang.key);
-    section(`${contact.titleLine1} ${contact.titleAccent}`, `<p>${esc(contact.subtitle)}</p>\n<p>${esc(contact.caption)}</p>`);
+    section(`${contact.titleLine1} ${contact.titleAccent}`, `<p>${esc(contact.subtitle)}</p>\n<p>${esc(contact.caption)}</p><ul>${(contact.guideItems||[]).map(item=>'<li>'+esc(item)+'</li>').join('')}</ul>`);
   }
 
   const nav = seo.pages.map((p) => `<a href="${lang.prefix}${p.path}">${esc(p.label)}</a>`).join('\n');
@@ -237,11 +239,9 @@ ${switcher}
 
 function renderPage(page, lang, overrides = {}) {
   const copy = pageCopy(page, lang);
-  if(page.key==='news') return newsIndexPage(page,lang);
   const hreflang = [
     ...languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${urlFor(l, page.path)}">`),
     `<link rel="alternate" hreflang="x-default" href="${urlFor(languages[0], page.path)}">`,
-    feedLink(lang),
   ].join('\n');
   const ogLocale = [
     `<meta property="og:locale" content="${lang.locale}">`,
@@ -270,35 +270,21 @@ function renderPage(page, lang, overrides = {}) {
   });
 }
 
-function newsIndexPage(page,lang){
-  const copy=pageCopy(page,lang);
-  return detailPage({lang,pathFor:l=>l.prefix+'/news/',title:copy.title.replace(/ \| TALETONE MUSIC.*$/,''),description:copy.description,ogType:'website',image:'/assets/social/og-image.png',schema:{'@type':'CollectionPage',url:urlFor(lang,page.path),name:copy.title},crumbs:[[labels[lang.key].nav,lang.prefix+'/'],[labels[lang.key].news,lang.prefix+'/news/']],body:'<h1>'+esc(labels[lang.key].news)+'</h1>'+site.news.map(item=>{var n=localized(item,lang.key);return '<article class="tt-d-card"><p>'+esc(n.date)+'</p><h2><a href="'+newsPath(lang,item)+'">'+esc(n.title)+'</a></h2>'+paragraphs(n.summary)+'</article>';}).join('')});
-}
-
-// ---- Works / News detail pages: lightweight static pages, one per item and language ----
+// ---- Works detail pages: lightweight static pages, one per item and language ----
 
 const detailLabels = {
-  kr: { home: '홈', works: 'Works', news: 'News', skip: '본문으로 바로가기', release: '발매일', format: '형태', type: '구분', artist: '아티스트', listen: '미리 듣기', youtube: 'YouTube에서 보기', credits: 'Credits', tracks: '수록곡', versions: '언어별 버전', prev: '이전', next: '다음', allWorks: '전체 작업물 보기', allNews: '전체 소식 보기', viewOnSite: '사이트에서 보기' },
-  en: { home: 'Home', works: 'Works', news: 'News', skip: 'Skip to content', release: 'Released', format: 'Format', type: 'Release', artist: 'Artist', listen: 'Preview', youtube: 'Watch on YouTube', credits: 'Credits', tracks: 'Tracklist', versions: 'Language versions', prev: 'Previous', next: 'Next', allWorks: 'All works', allNews: 'All news', viewOnSite: 'View on site' },
-  jp: { home: 'ホーム', works: 'Works', news: 'News', skip: '本文へスキップ', release: 'リリース', format: '形態', type: '区分', artist: 'アーティスト', listen: '試聴', youtube: 'YouTubeで見る', credits: 'Credits', tracks: '収録曲', versions: '言語別バージョン', prev: '前へ', next: '次へ', allWorks: 'すべての制作実績', allNews: 'すべてのニュース', viewOnSite: 'サイトで見る' },
+  kr: { home: '홈', works: 'Discography', skip: '본문으로 바로가기', release: '발매일', format: '형태', type: '구분', artist: '아티스트', listen: '미리 듣기', youtube: 'YouTube에서 보기', credits: 'Credits', tracks: '수록곡', versions: '언어별 버전', prev: '이전', next: '다음', allWorks: '전체 작업물 보기', viewOnSite: '사이트에서 보기' },
+  en: { home: 'Home', works: 'Works', skip: 'Skip to content', release: 'Released', format: 'Format', type: 'Release', artist: 'Artist', listen: 'Preview', youtube: 'Watch on YouTube', credits: 'Credits', tracks: 'Tracklist', versions: 'Language versions', prev: 'Previous', next: 'Next', allWorks: 'All works', viewOnSite: 'View on site' },
+  jp: { home: 'ホーム', works: 'Works', skip: '本文へスキップ', release: 'リリース', format: '形態', type: '区分', artist: 'アーティスト', listen: '試聴', youtube: 'YouTubeで見る', credits: 'Credits', tracks: '収録曲', versions: '言語別バージョン', prev: '前へ', next: '次へ', allWorks: 'すべての制作実績', viewOnSite: 'サイトで見る' },
 };
 
 const worksByDate = [...works.works].sort((a, b) => String(b.date).localeCompare(String(a.date)));
 const assetPath = (value) => `/${String(value || '').replace(/\\/g, '/').replace(/^\/+/, '')}`;
 const isoDate = (value) => String(value || '').replace(/\./g, '-');
-// news feeds (rssFeed below), one per language, linked from every page's head
-const feedTitle = { kr: 'TALETONE MUSIC 소식', en: 'TALETONE MUSIC News', jp: 'TALETONE MUSIC ニュース' };
-const feedPath = (lang) => `${lang.prefix}/rss.xml`;
-function feedLink(lang) {
-  return `<link rel="alternate" type="application/rss+xml" title="${esc(feedTitle[lang.key])}" href="${baseUrl}${feedPath(lang)}">`;
-}
-// news dates are KST calendar days
-const rfc822 = (value) => new Date(`${isoDate(value)}T09:00:00+09:00`).toUTCString();
 const workPath = (lang, work) => `${lang.prefix}/works/${work.slug}/`;
-const newsPath = (lang, item) => `${lang.prefix}/news/${item.slug}/`;
 const detailCss = await read('assets/css/detail.css');
-const missingSlug = [...works.works, ...site.news].find((item) => !/^[a-z0-9-]+$/.test(item.slug || ''));
-if (missingSlug) throw new Error(`Every work and news item needs a lowercase "slug": ${missingSlug.id || missingSlug.slotId}`);
+const missingSlug = works.works.find((item) => !/^[a-z0-9-]+$/.test(item.slug || ''));
+if (missingSlug) throw new Error(`Every work needs a lowercase "slug": ${missingSlug.id || missingSlug.slotId}`);
 
 function detailPage({ lang, pathFor, title, description, ogType, image, schema, crumbs, body, preview = false }) {
   const d = detailLabels[lang.key];
@@ -322,7 +308,6 @@ function detailPage({ lang, pathFor, title, description, ogType, image, schema, 
 <link rel="canonical" href="${url}">
 ${languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${baseUrl}${pathFor(l)}">`).join('\n')}
 <link rel="alternate" hreflang="x-default" href="${baseUrl}${pathFor(languages[0])}">
-${feedLink(lang)}
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="TALETONE MUSIC">
 <meta property="og:title" content="${esc(fullTitle)}">
@@ -473,87 +458,9 @@ ${pager(lang, list[index - 1], list[index + 1], pageOf, titleOf)}`;
   });
 }
 
-function newsPage(item, index, lang) {
-  const d = detailLabels[lang.key];
-  const n = localized(item, lang.key);
-  const titleOf = (news) => localized(news, lang.key).title;
-  const summary = String(n.summary || '').trim() || String(n.body || '').trim().split('\n')[0];
-  const body = `<article class="tt-d-article">
-<p class="tt-d-kicker">${esc(n.tag || n.category || '')} · ${esc(item.date)}</p>
-<h1>${esc(n.title)}</h1>
-</article>
-<div class="tt-d-hero is-wide"><figure class="tt-d-cover"><img src="${esc(assetPath(item.image))}" alt="${esc(n.title)}" width="1600" height="900"></figure></div>
-<article class="tt-d-article tt-d-section">
-${paragraphs(n.body || n.summary)}
-<div class="tt-d-actions"><a class="tt-d-button is-ghost" href="${lang.prefix}/news/">${esc(d.allNews)}</a></div>
-</article>
-${pager(lang, site.news[index - 1], site.news[index + 1], newsPath, titleOf)}`;
-  const schema = {
-    '@type': 'NewsArticle',
-    '@id': `${baseUrl}${newsPath(lang, item)}#article`,
-    headline: n.title,
-    url: `${baseUrl}${newsPath(lang, item)}`,
-    description: summary,
-    image: `${baseUrl}${assetPath(item.image)}`,
-    datePublished: isoDate(item.date),
-    inLanguage: lang.html,
-    author: { '@type': 'Organization', '@id': `${baseUrl}/#organization`, name: seo.siteName, url: `${baseUrl}/` },
-    publisher: { '@type': 'Organization', '@id': `${baseUrl}/#organization`, name: seo.siteName, logo: { '@type': 'ImageObject', url: `${baseUrl}/assets/icons/icon-512.png` } },
-    mainEntityOfPage: `${baseUrl}${newsPath(lang, item)}`,
-  };
-  return detailPage({
-    lang,
-    pathFor: (l) => newsPath(l, item),
-    title: n.title,
-    description: summary.length > 160 ? `${summary.slice(0, 157)}…` : summary,
-    ogType: 'article',
-    image: assetPath(item.ogImage || item.image),
-    schema,
-    crumbs: [[d.home, `${lang.prefix}/`], [d.news, `${lang.prefix}/news/`], [n.title, newsPath(lang, item)]],
-    body,
-  });
-}
-
 const detailPages = [
   ...worksByDate.flatMap((work, i) => languages.map((lang) => [`${workPath(lang, work).slice(1)}index.html`, workPage(work, i, lang)])),
-  ...site.news.flatMap((item, i) => languages.map((lang) => [`${newsPath(lang, item).slice(1)}index.html`, newsPage(item, i, lang)])),
 ];
-
-// ---- News feeds: /rss.xml (Korean), /en/rss.xml, /ja/rss.xml (RSS 2.0, for Naver and feed readers) ----
-function rssFeed(lang) {
-  const newsPage = seo.pages.find((page) => page.key === 'news');
-  const items = [...site.news].sort((a, b) => String(b.date).localeCompare(String(a.date))).map((item) => {
-    const n = localized(item, lang.key);
-    // (U+2060 word joiners keep Korean particles on the line in the page; a feed reader needs plain text)
-    const text = String(n.summary || n.body || '').replace(/\r|⁠/g, '').split(/\n\s*\n/).map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 2).join(' ');
-    const url = `${baseUrl}${newsPath(lang, item)}`;
-    return [
-      '    <item>',
-      `      <title>${esc(n.title)}</title>`,
-      `      <link>${url}</link>`,
-      `      <guid isPermaLink="true">${url}</guid>`,
-      `      <pubDate>${rfc822(item.date)}</pubDate>`,
-      n.tag || n.category ? `      <category>${esc(n.tag || n.category)}</category>` : '',
-      `      <description>${esc(text.length > 300 ? `${text.slice(0, 297)}…` : text)}</description>`,
-      '    </item>',
-    ].filter(Boolean).join('\n');
-  });
-  const newest = [...site.news].map((item) => item.date).sort().pop();
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${esc(feedTitle[lang.key])}</title>
-    <link>${baseUrl}${lang.prefix}/news/</link>
-    <description>${esc(pageCopy(newsPage, lang).description)}</description>
-    <language>${lang.html}</language>
-    <atom:link href="${baseUrl}${feedPath(lang)}" rel="self" type="application/rss+xml"/>
-    ${newest ? `<lastBuildDate>${rfc822(newest)}</lastBuildDate>` : ''}
-    <image><url>${baseUrl}/assets/icons/icon-512.png</url><title>${esc(feedTitle[lang.key])}</title><link>${baseUrl}${lang.prefix}/news/</link></image>
-${items.join('\n')}
-  </channel>
-</rss>
-`;
-}
 
 function sitemap() {
   const entry = (pathFor) => languages.map((lang) => [
@@ -566,7 +473,6 @@ function sitemap() {
   const urls = [
     ...seo.pages.flatMap((page) => entry((lang) => `${lang.prefix}${page.path}`)),
     ...worksByDate.flatMap((work) => entry((lang) => workPath(lang, work))),
-    ...site.news.flatMap((item) => entry((lang) => newsPath(lang, item))),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -600,7 +506,7 @@ const previewPage = (page, lang) => renderPage(page, lang, {
   APP_VERSION: version(previewApp),
   SITE_VERSION: version(previewSiteScript),
   NANUM_FONT_URL: previewNanum,
-}).replace(/href="(\/(?:en\/|ja\/)?(?:news|works)\/[^"]*)"/g,'href="/preview$1"').replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
+}).replace(/href="(\/(?:en\/|ja\/)?works\/[^"]*)"/g,'href="/preview$1"').replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
   .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
   .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
   .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
@@ -618,6 +524,16 @@ const previewOutputs = [
   ...previewWorksByDate.flatMap((work, i) => languages.map((lang) => [`preview${workPath(lang, work)}index.html`, workPage(work, i, lang, previewWorksByDate, true)])),
 ];
 
+// Retired News and RSS have no replacement. Remove prior generated artifacts so Pages serves 404.
+if (!check && !listOnly) {
+  for (const prefix of ['', 'en/', 'ja/', 'preview/', 'preview/en/', 'preview/ja/']) {
+    for (const relative of [prefix+'news', prefix+'rss.xml']) {
+      const target=path.resolve(root,relative);
+      if(!target.startsWith(root+path.sep)) throw new Error('Invalid retired route path');
+      await rm(target,{recursive:true,force:true});
+    }
+  }
+}
 const outputs = [
   ...seo.pages.flatMap((page) => languages.map((lang) => [fileFor(lang, page.path), renderPage(page, lang)])),
   ...detailPages,
@@ -627,7 +543,6 @@ const outputs = [
   ['assets/data/site-content.js', siteScript],
   ['assets/data/seo-content.js', seoScript],
   ['sitemap.xml', sitemap()],
-  ...languages.map((lang) => [feedPath(lang).slice(1), rssFeed(lang)]),
 ];
 
 if (listOnly) { console.log(outputs.map(([relative]) => relative).join('\n')); process.exit(0); }

@@ -545,16 +545,12 @@ async function navigateForInteraction(client, url, waitMs = 900) {
 async function runRegressionChecks(chrome, origin){
   const target=await(await fetch('http://127.0.0.1:'+chrome.port+'/json/new?about:blank',{method:'PUT'})).json();
   const client=new CdpClient(target.webSocketDebuggerUrl);await client.ready;
-  const newsCount=JSON.parse(await readFile(path.join(root,"assets/data/site-content.json"),"utf8")).news.length;
   try{
     await Promise.all([client.send('Page.enable'),client.send('Runtime.enable')]);
     await client.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
     await client.send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.setItem('tt_intro_home_v5','1')}catch{}"});
-    for(const prefix of ['', '/en','/ja']){
-      await navigateForInteraction(client,origin+prefix+'/news/');
-      const news=await evaluate(client,`({title:document.title,canonical:document.querySelector('link[rel=canonical]').href,items:document.querySelectorAll('article.tt-d-card').length,app:!!document.querySelector('x-dc')})`);
-      assert(news.items===newsCount&&!news.app&&news.canonical.endsWith(prefix+'/news/'),'News collection: '+JSON.stringify(news));
-    }
+    await navigateForInteraction(client,origin+'/news/');
+    assert(await evaluate(client,`!document.querySelector('x-dc') && !document.querySelector('article.tt-d-card')`),'retired news must not render a collection');
     await navigateForInteraction(client,origin+'/?lang=kr');
     await evaluate(client,`(()=>{window.__rects=0;const el=document.querySelector('#c-works'),old=el.getBoundingClientRect;el.getBoundingClientRect=function(){window.__rects++;return old.call(this)};})()`);
     await sleep(1000);assert(await evaluate(client,'window.__rects<=4'),'home Works geometry cache did not throttle');
@@ -568,7 +564,7 @@ async function runRegressionChecks(chrome, origin){
     await evaluate(client,'history.forward()'); await sleep(900);
     const forward=await evaluate(client,`({path:location.pathname,chapter:document.body.getAttribute('data-active-chapter'),canonical:document.querySelector('link[rel=canonical]').href})`);
     assert(forward.path==='/en/contact/'&&forward.chapter==='contact'&&forward.canonical.endsWith('/en/contact/'),'history forward: '+JSON.stringify(forward));
-    console.log('Regression checks completed: news, history, JSON-LD, geometry cache, language render');
+    console.log('Regression checks completed: retired news, history, JSON-LD, geometry cache, language render');
   }finally{client.close();await fetch('http://127.0.0.1:'+chrome.port+'/json/close/'+target.id).catch(()=>{});}
 }
 

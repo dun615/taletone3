@@ -317,7 +317,7 @@ var ComponentScene = {
       }
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
     }
-    // 6b) echo: in the news chapter a few motes of light rise slowly, the music travelling up to the world
+    // 6b) echo: between Discography and Contact a few motes of light rise slowly, the music travelling up to the world
     var echo=this.smooth(1500,1900,metres)*(1-this.smooth(2500,3000,metres));
     if(echo>0.02&&this.motes){
       c.globalCompositeOperation='lighter';

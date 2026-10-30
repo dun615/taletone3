@@ -15,8 +15,8 @@ const sha = process.argv[3] || '';
 // Publish only known public entry points; new tooling can never leak by default.
 const PUBLIC = new Set([
   'assets', 'support.js', 'CNAME', '404.html', 'favicon.ico', 'site.webmanifest',
-  'robots.txt', 'sitemap.xml', 'index.html', 'rss.xml', 'en', 'ja', 'members',
-  'works', 'news', 'story-types', 'contact', 'projects', 'preview',
+  'robots.txt', 'sitemap.xml', 'index.html', 'en', 'ja', 'members',
+  'works', 'story-types', 'contact', 'projects', 'preview',
 ]);
 const skip = (name) => !PUBLIC.has(name) || name === path.basename(out);
 

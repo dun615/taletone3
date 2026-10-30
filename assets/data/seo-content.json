@@ -29,24 +29,6 @@
       }
     },
     {
-      "key": "projects",
-      "label": "How It Works",
-      "path": "/story-types/",
-      "title": "How It Works | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
-      "description": "레퍼런스가 아니라 이야기에서 출발하는 TALETONE MUSIC(테일톤 뮤직)의 음악 제작 방식과, 여름을 그리다·마음악보 등 대표 작업을 소개합니다.",
-      "sectionId": "c-projects",
-      "translations": {
-        "en": {
-          "title": "How It Works | TALETONE MUSIC — Starting from the Story",
-          "description": "How TALETONE MUSIC makes music starting from the story, not a reference, with selected work such as Drawing Summer and Heart Score."
-        },
-        "jp": {
-          "title": "How It Works | TALETONE MUSIC — 物語から始まる制作",
-          "description": "リファレンスではなく物語から始まるTALETONE MUSICの制作方法と、「Drawing Summer」「Heart Score」などの代表作品を紹介します。"
-        }
-      }
-    },
-    {
       "key": "members",
       "label": "About",
       "path": "/members/",
@@ -65,6 +47,24 @@
       }
     },
     {
+      "key": "projects",
+      "label": "How It Works",
+      "path": "/story-types/",
+      "title": "How It Works | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
+      "description": "이야기(TALE)에서 톤(TONE)을 찾고 음악(MUSIC)으로 완성하는 TALETONE MUSIC의 제작 방식입니다. 해봄 「Love Dopamine」 사례와 함께 곡의 기획 의도와 제작 과정을 소개합니다.",
+      "sectionId": "c-projects",
+      "translations": {
+        "en": {
+          "title": "How It Works | TALETONE MUSIC — Starting from the Story",
+          "description": "From TALE to TONE to MUSIC: how TALETONE MUSIC turns a story into a song. Explore the creative process through HAEBOM’s Love Dopamine and selected work."
+        },
+        "jp": {
+          "title": "How It Works | TALETONE MUSIC — 物語から始まる制作",
+          "description": "物語（TALE）からトーン（TONE）を見つけ、音楽（MUSIC）に仕上げるTALETONE MUSICの制作方法。HAEBOM「Love Dopamine」の事例とともに企画意図と制作過程を紹介します。"
+        }
+      }
+    },
+    {
       "key": "works",
       "label": "Discography",
       "path": "/works/",
@@ -79,24 +79,6 @@
         "jp": {
           "title": "Discography | TALETONE MUSIC — ディスコグラフィー",
           "description": "TALETONE MUSICのディスコグラフィーです。Heart Score、Drawing Summer、Bubble Sweetなど、オリジナルソング、OST、キャラクターソングの制作記録とサウンドエンジニアリング作品を紹介します。"
-        }
-      }
-    },
-    {
-      "key": "news",
-      "label": "News",
-      "path": "/news/",
-      "title": "News | TALETONE MUSIC — 소식과 업데이트",
-      "description": "TALETONE MUSIC(테일톤 뮤직)의 최신 소식, 프로젝트 업데이트, STELLIVE 마음악보 발매 소식 등을 모아둡니다.",
-      "sectionId": "c-news",
-      "translations": {
-        "en": {
-          "title": "News | TALETONE MUSIC — News and Updates",
-          "description": "The latest news and project updates from TALETONE MUSIC, including new releases such as Bubble Sweet and Heart Score."
-        },
-        "jp": {
-          "title": "News | TALETONE MUSIC — ニュースとお知らせ",
-          "description": "TALETONE MUSICの最新ニュースとプロジェクトのお知らせ。Bubble Sweet、Heart Scoreなどのリリース情報をお届けします。"
         }
       }
     },

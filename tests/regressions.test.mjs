@@ -61,15 +61,18 @@ test("audio cache releases earlier records while retaining current language buff
   assert.equal(Object.keys(ctx.layerBuffers).length, 0);
 });
 
-test("all news languages serve real static collections and correct canonical URLs", async () => {
-  const site = JSON.parse(await read("assets/data/site-content.json"));
-  for (const prefix of ["", "en/", "ja/"]) {
-    const html = await read(prefix + "news/index.html");
-    assert.ok(html.includes(`https://taletone.net/${prefix}news/`));
-    assert.ok(!html.includes("<x-dc>"));
-    for (const news of site.news)
-      assert.ok(html.includes(`/${prefix}news/${news.slug}/`));
-  }
+test("only the current five chapters are indexed", async () => {
+  const seo = JSON.parse(await read("assets/data/seo-content.json"));
+  assert.deepEqual(
+    seo.pages.map((p) => p.label),
+    ["Home", "About", "How It Works", "Discography", "Contact"],
+  );
+  const sitemap = await read("sitemap.xml");
+  assert.ok(!sitemap.includes("/news/"));
+  for (const prefix of ["", "en/", "ja/"])
+    assert.ok(
+      !(await read(prefix + "index.html")).includes("application/rss+xml"),
+    );
 });
 
 test("runtime route normalization keeps every configured route", async () => {
@@ -84,10 +87,28 @@ test("runtime route normalization keeps every configured route", async () => {
     );
 });
 
-test("preview uses canonical sources and keeps news navigation isolated", async () => {
+test("all language metadata exposes exactly five navigation entries and 126 sitemap URLs", async () => {
+  const labels = ["Home", "About", "How It Works", "Discography", "Contact"];
   for (const prefix of ["", "en/", "ja/"]) {
-    const html = await read("preview/" + prefix + "news/index.html");
-    assert.ok(html.includes("noindex, nofollow"));
-    assert.ok(html.includes("/preview/" + prefix + "news/"));
+    const html = await read(prefix + "index.html");
+    const data = JSON.parse(
+      html.match(
+        /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+      )[1],
+    );
+    const nav = data["@graph"].filter(
+      (node) => node["@type"] === "SiteNavigationElement",
+    );
+    assert.deepEqual(
+      nav.map((node) => node.name),
+      labels,
+    );
+    assert.ok(
+      nav.every((node) =>
+        node.url.startsWith("https://taletone.net/" + prefix),
+      ),
+    );
+    assert.ok(!html.includes("/news/"));
   }
+  assert.equal((await read("sitemap.xml")).match(/<loc>/g).length, 126);
 });
