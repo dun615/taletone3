@@ -542,6 +542,36 @@ async function navigateForInteraction(client, url, waitMs = 900) {
   await sleep(waitMs);
 }
 
+async function runRegressionChecks(chrome, origin){
+  const target=await(await fetch('http://127.0.0.1:'+chrome.port+'/json/new?about:blank',{method:'PUT'})).json();
+  const client=new CdpClient(target.webSocketDebuggerUrl);await client.ready;
+  const newsCount=JSON.parse(await readFile(path.join(root,"assets/data/site-content.json"),"utf8")).news.length;
+  try{
+    await Promise.all([client.send('Page.enable'),client.send('Runtime.enable')]);
+    await client.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
+    await client.send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.setItem('tt_intro_home_v5','1')}catch{}"});
+    for(const prefix of ['', '/en','/ja']){
+      await navigateForInteraction(client,origin+prefix+'/news/');
+      const news=await evaluate(client,`({title:document.title,canonical:document.querySelector('link[rel=canonical]').href,items:document.querySelectorAll('article.tt-d-card').length,app:!!document.querySelector('x-dc')})`);
+      assert(news.items===newsCount&&!news.app&&news.canonical.endsWith(prefix+'/news/'),'News collection: '+JSON.stringify(news));
+    }
+    await navigateForInteraction(client,origin+'/?lang=kr');
+    await evaluate(client,`(()=>{window.__rects=0;const el=document.querySelector('#c-works'),old=el.getBoundingClientRect;el.getBoundingClientRect=function(){window.__rects++;return old.call(this)};})()`);
+    await sleep(1000);assert(await evaluate(client,'window.__rects<=4'),'home Works geometry cache did not throttle');
+    await clickSelector(client,'#nav-4');await sleep(1900);
+    await evaluate(client,`(()=>{window.__rebuilds=0;const el=document.querySelector('#tt-gh-works-app');new MutationObserver(rs=>window.__rebuilds+=rs.filter(r=>r.target===el).length).observe(el,{childList:true});})()`);
+    await clickSelector(client,'#lang-en');await sleep(400);
+    assert(await evaluate(client,'window.__rebuilds===1'),'language switch must rebuild Works once');
+    await clickSelector(client,'#nav-6');await sleep(1900);await evaluate(client,'history.back()');await sleep(900);
+    const back=await evaluate(client,`({path:location.pathname,chapter:document.body.getAttribute('data-active-chapter'),canonical:document.querySelector('link[rel=canonical]').href,ld:JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent)['@graph'].find(n=>n['@type']==='WebPage').url})`);
+    assert(back.path==='/en/works/'&&back.chapter==='works'&&back.ld===back.canonical,'history restoration: '+JSON.stringify(back));
+    await evaluate(client,'history.forward()'); await sleep(900);
+    const forward=await evaluate(client,`({path:location.pathname,chapter:document.body.getAttribute('data-active-chapter'),canonical:document.querySelector('link[rel=canonical]').href})`);
+    assert(forward.path==='/en/contact/'&&forward.chapter==='contact'&&forward.canonical.endsWith('/en/contact/'),'history forward: '+JSON.stringify(forward));
+    console.log('Regression checks completed: news, history, JSON-LD, geometry cache, language render');
+  }finally{client.close();await fetch('http://127.0.0.1:'+chrome.port+'/json/close/'+target.id).catch(()=>{});}
+}
+
 async function runInteractionSmoke(chrome, origin) {
   const target = await (await fetch(`http://127.0.0.1:${chrome.port}/json/new?about:blank`, { method: 'PUT' })).json();
   const client = new CdpClient(target.webSocketDebuggerUrl);
@@ -940,6 +970,7 @@ try {
       results.push(result);
     }
   }
+  if(!process.env.BRIDGE_ONLY) await runRegressionChecks(chrome,serverHandle.origin);
   const functionalChecks = process.env.BRIDGE_ONLY ? [] : await runFunctionalMatrix(chrome, serverHandle.origin);
   const interactionChecks = process.env.BRIDGE_ONLY ? [] : await runInteractionSmoke(chrome, serverHandle.origin);
   const bridgeChecks = process.env.SKIP_BRIDGES ? [] : await runBridgeSmoke(chrome, serverHandle.origin);

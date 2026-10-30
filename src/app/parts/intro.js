@@ -174,7 +174,9 @@ var ComponentIntro = {
       }
     }
 
+    var introRaf=0;
     function frame(now){
+      if(finished) return;
       if(finished) return;
       var t=now-self._introV2Start+skipShift, ts=t/1000;
       c.setTransform(dpr,0,0,dpr,0,0);
@@ -222,14 +224,15 @@ var ComponentIntro = {
         try{ sessionStorage.setItem('tt_intro_home_v5','1'); }catch(e){}
         return;
       }
-      requestAnimationFrame(frame);
+      introRaf=requestAnimationFrame(frame);
     }
     // any input: jump straight to the dive
     var skip=function(){ var t=performance.now()-self._introV2Start+skipShift; if(t<T.cross0-150) skipShift+=T.cross0-150-t; };
     window.addEventListener('wheel',skip,{passive:true}); window.addEventListener('touchstart',skip,{passive:true}); window.addEventListener('keydown',skip);
     // the page runs from the first frame; the dive is only the backdrop it plays on
     this.introDone=true;
+    this._introCleanup=()=>{ finished=true; cancelAnimationFrame(introRaf); cv.remove(); window.removeEventListener('wheel',skip); window.removeEventListener('touchstart',skip); window.removeEventListener('keydown',skip); };
     this._introV2Start=performance.now();
-    requestAnimationFrame(frame);
+    introRaf=requestAnimationFrame(frame);
   },
 };

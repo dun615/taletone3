@@ -18,9 +18,6 @@ test('font coverage reads every script and component part', async () => {
     if (file.endsWith('image-slot.js') || source.includes(`'${file}'`)) continue;
     assert.fail(`${file} is not in SOURCES of scripts/font-coverage.mjs`);
   }
-  for (const file of [...await list('preview-src/app/parts'), ...await list('preview-src/js'), 'preview-src/app/component.js']) {
-    assert.ok(source.includes(`'${file}'`), `${file} is not in PREVIEW_SOURCES of scripts/font-coverage.mjs`);
-  }
 });
 
 test('the deploy stage publishes the site but no sources or notes', async () => {
@@ -41,7 +38,7 @@ test('the deploy stage publishes the site but no sources or notes', async () => 
 test('both rich-text sanitizers allow the same tags and style properties', async () => {
   const allowLists = (source) => [...source.matchAll(/var allowed = (\{[\s\S]*?\});/g)]
     .map((m) => m[1].replace(/\s+/g, '').replace(/'/g, '"'));
-  for (const [component, works] of [['src/app/parts/content.js', 'assets/js/works.js'], ['preview-src/app/parts/content.js', 'preview-src/js/works.js']]) {
+  for (const [component, works] of [['src/app/parts/content.js', 'assets/js/works.js']]) {
     const a = allowLists(await readFile(path.join(root, component), 'utf8'));
     const b = allowLists(await readFile(path.join(root, works), 'utf8'));
     assert.equal(a.length, 2, `${component}: expected the style and tag allow-lists`);

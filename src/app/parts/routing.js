@@ -17,7 +17,7 @@ var ComponentRouting = {
     var langs=['kr','en','jp'];
     for(var k=0;k<langs.length;k++){ var btn=document.getElementById('lang-'+langs[k]); if(btn){ var on=langs[k]===l; btn.style.background=on?'var(--ink,#141C30)':'none'; btn.style.color=on?'var(--paper,#fffdf8)':'var(--ink,#141C30)'; btn.style.border='0'; btn.style.outline='0'; btn.style.boxShadow='none'; btn.style.borderRadius='999px'; btn.style.overflow='hidden'; btn.style.backgroundClip='padding-box'; btn.style.appearance='none'; btn.style.webkitAppearance='none'; btn.style.webkitTapHighlightColor='transparent'; btn.style.minWidth='44px'; btn.style.minHeight='44px'; } }
     try{ localStorage.setItem('tt_lang', l); }catch(e){}
-    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.setMeta){ window.TALETONE_WORKS_API.setMeta((window.TALETONE_CONTENT||{}).worksMeta || this.WORKS_META || {}); } }catch(e){}
+    try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); }catch(e){}
     clearTimeout(this._langRebuildTimer);
     this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
   },
@@ -42,7 +42,7 @@ var ComponentRouting = {
     var incoming = Array.isArray(cfg.pages) ? cfg.pages : [];
     var byKey = {};
     incoming.forEach(function(page){ if(page && page.key) byKey[String(page.key)] = page; });
-    var pages = defaults.pages.map(function(def){
+    var pages = (incoming.length ? incoming : defaults.pages).map(function(def){
       var next = Object.assign({}, def, byKey[def.key] || {});
       next.key = String(next.key || def.key);
       next.label = String(next.label || def.label);
@@ -85,6 +85,7 @@ var ComponentRouting = {
     if(path.indexOf('/members/') !== -1) return 'members';
     if(path.indexOf('/works/') !== -1) return 'works';
     if(path.indexOf('/contact/') !== -1) return 'contact';
+    if(path.indexOf('/news/') !== -1) return 'news';
     return 'home';
   },
 
@@ -115,6 +116,10 @@ var ComponentRouting = {
     var copy = Object.assign({ title: page.title, description: page.description }, (page.translations && page.translations[lang]) || {});
     var url = this._seoAbsoluteUrl(this._langPath(page.path, lang));
     document.title = copy.title;
+    var ld = document.querySelector('script[type="application/ld+json"]');
+    if(ld){ try{ var data=JSON.parse(ld.textContent); (data['@graph']||[]).forEach(function(node){ if(node['@type']==='WebPage'){ node['@id']=url+'#webpage'; node.url=url; node.name=copy.title; node.description=copy.description; node.inLanguage=document.documentElement.lang; } }); ld.textContent=JSON.stringify(data).replace(/</g,'\\u003c'); }catch(_){} }
+    var feed=document.querySelector('link[type="application/rss+xml"]');
+    if(feed) feed.href=this._seoAbsoluteUrl(this._langPath('/rss.xml',lang));
     this._setMetaAttr('name', 'description', copy.description);
     this._setMetaAttr('property', 'og:title', copy.title);
     this._setMetaAttr('property', 'og:description', copy.description);
@@ -136,6 +141,15 @@ var ComponentRouting = {
       var alt = document.head && document.head.querySelector('link[rel="alternate"][hreflang="' + hreflang + '"]');
       if(alt) alt.setAttribute('href', this._seoAbsoluteUrl(this._langPath(page.path, alternates[hreflang])));
     }
+  },
+
+  restoreHistoryRoute(){
+    ['_chapterNavCorrect1','_chapterNavCorrect2','_routeLandingCorrect1','_routeLandingCorrect2','_routeLandingCorrect3'].forEach(k=>clearTimeout(this[k]));
+    this.setLang(this._routeLang());
+    var page=this._seoPageForKey(this._seoPageKeyFromLocation());
+    this._chapterTarget=page.sectionId;
+    this.scrollToId(page.sectionId,'auto');
+    this._layoutGeometryDirty=true; this._sceneDirty=true;
   },
 
   // Language lives in the URL: KR at the root, EN under /en/, JP under /ja/.

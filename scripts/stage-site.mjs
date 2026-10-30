@@ -12,12 +12,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.resolve(root, process.argv[2] || '_site');
 const sha = process.argv[3] || '';
 
-// not part of the site
-const EXCLUDE = new Set([
-  '.git', '.github', '.claude', 'node_modules', 'src', 'scripts', 'preview-src', 'archive', 'qa', 'tests',
-  'package.json', 'package-lock.json', '.gitignore', path.basename(out),
+// Publish only known public entry points; new tooling can never leak by default.
+const PUBLIC = new Set([
+  'assets', 'support.js', 'CNAME', '404.html', 'favicon.ico', 'site.webmanifest',
+  'robots.txt', 'sitemap.xml', 'index.html', 'rss.xml', 'en', 'ja', 'members',
+  'works', 'news', 'story-types', 'contact', 'projects', 'preview',
 ]);
-const skip = (name) => EXCLUDE.has(name) || /\.md$/i.test(name) || (name.startsWith('.') && name !== '.well-known');
+const skip = (name) => !PUBLIC.has(name) || name === path.basename(out);
 
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });

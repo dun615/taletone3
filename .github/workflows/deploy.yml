@@ -19,7 +19,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -31,6 +31,10 @@ jobs:
         run: node scripts/build.mjs
       - name: Validate production files
         run: node .github/scripts/validate-site.mjs
+      - name: Unit tests
+        run: node --test "tests/*.test.mjs"
+      - name: Browser regression and performance checks
+        run: node .github/scripts/validate-runtime-performance.mjs
       - name: Stage the public files
         run: node scripts/stage-site.mjs _site "${{ github.sha }}"
       - name: Upload the site
@@ -41,7 +45,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

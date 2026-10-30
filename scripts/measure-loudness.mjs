@@ -4,7 +4,7 @@
 //
 //   CHROME_PATH=/path/to/chrome node scripts/measure-loudness.mjs [works-data.json ...]
 //
-// Default file: preview-src/data/works-data.json. Writes `loudness`: { target, ceiling, files: { <audio path>:
+// Default file: assets/data/works-data.json. Writes `loudness`: { target, ceiling, files: { <audio path>:
 // { lufs, peak, trim?, gain } } }, gain in dB = target - lufs + trim, lowered when a quiet file would push its sample
 // peak above the ceiling. `trim` (dB) is a by-ear correction kept across runs: LUFS (and the ISO 532-1 loudness
 // checked against it) leave about ±1 dB that tone alone makes a record feel louder or smaller. Run it again after
@@ -17,7 +17,7 @@ import path from 'node:path';
 const TARGET = -14;   // LUFS, integrated
 const CEILING = -1;   // dBFS, sample peak after the gain
 
-const files = process.argv.slice(2).length ? process.argv.slice(2) : ['preview-src/data/works-data.json'];
+const files = process.argv.slice(2).length ? process.argv.slice(2) : ['assets/data/works-data.json'];
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const round = (value) => Math.round(value * 10) / 10;
 

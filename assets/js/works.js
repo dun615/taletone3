@@ -228,16 +228,8 @@
   };
   function L() { return shelfLabels[pageLangKey()] || shelfLabels.kr; }
 
-  // Category: an explicit `category` in works-data wins (our own projects are 'original'); otherwise game / animation work is OST
-  // and everything else is an artist release.
-  function categoryOf(work) {
-    if (work && work.category) return String(work.category);
-    var text = [work && work.type, work && work.translations && work.translations.en && work.translations.en.type].join(' ');
-    return /게임|애니|ANIMATION|Zenless|붕괴|Star ?Rail|OST|주제곡|\bOP\b|game|anime/i.test(text) ? 'ost' : 'artist';
-  }
   function isAlbum(work) { var k = itemKind(work); return k === 'album' || k === 'ep'; }
   var FIELD_FILTERS = ['all', 'game', 'artist', 'original'];
-  var ROLE_ORDER = ['produce', 'compose', 'arrange', 'lyrics', 'rec', 'edit', 'mix', 'master'];
   var POST_ROLES = { rec: 'Rec', edit: 'Edit', mix: 'Mix', master: 'Master' };
   // the rack is pre-production; recording, editing, mixing and mastering show in Sound Engineering
   var PRE_ROLES = ['produce', 'compose', 'arrange', 'lyrics'];
@@ -361,7 +353,7 @@
   // ---- a record: the cover art pressed into a picture disc; it spins while it plays ----
   function discHtml(work, extraClass, eager) {
     var unit = localizedUnit(work);
-    var image = unit.image || work.image || '';
+    var image = unit.thumb || work.thumb || unit.image || work.image || '';
     return '<span class="tt-disc' + (extraClass ? ' ' + extraClass : '') + '" aria-hidden="true">' +
       '<span class="tt-disc-spin"><img ' + (eager === false ? 'data-src' : 'src') + '="' + esc(image) + '" alt="" loading="lazy" decoding="async" style="' + coverStyle(unit) + '"></span>' +
       '<span class="tt-disc-sheen"></span><span class="tt-disc-hole"></span></span>';
@@ -404,32 +396,6 @@
     picks[next].scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
-  function trackItemHtml(entry, order) {
-    var work = entry.work, index = entry.index, labels = L();
-    var track = work.tracks[entry.track] || {};
-    var unit = localizedUnit(track), album = localizedUnit(work);
-    var title = plainRichText(unit.title || track.title || '');
-    var from = rolesText(track);
-    var image = unit.image || track.image || work.thumb || work.image || '';
-    var current = state.current === index && state.track === entry.track;
-    var no = String(entry.track + 1).padStart(2, '0');
-    var cls = 'tt-rack-item is-track' + (isPhone() ? ' tt-m-card' : '') + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '');
-    var pickButton = '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" data-track="' + entry.track + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">';
-    var art = '<img ' + (order < 8 ? 'src' : 'data-src') + '="' + esc(image) + '" alt="" loading="' + (order < 8 ? 'eager' : 'lazy') + '" decoding="async" style="' + coverStyle(unit) + '">';
-    if (isPhone()) {
-      return '<li class="' + cls + '" data-works-book="' + entryKey(entry) + '">' + pickButton +
-          '<span class="tt-m-card-art">' + art + '<span class="tt-rack-trackno" aria-hidden="true">' + no + '</span><span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
-          '<span class="tt-rack-name">' + esc(title) + '</span>' + (from ? '<span class="tt-rack-artist tt-rack-roles">' + esc(from) + '</span>' : '') +
-        '</button></li>';
-    }
-    return '<li class="' + cls + '" data-works-book="' + entryKey(entry) + '" style="--i:' + order + '">' + pickButton +
-        '<span class="tt-sleeve" aria-hidden="true">' + art + '<span class="tt-sleeve-sheen"></span></span>' +
-        '<span class="tt-rack-trackno" aria-hidden="true">' + no + '</span>' +
-        '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
-      '</button>' +
-      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (from ? '<p class="tt-rack-artist tt-rack-roles">' + esc(from) + '</p>' : '') + '</div>' +
-    '</li>';
-  }
   function rolesText(unit) {
     var labels = L();
     var roles = unit && Array.isArray(unit.roles) ? unit.roles : [];
@@ -443,34 +409,6 @@
       return (labels[CARD_ROLES[m[1]]] || m[1]) + (m[2] || '');
     }).join(' · ');
   }
-  function rackItemHtml(entry, order) {
-    if (entry.track != null) return trackItemHtml(entry, order);
-    var work = entry.work, index = entry.index, labels = L();
-    var unit = localizedUnit(work);
-    var title = plainRichText(unit.title || work.title || '');
-    var artist = plainRichText(unit.artist || work.artist || '');
-    var current = state.current === index;
-    var pin = pinRank(work) < Infinity ? '<span class="tt-rack-trackno" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display:block"><path d="M16 9V4h1a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2h1v5a3 3 0 0 1-3 3v2h5.97v7l1 1 1-1v-7H19v-2a3 3 0 0 1-3-3z"/></svg></span>' : '';
-    if (isPhone()) {
-      var thumb = unit.image && unit.image !== work.image ? unit.image : (work.thumb || work.image || '');
-      return '<li class="tt-rack-item tt-m-card' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '">' +
-        '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
-          '<span class="tt-m-card-art"><img ' + (order < 4 ? 'src' : 'data-src') + '="' + esc(thumb) + '" alt="" decoding="async" style="' + coverStyle(unit) + '">' +
-            pin + '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span></span>' +
-          '<span class="tt-rack-name">' + esc(title) + '</span><span class="tt-rack-artist">' + esc(artist) + '</span>' + (rolesText(work) ? '<span class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</span>' : '') +
-        '</button>' +
-      '</li>';
-    }
-    return '<li class="tt-rack-item' + (current ? ' is-current' : '') + (current && state.playing ? ' is-playing' : '') + '" data-works-book="' + index + '" style="--i:' + order + '">' +
-      '<button type="button" class="tt-rack-pick" data-works-action="pick" data-index="' + index + '" tabindex="' + (order === rackFocusOrder() ? '0' : '-1') + '" title="' + esc(title + (artist ? ' — ' + artist : '')) + '" aria-label="' + esc(title + ' — ' + labels.pick) + '">' +
-        sleeveHtml(work, order < 8) + pin +
-        '<span class="tt-rack-badge" aria-hidden="true"><i></i><i></i><i></i></span>' +
-      '</button>' +
-      '<div class="tt-rack-meta"><h3 class="tt-rack-name">' + esc(title) + '</h3>' + (artist ? '<p class="tt-rack-artist">' + esc(artist) + '</p>' : '') + (rolesText(work) ? '<p class="tt-rack-artist tt-rack-roles">' + esc(rolesText(work)) + '</p>' : '') + '</div>' +
-    '</li>';
-  }
-
-  // ---- the turntable: the chosen record on the platter, the tonearm, and everything to play it ----
   function deckHtml() {
     var labels = L();
     var work = works[state.current];
@@ -1031,26 +969,7 @@
       if (!last || last.kind !== kind) { last = { kind: kind, index: entry.index, entries: [] }; blocks.push(last); }
       last.entries.push(entry);
     });
-    if (isPhone()) return sleeveListHtml(blocks);
-    var order = 0;
-    var row = function (entries) {
-      return '<ul class="tt-shelf-row' + (isPhone() ? ' tt-m-carousel' : '') + '">' + entries.map(function (entry) { return rackItemHtml(entry, order++); }).join('') + '</ul>';
-    };
-    var count = function (n) { return n + (pageLangKey() === 'en' ? ' ' : '') + esc(labels.songs); };
-    var html = blocks.map(function (block) {
-          if (block.kind === 'singles') return '<div class="tt-shelf-block">' + row(block.entries) + '</div>';
-          var work = works[block.index], unit = localizedUnit(work);
-          var name = plainRichText(String(unit.title || work.title || '').replace(/\s*\[ALBUM\]\s*$/i, ''));
-          var artist = plainRichText(unit.artist || work.artist || '');
-          var total = (work.tracks || []).length, shown = block.entries.length;
-          return '<div class="tt-shelf-block tt-shelf-album" aria-label="' + esc(name) + '">' +
-            '<div class="tt-shelf-plate' + (state.current === block.index ? ' is-current' : '') + '" data-works-book="' + block.index + '">' +
-              '<button type="button" class="tt-shelf-plate-cover" data-works-action="pick" data-index="' + block.index + '" tabindex="-1" aria-label="' + esc(name + ' — ' + labels.albumPick) + '"><img src="' + esc(work.thumb || work.image || '') + '" alt="" loading="lazy" decoding="async"></button>' +
-              '<span class="tt-shelf-plate-text"><span class="tt-shelf-plate-name">' + esc(name) + '</span><span class="tt-shelf-plate-artist">' + esc(artist) + '</span></span>' +
-              '<span class="tt-shelf-plate-count">' + (shown !== total ? shown + ' / ' : '') + count(total) + '</span>' +
-            '</div>' + row(block.entries) + '</div>';
-    }).join('');
-    return '<div class="tt-rack-grid tt-rack-shelves">' + html + '</div>';
+    return sleeveListHtml(blocks);
   }
 
   function render(before) {
@@ -1267,6 +1186,10 @@
     return list.length > 1 ? list : [];
   }
   function layerKey(entries) { return state.current + '|' + state.track + '|' + entries.map(function (e) { return e.url; }).join('|'); }
+  function retainLayerBuffers(entries){
+    var retained={}; entries.forEach(function(entry){ if(layerBuffers[entry.url]) retained[entry.url]=layerBuffers[entry.url]; });
+    layerBuffers=retained;
+  }
   function layerBuffer(url) {
     if (!layerBuffers[url]) {
       layerBuffers[url] = fetch(url).then(function (response) { if (!response.ok) throw new Error('audio ' + response.status); return response.arrayBuffer(); })
@@ -1306,6 +1229,8 @@
     if (!entries.length || layerFailed[key] || !ensureCtx() || !window.fetch) { stopLayer(false); return false; }
     if (layer && layer.key === key) return true;
     stopLayer(false);
+    // Keep instant language switching for this record, release previous records' PCM.
+    retainLayerBuffers(entries);
     var token = ++layerToken;
     layerLoading = true;
     if (audio && !audio.paused) audio.pause();
@@ -1762,7 +1687,7 @@
 
   function init() {
     if (worksDataPromise) return worksDataPromise;
-    worksDataPromise = fetch(new URL('data/works-data.json', assetBase).href)
+    worksDataPromise = fetch(new URL('data/works-data.json?v=' + new URL(scriptUrl).searchParams.get('v'), assetBase).href)
       .then(function (response) {
         if (!response.ok) throw new Error('WORKS data request failed: ' + response.status);
         return response.json();

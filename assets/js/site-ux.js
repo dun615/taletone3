@@ -369,35 +369,6 @@
     activateSiteDialog(found);
   }
 
-  // Placeholders: every "[TODO: …]" on screen is wrapped in a yellow mark so it is easy to find.
-  var todoPattern = /\[TODO[^\]]*\]/g;
-  function markTodos() {
-    var root = document.body;
-    if (!root || root.textContent.indexOf('[TODO') === -1) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (node) {
-        var parent = node.parentNode;
-        if (!parent || /^(SCRIPT|STYLE|TEXTAREA|TITLE|OPTION)$/.test(parent.nodeName) || (parent.classList && parent.classList.contains('tt-todo'))) return NodeFilter.FILTER_REJECT;
-        return node.nodeValue.indexOf('[TODO') !== -1 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
-      }
-    });
-    var nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) {
-      var text = node.nodeValue, last = 0, fragment = document.createDocumentFragment();
-      text.replace(todoPattern, function (match, offset) {
-        if (offset > last) fragment.appendChild(document.createTextNode(text.slice(last, offset)));
-        var mark = document.createElement('mark');
-        mark.className = 'tt-todo';
-        mark.textContent = match;
-        fragment.appendChild(mark);
-        last = offset + match.length;
-        return match;
-      });
-      if (last < text.length) fragment.appendChild(document.createTextNode(text.slice(last)));
-      node.parentNode.replaceChild(fragment, node);
-    });
-  }
   // Images further down (img[data-defer-src]: client logos, the planning sheet) wait for the reader's first input,
   // or for a page opened on a chapter other than home, so the opening view fetches no more than before.
   // Scrolling alone does not count: the intro glide scrolls #content by itself.
@@ -416,17 +387,11 @@
     loadDeferredImages();
   }
   ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (type) { window.addEventListener(type, releaseDeferredImages, { passive: true, once: true }); });
-  var markTimer = 0;
-  new MutationObserver(function () {
-    clearTimeout(markTimer);
-    markTimer = setTimeout(function () { markTodos(); loadDeferredImages(); }, 120);
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 
   function refreshGlobalUx() {
     refreshChapterControls();
     ensureSkipLink();
     refreshSiteDialog();
-    markTodos();
     loadDeferredImages();
   }
 

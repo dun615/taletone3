@@ -22,6 +22,8 @@ class Component extends DCLogic {
     this._mountContactLink();
     this._mountPointerInput();
     this._mountLanguage();
+    this._popstateHandler=()=>this.restoreHistoryRoute();
+    window.addEventListener('popstate',this._popstateHandler);
     this._mountChapterNav();
     this._initialRouteTimer1=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 120);
     this._initialRouteTimer2=setTimeout(()=>{ try{ this.applyInitialSectionFromUrl(); }catch(_){} }, 520);
@@ -188,8 +190,8 @@ class Component extends DCLogic {
     };
     if(this.scroller) this.scroller.addEventListener('scroll',this._mobileScrollHandler,{passive:true});
     // only the reader's own scrolling counts for _preloadAhead (not route landings or menu jumps)
-    var markInput=()=>{ this._userScrollAt=performance.now(); };
-    ['wheel','touchmove','keydown'].forEach((type)=>window.addEventListener(type,markInput,{passive:true}));
+    this._markInput=()=>{ this._userScrollAt=performance.now(); };
+    ['wheel','touchmove','keydown'].forEach((type)=>window.addEventListener(type,this._markInput,{passive:true}));
   }
   // Reading downward by hand: a chapter within a screen and a half below the view gets its pictures now
   // (TALETONE_CHAPTER_PRELOAD, as a bridge does), so they are decoded by the time it scrolls in. A menu or
@@ -271,6 +273,7 @@ class Component extends DCLogic {
       this._chapterLinkClick = (e)=>{
         var a = e && e.target && e.target.closest ? e.target.closest('#chapnav a[href]') : null;
         if(!a || !document.getElementById('chapnav') || !document.getElementById('chapnav').contains(a)) return;
+        if(e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         if(e.preventDefault) e.preventDefault();
         if(e.stopPropagation) e.stopPropagation();
         var href = this._routePath(a.getAttribute('href') || '/');
@@ -319,6 +322,10 @@ class Component extends DCLogic {
     document.addEventListener('visibilitychange',this._visibilityHandler);
   }
   componentWillUnmount(){                                   
+    if(this._introCleanup) this._introCleanup();
+    window.removeEventListener('popstate',this._popstateHandler);
+    document.removeEventListener('click',this._workLinkClick,true);
+    ['wheel','touchmove','keydown'].forEach(type=>window.removeEventListener(type,this._markInput));
     this.releaseBridge();
     ['wheel','touchmove','keydown'].forEach(type=>window.removeEventListener(type,this._bridgeInputHandler,true));
     cancelAnimationFrame(this.raf);

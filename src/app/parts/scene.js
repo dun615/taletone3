@@ -505,7 +505,7 @@ var ComponentScene = {
     var el=this._worksEl;
     if(!el) return {t:Infinity,inside:false,deck:null,deckRect:null};
     var now=performance.now(), sc=this.scroller?this.scroller.scrollTop:0, m=this._worksMeasure;
-    if(!m||now-m.at>400||this._layoutGeometryDirty||!(m.deck&&m.deck.isConnected)){
+    if(!m||now-m.at>400||this._layoutGeometryDirty||(m.deck&&!m.deck.isConnected)){
       // the light source: the record that is playing (a floating disc on desktop), else the turntable
       var deck=el.querySelector('.tt-float.is-current .tt-disc')||el.querySelector('.tt-deck-platter')||el.querySelector('.tt-deck');
       var r=el.getBoundingClientRect(), d=deck?deck.getBoundingClientRect():null;

@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const json = async (file) => JSON.parse(await readFile(path.join(root, file), 'utf8'));
 const exists = async (file) => { try { await access(path.join(root, String(file).replace(/\\/g, '/'))); return true; } catch { return false; } };
 
-for (const [label, dir] of [['live', 'assets/data'], ['preview', 'preview-src/data']]) {
+for (const [label, dir] of [['live', 'assets/data']]) {
   test(`${label}: works have unique lowercase slugs, dates and their images`, async () => {
     const { works } = await json(`${dir}/works-data.json`);
     assert.ok(works.length > 0, 'no works');

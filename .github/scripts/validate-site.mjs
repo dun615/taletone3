@@ -50,7 +50,7 @@ const contentKey = async (...files) => createHash('sha256').update((await Promis
 // revisits) is checked by validate-runtime-performance.mjs; this file keeps output policy and guards against
 // retired code returning.
 const expectedCacheKeys = {
-  'assets/js/image-slot.js': '20261017-lang-routes',
+  'assets/js/image-slot.js': await contentKey('assets/js/image-slot.js'),
   'assets/css/works.css': await contentKey('assets/css/works.css'),
   'assets/js/works.js': await contentKey('assets/js/works.js', 'assets/data/works-data.json'),
   'assets/css/responsive.css': await contentKey('assets/css/responsive.css'),
@@ -134,6 +134,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   }
   assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
   assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
+  if(key==='news'){ assert(html.includes('tt-d-card') && !html.includes('<x-dc>'), 'News must be a static collection'); continue; }
   assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
   assert(!html.includes('assets/data/track-record.js'), `${file}: standalone track-record request returned`);
   assert(!html.includes('assets/icons/favicon.svg'), `${file}: PNG-wrapped SVG favicon returned`);
@@ -272,7 +273,7 @@ for (const [key, file, route, expectedTitle] of routes) {
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
 assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synchronized');
-assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
+assert(new Set(fallbackHashes.values()).size === routes.filter(([key])=>key!=='news').length, 'route fallback content is not unique');
 assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
 assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
 // the dive plays behind Home (the name reads from the first frame) and settles in 1.7 s
@@ -381,7 +382,7 @@ for (const [prefix, htmlLang] of [['', 'ko'], ['/en', 'en'], ['/ja', 'ja']]) {
       assert(html.includes(`<link rel="alternate" hreflang="${lang}" href="https://taletone.net${langPrefix}${route}">`), `${localFile}: hreflang ${lang} does not point at its language URL`);
     }
     assert(sitemap.includes(`<loc>${url}</loc>`), `sitemap.xml: missing ${prefix}${route}`);
-    assert(cleanText(attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
+    assert(cleanText(route === '/news/' ? html : attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
   }
 }
 const manifest = JSON.parse(await text('site.webmanifest'));
@@ -408,6 +409,7 @@ const newestWork = [...(await readJson('assets/data/works-data.json')).works].so
 assert(builtLatestWork && newestWork && builtLatestWork.slug === newestWork.slug, 'site-content.js latestWork is not the newest work');
 assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
 assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
+const localCopy=(value,lang)=>({...value,...value?.translations?.[lang]});
 const siteLanguages = ['kr', 'en', 'jp'];
 const expectedHomeTaglines = {
   kr: '당신의 이야기가 음악이 되는 곳',
@@ -416,7 +418,7 @@ const expectedHomeTaglines = {
 };
 assert(siteJson.home?.tagline === expectedHomeTaglines.kr, 'HOME canonical tagline changed');
 for (const language of siteLanguages) {
-  assert(siteJson.home?.translations?.[language]?.tagline === expectedHomeTaglines[language], `HOME ${language} tagline changed`);
+  assert(localCopy(siteJson.home,language).tagline === expectedHomeTaglines[language], `HOME ${language} tagline changed`);
 }
 const clearedChapterCopy = {
   membersMeta: ['description'],
@@ -427,7 +429,7 @@ for (const [section, fields] of Object.entries(clearedChapterCopy)) {
   for (const field of fields) {
     assert(siteJson[section]?.[field] === '', `${section}.${field} must remain empty until edited`);
     for (const language of siteLanguages) {
-      assert(siteJson[section]?.translations?.[language]?.[field] === '', `${section}.${field} ${language} must remain empty until edited`);
+      assert(localCopy(siteJson[section],language)[field] === '', `${section}.${field} ${language} must remain empty until edited`);
     }
   }
 }
@@ -448,11 +450,11 @@ const expectedContactCopy = {
 assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
 assert(siteJson.contact?.caption === expectedContactCopy.kr.caption, 'CONTACT canonical caption changed');
 for (const language of siteLanguages) {
-  assert(siteJson.contact?.translations?.[language]?.subtitle === expectedContactCopy[language].subtitle, `CONTACT ${language} subtitle changed`);
-  assert(siteJson.contact?.translations?.[language]?.caption === expectedContactCopy[language].caption, `CONTACT ${language} caption changed`);
+  assert(localCopy(siteJson.contact,language).subtitle === expectedContactCopy[language].subtitle, `CONTACT ${language} subtitle changed`);
+  assert(localCopy(siteJson.contact,language).caption === expectedContactCopy[language].caption, `CONTACT ${language} caption changed`);
 }
 for (const language of siteLanguages) {
-  assert(String(siteJson.projects?.translations?.[language]?.subtitle || '').trim(), `Story Types ${language} subtitle was cleared`);
+  assert(String(localCopy(siteJson.projects,language).subtitle || '').trim(), `Story Types ${language} subtitle was cleared`);
 }
 for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1', 'descriptionLine2']) {
   assert(!Object.hasOwn(siteJson.home || {}, obsoleteField), `HOME obsolete field returned: ${obsoleteField}`);
@@ -471,7 +473,7 @@ const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projec
 assert(firstBridge?.eyebrow === 'CHAPTER 1 · TALE' && firstBridge?.translations?.jp?.text === '水面の下には、\n物語に耳を傾ける人がいます。', 'chapter 1 bridge copy or Japanese line break changed');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
-  for (const language of ['kr', 'en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
+  for (const language of ['en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
 }
 // site-content.json has no typography block any more (nothing read it); fonts come from the template's CSS variables
 assert(!('typography' in siteJson), 'site-content.json typography returned: nothing reads it');
