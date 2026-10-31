@@ -804,13 +804,15 @@ async function runBridgeSmoke(chrome, origin) {
               const height=document.getElementById('content').clientHeight;
               // Test the next chapter's arrival viewport. Offscreen records intentionally use
               // native lazy loading; assigning src does not promise they are fetched yet.
-              const images=Array.from(section.querySelectorAll('.tt-float img[src], .tt-crate-item img[src], .tt-rack-item img[src]')).filter(img=>{
+              const mounted=Array.from(section.querySelectorAll('.tt-float img[src], .tt-crate-item img[src], .tt-rack-item img[src]'));
+              const images=mounted.filter(img=>{
                 const rect=img.getBoundingClientRect();
                 return rect.width>0 && rect.height>0 && rect.bottom>start && rect.top<start+height && rect.right>0 && rect.left<innerWidth;
               });
-              return {count:images.length,pending:images.filter(img=>!img.complete||!img.naturalWidth).map(img=>img.getAttribute('src'))};
+              return {mounted:mounted.length,count:images.length,pending:images.filter(img=>!img.complete||!img.naturalWidth).map(img=>img.getAttribute('src'))};
             })()`);
-            assert(readiness.count>0 && readiness.pending.length===0, `${label}: next chapter arrival images were not ready during playback: ${JSON.stringify(readiness)}`);
+            // On a short landscape screen the heading can fill the arrival viewport.
+            assert(readiness.mounted>0 && readiness.pending.length===0, `${label}: next chapter arrival images were not ready during playback: ${JSON.stringify(readiness)}`);
           }
         }
         for(let n=0;n<35;n++){
