@@ -214,7 +214,7 @@ class Component extends DCLogic {
     if(em){
       var contact = this.CONTACT || {};
       var link = contact.link || 'mailto:contact@taletone.net';
-      em.href = link;
+      em.href = '#tt-inquiry';
       var emLabel = em.querySelector('[data-email-label]');
       if(emLabel) emLabel.textContent = contact.buttonLabel || 'Tell us your story';
       else em.textContent = contact.buttonLabel || 'Tell us your story';

@@ -498,10 +498,10 @@
         return head ? '<strong>' + esc(line.replace(/^\[|\]$/g, '')) + '</strong>' : '<span>' + esc(line) + '</span>';
       }).join('');
     }).filter(Boolean);
-    return '<section class="tt-shelf-modal-credits" aria-label="' + esc(label) + '">' +
-      '<p class="tt-shelf-modal-label">' + esc(label) + '</p>' +
+    return '<details class="tt-shelf-modal-credits" aria-label="' + esc(label) + '">' +
+      '<summary class="tt-shelf-modal-label">' + esc(label) + '</summary>' +
       '<div class="tt-shelf-modal-credits-list" tabindex="0"><div>' + groups.map(function (g) { return '<p>' + g + '</p>'; }).join('') + '</div></div>' +
-    '</section>';
+    '</details>';
   }
 
   // An album shows the credits of one track at a time: the one playing, else its title track. The heading
@@ -531,7 +531,7 @@
     var image = unit.image || work.image || '';
     var credit = creditsFor(work, index);
     var id = videoFor(work, index);
-    var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
+    var facts = [[meta.yearLabel, unit.date || work.date], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
       .filter(function (row) { return row[1]; })
       .map(function (row) { return '<div><dt>' + esc(plainRichText(row[0] || '')) + '</dt><dd>' + esc(row[1]) + '</dd></div>'; }).join('');
     var stage = id
@@ -550,6 +550,7 @@
             '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
             '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
             '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
+            (rolesText(work) ? '<p class="tt-modal-role">TALETONE · ' + esc(rolesText(work)) + '</p>' : '') +
             (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
             coversHtml(work) +
@@ -923,7 +924,7 @@
         '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
         (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' : '') +
       '</div>' +
-      '<div class="tt-console-lamps">' + lanternsHtml() +
+      '<div class="tt-console-lamps"><details class="tt-console-filters"><summary>' + esc(labels.filters) + '</summary>' + lanternsHtml() + '</details>' +
         '<button type="button" class="tt-console-view" data-works-action="view" data-view="' + (state.view === 'credits' ? 'stage' : 'credits') + '">' + esc(state.view === 'credits' ? labels.viewFloat : labels.viewList) + '</button></div>' +
     '</div>';
   }

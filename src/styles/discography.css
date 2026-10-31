@@ -1,7 +1,4 @@
-/* =====================================================================
-   WORKS · the record shop (revision 2.3): a turntable beside a display rack of picture discs.
-   Brand: teal #0e6e7d, sky #8decfc, white #fbffff.
-   ===================================================================== */
+
 /* a record: the cover pressed into a picture disc with a black rim, faint grooves, a sheen and a centre hole */
 .tt-disc {display:block;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#141b23 0 60%,#05080c 100%);}
 .tt-disc-spin {position:absolute;inset:4.5%;border-radius:50%;overflow:hidden;animation:ttDiscSpin 3.6s linear infinite;animation-play-state:paused}
@@ -176,11 +173,7 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 .tt-deck-volume input::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6.5px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
 .tt-deck-volume input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
 
-/* =====================================================================
-   WORKS popup (revision 2.5): two panes. Left: the video (or the record) and the story.
-   Right: release facts, tracks and the credits, which take the remaining height and scroll.
-   Below 900px it is one column again and the whole sheet scrolls.
-   ===================================================================== */
+
 .tt-shelf-modal-panel {display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);width:min(1200px,100%);
   height:auto;max-height:min(740px,calc(100vh - 48px));overflow:hidden;padding:0;gap:0}
 /* each pane carries the height cap (minus the panel border), so the panel hugs the taller pane and both scroll when short */
@@ -233,10 +226,7 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
   .tt-shelf-modal-facts > div {grid-template-columns:72px minmax(0,1fr);gap:12px;padding:11px 0}
 }
 
-/* =====================================================================
-   Mobile chrome in one row (REVIEW-mobile phase 1, M1/M2/M4): logo on the left, the chapter button on
-   the right, languages inside the chapter menu. The bar is 64px instead of two rows (120px).
-   ===================================================================== */
+
 .tt-mobile-menu-langs {display:none}
 @media (max-width:760px){
   html body .tt-top-scrim {height:calc(78px + env(safe-area-inset-top))}
@@ -311,9 +301,7 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body .tt-shelf-modal-credits-list {max-height:none}
 }
 
-/* Phones (REVIEW-mobile phase 2): a bridge that has already played becomes a short quote band (46% of the
-   screen) instead of a whole empty screen; the first, locked play is unchanged. The stage shrinks with its
-   wrapper, so the sentence cannot spill into the next chapter (the earlier attempt left the stage 100vh). */
+
 @media (max-width:760px){
   html body [data-story-bridge-wrap].tt-bridge-seen:not([data-bridge-active]),
   html body [data-story-bridge-wrap].tt-bridge-pinned.tt-bridge-seen:not([data-bridge-active]) {min-height:0!important;height:46vh!important}
@@ -349,10 +337,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body .tt-shelf-modal-credits-list {max-height:none!important;overflow:visible!important}
 }
 
-/* =====================================================================
-   Phones: one dock at the bottom instead of the top bar (site-ux.js), and chapter starts as resting points
-   while scrolling (both were preview experiments X1/X2).
-   ===================================================================== */
+
 #tt-dock {display:none}
 @media (max-width:760px){
   html body #brand,
@@ -390,11 +375,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   font:800 11px/1.2 var(--tt-noto-primary),sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .tt-screen-badge.is-folded {width:10px;overflow:hidden;color:transparent;padding:14px 0}
 
-/* =====================================================================
-   Works, phone layout of its own (no turntable): a compact "now playing" panel directly above a sideways cover
-   carousel, so the chosen song and the choices share one screen. Markup from works.js (isPhone); the desktop
-   record shop is untouched.
-   ===================================================================== */
+
 @media (max-width:760px){
   html body .tt-crate-stage {display:block}
   html body .tt-crate-deck {position:static;max-width:none;margin:0 0 18px}
@@ -469,9 +450,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   /* an older rule kept a 220px minimum under the text (about 95px of empty card): the card now ends with its text */
 }
 
-/* Brand pill (tablet and desktop): the mark already switches from ink to white at depth 0.5 (component.js);
-   the pill and the words now switch at the same point. Before, the pill darkened gradually while a chapter rule
-   kept the words dark, so between Members and Works the logo nearly vanished (dark on dark). */
+
 @media (min-width:761px){
   html body #brand {--tt-brand-light:clamp(0,(.5 - var(--deep-glow,0)) * 1000,1);
     background:color-mix(in srgb,rgba(255,253,248,.84) calc(var(--tt-brand-light) * 100%),rgba(7,25,36,.82))!important}
@@ -805,9 +784,7 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-role-chip.is-on::before {background:currentColor;box-shadow:inset 0 0 0 2px var(--paper,#fffdf8)}
 .tt-role-chip:hover {opacity:1}
 
-/* Phones: the rack as one column of record sleeves (works.js sleeveListHtml). Each sleeve's picture disc peeks out
-   to its right and slides further out (and spins) while it plays; an album opens its tracks in place. The page only
-   scrolls down — no sideways rows. */
+
 @media (max-width:760px){
   html body .tt-crate-rack .tt-sl-list {display:block;max-height:none!important;overflow:visible!important;margin:0;padding:0}
   .tt-sl {list-style:none;display:flex;flex-direction:column;gap:10px;margin:0;padding:0}
@@ -925,9 +902,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 @keyframes tt-cut-hold {0% {opacity:0} 15% {opacity:1} 45% {opacity:1} 100% {opacity:0}}
 @media (prefers-reduced-motion: reduce) {.tt-cut {display:none}}
 
-/* Discography (desktop). Two levels of control, each where it acts: the tabs switch the whole chapter, so they
-   sit centred under the title with the line that says what the tab holds right below them, identical on every
-   tab; the field and role rows filter the list, so they are the list's own header (works.css .tt-filter-panel). */
+
 @media (min-width:861px) {
   #c-works.tt-gh-works {padding-top:clamp(92px,11vh,124px)}
   .tt-shelf-head {margin-bottom:22px}
@@ -1016,11 +991,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-works-bar + .tt-mix-head, .tt-mix > .tt-mix-head {margin-top:14px}
 }
 
-/* =====================================================================
-   Discography stage (songs tab, first view). The turntable is the scene: large and centred, its story under it,
-   and below one row of featured records to flip through like a record bin. Every record and the filters live
-   one step away, in the catalog view (the switch under the bin).
-   ===================================================================== */
+
 .tt-stage {display:grid;justify-items:center;gap:clamp(26px,4vh,40px);margin-top:6px}
 .tt-stage .tt-crate-deck {position:static;width:100%;max-width:none;margin:0}
 /* desktop: the record player and its story side by side, as one centred scene */
@@ -1057,11 +1028,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 }
 @media (prefers-reduced-motion: reduce) {.tt-crate-row {scroll-behavior:auto}.tt-crate-pick:hover .tt-sleeve {transform:none}}
 
-/* =====================================================================
-   Discography, desktop: the deep sea of records (works.js seaHtml). One drift of discs, featured first; a record
-   is a disc of light floating a little off its line (no years on purpose). The lanterns light the matching discs
-   and let the others sink into the dark. The chosen disc rises to the player, which rides beside the sea.
-   ===================================================================== */
+
 /* the lanterns: plain words with a lamp that is lit when on, not shop chips */
 .tt-lanterns {display:grid;gap:12px;margin:0 0 8px}
 .tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
@@ -1080,11 +1047,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-credit-play {appearance:none;padding:0;border:0;background:none;color:#fbffff;font:700 14px/1.45 var(--tt-noto-primary),sans-serif;text-align:left;cursor:pointer}
 .tt-credit-play:hover, .tt-credit-play:focus-visible {text-decoration:underline;text-underline-offset:3px}
 
-/* =====================================================================
-   Discography, desktop: the current. One slow S runs down the sea (a faint line); the records sit on either
-   bank of it, featured first and larger, each named beside it, bobbing gently. Read top to bottom, pick one.
-   The console (fixed, bottom centre) is the instrument you carry while you are here.
-   ===================================================================== */
+
 .tt-flotsam {position:relative;margin:12px 0 200px}
 .tt-current {position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .tt-current path {fill:none;stroke:rgba(141,236,252,.16);stroke-width:2px;vector-effect:non-scaling-stroke;stroke-linecap:round}
@@ -1163,9 +1126,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float.is-track .tt-float-label {width:124px}
 .tt-float.is-track .tt-float-label b, .tt-float.is-track .tt-float-label i {display:block;-webkit-line-clamp:unset}
 
-/* Coloured vinyl (the sea's records and the console): a translucent disc pressed in its cover's colour (--vinyl,
-   set by works.js tintVinyls), fine grooves, the cover as a large centre label, and a light catching the surface.
-   Playing, the disc glows in its own colour. */
+
 .tt-float-pick .tt-disc.tt-disc--float, .tt-console .tt-disc.tt-disc--console {
   --vinyl:120 200 220;
   background:

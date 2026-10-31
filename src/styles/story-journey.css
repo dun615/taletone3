@@ -64,3 +64,41 @@
   .tt-inquiry {margin-top:36px!important}
 }
 @media(prefers-reduced-motion:reduce){.tt-arrival-book *{animation:none!important;transition:none!important}.tt-arrival-book .tb-cover{transform:rotateY(-165deg)!important}}
+
+/* Quiet information hierarchy and focused media sheets. */
+#c-members .tt-audience{background:none!important;border:0!important;box-shadow:none!important;padding:24px!important}
+#c-members .tt-audience-title{font-size:24px!important;line-height:1.45!important;margin:0 0 22px!important}
+#c-members .tt-audience-services{display:block!important;padding:0!important;line-height:1.9!important}
+#c-members .tt-audience-services li{display:inline!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;font-size:15px!important;font-weight:400!important;color:#244b57!important}
+#c-members .tt-audience-services li:not(:last-child)::after{content:' · ';white-space:pre}
+#c-members .tt-audience-hook{border:0!important;padding:0!important;margin-top:24px!important;font-size:14px!important;font-weight:400!important;line-height:1.8!important}
+#c-members .tt-audience-hook::before{display:none!important}
+.tt-process .tt-cmp-result{font-weight:400!important}
+.tt-case-details summary,.tt-console-filters summary{cursor:pointer;font-weight:600;padding:12px 0;min-height:24px}
+.tt-case-steps{display:block!important}
+.tt-case-steps>li{background:none!important;border:0!important;border-radius:0!important;padding:12px 0!important;display:block!important}
+.tt-case-steps>li::before{display:none!important}
+.tt-case-steps>li>p{font-weight:400!important;color:#244b57!important;margin-top:6px!important;font-size:15px!important}
+.tt-case-steps>li>span{color:#146575!important}
+.tt-case-lesson{font-weight:400!important;line-height:1.85!important}
+body.tt-site-dialog-open:has(.tt-shelf-modal) #lang-switcher.tt-lang-switcher{visibility:hidden!important;pointer-events:none!important}
+html body .tt-shelf-modal-panel{display:block!important;position:relative!important;width:min(760px,100%)!important;height:auto!important;max-height:calc(100dvh - 48px)!important;overflow:auto!important}
+html body .tt-shelf-modal-media,html body .tt-shelf-modal-info{max-height:none!important;overflow:visible!important}
+html body .tt-shelf-modal-info{display:block!important;padding:8px 32px 32px!important;background:none!important;border:0!important}
+html body .tt-shelf-modal-close{position:sticky!important;top:12px!important;float:right;right:12px!important;margin:12px 12px -56px 0!important;z-index:20!important}
+html body .tt-shelf-modal-credits{display:block!important;min-height:0!important;margin-top:20px!important}
+html body .tt-shelf-modal-credits-list{overflow:visible!important;max-height:none!important;background:none!important;border:0!important;padding:16px 0!important}
+.tt-shelf-modal-credits summary{cursor:pointer;padding:14px 0;min-height:24px;border-top:1px solid #ffffff30}
+.tt-modal-role{font-size:15px;line-height:1.7;color:#a1e7ed;font-weight:600}
+.tt-console-story{display:none!important}
+.tt-console-filters{position:relative}
+.tt-console-filters .tt-lanterns{position:absolute;bottom:100%;left:0;background:#102c39;border:1px solid #48616c;border-radius:16px;padding:18px;max-width:80vw;box-shadow:0 12px 32px #0005}
+.tt-console-filters .tt-lantern-row{flex-wrap:wrap!important;margin:8px 0}
+.tt-inquiry label,.tt-inquiry legend{font-weight:500!important}
+.tt-inquiry-note{font-weight:400!important}
+#tt-inquiry{scroll-margin-top:100px}
+@media(max-width:760px){#c-members .tt-audience{padding:24px 4px!important}html body .tt-shelf-modal-info{padding:8px 20px 24px!important}html body .tt-shelf-modal-panel{max-height:94dvh!important}.tt-console-filters .tt-lanterns{max-width:72vw}}
+
+body:has(.tt-shelf-modal) #lang-switcher{visibility:hidden!important;pointer-events:none!important}
+html body .tt-shelf-modal-panel{background:#103b46!important;scrollbar-width:thin}
+@media(min-width:761px){.tt-shelf-modal-stage .tt-shelf-yt{max-height:280px!important;aspect-ratio:auto!important;height:280px!important}.tt-shelf-modal-stage .tt-shelf-yt>img{height:100%!important;object-fit:cover!important}}

@@ -275,6 +275,8 @@ var ComponentContent = {
 
   closeAll(){document.body.classList.remove('tt-network-open');this.setState({mOpen:false,partnerOpen:false});},
 
+  openInquiry(e){e.preventDefault();var form=document.getElementById('tt-inquiry');if(form){form.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});var field=form.querySelector('input');if(field)field.focus({preventScroll:true});}},
+
   syncContactEmailLink(){
     var em=document.getElementById('email-link');
     if(!em) return;
@@ -284,7 +286,7 @@ var ComponentContent = {
     if(contact.email && contact.mailSubject){
       link = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(contact.mailSubject) + (contact.mailTemplate ? '&body=' + encodeURIComponent(contact.mailTemplate) : '');
     }
-    em.href = link;
+    em.href = '#tt-inquiry';
     var label = contact.buttonLabel || 'Start a Project';
     var emLabel = em.querySelector('[data-email-label]');
     if(emLabel) emLabel.textContent = label;
