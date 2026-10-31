@@ -898,11 +898,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div class="tt-case" data-reveal="">
     <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true"></span></a>
     <div class="tt-case-body">
-      
+      <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
       <h3 class="tt-case-title">{{ CASE.title }}</h3>
       <p class="tt-case-meta">{{ CASE.meta }}</p>
-      <p class="tt-case-lesson">{{ CASE.lesson }}</p><details class="tt-case-details"><summary>{{ CASE.eyebrow }}</summary><ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
-      </details>
+      <ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
+      <p class="tt-case-lesson">{{ CASE.lesson }}</p>
       <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
     </div>
   </div>

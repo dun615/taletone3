@@ -629,7 +629,6 @@ async function runInteractionSmoke(chrome, origin) {
 
     // the field lamps light the matching songs (singles and album tracks) and their albums; the rest sink
     const rackState = `(() => ({ songs: document.querySelectorAll('.tt-float:not(.is-album):not(.is-dark)').length, plates: document.querySelectorAll('.tt-float.is-album:not(.is-dark)').length }))()`;
-    await clickSelector(client, '.tt-console-filters > summary');
     await clickSelector(client, '[data-works-action="filter"][data-filter="game"]');
     await sleep(700);
     const games = await evaluate(client, rackState);
@@ -641,7 +640,6 @@ async function runInteractionSmoke(chrome, origin) {
     assert(mixTab.cards === 12 && mixTab.more && mixTab.rack === 0, `interaction: mixing tab expected 12 video cards and a more button, found ${JSON.stringify(mixTab)}`);
     await clickSelector(client, '[data-works-action="tab"][data-tab="songs"]');
     await sleep(500);
-    await clickSelector(client, '.tt-console-filters > summary');
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, rackState);
