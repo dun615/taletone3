@@ -14,7 +14,7 @@ const SOURCES = [
 const skip = (cp) => cp < 0x80 || (cp >= 0x3040 && cp <= 0x30ff) || (cp >= 0x3400 && cp <= 0x9fff) || (cp >= 0xff65 && cp <= 0xff9f) || (cp >= 0xf900 && cp <= 0xfaff);
 
 // The /preview/ page draws from its own copies in preview-src/.
-export const PREVIEW_SOURCES = SOURCES;
+export const PREVIEW_SOURCES = [...SOURCES, 'preview-src/story-journey.mjs'];
 
 export async function nanumCharacters(root, sources = SOURCES) {
   const chars = new Set();

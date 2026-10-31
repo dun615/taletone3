@@ -16,6 +16,7 @@ import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { nanumCharacters, PREVIEW_SOURCES } from './font-coverage.mjs';
+import { previewSite, previewComponent, previewTemplate as storyJourneyTemplate } from '../preview-src/story-journey.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -481,24 +482,24 @@ ${urls.join('\n')}
 }
 
 // ---- Preview of work in progress (taletone.net/preview/, not indexed) ----
-// Built from preview-src/ only, into preview/ only: its own app, content, Works script/style/data,
-// so a redesign can change text and layout without touching the live site.
+// Shared sources plus an explicit preview-only experiment; no duplicate app tree.
 const [pSupport, pResponsiveCss, pSiteUx] = await Promise.all([read('preview-src/support.js'), read('assets/css/responsive.css'), read('preview-src/js/site-ux.js')]);
 const [pTemplate, pComponent, pSiteText, pWorksText, pWorksJs, pWorksCss] = await Promise.all([
   read('preview-src/app/template.html'), composeComponent('preview-src/app'),
   read('preview-src/data/site-content.json'), read('preview-src/data/works-data.json'),
-  read('preview-src/js/works.js'), Promise.resolve(sharedCss),
+  read('preview-src/js/works.js'), readFile(path.join(root, 'preview-src/story-journey.css'), 'utf8').then(css => sharedCss + '\n' + css),
 ]);
 const previewDetailCss = await read('preview-src/css/detail.css');
 const previewWorksByDate = [...JSON.parse(pWorksText).works].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-const previewTemplate = pTemplate
+const previewTemplate = storyJourneyTemplate(pTemplate)
   .replace(/assets\/js\/image-slot\.js\?v=[\w-]+/, `assets/js/image-slot.js?v=${version(imageSlotJs)}`)
   .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(pWorksCss)}`)
   .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(pWorksJs + pWorksText)}`)
   .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`)
   .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
-const previewApp = makeAppBundle(previewTemplate, pComponent);
-const previewSiteScript = dataScript({ ...JSON.parse(pSiteText), ...siteExtras(JSON.parse(pSiteText), JSON.parse(pWorksText)) }, 'TALETONE_CONTENT');
+const previewApp = makeAppBundle(previewTemplate, previewComponent(pComponent));
+const previewSiteData = previewSite(JSON.parse(pSiteText));
+const previewSiteScript = dataScript({ ...previewSiteData, ...siteExtras(previewSiteData, JSON.parse(pWorksText)) }, 'TALETONE_CONTENT');
 const previewNanum = nanumUrl(await nanumCharacters(root, PREVIEW_SOURCES));
 // every route of the live site exists under /preview/ too, so a reload or a shared link stays in the preview
 const previewPage = (page, lang) => renderPage(page, lang, {
