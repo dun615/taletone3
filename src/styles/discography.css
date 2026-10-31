@@ -503,12 +503,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   #content#content #c-members > [data-reveal]:first-child {margin-bottom:clamp(22px,3.6vh,44px)!important}
 }
 
-/* =====================================================================
-   Member sheet as liner notes (fresh markup: .tt-sheet-*). A header band in the member's colour with the
-   CD, role, name and animal tag; below it the credits (selected first, then every year) beside a narrow
-   profile column. Desktop: the panel has a fixed height and the credits scroll inside it. Phones: one
-   long sheet (the dialog scrolls), credits first, profile last. Parsing: memberSheet() in content.js.
-   ===================================================================== */
+/* Member liner notes: scrollable credits on desktop; full sheet on phones. */
 html body .tt-member-modal .tt-sheet {position:relative;box-sizing:border-box;width:min(1040px,94vw)!important;height:min(780px,88vh);max-height:none!important;padding:0!important;
   overflow:hidden!important;display:grid;grid-template-rows:auto minmax(0,1fr);border-radius:28px!important;background:#fbfaf6!important;
   border:1px solid rgba(255,255,255,.8);box-shadow:0 50px 120px rgba(8,12,30,.45)}
