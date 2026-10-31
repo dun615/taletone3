@@ -17,7 +17,7 @@
 .tt-process .tt-cmp-flow li:last-child b {color:#123d49!important}
 .tt-cmp-closing {color:#173b48;max-width:700px;text-wrap:balance;line-height:1.8!important}
 .tt-audience-hook {color:#164e5c!important}
-#c-contact {padding-top:100px!important;padding-bottom:100px!important;overflow-x:clip}
+#content#content #c-contact {padding-top:100px!important;padding-bottom:100px!important;overflow-x:clip}
 .tt-arrival {width:min(1100px,100%);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:28px;min-height:560px;position:relative;z-index:3}
 .tt-arrival-book {grid-column:2;grid-row:1;margin:0!important;min-width:0;pointer-events:none}
 .tt-arrival-book > [data-float] {width:100%!important}
@@ -48,7 +48,7 @@
   .tt-process .tt-cmp-result {min-height:0}
   #c-projects .tt-chapter-lead {font-size:15px!important;max-width:340px}
   #tt-mobile-chapter-menu {background:#102c39!important;border-color:#456572!important;backdrop-filter:blur(24px)}
-  #c-contact {padding-top:40px!important;padding-bottom:110px!important}
+  #content#content #c-contact {padding-top:40px!important;padding-bottom:110px!important}
   .tt-arrival {grid-template-columns:1fr;gap:8px;min-height:0}
   .tt-arrival-book {grid-column:1;grid-row:1}
   .tt-arrival-book .tt-book2 {--bw:min(160px,40vw);height:255px}
