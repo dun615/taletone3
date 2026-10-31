@@ -177,7 +177,7 @@
     "title": "",
     "titleAccent": "APPROACH",
     "subtitle": "이야기에, 이 음악이어야 하는 이유를 찾아냅니다.",
-    "description": "서사를 함께 느끼고, 그 감정에 맞는 소리를 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
+    "description": "서사를 함께 느끼고, 그 감정에 맞는 소리의 흐름을 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
     "cards": [
       {
         "id": "selected-game-ip",
@@ -273,7 +273,7 @@
         "title": "",
         "titleAccent": "APPROACH",
         "subtitle": "이야기에, 이 음악이어야 하는 이유를 찾아냅니다.",
-        "description": "서사를 함께 느끼고, 그 감정에 맞는 소리를 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
+        "description": "서사를 함께 느끼고, 그 감정에 맞는 소리의 흐름을 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
         "proof": {
           "rows": [
             {
@@ -294,7 +294,7 @@
               "badge": "",
               "steps": [
                 {
-                  "text": "감정을 설계합니다",
+                  "text": "소리의 방향을 찾습니다",
                   "en": ""
                 }
               ],
@@ -310,10 +310,10 @@
                   "en": ""
                 }
               ],
-              "result": "기획의 이유가 작곡·편곡·가사와 보컬까지 이어지도록 만듭니다."
+              "result": "이야기에서 찾은 생각을 작곡과 편곡, 가사와 보컬에 담습니다."
             }
           ],
-          "closing": "이야기의 발자취를 따라, 우리만의 길로 만들어냅니다.",
+          "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
@@ -352,7 +352,7 @@
         "title": "",
         "titleAccent": "APPROACH",
         "subtitle": "We discover why the story calls for this music.",
-        "description": "We experience the narrative together and shape sounds to match its emotions.\nAnd so, our story blossoms into music.",
+        "description": "We experience the narrative together and design the flow of sound around its emotions.\nAnd so, our story blossoms into music.",
         "cards": [
           {
             "label": "GAME IP",
@@ -373,7 +373,7 @@
         "audienceGameTitle": "Subculture Games",
         "audienceGameService1": "OST · Character themes · Event songs",
         "audienceGameService2": "PV / trailer music · BGM",
-        "audienceGameHook": "When the story ends, what should stay in the heart?",
+        "audienceGameHook": "What emotions remain after the story ends?",
         "audienceCreatorKicker": "VTUBER / ARTIST",
         "audienceCreatorTitle": "VTuber · Influencer · Artist",
         "audienceCreatorService1": "Original songs · Debut songs · Unit songs",
@@ -404,7 +404,7 @@
               "badge": "",
               "steps": [
                 {
-                  "text": "Shape the emotion",
+                  "text": "Find the direction of sound",
                   "en": ""
                 }
               ],
@@ -420,10 +420,10 @@
                   "en": ""
                 }
               ],
-              "result": "Carry those choices through composition, arrangement, lyrics and vocals."
+              "result": "We bring ideas from the story into composition, arrangement, lyrics and vocals."
             }
           ],
-          "closing": "Following the story’s footsteps, we forge a path of our own.",
+          "closing": "Following the story’s footsteps, we create music of our own.",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "STORY INTO SOUND · A real project",
@@ -462,7 +462,7 @@
         "title": "",
         "titleAccent": "APPROACH",
         "subtitle": "物語から、この音楽である理由を見つけ出します。",
-        "description": "物語をともに感じ、その感情に合う音を設計します。\nそうして、私たちの物語が音楽として花開きます。",
+        "description": "物語をともに感じ、その感情に合う音の流れを設計します。\nそうして、私たちの物語が音楽として花開きます。",
         "cards": [
           {
             "label": "GAME IP",
@@ -483,7 +483,7 @@
         "audienceGameTitle": "サブカルチャー系ゲーム",
         "audienceGameService1": "OST・キャラクターテーマソング・イベント曲",
         "audienceGameService2": "PV／トレーラー音楽・BGM",
-        "audienceGameHook": "物語が終わったあと、心には何が残るべきでしょう？",
+        "audienceGameHook": "物語が終わったあとも、どんな感情が残るでしょう？",
         "audienceCreatorKicker": "VTUBER / ARTIST",
         "audienceCreatorTitle": "VTuber・インフルエンサー・アーティスト",
         "audienceCreatorService1": "オリジナルソング・デビュー曲・ユニット曲",
@@ -514,7 +514,7 @@
               "badge": "",
               "steps": [
                 {
-                  "text": "感情を形にする",
+                  "text": "音の方向を見つける",
                   "en": ""
                 }
               ],
@@ -530,10 +530,10 @@
                   "en": ""
                 }
               ],
-              "result": "企画の意図を、作曲・編曲・歌詞・歌声までつなげます。"
+              "result": "物語から見つけた想いを、作曲・編曲・歌詞・歌声に込めます。"
             }
           ],
-          "closing": "物語の足跡をたどり、私たちだけの道を切り拓きます。",
+          "closing": "物語の足跡をたどり、私たちだけの音楽をつくっていきます。",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "STORY INTO SOUND · 制作事例",
@@ -572,7 +572,7 @@
     "audienceGameTitle": "서브컬처 게임",
     "audienceGameService1": "OST · 캐릭터 테마송 · 이벤트 곡",
     "audienceGameService2": "PV / 트레일러 음악 · BGM",
-    "audienceGameHook": "이 이야기가 끝난 뒤, 마음에는 무엇이 남아야 할까요?",
+    "audienceGameHook": "이야기가 끝난 뒤에도, 어떤 감정이 남을까요?",
     "audienceCreatorKicker": "VTUBER / ARTIST",
     "audienceCreatorTitle": "버튜버 · 인플루언서 · 아티스트",
     "audienceCreatorService1": "오리지널 송 · 데뷔곡 · 유닛곡",
@@ -603,7 +603,7 @@
           "badge": "",
           "steps": [
             {
-              "text": "감정을 설계합니다",
+              "text": "소리의 방향을 찾습니다",
               "en": ""
             }
           ],
@@ -619,10 +619,10 @@
               "en": ""
             }
           ],
-          "result": "기획의 이유가 작곡·편곡·가사와 보컬까지 이어지도록 만듭니다."
+          "result": "이야기에서 찾은 생각을 작곡과 편곡, 가사와 보컬에 담습니다."
         }
       ],
-      "closing": "이야기의 발자취를 따라, 우리만의 길로 만들어냅니다.",
+      "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
       "case": {
         "slug": "love-dopamine",
         "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
@@ -660,8 +660,8 @@
     "eyebrow": "Contact",
     "titleLine1": "이제, 우리의 이야기를",
     "titleAccent": "함께 써 내려갑니다.",
-    "subtitle": "우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.",
-    "caption": "캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?",
+    "subtitle": "캐릭터의 첫 노래부터 게임 속 한 장면까지.",
+    "caption": "이 페이지에는 어떤 발자취를 남겨볼까요?",
     "buttonLabel": "프로젝트 문의하기",
     "link": "mailto:contact@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
     "translations": {
@@ -702,18 +702,18 @@
             "url": ""
           }
         ],
-        "arrivalLabel": "마침내 만난, 아직 쓰이지 않은 페이지",
+        "arrivalLabel": "마침내 만난 마법의 서",
         "titleLine1": "이제, 우리의 이야기를",
         "titleAccent": "함께 써 내려갑니다.",
-        "subtitle": "우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.",
-        "caption": "캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?"
+        "subtitle": "캐릭터의 첫 노래부터 게임 속 한 장면까지.",
+        "caption": "이 페이지에는 어떤 발자취를 남겨볼까요?"
       },
       "en": {
         "eyebrow": "Contact",
         "titleLine1": "Our story.",
         "titleAccent": "Our next page together.",
-        "subtitle": "The magical book we sought—its next page is still blank.",
-        "caption": "From a character’s first song to a scene in a game.\nWhat mark shall we leave as we write the next page together?",
+        "subtitle": "From a character’s first song to a scene in a game.",
+        "caption": "What mark shall we leave on this page?",
         "buttonLabel": "Project Inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
@@ -753,14 +753,14 @@
           "budgetPlaceholder": "Range / to discuss / undecided",
           "schedulePlaceholder": "Release target / undecided"
         },
-        "arrivalLabel": "An unwritten page, found at last"
+        "arrivalLabel": "The magical book, found at last"
       },
       "jp": {
         "eyebrow": "Contact",
         "titleLine1": "私たちの物語を、",
         "titleAccent": "一緒に綴る次のページへ。",
-        "subtitle": "探していた魔法の書。その次のページは、まだ白いままです。",
-        "caption": "キャラクターの初めての歌から、ゲームのひと場面まで。\nどんな足跡を残すのか、一緒に綴っていきませんか。",
+        "subtitle": "キャラクターの初めての歌から、ゲームのひと場面まで。",
+        "caption": "このページに、どんな足跡を残しましょうか。",
         "buttonLabel": "プロジェクトのご相談",
         "copyLabel": "メールアドレスをコピー",
         "copyDone": "コピーしました",
@@ -800,7 +800,7 @@
           "budgetPlaceholder": "ご予算の目安・応相談・未定",
           "schedulePlaceholder": "公開予定・未定"
         },
-        "arrivalLabel": "たどり着いた、まだ白いページ"
+        "arrivalLabel": "ついに出会った魔法の書"
       }
     },
     "email": "contact@taletone.net",
@@ -818,7 +818,7 @@
     "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
     "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:",
     "formKey": "0e2fc060-8216-4f7d-9cc7-770b2842df69",
-    "arrivalLabel": "마침내 만난, 아직 쓰이지 않은 페이지",
+    "arrivalLabel": "마침내 만난 마법의 서",
     "form": {
       "title": "이야기의 첫 단서를 남겨주세요",
       "nameLabel": "이름 / 소속",
@@ -848,13 +848,13 @@
   "membersMeta": {
     "eyebrow": "The Storytellers",
     "title": "",
-    "subtitle": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서, TALETONE입니다.",
+    "subtitle": "이야기를 음악으로 번역하는 음악 프로듀서, TALETONE입니다.",
     "description": "",
     "translations": {
       "en": {
         "eyebrow": "The Storytellers",
         "title": "",
-        "subtitle": "TALETONE is a subculture music producer who reads the story first, then writes the song.",
+        "subtitle": "TALETONE is a music producer who translates stories into music.",
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "Stories TALETONE writes songs for",
@@ -864,7 +864,7 @@
       "jp": {
         "eyebrow": "The Storytellers",
         "title": "",
-        "subtitle": "物語を先に読んでから歌をつくる、サブカルチャー音楽プロデューサー TALETONEです。",
+        "subtitle": "物語を音楽に翻訳する音楽プロデューサー、TALETONEです。",
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "こんな物語に歌をつくります",
@@ -881,40 +881,40 @@
     {
       "id": "home-projects",
       "eyebrow": "CHAPTER 1 · TALE",
-      "text": "수면 아래에는,\n이야기에 귀 기울이는 사람이 있습니다.",
+      "text": "수면 아래로 한 걸음,\n이야기를 찾아가는 여행이 시작됩니다.",
       "translations": {
         "en": {
           "eyebrow": "CHAPTER 1 · TALE",
-          "text": "Below the surface,\nthere is someone who listens to stories.",
+          "text": "One step below the surface,\na journey in search of stories begins.",
           "mobileLines": [
             {
-              "text": "Below the surface,",
+              "text": "One step below the surface,",
               "indent": 0
             },
             {
-              "text": "there is someone",
+              "text": "a journey in search of stories",
               "indent": 0
             },
             {
-              "text": "who listens to stories.",
+              "text": "begins.",
               "indent": 0
             }
           ]
         },
         "jp": {
           "eyebrow": "CHAPTER 1 · TALE",
-          "text": "水面の下には、\n物語に耳を傾ける人がいます。",
+          "text": "水面の下へ一歩、\n物語を探す旅が始まります。",
           "mobileLines": [
             {
-              "text": "水面の下には、",
+              "text": "水面の下へ一歩、",
               "indent": 0
             },
             {
-              "text": "物語に耳を傾ける",
+              "text": "物語を探す",
               "indent": 0
             },
             {
-              "text": "人がいます。",
+              "text": "旅が始まります。",
               "indent": 0
             }
           ]
@@ -922,15 +922,15 @@
       },
       "mobileLines": [
         {
-          "text": "수면 아래에는,",
+          "text": "수면 아래로 한 걸음,",
           "indent": 0
         },
         {
-          "text": "이야기에 귀 기울이는",
+          "text": "이야기를 찾아가는",
           "indent": 0
         },
         {
-          "text": "사람이 있습니다.",
+          "text": "여행이 시작됩니다.",
           "indent": 0
         }
       ]
@@ -938,32 +938,32 @@
     {
       "id": "projects-members",
       "eyebrow": "CHAPTER 2 · TONE",
-      "text": "귀 기울여 들은 이야기는\n저마다의 빛깔을 띠기 시작합니다.",
+      "text": "우리가 만난 이야기는\n저마다의 빛깔을 띠기 시작합니다.",
       "translations": {
         "en": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "A story, truly listened to,\nbegins to take on a color of its own.",
+          "text": "The stories we encounter\nbegin to take on colors of their own.",
           "mobileLines": [
             {
-              "text": "A story, truly listened to,",
+              "text": "The stories we encounter",
               "indent": 0
             },
             {
-              "text": "begins to take on",
+              "text": "begin to take on",
               "indent": 0
             },
             {
-              "text": "a color of its own.",
+              "text": "colors of their own.",
               "indent": 0
             }
           ]
         },
         "jp": {
           "eyebrow": "CHAPTER 2 · TONE",
-          "text": "耳を澄ませて聴いた物語は、\nそれぞれの色を帯びはじめます。",
+          "text": "私たちが出会った物語は\nそれぞれの色を帯びはじめます。",
           "mobileLines": [
             {
-              "text": "耳を澄ませて聴いた物語は、",
+              "text": "私たちが出会った物語は",
               "indent": 0
             },
             {
@@ -979,7 +979,7 @@
       },
       "mobileLines": [
         {
-          "text": "귀 기울여 들은 이야기는",
+          "text": "우리가 만난 이야기는",
           "indent": 0
         },
         {
@@ -995,40 +995,40 @@
     {
       "id": "members-works",
       "eyebrow": "CHAPTER 3 · MUSIC",
-      "text": "손끝에 닿은 빛깔은 소리가 되어,\n마침내 한 곡의 노래로 태어납니다.",
+      "text": "저마다의 빛깔을 품은 이야기는\n한 곡의 노래가 되어 흘러갑니다.",
       "translations": {
         "en": {
           "eyebrow": "CHAPTER 3 · MUSIC",
-          "text": "At the fingertips, that color turns to sound\nand is born, at last, as a song.",
+          "text": "Each story, holding its own color,\nflows onward as a song.",
           "mobileLines": [
             {
-              "text": "At the fingertips,",
+              "text": "Each story, holding its own color,",
               "indent": 0
             },
             {
-              "text": "that color turns to sound",
+              "text": "flows onward",
               "indent": 0
             },
             {
-              "text": "and is born as a song.",
+              "text": "as a song.",
               "indent": 0
             }
           ]
         },
         "jp": {
           "eyebrow": "CHAPTER 3 · MUSIC",
-          "text": "指先に触れた色は音になり、\nやがてひとつの歌として生まれます。",
+          "text": "それぞれの色を宿した物語は\n一曲の歌となって流れていきます。",
           "mobileLines": [
             {
-              "text": "指先に触れた色は",
+              "text": "それぞれの色を宿した物語は",
               "indent": 0
             },
             {
-              "text": "音になり、やがて",
+              "text": "一曲の歌となって",
               "indent": 0
             },
             {
-              "text": "ひとつの歌として生まれます。",
+              "text": "流れていきます。",
               "indent": 0
             }
           ]
@@ -1036,15 +1036,15 @@
       },
       "mobileLines": [
         {
-          "text": "손끝에 닿은 빛깔은",
+          "text": "저마다의 빛깔을 품은 이야기는",
           "indent": 0
         },
         {
-          "text": "소리가 되어, 마침내",
+          "text": "한 곡의 노래가 되어",
           "indent": 0
         },
         {
-          "text": "한 곡의 노래로 태어납니다.",
+          "text": "흘러갑니다.",
           "indent": 0
         }
       ]
@@ -1298,7 +1298,7 @@
     },
     "tale": {
       "label": "CHAPTER 1 · TALE",
-      "note": "이야기에 귀 기울이는 사람"
+      "note": "우리의 여행을 함께할 사람"
     },
     "tone": {
       "label": "CHAPTER 2 · TONE",
@@ -1326,7 +1326,7 @@
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
-          "note": "The ones who listen to stories"
+          "note": "Our companion on this journey"
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",
@@ -1354,7 +1354,7 @@
         },
         "tale": {
           "label": "CHAPTER 1 · TALE",
-          "note": "物語に耳を傾ける人"
+          "note": "私たちの旅をともにする人"
         },
         "tone": {
           "label": "CHAPTER 2 · TONE",

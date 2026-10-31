@@ -428,16 +428,16 @@ for (const [section, fields] of Object.entries(clearedChapterCopy)) {
 }
 const expectedContactCopy = {
   kr: {
-    subtitle: '우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.',
-    caption: '캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?',
+    subtitle: '캐릭터의 첫 노래부터 게임 속 한 장면까지.',
+    caption: '이 페이지에는 어떤 발자취를 남겨볼까요?',
   },
   en: {
-    subtitle: 'The magical book we sought—its next page is still blank.',
-    caption: 'From a character’s first song to a scene in a game.\nWhat mark shall we leave as we write the next page together?',
+    subtitle: 'From a character’s first song to a scene in a game.',
+    caption: 'What mark shall we leave on this page?',
   },
   jp: {
-    subtitle: '探していた魔法の書。その次のページは、まだ白いままです。',
-    caption: 'キャラクターの初めての歌から、ゲームのひと場面まで。\nどんな足跡を残すのか、一緒に綴っていきませんか。',
+    subtitle: 'キャラクターの初めての歌から、ゲームのひと場面まで。',
+    caption: 'このページに、どんな足跡を残しましょうか。',
   },
 };
 assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
@@ -463,7 +463,7 @@ for (const [key, minimum] of Object.entries({ members: 1, partners: 1, bridges: 
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
 const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
-assert(firstBridge?.eyebrow === 'CHAPTER 1 · TALE' && firstBridge?.translations?.jp?.text === '水面の下には、\n物語に耳を傾ける人がいます。', 'chapter 1 bridge copy or Japanese line break changed');
+assert(firstBridge?.eyebrow === 'CHAPTER 1 · TALE' && firstBridge?.translations?.jp?.text === '水面の下へ一歩、\n物語を探す旅が始まります。', 'chapter 1 bridge copy or Japanese line break changed');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
