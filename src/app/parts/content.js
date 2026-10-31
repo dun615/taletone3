@@ -275,7 +275,14 @@ var ComponentContent = {
 
   closeAll(){document.body.classList.remove('tt-network-open');this.setState({mOpen:false,partnerOpen:false});},
 
-  openInquiry(e){e.preventDefault();var form=document.getElementById('tt-inquiry');if(form){form.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});var field=form.querySelector('input');if(field)field.focus({preventScroll:true});}},
+  openInquiry(e){
+    if(e) e.preventDefault();
+    var form=document.getElementById('tt-inquiry');if(!form||!this.scroller)return;
+    this.bypassBridges('c-contact');
+    var land=()=>{if(!form.isConnected)return;this.scroller.scrollTo({top:this.scroller.scrollTop+form.getBoundingClientRect().top-this.scroller.getBoundingClientRect().top-90,behavior:'auto'});};
+    land();[100,400,900].forEach(ms=>setTimeout(land,ms));
+    var field=form.querySelector('input');if(field)field.focus({preventScroll:true});
+  },
 
   syncContactEmailLink(){
     var em=document.getElementById('email-link');
