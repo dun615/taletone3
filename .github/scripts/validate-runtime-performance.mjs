@@ -629,6 +629,7 @@ async function runInteractionSmoke(chrome, origin) {
 
     // the field lamps light the matching songs (singles and album tracks) and their albums; the rest sink
     const rackState = `(() => ({ songs: document.querySelectorAll('.tt-float:not(.is-album):not(.is-dark)').length, plates: document.querySelectorAll('.tt-float.is-album:not(.is-dark)').length }))()`;
+    await clickSelector(client, '.tt-console-filters > summary');
     await clickSelector(client, '[data-works-action="filter"][data-filter="game"]');
     await sleep(700);
     const games = await evaluate(client, rackState);
