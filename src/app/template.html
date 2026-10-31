@@ -817,7 +817,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-18px 0 40px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
     <article class="tt-audience">
-      
+      <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
       <h3 class="tt-audience-title">{{ a.title }}</h3>
       <ul class="tt-audience-services">
         <sc-for list="{{ a.services }}" as="service" hint-placeholder-count="5"><li>{{ service }}</li></sc-for>
@@ -1019,7 +1019,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
 
     <div class="tt-contact-actions" style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
-      <button type="button" onclick="{{ openInquiry }}" id="email-link" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></button>
+      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
       <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
     </div>
     <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
@@ -1039,7 +1039,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 
 </div>
   <sc-if value="{{ CONTACT_FORM.title }}">
-  <form id="tt-inquiry" class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
+  <form class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
     <p class="tt-inquiry-title">{{ CONTACT_FORM.title }}</p>
     <div class="tt-inquiry-grid">
       <label><span>{{ CONTACT_FORM.nameLabel }}</span><input name="name" type="text" autocomplete="organization"></label>
