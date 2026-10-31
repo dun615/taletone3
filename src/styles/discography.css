@@ -723,7 +723,6 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-case-steps > li[data-kind=answer] > p {font-size:var(--fs-m)}
 .tt-case-lesson {margin:16px 0 0;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
 .tt-case-listen {margin-top:14px;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
-.tt-dive-cta {width:fit-content;margin:30px auto 0;display:flex;justify-content:center;align-items:center;gap:8px;padding:15px 28px;border-radius:999px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)}
 @media (max-width:900px) {
   .tt-cmp {grid-template-columns:minmax(0,1fr)}
   .tt-case {grid-template-columns:minmax(0,1fr);padding:16px}
