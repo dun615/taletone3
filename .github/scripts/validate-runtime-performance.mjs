@@ -641,6 +641,7 @@ async function runInteractionSmoke(chrome, origin) {
     assert(mixTab.cards === 12 && mixTab.more && mixTab.rack === 0, `interaction: mixing tab expected 12 video cards and a more button, found ${JSON.stringify(mixTab)}`);
     await clickSelector(client, '[data-works-action="tab"][data-tab="songs"]');
     await sleep(500);
+    await clickSelector(client, '.tt-console-filters > summary');
     await clickSelector(client, '[data-works-action="filter"][data-filter="all"]');
     await sleep(700);
     const all = await evaluate(client, rackState);
