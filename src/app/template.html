@@ -658,6 +658,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <div id="sky" aria-hidden="true" style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#eef4ff 0%,#fff4e8 100%)"></div>
 <div id="glow" aria-hidden="true" style="position:fixed;left:50%;bottom:-26vh;width:150vw;height:96vh;transform:translateX(-50%);z-index:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side, rgba(255,224,168,.85), rgba(120,196,200,.22) 46%, rgba(120,196,200,0) 72%);filter:blur(10px)"></div>
 <canvas id="fx" aria-hidden="true" style="position:fixed;inset:0;width:100vw;height:100lvh;min-height:0;z-index:2;pointer-events:none;mix-blend-mode:normal;opacity:.82"></canvas>
+<!-- Story to project -->
 <!-- BRAND -->
 <div class="tt-top-scrim" aria-hidden="true"></div>
 <div id="brand" style="position:fixed;left:32px;top:26px;z-index:60;display:flex;align-items:center;gap:11px">
@@ -765,11 +766,12 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div class="tt-s-color-var-accent-9aa3" data-reveal="" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
   <h1 class="tt-s-color-var-ink-f97e" data-reveal="" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.84;color:var(--ink,#141C30);font-size:clamp(58px,11.5vw,188px);opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1.1s cubic-bezier(.2,.8,.2,1) .08s">{{ HOME.titleLine1 }}<br>{{ HOME.titleLine2 }}</h1>
   <sc-if value="{{ HOME.tagline }}"><p data-reveal="" class="tt-home-tagline" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .2s,transform 1s cubic-bezier(.2,.8,.2,1) .2s">{{ HOME.tagline }}</p></sc-if>
+  <p class="tt-journey-invitation">{{ HOME.journeyIntro }}</p>
   <div data-reveal="" class="tt-home-quick-actions">
     <a class="is-primary" href="/discography/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
     <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
   </div>
-  <sc-if value="{{ HOME_LISTEN.slug }}"><a class="tt-home-latest" href="/discography/?work={{ HOME_LISTEN.slug }}" aria-label="{{ HOME_LISTEN.ariaLabel }}"><img src="{{ HOME_LISTEN.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ HOME_LISTEN.label }}</small><b>{{ HOME_LISTEN.title }}</b><em>{{ HOME_LISTEN.context }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
+  <sc-if value="{{ HOME_LISTEN.slug }}"><a class="tt-home-latest" href="{{ HOME_LISTEN.href }}" aria-label="{{ HOME_LISTEN.ariaLabel }}"><img src="{{ HOME_LISTEN.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ HOME_LISTEN.label }}</small><b>{{ HOME_LISTEN.title }}</b><em>{{ HOME_LISTEN.context }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
   <div data-px="-0.04" style="position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:min(880px,82vw);opacity:.55;pointer-events:none">
     <svg data-drift="" viewBox="0 0 1200 200" style="width:100%;height:auto;display:block" preserveAspectRatio="none">
       <g fill="none" stroke="var(--line,rgba(24,32,52,.3))" stroke-width="1.6">
@@ -882,7 +884,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
   </div>
-  <div class="tt-cmp" data-reveal="">
+  <div class="tt-cmp tt-process" data-reveal="">
     <sc-for list="{{ PROOF.rows }}" as="row" hint-placeholder-count="2">
     <div class="tt-cmp-card" data-ours="{{ row.ours }}">
       <div class="tt-cmp-head"><span class="tt-cmp-label">{{ row.label }}</span><sc-if value="{{ row.badge }}"><span class="tt-cmp-badge">{{ row.badge }}</span></sc-if></div>
@@ -955,55 +957,9 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <g fill="var(--accent,#0E6E7D)"><circle cx="300" cy="63" r="6"></circle><circle cx="640" cy="112" r="6"></circle><circle cx="900" cy="58" r="6"></circle></g>
     </svg>
   </div>
-  <div data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
-    <h2 class="tt-chapter-title tt-contact-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ CONTACT.titleAccent }}</span></h2>
-    <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
-    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
-
-    <div style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
-      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
-      <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
-    </div>
-    <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
-    <sc-if value="{{ CONTACT.replyNote }}"><p class="tt-contact-promise">{{ CONTACT.replyNote }}<sc-if value="{{ CONTACT.timelineNote }}"><br>{{ CONTACT.timelineNote }}</sc-if></p></sc-if>
-    <div class="tt-s-color-var-accent-9aa3" id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
-    <sc-if value="{{ CONTACT_NO_FORM }}">
-    <sc-if value="{{ CONTACT.guideTitle }}">
-    <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
-      <p class="tt-s-color-var-ink-f97e" style="margin:0 0 10px;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
-      <ul style="margin:0;padding-left:18px;font-weight:500;font-size:var(--fs-m);line-height:1.75;color:var(--soft,#44505F)">
-        <sc-for list="{{ CONTACT.guideItems }}" as="g" hint-placeholder-count="5"><li>{{ g }}</li></sc-for>
-      </ul>
-    </div>
-    </sc-if>
-    </sc-if>
-  </div>
-
-  <sc-if value="{{ CONTACT_FORM.title }}">
-  <form class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
-    <p class="tt-inquiry-title">{{ CONTACT_FORM.title }}</p>
-    <div class="tt-inquiry-grid">
-      <label><span>{{ CONTACT_FORM.nameLabel }}</span><input name="name" type="text" autocomplete="organization"></label>
-      <label><span>{{ CONTACT_FORM.contactLabel }}</span><input name="reply" type="email" autocomplete="email" required></label>
-      <label class="is-wide"><span>{{ CONTACT_FORM.projectLabel }}</span><input name="project" type="text" placeholder="{{ CONTACT_FORM.projectPlaceholder }}" required></label>
-      <fieldset class="is-wide"><legend>{{ CONTACT_FORM.songLabel }}</legend><div class="tt-inquiry-chips"><sc-for list="{{ CONTACT_FORM.songOptions }}" as="opt" hint-placeholder-count="5"><label class="tt-inquiry-chip"><input type="checkbox" name="song" value="{{ opt }}"><span>{{ opt }}</span></label></sc-for></div></fieldset>
-      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><input name="budget" type="text"></label>
-      <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text"></label>
-      <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
-    </div>
-    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
-    <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
-    <p class="tt-inquiry-note" aria-live="polite" style="min-height:1.4em;color:var(--accent-soft,#8decfc)">{{ INQUIRY_MESSAGE }}</p>
-  </form>
-  <div class="tt-contact-channels" data-reveal="">
-    <span>{{ CONTACT.channelsLabel }}</span>
-    <sc-for list="{{ CONTACT_CHANNELS }}" as="ch" hint-placeholder-count="2"><a href="{{ ch.url }}" target="_blank" rel="noopener">{{ ch.label }} ↗</a></sc-for>
-    <sc-if value="{{ CONTACT.channelsTodo }}"><em>{{ CONTACT.channelsTodo }}</em></sc-if>
-  </div>
-  </sc-if>
+<div class="tt-arrival">
     <!-- the book rests on the sea floor at the very bottom of the page, in the water -->
-    <div style="margin-top:clamp(40px,8vh,120px);position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center">
+    <div class="tt-arrival-book" style="margin-top:clamp(40px,8vh,120px);position:relative;z-index:3;width:100%;display:flex;flex-direction:column;align-items:center">
 <div data-float="" style="position:relative;z-index:2;width:min(800px,92vw);overflow:visible">
         <div class="tt-book-light-stage" aria-hidden="true">
           <div class="beam-wide"></div><div class="beam-core"></div><i class="beam-spark s1"></i><i class="beam-spark s2"></i><i class="beam-spark s3"></i>
@@ -1057,6 +1013,54 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       </div>
     </div>
     
+  <div class="tt-arrival-copy" data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
+    <p class="tt-arrival-label">{{ CONTACT.arrivalLabel }}</p><div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
+    <h2 class="tt-chapter-title tt-contact-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ CONTACT.titleAccent }}</span></h2>
+    <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
+    <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
+
+    <div class="tt-contact-actions" style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
+      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
+      <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
+    </div>
+    <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
+    <sc-if value="{{ CONTACT.replyNote }}"><p class="tt-contact-promise">{{ CONTACT.replyNote }}<sc-if value="{{ CONTACT.timelineNote }}"><br>{{ CONTACT.timelineNote }}</sc-if></p></sc-if>
+    <div class="tt-s-color-var-accent-9aa3" id="email-copy-feedback" aria-live="polite" style="min-height:20px;margin-top:12px;font-weight:800;font-size:var(--fs-s);letter-spacing:.02em;color:var(--accent,#0E6E7D)">{{ CONTACT_COPY_MESSAGE }}</div>
+    <sc-if value="{{ CONTACT_NO_FORM }}">
+    <sc-if value="{{ CONTACT.guideTitle }}">
+    <div class="tt-contact-guide" style="margin:40px auto 0;max-width:560px;padding:22px 26px;border-radius:20px;background:var(--card,rgba(255,255,255,.54));border:1px solid rgba(255,255,255,.7);text-align:left">
+      <p class="tt-s-color-var-ink-f97e" style="margin:0 0 10px;font-weight:800;font-size:var(--fs-m);color:var(--ink,#141C30)">{{ CONTACT.guideTitle }}</p>
+      <ul style="margin:0;padding-left:18px;font-weight:500;font-size:var(--fs-m);line-height:1.75;color:var(--soft,#44505F)">
+        <sc-for list="{{ CONTACT.guideItems }}" as="g" hint-placeholder-count="5"><li>{{ g }}</li></sc-for>
+      </ul>
+    </div>
+    </sc-if>
+    </sc-if>
+  </div>
+
+</div>
+  <sc-if value="{{ CONTACT_FORM.title }}">
+  <form class="tt-inquiry" data-reveal="" onsubmit="{{ sendInquiry }}">
+    <p class="tt-inquiry-title">{{ CONTACT_FORM.title }}</p>
+    <div class="tt-inquiry-grid">
+      <label><span>{{ CONTACT_FORM.nameLabel }}</span><input name="name" type="text" autocomplete="organization"></label>
+      <label><span>{{ CONTACT_FORM.contactLabel }}</span><input name="reply" type="email" autocomplete="email" required></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.projectLabel }}</span><input name="project" type="text" placeholder="{{ CONTACT_FORM.projectPlaceholder }}" required></label>
+      <fieldset class="is-wide"><legend>{{ CONTACT_FORM.songLabel }}</legend><div class="tt-inquiry-chips"><sc-for list="{{ CONTACT_FORM.songOptions }}" as="opt" hint-placeholder-count="5"><label class="tt-inquiry-chip"><input type="checkbox" name="song" value="{{ opt }}"><span>{{ opt }}</span></label></sc-for></div></fieldset>
+      <label><span>{{ CONTACT_FORM.budgetLabel }}</span><input name="budget" type="text" placeholder="{{ CONTACT_FORM.budgetPlaceholder }}"></label>
+      <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text" placeholder="{{ CONTACT_FORM.schedulePlaceholder }}"></label>
+      <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
+    </div>
+    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
+    <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
+    <p class="tt-inquiry-note" aria-live="polite" style="min-height:1.4em;color:var(--accent-soft,#8decfc)">{{ INQUIRY_MESSAGE }}</p>
+  </form>
+  <sc-if value="{{ CONTACT_CHANNELS.length }}"><div class="tt-contact-channels" data-reveal="">
+    <span>{{ CONTACT.channelsLabel }}</span>
+    <sc-for list="{{ CONTACT_CHANNELS }}" as="ch" hint-placeholder-count="2"><a href="{{ ch.url }}" target="_blank" rel="noopener">{{ ch.label }} ↗</a></sc-for>
+    <sc-if value="{{ CONTACT.channelsTodo }}"><em>{{ CONTACT.channelsTodo }}</em></sc-if>
+  </div></sc-if>
+  </sc-if>
     </section></div>
   <footer style="margin-top:auto;width:100%;padding:34px 2vw 30px;border-top:1px solid var(--line,rgba(24,32,52,.12));display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
     <div style="display:flex;align-items:center;gap:11px">

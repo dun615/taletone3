@@ -163,14 +163,14 @@ var ComponentContent = {
     // Home's featured song: the work card comes from the build (listenWork), the label and context from home.listen
     var listen = this.HOME.listen || {}, listenWork = cfg.listenWork ? this._localizedObject(cfg.listenWork, cfg.listenWork.translations) : {};
     this.HOME_LISTEN = listenWork.slug && listen.slug === listenWork.slug ? Object.assign({}, listenWork, {
+      href: this._langPath('/discography/') + '?work=' + listenWork.slug,
       label: listen.label || '', context: listen.context || listenWork.artist || '',
       ariaLabel: (listen.label || '') + ': ' + listenWork.title + ', ' + (listen.context || listenWork.artist || '')
     }) : {};
-    // HOW WE WORK: one comparison, reference-led against story-led (story, tone, music: the name itself), and one real
-    // case with its record (the cover comes from the build: caseWork); the case is written for some languages only
+    // Story, tone and music lead into a real production case; its artwork comes from the build.
     this.PROOF = this.PROJECTS_META.proof || {};
     var caseData = this.PROOF.case || {}, caseWork = cfg.caseWork && cfg.caseWork.slug === caseData.slug ? cfg.caseWork : {};
-    this.CASE = caseData.title ? Object.assign({}, caseData, { thumb: caseWork.thumb || '', href: '/discography/?work=' + caseData.slug }) : {};
+    this.CASE = caseData.title ? Object.assign({}, caseData, { thumb: caseWork.thumb || '', href: this._langPath('/discography/') + '?work=' + caseData.slug }) : {};
     // Blocks written only for some languages (the client voices, the inquiry form) are empty elsewhere
     var voicesData = cfg.voices || {};
     this.VOICES = this._localizedObject(voicesData, voicesData.translations);

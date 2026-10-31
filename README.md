@@ -18,7 +18,7 @@ Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projec
 
 - Page shell: src/page.html
 - UI: src/app/template.html, component.js, parts/*.js
-- Styles: src/styles/site-and-dialogs.css and discography.css; generated assets/css/works.css preserves their order.
+- Styles: src/styles/site-and-dialogs.css, discography.css and story-journey.css; generated assets/css/works.css preserves their order.
 - Copy: assets/data/site-content.json
 - Search titles, descriptions and route registry: assets/data/seo-content.json
 - Works and audio gain: assets/data/works-data.json

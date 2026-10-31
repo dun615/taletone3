@@ -2,6 +2,7 @@
 // Methods of Component (src/app/component.js); the build attaches them with Object.assign.
 var ComponentRouting = {
   setLang(l){
+    var page = this.lang !== l ? this._seoPageForKey(this._seoPageKeyFromLocation()) : null;
     this.lang=l;
     document.documentElement.lang = l==='kr'?'ko':(l==='jp'?'ja':'en');
     var els=document.querySelectorAll('[data-en]');
@@ -20,6 +21,10 @@ var ComponentRouting = {
     try{ this._applyExternalContent(); this.forceUpdate(); this.syncContactEmailLink(); this._syncLangUrl(); this._localizeRouteLinks(); this._applySeoForCurrentPage(); }catch(e){}
     clearTimeout(this._langRebuildTimer);
     this._langRebuildTimer=setTimeout(()=>{ try{ this.bridges = Array.from(document.querySelectorAll('[data-bridge]')); this.bridges.forEach(function(bg){ if(bg._visual && bg._visual.parentNode) bg._visual.parentNode.removeChild(bg._visual); bg._visual=null; bg._visualItems=null; bg._words=null; bg.innerHTML=''; bg.style.opacity='0'; }); this._layoutGeometryDirty=true; this._sceneDirty=true; }catch(_e){} }, 0);
+    // Keep the selected chapter visible after translated copy changes the layout.
+    if(page && page.sectionId) requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      if(this.scroller) this.scrollToId(page.sectionId, 'auto');
+    }));
   },
 
   _defaultSeoConfig(){

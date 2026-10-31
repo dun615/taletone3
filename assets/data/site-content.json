@@ -119,14 +119,14 @@
     "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
     "titleLine1": "TALETONE",
     "titleLine2": "MUSIC",
-    "tagline": "당신의 이야기가 음악이 되는 곳",
+    "tagline": "우리의 이야기가 음악이 되는 곳",
     "scrollHint": "아래로 내려가 보세요",
     "translations": {
       "en": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
-        "tagline": "Where your story becomes music.",
+        "tagline": "Where our story becomes music.",
         "scrollHint": "Scroll to dive in",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
@@ -136,13 +136,14 @@
           "slug": "heart-score",
           "label": "Listen",
           "context": "STELLIVE 'Universe' 2nd Single"
-        }
+        },
+        "journeyIntro": "In search of the magical book where every story begins, deeper into the sea."
       },
       "jp": {
         "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
-        "tagline": "あなたの物語が、音楽になる場所。",
+        "tagline": "私たちの物語が、音楽になる場所。",
         "scrollHint": "スクロールして潜る",
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
@@ -152,7 +153,12 @@
           "slug": "heart-score",
           "label": "代表曲を聴く",
           "context": "STELLIVE『Universe』2nd Single"
-        }
+        },
+        "journeyIntro": "すべての物語が始まる魔法の書を探して、海のもっと深い場所へ。"
+      },
+      "kr": {
+        "tagline": "우리의 이야기가 음악이 되는 곳",
+        "journeyIntro": "모든 이야기가 시작되는 마법의 서를 찾아, 바닷속 더욱 깊은 곳으로."
       }
     },
     "worksCtaLabel": "디스코그래피 바로가기",
@@ -163,14 +169,15 @@
       "slug": "heart-score",
       "label": "대표곡 듣기",
       "context": "STELLIVE 'Universe' 2nd Single"
-    }
+    },
+    "journeyIntro": "모든 이야기가 시작되는 마법의 서를 찾아, 바닷속 더욱 깊은 곳으로."
   },
   "projects": {
     "eyebrow": "FOR STORY-DRIVEN IP",
     "title": "",
     "titleAccent": "APPROACH",
-    "subtitle": "레퍼런스가 아니라, 이야기에서 출발합니다.",
-    "description": "",
+    "subtitle": "이야기에, 이 음악이어야 하는 이유를 찾아냅니다.",
+    "description": "서사를 함께 느끼고, 그 감정에 맞는 소리를 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
     "cards": [
       {
         "id": "selected-game-ip",
@@ -264,14 +271,88 @@
           }
         ],
         "title": "",
-        "titleAccent": "APPROACH"
+        "titleAccent": "APPROACH",
+        "subtitle": "이야기에, 이 음악이어야 하는 이유를 찾아냅니다.",
+        "description": "서사를 함께 느끼고, 그 감정에 맞는 소리를 설계합니다.\n그렇게, 우리의 이야기가 음악으로 피어납니다.",
+        "proof": {
+          "rows": [
+            {
+              "label": "01 · TALE",
+              "ours": "true",
+              "badge": "",
+              "steps": [
+                {
+                  "text": "이야기를 읽습니다",
+                  "en": ""
+                }
+              ],
+              "result": "IP의 세계와 인물, 아티스트의 목소리에서 출발점을 찾습니다."
+            },
+            {
+              "label": "02 · TONE",
+              "ours": "true",
+              "badge": "",
+              "steps": [
+                {
+                  "text": "감정을 설계합니다",
+                  "en": ""
+                }
+              ],
+              "result": "남기고 싶은 감정을 바탕으로 장르, 악기와 노래의 흐름을 정합니다."
+            },
+            {
+              "label": "03 · MUSIC",
+              "ours": "true",
+              "badge": "",
+              "steps": [
+                {
+                  "text": "음악으로 완성합니다",
+                  "en": ""
+                }
+              ],
+              "result": "기획의 이유가 작곡·편곡·가사와 보컬까지 이어지도록 만듭니다."
+            }
+          ],
+          "closing": "이야기의 발자취를 따라, 우리만의 길로 만들어냅니다.",
+          "case": {
+            "slug": "love-dopamine",
+            "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
+            "title": "해봄 「Love Dopamine」",
+            "meta": "HAEBOM · 3rd Single",
+            "steps": [
+              {
+                "label": "요청",
+                "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+                "kind": "request"
+              },
+              {
+                "label": "강점",
+                "text": "뮤지컬을 전공하며 단련된 파워풀한 복식 발성",
+                "kind": "strength"
+              },
+              {
+                "label": "TALETONE의 질문",
+                "text": "강한 발성이 무기가 되는 이야기는 무엇일까?",
+                "kind": "question"
+              },
+              {
+                "label": "답",
+                "text": "치어리딩. 고교 야구부 선배를 짝사랑해 치어리딩부를 만들고 응원하는 이야기",
+                "kind": "answer"
+              }
+            ],
+            "lesson": "목소리의 강점을 이야기의 출발점으로 삼았습니다. 치어리딩이라는 장면이 강한 발성의 이유가 되었습니다.",
+            "listenLabel": "Love Dopamine 듣기"
+          },
+          "ctaLabel": "우리 프로젝트의 음악 찾기"
+        }
       },
       "en": {
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "",
         "titleAccent": "APPROACH",
-        "subtitle": "TALETONE starts from the story, not a reference.",
-        "description": "",
+        "subtitle": "We discover why the story calls for this music.",
+        "description": "We experience the narrative together and shape sounds to match its emotions.\nAnd so, our story blossoms into music.",
         "cards": [
           {
             "label": "GAME IP",
@@ -306,50 +387,46 @@
         "proof": {
           "rows": [
             {
-              "label": "Reference-led",
-              "result": "The sound is decided first; the story is fitted in afterwards.",
-              "ours": "false",
+              "label": "01 · TALE",
+              "ours": "true",
               "badge": "",
               "steps": [
                 {
-                  "text": "Sound",
-                  "en": ""
-                },
-                {
-                  "text": "Lyrics",
-                  "en": ""
-                },
-                {
-                  "text": "Title",
+                  "text": "Read the story",
                   "en": ""
                 }
-              ]
+              ],
+              "result": "Find our starting point in the IP, its characters and the artist’s voice."
             },
             {
-              "label": "Story-led",
-              "result": "The story becomes the reason for every sound.",
+              "label": "02 · TONE",
               "ours": "true",
-              "badge": "TALETONE",
+              "badge": "",
               "steps": [
                 {
-                  "text": "Story",
-                  "en": "TALE"
-                },
-                {
-                  "text": "Tone",
-                  "en": "TONE"
-                },
-                {
-                  "text": "Music",
-                  "en": "MUSIC"
+                  "text": "Shape the emotion",
+                  "en": ""
                 }
-              ]
+              ],
+              "result": "Choose the genre, instruments and musical arc around what we want people to feel."
+            },
+            {
+              "label": "03 · MUSIC",
+              "ours": "true",
+              "badge": "",
+              "steps": [
+                {
+                  "text": "Bring it to life",
+                  "en": ""
+                }
+              ],
+              "result": "Carry those choices through composition, arrangement, lyrics and vocals."
             }
           ],
-          "closing": "The name TALETONE is the order in which a song is made.",
+          "closing": "Following the story’s footsteps, we forge a path of our own.",
           "case": {
             "slug": "love-dopamine",
-            "eyebrow": "CASE STORY",
+            "eyebrow": "STORY INTO SOUND · A real project",
             "title": "HAEBOM “Love Dopamine”",
             "meta": "HAEBOM · 3rd Single",
             "steps": [
@@ -374,18 +451,18 @@
                 "kind": "answer"
               }
             ],
-            "lesson": "Her strong voice stopped being something to hold back. It became the reason the song exists.",
+            "lesson": "Her vocal strength became the starting point. A cheerleading story gave that powerful voice a purpose.",
             "listenLabel": "Listen to Love Dopamine"
           },
-          "ctaLabel": "Start a project with TALETONE"
+          "ctaLabel": "Find the music for our project"
         }
       },
       "jp": {
         "eyebrow": "FOR STORY-DRIVEN IP",
         "title": "",
         "titleAccent": "APPROACH",
-        "subtitle": "リファレンスではなく、物語から出発します。",
-        "description": "",
+        "subtitle": "物語から、この音楽である理由を見つけ出します。",
+        "description": "物語をともに感じ、その感情に合う音を設計します。\nそうして、私たちの物語が音楽として花開きます。",
         "cards": [
           {
             "label": "GAME IP",
@@ -420,50 +497,46 @@
         "proof": {
           "rows": [
             {
-              "label": "リファレンス中心",
-              "result": "まずサウンドが決まり、物語は後から合わせられます。",
-              "ours": "false",
+              "label": "01 · TALE",
+              "ours": "true",
               "badge": "",
               "steps": [
                 {
-                  "text": "サウンド",
-                  "en": ""
-                },
-                {
-                  "text": "歌詞",
-                  "en": ""
-                },
-                {
-                  "text": "タイトル",
+                  "text": "物語を読み解く",
                   "en": ""
                 }
-              ]
+              ],
+              "result": "IPの世界や人物、アーティストの声から出発点を探します。"
             },
             {
-              "label": "ストーリーベース",
-              "result": "物語が、音を選ぶ理由になります。",
+              "label": "02 · TONE",
               "ours": "true",
-              "badge": "TALETONE",
+              "badge": "",
               "steps": [
                 {
-                  "text": "物語",
-                  "en": "TALE"
-                },
-                {
-                  "text": "トーン",
-                  "en": "TONE"
-                },
-                {
-                  "text": "音楽",
-                  "en": "MUSIC"
+                  "text": "感情を形にする",
+                  "en": ""
                 }
-              ]
+              ],
+              "result": "届けたい感情をもとに、ジャンル、楽器、曲の流れを選びます。"
+            },
+            {
+              "label": "03 · MUSIC",
+              "ours": "true",
+              "badge": "",
+              "steps": [
+                {
+                  "text": "音楽として仕上げる",
+                  "en": ""
+                }
+              ],
+              "result": "企画の意図を、作曲・編曲・歌詞・歌声までつなげます。"
             }
           ],
-          "closing": "TALETONEという名前そのものが、歌が生まれる順番です。",
+          "closing": "物語の足跡をたどり、私たちだけの道を切り拓きます。",
           "case": {
             "slug": "love-dopamine",
-            "eyebrow": "CASE STORY",
+            "eyebrow": "STORY INTO SOUND · 制作事例",
             "title": "HAEBOM「Love Dopamine」",
             "meta": "HAEBOM · 3rd Single",
             "steps": [
@@ -488,10 +561,10 @@
                 "kind": "answer"
               }
             ],
-            "lesson": "強い声は、もう抑えるべき点ではなく、この曲が存在する理由になりました。",
+            "lesson": "声の強さを物語の出発点に。チアリーディングという場面が、その力強い声の理由になりました。",
             "listenLabel": "Love Dopamine を聴く"
           },
-          "ctaLabel": "プロジェクトのご相談"
+          "ctaLabel": "私たちのプロジェクトの音楽を探す"
         }
       }
     },
@@ -513,50 +586,46 @@
     "proof": {
       "rows": [
         {
-          "label": "레퍼런스 중심",
-          "result": "소리가 먼저 정해지고, 이야기는 그 뒤에 맞춰집니다.",
-          "ours": "false",
+          "label": "01 · TALE",
+          "ours": "true",
           "badge": "",
           "steps": [
             {
-              "text": "사운드",
-              "en": ""
-            },
-            {
-              "text": "가사",
-              "en": ""
-            },
-            {
-              "text": "제목",
+              "text": "이야기를 읽습니다",
               "en": ""
             }
-          ]
+          ],
+          "result": "IP의 세계와 인물, 아티스트의 목소리에서 출발점을 찾습니다."
         },
         {
-          "label": "스토리 기반",
-          "result": "이야기가 소리를 고르는 이유가 됩니다.",
+          "label": "02 · TONE",
           "ours": "true",
-          "badge": "TALETONE",
+          "badge": "",
           "steps": [
             {
-              "text": "이야기",
-              "en": "TALE"
-            },
-            {
-              "text": "톤",
-              "en": "TONE"
-            },
-            {
-              "text": "음악",
-              "en": "MUSIC"
+              "text": "감정을 설계합니다",
+              "en": ""
             }
-          ]
+          ],
+          "result": "남기고 싶은 감정을 바탕으로 장르, 악기와 노래의 흐름을 정합니다."
+        },
+        {
+          "label": "03 · MUSIC",
+          "ours": "true",
+          "badge": "",
+          "steps": [
+            {
+              "text": "음악으로 완성합니다",
+              "en": ""
+            }
+          ],
+          "result": "기획의 이유가 작곡·편곡·가사와 보컬까지 이어지도록 만듭니다."
         }
       ],
-      "closing": "TALETONE이라는 이름이 곧, 노래가 만들어지는 순서입니다.",
+      "closing": "이야기의 발자취를 따라, 우리만의 길로 만들어냅니다.",
       "case": {
         "slug": "love-dopamine",
-        "eyebrow": "CASE STORY",
+        "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
         "title": "해봄 「Love Dopamine」",
         "meta": "HAEBOM · 3rd Single",
         "steps": [
@@ -581,27 +650,27 @@
             "kind": "answer"
           }
         ],
-        "lesson": "강한 목소리는 더 이상 덜어 내야 할 점이 아니라, 이 곡이 존재할 이유가 되었습니다.",
+        "lesson": "목소리의 강점을 이야기의 출발점으로 삼았습니다. 치어리딩이라는 장면이 강한 발성의 이유가 되었습니다.",
         "listenLabel": "Love Dopamine 듣기"
       },
-      "ctaLabel": "프로젝트 상담하기"
+      "ctaLabel": "우리 프로젝트의 음악 찾기"
     }
   },
   "contact": {
     "eyebrow": "Contact",
-    "titleLine1": "당신의 이야기를",
-    "titleAccent": "들려주세요.",
-    "subtitle": "아직 정리되지 않은 이야기라도 괜찮습니다.",
-    "caption": "그 이야기가 어떤 노래가 될지,\n첫 마디부터 함께 찾아가겠습니다.",
+    "titleLine1": "이제, 우리의 이야기를",
+    "titleAccent": "함께 써 내려갑니다.",
+    "subtitle": "우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.",
+    "caption": "캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?",
     "buttonLabel": "프로젝트 문의하기",
     "link": "mailto:contact@taletone.net?subject=%5BTALETONE%20MUSIC%5D%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%9D%98",
     "translations": {
       "kr": {
         "form": {
-          "title": "간단히 남겨 주세요",
+          "title": "이야기의 첫 단서를 남겨주세요",
           "nameLabel": "이름 / 소속",
-          "contactLabel": "연락받을 이메일",
-          "projectLabel": "프로젝트 한 줄 소개",
+          "contactLabel": "연락받을 이메일 (필수)",
+          "projectLabel": "프로젝트 한 줄 소개 (필수)",
           "projectPlaceholder": "예: 버추얼 아티스트 데뷔곡, 게임 캐릭터송",
           "songLabel": "필요한 노래",
           "songOptions": [
@@ -611,14 +680,16 @@
             "앨범",
             "기타"
           ],
-          "budgetLabel": "예산 (곡당)",
-          "scheduleLabel": "희망 일정·공개 시점",
+          "budgetLabel": "예산 (곡당·선택)",
+          "scheduleLabel": "희망 일정·공개 시점 (선택)",
           "messageLabel": "하고 싶은 이야기 (선택)",
           "submitLabel": "문의 보내기",
-          "mailNote": "메일로 직접 보내셔도 좋습니다.",
+          "mailNote": "이메일과 프로젝트 소개는 필수입니다. 예산과 일정은 미정이어도 괜찮습니다. 확인 후 남겨주신 이메일로 답장드립니다.",
           "sendingNote": "보내는 중…",
           "sentNote": "문의가 전송됐어요. 확인 후 메일로 답장드릴게요.",
-          "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다."
+          "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다.",
+          "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
+          "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
         },
         "channelsLabel": "다른 채널로도 연락할 수 있어요",
         "channels": [
@@ -630,14 +701,19 @@
             "label": "Discord",
             "url": ""
           }
-        ]
+        ],
+        "arrivalLabel": "마침내 만난, 아직 쓰이지 않은 페이지",
+        "titleLine1": "이제, 우리의 이야기를",
+        "titleAccent": "함께 써 내려갑니다.",
+        "subtitle": "우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.",
+        "caption": "캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?"
       },
       "en": {
         "eyebrow": "Contact",
-        "titleLine1": "TELL US",
-        "titleAccent": "YOUR STORY",
-        "subtitle": "It's okay if your story is not fully formed yet.",
-        "caption": "Let's find, from the very first bar, what song your story could become.",
+        "titleLine1": "Our story.",
+        "titleAccent": "Our next page together.",
+        "subtitle": "The magical book we sought—its next page is still blank.",
+        "caption": "From a character’s first song to a scene in a game.\nWhat mark shall we leave as we write the next page together?",
         "buttonLabel": "Project Inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
@@ -653,10 +729,10 @@
         "mailSubject": "[TALETONE MUSIC] Project Inquiry",
         "mailTemplate": "Hello TALETONE MUSIC, we would like to discuss a project.\n\n1. Project / IP:\n2. Music needed (original song / OST / character song / BGM) and number of tracks:\n3. Preferred timeline / release date:\n4. Budget range:\n5. Reference links:\n\nName / Company:\nContact:",
         "form": {
-          "title": "Leave a quick note",
+          "title": "Leave the first clues to our story",
           "nameLabel": "Name / Organization",
-          "contactLabel": "Email for our reply",
-          "projectLabel": "Your project in one line",
+          "contactLabel": "Reply email (required)",
+          "projectLabel": "Your project in one line (required)",
           "projectPlaceholder": "e.g. a virtual artist's debut song, a game character song",
           "songLabel": "Songs you need",
           "songOptions": [
@@ -666,22 +742,25 @@
             "Album",
             "Other"
           ],
-          "budgetLabel": "Budget (per song)",
-          "scheduleLabel": "Preferred timeline · release date",
+          "budgetLabel": "Budget per song (optional)",
+          "scheduleLabel": "Timeline / release date (optional)",
           "messageLabel": "Anything else to share (optional)",
           "submitLabel": "Send inquiry",
-          "mailNote": "You can also email us directly.",
+          "mailNote": "Email and a short project introduction are required. Budget and timing can be undecided. We will reply to the email you provide.",
           "sendingNote": "Sending…",
           "sentNote": "Your inquiry was sent. We will reply by email.",
-          "failNote": "Sending failed, so your mail app will open instead."
-        }
+          "failNote": "Sending failed, so your mail app will open instead.",
+          "budgetPlaceholder": "Range / to discuss / undecided",
+          "schedulePlaceholder": "Release target / undecided"
+        },
+        "arrivalLabel": "An unwritten page, found at last"
       },
       "jp": {
         "eyebrow": "Contact",
-        "titleLine1": "あなたの物語を",
-        "titleAccent": "聞かせてください。",
-        "subtitle": "まだ整理されていない物語でも大丈夫です。",
-        "caption": "その物語がどんな歌になるのか、\n最初の一小節から一緒に探していきます。",
+        "titleLine1": "私たちの物語を、",
+        "titleAccent": "一緒に綴る次のページへ。",
+        "subtitle": "探していた魔法の書。その次のページは、まだ白いままです。",
+        "caption": "キャラクターの初めての歌から、ゲームのひと場面まで。\nどんな足跡を残すのか、一緒に綴っていきませんか。",
         "buttonLabel": "プロジェクトのご相談",
         "copyLabel": "メールアドレスをコピー",
         "copyDone": "コピーしました",
@@ -697,10 +776,10 @@
         "mailSubject": "[TALETONE MUSIC] プロジェクトのご相談",
         "mailTemplate": "TALETONE MUSIC御中\nプロジェクトについてご相談させてください。\n\n1. プロジェクト・IPのご紹介：\n2. 必要な音楽（オリジナルソング / OST / キャラクターソング / BGMなど）と曲数：\n3. ご希望のスケジュール / 公開時期：\n4. ご予算の目安：\n5. 参考リファレンスのリンク：\n\nお名前 / ご所属：\nご連絡先：",
         "form": {
-          "title": "かんたんにご記入ください",
+          "title": "物語の最初の手がかりを",
           "nameLabel": "お名前 / ご所属",
-          "contactLabel": "ご連絡先メールアドレス",
-          "projectLabel": "プロジェクトの概要（一行）",
+          "contactLabel": "メールアドレス（必須）",
+          "projectLabel": "プロジェクトの概要（必須）",
           "projectPlaceholder": "例：バーチャルアーティストのデビュー曲、ゲームのキャラクターソング",
           "songLabel": "ご希望の楽曲",
           "songOptions": [
@@ -710,15 +789,18 @@
             "アルバム",
             "その他"
           ],
-          "budgetLabel": "ご予算（1曲あたり）",
-          "scheduleLabel": "ご希望のスケジュール・公開時期",
+          "budgetLabel": "1曲のご予算（任意）",
+          "scheduleLabel": "日程・公開時期（任意）",
           "messageLabel": "その他ご要望（任意）",
           "submitLabel": "お問い合わせを送る",
-          "mailNote": "メールで直接お送りいただいても構いません。",
+          "mailNote": "メールアドレスとプロジェクト紹介は必須です。ご予算と日程は未定でも大丈夫です。ご記入のメールに返信します。",
           "sendingNote": "送信中…",
           "sentNote": "お問い合わせを送信しました。確認後メールでご返信します。",
-          "failNote": "送信に失敗したため、メールアプリで続けてお送りします。"
-        }
+          "failNote": "送信に失敗したため、メールアプリで続けてお送りします。",
+          "budgetPlaceholder": "ご予算の目安・応相談・未定",
+          "schedulePlaceholder": "公開予定・未定"
+        },
+        "arrivalLabel": "たどり着いた、まだ白いページ"
       }
     },
     "email": "contact@taletone.net",
@@ -735,7 +817,33 @@
     ],
     "mailSubject": "[TALETONE MUSIC] 프로젝트 문의",
     "mailTemplate": "안녕하세요, TALETONE MUSIC에 프로젝트를 문의드립니다.\n\n1. 프로젝트·IP 소개:\n2. 필요한 음악 (오리지널송 / OST / 캐릭터송 / BGM 등)과 곡 수:\n3. 희망 일정 / 공개 시점:\n4. 예산 범위:\n5. 참고 레퍼런스 링크:\n\n성함 / 소속:\n연락처:",
-    "formKey": "0e2fc060-8216-4f7d-9cc7-770b2842df69"
+    "formKey": "0e2fc060-8216-4f7d-9cc7-770b2842df69",
+    "arrivalLabel": "마침내 만난, 아직 쓰이지 않은 페이지",
+    "form": {
+      "title": "이야기의 첫 단서를 남겨주세요",
+      "nameLabel": "이름 / 소속",
+      "contactLabel": "연락받을 이메일 (필수)",
+      "projectLabel": "프로젝트 한 줄 소개 (필수)",
+      "projectPlaceholder": "예: 버추얼 아티스트 데뷔곡, 게임 캐릭터송",
+      "songLabel": "필요한 노래",
+      "songOptions": [
+        "오리지널송",
+        "OST·주제가",
+        "캐릭터송",
+        "앨범",
+        "기타"
+      ],
+      "budgetLabel": "예산 (곡당·선택)",
+      "scheduleLabel": "희망 일정·공개 시점 (선택)",
+      "messageLabel": "하고 싶은 이야기 (선택)",
+      "submitLabel": "문의 보내기",
+      "mailNote": "이메일과 프로젝트 소개는 필수입니다. 예산과 일정은 미정이어도 괜찮습니다. 확인 후 남겨주신 이메일로 답장드립니다.",
+      "sendingNote": "보내는 중…",
+      "sentNote": "문의가 전송됐어요. 확인 후 메일로 답장드릴게요.",
+      "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다.",
+      "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
+      "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
+    }
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",
@@ -944,18 +1052,18 @@
     {
       "id": "news-contact",
       "eyebrow": "EPILOGUE",
-      "text": "이제, 당신의 이야기가\n음악이 될 차례입니다.",
+      "text": "이제, 우리의 이야기가\n음악이 될 차례입니다.",
       "translations": {
         "en": {
           "eyebrow": "EPILOGUE",
-          "text": "Now, it’s time for your story\nto become music.",
+          "text": "Now, it’s time for our story\nto become music.",
           "mobileLines": [
             {
               "text": "Now, it's time",
               "indent": 0
             },
             {
-              "text": "for your story",
+              "text": "for our story",
               "indent": 0
             },
             {
@@ -966,14 +1074,14 @@
         },
         "jp": {
           "eyebrow": "EPILOGUE",
-          "text": "さあ、あなたの物語が\n音楽になる番です。",
+          "text": "さあ、私たちの物語が\n音楽になる番です。",
           "mobileLines": [
             {
               "text": "さあ、",
               "indent": 0
             },
             {
-              "text": "あなたの物語が",
+              "text": "私たちの物語が",
               "indent": 0
             },
             {
@@ -989,7 +1097,7 @@
           "indent": 0
         },
         {
-          "text": "당신의 이야기가",
+          "text": "우리의 이야기가",
           "indent": 0
         },
         {

@@ -266,7 +266,7 @@ for (const [key, file, route, expectedTitle] of routes) {
   const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
   const fallbackText = cleanText(fallback);
   assert(fallbackText.length > 80, `${file}: fallback content is too short`);
-  assert(fallbackText.includes('당신의 이야기가 음악이 되는 곳'), `${file}: fallback HOME tagline is missing`);
+  assert(fallbackText.includes('우리의 이야기가 음악이 되는 곳'), `${file}: fallback HOME tagline is missing`);
   fallbackHashes.set(key, createHash('sha256').update(fallbackText).digest('hex'));
 }
 assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
@@ -406,9 +406,9 @@ assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 
 const localCopy=(value,lang)=>({...value,...value?.translations?.[lang]});
 const siteLanguages = ['kr', 'en', 'jp'];
 const expectedHomeTaglines = {
-  kr: '당신의 이야기가 음악이 되는 곳',
-  en: 'Where your story becomes music.',
-  jp: 'あなたの物語が、音楽になる場所。',
+  kr: '우리의 이야기가 음악이 되는 곳',
+  en: 'Where our story becomes music.',
+  jp: '私たちの物語が、音楽になる場所。',
 };
 assert(siteJson.home?.tagline === expectedHomeTaglines.kr, 'HOME canonical tagline changed');
 for (const language of siteLanguages) {
@@ -428,16 +428,16 @@ for (const [section, fields] of Object.entries(clearedChapterCopy)) {
 }
 const expectedContactCopy = {
   kr: {
-    subtitle: '아직 정리되지 않은 이야기라도 괜찮습니다.',
-    caption: '그 이야기가 어떤 노래가 될지,\n첫 마디부터 함께 찾아가겠습니다.',
+    subtitle: '우리가 찾던 마법의 서, 그 다음 페이지는 비어 있습니다.',
+    caption: '캐릭터의 첫 노래부터 게임 속 한 장면까지.\n어떤 발자취를 남길지 함께 써 내려갈까요?',
   },
   en: {
-    subtitle: "It's okay if your story is not fully formed yet.",
-    caption: "Let's find, from the very first bar, what song your story could become.",
+    subtitle: 'The magical book we sought—its next page is still blank.',
+    caption: 'From a character’s first song to a scene in a game.\nWhat mark shall we leave as we write the next page together?',
   },
   jp: {
-    subtitle: 'まだ整理されていない物語でも大丈夫です。',
-    caption: 'その物語がどんな歌になるのか、\n最初の一小節から一緒に探していきます。',
+    subtitle: '探していた魔法の書。その次のページは、まだ白いままです。',
+    caption: 'キャラクターの初めての歌から、ゲームのひと場面まで。\nどんな足跡を残すのか、一緒に綴っていきませんか。',
   },
 };
 assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
