@@ -895,24 +895,31 @@
         '</li>';
       }).join('') + '</ul></div>';
   }
+  // the console: the song in hand (disc, title and artist as one button that opens its details), the album's
+  // tracks, one capsule holding play and volume; below, the filters and a sea/list switch
   function consoleHtml() {
     if (isPhone() || state.tab !== 'songs') return '';
     var labels = L(), work = works[state.current];
     var unit = work ? localizedUnit(work) : {}, tracks = work && work.tracks && work.tracks.length > 1 ? work.tracks : null;
     var trackUnit = tracks ? localizedUnit(tracks[state.track] || {}) : null;
-    var title = work ? plainRichText(unit.title || work.title || '') : '', story = trackUnit && trackUnit.description || unit.description || '';
+    var title = work ? plainRichText(unit.title || work.title || '') : '';
+    var shown = trackUnit ? plainRichText(trackUnit.title || '') : title;
+    var view = function (key, text) { var on = (state.view === 'credits') === (key === 'credits'); return '<button type="button" class="tt-console-view' + (on ? ' is-on' : '') + '" data-works-action="view" data-view="' + key + '" aria-pressed="' + on + '">' + esc(text) + '</button>'; };
     return '<div class="tt-console' + (state.playing ? ' is-playing' : '') + '" role="region" aria-label="' + esc(labels.console) + '">' +
-      '<div class="tt-console-now">' + (work ? discHtml(trackUnit && (trackUnit.image || tracks[state.track].image) ? tracks[state.track] : work, 'tt-disc--console') : '') +
-        '<div class="tt-console-text"><p class="tt-console-title">' + esc(trackUnit ? plainRichText(trackUnit.title || '') : title) + '</p>' +
-          '<p class="tt-console-artist">' + esc(work ? plainRichText(unit.artist || work.artist || '') : '') + (trackUnit ? ' · ' + esc(title) : '') + '</p>' +
-          (story ? '<p class="tt-console-story">' + esc(plainRichText(story)) + '</p>' : '') + '</div>' +
+      '<div class="tt-console-now">' +
+        (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '" aria-label="' + esc(labels.detail + ': ' + shown) + '">' +
+          discHtml(trackUnit && (trackUnit.image || tracks[state.track].image) ? tracks[state.track] : work, 'tt-disc--console') +
+          '<span class="tt-console-text"><span class="tt-console-title">' + esc(shown) + '</span>' +
+          '<span class="tt-console-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackUnit ? ' · ' + esc(title) : '') + '</span></span>' +
+          '<span class="tt-console-chev" aria-hidden="true"></span></button>' : '<span></span>') +
         (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
-        (work && hasAudio(work) ? '<button type="button" class="tt-console-play tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
-        '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
-        (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + ' <span aria-hidden="true">+</span></button>' : '') +
+        '<div class="tt-console-deck">' +
+          (work && hasAudio(work) ? '<button type="button" class="tt-console-play tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
+          '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
+        '</div>' +
       '</div>' +
       '<div class="tt-console-lamps">' + lanternsHtml() +
-        '<button type="button" class="tt-console-view" data-works-action="view" data-view="' + (state.view === 'credits' ? 'stage' : 'credits') + '">' + esc(state.view === 'credits' ? labels.viewFloat : labels.viewList) + '</button></div>' +
+        '<div class="tt-console-views" role="group">' + view('stage', labels.viewFloat) + view('credits', labels.viewList) + '</div></div>' +
     '</div>';
   }
   function creditsTableHtml() {
@@ -1488,7 +1495,7 @@
     } else if (action === 'view') {
       state.view = button.getAttribute('data-view') || 'stage';
       render();
-      var back = root && root.querySelector('[data-works-action="view"]'); if (back) back.focus({ preventScroll: true });
+      var back = root && (root.querySelector('[data-works-action="view"][aria-pressed="true"]') || root.querySelector('[data-works-action="view"]')); if (back) back.focus({ preventScroll: true });
     } else if (action === 'crate-scroll') {
       var row = root && root.querySelector('.tt-crate-row');
       if (row) row.scrollBy({ left: Number(button.getAttribute('data-dir')) * row.clientWidth * 0.8, behavior: 'smooth' });

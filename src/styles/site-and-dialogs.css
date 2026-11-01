@@ -1853,7 +1853,7 @@ html body #content#content .tt-home-tagline { font-weight: 700 !important; }
 html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
 .tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(21px, 2.1vw, 28px); }
 .tt-shelf:not(.is-engaged) .tt-console-now { display: none; }
-.tt-shelf:not(.is-engaged) .tt-console-lamps { padding-top: 0; border-top: 0; }
+.tt-shelf:not(.is-engaged) .tt-console-lamps { padding: 4px 0 4px 8px; border-top: 0; }
 @media (max-width: 760px) { .tt-shelf-clients-row { display: grid; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 18px 36px; } }
 /* the sea's static light: brighter toward the surface, darker at the edges as it deepens (scene.js sets the strengths) */
 #sky::before,#sky::after{content:'';position:absolute;inset:0;pointer-events:none}
@@ -1863,6 +1863,6 @@ html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color
 /* Discography accents: cyan marks the chapter (label, title, the chosen tab), amber marks the song in hand (its
    title and ring, the active filter). The note under the label and the song's story are reading text, so white. */
 body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-note { color: #e6f3f8 !important; text-shadow: 0 1px 6px rgba(2,10,22,.5) !important; }
-.tt-console-story, .tt-deck-story { color: #e6f3f8 !important; }
+.tt-deck-story { color: #e6f3f8 !important; }
 .tt-float-label span { color: rgba(232,246,250,.84) !important; }
 .tt-works-tab:not(.is-on):not([aria-selected="true"]) { color: #eaf7fb; }
