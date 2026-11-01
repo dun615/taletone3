@@ -1042,8 +1042,8 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* details: a quiet pill */
 .tt-console-more {flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px 0 18px;border-radius:999px;background:rgba(251,255,255,.08);color:#f4f9ff;transition:background .2s ease}
 .tt-console-more:hover {background:rgba(251,255,255,.16)}
-/* the album's tracks */
-.tt-console-tracks {display:flex;gap:4px}
+/* an album's tracks: a row under the song, lined up with its title; long albums wrap */
+.tt-console-tracks {display:flex;flex-wrap:wrap;gap:4px;padding:0 0 10px 66px}
 .tt-console-track {min-width:36px;height:30px;padding:0 10px;border-radius:999px;background:rgba(251,255,255,.07);color:#f4f9ff;font-family:'Quicksand',sans-serif!important}
 .tt-console-track:hover {background:rgba(251,255,255,.15)}
 /* play and volume in one capsule */
