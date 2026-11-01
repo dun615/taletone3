@@ -120,7 +120,6 @@ test("all language metadata exposes exactly five navigation entries and 15 chapt
 });
 
 test("legacy URLs redirect directly and preserve queries and fragments", async () => {
-  const data = JSON.parse(await read("assets/data/works-data.json"));
   const sitemap = await read("sitemap.xml");
   for (const prefix of [
     "",
@@ -135,10 +134,6 @@ test("legacy URLs redirect directly and preserve queries and fragments", async (
       ["story-types/", "approach/"],
       ["projects/", "approach/"],
       ["works/", "discography/"],
-      ...data.works.map((w) => [
-        "works/" + w.slug + "/",
-        "discography/" + w.slug + "/",
-      ]),
     ];
     for (const [oldPath, newPath] of pairs) {
       const html = await read(prefix + oldPath + "index.html");

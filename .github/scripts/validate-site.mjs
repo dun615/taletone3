@@ -326,16 +326,9 @@ const inspectHtmlReferences = (html, source, basePath) => {
 for (const [, file] of routes) inspectHtmlReferences(await text(file), file, '/');
 inspectHtmlReferences(await text('projects/index.html'), 'projects/index.html', '/');
 inspectHtmlReferences(await text('404.html'), '404.html', '/');
-// Generated Works detail pages: real assets, self canonical, valid JSON-LD.
-const detailPageFiles = inventory.filter((file) => /^(?:(?:en|ja)\/)?discography\/[a-z0-9-]+\/index\.html$/.test(file));
-assert(detailPageFiles.length >= 3 * 37, `expected Works detail pages for every language, found ${detailPageFiles.length}`);
-for (const file of detailPageFiles) {
-  const html = await text(file);
-  const route = `/${file.replace(/index\.html$/, '')}`;
-  inspectHtmlReferences(html, file, route);
-  assert(attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i) === `https://taletone.net${route}`, `${file}: canonical is not self-referencing`);
-  try { JSON.parse(attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i)); } catch { errors.push(`${file}: invalid JSON-LD`); }
-}
+// Works detail pages are retired: nothing under discography/<slug>/ or works/<slug>/ is generated
+const detailPageFiles = inventory.filter((file) => /^(?:preview\/)?(?:(?:en|ja)\/)?(?:discography|works)\/[a-z0-9-]+\/index\.html$/.test(file));
+assert(detailPageFiles.length === 0, `retired Works detail pages were generated: ${detailPageFiles.slice(0, 3).join(', ')}`);
 inspectHtmlReferences(decodedApp, 'decoded app template', '/');
 for (const cssFile of inventory.filter((file) => file.endsWith('.css'))) {
   const css = await text(cssFile);

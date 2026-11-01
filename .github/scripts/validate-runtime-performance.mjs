@@ -614,7 +614,7 @@ async function runInteractionSmoke(chrome, origin) {
     await clickSelector(client, '.tt-console-more');
     await sleep(200);
     const popup = await evaluate(client, `({open:!!document.querySelector('.tt-shelf-modal[role="dialog"][aria-modal="true"]'),dialog:document.body.classList.contains('tt-site-dialog-open'),playback:document.body.dataset.ttMediaPlayback,permalink:!!document.querySelector('.tt-shelf-modal a[href*="/discography/"]')})`);
-    assert(popup.permalink, 'interaction: WORKS popup has no permalink to the work page');
+    assert(!popup.permalink, 'interaction: WORKS popup links to a retired work page');
     assert(popup.open && popup.dialog && popup.playback === 'playing', `interaction: WORKS popup did not open over playing music: ${JSON.stringify(popup)}`);
     await clickSelector(client, '.tt-shelf-modal-close');
     await sleep(200);

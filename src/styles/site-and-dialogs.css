@@ -1789,8 +1789,6 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-modal-tracks button span {font:700 11px/1 'Quicksand',sans-serif;}
 .tt-shelf-modal-tracks button:hover {background:rgba(255,255,255,.1)}
 .tt-shelf-modal-links {display:flex;flex-wrap:wrap;gap:8px;}
-.tt-shelf-modal-link {display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid rgba(220,240,248,.3);color:#eef7fb;text-decoration:none;font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif}
-.tt-shelf-modal-link:hover {background:rgba(255,255,255,.08)}
 @media (max-width:760px){
   .tt-shelf-modal {padding:0;align-items:end}
   .tt-shelf-modal-art {width:72%;margin:0 auto 0 4%}
@@ -1819,7 +1817,6 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-yt-play:focus-visible span {transform:scale(1.08)}
 .tt-shelf-modal-stage .tt-shelf-modal-art {width:min(380px,70%);margin:36px auto 0}
 .tt-shelf-modal-links {margin-top:24px;align-items:center}
-.tt-shelf-modal-link {min-height:44px;padding:0 18px;line-height:1;border-color:rgba(251,255,255,.32)}
 .tt-shelf-listen {display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px 0 16px;border:0;border-radius:999px;background:#fbffff;color:#0e6e7d;font:800 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif;cursor:pointer;transition:transform .2s}
 .tt-shelf-listen:hover {transform:translateY(-1px)}
 .tt-shelf-listen .tt-shelf-play-icon {border-left:11px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent;margin:0}
