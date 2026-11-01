@@ -507,7 +507,7 @@ class Component extends DCLogic {
         var enter=this.cl((0.78 - tt)/0.6, 0, 1); enter=1-Math.pow(1-enter,3);   // bottom -> in
         var exit=this.smooth(-0.66,-0.16, tt);                                    // center -> out top
         // the cover's top lines (the eyebrow) sit high on the first screen; nothing is leaving before the visitor scrolls
-        if(sc < 4 && re.closest && re.closest('#c-home')) exit=1;
+        if(sc < 4){ if(re._inHome===undefined) re._inHome=!!(re.closest && re.closest('#c-home')); if(re._inHome) exit=1; }
         var op=enter*exit;
         var ty=(1-enter)*64 - (1-exit)*88;
         var sc=0.965 + 0.035*enter - (1-exit)*0.04;
