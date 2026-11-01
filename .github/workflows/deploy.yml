@@ -35,19 +35,6 @@ jobs:
         run: node --test "tests/*.test.mjs"
       - name: Browser regression and performance checks
         run: node .github/scripts/validate-runtime-performance.mjs
-      # /preview/ shows a design branch while it waits for approval; the live pages stay on main.
-      # Rerun this workflow on main (Actions -> Run workflow) after pushing the branch.
-      - name: Build the design branch into /preview/
-        env:
-          PREVIEW_BRANCH: design/minimal
-        run: |
-          if git fetch --depth=1 origin "$PREVIEW_BRANCH"; then
-            git worktree add /tmp/preview-branch FETCH_HEAD
-            (cd /tmp/preview-branch && node scripts/build.mjs)
-            rm -rf preview && cp -r /tmp/preview-branch/preview preview
-          else
-            echo "no $PREVIEW_BRANCH branch: /preview/ shows main"
-          fi
       - name: Stage the public files
         run: node scripts/stage-site.mjs _site "${{ github.sha }}"
       - name: Upload the site
