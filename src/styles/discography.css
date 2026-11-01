@@ -177,60 +177,43 @@ button.tt-deck-arm-base {height:auto;aspect-ratio:1}
 .tt-deck-volume input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;border:0;background:radial-gradient(circle at 38% 32%,#ffffff,#dbe9ec 48%,#9fb4ba 100%);box-shadow:0 2px 6px rgba(0,16,22,.55)}
 
 /* =====================================================================
-   WORKS popup (revision 2.5): two panes. Left: the video (or the record) and the story.
-   Right: release facts, tracks and the credits, which take the remaining height and scroll.
-   Below 900px it is one column again and the whole sheet scrolls.
+   WORKS popup (minimal): one sheet, one scroll. The video or the record, the title, one line of facts,
+   the story, play and a text link, then tracks and the key credits; the rest of the credits fold away.
+   Phones: the sheet rises from the bottom.
    ===================================================================== */
-.tt-shelf-modal-panel {display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);width:min(1200px,100%);
-  height:auto;max-height:min(740px,calc(100vh - 48px));overflow:hidden;padding:0;gap:0}
-/* each pane carries the height cap (minus the panel border), so the panel hugs the taller pane and both scroll when short */
-.tt-shelf-modal-media,
-.tt-shelf-modal-info {max-height:calc(min(740px,calc(100vh - 48px)) - 2px)}
-.tt-shelf-modal-media {min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.4) transparent}
-.tt-shelf-modal-media .tt-shelf-yt {border-radius:24px 0 0 0}
-.tt-shelf-modal-main {padding:28px 34px 32px}
-.tt-shelf-modal-main .tt-shelf-format {color:#8decfc}
-.tt-shelf-modal-info {display:flex;flex-direction:column;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;
-  padding:76px 28px 28px;background:rgba(2,24,30,.3);border-left:1px solid rgba(251,255,255,.1);
+.tt-shelf-modal-panel {display:block;width:min(640px,100%);height:auto;max-height:min(900px,calc(100vh - 48px));overflow:auto;padding:0;
   scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.4) transparent}
+.tt-shelf-modal-media .tt-shelf-yt {border-radius:24px 24px 0 0}
+.tt-shelf-modal-main {padding:26px 32px 0}
+.tt-shelf-modal-main .tt-shelf-modal-title {margin:0 0 6px}
+.tt-shelf-modal-info {padding:4px 32px 32px}
+.tt-shelf-modal .tt-shelf-modal-label {margin:30px 0 12px;font:800 var(--fs-m,15px)/1.3 var(--tt-noto-primary),sans-serif;letter-spacing:0;text-transform:none;color:#fbffff}
+/* the second action is a text link, not a second button */
+.tt-shelf-modal .tt-shelf-modal-link {min-height:44px;padding:0 6px;border:0;border-radius:6px;background:none;color:#dff7fb;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.tt-shelf-modal .tt-shelf-modal-link:hover {background:none;color:#fbffff}
+.tt-shelf-modal-links {gap:12px 18px}
+/* credits: role → name */
+.tt-credit-rows {display:grid;grid-template-columns:minmax(4.5em,max-content) minmax(0,1fr);gap:8px 22px;margin:0}
+.tt-credit-rows dt {margin:0;font:600 var(--fs-s,13px)/1.6 var(--tt-noto-primary),sans-serif;color:#9cc4cf}
+.tt-credit-rows dd {margin:0;font:600 var(--fs-m,15px)/1.5 var(--tt-noto-primary),sans-serif;color:#fbffff;overflow-wrap:anywhere}
+.tt-credit-rows .tt-credit-note {grid-column:1/-1;font-size:var(--fs-s,13px);color:#c9dbe4}
+.tt-credit-head {margin:18px 0 8px;font:800 var(--fs-s,13px)/1.4 var(--tt-noto-primary),sans-serif;color:#8decfc}
+.tt-credit-head:first-of-type {margin-top:0}
+.tt-credits-more {margin-top:6px}
+.tt-credits-more > summary {display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;list-style:none;font:700 var(--fs-s,13px)/1 var(--tt-noto-primary),sans-serif;color:#8decfc}
+.tt-credits-more > summary::-webkit-details-marker {display:none}
+.tt-credits-more > summary::after {content:'';width:7px;height:7px;margin-top:-4px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform .2s ease}
+.tt-credits-more[open] > summary::after {margin-top:3px;transform:rotate(-135deg)}
+.tt-credits-more[open] > summary {margin-bottom:8px}
+.tt-credits-more > summary:focus-visible {outline:2px solid #8decfc;outline-offset:3px;border-radius:4px}
+.tt-shelf-modal .tt-shelf-covers {margin-top:30px}
 
-/* release facts: label and value per row */
-.tt-shelf-modal-facts {display:grid;margin:0;padding:0;border-top:1px solid rgba(251,255,255,.16);border-bottom:1px solid rgba(251,255,255,.16)}
-.tt-shelf-modal-facts > div {display:grid;grid-template-columns:78px minmax(0,1fr);gap:14px;align-items:baseline;min-width:0;padding:12px 0}
-.tt-shelf-modal-facts > div + div {border-top:1px solid rgba(251,255,255,.1)}
-.tt-shelf-modal-facts dt {margin:0;font:700 var(--fs-xs,11px)/1.3 var(--tt-noto-primary),sans-serif;letter-spacing:.04em;color:#8decfc}
-.tt-shelf-modal-facts dd {margin:0;font:700 var(--fs-m,15px)/1.45 var(--tt-noto-primary),sans-serif;color:#fbffff;overflow-wrap:anywhere}
-
-.tt-shelf-modal-info .tt-shelf-modal-tracks .tt-shelf-modal-label {margin:24px 0 10px}
-
-/* credits fill what is left of the pane and scroll inside it */
-.tt-shelf-modal-credits {display:flex;flex-direction:column;flex:1 0 220px;min-height:220px;margin-top:24px}
-.tt-shelf-modal-credits .tt-shelf-modal-label {margin:0 0 10px}
-.tt-shelf-modal-credits-list {flex:1 1 0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 18px;border-radius:14px;
-  background:rgba(2,24,30,.36);box-shadow:inset 0 0 0 1px rgba(251,255,255,.1);
-  scrollbar-width:thin;scrollbar-color:rgba(141,236,252,.45) transparent}
-.tt-shelf-modal-credits-list:focus-visible {outline:2px solid #8decfc;outline-offset:3px}
-.tt-shelf-modal-credits-list p {margin:0 0 14px}
-.tt-shelf-modal-credits-list p:last-child {margin-bottom:0}
-.tt-shelf-modal-credits-list span,
-.tt-shelf-modal-credits-list strong {display:block;font:500 var(--fs-s,13px)/1.65 var(--tt-noto-primary),sans-serif;color:#c9dbe4;overflow-wrap:anywhere}
-.tt-shelf-modal-credits-list strong {font-weight:800;color:#fbffff}
-
-@media (max-width:899px){
-  .tt-shelf-modal-panel {display:block;height:auto;max-height:min(860px,calc(100vh - 48px));overflow:auto;width:min(720px,100%)}
-  .tt-shelf-modal-media {overflow:visible;max-height:none}
-  .tt-shelf-modal-media .tt-shelf-yt {border-radius:24px 24px 0 0}
-  .tt-shelf-modal-main {padding:24px 28px 8px}
-  .tt-shelf-modal-info {display:block;overflow:visible;max-height:none;padding:16px 28px 30px;background:none;border-left:0}
-  .tt-shelf-modal-credits {display:block;min-height:0}
-  .tt-shelf-modal-credits-list {max-height:min(280px,42vh)}
-}
 @media (max-width:760px){
-  .tt-shelf-modal-panel {max-height:94vh}
-  .tt-shelf-modal-media .tt-shelf-yt {border-radius:22px 22px 0 0}
-  .tt-shelf-modal-main {padding:22px 20px 6px}
-  .tt-shelf-modal-info {padding:14px 20px 28px}
-  .tt-shelf-modal-facts > div {grid-template-columns:72px minmax(0,1fr);gap:12px;padding:11px 0}
+  .tt-shelf-modal-panel {width:100%;max-height:92vh;border-radius:24px 24px 0 0!important;border-bottom:0!important}
+  .tt-shelf-modal-panel::before {content:'';position:sticky;z-index:5;top:0;display:block;width:40px;height:5px;margin:0 auto -5px;border-radius:3px;background:rgba(251,255,255,.55);transform:translateY(8px)}
+  .tt-shelf-modal-main {padding:22px 20px 0}
+  .tt-shelf-modal-info {padding:4px 20px 32px}
+  .tt-credit-rows {gap:6px 16px}
 }
 
 /* =====================================================================
@@ -298,18 +281,6 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
 
 }
 
-/* Landscape phones (REVIEW-mobile M18): the Works popup keeps its two panes so the facts are not pushed below a screen-high video */
-@media (orientation:landscape) and (max-height:500px){
-  html body .tt-shelf-modal-panel {display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);height:auto;max-height:calc(100vh - 32px);overflow:hidden}
-  html body .tt-shelf-modal {padding:16px;align-items:center}
-  html body .tt-shelf-modal-media,
-  html body .tt-shelf-modal-info {max-height:calc(100vh - 34px);overflow:auto}
-  html body .tt-shelf-modal-media .tt-shelf-yt {border-radius:24px 0 0 0}
-  html body .tt-shelf-modal-main {padding:18px 22px 22px}
-  html body .tt-shelf-modal-info {display:flex;padding:64px 20px 20px;background:rgba(2,24,30,.3);border-left:1px solid rgba(251,255,255,.1)}
-  html body .tt-shelf-modal-credits {display:flex;min-height:180px}
-  html body .tt-shelf-modal-credits-list {max-height:none}
-}
 
 /* Phones (REVIEW-mobile phase 2): a bridge that has already played becomes a short quote band (46% of the
    screen) instead of a whole empty screen; the first, locked play is unchanged. The stage shrinks with its
@@ -344,10 +315,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body #c-track-record article.lift > :nth-child(3) {font-size:12px!important}
 }
 
-/* Sheets on phones (REVIEW-mobile phase 2, M16): the Works popup has one scroll — the credits no longer scroll inside it */
-@media (max-width:760px){
-  html body .tt-shelf-modal-credits-list {max-height:none!important;overflow:visible!important}
-}
 
 /* =====================================================================
    Phones: one dock at the bottom instead of the top bar (site-ux.js), and chapter starts as resting points
@@ -364,8 +331,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body #tt-dock {display:flex;position:fixed;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));
     bottom:max(10px,env(safe-area-inset-bottom));z-index:96;align-items:center;gap:6px;padding:6px;border-radius:999px;
     background:rgba(7,25,36,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(2,14,24,.35);border:1px solid rgba(255,255,255,.14)}
-  html body.tt-site-dialog-open #tt-dock,
-  html body.tt-network-open #tt-dock {display:none}
+  html body.tt-site-dialog-open #tt-dock {display:none}
   #tt-dock button {min-height:48px;border:0;border-radius:999px;cursor:pointer;color:#f4faff;background:none;font:800 13px/1 'Quicksand',var(--tt-noto-primary),sans-serif}
   #tt-dock button:focus-visible {outline:2px solid #8decfc;outline-offset:2px}
   .tt-dock-home {width:48px;display:grid;place-items:center;padding:0}
@@ -448,10 +414,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-now-eq i {animation:none}}
 
-/* Phones: the partnership bar as a soft card */
-@media (max-width:760px){
-  #content#content #c-members .tt-network-summary {min-height:72px;border-radius:20px!important;background:rgba(255,253,248,.92)!important;box-shadow:0 10px 26px rgba(8,22,38,.1)!important}
-}
 
 /* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) — they
    were taller than a screen half */
@@ -487,13 +449,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body #brand, html body #brand > div, html body #brand > div > span {transition:none!important}
 }
 
-/* the partnership bar lines up with the panel */
-#c-members .tt-network-directory {width:min(1080px,90vw)!important;max-width:none!important;margin-top:clamp(14px,2.2vh,24px)!important}
-
-/* phones */
-@media (max-width:760px){
-  #c-members .tt-network-directory {width:100%!important}
-}
 
 /* the sheet shows the member's disc where the photo was */
 
@@ -661,8 +616,6 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-contact-channels a {color:inherit;text-decoration:underline;text-underline-offset:3px}
 .tt-contact-channels em {font-style:normal}
 .tt-voices-title {margin:0;font-weight:800;font-size:var(--fs-xl);line-height:1.35;color:var(--ink,#141C30)}
-/* About Us: a small label above the kinds of stories and above the people */
-.tt-about-label {margin:0 0 16px;font-weight:800;font-size:var(--fs-s);letter-spacing:.14em;color:var(--accent,#0E6E7D)}
 @media (max-width:900px) {
   .tt-voices-list {grid-template-columns:minmax(0,1fr)}
 }
@@ -697,43 +650,31 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-cmp-card[data-ours=false] .tt-cmp-result {color:rgba(68,80,95,.75)}
 .tt-cmp-card[data-ours=true] .tt-cmp-result {color:var(--ink,#141C30);font-weight:700}
 .tt-cmp-closing {margin:26px 0 0;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F);text-align:center}
-.tt-case {box-sizing:border-box;width:min(1000px,92vw);margin-top:44px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,3vw,36px);align-items:start;padding:22px;border-radius:26px;background:var(--card,rgba(255,255,255,.7));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 20px 50px rgba(8,22,38,.12);text-align:left}
+.tt-case {box-sizing:border-box;width:min(1000px,92vw);margin-top:64px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(24px,3.4vw,48px);align-items:start;padding:0;text-align:left}
 .tt-case-art {position:relative;display:block;aspect-ratio:1;border-radius:18px;overflow:hidden;background:rgba(14,110,125,.12)}
 .tt-case-art > img {display:block;width:100%;height:100%;object-fit:cover}
 .tt-case-play {position:absolute;right:14px;bottom:14px;width:52px;height:52px;border-radius:50%;background:rgba(255,253,248,.94);box-shadow:0 8px 20px rgba(8,22,38,.25)}
 .tt-case-play::after {content:'';position:absolute;left:20px;top:16px;border-left:16px solid #0E6E7D;border-top:10px solid transparent;border-bottom:10px solid transparent}
 .tt-case-body {display:flex;flex-direction:column;min-width:0;padding:6px 6px 4px 0}
-.tt-case-eyebrow {margin:0 0 8px;font:700 11.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.22em;color:var(--accent,#0E6E7D)}
 .tt-case-title {margin:0;font-weight:800;font-size:var(--fs-xl);line-height:1.3;color:var(--ink,#141C30)}
 .tt-case-meta {margin:4px 0 0;font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F)}
-.tt-case-steps {list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 22px}
-.tt-case-steps > li {position:relative;display:flex;flex-direction:column;gap:6px;padding:12px 14px 14px;border-radius:14px;background:rgba(14,110,125,.07)}
-.tt-case-steps > li > span {font-weight:800;font-size:12px;letter-spacing:.04em;color:var(--accent,#0E6E7D)}
-.tt-case-steps > li > p {margin:0;font-weight:700;font-size:var(--fs-s);line-height:1.55;color:var(--ink,#141C30)}
-/* request + strength = our question */
-.tt-case-steps > li[data-kind=strength]::before, .tt-case-steps > li[data-kind=question]::before {position:absolute;left:-17px;top:50%;transform:translateY(-50%);font-weight:800;font-size:18px;color:var(--soft,#44505F)}
-.tt-case-steps > li[data-kind=strength]::before {content:'+'}
-.tt-case-steps > li[data-kind=question]::before {content:'='}
-.tt-case-steps > li[data-kind=question] {background:#0E6E7D}
-.tt-case-steps > li[data-kind=question] > span {color:rgba(255,255,255,.75)}
-.tt-case-steps > li[data-kind=question] > p {color:#fff}
-/* the answer, across the row */
-.tt-case-steps > li[data-kind=answer] {grid-column:1 / -1;flex-direction:row;align-items:baseline;gap:12px;padding:14px 16px;background:rgba(233,162,59,.14);border:1px solid rgba(233,162,59,.45)}
-.tt-case-steps > li[data-kind=answer] > span {flex:none;color:#b8761a}
-.tt-case-steps > li[data-kind=answer] > p {font-size:var(--fs-m)}
+.tt-case-steps {list-style:none;margin:20px 0 0;padding:0;display:grid}
+.tt-case-steps > li {display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:4px 18px;align-items:baseline;padding:12px 0;border-top:1px solid rgba(18,61,73,.16)}
+.tt-case-steps > li > span {font-weight:700;font-size:var(--fs-s);color:#0b5562}
+.tt-case-steps > li > p {margin:0;font-weight:600;font-size:var(--fs-m);line-height:1.6;color:var(--ink,#141C30)}
+.tt-case-steps > li[data-kind=answer] {border-bottom:1px solid rgba(18,61,73,.16)}
+.tt-case-steps > li[data-kind=answer] > p {font-weight:800}
 .tt-case-lesson {margin:16px 0 0;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
 .tt-case-listen {margin-top:14px;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
 @media (max-width:900px) {
   .tt-cmp {grid-template-columns:minmax(0,1fr)}
-  .tt-case {grid-template-columns:minmax(0,1fr);padding:16px}
+  .tt-case {grid-template-columns:minmax(0,1fr);padding:0}
   .tt-case-art {max-width:220px;width:60%}
 }
 @media (max-width:560px) {
   .tt-cmp-card {padding:20px 18px 18px}
   .tt-cmp-flow > li {font-size:clamp(20px,6.6vw,28px)}
-  .tt-case-steps {grid-template-columns:minmax(0,1fr);gap:20px}
-  .tt-case-steps > li[data-kind=strength]::before, .tt-case-steps > li[data-kind=question]::before {left:50%;top:-17px;transform:translateX(-50%)}
-  .tt-case-steps > li[data-kind=answer] {flex-direction:column;gap:4px}
+  .tt-case-steps > li {grid-template-columns:minmax(0,1fr)}
 }
 
 /* WORKS by service: tabs under the title; the mixing and arrangement tabs are grids of video cards */
@@ -949,15 +890,16 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 #chapnav .nav-label, #lang-switcher button {font-size:13px!important}
 #chapnav .nav-label {letter-spacing:.12em!important}
 #content .tt-section-chapter, #content .tt-bridge-label {font-size:13px;letter-spacing:.18em}
-#c-home > .tt-s-color-var-accent-9aa3[data-reveal]:first-of-type {font-size:15px!important;letter-spacing:.16em!important}
-.tt-audience-kicker, .tt-network-directory small, .tt-home-latest small, .tt-cmp-badge, .tt-cmp-flow small, .tt-case-eyebrow,
+.tt-home-latest small, .tt-cmp-badge, .tt-cmp-flow small,
 .tt-case-steps > li > span, .tt-shelf-format, .tt-mix-label, .tt-mix-audio-tag, .tt-shelf-clients-label, .tt-shelf-modal-label, .tt-shelf-covers-title {font-size:13px!important}
 .tt-rack-artist {font-size:13px}
 #tt-bridge-progress span {font-size:13px}
 /* the inquiry form at the bottom of the sea: fields one tone up from the card instead of pale slabs */
 .tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:15px}
 .tt-inquiry-note {font-size:13.5px}
-#c-contact .tt-inquiry input[type=text], #c-contact .tt-inquiry input[type=email], #c-contact .tt-inquiry textarea {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#f4fbff}
+#c-contact .tt-inquiry input[type=text], #c-contact .tt-inquiry input[type=email], #c-contact .tt-inquiry textarea {background:rgba(255,255,255,.12);border-color:transparent;color:#f4fbff}
+/* required fields carry a small mark; the note under the form says which ones */
+.tt-inquiry label:is(:has(> [name=reply]),:has(> [name=project])) > span::after {content:"*";margin-left:3px;color:#f4d6a0}
 #c-contact .tt-inquiry input::placeholder, #c-contact .tt-inquiry textarea::placeholder {color:rgba(232,244,248,.55)}
 #c-contact .tt-inquiry-chip > span {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#eaf6fa}
 #c-contact .tt-inquiry-chip > input:checked + span {background:#0E6E7D;border-color:#4fc3d4;color:#fff}
@@ -986,7 +928,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* the type scale, folded onto a few steps: 13 · 15 · 18 · 24 · 38 · display */
 [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
 .tt-inquiry-chip > span {font-size:15px}
-.tt-audience-num {font-size:38px!important}
 .tb-title {font-size:24px!important}
 
 /* tablet: turntable and records side by side, so the list starts on the first screen */

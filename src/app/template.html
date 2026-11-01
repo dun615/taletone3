@@ -271,8 +271,6 @@ html body #chapnav .nav-label{color:var(--ink,#141C30)!important;text-shadow:var
 html body[data-active-chapter] #chapnav a.navbtn{opacity:.9!important}
 /* dark-side chapter labels: a glyph shadow (no backing plate: plates read as dark bands on wide screens) */
 .tt-section-chapter,.tt-section-note{text-shadow:0 0 calc(var(--deep-glow,0) * 10px) rgba(3,18,28,calc(var(--deep-glow,0) * .85)),0 1px 2px rgba(3,18,28,calc(var(--deep-glow,0) * .7))}
-/* the partner's role on the light summary bar */
-.tt-network-person small{color:#3a4656;opacity:1!important}
 /* ===== One close button for every popup: a round X, the same as the Works popup =====
    (the :is(#…) boosts outrank older per-popup rules that use ID selectors) */
 html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close){display:grid;place-items:center;width:44px;height:44px;min-width:0;min-height:0;padding:0;border:0;border-radius:50%;
@@ -297,47 +295,31 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 #content#content .tt-chapter-title{font-size:var(--fs-4xl)!important}
 #content#content .tt-home-tagline{font-size:var(--fs-xl)}
 #content#content .tt-prologue-hint{font-size:var(--fs-s)}
-#content#content .tt-scroll-hint{font-size:var(--fs-s);letter-spacing:.12em!important}
+.tt-visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 #content#content #c-home :is(.is-primary,.is-secondary){font-size:var(--fs-s);min-height:44px}
 #content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
 .tt-project-title{font-size:var(--fs-2xl)!important}
-/* R4: who we write for, as a quiet list; the two stories stay the only cards */
-#content#content .tt-audiences{background:none;box-shadow:none;border-radius:0;padding:0!important;backdrop-filter:none;gap:0!important;margin:0 0 48px!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
-#content#content .tt-audience{background:none;border:0;box-shadow:none;border-radius:0;padding:24px 26px!important;text-align:left}
-/* audience row: number + kicker, title, services as chips, the question as a quote pinned to the bottom */
-#content#content .tt-audience{display:flex;flex-direction:column;gap:0}
-.tt-audience-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
-.tt-audience-num{font:700 clamp(30px,2.6vw,40px)/.9 'Quicksand',sans-serif;letter-spacing:-.02em;color:var(--accent,#0E6E7D)}
-.tt-audience-kicker{font:800 var(--fs-xs)/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--ink,#141C30);opacity:.72}
-.tt-audience-title{margin:0 0 16px;font:800 var(--fs-l)/1.3 var(--tt-noto-primary),sans-serif;letter-spacing:-.02em;color:var(--ink,#141C30);text-wrap:balance;word-break:keep-all}
-.tt-audience-services{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 22px;padding:0;list-style:none}
-.tt-audience-services li{padding:7px 12px;border-radius:999px;background:color-mix(in srgb,var(--paper,#fffdf8) 62%,transparent);
-  border:1px solid color-mix(in srgb,var(--ink,#141C30) 10%,transparent);font:700 var(--fs-s)/1.2 var(--tt-noto-primary),sans-serif;color:var(--ink,#141C30);white-space:nowrap}
-.tt-audience-hook{position:relative;margin:auto 0 0;padding:14px 0 0 30px;border-top:1px dashed color-mix(in srgb,var(--ink,#141C30) 18%,transparent);
-  font:700 var(--fs-m)/1.55 var(--tt-noto-primary),sans-serif;color:var(--accent,#0E6E7D);word-break:keep-all;text-wrap:pretty}
-@media (max-width:760px){.tt-audience-head{margin-bottom:8px}.tt-audience-title{margin-bottom:12px}.tt-audience-services{margin-bottom:16px;gap:6px}.tt-audience-services li{padding:6px 11px}.tt-audience-hook{padding-top:12px;font-size:var(--fs-s)}}
-.tt-audience-hook::before{content:'\201C';position:absolute;left:0;top:8px;font:700 38px/1 'Quicksand',Georgia,serif;color:var(--accent,#0E6E7D);opacity:.55}
-#content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
-@media (max-width:760px){#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
+/* ABOUT: what I make, as a grouped list - the field on the left, the work on the right */
+#content#content .tt-audiences{display:block!important;width:min(880px,100%)!important;margin:0 auto 40px!important;padding:0!important;background:none;box-shadow:none;border-radius:0;backdrop-filter:none}
+.tt-field{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:6px 32px;align-items:baseline;padding:18px 0;border-top:1px solid color-mix(in srgb,var(--ink,#141C30) 14%,transparent);text-align:left}
+.tt-field:last-child{border-bottom:1px solid color-mix(in srgb,var(--ink,#141C30) 14%,transparent)}
+.tt-field-title{margin:0;font:800 var(--fs-l)/1.35 var(--tt-noto-primary),sans-serif;letter-spacing:-.01em;color:var(--ink,#141C30);word-break:keep-all}
+.tt-field-work{margin:0;font:500 var(--fs-m)/1.65 var(--tt-noto-primary),sans-serif;color:var(--soft,#44505F);word-break:keep-all}
+@media (max-width:760px){.tt-field{grid-template-columns:minmax(0,1fr);padding:16px 0}#content#content .tt-partners{flex-direction:column;align-items:flex-start;gap:6px}}
+/* partners: names on one line */
+#content#content .tt-partners{width:min(880px,100%)!important;max-width:none!important;margin:0 auto!important;padding:0!important;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 24px;font:500 var(--fs-m)/1.6 var(--tt-noto-primary),sans-serif;color:var(--soft,#44505F);text-align:left}
+.tt-partners-title{font-weight:800;color:var(--ink,#141C30);margin-right:8px}
+.tt-partner{display:inline-flex;align-items:baseline;gap:8px;color:inherit;text-decoration:none}
+.tt-partner strong{color:var(--ink,#141C30);font-weight:800}
+.tt-partner span{font-size:var(--fs-s)}
+.tt-partner[data-link="on"] strong{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.tt-partner[data-link="off"]{cursor:default}
 /* R5 */
 #c-projects article.lift a{min-height:44px;box-sizing:border-box}
 /* R6: role label, name, the member's line */
 
-/* R7: partners, named */
-#content#content .tt-network-summary{display:flex;align-items:center;gap:20px;min-height:64px}
-#content#content .tt-network-title{font-size:var(--fs-l);white-space:nowrap}
-.tt-network-people{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px 18px;min-width:0}
-.tt-network-person{display:inline-flex;align-items:center;gap:10px;text-align:left}
-.tt-network-person img{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none}
-.tt-network-person strong{display:block;font-size:var(--fs-s);line-height:1.2}
-.tt-network-person small{display:block;font-size:var(--fs-xs);line-height:1.3;opacity:.7}
 /* a former name, small beside the brand */
 .tt-aka{white-space:nowrap;font-size:var(--fs-xs);font-weight:600;letter-spacing:.04em;color:#5a6678;text-transform:none}.tt-aka:empty{display:none}
-/* a partner without a page: a plain card, no arrow */
-.tt-network-card[data-link="off"]{cursor:default}.tt-network-card[data-link="off"]::after{visibility:hidden}.tt-network-card[data-link="off"]:hover{transform:none;border-color:rgba(20,28,48,.12);background:rgba(255,255,255,.82)}
-/* phones: the title and arrow on one line, the partners on the next */
-@media (max-width:760px){#content#content .tt-network-summary{flex-wrap:wrap;gap:12px 14px;padding:14px 12px 14px 16px}#content#content .tt-network-summary-copy{flex:1 1 auto}.tt-network-people{order:3;flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}}
-#content#content .tt-network-arrow{font-size:var(--fs-l)}
 /* ===== Line breaks (revision 2) ===== */
 /* Korean never breaks inside a word; outranks the older word-break:normal resets in responsive.css */
 html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important;overflow-wrap:break-word}
@@ -762,13 +744,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 
 <!-- ================= 01 HOME ================= -->
 <section id="c-home" data-screen-label="01 Home" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:150px 6vw 130px;text-align:center">
-  <div class="tt-s-color-var-ink-f97e" data-px="0.05" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(80px,15vw,260px);letter-spacing:-.02em;line-height:.82;color:var(--ink,#141C30);opacity:.05;white-space:nowrap;pointer-events:none">{{ HOME.backgroundLine1 }}<br>{{ HOME.backgroundLine2 }}</div>
-  <div class="tt-s-color-var-accent-9aa3" data-reveal="" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
   <h1 class="tt-s-color-var-ink-f97e" data-reveal="" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.84;color:var(--ink,#141C30);font-size:clamp(58px,11.5vw,188px);opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1.1s cubic-bezier(.2,.8,.2,1) .08s">{{ HOME.titleLine1 }}<br>{{ HOME.titleLine2 }}</h1>
   <sc-if value="{{ HOME.tagline }}"><p data-reveal="" class="tt-home-tagline" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .2s,transform 1s cubic-bezier(.2,.8,.2,1) .2s">{{ HOME.tagline }}</p></sc-if>
   <p class="tt-journey-invitation">{{ HOME.journeyIntro }}</p>
   <div data-reveal="" class="tt-home-quick-actions">
-    <a class="is-primary" href="/discography/">{{ HOME.worksCtaLabel }} <span aria-hidden="true">&#8594;</span></a>
+    <a class="is-primary" href="/discography/">{{ HOME.worksCtaLabel }}</a>
     <a class="is-secondary" href="/contact/">{{ HOME.contactCtaLabel }}</a>
   </div>
   <sc-if value="{{ HOME_LISTEN.slug }}"><a class="tt-home-latest" href="{{ HOME_LISTEN.href }}" aria-label="{{ HOME_LISTEN.ariaLabel }}"><img src="{{ HOME_LISTEN.thumb }}" alt="" loading="lazy" decoding="async" width="56" height="56"><span class="tt-home-latest-copy"><small>{{ HOME_LISTEN.label }}</small><b>{{ HOME_LISTEN.title }}</b><em>{{ HOME_LISTEN.context }}</em></span><span class="tt-home-latest-play" aria-hidden="true"></span></a></sc-if>
@@ -787,7 +767,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </svg>
   </div>
   <div data-bob="" style="position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--soft,#44505F)">
-    <span class="tt-scroll-hint" style="font-weight:700;letter-spacing:.22em;text-transform:uppercase">{{ HOME.scrollHint }}<br></span>
+    <span class="tt-scroll-hint tt-visually-hidden">{{ HOME.scrollHint }}</span>
     <span class="tt-prologue-hint" title="{{ CHAPTER_PROLOGUE.hint }}">{{ CHAPTER_PROLOGUE.hint }}</span>
     <div style="width:1px;height:30px;background:currentColor"></div>
   </div>
@@ -807,64 +787,25 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- ================= 02 ABOUT US (c-members) ================= -->
 <section id="c-members" data-screen-label="02 About Us" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:130px 5vw">
   <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
+    <div class="tt-section-chapter-block"><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
     <sc-if value="{{ MEMBERS_META.subtitle }}"><sc-if value="{{ MEMBERS_META.leadPlain }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadPlain }}</p></sc-if>
     <sc-if value="{{ MEMBERS_META.leadSplit }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadBefore }}<ruby style="ruby-position:under">TALETONE<rt style="font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F);padding-top:4px">{{ MEMBERS_META.aka }}</rt></ruby>{{ MEMBERS_META.leadAfter }}</p></sc-if></sc-if>
     <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
-  <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
   <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-18px 0 40px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
-    <article class="tt-audience">
-      <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
-      <h3 class="tt-audience-title">{{ a.title }}</h3>
-      <ul class="tt-audience-services">
-        <sc-for list="{{ a.services }}" as="service" hint-placeholder-count="5"><li>{{ service }}</li></sc-for>
-      </ul>
-      <p class="tt-audience-hook">{{ a.hook }}</p>
-    </article>
+    <div class="tt-field">
+      <h3 class="tt-field-title">{{ a.title }}</h3>
+      <p class="tt-field-work">{{ a.servicesText }}</p>
+    </div>
     </sc-for>
   </div>
-  <div class="tt-network-directory" data-reveal="">
-    <button type="button" class="tt-network-summary" onclick="{{ togglePartner }}" aria-expanded="{{ partnerOpen }}" aria-controls="tt-network-panel">
-      <span class="tt-network-summary-copy">
-        <span class="tt-network-title">{{ PARTNERS_META.title }}</span>
-      </span>
-      <span class="tt-network-people">
-        <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><span class="tt-network-person"><img data-member-src="{{ p.image }}" alt="" loading="lazy"><span><strong>{{ p.name }}</strong><small>{{ p.role }}</small></span></span></sc-for>
-      </span>
-      <span class="tt-network-arrow" aria-hidden="true">&#8594;</span>
-    </button>
-  </div>
-  <sc-if value="{{ partnerOpen }}" hint-placeholder-val="{{ false }}">
-    <div class="tt-network-overlay" onclick="{{ closeModal }}">
-      <div id="tt-network-panel" class="tt-network-panel" role="dialog" aria-modal="true" aria-label="{{ PARTNERS_META.title }}" onclick="{{ stop }}">
-        <header class="tt-network-panel-head">
-          <div>
-            <div class="tt-network-eyebrow">{{ PARTNERS_META.eyebrow }}</div>
-            <h3 class="tt-network-panel-title">{{ PARTNERS_META.title }}</h3>
-          </div>
-          <div class="tt-network-panel-actions">
-            <span class="tt-network-panel-count">{{ PARTNERS.length }}</span>
-            <button type="button" class="tt-network-close tt-x-close" onclick="{{ closeModal }}" aria-label="{{ PARTNERS_META.closeLabel }}" title="{{ PARTNERS_META.closeLabel }}" autofocus><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-          </div>
-        </header>
-        <div class="tt-network-scroll">
-          <div class="tt-network-grid">
-            <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1">
-              <a class="tt-network-card" data-link="{{ p.linkState }}" tabindex="{{ p.tabIndex }}" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}" style="color:{{ p.textColor }}">
-                <image-slot id="{{ 'partner-' + p.id }}" class="tt-network-card-image" style="filter:brightness({{ p.brightness }}%) saturate({{ p.saturation }}%) contrast({{ p.lightness }}%)" shape="rounded" radius="8" placeholder="{{ UI_LABELS.photoPlaceholder }}" src="{{ p.image }}"></image-slot>
-                <span class="tt-network-card-shade"></span>
-                <span class="tt-network-card-copy"><span class="tt-network-card-role">{{ p.role }}</span><strong class="tt-network-card-name">{{ p.name }}</strong></span>
-              </a>
-            </sc-for>
-          </div>
-        </div>
-      </div>
-    </div>
-  </sc-if>
-                                                                                                                                                                                                                                                                                                                                                                                                       </section>
+  <p class="tt-partners" data-reveal=""><span class="tt-partners-title">{{ PARTNERS_META.title }}</span>
+    <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><a class="tt-partner" data-link="{{ p.linkState }}" tabindex="{{ p.tabIndex }}" href="{{ p.link }}" target="_blank" rel="noopener" onclick="{{ partnerClick }}"><strong>{{ p.name }}</strong><span>{{ p.role }}</span></a></sc-for>
+  </p>
+</section>
+
 
 
 <!-- bridge -->
@@ -879,7 +820,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 <!-- ================= 03 APPROACH (c-projects) ================= -->
 <section id="c-projects" data-screen-label="03 Approach" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:140px 5vw">
   <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
+    <div class="tt-section-chapter-block"><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
     <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
     <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
@@ -898,12 +839,11 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div class="tt-case" data-reveal="">
     <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true"></span></a>
     <div class="tt-case-body">
-      <p class="tt-case-eyebrow">{{ CASE.eyebrow }}</p>
       <h3 class="tt-case-title">{{ CASE.title }}</h3>
       <p class="tt-case-meta">{{ CASE.meta }}</p>
       <ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
       <p class="tt-case-lesson">{{ CASE.lesson }}</p>
-      <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }} <span aria-hidden="true">&#8594;</span></a>
+      <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }}</a>
     </div>
   </div>
   </sc-if>
@@ -1013,14 +953,14 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </div>
     
   <div class="tt-arrival-copy" data-reveal="" style="opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
-    <p class="tt-arrival-label">{{ CONTACT.arrivalLabel }}</p><div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_EPILOGUE.label }}</div><div class="tt-section-note">{{ CHAPTER_EPILOGUE.note }}</div></div>
+    <p class="tt-arrival-label">{{ CONTACT.arrivalLabel }}</p>
     <h2 class="tt-chapter-title tt-contact-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.86;font-size:var(--fs-4xl);color:var(--ink,#141C30)">{{ CONTACT.titleLine1 }}<br><span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ CONTACT.titleAccent }}</span></h2>
     <sc-if value="{{ CONTACT.subtitle }}"><p style="margin:26px 0 4px;font-weight:600;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ CONTACT.subtitle }}</p></sc-if>
     <sc-if value="{{ CONTACT.caption }}"><p class="tt-contact-caption" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F);opacity:.9">{{ CONTACT.caption }}</p></sc-if>
 
     <div class="tt-contact-actions" style="margin-top:42px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px">
-      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span> <span style="font-size:var(--fs-l)">&#8594;</span></a>
-      <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;gap:9px;background:var(--card,rgba(255,255,255,.54));color:var(--ink,#141C30);padding:18px 28px;border-radius:999px;border:1px solid var(--cardBorder,rgba(24,32,52,.12));cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 20px rgba(8,22,38,.08)">{{ CONTACT.copyLabel }}</button>
+      <a id="email-link" href="{{ CONTACT.link }}" aria-label="{{ CONTACT.buttonLabel }}" style="display:inline-flex;align-items:center;gap:10px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);padding:18px 34px;border-radius:999px;border:0;cursor:pointer;font-weight:800;font-size:var(--fs-m);text-decoration:none;box-shadow:0 8px 22px rgba(8,22,38,.16)"><span data-email-label="">{{ CONTACT.buttonLabel }}</span></a>
+      <button class="tt-s-color-var-ink-f97e" id="email-copy-button" type="button" onclick="{{ copyContactEmail }}" aria-label="{{ CONTACT.copyLabel }}" aria-live="polite" aria-atomic="true" style="display:inline-flex;align-items:center;min-height:44px;background:none;color:inherit;padding:0 6px;border:0;cursor:pointer;font-weight:700;font-size:var(--fs-m);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px">{{ CONTACT.copyLabel }}</button>
     </div>
     <p class="tt-contact-address"><a href="{{ CONTACT.link }}">{{ CONTACT.email }}</a></p>
     <sc-if value="{{ CONTACT.replyNote }}"><p class="tt-contact-promise">{{ CONTACT.replyNote }}<sc-if value="{{ CONTACT.timelineNote }}"><br>{{ CONTACT.timelineNote }}</sc-if></p></sc-if>
@@ -1050,7 +990,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <label><span>{{ CONTACT_FORM.scheduleLabel }}</span><input name="schedule" type="text" placeholder="{{ CONTACT_FORM.schedulePlaceholder }}"></label>
       <label class="is-wide"><span>{{ CONTACT_FORM.messageLabel }}</span><textarea name="message" rows="3"></textarea></label>
     </div>
-    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }} <span aria-hidden="true">&#8594;</span></button>
+    <button type="submit" class="tt-inquiry-submit">{{ CONTACT_FORM.submitLabel }}</button>
     <p class="tt-inquiry-note">{{ CONTACT_FORM.mailNote }}</p>
     <p class="tt-inquiry-note" aria-live="polite" style="min-height:1.4em;color:var(--accent-soft,#8decfc)">{{ INQUIRY_MESSAGE }}</p>
   </form>

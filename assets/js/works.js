@@ -489,18 +489,64 @@
     return '<button type="button" class="tt-shelf-listen' + (on ? ' is-playing' : '') + '" data-works-action="play" data-index="' + index + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span><span class="tt-shelf-listen-label">' + esc(on ? labels.pause : labels.listen) + '</span></button>';
   }
 
-  // Credits keep their own wording; blank lines split them into groups, and "[Music Credits]" or
-  // "1. Song" lines head a group. The block scrolls inside the popup when it is long.
+  // Credits are free text in several shapes ("Mixed by A", "작곡 : A", "Composition - A", "Lyrics. A").
+  // Each line becomes a role → name row; composition, arrangement, lyrics, mixing and mastering show first,
+  // named in the page language, and the rest waits behind "more". A role with no name is left out, a line
+  // that is not a role keeps its wording, and "[Music Credits]" or "1. Song" lines head a section.
+  var KEY_CREDITS = [
+    ['compose', /^(compose[ds]?|composition|composer|작곡|作曲)$/],
+    ['arrange', /^(arrange[ds]?|arrangement|arranger|편곡|編曲)$/],
+    ['lyrics', /^(lyrics( written)?|lyricist|작사|作詞)$/],
+    ['mix', /^((audio )?mix(ed|ing)?|믹싱|믹스|ミックス|ミキシング)$/],
+    ['master', /^((audio )?master(ed|ing)?|마스터링|마스터|マスタリング)$/]
+  ];
+  function creditKeys(role) {
+    var keys = role.toLowerCase().split(/\s*(?:&|·|\/|,)\s*/).map(function (part) {
+      for (var i = 0; i < KEY_CREDITS.length; i++) if (KEY_CREDITS[i][1].test(part)) return KEY_CREDITS[i][0];
+      return '';
+    });
+    return keys.every(Boolean) ? keys : null;
+  }
+  function parseCredits(text) {
+    var sections = [], section = null;
+    function open(head) { section = { head: head, key: [], rest: [] }; sections.push(section); }
+    text.replace(/\r/g, '').split('\n').forEach(function (raw) {
+      var line = raw.trim(); if (!line) return;
+      if (/^\[.+\]$/.test(line) || /^\d+\.\s/.test(line)) { open(/^\[/.test(line) ? '' : line); return; }
+      if (!section) open('');
+      var m = /^(.+?)\s+by(?:\s+(.*))?$/i.exec(line) || /^([^:：]+?)\s*[:：]\s*(.*)$/.exec(line) || /^(.+?)\s+[-–]\s+(.+)$/.exec(line) || /^([^.]+?)\.\s+(.+)$/.exec(line);
+      if (!m) { section.rest.push({ text: line }); return; }
+      var role = m[1].trim().replace(/\s+by$/i, ''), name = (m[2] || '').trim();
+      if (!name) return;
+      var keys = creditKeys(role);
+      if (!keys) { section.rest.push({ role: role, name: name }); return; }
+      var label = keys.map(function (k) { return L()[k]; }).join('·');
+      var same = section.key.filter(function (row) { return row.role === label; })[0];
+      if (same) { if (same.name.split(', ').indexOf(name) === -1) same.name += ', ' + name; }
+      else section.key.push({ role: label, name: name });
+    });
+    return sections.filter(function (sec) { return sec.head || sec.key.length || sec.rest.length; });
+  }
+  function creditRowsHtml(rows) {
+    return rows.map(function (row) {
+      return row.role ? '<dt>' + esc(row.role) + '</dt><dd>' + esc(row.name) + '</dd>' : '<dd class="tt-credit-note">' + esc(row.text) + '</dd>';
+    }).join('');
+  }
   function creditsHtml(text, label) {
-    var groups = text.replace(/\r/g, '').split(/\n\s*\n/).map(function (group) {
-      return group.split('\n').map(function (line) { return line.trim(); }).filter(Boolean).map(function (line) {
-        var head = /^\[.+\]$/.test(line) || /^\d+\.\s/.test(line);
-        return head ? '<strong>' + esc(line.replace(/^\[|\]$/g, '')) + '</strong>' : '<span>' + esc(line) + '</span>';
+    var sections = parseCredits(text), labels = L();
+    var hasKey = sections.some(function (sec) { return sec.key.length; });
+    var hasRest = sections.some(function (sec) { return sec.rest.length; });
+    function list(part) {
+      return sections.map(function (sec) {
+        var rows = hasKey ? sec[part] : sec.key.concat(sec.rest);
+        if (!rows.length && !(part === 'key' && sec.head)) return '';
+        return (sec.head ? '<p class="tt-credit-head">' + esc(sec.head) + '</p>' : '') + (rows.length ? '<dl class="tt-credit-rows">' + creditRowsHtml(rows) + '</dl>' : '');
       }).join('');
-    }).filter(Boolean);
+    }
     return '<section class="tt-shelf-modal-credits" aria-label="' + esc(label) + '">' +
       '<p class="tt-shelf-modal-label">' + esc(label) + '</p>' +
-      '<div class="tt-shelf-modal-credits-list" tabindex="0"><div>' + groups.map(function (g) { return '<p>' + g + '</p>'; }).join('') + '</div></div>' +
+      list('key') +
+      (hasKey && hasRest ? '<details class="tt-credits-more"><summary>' + esc(labels.more) + '</summary>' + list('rest') + '</details>' : '') +
     '</section>';
   }
 
@@ -525,40 +571,36 @@
 
   function modalHtml(index) {
     var work = works[index]; if (!work) return '';
-    var labels = L(), meta = localizedMeta();
+    var labels = L();
     var unit = localizedUnit(work);
     var title = plainRichText(unit.title || work.title || '');
     var image = unit.image || work.image || '';
     var credit = creditsFor(work, index);
     var id = videoFor(work, index);
-    var facts = [[meta.yearLabel, unit.date || work.date], [meta.typeLabel, work.format], [meta.releaseLabel, plainRichText(unit.type || work.type || '')]]
-      .filter(function (row) { return row[1]; })
-      .map(function (row) { return '<div><dt>' + esc(plainRichText(row[0] || '')) + '</dt><dd>' + esc(row[1]) + '</dd></div>'; }).join('');
+    var facts = [plainRichText(unit.artist || work.artist || ''), unit.date || work.date, work.format].filter(Boolean).join(' · ');
     var stage = id
       ? '<div class="tt-shelf-yt" data-yt="' + id + '"><img src="https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg" alt="" onload="if(this.naturalWidth<200)this.src=\'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg\'">' +
         '<button type="button" class="tt-shelf-yt-play" data-works-action="video" aria-label="' + esc(title + ' — ' + labels.video) + '"><span aria-hidden="true"></span></button></div>'
       : '<div class="tt-shelf-modal-art' + (state.current === index && state.playing ? ' is-playing' : '') + '"><span class="tt-shelf-disc" aria-hidden="true" style="--art:url(\'' + esc(rootUrl(image)) + '\')"><i></i></span><img src="' + esc(image) + '" alt="" style="' + coverStyle(unit) + '">' + (hasAudio(work) ? playButton(index, title, 'tt-shelf-modal-play') : '') + '</div>';
     var links = (hasAudio(work) ? listenButton(index) : '') +
-      '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + ' <span aria-hidden="true">→</span></a>';
+      '<a class="tt-shelf-modal-link" href="' + esc(workHref(work)) + '">' + esc(labels.page) + '</a>';
     return '<div class="tt-shelf-modal" role="dialog" aria-modal="true" aria-label="' + esc(title) + '" data-works-action="close-backdrop">' +
       '<div class="tt-shelf-modal-panel">' +
         '<button type="button" class="tt-shelf-modal-close" data-works-action="close" aria-label="' + esc(labels.close) + '">' + closeIcon + '</button>' +
-        // two panes: the video and the story on the left, the record's facts, tracks and credits on the right
+        // one column, one scroll: the video (or the record), the story, then tracks and credits
         '<div class="tt-shelf-modal-media">' +
           '<div class="tt-shelf-modal-stage">' + stage + '</div>' +
           '<div class="tt-shelf-modal-main">' +
-            '<p class="tt-shelf-format">' + esc([work.format, yearOf(work)].filter(Boolean).join(' · ')) + '</p>' +
             '<h3 class="tt-shelf-modal-title">' + esc(title) + '</h3>' +
-            '<p class="tt-shelf-modal-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + '</p>' +
+            (facts ? '<p class="tt-shelf-modal-artist">' + esc(facts) + '</p>' : '') +
             (unit.description ? '<p class="tt-shelf-modal-story">' + esc(plainRichText(unit.description)) + '</p>' : '') +
             '<div class="tt-shelf-modal-links">' + links + '</div>' +
-            coversHtml(work) +
           '</div>' +
         '</div>' +
         '<div class="tt-shelf-modal-info">' +
-          (facts ? '<dl class="tt-shelf-modal-facts">' + facts + '</dl>' : '') +
           trackRowsHtml(work, index) +
           (credit.text ? creditsHtml(credit.text, credit.label) : '') +
+          coversHtml(work) +
         '</div>' +
       '</div>' +
     '</div>';
@@ -1701,10 +1743,30 @@
     return worksDataPromise;
   }
 
+  // phones: the popup is a bottom sheet; pulling it down from its top closes it
+  var sheetDrag = null;
+  function onSheetTouchStart(event) {
+    var panel = event.target.closest && event.target.closest('.tt-shelf-modal-panel');
+    sheetDrag = panel && panel.scrollTop <= 0 && window.innerWidth <= 760 ? { panel: panel, y: event.touches[0].clientY, dy: 0 } : null;
+  }
+  function onSheetTouchMove(event) {
+    if (!sheetDrag) return;
+    sheetDrag.dy = Math.max(0, event.touches[0].clientY - sheetDrag.y);
+    sheetDrag.panel.style.transform = sheetDrag.dy ? 'translateY(' + sheetDrag.dy + 'px)' : '';
+  }
+  function onSheetTouchEnd() {
+    if (!sheetDrag) return;
+    var drag = sheetDrag; sheetDrag = null;
+    if (drag.dy > 110) closeModal(); else drag.panel.style.transform = '';
+  }
+
   function bindWorksInteractions() {
     if (worksInteractionsBound) return;
     worksInteractionsBound = true;
     document.addEventListener('click', onClick, true);
+    document.addEventListener('touchstart', onSheetTouchStart, { passive: true });
+    document.addEventListener('touchmove', onSheetTouchMove, { passive: true });
+    document.addEventListener('touchend', onSheetTouchEnd);
     document.addEventListener('keydown', onRackKey);
     document.addEventListener('input', onVolumeInput);
     window.addEventListener('hashchange', scrollToWorksFromHash);

@@ -572,7 +572,7 @@ const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] 
 // (its size comes from the template's #content#content rule, which always won over works.css)
 const liveTemplate = await text('src/app/template.html');
 assert(/display:\s*inline-flex;/.test(homeTaglineRule) && liveTemplate.includes('#content#content .tt-home-tagline{font-size:var(--fs-xl)}'), 'HOME tagline is no longer visually grouped with the title');
-assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
+assert(!/\.tt-home-tagline::(before|after)/.test(worksCss), 'HOME tagline ornament returned (the minimal pass removed it)');
 // raised from 140 KB / 110 KB for the Discography's sea of records, console and coloured vinyl (2026-10-30)
 assert(Buffer.byteLength(worksCss) <= 165_000, 'WORKS CSS exceeds 165 KB source budget');
 assert(Buffer.byteLength(worksJs) <= 120_000, 'WORKS JavaScript exceeds 120 KB source budget');

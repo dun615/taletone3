@@ -1,7 +1,7 @@
 // Component core: state, lifecycle, the animation loop and the values the template renders.
 // Everything else lives in src/app/parts/*.js and is attached to Component.prototype by the build.
 class Component extends DCLogic {
-  state = { mOpen:false, partnerOpen:false, mi:0, contactCopyMessage:'', inquiryMessage:'' };
+  state = { mOpen:false, mi:0, contactCopyMessage:'', inquiryMessage:'' };
 
   ensureDataReady(){
     if(this._dataReady) return;
@@ -627,7 +627,7 @@ class Component extends DCLogic {
       title: meta['audience' + key + 'Title'] || '',
       services: [meta['audience' + key + 'Service1'], meta['audience' + key + 'Service2']].join(' · ').split(/\s*[·・]\s*/).filter(Boolean),
       hook: meta['audience' + key + 'Hook'] || ''
-    })).filter((item)=>item.title);
+    })).filter((item)=>item.title).map((item)=>Object.assign(item, { servicesText: item.services.join(this.lang === 'jp' ? '、' : ', ') }));
   }
   renderVals(){
     this.ensureDataReady();
@@ -672,8 +672,6 @@ class Component extends DCLogic {
       mOpen: this.state.mOpen,
       m: (this.MEMBERS||[])[this.state.mi] || {},
       M_SHEET: this.memberSheet((this.MEMBERS||[])[this.state.mi] || {}),
-      partnerOpen: this.state.partnerOpen,
-      togglePartner:()=>this.togglePartner(),
       PARTNERS: this.PARTNERS || [],
       partnerClick: (e)=>{ var href=e.currentTarget.getAttribute('href'); if(!href || href==='#'){ if(e && e.preventDefault) e.preventDefault(); } },
       closeModal:()=>this.closeAll(),
