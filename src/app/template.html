@@ -808,20 +808,19 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-reveal="" style="text-align:center;margin-bottom:50px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TALE.label }}</div><div class="tt-section-note">{{ CHAPTER_TALE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.86;color:var(--ink,#141C30)">{{ MEMBERS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ MEMBERS_META.titleAccent }}</span></h2>
-    <sc-if value="{{ MEMBERS_META.subtitle }}"><sc-if value="{{ MEMBERS_META.leadPlain }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadPlain }}</p></sc-if>
-    <sc-if value="{{ MEMBERS_META.leadSplit }}"><p class="tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadBefore }}<ruby style="ruby-position:under">TALETONE<rt style="font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F);padding-top:4px">{{ MEMBERS_META.aka }}</rt></ruby>{{ MEMBERS_META.leadAfter }}</p></sc-if></sc-if>
+    <sc-if value="{{ MEMBERS_META.subtitle }}"><sc-if value="{{ MEMBERS_META.leadPlain }}"><p class="tt-chapter-sub tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadPlain }}</p></sc-if>
+    <sc-if value="{{ MEMBERS_META.leadSplit }}"><p class="tt-chapter-sub tt-s-color-var-ink-f97e" style="margin:22px 0 4px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ MEMBERS_META.leadBefore }}TALETONE{{ MEMBERS_META.leadAfter }}</p><sc-if value="{{ MEMBERS_META.aka }}"><p class="tt-about-aka">{{ MEMBERS_META.aka }}</p></sc-if></sc-if></sc-if>
     <sc-if value="{{ MEMBERS_META.description }}"><p style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ MEMBERS_META.description }}</p></sc-if>
   </div>
   <sc-if value="{{ MEMBERS_META.typesLabel }}"><p class="tt-about-label" data-reveal="">{{ MEMBERS_META.typesLabel }}</p></sc-if>
   <div data-public-audience="" data-reveal="" class="tt-audiences tt-s-grid-template-columns-0466" style="width:min(1060px,76vw);display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:-18px 0 40px;opacity:0;transform:translateY(24px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1s cubic-bezier(.2,.8,.2,1) .08s">
     <sc-for list="{{ AUDIENCES }}" as="a" hint-placeholder-count="3">
     <article class="tt-audience">
-      <div class="tt-audience-head"><span class="tt-audience-num" aria-hidden="true">{{ a.number }}</span><span class="tt-audience-kicker">{{ a.kicker }}</span></div>
       <h3 class="tt-audience-title">{{ a.title }}</h3>
+      <p class="tt-audience-hook">{{ a.hook }}</p>
       <ul class="tt-audience-services">
         <sc-for list="{{ a.services }}" as="service" hint-placeholder-count="5"><li>{{ service }}</li></sc-for>
       </ul>
-      <p class="tt-audience-hook">{{ a.hook }}</p>
     </article>
     </sc-for>
   </div>
@@ -833,7 +832,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <span class="tt-network-people">
         <sc-for list="{{ PARTNERS }}" as="p" hint-placeholder-count="1"><span class="tt-network-person"><img data-member-src="{{ p.image }}" alt="" loading="lazy"><span><strong>{{ p.name }}</strong><small>{{ p.role }}</small></span></span></sc-for>
       </span>
-      <span class="tt-network-arrow" aria-hidden="true">&#8594;</span>
+      <sc-if value="{{ PARTNERS_META.openLabel }}"><span class="tt-network-cta">{{ PARTNERS_META.openLabel }}</span></sc-if><span class="tt-network-arrow" aria-hidden="true">&#8594;</span>
     </button>
   </div>
   <sc-if value="{{ partnerOpen }}" hint-placeholder-val="{{ false }}">
@@ -880,8 +879,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
   <div data-reveal="" style="text-align:center;margin-bottom:54px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">
     <div class="tt-section-chapter-block"><div class="tt-section-chapter">{{ CHAPTER_TONE.label }}</div><div class="tt-section-note">{{ CHAPTER_TONE.note }}</div></div>
     <h2 class="tt-chapter-title tt-s-color-var-ink-f97e" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-4xl);line-height:.84;color:var(--ink,#141C30)">{{ PROJECTS_META.title }} <span class="tt-s-color-var-accent-9aa3" style="color:var(--accent,#0E6E7D)">{{ PROJECTS_META.titleAccent }}</span></h2>
-    <p class="tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
-    <p class="tt-chapter-lead" style="margin:0;font-weight:500;font-size:var(--fs-l);color:var(--soft,#44505F)">{{ PROJECTS_META.description }}</p>
+    <p class="tt-chapter-sub tt-s-color-var-ink-f97e" style="margin:22px 0 2px;font-weight:800;font-size:var(--fs-xl);color:var(--ink,#141C30)">{{ PROJECTS_META.subtitle }}</p>
   </div>
   <div class="tt-cmp tt-process" data-reveal="">
     <sc-for list="{{ PROOF.rows }}" as="row" hint-placeholder-count="2">
@@ -892,7 +890,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </div>
     </sc-for>
   </div>
-  <sc-if value="{{ PROOF.closing }}"><p class="tt-cmp-closing" data-reveal="">{{ PROOF.closing }}</p></sc-if>
   <sc-if value="{{ CASE.title }}">
   <div class="tt-case" data-reveal="">
     <a class="tt-case-art" href="{{ CASE.href }}" aria-label="{{ CASE.listenLabel }}"><img data-defer-src="{{ CASE.thumb }}" alt="" decoding="async"><span class="tt-case-play" aria-hidden="true">{{ CASE.listenLabel }}</span></a>

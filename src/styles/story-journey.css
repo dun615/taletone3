@@ -15,7 +15,6 @@
 .tt-process .tt-cmp-flow li b {font-size:clamp(19px,1.7vw,24px)!important;color:#123d49!important;line-height:1.4;word-break:keep-all;white-space:normal}
 .tt-process .tt-cmp-result {color:#304c57!important;font-size:15px!important;line-height:1.85!important;border-top:1px solid #cadfe3;padding-top:18px;min-height:5.6em;text-align:center;word-break:keep-all}
 .tt-process .tt-cmp-flow li:last-child b {color:#123d49!important}
-.tt-cmp-closing {color:#173b48;max-width:700px;text-wrap:balance;line-height:1.8!important}
 .tt-audience-hook {color:#164e5c!important}
 #content#content #c-contact {padding-top:100px!important;padding-bottom:100px!important;overflow-x:clip}
 .tt-arrival {width:min(1100px,100%);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:28px;min-height:560px;position:relative;z-index:3}
@@ -36,7 +35,7 @@
 .tt-inquiry-title {color:#f4d6a0!important}
 .tt-inquiry-note {color:#d0dee7!important;line-height:1.9!important;max-width:560px}
 #c-contact .tt-inquiry input::placeholder {color:#bdccd6!important}
-@media(min-width:761px){#content#content #c-projects .tt-chapter-title{font-size:clamp(52px,6vw,82px)!important}#c-projects{padding-top:100px!important}#c-projects>[data-reveal]:first-child{margin-bottom:38px!important}}
+@media(min-width:761px){#c-projects{padding-top:100px!important}#c-projects>[data-reveal]:first-child{margin-bottom:38px!important}}
 @media(max-width:760px){
   #c-home {padding:100px 20px 110px!important}
   #c-home h1 {font-size:clamp(48px,12.6vw,72px)!important}

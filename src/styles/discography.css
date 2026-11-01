@@ -654,13 +654,10 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
    then one real case laid out as request + strength = our question -> answer, with its record to play */
 .tt-cmp {width:min(1000px,92vw);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
 .tt-cmp-card {position:relative;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 26px 22px;border-radius:22px;text-align:center}
-.tt-cmp-card[data-ours=false] {background:rgba(255,255,255,.16);border:1.5px dashed rgba(20,28,48,.2)}
 .tt-cmp-card[data-ours=true] {background:var(--card,rgba(255,255,255,.7));border:1.5px solid rgba(14,110,125,.45);box-shadow:0 18px 44px rgba(8,22,38,.12)}
 .tt-cmp-head {display:flex;align-items:center;justify-content:center;gap:10px}
 .tt-cmp-label {font-weight:800;font-size:var(--fs-m);letter-spacing:.02em}
-.tt-cmp-card[data-ours=false] .tt-cmp-label {color:rgba(68,80,95,.7)}
 .tt-cmp-card[data-ours=true] .tt-cmp-label {color:var(--accent,#0E6E7D)}
-.tt-cmp-badge {position:absolute;top:20px;right:20px;padding:5px 10px;border-radius:999px;background:#141C30;color:#fff;font:700 10.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em}
 .tt-cmp-flow {list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:baseline}
 .tt-cmp-flow > li {position:relative;display:flex;flex-direction:column;align-items:center;font-size:clamp(24px,2.7vw,38px)}
 .tt-cmp-flow > li + li {margin-left:1.35em}
@@ -668,15 +665,10 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-cmp-flow > li + li::before {width:.56em;height:2px;margin-top:-1px;background:currentColor;opacity:.5}
 .tt-cmp-flow > li + li::after {width:.2em;height:.2em;margin-top:-.1em;box-sizing:border-box;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);opacity:.5}
 .tt-cmp-flow b {font-weight:800;font-size:1em;line-height:1.25;letter-spacing:-.01em;white-space:nowrap}
-.tt-cmp-flow small {margin-top:5px;font:700 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.2em;color:var(--accent,#0E6E7D)}
-.tt-cmp-card[data-ours=false] .tt-cmp-flow > li {color:rgba(68,80,95,.5)}
-.tt-cmp-card[data-ours=false] .tt-cmp-flow b {font-weight:700}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li {color:var(--ink,#141C30)}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li:last-child b {color:#E9A23B}
 .tt-cmp-result {align-self:stretch;margin:auto 0 0;padding-top:14px;border-top:1px solid rgba(20,28,48,.1);font-weight:600;font-size:var(--fs-m);line-height:1.6}
-.tt-cmp-card[data-ours=false] .tt-cmp-result {color:rgba(68,80,95,.75)}
 .tt-cmp-card[data-ours=true] .tt-cmp-result {color:var(--ink,#141C30);font-weight:700}
-.tt-cmp-closing {margin:26px 0 0;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F);text-align:center}
 .tt-case {box-sizing:border-box;width:min(1000px,92vw);margin-top:44px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,3vw,36px);align-items:start;padding:22px;border-radius:26px;background:var(--card,rgba(255,255,255,.7));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 20px 50px rgba(8,22,38,.12);text-align:left}
 .tt-case-art {position:relative;display:block;aspect-ratio:1;border-radius:18px;overflow:hidden;background:rgba(14,110,125,.12)}
 .tt-case-art > img {display:block;width:100%;height:100%;object-fit:cover}
@@ -702,7 +694,6 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-case-steps > li[data-kind=answer] > span {flex:none;color:#b8761a}
 .tt-case-steps > li[data-kind=answer] > p {font-size:var(--fs-m)}
 .tt-case-lesson {margin:16px 0 0;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
-.tt-case-listen {margin-top:6px;padding:8px 0;display:inline-block;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
 @media (max-width:900px) {
   .tt-cmp {grid-template-columns:minmax(0,1fr)}
   .tt-case {grid-template-columns:minmax(0,1fr);padding:16px}
@@ -907,7 +898,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 #chapnav .nav-label {letter-spacing:.12em!important}
 #content .tt-section-chapter, #content .tt-bridge-label {font-size:13px;letter-spacing:.18em}
 #c-home > .tt-s-color-var-accent-9aa3[data-reveal]:first-of-type {font-size:15px!important;letter-spacing:.16em!important}
-.tt-audience-kicker, .tt-network-directory small, .tt-home-latest small, .tt-cmp-badge, .tt-cmp-flow small, .tt-case-eyebrow,
+.tt-network-directory small, .tt-home-latest small, .tt-case-eyebrow,
 .tt-case-steps > li > span, .tt-shelf-format, .tt-mix-label, .tt-mix-audio-tag, .tt-shelf-clients-label, .tt-shelf-modal-label, .tt-shelf-covers-title {font-size:13px!important}
 .tt-rack-artist {font-size:13px}
 #tt-bridge-progress span {font-size:13px}
@@ -943,7 +934,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* the type scale, folded onto a few steps: 13 · 15 · 18 · 24 · 38 · display */
 [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
 .tt-inquiry-chip > span {font-size:15px}
-.tt-audience-num {font-size:38px!important}
 .tb-title {font-size:24px!important}
 
 /* tablet: turntable and records side by side, so the list starts on the first screen */

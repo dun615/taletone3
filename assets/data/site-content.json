@@ -322,7 +322,7 @@
             "steps": [
               {
                 "label": "요청",
-                "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+                "text": "“청량하고 예쁜 J‑ROCK을 소화해 보고 싶어요.”",
                 "kind": "request"
               },
               {
@@ -540,7 +540,7 @@
             "steps": [
               {
                 "label": "ご要望",
-                "text": "「爽やかでかわいいJ-ROCKを歌ってみたい」",
+                "text": "「爽やかでかわいいJ‑ROCKを歌ってみたい」",
                 "kind": "request"
               },
               {
@@ -628,7 +628,7 @@
         "steps": [
           {
             "label": "요청",
-            "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+            "text": "“청량하고 예쁜 J‑ROCK을 소화해 보고 싶어요.”",
             "kind": "request"
           },
           {
@@ -1150,19 +1150,19 @@
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
     "title": "Partnership",
-    "openLabel": "열기",
+    "openLabel": "파트너 보기",
     "closeLabel": "닫기",
     "translations": {
       "en": {
         "eyebrow": "EXTENDED NETWORK",
         "title": "Partnership",
-        "openLabel": "Open",
+        "openLabel": "View partners",
         "closeLabel": "Close"
       },
       "jp": {
         "eyebrow": "EXTENDED NETWORK",
         "title": "Partnership",
-        "openLabel": "開く",
+        "openLabel": "パートナーを見る",
         "closeLabel": "閉じる"
       }
     }
