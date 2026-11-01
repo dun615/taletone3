@@ -116,14 +116,14 @@
     }
   ],
   "home": {
-    "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+    "eyebrow": "Story-based IP music producer",
     "titleLine1": "TALETONE",
     "titleLine2": "MUSIC",
     "tagline": "우리의 이야기가 음악이 되는 곳",
     "scrollHint": "아래로 내려가 보세요",
     "translations": {
       "en": {
-        "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+        "eyebrow": "Story-based IP music producer",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "Where our story becomes music.",
@@ -140,7 +140,7 @@
         "journeyIntro": "In search of the magical book where every story begins, deeper into the sea."
       },
       "jp": {
-        "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+        "eyebrow": "Story-based IP music producer",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "私たちの物語が、音楽になる場所。",
@@ -879,11 +879,11 @@
   "bridges": [
     {
       "id": "home-projects",
-      "eyebrow": "CHAPTER 1 · TALE",
+      "eyebrow": "Chapter 1 · Tale",
       "text": "수면 아래로 한 걸음,\n이야기를 찾아가는 여행이 시작됩니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 1 · TALE",
+          "eyebrow": "Chapter 1 · Tale",
           "text": "One step below the surface,\na journey in search of stories begins.",
           "mobileLines": [
             {
@@ -901,7 +901,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 1 · TALE",
+          "eyebrow": "Chapter 1 · Tale",
           "text": "水面の下へ一歩、\n物語を探す旅が始まります。",
           "mobileLines": [
             {
@@ -936,11 +936,11 @@
     },
     {
       "id": "projects-members",
-      "eyebrow": "CHAPTER 2 · TONE",
+      "eyebrow": "Chapter 2 · Tone",
       "text": "우리가 만난 이야기는\n저마다의 빛깔을 띠기 시작합니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 2 · TONE",
+          "eyebrow": "Chapter 2 · Tone",
           "text": "The stories we encounter\nbegin to take on colors of their own.",
           "mobileLines": [
             {
@@ -958,7 +958,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 2 · TONE",
+          "eyebrow": "Chapter 2 · Tone",
           "text": "私たちが出会った物語は\nそれぞれの色を帯びはじめます。",
           "mobileLines": [
             {
@@ -993,11 +993,11 @@
     },
     {
       "id": "members-works",
-      "eyebrow": "CHAPTER 3 · MUSIC",
+      "eyebrow": "Chapter 3 · Music",
       "text": "저마다의 빛깔을 품은 이야기는\n한 곡의 노래가 되어 흘러갑니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 3 · MUSIC",
+          "eyebrow": "Chapter 3 · Music",
           "text": "Each story, holding its own color,\nflows onward as a song.",
           "mobileLines": [
             {
@@ -1015,7 +1015,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 3 · MUSIC",
+          "eyebrow": "Chapter 3 · Music",
           "text": "それぞれの色を宿した物語は\n一曲の歌となって流れていきます。",
           "mobileLines": [
             {
@@ -1050,11 +1050,11 @@
     },
     {
       "id": "news-contact",
-      "eyebrow": "EPILOGUE",
+      "eyebrow": "Epilogue",
       "text": "이제, 우리의 이야기가\n음악이 될 차례입니다.",
       "translations": {
         "en": {
-          "eyebrow": "EPILOGUE",
+          "eyebrow": "Epilogue",
           "text": "Now, it’s time for our story\nto become music.",
           "mobileLines": [
             {
@@ -1072,7 +1072,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "EPILOGUE",
+          "eyebrow": "Epilogue",
           "text": "さあ、私たちの物語が\n音楽になる番です。",
           "mobileLines": [
             {
@@ -1107,24 +1107,24 @@
     }
   ],
   "worksMeta": {
-    "eyebrow": "CHAPTER 3 · MUSIC",
+    "eyebrow": "Chapter 3 · Music",
     "title": "",
     "titleAccent": "DISCOGRAPHY",
     "subtitle": "",
     "description": "",
-    "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+    "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
     "closeLabel": "닫기",
     "yearLabel": "발매일",
     "typeLabel": "형태",
     "releaseLabel": "발매 정보",
     "translations": {
       "en": {
-        "eyebrow": "CHAPTER 3 · MUSIC",
+        "eyebrow": "Chapter 3 · Music",
         "title": "",
         "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
-        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
         "closeLabel": "Close",
         "yearLabel": "Released",
         "typeLabel": "Format",
@@ -1132,12 +1132,12 @@
         "historyLabel": "View full history"
       },
       "jp": {
-        "eyebrow": "CHAPTER 3 · MUSIC",
+        "eyebrow": "Chapter 3 · Music",
         "title": "",
         "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
-        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
         "closeLabel": "閉じる",
         "yearLabel": "リリース日",
         "typeLabel": "形態",
@@ -1290,85 +1290,85 @@
   },
   "chapterLabels": {
     "prologue": {
-      "label": "PROLOGUE",
+      "label": "Prologue",
       "note": "수면에서 아래로",
       "copy": "",
       "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
     },
     "tale": {
-      "label": "CHAPTER 1 · TALE",
+      "label": "Chapter 1 · Tale",
       "note": "우리의 여행을 함께할 사람"
     },
     "tone": {
-      "label": "CHAPTER 2 · TONE",
+      "label": "Chapter 2 · Tone",
       "note": "이야기에 빛깔을 입히는 방식"
     },
     "music": {
-      "label": "CHAPTER 3 · MUSIC",
+      "label": "Chapter 3 · Music",
       "note": "깊은 바다에서 태어난 노래들"
     },
     "resurface": {
-      "label": "ECHO",
+      "label": "Echo",
       "note": "세상으로 번지는 울림"
     },
     "epilogue": {
-      "label": "EPILOGUE",
+      "label": "Epilogue",
       "note": "다음 페이지는 함께 써 내려갑니다."
     },
     "translations": {
       "en": {
         "prologue": {
-          "label": "PROLOGUE",
+          "label": "Prologue",
           "note": "From surface to below",
           "copy": "",
           "hint": "Below the surface, an unwritten book is waiting."
         },
         "tale": {
-          "label": "CHAPTER 1 · TALE",
+          "label": "Chapter 1 · Tale",
           "note": "Our companion on this journey"
         },
         "tone": {
-          "label": "CHAPTER 2 · TONE",
+          "label": "Chapter 2 · Tone",
           "note": "How a story gets its color"
         },
         "music": {
-          "label": "CHAPTER 3 · MUSIC",
+          "label": "Chapter 3 · Music",
           "note": "Songs born in the deep"
         },
         "resurface": {
-          "label": "ECHO",
+          "label": "Echo",
           "note": "Echoes reaching the world"
         },
         "epilogue": {
-          "label": "EPILOGUE",
+          "label": "Epilogue",
           "note": "Let's write the next page together."
         }
       },
       "jp": {
         "prologue": {
-          "label": "PROLOGUE",
+          "label": "Prologue",
           "note": "水面からその下へ",
           "copy": "",
           "hint": "水面の下で、まだ書かれていない本が待っています。"
         },
         "tale": {
-          "label": "CHAPTER 1 · TALE",
+          "label": "Chapter 1 · Tale",
           "note": "私たちの旅をともにする人"
         },
         "tone": {
-          "label": "CHAPTER 2 · TONE",
+          "label": "Chapter 2 · Tone",
           "note": "物語に色をのせる方法"
         },
         "music": {
-          "label": "CHAPTER 3 · MUSIC",
+          "label": "Chapter 3 · Music",
           "note": "深い海で生まれた歌"
         },
         "resurface": {
-          "label": "ECHO",
+          "label": "Echo",
           "note": "世界へ広がる響き"
         },
         "epilogue": {
-          "label": "EPILOGUE",
+          "label": "Epilogue",
           "note": "次のページは、一緒に綴っていきます。"
         }
       }

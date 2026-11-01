@@ -1648,7 +1648,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-eq i:nth-child(2) {animation-delay:-.3s}.tt-shelf-eq i:nth-child(3) {animation-delay:-.6s}
 @keyframes ttShelfEq{0%,100%{height:4px}50%{height:14px}}
 
-.tt-shelf-format {margin:0 0 7px;font:700 12px/1.2 'Quicksand',sans-serif;letter-spacing:.14em;text-transform:uppercase;}
+.tt-shelf-format {margin:0 0 7px;font:700 12px/1.2 var(--tt-noto-primary),sans-serif;letter-spacing:.02em;}
 
 /* MIX & ENGINEERING: a scrolling row of small video cards */
 .tt-mix {margin:clamp(56px,9vh,96px) auto 0;max-width:1180px}
@@ -1677,7 +1677,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
 }
 
 .tt-shelf-clients {margin:clamp(64px,10vh,104px) auto 0;text-align:center}
-.tt-shelf-clients-label {display:block;margin-bottom:22px;font:800 12px/1 'Quicksand',sans-serif;letter-spacing:.26em;}
+.tt-shelf-clients-label {display:block;margin-bottom:22px;font:700 13px/1 var(--tt-noto-primary),sans-serif;letter-spacing:.04em;}
 .tt-shelf-clients-row {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(22px,4vw,54px)}
 .tt-shelf-clients-row img {height:clamp(20px,2.2vw,28px);width:auto;opacity:.72;filter:brightness(0) invert(1)}
 
@@ -1931,3 +1931,10 @@ html body #content#content .tt-case-body { padding: 30px 34px 30px 0 !important;
   html body #content#content .tt-case-art > img { object-position: 50% 22%; }
   html body #content#content .tt-case-body { padding: 22px 20px 24px !important; }
 }
+
+/* tagline under the title; one-colour contact title; Parable's thin wordmark sized up; player row after a pick */
+html body #content#content .tt-home-tagline { font-weight: 700 !important; }
+html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
+.tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(26px, 2.6vw, 34px); }
+.tt-shelf:not(.is-engaged) .tt-console-now { display: none; }
+.tt-shelf:not(.is-engaged) .tt-console-lamps { padding-top: 0; border-top: 0; }

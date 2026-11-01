@@ -60,7 +60,7 @@ image-slot{display:block}
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
 /* narrative chapter labels */
-.tt-section-chapter,.tt-bridge-label{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:color-mix(in srgb,#e6f7fb calc(var(--depth,0)*95%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
+.tt-section-chapter,.tt-bridge-label{font-weight:700;font-size:13px;letter-spacing:.04em;color:color-mix(in srgb,#e6f7fb calc(var(--depth,0)*95%),var(--accent,#0E6E7D));text-shadow:var(--halo,none);white-space:pre-wrap}
 .tt-section-note{margin-top:7px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#44505F);opacity:.82;text-shadow:var(--halo,none);white-space:pre-wrap}
 
 .tt-prologue-hint{display:block;max-width:min(520px,82vw);font-weight:700;font-size:14px;line-height:1.45;letter-spacing:.06em;text-transform:none;text-align:center;color:var(--accent,#0E6E7D);opacity:.92;white-space:normal}
@@ -68,7 +68,7 @@ image-slot{display:block}
 .tt-depth-chip{display:none;font-weight:800;font-size:11px;letter-spacing:.04em;opacity:.78;white-space:nowrap}
 @media (max-width:1180px){.tt-depth-chip{display:inline}}
 .tt-bridge-readable{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:pre-wrap;border:0}
-@media (max-width:760px){.tt-section-chapter{font-size:11px;letter-spacing:.2em}.tt-section-note{font-size:12px;letter-spacing:.04em}.tt-prologue-hint{max-width:300px;font-size:12px}.tt-bridge-label{display:block;width:min(304px,calc(100vw - 56px));max-width:calc(100vw - 56px);margin-left:auto;margin-right:auto;font-size:11px;line-height:1.45;letter-spacing:.12em;text-align:center;white-space:normal;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}}
+@media (max-width:760px){.tt-section-chapter{font-size:12px;letter-spacing:.04em}.tt-section-note{font-size:12px;letter-spacing:.04em}.tt-prologue-hint{max-width:300px;font-size:12px}.tt-bridge-label{display:block;width:min(304px,calc(100vw - 56px));max-width:calc(100vw - 56px);margin-left:auto;margin-right:auto;font-size:11px;line-height:1.45;letter-spacing:.12em;text-align:center;white-space:normal;text-wrap:balance;word-break:keep-all;overflow-wrap:normal}}
 /* bridge text stays legible over bright motifs: strong dark glow always */
 [data-bridge]{text-shadow:var(--halo,none);}
 [data-bridge-line]+div{color:var(--accent,#0E6E7D);text-shadow:var(--halo,none) !important;}
@@ -291,12 +291,12 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
 @media (max-width:760px){:root{--fs-xs:12px;--fs-m:15px;--fs-l:17px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:34px;--fs-4xl:48px}}
 /* ===== Chapter review R1-R9 (revision 2) ===== */
-#content#content .tt-section-chapter{font-size:var(--fs-xs)}
+#content#content .tt-section-chapter{font-size:var(--fs-s)}
 #content#content .tt-section-note{font-size:var(--fs-s);letter-spacing:.02em}
 #content#content .tt-chapter-title{font-size:var(--fs-4xl)!important}
 #content#content .tt-home-tagline{font-size:var(--fs-xl)}
 #content#content .tt-prologue-hint{font-size:var(--fs-s)}
-#content#content .tt-scroll-hint{font-size:var(--fs-s);letter-spacing:.12em!important}
+#content#content .tt-scroll-hint{font-size:var(--fs-s);letter-spacing:0!important}
 #content#content #c-home :is(.is-primary,.is-secondary){font-size:var(--fs-s);min-height:44px}
 #content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
 
@@ -761,8 +761,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
 
 <!-- ================= 01 HOME ================= -->
 <section id="c-home" data-screen-label="01 Home" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:150px 6vw 130px;text-align:center">
-  <div class="tt-s-color-var-ink-f97e" data-px="0.05" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;font-size:clamp(80px,15vw,260px);letter-spacing:-.02em;line-height:.82;color:var(--ink,#141C30);opacity:.05;white-space:nowrap;pointer-events:none">{{ HOME.backgroundLine1 }}<br>{{ HOME.backgroundLine2 }}</div>
-  <div class="tt-s-color-var-accent-9aa3" data-reveal="" style="font-weight:800;font-size:var(--fs-s);letter-spacing:.28em;text-transform:uppercase;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
+  <div class="tt-home-eyebrow tt-s-color-var-accent-9aa3" data-reveal="" style="font-weight:700;font-size:var(--fs-s);letter-spacing:.04em;color:var(--accent,#0E6E7D);margin-bottom:30px;opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)">{{ HOME.eyebrow }}</div>
   <h1 class="tt-s-color-var-ink-f97e" data-reveal="" style="margin:0;font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif;font-weight:700;letter-spacing:-.012em;line-height:.84;color:var(--ink,#141C30);font-size:clamp(58px,11.5vw,188px);opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.8,.2,1) .08s,transform 1.1s cubic-bezier(.2,.8,.2,1) .08s">{{ HOME.titleLine1 }}<br>{{ HOME.titleLine2 }}</h1>
   <sc-if value="{{ HOME.tagline }}"><p data-reveal="" class="tt-home-tagline" style="opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1) .2s,transform 1s cubic-bezier(.2,.8,.2,1) .2s">{{ HOME.tagline }}</p></sc-if>
   <p class="tt-journey-invitation">{{ HOME.journeyIntro }}</p>
@@ -786,7 +785,7 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
     </svg>
   </div>
   <div data-bob="" style="position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--soft,#44505F)">
-    <span class="tt-scroll-hint" style="font-weight:700;letter-spacing:.22em;text-transform:uppercase">{{ HOME.scrollHint }}<br></span>
+    <span class="tt-scroll-hint" style="font-weight:700">{{ HOME.scrollHint }}<br></span>
     <span class="tt-prologue-hint" title="{{ CHAPTER_PROLOGUE.hint }}">{{ CHAPTER_PROLOGUE.hint }}</span>
     <div style="width:1px;height:30px;background:currentColor"></div>
   </div>
