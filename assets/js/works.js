@@ -919,6 +919,7 @@
         (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + '<span class="tt-console-chev" aria-hidden="true"></span></button>' : '') + '</div>' +
     '</div>';
   }
+  var CRATE_SIZE = 12;
   function crateHtml() {
     var labels = L();
     var list = works.map(function (work, index) { return { work: work, index: index }; }).sort(byFeatured).slice(0, CRATE_SIZE), crateOrder = 0;
