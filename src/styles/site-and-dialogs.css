@@ -1844,12 +1844,12 @@ html body #content#content .tt-case-body { padding: 30px 34px 30px 0 !important;
   html body #content#content .tt-case-body { padding: 22px 20px 24px !important; }
 }
 
-/* tagline under the title; one-colour contact title; Parable's thin wordmark sized up; player row after a pick */
+/* tagline under the title; one-colour contact title; Parable's thin wordmark sized up; player bar after a pick */
 html body #content#content .tt-home-tagline { font-weight: 700 !important; }
 html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
 .tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(21px, 2.1vw, 28px); }
-.tt-shelf:not(.is-engaged) .tt-console-now, .tt-shelf:not(.is-engaged) .tt-console-more { display: none; }
-.tt-shelf:not(.is-engaged) .tt-console-lamps { padding: 0; border-top: 0; }
+/* the player bar (song, play, filters, details) appears once a song is picked, then fades in */
+.tt-shelf:not(.is-engaged) .tt-console-host { visibility: hidden; opacity: 0; pointer-events: none; }
 @media (max-width: 760px) { .tt-shelf-clients-row { display: grid; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 18px 36px; } }
 /* the sea's static light: brighter toward the surface, darker at the edges as it deepens (scene.js sets the strengths) */
 #sky::before,#sky::after{content:'';position:absolute;inset:0;pointer-events:none}
