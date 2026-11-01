@@ -65,7 +65,6 @@
 .tt-rack-badge i:nth-child(2) {animation-delay:-.3s}.tt-rack-badge i:nth-child(3) {animation-delay:-.6s}
 .tt-rack-item.is-playing .tt-rack-badge {display:flex}
 
-.tt-rack-meta {padding-top:20px}
 .tt-rack-name {margin:0;font:700 var(--fs-s,13px)/1.35 'Quicksand',var(--tt-noto-primary),sans-serif;color:var(--ink);text-overflow:ellipsis}
 .tt-rack-artist {margin:3px 0 0;font:600 11.5px/1.35 var(--tt-noto-primary),sans-serif;color:var(--soft);text-overflow:ellipsis}
 
@@ -336,12 +335,6 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 @media (max-width:760px){
   html body #c-home > [data-px="0.05"] {display:none}
 
-  html body #c-track-record {min-height:0!important;padding:28px 18px 40px!important}
-  html body #c-track-record .tt-s-grid-template-columns-0466 {grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
-  html body #c-track-record article.lift {min-height:0!important;padding:18px 12px 16px!important;gap:6px!important}
-  html body #c-track-record article.lift > :first-child {font-size:38px!important}
-  html body #c-track-record article.lift > :nth-child(2) {font-size:14px!important}
-  html body #c-track-record article.lift > :nth-child(3) {font-size:12px!important}
 }
 
 /* Sheets on phones (REVIEW-mobile phase 2, M16): the Works popup has one scroll — the credits no longer scroll inside it */
@@ -431,20 +424,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
   html body .tt-crate-rack .tt-shelf-filters {flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;margin:0 -16px 12px;padding:2px 16px 6px;scrollbar-width:none}
   html body .tt-crate-rack .tt-shelf-filters::-webkit-scrollbar {display:none}
   html body .tt-crate-rack .tt-shelf-chip {flex:none}
-  html body .tt-crate-rack .tt-m-carousel {display:flex;gap:12px;max-height:none!important;overflow-x:auto;overflow-y:hidden!important;margin:0 -16px;padding:4px 16px 14px;
-    list-style:none;scroll-snap-type:x mandatory;scroll-padding:0 16px;overscroll-behavior-x:contain;scrollbar-width:none}
-  html body .tt-crate-rack .tt-m-carousel::-webkit-scrollbar {display:none}
-  html body .tt-m-card {flex:0 0 clamp(128px,38vw,168px);scroll-snap-align:start;transform:none!important;animation:none!important;text-align:left}
-  html body .tt-m-card .tt-rack-pick {display:flex;flex-direction:column;gap:4px;width:100%;padding:0;border:0;background:none;color:#fbffff;text-align:left;cursor:pointer;transform:none!important}
-  html body .tt-m-card .tt-rack-pick::before,
-  html body .tt-m-card .tt-rack-pick::after {content:none;display:none}
-  html body .tt-m-card .tt-rack-pick:focus-visible {outline:2px solid #8decfc;outline-offset:3px;border-radius:14px}
-  .tt-m-card-art {position:relative;display:block;aspect-ratio:1;border-radius:14px;overflow:hidden;margin-bottom:6px;box-shadow:0 10px 22px rgba(0,14,22,.4)}
-  .tt-m-card-art img {display:block;width:100%;height:100%}
-  html body .tt-m-card.is-current .tt-m-card-art {box-shadow:0 0 0 3px #8decfc,0 10px 22px rgba(0,14,22,.4)}
-  html body .tt-m-card .tt-rack-badge {position:absolute;left:8px;bottom:8px;right:auto;top:auto;height:22px}
-  html body .tt-m-card .tt-rack-name {font:700 14px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  html body .tt-m-card .tt-rack-artist {margin:0;font:600 12px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.65)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.tt-m-now-eq i {animation:none}}
 
@@ -460,7 +440,7 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
     column-gap:14px!important;row-gap:4px!important;align-items:start;padding:14px!important;border-radius:20px!important}
   #content#content #c-projects article.lift > :nth-child(1) {grid-area:head;margin:0!important;}
   #content#content #c-projects article.lift > :nth-child(1) > :first-child > :first-child {margin-bottom:4px!important;font-size:12px!important}
-  #content#content #c-projects .tt-project-title {font-size:22px!important;line-height:1.15!important}
+
   #content#content #c-projects article.lift > :nth-child(2) {grid-area:media;order:0;width:104px;height:104px;aspect-ratio:1;margin:0!important;border-radius:14px!important}
   #content#content #c-projects article.lift > :nth-child(3) {grid-area:copy;margin:2px 0 0!important;font-size:13.5px!important;line-height:1.5!important;
     display:-webkit-box!important;overflow:hidden!important}
@@ -630,7 +610,7 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
   .tt-sheet-profile > .tt-sheet-traits {grid-column:1/-1}
 }
 /* Chapter redesign: About Us labels, How We Work steps, client voices under Discography, the short inquiry form */
-mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:4px;box-shadow:0 0 0 1px rgba(120,90,0,.25);font-weight:700}
+
 .tt-voices {box-sizing:border-box;width:min(1080px,92vw);margin:56px auto 0;padding-bottom:40px;text-align:center}
 .tt-voices-list {list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:left}
 .tt-voice {display:flex;flex-direction:column;justify-content:space-between;gap:16px;padding:22px 22px 20px;border-radius:18px;background:var(--card,rgba(255,255,255,.52));border:1px solid var(--cardBorder,rgba(24,32,52,.08))}
@@ -768,28 +748,11 @@ mark.tt-todo {background:#ffe45c;color:#1d1700;padding:.05em .3em;border-radius:
 .tt-shelf-covers p {margin:6px 0 0;font:700 12px/1.35 var(--tt-noto-primary),sans-serif;color:inherit;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* The rack: songs newest first; an album sits at its release date as a block with its own name band */
-.tt-crate-rack .tt-rack-grid.tt-rack-shelves {display:block}
-.tt-shelf-block + .tt-shelf-block {margin-top:28px}
-.tt-shelf-plate {display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:8px 12px 8px 10px;border-left:3px solid #8decfc;border-radius:4px 10px 10px 4px;
-  background:linear-gradient(90deg,rgba(141,236,252,.18),rgba(141,236,252,.03) 85%)}
-.tt-shelf-plate.is-current {border-left-color:#fbffff;background:linear-gradient(90deg,rgba(141,236,252,.3),rgba(141,236,252,.06) 85%)}
-.tt-shelf-plate-cover {flex:none;width:40px;height:40px;padding:0;border:0;border-radius:6px;overflow:hidden;cursor:pointer;background:rgba(8,24,40,.45);box-shadow:0 6px 14px -6px rgba(2,10,22,.8)}
-.tt-shelf-plate-cover img {display:block;width:100%;height:100%;object-fit:cover}
-.tt-shelf-plate-text {display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
-.tt-shelf-plate-name {font:800 13.5px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-shelf-plate-artist {font:600 11.5px/1.25 var(--tt-noto-primary),sans-serif;color:rgba(251,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tt-shelf-plate-count {flex:none;padding:5px 9px;border:1px solid rgba(141,236,252,.45);border-radius:999px;font:800 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.06em;color:#8decfc}
+
 .tt-shelf-row {list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px}
 @media (max-width:1100px){.tt-shelf-row {grid-template-columns:repeat(3,minmax(0,1fr))}}
-.tt-rack-trackno {position:absolute;left:6px;top:6px;z-index:2;padding:4px 7px;border-radius:999px;background:rgba(5,30,38,.82);color:#8decfc;
-  font:800 10.5px/1 'Quicksand',sans-serif;letter-spacing:.06em;pointer-events:none}
+
 .tt-rack-roles {color:#8decfc!important}
-@media (max-width:760px){
-  html body .tt-crate-rack .tt-rack-grid.tt-rack-shelves {max-height:none!important;overflow:visible!important;padding:0;margin:0}
-  .tt-shelf-block + .tt-shelf-block {margin-top:14px}
-  .tt-shelf-plate {margin-bottom:10px}
-  html body .tt-m-card .tt-rack-trackno {left:8px;top:8px}
-}
 
 /* desktop: the language switcher stays above an open works popup, so the popup can be read in another language */
 @media (min-width: 861px) {
@@ -939,12 +902,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 @media (min-width:1101px) {
   .tt-crate-stage {grid-template-columns:minmax(320px,.8fr) minmax(0,1.3fr)}
 }
-/* record cards (tablet and up): text on the cover's left edge, artist and roles one line each */
-@media (min-width:761px) {
-  .tt-rack-meta {text-align:left;padding-top:14px}
-  .tt-rack-meta .tt-rack-name {-webkit-line-clamp:2}
-  .tt-rack-meta .tt-rack-artist {-webkit-line-clamp:1;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-}
 /* Readable floor: nothing meant to be read below 13px */
 #chapnav .nav-label, #lang-switcher button {font-size:13px!important}
 #chapnav .nav-label {letter-spacing:.12em!important}
@@ -1005,12 +962,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-works-bar {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 16px}
 .tt-works-bar > .tt-works-tabs {margin:0}
 .tt-works-bar > .tt-shelf-history {margin:0}
-/* record card text, three clear levels: the song (larger, full white), who it is for (muted), what I did (accent, light) */
-@media (min-width:761px) {
-  #c-works .tt-rack-meta .tt-rack-name {font:800 15px/1.3 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;letter-spacing:-.01em}
-  #c-works .tt-rack-meta .tt-rack-artist {margin-top:4px;font:500 13px/1.35 var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.68)!important}
-  #c-works .tt-rack-meta .tt-rack-roles {margin-top:6px;font:600 13px/1.35 var(--tt-noto-primary),sans-serif;color:#8decfc!important;opacity:.9}
-}
 @media (max-width:760px) {
   .tt-works-bar {gap:10px}
   .tt-works-bar + .tt-mix-head, .tt-mix > .tt-mix-head {margin-top:14px}

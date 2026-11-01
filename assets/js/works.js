@@ -800,7 +800,6 @@
     window.addEventListener('resize', queue);
   })();
 
-  // tablets and up: the rack grid with album shelves
   // ---- desktop: the records drift down one current, a slow S through the sea, featured ones first, each named
   // beside it; you follow it down and pick the one you want to hear. A console comes with you while you are in
   // the Discography: what is playing, play, volume, and (unfolded) the lamps for field and role, which light the

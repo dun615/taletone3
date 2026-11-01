@@ -81,9 +81,8 @@ html:lang(ja) body{line-break:strict;word-break:auto-phrase;overflow-wrap:break-
 html:lang(ja) body *{word-break:auto-phrase!important}
 h1,
 h2,
-h3,
-.tt-project-title {text-wrap:balance}
-.tt-project-title{overflow-wrap:anywhere}
+h3 {text-wrap:balance}
+
 p,li{text-wrap:pretty}
 #tt-bridge-progress{position:fixed;left:50%;bottom:max(30px,calc(env(safe-area-inset-bottom) + 18px));transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:0;transition:opacity .35s ease;pointer-events:none;color:var(--soft,#44505F);text-shadow:var(--halo,none)}
 #tt-bridge-progress i{display:block;width:132px;height:2px;border-radius:2px;background:var(--line,rgba(24,32,52,.18));overflow:hidden}
@@ -300,7 +299,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 #content#content .tt-scroll-hint{font-size:var(--fs-s);letter-spacing:.12em!important}
 #content#content #c-home :is(.is-primary,.is-secondary){font-size:var(--fs-s);min-height:44px}
 #content#content #c-contact :is(.tt-contact-caption,h2 + p,h2 + p + p,sc-if > p){font-size:var(--fs-m)!important}
-.tt-project-title{font-size:var(--fs-2xl)!important}
+
 /* R4: who we write for, as a quiet list; the two stories stay the only cards */
 #content#content .tt-audiences{background:none;box-shadow:none;border-radius:0;padding:0!important;backdrop-filter:none;gap:0!important;margin:0 0 48px!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 16%,transparent)}
 #content#content .tt-audience{background:none;border:0;box-shadow:none;border-radius:0;padding:24px 26px!important;text-align:left}
@@ -344,7 +343,7 @@ html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-brea
 /* running text never ends on a lone word; headings and short notes are balanced */
 #content{text-wrap:pretty}
 /* short titles stay on one line */
-.tt-project-title{white-space:nowrap;font-size:var(--fs-2xl)!important}
+
 .tb-title{white-space:nowrap}
 /* accessibility: keyboard focus + reduced motion */
 a:focus-visible,button:focus-visible,[tabindex]:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--accent,#0E6E7D);outline-offset:3px;border-radius:6px}

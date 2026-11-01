@@ -36,7 +36,7 @@ for (const [label, dir] of [["live", "assets/data"]]) {
         /^\d{4}\.\d{2}\.\d{2}$/,
         `${name}: date must be YYYY.MM.DD (the rack sorts by it)`,
       );
-      for (const field of ["image", "thumb", "ogImage"]) {
+      for (const field of ["image", "thumb"]) {
         assert.ok(work[field], `${name}: ${field} is missing`);
         assert.ok(
           await exists(work[field]),

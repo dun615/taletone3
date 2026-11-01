@@ -14,13 +14,12 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { nanumCharacters, PREVIEW_SOURCES } from './font-coverage.mjs';
+import { nanumCharacters } from './font-coverage.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
 const listOnly = process.argv.includes('--list');
-const previewSource = (file) => file.replace(/^preview-src\/app\//, 'src/app/').replace(/^preview-src\/data\//, 'assets/data/').replace(/^preview-src\/(js|css)\//, 'assets/$1/').replace(/^preview-src\/support.js$/, 'support.js');
-const read = (file) => readFile(path.join(root, previewSource(file)), 'utf8');
+const read = (file) => readFile(path.join(root, file), 'utf8');
 const readJson = async (file) => JSON.parse(await read(file));
 
 // Content keys stay kr/en/jp; URLs and html lang use ISO codes.
@@ -36,10 +35,9 @@ const labels = {
   jp: { nav: '主要ページ', languages: '言語', storyTypes: 'Approach', trackRecord: 'Track Record', members: '紹介', works: 'ディスコグラフィー', contact: 'プロジェクトのご相談' },
 };
 
-const [shell, template, component, siteJsonText, seoJsonText, works] = await Promise.all([
+const [shell, template, siteJsonText, seoJsonText, works] = await Promise.all([
   read('src/page.html'),
-  readFile(path.join(root, 'src/app/template.html')),
-  readFile(path.join(root, 'src/app/component.js')),
+  read('src/app/template.html'),
   read('assets/data/site-content.json'),
   read('assets/data/seo-content.json'),
   readJson('assets/data/works-data.json'),
@@ -104,7 +102,8 @@ const liveTemplate = String(template)
   .replace(/assets\/js\/works\.js\?v=[\w-]+/, `assets/js/works.js?v=${version(worksJsText + worksDataText)}`)
   .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(responsiveCss)}`)
   .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `assets/js/site-ux.js?v=${version(siteUxJs)}`);
-const appBundle = makeAppBundle(liveTemplate, await composeComponent('src/app'));
+const componentText = await composeComponent('src/app');
+const appBundle = makeAppBundle(liveTemplate, componentText);
 
 const dataScript = (data, name, aliases = []) =>
   [`window.${name} = ${JSON.stringify(data, null, 2)};`, ...aliases.map((alias) => `window.${alias} = window.${name};`)].join('\n') + '\n';
@@ -298,42 +297,29 @@ ${urls.join('\n')}
 }
 
 // ---- Preview of work in progress (taletone.net/preview/, not indexed) ----
-// Preview shares the approved production sources and keeps isolated URLs/noindex metadata.
-const [pSupport, pResponsiveCss, pSiteUx] = await Promise.all([read('preview-src/support.js'), read('assets/css/responsive.css'), read('preview-src/js/site-ux.js')]);
-const [pTemplate, pComponent, pSiteText, pWorksText, pWorksJs, pWorksCss] = await Promise.all([
-  read('preview-src/app/template.html'), composeComponent('preview-src/app'),
-  read('preview-src/data/site-content.json'), read('preview-src/data/works-data.json'),
-  read('preview-src/js/works.js'), Promise.resolve(sharedCss),
-]);
-const previewTemplate = pTemplate
+// The same sources under isolated URLs with noindex, so a reload or a shared link stays in the preview.
+const previewTemplate = String(template)
   .replace(/assets\/js\/image-slot\.js\?v=[\w-]+/, `assets/js/image-slot.js?v=${version(imageSlotJs)}`)
-  .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(pWorksCss)}`)
-  .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(pWorksJs + pWorksText)}`)
-  .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(pResponsiveCss)}`)
-  .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(pSiteUx)}`);
-const previewApp = makeAppBundle(previewTemplate, pComponent);
-const previewSiteData = JSON.parse(pSiteText);
-const previewSiteScript = dataScript({ ...previewSiteData, ...siteExtras(previewSiteData, JSON.parse(pWorksText)) }, 'TALETONE_CONTENT');
-const previewNanum = nanumUrl(await nanumCharacters(root, PREVIEW_SOURCES));
-// every route of the live site exists under /preview/ too, so a reload or a shared link stays in the preview
-const previewPage = (page, lang) => renderPage(page, lang, {
-  APP_VERSION: version(previewApp),
-  SITE_VERSION: version(previewSiteScript),
-  NANUM_FONT_URL: previewNanum,
-}).replace(/href="(\/(?:en\/|ja\/)?discography\/[^"]*)"/g,'href="/preview$1"').replace(/<html lang="([^"]+)">/, '<html lang="$1" data-intro-v2>')
+  .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(worksCssText)}`)
+  .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(worksJsText + worksDataText)}`)
+  .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(responsiveCss)}`)
+  .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(siteUxJs)}`);
+const previewApp = makeAppBundle(previewTemplate, componentText);
+const previewPage = (page, lang) => renderPage(page, lang, { APP_VERSION: version(previewApp) })
+  .replace(/href="(\/(?:en\/|ja\/)?discography\/[^"]*)"/g, 'href="/preview$1"')
   .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
   .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
   .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
-  .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(pSupport)}`);
+  .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(supportJs)}`);
 const previewOutputs = [
   ...seo.pages.flatMap((page) => languages.map((lang) => [`preview/${fileFor(lang, page.path)}`, previewPage(page, lang)])),
-  ['preview/support.js', pSupport],
+  ['preview/support.js', supportJs],
   ['preview/assets/app/app.js', previewApp],
-  ['preview/assets/data/site-content.js', previewSiteScript],
-  ['preview/assets/data/works-data.json', pWorksText],
-  ['preview/assets/js/works.js', pWorksJs],
-  ['preview/assets/js/site-ux.js', pSiteUx],
-  ['preview/assets/css/works.css', pWorksCss],
+  ['preview/assets/data/site-content.js', siteScript],
+  ['preview/assets/data/works-data.json', worksDataText],
+  ['preview/assets/js/works.js', worksJsText],
+  ['preview/assets/js/site-ux.js', siteUxJs],
+  ['preview/assets/css/works.css', worksCssText],
 ];
 
 // Retired News and RSS have no replacement. Remove prior generated artifacts so Pages serves 404.
