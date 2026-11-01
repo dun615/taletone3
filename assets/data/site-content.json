@@ -710,7 +710,7 @@
         "titleAccent": "Our next page together.",
         "subtitle": "From a character’s first song to a scene in a game.",
         "caption": "What mark shall we leave on this page?",
-        "buttonLabel": "Project Inquiry",
+        "buttonLabel": "Project inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
         "copyFail": "Copy failed",
@@ -749,7 +749,8 @@
           "budgetPlaceholder": "Range / to discuss / undecided",
           "schedulePlaceholder": "Release target / undecided"
         },
-        "arrivalLabel": "The magical book, found at last"
+        "arrivalLabel": "The magical book, found at last",
+        "copyShortLabel": "Copy"
       },
       "jp": {
         "eyebrow": "Contact",
@@ -796,7 +797,8 @@
           "budgetPlaceholder": "ご予算の目安・応相談・未定",
           "schedulePlaceholder": "公開予定・未定"
         },
-        "arrivalLabel": "ついに出会った魔法の書"
+        "arrivalLabel": "ついに出会った魔法の書",
+        "copyShortLabel": "コピー"
       }
     },
     "email": "contact@taletone.net",
@@ -839,7 +841,8 @@
       "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다.",
       "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
       "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
-    }
+    },
+    "copyShortLabel": "복사"
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",

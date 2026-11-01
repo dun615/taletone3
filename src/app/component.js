@@ -213,8 +213,8 @@ class Component extends DCLogic {
     var em=document.getElementById('email-link');
     if(em){
       var contact = this.CONTACT || {};
-      var link = contact.link || 'mailto:contact@taletone.net';
-      em.href = link;
+      // the main contact button leads to the inquiry form; the address below it opens the mail app
+      em.href = '#inquiry';
       var emLabel = em.querySelector('[data-email-label]');
       if(emLabel) emLabel.textContent = contact.buttonLabel || 'Tell us your story';
       else em.textContent = contact.buttonLabel || 'Tell us your story';
@@ -654,6 +654,7 @@ class Component extends DCLogic {
       CONTACT_COPY_MESSAGE: this.state.contactCopyMessage || '',
       INQUIRY_MESSAGE: this.state.inquiryMessage || '',
       copyContactEmail:(e)=>this.copyContactEmail(e),
+      goToInquiry:(e)=>this.goToInquiry(e),
       sendInquiry:(e)=>this.sendInquiry(e),
       // the featured song, How We Work's steps, client voices and the short inquiry form
       HOME_LISTEN: this.HOME_LISTEN || {}, PROOF: this.PROOF || {}, CASE: this.CASE || {}, VOICES: this.VOICES || {},

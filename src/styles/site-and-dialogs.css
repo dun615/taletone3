@@ -1811,7 +1811,7 @@ footer span {
    actions, the contact actions and the inquiry submit used three heights (44/48/57px), two font sizes and two
    primary colours (brand teal and ink); they now share one size. The colours come from the theme variables, so
    they still follow the light surface and the deep water. */
-html body #content#content :is(.tt-home-quick-actions a, #email-link, #email-copy-button, .tt-inquiry-submit) {
+html body #content#content :is(.tt-home-quick-actions a, #email-link, .tt-inquiry-submit) {
   min-height: 48px !important;
   padding: 0 26px !important;
   border-radius: 999px !important;
@@ -1824,14 +1824,40 @@ html body #content#content :is(.tt-home-quick-actions a, #email-link, #email-cop
   justify-content: center;
 }
 
-html body #content#content :is(.tt-home-quick-actions .is-secondary, #email-copy-button) {
+html body #content#content .tt-home-quick-actions .is-secondary {
   background: var(--card, rgba(255, 255, 255, .54)) !important;
   color: var(--ink, #141C30) !important;
   border: 1px solid var(--cardBorder, rgba(24, 32, 52, .12)) !important;
 }
 
 @media (max-width: 760px) {
-  html body #content#content :is(.tt-home-quick-actions a, #email-link, #email-copy-button, .tt-inquiry-submit) {
+  html body #content#content :is(.tt-home-quick-actions a, #email-link, .tt-inquiry-submit) {
     padding: 0 20px !important;
   }
+}
+
+/* The address and its copy button are one unit: the address opens the mail app, the button copies it. */
+html body #content#content .tt-contact-address {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+html body #content#content .tt-contact-copy {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--cardBorder, rgba(24, 32, 52, .12));
+  background: var(--card, rgba(255, 255, 255, .54));
+  color: var(--ink, #141C30);
+  font: 700 var(--fs-s)/1 var(--tt-noto-primary), sans-serif;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+html body #content#content .tt-contact-copy:focus-visible {
+  outline: 2px solid var(--accent, #0E6E7D);
+  outline-offset: 2px;
+}
+@media (max-width: 760px) {
+  html body #content#content .tt-contact-address { justify-content: center; }
 }
