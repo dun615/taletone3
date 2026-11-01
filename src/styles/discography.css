@@ -283,20 +283,6 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body .tt-contact-address a::after {content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}
 }
 
-/* Phones: the featured songs show their artwork on top instead of a faded backdrop under
-   the text (REVIEW-mobile M12, M17) */
-@media (max-width:760px){
-  html body #c-projects article.lift {min-height:0;background:rgba(255,253,248,.94)!important}
-  html body #c-projects article.lift::after {display:none}
-  html body #c-projects article.lift > :nth-child(2) {position:relative;inset:auto;
-    pointer-events:auto}
-  html body #c-projects article.lift > :nth-child(2) image-slot,
-  html body #c-projects article.lift > :nth-child(2) img {opacity:1;filter:none!important;object-position:50% 22%}
-  html body #c-projects article.lift > :not(:nth-child(2)) {max-width:none!important;}
-  html body #c-projects article.lift > :nth-child(1) > :nth-child(2) {display:none!important}
-
-}
-
 /* Landscape phones (REVIEW-mobile M18): the Works popup keeps its two panes so the facts are not pushed below a screen-high video */
 @media (orientation:landscape) and (max-height:500px){
   html body .tt-shelf-modal-panel {display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);height:auto;max-height:calc(100vh - 32px);overflow:hidden}
@@ -436,15 +422,13 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 /* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) — they
    were taller than a screen half */
 @media (max-width:760px){
-  #content#content #c-projects article.lift {display:grid!important;grid-template-columns:104px minmax(0,1fr);grid-template-areas:"media head" "media copy" "button button";
-    column-gap:14px!important;row-gap:4px!important;align-items:start;padding:14px!important;border-radius:20px!important}
-  #content#content #c-projects article.lift > :nth-child(1) {grid-area:head;margin:0!important;}
-  #content#content #c-projects article.lift > :nth-child(1) > :first-child > :first-child {margin-bottom:4px!important;font-size:12px!important}
+  
+  
+  
 
-  #content#content #c-projects article.lift > :nth-child(2) {grid-area:media;order:0;width:104px;height:104px;aspect-ratio:1;margin:0!important;border-radius:14px!important}
-  #content#content #c-projects article.lift > :nth-child(3) {grid-area:copy;margin:2px 0 0!important;font-size:13.5px!important;line-height:1.5!important;
-    display:-webkit-box!important;overflow:hidden!important}
-  #content#content #c-projects article.lift > :nth-child(4) {grid-area:button;justify-self:stretch;justify-content:center;margin:12px 0 0!important}
+  
+  
+  
 
   /* an older rule kept a 220px minimum under the text (about 95px of empty card): the card now ends with its text */
 }

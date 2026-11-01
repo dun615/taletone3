@@ -6,7 +6,7 @@
 #c-home .tt-home-latest {margin-top:22px}
 #c-home [data-bob] {bottom:14px!important}
 #c-home .tt-prologue-hint {display:none}
-#c-projects .tt-chapter-lead {white-space:pre-line;max-width:660px;line-height:1.9;margin:16px auto 0!important;color:#183f4b}
+
 .tt-process {grid-template-columns:repeat(3,minmax(0,1fr));gap:0;max-width:1060px;padding:36px 24px;background:#f4f8f4;border:1px solid rgba(255,255,255,.65);border-radius:28px;box-shadow:0 14px 36px rgba(17,61,72,.08)}
 .tt-process .tt-cmp-card[data-ours=true] {position:relative;min-width:0;padding:0 22px;background:transparent;border:0;border-radius:0;box-shadow:none;opacity:1;filter:none;text-align:center;align-items:center;gap:0}
 .tt-process .tt-cmp-card:not(:last-child)::after {content:'→';position:absolute;top:0;right:-12px;z-index:1;color:#31808b;font-size:22px;line-height:1}
@@ -46,7 +46,7 @@
   .tt-process .tt-cmp-card:not(:last-child)::after {content:'↓';top:auto;bottom:-12px;right:calc(50% - 9px);background:#f4f8f4;padding:0 4px}
   .tt-process .tt-cmp-flow {margin:16px 0 12px}
   .tt-process .tt-cmp-result {min-height:0}
-  #c-projects .tt-chapter-lead {font-size:15px!important;max-width:340px}
+  
   #tt-mobile-chapter-menu {background:#102c39!important;border-color:#456572!important;backdrop-filter:blur(24px)}
   #content#content #c-contact {padding-top:40px!important;padding-bottom:110px!important}
   .tt-arrival {grid-template-columns:1fr;gap:8px;min-height:0}

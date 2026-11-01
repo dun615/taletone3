@@ -52,10 +52,6 @@ image-slot{display:block}
 @media (max-width:480px){
   #progress > div{width:64px !important}
 }
-.lift{transition:box-shadow .5s cubic-bezier(.2,.8,.2,1), filter .5s ease}
-.lift:hover{box-shadow:0 26px 60px rgba(8,22,38,.22);filter:brightness(1.05)}
-.lift:hover img{transform:scale(1.05)}
-.lift img{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
 
 /* depth-aware legibility halo behind text on the sky */
 #content h1,#content h2,#content h3,#content p,#content section>div>div{text-shadow:var(--halo,none)}
@@ -285,7 +281,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* the header lockup reads like the logo: MUSIC in the brand teal near the surface, in sky blue in deep water */
 #brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--deep-glow,0) * 100%),var(--brand));opacity:1!important}
 /* primary buttons wear the brand: teal with white words near the surface, white with teal words in the deep */
-#content#content :is(.tt-home-quick-actions .is-primary,#email-link,.tt-inquiry-submit,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
+#content#content :is(.tt-home-quick-actions .is-primary,#email-link,.tt-inquiry-submit){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
 :root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
@@ -319,7 +315,6 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 #content#content .tt-audience + .tt-audience{border-left:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}
 @media (max-width:760px){#content#content .tt-audiences{width:100%!important;border-left:0!important;border-right:0!important}#content#content .tt-audience{padding:20px 4px!important}#content#content .tt-audience + .tt-audience{border-left:0!important;border-top:1px solid color-mix(in srgb,var(--ink) 16%,transparent)!important}}
 /* R5 */
-#c-projects article.lift a{min-height:44px;box-sizing:border-box}
 /* R6: role label, name, the member's line */
 
 /* R7: partners, named */
