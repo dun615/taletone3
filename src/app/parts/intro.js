@@ -7,7 +7,8 @@ var ComponentIntro = {
     // low-memory or few-core phones draw about half the specks (REVIEW-mobile M20)
     var nav=window.navigator||{}, low=mobile&&((nav.deviceMemory&&nav.deviceMemory<=4)||(nav.hardwareConcurrency&&nav.hardwareConcurrency<=4));
     var n=(count)=>low?Math.ceil(count/2):count;
-    this.stars = Array.from({length:n(mobile?60:120)},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+0.3,ph:Math.random()*6.28,sp:Math.random()*1.6+0.4}));
+    this.stars = Array.from({length:n(mobile?66:132)},(_,i)=>{ var z=i%10<5?0:(i%10<9?1:2);
+      return {x:Math.random(),y:Math.random(),z:z,r:z===0?Math.random()*0.5+0.35:(z===2?Math.random()*8+6:Math.random()*1.3+0.3),ph:Math.random()*6.28,sp:Math.random()*1.6+0.4}; });
     // story fragments rising from the deep ??glyphs of music & story (notes, letters, kana)
     var glyphs=['\u266a','\u266b','\u266a','\u266c','\u2669','A','S','T','\u3042','\u306e','\u304b','\uac00','\u2026','&','\u00a7'];
     this.parts = Array.from({length:n(mobile?36:90)},(_,i)=>({

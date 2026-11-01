@@ -128,8 +128,6 @@
         "titleLine2": "MUSIC",
         "tagline": "Where our story becomes music.",
         "scrollHint": "Scroll to dive in",
-        "backgroundLine1": "TALE",
-        "backgroundLine2": "TONE",
         "worksCtaLabel": "Go to Discography",
         "contactCtaLabel": "Project inquiry",
         "listen": {
@@ -145,8 +143,6 @@
         "titleLine2": "MUSIC",
         "tagline": "私たちの物語が、音楽になる場所。",
         "scrollHint": "スクロールして潜る",
-        "backgroundLine1": "TALE",
-        "backgroundLine2": "TONE",
         "worksCtaLabel": "Discographyへ",
         "contactCtaLabel": "プロジェクトのご相談",
         "listen": {
@@ -163,8 +159,6 @@
     },
     "worksCtaLabel": "디스코그래피 바로가기",
     "contactCtaLabel": "프로젝트 문의",
-    "backgroundLine1": "TALE",
-    "backgroundLine2": "TONE",
     "listen": {
       "slug": "heart-score",
       "label": "대표곡 듣기",
@@ -313,7 +307,6 @@
               "result": "이야기에서 찾은 생각을 작곡과 편곡, 가사와 보컬에 담습니다."
             }
           ],
-          "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "실제 제작 사례",
@@ -422,7 +415,6 @@
               "result": "We bring ideas from the story into composition, arrangement, lyrics and vocals."
             }
           ],
-          "closing": "Following the story’s footsteps, we create music of our own.",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "A real project",
@@ -531,7 +523,6 @@
               "result": "物語から見つけた想いを、作曲・編曲・歌詞・歌声に込めます。"
             }
           ],
-          "closing": "物語の足跡をたどり、私たちだけの音楽をつくっていきます。",
           "case": {
             "slug": "love-dopamine",
             "eyebrow": "制作事例",
@@ -619,7 +610,6 @@
           "result": "이야기에서 찾은 생각을 작곡과 편곡, 가사와 보컬에 담습니다."
         }
       ],
-      "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
       "case": {
         "slug": "love-dopamine",
         "eyebrow": "실제 제작 사례",
@@ -857,7 +847,6 @@
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "Stories TALETONE writes songs for",
-        "teamLabel": "The maker",
         "aka": "aka 노사무엘 (N4ML)"
       },
       "jp": {
@@ -867,13 +856,11 @@
         "description": "",
         "titleAccent": "ABOUT",
         "typesLabel": "こんな物語に歌をつくります",
-        "teamLabel": "つくる人",
         "aka": "aka 노사무엘 (N4ML)"
       }
     },
     "titleAccent": "ABOUT",
     "typesLabel": "이런 이야기에 노래를 짓습니다",
-    "teamLabel": "만드는 사람",
     "aka": "aka 노사무엘 (N4ML)"
   },
   "bridges": [
@@ -1200,7 +1187,6 @@
     "close": "닫기",
     "education": "Education",
     "mbti": "MBTI",
-    "traits": "키워드",
     "sns": "SNS ↗",
     "snsLink": "인스타그램 링크",
     "role": "역할",
@@ -1210,12 +1196,7 @@
     "profile": "프로필",
     "selectedCredits": "주요 크레딧",
     "allCredits": "전체 크레딧",
-    "add": "+ 추가",
-    "brightness": "Bright",
-    "saturation": "Saturation",
-    "lightness": "Light",
     "delete": "삭제",
-    "thumbnailPlaceholder": "썸네일",
     "photoPlaceholder": "Photo",
     "translations": {
       "en": {
@@ -1234,7 +1215,6 @@
         "close": "Close",
         "education": "Education",
         "mbti": "MBTI",
-        "traits": "Keywords",
         "sns": "SNS ↗",
         "snsLink": "Instagram link",
         "role": "Role",
@@ -1244,12 +1224,7 @@
         "profile": "Profile",
         "selectedCredits": "Selected credits",
         "allCredits": "All credits",
-        "add": "+ Add",
-        "brightness": "Bright",
-        "saturation": "Saturation",
-        "lightness": "Light",
         "delete": "Delete",
-        "thumbnailPlaceholder": "Thumbnail",
         "photoPlaceholder": "Photo"
       },
       "jp": {
@@ -1268,7 +1243,6 @@
         "close": "閉じる",
         "education": "Education",
         "mbti": "MBTI",
-        "traits": "キーワード",
         "sns": "SNS ↗",
         "snsLink": "Instagramのリンク",
         "role": "役割",
@@ -1278,12 +1252,7 @@
         "profile": "プロフィール",
         "selectedCredits": "主なクレジット",
         "allCredits": "すべてのクレジット",
-        "add": "+ 追加",
-        "brightness": "Bright",
-        "saturation": "Saturation",
-        "lightness": "Light",
         "delete": "削除",
-        "thumbnailPlaceholder": "サムネイル",
         "photoPlaceholder": "Photo"
       }
     }

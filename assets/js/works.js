@@ -7,7 +7,6 @@
   var works = [];
   var logos = [];
   var worksMeta = null;
-  var liveSiteContent = null;
   var mounted = false;
   var worksDataPromise = null;
   var worksInteractionsBound = false;
@@ -571,7 +570,7 @@
 
   function headHtml() {
     var meta = localizedMeta();
-    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var content = window.TALETONE_CONTENT || {};
     var chapter = content.chapterLabels || {};
     var music = Object.assign({}, chapter.music || {}, (chapter.translations && chapter.translations[pageLangKey()] && chapter.translations[pageLangKey()].music) || {});
     return '<header class="tt-shelf-head">' +
@@ -609,7 +608,7 @@
   }
   // ETC cards that also credit recording, editing, mixing or mastering show in Sound Engineering too
   function etcPostItems() {
-    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var content = window.TALETONE_CONTENT || {};
     var post = Object.keys(POST_ROLES);
     return ((content.bgmWorks && content.bgmWorks.items) || []).filter(function (it) {
       return cardRoleKeys(it && it.roles).some(function (key) { return post.indexOf(key) !== -1; });
@@ -627,14 +626,14 @@
     return m[1] + '.' + m[2] + '.' + m[3];
   }
   function tabHeadHtml(key) {
-    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var content = window.TALETONE_CONTENT || {};
     var head = content[key] || {};
     var t = Object.assign({}, head, (head.translations && head.translations[pageLangKey()]) || {});
     if (!t.label && !t.note) return '';
     return '<div class="tt-mix-head tt-tab-head"><span class="tt-mix-label">' + esc(t.label || '') + '</span>' + (t.note ? '<span class="tt-mix-note">' + esc(t.note) + '</span>' : '') + '</div>';
   }
   function mixHtml(key, extra, paged, roleGroup) {
-    var content = liveSiteContent || window.TALETONE_CONTENT || {};
+    var content = window.TALETONE_CONTENT || {};
     var mix = content[key] || {};
     var seen = {};
     var items = (Array.isArray(mix.items) ? mix.items : []).concat(extra || []).filter(function (it) {
@@ -1613,22 +1612,6 @@
     if (asked) queueWork(asked);
     setTimeout(function () { waitForHost(0); }, 120);
   }
-  function setEditorData(json) {
-    if (!json || !json.works) return;
-    bindWorksInteractions();
-    stopAll();
-    works = json.works || [];
-    logos = json.clientLogos || [];
-    loudness = (json.loudness && json.loudness.files) || {};
-    state.modal = -1;
-    render();
-  }
-  function selectEditorWork(payload) {
-    // (the editor scrolls the rack to the chosen record)
-    var index = payload && typeof payload === 'object' ? payload.index : payload;
-    var book = root && root.querySelector('[data-works-book="' + Number(index) + '"]');
-    if (book) book.scrollIntoView({ block: 'center' });
-  }
 
   var lastWidthStep = 0;
   function onResize() {
@@ -1638,9 +1621,7 @@
   }
 
   window.TALETONE_WORKS_API = {
-    setData: setEditorData,
     setMeta: setMeta,
-    select: selectEditorWork,
     pauseAll: function () { pauseAll(); },
     queue: queueWork
   };
@@ -1660,18 +1641,6 @@
     if (!mounted) init();
   });
 
-  // only this site's own origin may push data or language into the Works module (see component.js)
-  window.addEventListener('message', function (event) {
-    if (!event || event.origin !== window.location.origin) return;
-    var message = event.data || {};
-    if (message.type === 'TALETONE_WORKS_SET_DATA') setEditorData(message.data);
-    if (message.type === 'TALETONE_SITE_SET_DATA' && message.data) {
-      liveSiteContent = message.data;
-      setMeta(message.data.worksMeta || {});
-    }
-    if (message.type === 'TALETONE_SET_LANG' && mounted) render();
-    if (message.type === 'TALETONE_WORKS_SELECT') selectEditorWork(message);
-  });
 
   function init() {
     if (worksDataPromise) return worksDataPromise;

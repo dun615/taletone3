@@ -13,7 +13,6 @@ class Component extends DCLogic {
     this.ensureDataReady();
     this._loadSeo();
     this._applySeoForCurrentPage();
-    this._mountSiteMessages();
     this._mountScene();
     this._mountBridges();
     this._mountPalettes();
@@ -30,24 +29,6 @@ class Component extends DCLogic {
     this.initIntro();
     this._mountVisibility();
     this.raf = requestAnimationFrame(this.loop);
-  }
-  // Content and language messages from this site itself (see S1 in the code review).
-  _mountSiteMessages(){
-    // Content and language messages are accepted only from this site's own origin: a page that frames
-    // taletone.net must not be able to swap its content (e.g. the contact address) inside the frame.
-    this._siteDataListener = (event)=>{
-      if(!event || event.origin !== window.location.origin) return;
-      var message = event.data || {};
-      if(message.type === 'TALETONE_SET_LANG'){
-        this.setLang(message.lang || 'kr');
-        return;
-      }
-      if(message.type !== 'TALETONE_SITE_SET_DATA') return;
-      window.TALETONE_CONTENT = message.data || {};
-      this._applyExternalContent();
-      this.forceUpdate();
-    };
-    window.addEventListener('message', this._siteDataListener);
   }
   // Canvas, sky and the elements the scroll scene animates.
   _mountScene(){
@@ -341,7 +322,6 @@ class Component extends DCLogic {
       window.removeEventListener('touchmove',this._introSkip);
       window.removeEventListener('pointerdown',this._introSkip);
     }
-    window.removeEventListener('message', this._siteDataListener);
     if(this._escapeHandler) window.removeEventListener('keydown',this._escapeHandler);
     if(this._historyHandler) window.removeEventListener('TALETONE_OPEN_HISTORY',this._historyHandler);
     if(this._spawnInkFromEvent){
@@ -378,9 +358,9 @@ class Component extends DCLogic {
     if(document.hidden) return;
     if(this._reduceMotion===undefined) this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var frameNow = Number.isFinite(frameTime) ? frameTime : performance.now();
-    // at rest (no scroll for 1.2 s, no bridge running) the ambient drift needs no more than 30 fps
+    // at rest (no scroll for 1.2 s, no bridge running) the ambient drift needs no more than 20 fps
     var atRest = this.introDone && !this._bridgeRun && this._lastScrollMoveAt!=null && frameNow-this._lastScrollMoveAt > 1200;
-    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : ((atRest || this.isMobileMotion()) ? 34 : 1000/60));
+    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : (atRest ? 50 : (this.isMobileMotion() ? 34 : 1000/60)));
     if(minFrameMs && this._lastLoopFrame && frameNow-this._lastLoopFrame < minFrameMs){
       this.raf = requestAnimationFrame(this.loop);
       return;
@@ -507,7 +487,7 @@ class Component extends DCLogic {
         var enter=this.cl((0.78 - tt)/0.6, 0, 1); enter=1-Math.pow(1-enter,3);   // bottom -> in
         var exit=this.smooth(-0.66,-0.16, tt);                                    // center -> out top
         // the cover's top lines (the eyebrow) sit high on the first screen; nothing is leaving before the visitor scrolls
-        if(sc < 4 && re.closest && re.closest('#c-home')) exit=1;
+        if(sc < 4){ if(re._inHome===undefined) re._inHome=!!(re.closest && re.closest('#c-home')); if(re._inHome) exit=1; }
         var op=enter*exit;
         var ty=(1-enter)*64 - (1-exit)*88;
         var sc=0.965 + 0.035*enter - (1-exit)*0.04;
@@ -546,15 +526,6 @@ class Component extends DCLogic {
         var floatY=(Math.sin(tA*0.9+fi)*-12).toFixed(2); fl._floatY=Number(floatY);
         fl.style.transform='translateY('+floatY+'px)';
       }
-      // suspended-in-water float: cards drift gently in place, each with its own phase
-      if(this.floatCards){ for(var ci=0;ci<this.floatCards.length;ci++){ var fc=this.floatCards[ci];
-        if(!this.isNearViewport(fc,motionMargin,fc._motionBounds,sc,vhR)){ this.setMotionIdle(fc,true); continue; }
-        this.setMotionIdle(fc,false);
-        var yy=Math.sin(tA*0.55+fc._fph)*fc._fpy + Math.sin(tA*0.27+fc._fph*1.3)*1.4;
-        var xx=Math.sin(tA*0.4+fc._fph*0.8)*fc._fpx;
-        var rr=Math.sin(tA*0.33+fc._fph)*0.5;
-        fc.style.transform='translate('+xx.toFixed(2)+'px,'+yy.toFixed(2)+'px) rotate('+rr.toFixed(2)+'deg)';
-      }}
       for(var qi=0;qi<this.eqs.length;qi++){
         var eq=this.eqs[qi];
         if(!this.isNearViewport(eq,motionMargin,eq._motionBounds,sc,vhR)){ this.setMotionIdle(eq,true); continue; }
