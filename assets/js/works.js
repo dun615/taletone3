@@ -326,7 +326,7 @@
       var on = state.tab === tab[0];
       return '<button type="button" role="tab" class="tt-works-tab' + (on ? ' is-on' : '') + '" aria-selected="' + on + '" data-works-action="tab" data-tab="' + tab[0] + '">' + esc(tab[1]) + '</button>';
     }).join('') + '</div>' +
-      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') + '</div>';
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + '</button>' : '') + '</div>';
   }
   function filtersHtml() {
     var labels = L();

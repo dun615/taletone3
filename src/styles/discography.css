@@ -695,14 +695,14 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-case-steps > li[data-kind=strength]::before {content:'+'}
 .tt-case-steps > li[data-kind=question]::before {content:'='}
 .tt-case-steps > li[data-kind=question] {background:#0E6E7D}
-.tt-case-steps > li[data-kind=question] > span {color:rgba(255,255,255,.75)}
+.tt-case-steps > li[data-kind=question] > span {color:rgba(255,255,255,.92)} /* 5.4:1 on #0E6E7D */
 .tt-case-steps > li[data-kind=question] > p {color:#fff}
 /* the answer, across the row */
 .tt-case-steps > li[data-kind=answer] {grid-column:1 / -1;flex-direction:row;align-items:baseline;gap:12px;padding:14px 16px;background:rgba(233,162,59,.14);border:1px solid rgba(233,162,59,.45)}
 .tt-case-steps > li[data-kind=answer] > span {flex:none;color:#b8761a}
 .tt-case-steps > li[data-kind=answer] > p {font-size:var(--fs-m)}
 .tt-case-lesson {margin:16px 0 0;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
-.tt-case-listen {margin-top:14px;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
+.tt-case-listen {margin-top:6px;padding:8px 0;display:inline-block;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
 @media (max-width:900px) {
   .tt-cmp {grid-template-columns:minmax(0,1fr)}
   .tt-case {grid-template-columns:minmax(0,1fr);padding:16px}
@@ -1133,3 +1133,8 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float.is-playing .tt-disc.tt-disc--float {animation:tt-vinyl-glow 2.4s ease-in-out infinite}
 @keyframes tt-vinyl-glow {50% {box-shadow:inset 0 0 0 1px rgb(255 255 255 / .5),inset 0 0 36px rgb(var(--vinyl) / .85),0 0 0 2px #ffd98c,0 0 80px rgb(var(--vinyl) / .9)}}
 @media (prefers-reduced-motion: reduce) {.tt-float.is-playing .tt-disc.tt-disc--float {animation:none}}
+
+/* the contact address is a stand-alone link: give it a 44px-tall hit area at every width, not only on touch
+   screens, without changing how it looks (WCAG 2.5.8) */
+.tt-contact-address a{position:relative}
+.tt-contact-address a::after{content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}

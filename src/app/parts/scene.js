@@ -629,6 +629,6 @@ var ComponentScene = {
     c.font='700 12px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
     c.globalAlpha=0.95; c.fillText(Math.round(metres).toLocaleString('en-US')+'m', railX+20, py-7);
     c.font='600 10px "Quicksand","Nanum Gothic","Noto Sans JP",sans-serif';
-    c.globalAlpha=0.7; c.fillText(this._depthZone(metres)+' · '+Math.round((this.scrollP||0)*100)+'%', railX+20, py+9); c.globalAlpha=1;
+    c.globalAlpha=0.7; c.fillText(this._depthZone(metres), railX+20, py+9); c.globalAlpha=1;
   },
 };

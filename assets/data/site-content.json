@@ -1375,17 +1375,17 @@
     {
       "value": "20+",
       "label": "누적 발매 작업물",
-      "note": "TONALIE 2024 → TALETONE 2026",
+      "note": "2018년부터",
       "translations": {
         "en": {
           "value": "20+",
           "label": "Released works to date",
-          "note": "TONALIE 2024 → TALETONE 2026"
+          "note": "Since 2018"
         },
         "jp": {
           "value": "20+",
           "label": "累計リリース作品",
-          "note": "TONALIE 2024 → TALETONE 2026"
+          "note": "2018年から"
         }
       }
     },

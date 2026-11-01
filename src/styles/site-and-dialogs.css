@@ -920,9 +920,11 @@ body.tt-network-open #content {
   }
 }
 
+/* the ring sits just outside the button, on the switcher's light pill, so it reads on the dark (current)
+   and the light buttons alike: #0E6E7D on #fbffff is 5.4:1 (WCAG 1.4.11 asks 3:1) */
 #lang-switcher.tt-lang-switcher button:focus-visible {
-  outline: 3px solid #F0A634 !important;
-  outline-offset: -3px !important;
+  outline: 3px solid #0E6E7D !important;
+  outline-offset: 2px !important;
 }
 
 /* ===== Final mobile card layering + modal controls ===== */
