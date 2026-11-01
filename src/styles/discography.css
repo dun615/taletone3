@@ -683,7 +683,7 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-case-play {position:absolute;right:14px;bottom:14px;width:52px;height:52px;border-radius:50%;background:rgba(255,253,248,.94);box-shadow:0 8px 20px rgba(8,22,38,.25)}
 .tt-case-play::after {content:'';position:absolute;left:20px;top:16px;border-left:16px solid #0E6E7D;border-top:10px solid transparent;border-bottom:10px solid transparent}
 .tt-case-body {display:flex;flex-direction:column;min-width:0;padding:6px 6px 4px 0}
-.tt-case-eyebrow {margin:0 0 8px;font:700 11.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.22em;color:var(--accent,#0E6E7D)}
+.tt-case-eyebrow {margin:0 0 8px;font:700 13px/1.2 var(--tt-noto-primary),sans-serif;letter-spacing:0;color:var(--accent,#0E6E7D)}
 .tt-case-title {margin:0;font-weight:800;font-size:var(--fs-xl);line-height:1.3;color:var(--ink,#141C30)}
 .tt-case-meta {margin:4px 0 0;font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F)}
 .tt-case-steps {list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 22px}

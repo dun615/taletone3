@@ -1045,7 +1045,8 @@ body.tt-network-open #content {
 }
 
 @media (min-width: 901px) {
-  #c-projects > div[data-reveal]:last-child {
+  /* the old two-up project cards; the case study card is now last in the section and keeps its own grid */
+  #c-projects > div[data-reveal]:last-child:not(.tt-case) {
     width:min(1080px,78vw)!important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap:clamp(18px,2vw,26px)!important;
