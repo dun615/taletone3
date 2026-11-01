@@ -2419,7 +2419,7 @@
       "title": "7th world: Always with you",
       "date": "2022.11.10",
       "type": "게임 '에픽세븐' OST 프로젝트 #5",
-      "description": "릴파 님의 커버 영상이 조회수 500만 회를 넘긴 곡입니다. 에픽세븐 OST 프로젝트를 위해 작곡과 편곡을 맡았습니다.",
+      "description": "",
       "credits": "노래 : 조경이 (이세리아), 여윤미 (메르세데스), 이경태 (라스), 남도형 (빌트레드)\n작곡 : N4ML\n작사 : 유시\n편곡 : N4ML\n베이스 연주 : 권순환\n기타 연주 : PoDoDan\n녹음 : 김광민 (개나리싸운드)\n믹싱 : N4ML\n마스터링 : 이준용 (U-il SoundWorks)\n프로듀싱 : N4ML",
       "image": "assets/works/images/always-with-you-cover-1024.webp",
       "thumb": "assets/works/images/always-with-you-cover-1024-w320.webp",
@@ -2525,13 +2525,13 @@
           "artist": "Epic Seven",
           "title": "7th world: Always with you",
           "type": "Game 'Epic Seven' OST Project #5",
-          "description": "LILPA's cover of this song has passed 5 million views. Composed and arranged for Epic Seven's OST project."
+          "description": ""
         },
         "jp": {
           "artist": "エピックセブン",
           "title": "7th world: Always with you",
           "type": "ゲーム『エピックセブン』OST プロジェクト #5",
-          "description": "リルパさんのカバー動画が再生回数500万回を超えた曲です。『エピックセブン』のOSTプロジェクトのために作曲・編曲を担当しました。"
+          "description": ""
         }
       },
       "roles": [
