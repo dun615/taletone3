@@ -1021,9 +1021,12 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 }
 
 /* the console: a frosted bar. Top: the song in hand (one button that opens its details), the album's tracks and
-   one capsule for play and volume. Below a hairline: the filters as chips and the details button. */
-.tt-console-host {position:fixed;left:50%;bottom:22px;z-index:60;width:min(1040px,calc(100vw - 220px));translate:-50% 24px;opacity:0;pointer-events:none;transition:opacity .45s ease,translate .45s ease}
+   one capsule for play and volume. Below a hairline: field and role filters, stacked, and the details button. */
+.tt-console-host {position:fixed;left:50%;bottom:22px;z-index:60;width:min(var(--console-w,640px),calc(100vw - 220px));translate:-50% 24px;opacity:0;pointer-events:none;transition:opacity .45s ease,translate .45s ease}
 .tt-console-host.is-on {opacity:1;translate:-50% 0;pointer-events:auto}
+/* as narrow as the field filters allow in each language */
+:lang(en) .tt-console-host {--console-w:700px}
+:lang(ja) .tt-console-host {--console-w:800px}
 .tt-console {display:grid;padding:8px 12px 8px 8px;border-radius:24px;background:rgba(4,20,30,.82);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(141,236,252,.14),0 24px 60px -20px rgba(0,6,14,.9);color:#f4f9ff}
 .tt-console-now {display:flex;align-items:center;gap:12px;padding-bottom:8px}
 .tt-console button {appearance:none;border:0;cursor:pointer;font:700 13px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;white-space:nowrap}
@@ -1058,9 +1061,12 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-volume input::-moz-range-progress {height:4px;border-radius:4px;background:#a9e9f4}
 .tt-console-volume input::-webkit-slider-thumb {-webkit-appearance:none;width:12px;height:12px;margin-top:-4px;border-radius:50%;border:0;background:#fbffff;box-shadow:0 1px 4px rgba(0,16,22,.5)}
 .tt-console-volume input::-moz-range-thumb {width:12px;height:12px;border-radius:50%;border:0;background:#fbffff}
-/* filters: each group (field, role) a rounded tray of chips; the chosen chip lit amber */
+/* filters: field, then role under it, each a rounded tray of chips; the chosen chip lit amber; details at the end */
 .tt-console-lamps {display:flex;align-items:center;gap:16px;padding:8px 0 0 6px;border-top:1px solid rgba(232,246,250,.1)}
-.tt-lanterns {flex:1 1 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0}
+.tt-lanterns {flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:0}
+/* role sits under field, indented and a step smaller: a sub-filter */
+.tt-lantern-row + .tt-lantern-row {margin-left:20px}
+.tt-console .tt-lantern-row + .tt-lantern-row .tt-lamp {height:28px;font-size:13px}
 .tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(251,255,255,.05);box-shadow:inset 0 0 0 1px rgba(251,255,255,.06)}
 .tt-lantern-row .tt-filter-caption {margin:0 4px 0 12px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
 .tt-console .tt-lamp {height:30px;padding:0 12px;border-radius:999px;background:none;color:rgba(232,246,250,.78);font-size:14px;transition:background .2s ease,color .2s ease}
