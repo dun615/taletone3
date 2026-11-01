@@ -1040,7 +1040,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-chev {width:7px;height:7px;margin-left:2px;border-top:2px solid currentColor;border-right:2px solid currentColor;rotate:45deg;opacity:.5;transition:opacity .2s ease,translate .2s ease}
 .tt-console-more:hover .tt-console-chev {opacity:1;translate:2px 0}
 /* details: a quiet pill */
-.tt-console-more {flex:none;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px 0 18px;border-radius:999px;background:rgba(251,255,255,.08);color:#f4f9ff;transition:background .2s ease}
+.tt-console-more {flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px 0 18px;border-radius:999px;background:rgba(251,255,255,.08);color:#f4f9ff;transition:background .2s ease}
 .tt-console-more:hover {background:rgba(251,255,255,.16)}
 /* the album's tracks */
 .tt-console-tracks {display:flex;gap:4px}
@@ -1061,14 +1061,15 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-volume input::-moz-range-progress {height:4px;border-radius:4px;background:#a9e9f4}
 .tt-console-volume input::-webkit-slider-thumb {-webkit-appearance:none;width:12px;height:12px;margin-top:-4px;border-radius:50%;border:0;background:#fbffff;box-shadow:0 1px 4px rgba(0,16,22,.5)}
 .tt-console-volume input::-moz-range-thumb {width:12px;height:12px;border-radius:50%;border:0;background:#fbffff}
-/* filters: field, then role under it, each a rounded tray of chips; the chosen chip lit amber; details at the end */
-.tt-console-lamps {display:flex;align-items:center;gap:16px;padding:8px 0 0 6px;border-top:1px solid rgba(232,246,250,.1)}
-.tt-lanterns {flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin:0}
-/* role sits under field, indented and a step smaller: a sub-filter */
-.tt-lantern-row + .tt-lantern-row {margin-left:20px}
-.tt-console .tt-lantern-row + .tt-lantern-row .tt-lamp {height:28px;font-size:13px}
-.tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(251,255,255,.05);box-shadow:inset 0 0 0 1px rgba(251,255,255,.06)}
-.tt-lantern-row .tt-filter-caption {margin:0 4px 0 12px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
+/* filters: one tray. Field on top; role nested under it (indented, hooked by an L-shaped line from the field
+   caption, a step smaller), so it reads as a sub-filter. The chosen chip is lit amber; details at the end. */
+.tt-console-lamps {display:flex;align-items:center;gap:16px;padding:10px 0 0 6px;border-top:1px solid rgba(232,246,250,.1)}
+.tt-lanterns {flex:0 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0;padding:4px 8px 6px 0;border-radius:20px;background:rgba(251,255,255,.05);box-shadow:inset 0 0 0 1px rgba(251,255,255,.06)}
+.tt-lantern-row {position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:2px}
+.tt-lantern-row .tt-filter-caption {margin:0 4px 0 14px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
+.tt-lantern-row + .tt-lantern-row {margin-left:22px}
+.tt-lantern-row + .tt-lantern-row::before {content:'';position:absolute;left:0;top:-12px;width:10px;height:26px;border-left:1.5px solid rgba(232,246,250,.3);border-bottom:1.5px solid rgba(232,246,250,.3);border-bottom-left-radius:6px}
+.tt-console .tt-lantern-row + .tt-lantern-row .tt-lamp {height:26px;padding:0 10px;font-size:13px}
 .tt-console .tt-lamp {height:30px;padding:0 12px;border-radius:999px;background:none;color:rgba(232,246,250,.78);font-size:14px;transition:background .2s ease,color .2s ease}
 .tt-console .tt-lamp:hover {background:rgba(251,255,255,.08);color:#fbffff}
 .tt-console .tt-lamp.is-on, .tt-console .tt-console-track.is-on {background:rgba(255,217,140,.16);color:#ffd98c;box-shadow:inset 0 0 0 1px rgba(255,217,140,.42)}
