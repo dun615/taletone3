@@ -5,6 +5,10 @@ var ComponentRouting = {
     var page = this.lang !== l ? this._seoPageForKey(this._seoPageKeyFromLocation()) : null;
     this.lang=l;
     document.documentElement.lang = l==='kr'?'ko':(l==='jp'?'ja':'en');
+    if(l==='jp' && !document.getElementById('tt-noto-jp')){
+      var jpFont=document.querySelector('meta[name="tt-noto-jp"]');
+      if(jpFont && jpFont.content){ var jpLink=document.createElement('link'); jpLink.id='tt-noto-jp'; jpLink.rel='stylesheet'; jpLink.href=jpFont.content; document.head.appendChild(jpLink); }
+    }
     var els=document.querySelectorAll('[data-en]');
     for(var i=0;i<els.length;i++){
       var el=els[i];

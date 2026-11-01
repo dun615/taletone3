@@ -862,7 +862,7 @@ async function runBridgeSmoke(chrome, origin) {
         assert(!free.phase&&free.top>before.top+20,`bridge/${viewport.key}/revisit/${index}: ordinary scrolling was blocked`);
         passed.push(`bridge/${viewport.key}/revisit/${index}`);
       }
-      await evaluate(client, `window.postMessage({type:'TALETONE_SET_LANG',lang:'jp'},'*')`);
+      await evaluate(client, `document.getElementById('lang-jp').click()`);
       await sleep(400);
       await navigateForInteraction(client, `${origin}/?lang=jp&bridge-reload=1`,1500);
       await evaluate(client, `document.getElementById('content').scrollTo({top:document.querySelector('[data-story-bridge-wrap]').offsetTop,behavior:'instant'})`);

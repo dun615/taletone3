@@ -14,7 +14,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { nanumCharacters } from './font-coverage.mjs';
+import { nanumCharacters, japaneseCharacters } from './font-coverage.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -55,6 +55,9 @@ const fileFor = (lang, pagePath) => `${lang.prefix.slice(1)}${pagePath}index.htm
 // Nanum Gothic via Google Fonts `text=`: one small file per weight holding only the characters the site uses.
 const nanumUrl = (chars) => `https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&amp;display=swap&amp;text=${encodeURIComponent(chars)}`;
 const nanumFontUrl = nanumUrl(await nanumCharacters(root));
+// Noto Sans JP the same way: the whole family (hundreds of KB in ~40 slices on /ja/) becomes one file per weight.
+const notoJpUrl = (chars) => `https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap&amp;text=${encodeURIComponent(chars)}`;
+const notoJpFontUrl = notoJpUrl(await japaneseCharacters(root));
 
 // Cloudflare Web Analytics: set seo-content.json → analytics.cloudflareToken to switch it on.
 const analyticsToken = String(seo.analytics?.cloudflareToken || '').trim();
@@ -260,6 +263,10 @@ function renderPage(page, lang, overrides = {}) {
     SUPPORT_VERSION: version(supportJs),
     ANALYTICS: analyticsTag,
     NANUM_FONT_URL: nanumFontUrl,
+    NOTO_JP_FONT_URL: notoJpFontUrl,
+    // only the Japanese pages load Noto Sans JP up front: a text= subset has no unicode-range, so on other pages
+    // the browser would fetch all of it while Nanum Gothic is still on its way
+    NOTO_JP_LINK: lang.html === 'ja' ? `\n<link id="tt-noto-jp" href="${notoJpFontUrl}" rel="stylesheet">` : '',
     ...overrides,
   };
   return shell.replace(/%%([A-Z_]+)%%/g, (match, key) => {

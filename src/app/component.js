@@ -13,7 +13,6 @@ class Component extends DCLogic {
     this.ensureDataReady();
     this._loadSeo();
     this._applySeoForCurrentPage();
-    this._mountSiteMessages();
     this._mountScene();
     this._mountBridges();
     this._mountPalettes();
@@ -30,24 +29,6 @@ class Component extends DCLogic {
     this.initIntro();
     this._mountVisibility();
     this.raf = requestAnimationFrame(this.loop);
-  }
-  // Content and language messages from this site itself (see S1 in the code review).
-  _mountSiteMessages(){
-    // Content and language messages are accepted only from this site's own origin: a page that frames
-    // taletone.net must not be able to swap its content (e.g. the contact address) inside the frame.
-    this._siteDataListener = (event)=>{
-      if(!event || event.origin !== window.location.origin) return;
-      var message = event.data || {};
-      if(message.type === 'TALETONE_SET_LANG'){
-        this.setLang(message.lang || 'kr');
-        return;
-      }
-      if(message.type !== 'TALETONE_SITE_SET_DATA') return;
-      window.TALETONE_CONTENT = message.data || {};
-      this._applyExternalContent();
-      this.forceUpdate();
-    };
-    window.addEventListener('message', this._siteDataListener);
   }
   // Canvas, sky and the elements the scroll scene animates.
   _mountScene(){
@@ -341,7 +322,6 @@ class Component extends DCLogic {
       window.removeEventListener('touchmove',this._introSkip);
       window.removeEventListener('pointerdown',this._introSkip);
     }
-    window.removeEventListener('message', this._siteDataListener);
     if(this._escapeHandler) window.removeEventListener('keydown',this._escapeHandler);
     if(this._historyHandler) window.removeEventListener('TALETONE_OPEN_HISTORY',this._historyHandler);
     if(this._spawnInkFromEvent){
