@@ -116,14 +116,14 @@
     }
   ],
   "home": {
-    "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+    "eyebrow": "Story-based IP music producer",
     "titleLine1": "TALETONE",
     "titleLine2": "MUSIC",
     "tagline": "우리의 이야기가 음악이 되는 곳",
     "scrollHint": "아래로 내려가 보세요",
     "translations": {
       "en": {
-        "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+        "eyebrow": "Story-based IP music producer",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "Where our story becomes music.",
@@ -131,7 +131,7 @@
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "worksCtaLabel": "Go to Discography",
-        "contactCtaLabel": "Project Inquiry",
+        "contactCtaLabel": "Project inquiry",
         "listen": {
           "slug": "heart-score",
           "label": "Listen",
@@ -140,7 +140,7 @@
         "journeyIntro": "In search of the magical book where every story begins, deeper into the sea."
       },
       "jp": {
-        "eyebrow": "STORY-BASED IP MUSIC PRODUCER",
+        "eyebrow": "Story-based IP music producer",
         "titleLine1": "TALETONE",
         "titleLine2": "MUSIC",
         "tagline": "私たちの物語が、音楽になる場所。",
@@ -316,13 +316,13 @@
           "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
           "case": {
             "slug": "love-dopamine",
-            "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
+            "eyebrow": "실제 제작 사례",
             "title": "해봄 「Love Dopamine」",
             "meta": "HAEBOM · 3rd Single",
             "steps": [
               {
                 "label": "요청",
-                "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+                "text": "“청량하고 예쁜 J‑ROCK을 소화해 보고 싶어요.”",
                 "kind": "request"
               },
               {
@@ -369,7 +369,7 @@
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
-        "audienceGameTitle": "Subculture Games",
+        "audienceGameTitle": "Subculture games",
         "audienceGameService1": "OST · Character themes · Event songs",
         "audienceGameService2": "PV / trailer music · BGM",
         "audienceGameHook": "What emotions remain after the story ends?",
@@ -379,7 +379,7 @@
         "audienceCreatorService2": "Worldbuilding songs · Anniversary singles and albums",
         "audienceCreatorHook": "What song could only this voice sing?",
         "audienceAnimationKicker": "ANIMATION / WEB IP",
-        "audienceAnimationTitle": "Animation · Webtoon · Web Novel IP",
+        "audienceAnimationTitle": "Animation · Webtoon · Web novel IP",
         "audienceAnimationService1": "Opening · Ending · Insert songs · BGM",
         "audienceAnimationService2": "Character songs · Promotional music",
         "audienceAnimationHook": "What sound will keep this scene alive in memory?",
@@ -425,7 +425,7 @@
           "closing": "Following the story’s footsteps, we create music of our own.",
           "case": {
             "slug": "love-dopamine",
-            "eyebrow": "STORY INTO SOUND · A real project",
+            "eyebrow": "A real project",
             "title": "HAEBOM “Love Dopamine”",
             "meta": "HAEBOM · 3rd Single",
             "steps": [
@@ -534,13 +534,13 @@
           "closing": "物語の足跡をたどり、私たちだけの音楽をつくっていきます。",
           "case": {
             "slug": "love-dopamine",
-            "eyebrow": "STORY INTO SOUND · 制作事例",
+            "eyebrow": "制作事例",
             "title": "HAEBOM「Love Dopamine」",
             "meta": "HAEBOM · 3rd Single",
             "steps": [
               {
                 "label": "ご要望",
-                "text": "「爽やかでかわいいJ-ROCKを歌ってみたい」",
+                "text": "「爽やかでかわいいJ‑ROCKを歌ってみたい」",
                 "kind": "request"
               },
               {
@@ -622,13 +622,13 @@
       "closing": "이야기의 발자취를 따라, 우리만의 음악을 만들어갑니다.",
       "case": {
         "slug": "love-dopamine",
-        "eyebrow": "STORY INTO SOUND · 실제 제작 사례",
+        "eyebrow": "실제 제작 사례",
         "title": "해봄 「Love Dopamine」",
         "meta": "HAEBOM · 3rd Single",
         "steps": [
           {
             "label": "요청",
-            "text": "“청량하고 예쁜 J-ROCK을 소화해 보고 싶어요.”",
+            "text": "“청량하고 예쁜 J‑ROCK을 소화해 보고 싶어요.”",
             "kind": "request"
           },
           {
@@ -710,7 +710,7 @@
         "titleAccent": "Our next page together.",
         "subtitle": "From a character’s first song to a scene in a game.",
         "caption": "What mark shall we leave on this page?",
-        "buttonLabel": "Project Inquiry",
+        "buttonLabel": "Project inquiry",
         "copyLabel": "Copy email address",
         "copyDone": "Copied",
         "copyFail": "Copy failed",
@@ -722,7 +722,7 @@
           "Budget range",
           "Reference links"
         ],
-        "mailSubject": "[TALETONE MUSIC] Project Inquiry",
+        "mailSubject": "[TALETONE MUSIC] Project inquiry",
         "mailTemplate": "Hello TALETONE MUSIC, we would like to discuss a project.\n\n1. Project / IP:\n2. Music needed (original song / OST / character song / BGM) and number of tracks:\n3. Preferred timeline / release date:\n4. Budget range:\n5. Reference links:\n\nName / Company:\nContact:",
         "form": {
           "title": "Leave the first clues to our story",
@@ -749,7 +749,8 @@
           "budgetPlaceholder": "Range / to discuss / undecided",
           "schedulePlaceholder": "Release target / undecided"
         },
-        "arrivalLabel": "The magical book, found at last"
+        "arrivalLabel": "The magical book, found at last",
+        "copyShortLabel": "Copy"
       },
       "jp": {
         "eyebrow": "Contact",
@@ -796,7 +797,8 @@
           "budgetPlaceholder": "ご予算の目安・応相談・未定",
           "schedulePlaceholder": "公開予定・未定"
         },
-        "arrivalLabel": "ついに出会った魔法の書"
+        "arrivalLabel": "ついに出会った魔法の書",
+        "copyShortLabel": "コピー"
       }
     },
     "email": "contact@taletone.net",
@@ -839,7 +841,8 @@
       "failNote": "전송에 실패해 메일 앱으로 이어서 보냅니다.",
       "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
       "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
-    }
+    },
+    "copyShortLabel": "복사"
   },
   "membersMeta": {
     "eyebrow": "The Storytellers",
@@ -848,7 +851,7 @@
     "description": "",
     "translations": {
       "en": {
-        "eyebrow": "The Storytellers",
+        "eyebrow": "The storytellers",
         "title": "",
         "subtitle": "TALETONE is a music producer who translates stories into music.",
         "description": "",
@@ -876,11 +879,11 @@
   "bridges": [
     {
       "id": "home-projects",
-      "eyebrow": "CHAPTER 1 · TALE",
+      "eyebrow": "Chapter 1 · Tale",
       "text": "수면 아래로 한 걸음,\n이야기를 찾아가는 여행이 시작됩니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 1 · TALE",
+          "eyebrow": "Chapter 1 · Tale",
           "text": "One step below the surface,\na journey in search of stories begins.",
           "mobileLines": [
             {
@@ -898,7 +901,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 1 · TALE",
+          "eyebrow": "Chapter 1 · Tale",
           "text": "水面の下へ一歩、\n物語を探す旅が始まります。",
           "mobileLines": [
             {
@@ -933,11 +936,11 @@
     },
     {
       "id": "projects-members",
-      "eyebrow": "CHAPTER 2 · TONE",
+      "eyebrow": "Chapter 2 · Tone",
       "text": "우리가 만난 이야기는\n저마다의 빛깔을 띠기 시작합니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 2 · TONE",
+          "eyebrow": "Chapter 2 · Tone",
           "text": "The stories we encounter\nbegin to take on colors of their own.",
           "mobileLines": [
             {
@@ -955,7 +958,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 2 · TONE",
+          "eyebrow": "Chapter 2 · Tone",
           "text": "私たちが出会った物語は\nそれぞれの色を帯びはじめます。",
           "mobileLines": [
             {
@@ -990,11 +993,11 @@
     },
     {
       "id": "members-works",
-      "eyebrow": "CHAPTER 3 · MUSIC",
+      "eyebrow": "Chapter 3 · Music",
       "text": "저마다의 빛깔을 품은 이야기는\n한 곡의 노래가 되어 흘러갑니다.",
       "translations": {
         "en": {
-          "eyebrow": "CHAPTER 3 · MUSIC",
+          "eyebrow": "Chapter 3 · Music",
           "text": "Each story, holding its own color,\nflows onward as a song.",
           "mobileLines": [
             {
@@ -1012,7 +1015,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "CHAPTER 3 · MUSIC",
+          "eyebrow": "Chapter 3 · Music",
           "text": "それぞれの色を宿した物語は\n一曲の歌となって流れていきます。",
           "mobileLines": [
             {
@@ -1047,11 +1050,11 @@
     },
     {
       "id": "news-contact",
-      "eyebrow": "EPILOGUE",
+      "eyebrow": "Epilogue",
       "text": "이제, 우리의 이야기가\n음악이 될 차례입니다.",
       "translations": {
         "en": {
-          "eyebrow": "EPILOGUE",
+          "eyebrow": "Epilogue",
           "text": "Now, it’s time for our story\nto become music.",
           "mobileLines": [
             {
@@ -1069,7 +1072,7 @@
           ]
         },
         "jp": {
-          "eyebrow": "EPILOGUE",
+          "eyebrow": "Epilogue",
           "text": "さあ、私たちの物語が\n音楽になる番です。",
           "mobileLines": [
             {
@@ -1104,24 +1107,24 @@
     }
   ],
   "worksMeta": {
-    "eyebrow": "CHAPTER 3 · MUSIC",
+    "eyebrow": "Chapter 3 · Music",
     "title": "",
     "titleAccent": "DISCOGRAPHY",
     "subtitle": "",
     "description": "",
-    "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+    "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
     "closeLabel": "닫기",
     "yearLabel": "발매일",
     "typeLabel": "형태",
     "releaseLabel": "발매 정보",
     "translations": {
       "en": {
-        "eyebrow": "CHAPTER 3 · MUSIC",
+        "eyebrow": "Chapter 3 · Music",
         "title": "",
         "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
-        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
         "closeLabel": "Close",
         "yearLabel": "Released",
         "typeLabel": "Format",
@@ -1129,12 +1132,12 @@
         "historyLabel": "View full history"
       },
       "jp": {
-        "eyebrow": "CHAPTER 3 · MUSIC",
+        "eyebrow": "Chapter 3 · Music",
         "title": "",
         "titleAccent": "DISCOGRAPHY",
         "subtitle": "",
         "description": "",
-        "collaborationLabel": "<span style=\"color:#74a9d2\">IN COLLABORATION WITH</span>",
+        "collaborationLabel": "<span style=\"color:#74a9d2\">In collaboration with</span>",
         "closeLabel": "閉じる",
         "yearLabel": "リリース日",
         "typeLabel": "形態",
@@ -1147,19 +1150,19 @@
   "partnersMeta": {
     "eyebrow": "EXTENDED NETWORK",
     "title": "Partnership",
-    "openLabel": "열기",
+    "openLabel": "파트너 보기",
     "closeLabel": "닫기",
     "translations": {
       "en": {
         "eyebrow": "EXTENDED NETWORK",
         "title": "Partnership",
-        "openLabel": "Open",
+        "openLabel": "View partners",
         "closeLabel": "Close"
       },
       "jp": {
         "eyebrow": "EXTENDED NETWORK",
         "title": "Partnership",
-        "openLabel": "開く",
+        "openLabel": "パートナーを見る",
         "closeLabel": "閉じる"
       }
     }
@@ -1239,8 +1242,8 @@
         "credit": "Credit",
         "credits": "Credits",
         "profile": "Profile",
-        "selectedCredits": "Selected Credits",
-        "allCredits": "All Credits",
+        "selectedCredits": "Selected credits",
+        "allCredits": "All credits",
         "add": "+ Add",
         "brightness": "Bright",
         "saturation": "Saturation",
@@ -1287,85 +1290,85 @@
   },
   "chapterLabels": {
     "prologue": {
-      "label": "PROLOGUE",
+      "label": "Prologue",
       "note": "수면에서 아래로",
       "copy": "",
       "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
     },
     "tale": {
-      "label": "CHAPTER 1 · TALE",
+      "label": "Chapter 1 · Tale",
       "note": "우리의 여행을 함께할 사람"
     },
     "tone": {
-      "label": "CHAPTER 2 · TONE",
+      "label": "Chapter 2 · Tone",
       "note": "이야기에 빛깔을 입히는 방식"
     },
     "music": {
-      "label": "CHAPTER 3 · MUSIC",
+      "label": "Chapter 3 · Music",
       "note": "깊은 바다에서 태어난 노래들"
     },
     "resurface": {
-      "label": "ECHO",
+      "label": "Echo",
       "note": "세상으로 번지는 울림"
     },
     "epilogue": {
-      "label": "EPILOGUE",
+      "label": "Epilogue",
       "note": "다음 페이지는 함께 써 내려갑니다."
     },
     "translations": {
       "en": {
         "prologue": {
-          "label": "PROLOGUE",
+          "label": "Prologue",
           "note": "From surface to below",
           "copy": "",
           "hint": "Below the surface, an unwritten book is waiting."
         },
         "tale": {
-          "label": "CHAPTER 1 · TALE",
+          "label": "Chapter 1 · Tale",
           "note": "Our companion on this journey"
         },
         "tone": {
-          "label": "CHAPTER 2 · TONE",
+          "label": "Chapter 2 · Tone",
           "note": "How a story gets its color"
         },
         "music": {
-          "label": "CHAPTER 3 · MUSIC",
+          "label": "Chapter 3 · Music",
           "note": "Songs born in the deep"
         },
         "resurface": {
-          "label": "ECHO",
+          "label": "Echo",
           "note": "Echoes reaching the world"
         },
         "epilogue": {
-          "label": "EPILOGUE",
+          "label": "Epilogue",
           "note": "Let's write the next page together."
         }
       },
       "jp": {
         "prologue": {
-          "label": "PROLOGUE",
+          "label": "Prologue",
           "note": "水面からその下へ",
           "copy": "",
           "hint": "水面の下で、まだ書かれていない本が待っています。"
         },
         "tale": {
-          "label": "CHAPTER 1 · TALE",
+          "label": "Chapter 1 · Tale",
           "note": "私たちの旅をともにする人"
         },
         "tone": {
-          "label": "CHAPTER 2 · TONE",
+          "label": "Chapter 2 · Tone",
           "note": "物語に色をのせる方法"
         },
         "music": {
-          "label": "CHAPTER 3 · MUSIC",
+          "label": "Chapter 3 · Music",
           "note": "深い海で生まれた歌"
         },
         "resurface": {
-          "label": "ECHO",
+          "label": "Echo",
           "note": "世界へ広がる響き"
         },
         "epilogue": {
-          "label": "EPILOGUE",
+          "label": "Epilogue",
           "note": "次のページは、一緒に綴っていきます。"
         }
       }
@@ -1375,17 +1378,17 @@
     {
       "value": "20+",
       "label": "누적 발매 작업물",
-      "note": "TONALIE 2024 → TALETONE 2026",
+      "note": "2018년부터",
       "translations": {
         "en": {
           "value": "20+",
           "label": "Released works to date",
-          "note": "TONALIE 2024 → TALETONE 2026"
+          "note": "Since 2018"
         },
         "jp": {
           "value": "20+",
           "label": "累計リリース作品",
-          "note": "TONALIE 2024 → TALETONE 2026"
+          "note": "2018年から"
         }
       }
     },

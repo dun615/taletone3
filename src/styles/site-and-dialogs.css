@@ -504,22 +504,13 @@ body[data-active-chapter] #progress {
     justify-items: stretch;
   }
 
-  #c-projects article.lift > :nth-child(1) {  min-width: 0; }
-  #c-projects article.lift > :nth-child(2) {  min-width: 0; align-self: start; }
-  #c-projects article.lift > :nth-child(3) {  min-width: 0; }
+  
+  
+  
 
-  #c-projects article p {
-    font-size: clamp(13px, 3.4vw, 15px) !important;
-    line-height: 1.45 !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  
 
-  #c-projects article a {
-    line-height: 1.15;
-  }
+  
 
 }
 
@@ -920,9 +911,11 @@ body.tt-network-open #content {
   }
 }
 
+/* the ring sits just outside the button, on the switcher's light pill, so it reads on the dark (current)
+   and the light buttons alike: #0E6E7D on #fbffff is 5.4:1 (WCAG 1.4.11 asks 3:1) */
 #lang-switcher.tt-lang-switcher button:focus-visible {
-  outline: 3px solid #F0A634 !important;
-  outline-offset: -3px !important;
+  outline: 3px solid #0E6E7D !important;
+  outline-offset: 2px !important;
 }
 
 /* ===== Final mobile card layering + modal controls ===== */
@@ -968,122 +961,50 @@ body.tt-network-open #content {
     border-radius: 999px !important;
   }
 
-  #c-projects article.lift {
-    position: relative !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-    isolation: isolate;
-  }
+  
 
-  #c-projects article.lift::after {
-    content: "";
-    position: absolute !important;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      linear-gradient(90deg, rgba(255, 253, 248, .78) 0%, rgba(255, 253, 248, .58) 56%, rgba(255, 253, 248, .14) 100%),
-      radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 48%);
-  }
+  
 
-  #c-projects article.lift > :nth-child(2) {
-    z-index: 0;
-    max-height: none;
-    min-height: 0;
-    border-radius: inherit !important;
-    overflow: hidden !important;
-    transform: none !important;
-  }
+  
 
-  #c-projects article.lift > :nth-child(2) image-slot,
-#c-projects article.lift > :nth-child(2) img {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: none !important;
-    aspect-ratio: auto !important;
-    border-radius: inherit !important;
-    object-fit: cover;
-  }
+  
 
-  #c-projects article.lift > :not(:nth-child(2)) {
-    position: relative;
-    z-index: 2;
-  }
+  
 
-  #c-projects article.lift > :nth-child(1) {
-    align-items: flex-start !important;
-  }
+  
 
-  #c-projects article.lift > :nth-child(1) > :first-child {
-    min-width: 0;
-    max-width: 100%;
-  }
+  
 
-  #c-projects article.lift > :nth-child(1) > :nth-child(2) {
-    position: absolute !important;
-    top: clamp(13px, 3.5vw, 17px);
-    right: clamp(15px, 4vw, 20px);
-    transform: scale(.78);
-    transform-origin: top right;
-  }
+  
 
-  #c-projects article.lift p {
-    -webkit-line-clamp: unset !important;
-    -webkit-box-orient: initial !important;
-    text-overflow: clip;
-    max-height: none;
-  }
+  
 
-  #c-projects article.lift a {
-    min-height: 44px !important;
-    padding: 10px 18px !important;
-    font-size: clamp(12.5px, 3.2vw, 14px) !important;
-  }
+  
 
 }
 
 @media (min-width: 901px) {
-  #c-projects > div[data-reveal]:last-child {
+  /* the old two-up project cards; the case study card is now last in the section and keeps its own grid */
+  #c-projects > div[data-reveal]:last-child:not(.tt-case) {
     width:min(1080px,78vw)!important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap:clamp(18px,2vw,26px)!important;
   }
 
-  #c-projects article.lift {
-    display: grid !important;
-    grid-template-columns: minmax(150px, .9fr) minmax(0, 1.1fr);
-    grid-template-areas: "media head" "media copy" "media button";
-    column-gap: 22px !important;
-    row-gap: 12px !important;
-    padding: 22px !important;
-    align-items: start;
-  }
+  
 
-  #c-projects article.lift > :nth-child(1) { grid-area: head; min-width: 0; }
-  #c-projects article.lift > :nth-child(2) { grid-area: media; transform: none !important; }
-  #c-projects article.lift > :nth-child(3) { grid-area: copy; min-width: 0; }
-  #c-projects article.lift > :nth-child(4) { grid-area: button; align-self: end !important; }
-  #c-projects article.lift > :nth-child(1) > :last-child { display: none !important; }
-  #c-projects article.lift > :nth-child(1) > :first-child {
-    font-size: 10px;
-    letter-spacing: .14em;
-    white-space: nowrap;
-  }
+  
+  
+  
+  
+  
+  
 
-  #c-projects article.lift image-slot {
-    height: auto !important;
-    aspect-ratio: 1 / 1;
-  }
+  
 
-  #c-projects article.lift p {
-    font-size: 13px !important;
-    line-height: 1.5 !important;
-  }
+  
 
-  #c-projects article.lift a {
-    padding: 11px 18px !important;
-    font-size: 13px !important;
-  }
+  
 }
 
 /* Visual QA: keep mobile section headers clear of the fixed logo/language UI
@@ -1645,7 +1566,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
 .tt-shelf-eq i:nth-child(2) {animation-delay:-.3s}.tt-shelf-eq i:nth-child(3) {animation-delay:-.6s}
 @keyframes ttShelfEq{0%,100%{height:4px}50%{height:14px}}
 
-.tt-shelf-format {margin:0 0 7px;font:700 12px/1.2 'Quicksand',sans-serif;letter-spacing:.14em;text-transform:uppercase;}
+.tt-shelf-format {margin:0 0 7px;font:700 12px/1.2 var(--tt-noto-primary),sans-serif;letter-spacing:.02em;}
 
 /* MIX & ENGINEERING: a scrolling row of small video cards */
 .tt-mix {margin:clamp(56px,9vh,96px) auto 0;max-width:1180px}
@@ -1674,7 +1595,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
 }
 
 .tt-shelf-clients {margin:clamp(64px,10vh,104px) auto 0;text-align:center}
-.tt-shelf-clients-label {display:block;margin-bottom:22px;font:800 12px/1 'Quicksand',sans-serif;letter-spacing:.26em;}
+.tt-shelf-clients-label {display:block;margin-bottom:22px;font:700 13px/1 var(--tt-noto-primary),sans-serif;letter-spacing:.04em;}
 .tt-shelf-clients-row {display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(22px,4vw,54px)}
 .tt-shelf-clients-row img {height:clamp(20px,2.2vw,28px);width:auto;opacity:.72;filter:brightness(0) invert(1)}
 
@@ -1782,3 +1703,156 @@ body.tt-network-open #tt-mobile-chapter-menu {
   .tt-shelf-yt-play span::before {border-left-width:19px;border-top-width:12px;border-bottom-width:12px;margin-left:5px}
   .tt-shelf-modal-close {top:12px;right:12px;width:40px;height:40px}
 }
+
+/* ===== Text weights =====
+   Nanum Gothic ships only 400, 700 and 800, so every supporting sentence set to 500-700 rendered as Bold and
+   nothing on a screen stood out. Titles, buttons, navigation and labels keep their weight; the sentences that
+   explain them read in Regular. (Some of these carry inline weights in the template, hence !important.) */
+.tt-journey-invitation,
+.tt-section-note,
+.tt-audience-hook,
+.tt-audience-services li,
+.tt-cmp-result,
+.tt-case-meta,
+.tt-case-lesson,
+.tt-case-steps > li > p,
+.tt-mix-note,
+.tt-arrival-copy > p,
+p.tt-s-color-var-ink-f97e rt,
+footer span {
+  font-weight: 400 !important;
+}
+
+/* ===== Buttons =====
+   One primary (brand fill), one secondary (card fill, hairline border), then plain text links. The home
+   actions, the contact actions and the inquiry submit used three heights (44/48/57px), two font sizes and two
+   primary colours (brand teal and ink); they now share one size. The colours come from the theme variables, so
+   they still follow the light surface and the deep water. */
+html body #content#content :is(.tt-home-quick-actions a, #email-link, .tt-inquiry-submit) {
+  min-height: 48px !important;
+  padding: 0 26px !important;
+  border-radius: 999px !important;
+  font-size: var(--fs-m) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+html body #content#content .tt-home-quick-actions .is-secondary {
+  background: var(--card, rgba(255, 255, 255, .54)) !important;
+  color: var(--ink, #141C30) !important;
+  border: 1px solid var(--cardBorder, rgba(24, 32, 52, .12)) !important;
+}
+
+@media (max-width: 760px) {
+  html body #content#content :is(.tt-home-quick-actions a, #email-link, .tt-inquiry-submit) {
+    padding: 0 20px !important;
+  }
+}
+
+/* The address and its copy button are one unit: the address opens the mail app, the button copies it. */
+html body #content#content .tt-contact-address {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+html body #content#content .tt-contact-copy {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--cardBorder, rgba(24, 32, 52, .12));
+  background: var(--card, rgba(255, 255, 255, .54));
+  color: var(--ink, #141C30);
+  font: 700 var(--fs-s)/1 var(--tt-noto-primary), sans-serif;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+html body #content#content .tt-contact-copy:focus-visible {
+  outline: 2px solid var(--accent, #0E6E7D);
+  outline-offset: 2px;
+}
+@media (max-width: 760px) {
+  html body #content#content .tt-contact-address { justify-content: center; }
+}
+
+/* About + Approach: one treatment per role (labels, card titles, body); Quicksand only on chapter titles */
+html body #content#content :is(#c-members, #c-projects) .tt-chapter-sub { color: var(--ink, #141C30) !important; }
+html body #content#content .tt-about-aka { margin: 6px 0 0; font-weight: 400; font-size: var(--fs-s); color: var(--soft, #44505F); }
+
+html body #content#content :is(.tt-about-label, .tt-process .tt-cmp-label, .tt-case-eyebrow, .tt-case-steps > li > span) {
+  font-family: var(--tt-noto-primary), sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--accent, #0E6E7D) !important;
+}
+
+html body #content#content :is(.tt-audience-title, .tt-process .tt-cmp-flow li b, .tt-case-title) {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -.01em !important;
+  color: var(--ink, #141C30) !important;
+}
+
+html body #content#content :is(.tt-audience-hook, .tt-process .tt-cmp-result, .tt-case-steps > li > p, .tt-case-lesson) {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+}
+
+html body #content#content .tt-audience-title { margin: 0 0 8px !important; }
+html body #content#content .tt-audience-hook { margin: 0 0 14px !important; padding: 0 !important; border: 0 !important; color: var(--ink, #141C30) !important; }
+html body #content#content .tt-audience-hook::before { content: none !important; }
+html body #content#content .tt-audience-services { display: block !important; margin: 0 !important; padding: 12px 0 0 !important; border-top: 1px solid color-mix(in srgb, var(--ink, #141C30) 12%, transparent); }
+html body #content#content .tt-audience-services li { display: inline !important; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; font-size: 14px !important; font-weight: 400 !important; color: var(--soft, #44505F) !important; }
+html body #content#content .tt-audience-services li:not(:last-child)::after { content: ', '; }
+
+html body #content#content .tt-network-title { font-family: var(--tt-noto-primary), sans-serif !important; font-weight: 800 !important; }
+html body #content#content .tt-network-cta { flex: none; font-size: var(--fs-s); font-weight: 700; color: var(--accent, #0E6E7D); white-space: nowrap; }
+
+/* Centred where a block stands alone on the page's centre line: the About label and columns, the Approach process
+   cards, and on phones the head of the case card. Paragraph-length text inside tiles and forms stays left. */
+html body #content#content .tt-about-label { align-self: center; text-align: center; }
+html body #content#content .tt-audience { text-align: center !important; align-items: center; }
+html body #content#content .tt-audience-services { align-self: stretch; }
+@media (max-width: 900px) {
+  html body #content#content .tt-case-art { margin: 0 auto; }
+  html body #content#content :is(.tt-case-eyebrow, .tt-case-title, .tt-case-meta) { text-align: center; }
+}
+
+/* case card: one tile style, only the answer highlighted; no + / = when stacked */
+html body #content#content .tt-case-steps > li[data-kind=question] { background: rgba(14, 110, 125, .07) !important; }
+html body #content#content .tt-case-steps > li[data-kind=question] > p { color: var(--ink, #141C30) !important; }
+html body #content#content .tt-case-steps > li[data-kind=answer] > span { color: #9a5f10 !important; }
+html body #content#content .tt-case-steps > li[data-kind=strength]::before,
+html body #content#content .tt-case-steps > li[data-kind=question]::before { font-size: 20px !important; font-weight: 700 !important; color: var(--accent, #0E6E7D) !important; }
+@media (max-width: 560px) {
+  html body #content#content .tt-case-steps { gap: 10px !important; }
+  html body #content#content .tt-case-steps > li[data-kind=strength]::before,
+  html body #content#content .tt-case-steps > li[data-kind=question]::before { content: none !important; }
+}
+
+/* Case card: the cover is one face of the card, edge to edge, so no uneven margin is left around it. Wide
+   screens: the left column, as tall as the text. Phones: a banner across the top. */
+html body #content#content .tt-case { padding: 0 !important; grid-template-columns: minmax(0, 340px) minmax(0, 1fr) !important; align-items: stretch !important; overflow: hidden; }
+html body #content#content .tt-case-art { aspect-ratio: auto !important; height: 100%; min-height: 340px; border-radius: 0 !important; }
+html body #content#content .tt-case-body { padding: 30px 34px 30px 0 !important; justify-content: center; }
+@media (max-width: 900px) {
+  html body #content#content .tt-case { grid-template-columns: minmax(0, 1fr) !important; }
+  html body #content#content .tt-case-art { width: 100% !important; max-width: none !important; min-height: 0; aspect-ratio: 4 / 3 !important; margin: 0 !important; }
+  html body #content#content .tt-case-art > img { object-position: 50% 22%; }
+  html body #content#content .tt-case-body { padding: 22px 20px 24px !important; }
+}
+
+/* tagline under the title; one-colour contact title; Parable's thin wordmark sized up; player row after a pick */
+html body #content#content .tt-home-tagline { font-weight: 700 !important; }
+html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
+.tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(26px, 2.6vw, 34px); }
+.tt-shelf:not(.is-engaged) .tt-console-now { display: none; }
+.tt-shelf:not(.is-engaged) .tt-console-lamps { padding-top: 0; border-top: 0; }

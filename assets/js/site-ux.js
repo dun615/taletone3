@@ -504,7 +504,13 @@
     new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['data-active-chapter'] });
     new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
     dock.querySelector('.tt-dock-home').addEventListener('click', function () { goChapter('nav-0'); });
-    dock.querySelector('.tt-dock-cta').addEventListener('click', function () { goChapter('nav-6'); });
+    // "Contact" in the dock means the same as the contact chapter's main button: in that chapter it goes straight
+    // to the inquiry form instead of jumping back to the chapter's top
+    dock.querySelector('.tt-dock-cta').addEventListener('click', function () {
+      var inChapter = document.body && document.body.getAttribute('data-active-chapter') === 'contact';
+      var toForm = document.getElementById('email-link');
+      if (inChapter && toForm) toForm.click(); else goChapter('nav-6');
+    });
     dock.querySelector('.tt-dock-chapter').addEventListener('click', function (event) {
       event.stopPropagation();
       if (window.TALETONE_SITE_UX && window.TALETONE_SITE_UX.toggleChapterMenu) window.TALETONE_SITE_UX.toggleChapterMenu();

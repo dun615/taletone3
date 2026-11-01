@@ -326,7 +326,7 @@
       var on = state.tab === tab[0];
       return '<button type="button" role="tab" class="tt-works-tab' + (on ? ' is-on' : '') + '" aria-selected="' + on + '" data-works-action="tab" data-tab="' + tab[0] + '">' + esc(tab[1]) + '</button>';
     }).join('') + '</div>' +
-      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + ' <span aria-hidden="true">&#8594;</span></button>' : '') + '</div>';
+      (meta.historyLabel ? '<button type="button" class="tt-shelf-history" data-works-action="history">' + esc(meta.historyLabel) + '</button>' : '') + '</div>';
   }
   function filtersHtml() {
     var labels = L();
@@ -893,7 +893,6 @@
             (isTrack ? '<span class="tt-float-no" aria-hidden="true">' + (node.track < 9 ? '0' : '') + (node.track + 1) + '</span>' : '') +
             '<span class="tt-float-label"><b>' + esc(title) + '</b>' + (isTrack ? '' : '<span>' + esc(artist) + '</span>') + '</span>' +
           '</button>' +
-          (i === 0 && !state.engaged ? '<span class="tt-float-hint" aria-hidden="true">' + esc(labels.hint) + '</span>' : '') +
         '</li>';
       }).join('') + '</ul></div>';
   }
@@ -1439,7 +1438,6 @@
     if (deckHost && rebuild) deckHost.innerHTML = deckHtml();
     var consoleHost = root.querySelector('.tt-console-host');
     if (consoleHost) { consoleHost.innerHTML = consoleHtml(); tintVinyls(); }
-    if (state.engaged) root.querySelectorAll('.tt-float-hint').forEach(function (hint) { hint.remove(); });
     updateMini();
     var deck = root.querySelector('.tt-deck');
     if (deck) {

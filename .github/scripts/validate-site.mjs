@@ -456,7 +456,7 @@ for (const [key, minimum] of Object.entries({ members: 1, partners: 1, bridges: 
   assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
 }
 const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
-assert(firstBridge?.eyebrow === 'CHAPTER 1 · TALE' && firstBridge?.translations?.jp?.text === '水面の下へ一歩、\n物語を探す旅が始まります。', 'chapter 1 bridge copy or Japanese line break changed');
+assert(firstBridge?.eyebrow === 'Chapter 1 · Tale' && firstBridge?.translations?.jp?.text === '水面の下へ一歩、\n物語を探す旅が始まります。', 'chapter 1 bridge copy or Japanese line break changed');
 for (const [index, item] of (siteJson.trackRecord || []).entries()) {
   assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
   for (const language of ['en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);

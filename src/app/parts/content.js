@@ -279,12 +279,8 @@ var ComponentContent = {
     var em=document.getElementById('email-link');
     if(!em) return;
     var contact = this.CONTACT || {};
-    var link = contact.link || ('mailto:' + ['contact','taletone.net'].join(String.fromCharCode(64)));
-    // Prefill the inquiry template in the visitor's language.
-    if(contact.email && contact.mailSubject){
-      link = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(contact.mailSubject) + (contact.mailTemplate ? '&body=' + encodeURIComponent(contact.mailTemplate) : '');
-    }
-    em.href = link;
+    // the main contact button leads to the inquiry form; the address below it opens the mail app
+    em.href = '#inquiry';
     var label = contact.buttonLabel || 'Start a Project';
     var emLabel = em.querySelector('[data-email-label]');
     if(emLabel) emLabel.textContent = label;
@@ -296,6 +292,31 @@ var ComponentContent = {
       if(window.TALETONE_WORKS_API && window.TALETONE_WORKS_API.pauseAll){ window.TALETONE_WORKS_API.pauseAll(); return; }
       document.querySelectorAll('#c-works audio,audio[data-works-audio]').forEach(function(a){ a.pause(); });
     }catch(_e){}
+  },
+
+  // The main contact button: bring the inquiry form into view and put the cursor in its first field.
+  goToInquiry(e){
+    var form = document.getElementById('inquiry');
+    if(!form) return;
+    if(e && e.preventDefault) e.preventDefault();
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var sc = this.scroller;
+    // on wide screens the page scrolls inside its own container, not the window
+    if(sc && sc.scrollHeight > sc.clientHeight + 1){
+      // a scroll re-opens the story bridges above and the page grows, pushing the form down; keep them settled
+      // (as chapter navigation does) and correct the landing once the layout has caught up
+      if(this.bypassBridges) this.bypassBridges('c-contact');
+      var formTop = ()=>Math.max(0, form.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 24);
+      sc.scrollTo({ top: formTop(), behavior: still ? 'auto' : 'smooth' });
+      var correct = ()=>{ var r = form.getBoundingClientRect().top - sc.getBoundingClientRect().top; if(r > 120 || r < -40) sc.scrollTo({ top: formTop(), behavior: 'auto' }); };
+      clearTimeout(this._inquiryCorrect1); clearTimeout(this._inquiryCorrect2);
+      this._inquiryCorrect1 = setTimeout(correct, 700);
+      this._inquiryCorrect2 = setTimeout(correct, 1400);
+    }else{
+      form.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+    }
+    var first = form.querySelector('input,textarea');
+    if(first) setTimeout(function(){ try{ first.focus({ preventScroll: true }); }catch(_e){ first.focus(); } }, still ? 0 : 600);
   },
 
   // The inquiry form. Until a form service is connected it writes the answers into a mail to the contact address.

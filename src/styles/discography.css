@@ -283,20 +283,6 @@ html body .tt-bridge-pin-stage [data-bridge-line]+div:not([data-bridge]) {
   html body .tt-contact-address a::after {content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}
 }
 
-/* Phones: the featured songs show their artwork on top instead of a faded backdrop under
-   the text (REVIEW-mobile M12, M17) */
-@media (max-width:760px){
-  html body #c-projects article.lift {min-height:0;background:rgba(255,253,248,.94)!important}
-  html body #c-projects article.lift::after {display:none}
-  html body #c-projects article.lift > :nth-child(2) {position:relative;inset:auto;
-    pointer-events:auto}
-  html body #c-projects article.lift > :nth-child(2) image-slot,
-  html body #c-projects article.lift > :nth-child(2) img {opacity:1;filter:none!important;object-position:50% 22%}
-  html body #c-projects article.lift > :not(:nth-child(2)) {max-width:none!important;}
-  html body #c-projects article.lift > :nth-child(1) > :nth-child(2) {display:none!important}
-
-}
-
 /* Landscape phones (REVIEW-mobile M18): the Works popup keeps its two panes so the facts are not pushed below a screen-high video */
 @media (orientation:landscape) and (max-height:500px){
   html body .tt-shelf-modal-panel {display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(260px,1fr);height:auto;max-height:calc(100vh - 32px);overflow:hidden}
@@ -326,10 +312,10 @@ html body .tt-home-latest {display:flex;align-items:center;gap:12px;width:min(32
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 html body .tt-home-latest img {width:56px;height:56px;flex:none;border-radius:12px;object-fit:cover}
 html body .tt-home-latest-copy {flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-html body .tt-home-latest small {font:800 12px/1.2 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#0e6e7d}
-html body .tt-home-latest b {font:700 16px/1.25 'Quicksand',var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-html body .tt-home-latest em {font:600 13px/1.25 var(--tt-noto-primary),sans-serif;font-style:normal;color:#44505f;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;text-wrap:balance} /* a full album name (e.g. HoYoFair Album "…") gets up to three lines */
-html body .tt-home-latest-play {flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#0e6e7d;color:#fff}
+html body .tt-home-latest small {font:700 12px/1.2 var(--tt-noto-primary),sans-serif;color:#0e6e7d}
+html body .tt-home-latest b {font:800 16px/1.25 var(--tt-noto-primary),sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .tt-home-latest em {font:400 13px/1.25 var(--tt-noto-primary),sans-serif;font-style:normal;color:#44505f;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;text-wrap:balance} /* a full album name (e.g. HoYoFair Album "…") gets up to three lines */
+html body .tt-home-latest-play {flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #0e6e7d;color:#0e6e7d}
 html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:12px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
 /* Home and Track Record on phones (REVIEW-mobile phase 2, M10/M11): no ghost "TALE TONE" behind the title, and the two numbers on one row */
 @media (max-width:760px){
@@ -436,15 +422,13 @@ html body .tt-home-latest-play::before {content:'';margin-left:3px;border-left:1
 /* Phones: the two featured songs as compact cards (artwork beside the text, the button across the bottom) — they
    were taller than a screen half */
 @media (max-width:760px){
-  #content#content #c-projects article.lift {display:grid!important;grid-template-columns:104px minmax(0,1fr);grid-template-areas:"media head" "media copy" "button button";
-    column-gap:14px!important;row-gap:4px!important;align-items:start;padding:14px!important;border-radius:20px!important}
-  #content#content #c-projects article.lift > :nth-child(1) {grid-area:head;margin:0!important;}
-  #content#content #c-projects article.lift > :nth-child(1) > :first-child > :first-child {margin-bottom:4px!important;font-size:12px!important}
+  
+  
+  
 
-  #content#content #c-projects article.lift > :nth-child(2) {grid-area:media;order:0;width:104px;height:104px;aspect-ratio:1;margin:0!important;border-radius:14px!important}
-  #content#content #c-projects article.lift > :nth-child(3) {grid-area:copy;margin:2px 0 0!important;font-size:13.5px!important;line-height:1.5!important;
-    display:-webkit-box!important;overflow:hidden!important}
-  #content#content #c-projects article.lift > :nth-child(4) {grid-area:button;justify-self:stretch;justify-content:center;margin:12px 0 0!important}
+  
+  
+  
 
   /* an older rule kept a 220px minimum under the text (about 95px of empty card): the card now ends with its text */
 }
@@ -625,7 +609,7 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-inquiry-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
 .tt-inquiry-grid > .is-wide {grid-column:1 / -1}
 .tt-inquiry-grid > label, .tt-inquiry-grid > fieldset {display:flex;flex-direction:column;gap:6px;min-width:0;margin:0;padding:0;border:0}
-.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {padding:0;font-weight:800;letter-spacing:.02em;color:var(--soft,#44505F)}
+.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {padding:0;font-weight:700;letter-spacing:0;color:var(--soft,#44505F)}
 .tt-inquiry input[type=text], .tt-inquiry input[type=email], .tt-inquiry textarea {box-sizing:border-box;width:100%;padding:11px 13px;border-radius:12px;border:1px solid rgba(20,28,48,.16);background:rgba(255,255,255,.86);color:#141c30;font:500 15px/1.4 var(--tt-noto-primary),sans-serif;outline:none}
 .tt-inquiry input:focus, .tt-inquiry textarea:focus {border-color:#0E6E7D;box-shadow:0 0 0 3px rgba(14,110,125,.18)}
 .tt-inquiry textarea {resize:vertical;min-height:80px}
@@ -636,7 +620,7 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-inquiry-chip > input:checked + span {background:#0E6E7D;border-color:#0E6E7D;color:#fff}
 .tt-inquiry-chip > input:focus-visible + span {box-shadow:0 0 0 3px rgba(14,110,125,.3)}
 .tt-inquiry-submit {margin-top:18px;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border:0;border-radius:999px;background:var(--ink,#141C30);color:var(--paper,#fffdf8);font-weight:800;font-size:var(--fs-m);cursor:pointer;box-shadow:0 8px 22px rgba(8,22,38,.16)}
-.tt-inquiry-note {margin:10px 0 0;font-weight:600;color:var(--soft,#44505F)}
+.tt-inquiry-note {margin:10px 0 0;font-weight:400;color:var(--soft,#44505F)}
 .tt-contact-channels {margin:18px auto 0;max-width:640px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 14px;font-weight:700;font-size:var(--fs-s);color:var(--soft,#44505F)}
 .tt-contact-channels a {color:inherit;text-decoration:underline;text-underline-offset:3px}
 .tt-contact-channels em {font-style:normal}
@@ -654,13 +638,10 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
    then one real case laid out as request + strength = our question -> answer, with its record to play */
 .tt-cmp {width:min(1000px,92vw);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
 .tt-cmp-card {position:relative;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px 26px 22px;border-radius:22px;text-align:center}
-.tt-cmp-card[data-ours=false] {background:rgba(255,255,255,.16);border:1.5px dashed rgba(20,28,48,.2)}
 .tt-cmp-card[data-ours=true] {background:var(--card,rgba(255,255,255,.7));border:1.5px solid rgba(14,110,125,.45);box-shadow:0 18px 44px rgba(8,22,38,.12)}
 .tt-cmp-head {display:flex;align-items:center;justify-content:center;gap:10px}
 .tt-cmp-label {font-weight:800;font-size:var(--fs-m);letter-spacing:.02em}
-.tt-cmp-card[data-ours=false] .tt-cmp-label {color:rgba(68,80,95,.7)}
 .tt-cmp-card[data-ours=true] .tt-cmp-label {color:var(--accent,#0E6E7D)}
-.tt-cmp-badge {position:absolute;top:20px;right:20px;padding:5px 10px;border-radius:999px;background:#141C30;color:#fff;font:700 10.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.16em}
 .tt-cmp-flow {list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:baseline}
 .tt-cmp-flow > li {position:relative;display:flex;flex-direction:column;align-items:center;font-size:clamp(24px,2.7vw,38px)}
 .tt-cmp-flow > li + li {margin-left:1.35em}
@@ -668,22 +649,17 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-cmp-flow > li + li::before {width:.56em;height:2px;margin-top:-1px;background:currentColor;opacity:.5}
 .tt-cmp-flow > li + li::after {width:.2em;height:.2em;margin-top:-.1em;box-sizing:border-box;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);opacity:.5}
 .tt-cmp-flow b {font-weight:800;font-size:1em;line-height:1.25;letter-spacing:-.01em;white-space:nowrap}
-.tt-cmp-flow small {margin-top:5px;font:700 11px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.2em;color:var(--accent,#0E6E7D)}
-.tt-cmp-card[data-ours=false] .tt-cmp-flow > li {color:rgba(68,80,95,.5)}
-.tt-cmp-card[data-ours=false] .tt-cmp-flow b {font-weight:700}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li {color:var(--ink,#141C30)}
 .tt-cmp-card[data-ours=true] .tt-cmp-flow > li:last-child b {color:#E9A23B}
 .tt-cmp-result {align-self:stretch;margin:auto 0 0;padding-top:14px;border-top:1px solid rgba(20,28,48,.1);font-weight:600;font-size:var(--fs-m);line-height:1.6}
-.tt-cmp-card[data-ours=false] .tt-cmp-result {color:rgba(68,80,95,.75)}
 .tt-cmp-card[data-ours=true] .tt-cmp-result {color:var(--ink,#141C30);font-weight:700}
-.tt-cmp-closing {margin:26px 0 0;font-weight:600;font-size:var(--fs-m);color:var(--soft,#44505F);text-align:center}
 .tt-case {box-sizing:border-box;width:min(1000px,92vw);margin-top:44px;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,3vw,36px);align-items:start;padding:22px;border-radius:26px;background:var(--card,rgba(255,255,255,.7));border:1px solid var(--cardBorder,rgba(24,32,52,.08));box-shadow:0 20px 50px rgba(8,22,38,.12);text-align:left}
 .tt-case-art {position:relative;display:block;aspect-ratio:1;border-radius:18px;overflow:hidden;background:rgba(14,110,125,.12)}
 .tt-case-art > img {display:block;width:100%;height:100%;object-fit:cover}
-.tt-case-play {position:absolute;right:14px;bottom:14px;width:52px;height:52px;border-radius:50%;background:rgba(255,253,248,.94);box-shadow:0 8px 20px rgba(8,22,38,.25)}
-.tt-case-play::after {content:'';position:absolute;left:20px;top:16px;border-left:16px solid #0E6E7D;border-top:10px solid transparent;border-bottom:10px solid transparent}
+.tt-case-play {position:absolute;right:14px;bottom:14px;display:flex;align-items:center;height:44px;padding:0 18px 0 42px;border-radius:999px;background:rgba(255,253,248,.94);box-shadow:0 8px 20px rgba(8,22,38,.25);font-weight:700;font-size:var(--fs-s);line-height:1;color:#0E6E7D;white-space:nowrap}
+.tt-case-play::after {content:'';position:absolute;left:18px;top:50%;transform:translateY(-50%);border-left:13px solid #0E6E7D;border-top:8px solid transparent;border-bottom:8px solid transparent}
 .tt-case-body {display:flex;flex-direction:column;min-width:0;padding:6px 6px 4px 0}
-.tt-case-eyebrow {margin:0 0 8px;font:700 11.5px/1 'Quicksand',var(--tt-noto-primary),sans-serif;letter-spacing:.22em;color:var(--accent,#0E6E7D)}
+.tt-case-eyebrow {margin:0 0 8px;font:700 13px/1.2 var(--tt-noto-primary),sans-serif;letter-spacing:0;color:var(--accent,#0E6E7D)}
 .tt-case-title {margin:0;font-weight:800;font-size:var(--fs-xl);line-height:1.3;color:var(--ink,#141C30)}
 .tt-case-meta {margin:4px 0 0;font-weight:600;font-size:var(--fs-s);color:var(--soft,#44505F)}
 .tt-case-steps {list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 22px}
@@ -695,14 +671,13 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
 .tt-case-steps > li[data-kind=strength]::before {content:'+'}
 .tt-case-steps > li[data-kind=question]::before {content:'='}
 .tt-case-steps > li[data-kind=question] {background:#0E6E7D}
-.tt-case-steps > li[data-kind=question] > span {color:rgba(255,255,255,.75)}
+.tt-case-steps > li[data-kind=question] > span {color:rgba(255,255,255,.92)} /* 5.4:1 on #0E6E7D */
 .tt-case-steps > li[data-kind=question] > p {color:#fff}
 /* the answer, across the row */
 .tt-case-steps > li[data-kind=answer] {grid-column:1 / -1;flex-direction:row;align-items:baseline;gap:12px;padding:14px 16px;background:rgba(233,162,59,.14);border:1px solid rgba(233,162,59,.45)}
 .tt-case-steps > li[data-kind=answer] > span {flex:none;color:#b8761a}
 .tt-case-steps > li[data-kind=answer] > p {font-size:var(--fs-m)}
 .tt-case-lesson {margin:16px 0 0;font-weight:600;font-size:var(--fs-m);line-height:1.65;color:var(--soft,#44505F)}
-.tt-case-listen {margin-top:14px;width:fit-content;font-weight:800;font-size:var(--fs-s);color:var(--accent,#0E6E7D);text-decoration:underline;text-underline-offset:4px}
 @media (max-width:900px) {
   .tt-cmp {grid-template-columns:minmax(0,1fr)}
   .tt-case {grid-template-columns:minmax(0,1fr);padding:16px}
@@ -905,15 +880,15 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* Readable floor: nothing meant to be read below 13px */
 #chapnav .nav-label, #lang-switcher button {font-size:13px!important}
 #chapnav .nav-label {letter-spacing:.12em!important}
-#content .tt-section-chapter, #content .tt-bridge-label {font-size:13px;letter-spacing:.18em}
-#c-home > .tt-s-color-var-accent-9aa3[data-reveal]:first-of-type {font-size:15px!important;letter-spacing:.16em!important}
-.tt-audience-kicker, .tt-network-directory small, .tt-home-latest small, .tt-cmp-badge, .tt-cmp-flow small, .tt-case-eyebrow,
+#content .tt-section-chapter, #content .tt-bridge-label {font-size:13px;letter-spacing:.04em}
+#c-home > .tt-s-color-var-accent-9aa3[data-reveal]:first-of-type {font-size:15px!important;letter-spacing:.04em!important}
+.tt-network-directory small, .tt-home-latest small, .tt-case-eyebrow,
 .tt-case-steps > li > span, .tt-shelf-format, .tt-mix-label, .tt-mix-audio-tag, .tt-shelf-clients-label, .tt-shelf-modal-label, .tt-shelf-covers-title {font-size:13px!important}
 .tt-rack-artist {font-size:13px}
 #tt-bridge-progress span {font-size:13px}
 /* the inquiry form at the bottom of the sea: fields one tone up from the card instead of pale slabs */
-.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:15px}
-.tt-inquiry-note {font-size:13.5px}
+.tt-inquiry-grid > label > span, .tt-inquiry-grid legend {font-size:14px}
+.tt-inquiry-note {font-size:13px}
 #c-contact .tt-inquiry input[type=text], #c-contact .tt-inquiry input[type=email], #c-contact .tt-inquiry textarea {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#f4fbff}
 #c-contact .tt-inquiry input::placeholder, #c-contact .tt-inquiry textarea::placeholder {color:rgba(232,244,248,.55)}
 #c-contact .tt-inquiry-chip > span {background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.24);color:#eaf6fa}
@@ -943,7 +918,6 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* the type scale, folded onto a few steps: 13 · 15 · 18 · 24 · 38 · display */
 [data-bridge-line]+div:not([data-bridge]) {font-size:13px!important}
 .tt-inquiry-chip > span {font-size:15px}
-.tt-audience-num {font-size:38px!important}
 .tb-title {font-size:24px!important}
 
 /* tablet: turntable and records side by side, so the list starts on the first screen */
@@ -1049,14 +1023,12 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 /* the name sits on the outer bank, away from the current */
 .tt-float-label {position:absolute;top:50%;left:calc(100% + 16px);translate:0 -50%;display:grid;gap:3px;text-align:left;pointer-events:none}
 .tt-float.is-left .tt-float-label {left:auto;right:calc(100% + 16px);text-align:right}
-.tt-float-label b {font:800 15px/1.3 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tt-float-label b {font:800 15px/1.3 var(--tt-noto-primary),sans-serif;color:#fbffff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tt-float-label span {font:500 13px/1.3 var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.66);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tt-float.is-current .tt-float-label b {color:#ffe2a6}
 .tt-float.is-dark {opacity:.16;filter:saturate(0)}
 .tt-float.is-dark:hover, .tt-float.is-dark:focus-within {opacity:.55}
 /* the first record says once what to do; gone after the first play */
-.tt-float-hint {position:absolute;bottom:calc(100% + 10px);left:50%;translate:-50% 0;padding:7px 12px;border-radius:999px;background:#ffd98c;color:#2a1d05;font:800 13px/1 var(--tt-noto-primary),sans-serif;white-space:nowrap;pointer-events:none}
-.tt-float-hint::after {content:'';position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#ffd98c}
 @media (prefers-reduced-motion: no-preference) {
   /* every record drifts on its own slow swell: up and down, a little sideways, a slight tilt */
   .tt-float-pick {animation:tt-float-drift var(--t,9s) ease-in-out infinite;animation-delay:var(--d,0s)}
@@ -1072,7 +1044,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-now .tt-disc {position:relative;inset:auto;}
 .tt-console-text {min-width:0}
 .tt-console-text p {margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tt-console-title {font:800 15px/1.3 'Quicksand',var(--tt-noto-primary),sans-serif;color:#fbffff}
+.tt-console-title {font:800 15px/1.3 var(--tt-noto-primary),sans-serif;color:#fbffff}
 .tt-console-artist {font:500 13px/1.35 var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.7)}
 .tt-console-story {margin-top:2px!important;font:500 13px/1.4 var(--tt-noto-primary),sans-serif;color:#f2dcaa}
 .tt-console-play {position:relative;width:48px;height:48px;border-radius:50%;border:0;background:#f4f9ff;color:#0b1330;cursor:pointer}
@@ -1133,3 +1105,8 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-float.is-playing .tt-disc.tt-disc--float {animation:tt-vinyl-glow 2.4s ease-in-out infinite}
 @keyframes tt-vinyl-glow {50% {box-shadow:inset 0 0 0 1px rgb(255 255 255 / .5),inset 0 0 36px rgb(var(--vinyl) / .85),0 0 0 2px #ffd98c,0 0 80px rgb(var(--vinyl) / .9)}}
 @media (prefers-reduced-motion: reduce) {.tt-float.is-playing .tt-disc.tt-disc--float {animation:none}}
+
+/* the contact address is a stand-alone link: give it a 44px-tall hit area at every width, not only on touch
+   screens, without changing how it looks (WCAG 2.5.8) */
+.tt-contact-address a{position:relative}
+.tt-contact-address a::after{content:'';position:absolute;left:-6px;right:-6px;top:-13px;bottom:-13px}

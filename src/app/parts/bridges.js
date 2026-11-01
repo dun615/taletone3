@@ -647,7 +647,7 @@ var ComponentBridges = {
         var kop=this.smooth(0.50,0.64,prog)*(1-this.smooth(0.965,1,prog));
         bg._kicker.style.opacity=(kop*0.78).toFixed(3);
         bg._kicker.style.transform='translateY('+((1-kop)*10).toFixed(1)+'px)';
-        bg._kicker.style.letterSpacing=(0.28+0.08*(1-kop)+0.03*(bg._imp||0)).toFixed(2)+'em';
+        bg._kicker.style.letterSpacing=(0.04+0.08*(1-kop)+0.03*(bg._imp||0)).toFixed(2)+'em';
         bg._kicker.style.filter='none';
       }
       if(bg._lines&&bg._lines.length){
