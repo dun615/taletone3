@@ -1036,11 +1036,9 @@ body.tt-network-open #content {
 
 body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-chapter,
 body[data-active-chapter="works"] #c-works.tt-gh-works .tt-section-note {
-  color: #8decfc !important;
+  color: #a9e9f4 !important;
   opacity: .96 !important;
-  text-shadow:
-    0 2px 8px rgba(2, 10, 22, .52),
-    0 0 18px rgba(141,236,252, .24) !important;
+  text-shadow: 0 1px 6px rgba(2, 10, 22, .5) !important;
 }
 
 /* Visual QA: the Members chapter title is centered by scroll progress, but the
@@ -1544,7 +1542,7 @@ body.tt-network-open #tt-mobile-chapter-menu {
   text-shadow:0 1px 6px rgba(3,18,28,.6);transition:background-color .2s ease,transform .2s ease}
 .tt-shelf-history:hover,.tt-shelf-history:focus-visible {background:rgba(255,255,255,.24);transform:translateY(-1px)}
 .tt-shelf-title {margin:16px 0 0;font-family:'Quicksand',var(--tt-noto-primary),sans-serif;font-weight:700;font-size:clamp(46px,7vw,96px);line-height:.92;letter-spacing:-.01em;color:var(--ink,#141C30);}
-.tt-shelf-title span {color:#8decfc;text-shadow:0 2px 8px rgba(2,10,22,.48),0 0 18px rgba(141,236,252,.22)}
+.tt-shelf-title span {color:#a9e9f4;text-shadow:0 2px 10px rgba(2,10,22,.35)}
 
 .tt-shelf-filters {display:flex;flex-wrap:wrap;gap:8px;margin:0 auto clamp(34px,5vh,52px)}
 .tt-shelf-chip {appearance:none;display:inline-flex;align-items:center;gap:8px;padding:10px 14px 10px 16px;border-radius:999px;border:1px solid color-mix(in srgb,var(--ink,#141C30) 24%,transparent);background:transparent;color:var(--ink,#141C30);font:600 13px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;cursor:pointer;transition:background .25s,border-color .25s,color .25s}

@@ -696,7 +696,7 @@ html body .tt-member-modal .tt-sheet .tt-member-close {position:absolute!importa
   border:1px solid rgba(141,236,252,.35);border-radius:999px;background:rgba(4,37,44,.45)}
 .tt-works-tab {padding:10px 20px;border:0;border-radius:999px;background:none;color:#cfeef4;font:800 14px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;letter-spacing:.02em;cursor:pointer;transition:background-color .2s ease,color .2s ease}
 .tt-works-tab:hover,.tt-works-tab:focus-visible {color:#fbffff;background:rgba(141,236,252,.14)}
-.tt-works-tab.is-on {background:#8decfc;color:#05303a}
+.tt-works-tab.is-on {background:#a9e9f4;color:#05303a}
 .tt-crate:not(.is-tab-songs) .tt-mix {margin-top:0}
 .tt-mix-row.tt-mix-grid {grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible;scroll-snap-type:none;gap:20px 18px}
 @media (max-width:1100px){.tt-mix-row.tt-mix-grid {grid-template-columns:repeat(3,minmax(0,1fr))}}
