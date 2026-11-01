@@ -358,9 +358,9 @@ class Component extends DCLogic {
     if(document.hidden) return;
     if(this._reduceMotion===undefined) this._reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var frameNow = Number.isFinite(frameTime) ? frameTime : performance.now();
-    // at rest (no scroll for 1.2 s, no bridge running) the ambient drift needs no more than 30 fps
+    // at rest (no scroll for 1.2 s, no bridge running) the ambient drift needs no more than 20 fps
     var atRest = this.introDone && !this._bridgeRun && this._lastScrollMoveAt!=null && frameNow-this._lastScrollMoveAt > 1200;
-    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : ((atRest || this.isMobileMotion()) ? 34 : 1000/60));
+    var minFrameMs = this._reduceMotion ? 64 : (!this.introDone ? (this._introMobile?34:24) : (atRest ? 50 : (this.isMobileMotion() ? 34 : 1000/60)));
     if(minFrameMs && this._lastLoopFrame && frameNow-this._lastLoopFrame < minFrameMs){
       this.raf = requestAnimationFrame(this.loop);
       return;
@@ -526,15 +526,6 @@ class Component extends DCLogic {
         var floatY=(Math.sin(tA*0.9+fi)*-12).toFixed(2); fl._floatY=Number(floatY);
         fl.style.transform='translateY('+floatY+'px)';
       }
-      // suspended-in-water float: cards drift gently in place, each with its own phase
-      if(this.floatCards){ for(var ci=0;ci<this.floatCards.length;ci++){ var fc=this.floatCards[ci];
-        if(!this.isNearViewport(fc,motionMargin,fc._motionBounds,sc,vhR)){ this.setMotionIdle(fc,true); continue; }
-        this.setMotionIdle(fc,false);
-        var yy=Math.sin(tA*0.55+fc._fph)*fc._fpy + Math.sin(tA*0.27+fc._fph*1.3)*1.4;
-        var xx=Math.sin(tA*0.4+fc._fph*0.8)*fc._fpx;
-        var rr=Math.sin(tA*0.33+fc._fph)*0.5;
-        fc.style.transform='translate('+xx.toFixed(2)+'px,'+yy.toFixed(2)+'px) rotate('+rr.toFixed(2)+'deg)';
-      }}
       for(var qi=0;qi<this.eqs.length;qi++){
         var eq=this.eqs[qi];
         if(!this.isNearViewport(eq,motionMargin,eq._motionBounds,sc,vhR)){ this.setMotionIdle(eq,true); continue; }

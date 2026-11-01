@@ -64,7 +64,7 @@ const routeDocumentBudgetBytes = 40_000;
 // 118 KB: inline-style attribute selectors became tt-s-* classes on the template elements (+~0.7 KB)
 const decodedTemplateBudgetBytes = 118_000;
 // Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 162_000; // raised from 150 KB for the Discography's light and sound response (scene.js)
+const decodedScriptBudgetBytes = 164_500; // raised from 150 KB for the Discography's light and sound response, then for the layered sea (scene.js)
 // Noto Sans JP is requested with only the Japanese characters the site uses (text=), from the page head
 const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap&amp;text=';
 const expectedFontAssets = {
@@ -221,7 +221,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(decodedScript.includes('self._layoutGeometryDirty=true; self._sceneDirty=true; self.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
     assert(decodedScript.includes('isNearViewport(el, margin, bounds, scrollTop, viewportHeight){'), `${file}: viewport helper does not accept cached loop geometry`);
     assert(decodedScript.includes('var vh=viewportHeight==null?(window.innerHeight||800):viewportHeight') && decodedScript.includes('scrollTop==null?(this.scroller?this.scroller.scrollTop:window.scrollY):scrollTop'), `${file}: viewport helper no longer falls back safely outside the main loop`);
-    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds,sc,vhR\)/g) || []).length === 6, `${file}: decorative motion still rereads viewport geometry between style writes`);
+    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds,sc,vhR\)/g) || []).length === 5, `${file}: decorative motion still rereads viewport geometry between style writes`);
     assert(decodedScript.includes('this._layoutGeometryDirty = true;') && decodedScript.includes('this._layoutGeometryDirty=true;'), `${file}: shared layout geometry lifecycle invalidation is missing`);
     assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
     assert(!drawBody.includes("document.getElementById('deep-book-svg')") && !drawBody.includes('getBoundingClientRect()') && !drawBody.includes('refreshLayoutGeometry'), `${file}: draw still performs layout measurement`);
@@ -244,7 +244,7 @@ for (const [key, file, route, expectedTitle] of routes) {
     assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
     assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
     assert(!decodedScript.includes('updateTranslation') && !decodedScript.includes('c-translation') && !decodedScript.includes('index===-1'), `${file}: retired TRANSLATE bridge code returned`);
-    assert(decodedScript.includes('((atRest || this.isMobileMotion()) ? 34 : 1000/60)') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
+    assert(decodedScript.includes('(atRest ? 50 : (this.isMobileMotion() ? 34 : 1000/60))') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
     assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
     assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
     assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);

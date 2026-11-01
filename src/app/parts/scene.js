@@ -15,6 +15,32 @@ var ComponentScene = {
     this.ctx.setTransform(this.dpr,0,0,this.dpr,0,0);
     this._layoutGeometryDirty = true;
     this._sceneDirty = true;
+    this._spr = {};
+  },
+
+  // sprites drawn once per viewport size, stamped every frame
+  sprite(key,w,h,paint){
+    this._spr=this._spr||{};
+    var s=this._spr[key];
+    if(!s){ s=document.createElement('canvas'); s.width=Math.max(1,Math.round(w)); s.height=Math.max(1,Math.round(h)); paint(s.getContext('2d'),s.width,s.height); this._spr[key]=s; }
+    return s;
+  },
+
+  // tileable caustic net: bright where two wrapped Voronoi cells meet
+  causticTile(){
+    return this.sprite('caustic',192,192,function(g,w,h){
+      var pts=[]; for(var i=0;i<14;i++) pts.push([Math.random()*w,Math.random()*h]);
+      var img=g.createImageData(w,h), d=img.data;
+      for(var y=0;y<h;y++) for(var x=0;x<w;x++){
+        var f1=1e9,f2=1e9;
+        for(var k=0;k<pts.length;k++){ var dx=Math.abs(x-pts[k][0]); dx=Math.min(dx,w-dx); var dy=Math.abs(y-pts[k][1]); dy=Math.min(dy,h-dy); var dd=dx*dx+dy*dy; if(dd<f1){f2=f1;f1=dd;} else if(dd<f2) f2=dd; }
+        var e=Math.sqrt(f2)-Math.sqrt(f1), a=Math.max(0,1-e/9); a=a*a*a;
+        var o=(y*w+x)*4; d[o]=235; d[o+1]=252; d[o+2]=255; d[o+3]=Math.round(a*255);
+      }
+      g.putImageData(img,0,0);
+      var t=document.createElement('canvas'); t.width=w; t.height=h; var tg=t.getContext('2d'); tg.drawImage(g.canvas,0,0);
+      g.clearRect(0,0,w,h); g.filter='blur(2px)'; for(var oy=-h;oy<=h;oy+=h) for(var ox=-w;ox<=w;ox+=w) g.drawImage(t,ox,oy); g.filter='none';
+    });
   },
 
   smooth(a,b,x){var t=this.cl((x-a)/(b-a),0,1);return t*t*(3-2*t);},
@@ -28,16 +54,14 @@ var ComponentScene = {
   collectMotionEls(){
     this.spins=Array.from(document.querySelectorAll('[data-spin]'));
     this.floats=Array.from(document.querySelectorAll('[data-float]'));
-    this.floatCards=Array.from(document.querySelectorAll('.lift'));
-    this.floatCards.forEach((el,i)=>{ if(el._fph==null){ el._fph=i*1.7; el._fpy=2.0+(i%3)*0.5; el._fpx=2.6+(i%4)*0.6; } });
     this.eqs=Array.from(document.querySelectorAll('[data-eq]'));
     this.bobs=Array.from(document.querySelectorAll('[data-bob]'));
     this.drifts=Array.from(document.querySelectorAll('[data-drift]'));
     // elements inside hidden (display:none) markup have a zero box that reads as "near the viewport";
     // leave them out so nothing invisible is animated every frame
     var shown=function(el){ return el.offsetParent!==null || getComputedStyle(el).position==='fixed'; };
-    ['spins','floats','floatCards','eqs','bobs','drifts'].forEach(k=>{ this[k]=this[k].filter(shown); });
-    this.motionEls=Array.from(new Set([].concat(this.spins,this.floats,this.floatCards,this.eqs,this.bobs,this.drifts)));
+    ['spins','floats','eqs','bobs','drifts'].forEach(k=>{ this[k]=this[k].filter(shown); });
+    this.motionEls=Array.from(new Set([].concat(this.spins,this.floats,this.eqs,this.bobs,this.drifts)));
   },
 
   refreshLayoutGeometry(layoutHeight){
@@ -82,7 +106,7 @@ var ComponentScene = {
   // The descent to the next layer happens between a chapter's bridge and the next chapter,
   // so the sea visibly gets deeper at each handoff instead of drifting with page length.
   _buildDepthKeys(layoutHeight){
-    var layers=[['c-home',0.2,0],['c-members',0.34,200],['c-projects',0.45,600],['c-works',0.6,1200],['c-contact',0.84,3200]];
+    var layers=[['c-home',0.2,0],['c-members',0.34,200],['c-projects',0.45,600],['c-works',0.68,1200],['c-contact',0.84,3200]];
     var scEl=this.scroller, bridgeTops=(this._bridgeOffsets||[]).filter(Number.isFinite), keys=[];
     for(var i=0;i<layers.length;i++){
       var el=document.getElementById(layers[i][0]); if(!el) continue;
@@ -209,10 +233,8 @@ var ComponentScene = {
     var shallow=1-this.smooth(0,800,metres);            // sunlight zone: caustics + god rays
     var deep=this.smooth(500,2600,metres);              // twilight -> midnight: vignette + bioluminescence
     var surf=1-this.smooth(0,H*1.1,scTop);              // the surface itself, only over Home
-    // the turn of the journey: the sea falls quiet over the last bridge, then the music lights the deep
     var works=this.worksBox(H);
-    var hush=this._reduceMotion?0:this.smooth(1.9,1.1,works.t)*(1-this.smooth(0.7,0.15,works.t));
-    var calm=1-0.85*hush;
+    var calm=1;
     var lvl=this.audioLevel();
     this.noteWorksArrival(works.t);
     // the reader's own descent: scroll speed (px per frame, eased) drives the streaks and the camera
@@ -223,12 +245,15 @@ var ComponentScene = {
     // 1) the surface seen from just below: a bright, rippling ceiling with a shimmering window of sky
     if(surf>0.01){
       var sy=-scTop*0.45;
-      var band=c.createLinearGradient(0,sy,0,sy+H*0.5);
-      band.addColorStop(0,'rgba(255,255,255,'+(0.95*surf)+')'); band.addColorStop(0.2,'rgba(240,252,255,'+(0.5*surf)+')'); band.addColorStop(1,'rgba(240,252,255,0)');
-      c.fillStyle=band; c.fillRect(0,sy,W,H*0.5);
-      var win=c.createRadialGradient(W*0.5,sy-H*0.05,0,W*0.5,sy-H*0.05,W*0.42);
-      win.addColorStop(0,'rgba(255,255,255,'+(0.9*surf)+')'); win.addColorStop(0.55,'rgba(255,255,255,'+(0.25*surf)+')'); win.addColorStop(1,'rgba(255,255,255,0)');
-      c.fillStyle=win; c.fillRect(0,sy-H*0.05,W,W*0.42);
+      var ceil=this.sprite('ceiling',W,H*0.6,function(g,w,h){
+        var band=g.createLinearGradient(0,0,0,h*0.83);
+        band.addColorStop(0,'rgba(255,255,255,0.95)'); band.addColorStop(0.2,'rgba(240,252,255,0.5)'); band.addColorStop(1,'rgba(240,252,255,0)');
+        g.fillStyle=band; g.fillRect(0,0,w,h);
+        var win=g.createRadialGradient(w*0.5,0,0,w*0.5,0,w*0.42);
+        win.addColorStop(0,'rgba(255,255,255,0.9)'); win.addColorStop(0.55,'rgba(255,255,255,0.25)'); win.addColorStop(1,'rgba(255,255,255,0)');
+        g.fillStyle=win; g.fillRect(0,0,w,h);
+      });
+      c.globalAlpha=surf; c.drawImage(ceil,0,sy,W,H*0.6); c.globalAlpha=1;
       c.lineWidth=3; c.strokeStyle='rgba(255,255,255,'+surf+')'; c.beginPath();
       for(var sx=0;sx<=W+20;sx+=20){ var wy=sy+12+Math.sin(sx*0.017+tw*1.2)*5+Math.sin(sx*0.051-tw*0.8)*2.5; if(sx===0)c.moveTo(sx,wy); else c.lineTo(sx,wy); }
       c.stroke();
@@ -238,6 +263,21 @@ var ComponentScene = {
       var slr=slg.createRadialGradient(64,64,0,64,64,64);
       slr.addColorStop(0,'rgba(255,255,255,1)'); slr.addColorStop(0.45,'rgba(255,255,255,.35)'); slr.addColorStop(1,'rgba(255,255,255,0)');
       slg.fillStyle=slr; slg.fillRect(0,0,128,128); this._softLight=slc;
+    }
+    // 1b) light from above and the dark at the edges: static layers on the sky element (CSS), set only when they change
+    var above=((0.05+0.5*shallow)*(1-deep)).toFixed(2), edge=(deep>0.02?0.62*deep:0).toFixed(2);
+    if(this._seaLight!==above+edge){ this._seaLight=above+edge; var rs=this.root.style; rs.setProperty('--sea-above',above); rs.setProperty('--sea-edge',edge); }
+    // 1c) caustics in shallow water: two nets drifting against each other
+    var caus=(this._reduceMotion?0.5:1)*Math.max(shallow*shallow*0.3,surf)*(fastMobile?0:1);
+    if(caus>0.03){
+      var ct=this.causticTile(), cs=Math.max(W,H)/3.2, ch=H*0.7;
+      // the tile, repeated into one wide sheet that already thins out downward: a frame stamps it with one call
+      var sheet=this.sprite('csheet',384,384,function(g,w,h){ for(var y=0;y<h;y+=192) for(var x=0;x<w;x+=192) g.drawImage(ct,x,y); g.globalCompositeOperation='destination-in'; var lg=g.createLinearGradient(0,0,0,h); lg.addColorStop(0,'#000'); lg.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=lg; g.fillRect(0,0,w,h); });
+      c.globalCompositeOperation='lighter';
+      var ox=((tw*9+scTop*0.08)%cs+cs)%cs, sw=Math.ceil(W/(cs*2))+1;
+      c.globalAlpha=0.17*caus;
+      for(var k=0;k<sw;k++) c.drawImage(sheet,k*cs*2-ox,-((tw*4+scTop*0.2)%cs+cs)%cs*0.3,cs*2,ch);
+      c.globalAlpha=1; c.globalCompositeOperation='source-over';
     }
     // 2) dappled sunlight: a few soft patches of light that drift and breathe under the surface
     if(shallow>0.02&&this.dapples){
@@ -256,14 +296,21 @@ var ComponentScene = {
     // 3) god rays: slanted shafts of sun that sway, strongest near the surface
     var rays=Math.max(shallow,surf*0.9)*calm;
     if(rays>0.02){
-      var rayN=fastMobile?4:7;
+      var rayN=this.isMobileMotion()?3:5;
       for(var rr=0;rr<rayN;rr++){
         var rx=(0.06+rr*(0.9/rayN))*W+Math.sin(tw*0.17+rr*1.7)*W*0.03;
         var flick=0.7+0.3*Math.sin(tw*0.6+rr*2.3);
-        var grd=c.createLinearGradient(0,0,0,H*0.9);
-        grd.addColorStop(0,'rgba(255,255,255,'+(0.5*rays*flick).toFixed(3)+')'); grd.addColorStop(0.5,'rgba(235,252,255,'+(0.18*rays*flick).toFixed(3)+')'); grd.addColorStop(1,'rgba(235,252,255,0)');
-        c.fillStyle=grd; c.save(); c.translate(rx,-20); c.rotate(0.24); c.fillRect(-W*0.03,0,W*(0.045+0.03*(rr%3)),H*1.15); c.restore();
+        var shaft=this.sprite('shaft',64,256,function(g,w,h){
+          var img=g.createImageData(w,h), d=img.data;
+          for(var y=0;y<h;y++){ var vy=y/h, v=vy<0.08?vy/0.08:Math.pow(1-(vy-0.08)/0.92,1.6);
+            for(var x=0;x<w;x++){ var u=(x+0.5)/w*2-1, hz=Math.exp(-u*u*4.2); var o=(y*w+x)*4; d[o]=240; d[o+1]=253; d[o+2]=255; d[o+3]=Math.round(255*hz*v); } }
+          g.putImageData(img,0,0);
+        });
+        var rw=W*(0.05+0.045*((rr*37)%5)/4)*(0.85+0.3*Math.sin(tw*0.11+rr));
+        c.globalAlpha=Math.min(1,0.42*rays*flick);
+        c.save(); c.translate(rx,-30); c.rotate(0.24); c.drawImage(shaft,-rw/2,0,rw,H*1.2); c.restore();
       }
+      c.globalAlpha=1;
       // bubbles rising toward the light
       if(!fastMobile&&this.bubbles){
         c.lineWidth=1.2;
@@ -281,12 +328,16 @@ var ComponentScene = {
     var snowA=0.28+0.5*this.smooth(100,1800,metres);
     var snowC=deep>0.5?pal.star:[255,255,255];
     c.fillStyle='rgb('+snowC[0]+','+snowC[1]+','+snowC[2]+')';
+    var nearSpecks=[];
     for(var i=0;i<starLimit;i++){
-      var s=this.stars[i];
+      var s=this.stars[i], z=s.z||1;
       var twk=0.55+0.45*Math.sin(time*s.sp+s.ph);
-      var syy=((s.y*H-scTop*(0.32+s.r*0.22)+time*6*s.sp)%H+H)%H;
-      c.globalAlpha=snowA*twk*calm*(1+0.8*lvl);
-      var sxx=s.x*W+Math.sin(time*0.3+s.ph)*6;
+      // far / mid / near: parallax, drift and dimming by distance
+      var par=z===0?0.12:(z===2?0.95:0.32+s.r*0.22), drift=z===0?2.5:(z===2?11:6);
+      var syy=((s.y*H-scTop*par+time*drift*s.sp)%H+H)%H;
+      if(z===2){ nearSpecks.push(s,syy); continue; }
+      c.globalAlpha=snowA*twk*calm*(1+0.8*lvl)*(z===0?0.45:1);
+      var sxx=s.x*W+Math.sin(time*0.3+s.ph)*(z===0?3:6);
       if(streak>0.02){
         // falling fast, the specks stretch into lines rushing past: you are the one moving
         var len=this._vel*(0.8+s.r)*1.6*streak;
@@ -294,14 +345,13 @@ var ComponentScene = {
         c.beginPath(); c.moveTo(sxx,syy); c.lineTo(sxx,syy+len); c.stroke();
       } else { c.beginPath(); c.arc(sxx, syy, s.r*(1+deep*0.6), 0, 6.283); c.fill(); }
     }
-    c.globalAlpha=1;
-    // 5) the dark: edges close in as the light from above runs out
-    if(deep>0.02){
-      var R=Math.max(W,H);
-      var vig=c.createRadialGradient(W*0.5,H*0.48,R*0.22,W*0.5,H*0.48,R*0.78);
-      vig.addColorStop(0,'rgba(1,6,18,0)'); vig.addColorStop(1,'rgba(1,6,18,'+(0.62*deep).toFixed(3)+')');
-      c.fillStyle=vig; c.fillRect(0,0,W,H);
+    // near specks: large and out of focus
+    for(var ni=0;ni<nearSpecks.length;ni+=2){
+      var ns=nearSpecks[ni], ny=nearSpecks[ni+1], nr=ns.r*(1+deep*0.4);
+      c.globalAlpha=Math.min(1,(0.2+0.32*deep)*(0.6+0.4*Math.sin(time*ns.sp+ns.ph))*calm);
+      c.drawImage(this._softLight,ns.x*W+Math.sin(time*0.22+ns.ph)*14-nr,ny-nr,nr*2,nr*2);
     }
+    c.globalAlpha=1;
     // 6) bioluminescence: creatures of light drifting in the midnight zone
     if(deep>0.05&&this.bio){
       this.bioSprites();
@@ -332,7 +382,7 @@ var ComponentScene = {
       c.globalAlpha=1; c.globalCompositeOperation='source-over';
     }
     // 6b2) listening: while a song plays with the record player in view, the sea around it goes to midnight
-    //      (and over the last bridge it already falls dark), so the record is the only light left
+    //      so the record is the only light left
     var playing=false; try{ playing=!!(window.TALETONE_AUDIO_PLAYING&&window.TALETONE_AUDIO_PLAYING()); }catch(_e){}
     var deckSeen=false;
     var dsr=works.deckRect;
@@ -341,7 +391,7 @@ var ComponentScene = {
     var listen=this._listen;
     var listening=listen>(this._listening?0.3:0.6);
     if(this._listening!==listening){ this._listening=listening; document.body.classList.toggle('tt-listening',listening); }
-    var dark=Math.max(0.82*hush,0.78*listen);
+    var dark=0.78*listen;
     if(dark>0.01){ c.fillStyle='rgba(2,8,20,'+dark.toFixed(3)+')'; c.fillRect(0,0,W,H); }
     var tint=this.coverTint(works.deck);
     // light from the record: slow beams in the colour of its cover, swelling with the music
@@ -383,9 +433,8 @@ var ComponentScene = {
     calling=calling*(1+0.9*lvl)+(works.inside?0.08:0);
     if(calling>0.01){
       var gr=H*(0.45+0.5*dd), gx=bookG?bookG.x:W*0.5, gy=H+gr*0.26;
-      var call=c.createRadialGradient(gx,gy,0,gx,gy,gr);
-      call.addColorStop(0,'rgba(255,214,140,'+calling.toFixed(3)+')'); call.addColorStop(0.42,'rgba(255,214,140,'+(calling*0.38).toFixed(3)+')'); call.addColorStop(1,'rgba(255,214,140,0)');
-      c.fillStyle=call; c.fillRect(0,H-gr,W,gr);
+      var callS=this.sprite('call',256,256,function(g,w,h){ var rg=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2); rg.addColorStop(0,'rgba(255,214,140,1)'); rg.addColorStop(0.42,'rgba(255,214,140,0.38)'); rg.addColorStop(1,'rgba(255,214,140,0)'); g.fillStyle=rg; g.fillRect(0,0,w,h); });
+      c.globalAlpha=Math.min(1,calling); c.drawImage(callS,gx-gr,gy-gr,gr*2,gr*2); c.globalAlpha=1;
     }
     // 8) the book awakens: as it reaches the middle of the screen its light opens over the sea floor
     //    and a column of light rises toward the far surface; the illustration gets its halo too.
