@@ -1208,10 +1208,6 @@ body[data-active-chapter="members"] #c-members > [data-reveal]:first-child {
     overflow-wrap: normal !important;
   }
 
-  body:has(div.tt-s-width-min-760px-96vw-9f63) #lang-switcher.tt-lang-switcher{
-    display: none !important;
-  }
-
 }
 
 #c-members > [data-reveal]:first-child p:first-of-type {
@@ -1853,7 +1849,7 @@ html body #content#content .tt-home-tagline { font-weight: 700 !important; }
 html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
 .tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(21px, 2.1vw, 28px); }
 .tt-shelf:not(.is-engaged) .tt-console-now, .tt-shelf:not(.is-engaged) .tt-console-more { display: none; }
-.tt-shelf:not(.is-engaged) .tt-console-lamps { padding: 4px 0 4px 8px; border-top: 0; }
+.tt-shelf:not(.is-engaged) .tt-console-lamps { padding: 0; border-top: 0; }
 @media (max-width: 760px) { .tt-shelf-clients-row { display: grid; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 18px 36px; } }
 /* the sea's static light: brighter toward the surface, darker at the edges as it deepens (scene.js sets the strengths) */
 #sky::before,#sky::after{content:'';position:absolute;inset:0;pointer-events:none}

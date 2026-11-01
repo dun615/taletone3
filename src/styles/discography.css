@@ -1058,12 +1058,12 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
 .tt-console-volume input::-moz-range-progress {height:4px;border-radius:4px;background:#a9e9f4}
 .tt-console-volume input::-webkit-slider-thumb {-webkit-appearance:none;width:12px;height:12px;margin-top:-4px;border-radius:50%;border:0;background:#fbffff;box-shadow:0 1px 4px rgba(0,16,22,.5)}
 .tt-console-volume input::-moz-range-thumb {width:12px;height:12px;border-radius:50%;border:0;background:#fbffff}
-/* filters: chips, the chosen one lit amber */
-.tt-console-lamps {display:flex;align-items:center;gap:16px;padding:8px 0 0 8px;border-top:1px solid rgba(232,246,250,.1)}
-.tt-lanterns {flex:1 1 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px 32px;margin:0}
-.tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:2px}
-.tt-lantern-row .tt-filter-caption {min-width:2.4em;margin-right:6px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
-.tt-console .tt-lamp {height:32px;padding:0 12px;border-radius:999px;background:none;color:rgba(232,246,250,.78);font-size:14px;transition:background .2s ease,color .2s ease}
+/* filters: each group (field, role) a rounded tray of chips; the chosen chip lit amber */
+.tt-console-lamps {display:flex;align-items:center;gap:16px;padding:8px 0 0 6px;border-top:1px solid rgba(232,246,250,.1)}
+.tt-lanterns {flex:1 1 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0}
+.tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(251,255,255,.05);box-shadow:inset 0 0 0 1px rgba(251,255,255,.06)}
+.tt-lantern-row .tt-filter-caption {margin:0 4px 0 12px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
+.tt-console .tt-lamp {height:30px;padding:0 12px;border-radius:999px;background:none;color:rgba(232,246,250,.78);font-size:14px;transition:background .2s ease,color .2s ease}
 .tt-console .tt-lamp:hover {background:rgba(251,255,255,.08);color:#fbffff}
 .tt-console .tt-lamp.is-on, .tt-console .tt-console-track.is-on {background:rgba(255,217,140,.16);color:#ffd98c;box-shadow:inset 0 0 0 1px rgba(255,217,140,.42)}
 @media (max-width:760px) {.tt-console-host {display:none}}
