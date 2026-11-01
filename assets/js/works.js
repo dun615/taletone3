@@ -895,8 +895,8 @@
         '</li>';
       }).join('') + '</ul></div>';
   }
-  // the console: the song in hand (disc, title, artist), the album's tracks, one capsule holding play and volume;
-  // below, the filters and the details button
+  // the console: the song in hand (disc, title, artist) and one capsule holding play and volume; an album's tracks
+  // on their own row under it (they wrap); below, the filters and the details button
   function consoleHtml() {
     if (isPhone() || state.tab !== 'songs') return '';
     var labels = L(), work = works[state.current];
@@ -909,12 +909,12 @@
         '<div class="tt-console-song">' + (work ? discHtml(trackUnit && (trackUnit.image || tracks[state.track].image) ? tracks[state.track] : work, 'tt-disc--console') +
           '<p class="tt-console-text"><span class="tt-console-title">' + esc(shown) + '</span>' +
           '<span class="tt-console-artist">' + esc(plainRichText(unit.artist || work.artist || '')) + (trackUnit ? ' · ' + esc(title) : '') + '</span></p>' : '') + '</div>' +
-        (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
         '<div class="tt-console-deck">' +
           (work && hasAudio(work) ? '<button type="button" class="tt-console-play tt-deck-toggle' + (state.playing ? ' is-playing' : '') + '" data-works-action="toggle" aria-label="' + esc((state.playing ? labels.pause : labels.play) + ': ' + title) + '"><span class="tt-shelf-play-icon" aria-hidden="true"></span></button>' : '') +
           '<label class="tt-console-volume"><span class="tt-sr-only">' + esc(labels.volume) + '</span><input type="range" min="0" max="100" step="1" value="' + Math.round(state.volume * 100) + '" data-works-volume aria-valuetext="' + esc(volumeText(state.volume)) + '" style="--v:' + state.volume + '"></label>' +
         '</div>' +
       '</div>' +
+      (tracks ? '<div class="tt-console-tracks" role="group" aria-label="' + esc(labels.tracks) + '">' + tracks.map(function (track, i) { return '<button type="button" class="tt-console-track' + (i === state.track ? ' is-on' : '') + '" data-works-action="track" data-track="' + i + '" aria-label="' + esc(plainRichText(localizedUnit(track).title || '')) + '">' + (i < 9 ? '0' : '') + (i + 1) + '</button>'; }).join('') + '</div>' : '') +
       '<div class="tt-console-lamps">' + lanternsHtml() +
         (work ? '<button type="button" class="tt-console-more" data-works-action="open" data-index="' + state.current + '">' + esc(labels.detail) + '<span class="tt-console-chev" aria-hidden="true"></span></button>' : '') + '</div>' +
     '</div>';
