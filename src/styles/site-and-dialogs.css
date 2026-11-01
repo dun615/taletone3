@@ -1784,3 +1784,23 @@ body.tt-network-open #tt-mobile-chapter-menu {
   .tt-shelf-yt-play span::before {border-left-width:19px;border-top-width:12px;border-bottom-width:12px;margin-left:5px}
   .tt-shelf-modal-close {top:12px;right:12px;width:40px;height:40px}
 }
+
+/* ===== Text weights =====
+   Nanum Gothic ships only 400, 700 and 800, so every supporting sentence set to 500-700 rendered as Bold and
+   nothing on a screen stood out. Titles, buttons, navigation and labels keep their weight; the sentences that
+   explain them read in Regular. (Some of these carry inline weights in the template, hence !important.) */
+.tt-journey-invitation,
+.tt-section-note,
+.tt-audience-hook,
+.tt-audience-services li,
+.tt-cmp-result,
+.tt-cmp-closing,
+.tt-case-meta,
+.tt-case-lesson,
+.tt-case-steps > li > p,
+.tt-mix-note,
+.tt-arrival-copy > p,
+p.tt-s-color-var-ink-f97e rt,
+footer span {
+  font-weight: 400 !important;
+}
