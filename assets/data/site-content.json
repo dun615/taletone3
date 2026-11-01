@@ -131,7 +131,7 @@
         "backgroundLine1": "TALE",
         "backgroundLine2": "TONE",
         "worksCtaLabel": "Go to Discography",
-        "contactCtaLabel": "Project Inquiry",
+        "contactCtaLabel": "Project inquiry",
         "listen": {
           "slug": "heart-score",
           "label": "Listen",
@@ -369,7 +369,7 @@
           }
         ],
         "audienceGameKicker": "SUBCULTURE GAMES",
-        "audienceGameTitle": "Subculture Games",
+        "audienceGameTitle": "Subculture games",
         "audienceGameService1": "OST · Character themes · Event songs",
         "audienceGameService2": "PV / trailer music · BGM",
         "audienceGameHook": "What emotions remain after the story ends?",
@@ -379,7 +379,7 @@
         "audienceCreatorService2": "Worldbuilding songs · Anniversary singles and albums",
         "audienceCreatorHook": "What song could only this voice sing?",
         "audienceAnimationKicker": "ANIMATION / WEB IP",
-        "audienceAnimationTitle": "Animation · Webtoon · Web Novel IP",
+        "audienceAnimationTitle": "Animation · Webtoon · Web novel IP",
         "audienceAnimationService1": "Opening · Ending · Insert songs · BGM",
         "audienceAnimationService2": "Character songs · Promotional music",
         "audienceAnimationHook": "What sound will keep this scene alive in memory?",
@@ -722,7 +722,7 @@
           "Budget range",
           "Reference links"
         ],
-        "mailSubject": "[TALETONE MUSIC] Project Inquiry",
+        "mailSubject": "[TALETONE MUSIC] Project inquiry",
         "mailTemplate": "Hello TALETONE MUSIC, we would like to discuss a project.\n\n1. Project / IP:\n2. Music needed (original song / OST / character song / BGM) and number of tracks:\n3. Preferred timeline / release date:\n4. Budget range:\n5. Reference links:\n\nName / Company:\nContact:",
         "form": {
           "title": "Leave the first clues to our story",
@@ -848,7 +848,7 @@
     "description": "",
     "translations": {
       "en": {
-        "eyebrow": "The Storytellers",
+        "eyebrow": "The storytellers",
         "title": "",
         "subtitle": "TALETONE is a music producer who translates stories into music.",
         "description": "",
@@ -1239,8 +1239,8 @@
         "credit": "Credit",
         "credits": "Credits",
         "profile": "Profile",
-        "selectedCredits": "Selected Credits",
-        "allCredits": "All Credits",
+        "selectedCredits": "Selected credits",
+        "allCredits": "All credits",
         "add": "+ Add",
         "brightness": "Bright",
         "saturation": "Saturation",

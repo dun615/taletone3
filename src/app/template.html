@@ -285,7 +285,7 @@ html body .tt-x-close:is(#tt-x-a,.tt-x-close):is(#tt-x-b,.tt-x-close):focus-visi
 /* the header lockup reads like the logo: MUSIC in the brand teal near the surface, in sky blue in deep water */
 #brand > div > span{color:color-mix(in srgb,var(--brand-sky) calc(var(--deep-glow,0) * 100%),var(--brand));opacity:1!important}
 /* primary buttons wear the brand: teal with white words near the surface, white with teal words in the deep */
-#content#content :is(.tt-home-quick-actions .is-primary,#email-link,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
+#content#content :is(.tt-home-quick-actions .is-primary,#email-link,.tt-inquiry-submit,#c-projects article.lift a){background:color-mix(in srgb,var(--brand-white) calc(var(--deep-glow,0) * 100%),var(--brand))!important;color:color-mix(in srgb,var(--brand) calc(var(--deep-glow,0) * 100%),var(--brand-white))!important;border-color:transparent!important}
 /* ===== Type scale (revision 2): 8 steps for the whole site ===== */
 :root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}
 @media (max-width:1100px){:root{--fs-3xl:42px;--fs-4xl:72px}}
@@ -902,7 +902,6 @@ body[data-active-chapter="members"] #chapnav #nav-3 .nav-dot {
       <p class="tt-case-meta">{{ CASE.meta }}</p>
       <ol class="tt-case-steps"><sc-for list="{{ CASE.steps }}" as="cs" hint-placeholder-count="4"><li data-kind="{{ cs.kind }}"><span>{{ cs.label }}</span><p>{{ cs.text }}</p></li></sc-for></ol>
       <p class="tt-case-lesson">{{ CASE.lesson }}</p>
-      <a class="tt-case-listen" href="{{ CASE.href }}">{{ CASE.listenLabel }}</a>
     </div>
   </div>
   </sc-if>

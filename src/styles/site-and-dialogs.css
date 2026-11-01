@@ -1805,3 +1805,33 @@ p.tt-s-color-var-ink-f97e rt,
 footer span {
   font-weight: 400 !important;
 }
+
+/* ===== Buttons =====
+   One primary (brand fill), one secondary (card fill, hairline border), then plain text links. The home
+   actions, the contact actions and the inquiry submit used three heights (44/48/57px), two font sizes and two
+   primary colours (brand teal and ink); they now share one size. The colours come from the theme variables, so
+   they still follow the light surface and the deep water. */
+html body #content#content :is(.tt-home-quick-actions a, #email-link, #email-copy-button, .tt-inquiry-submit) {
+  min-height: 48px !important;
+  padding: 0 26px !important;
+  border-radius: 999px !important;
+  font-size: var(--fs-m) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+html body #content#content :is(.tt-home-quick-actions .is-secondary, #email-copy-button) {
+  background: var(--card, rgba(255, 255, 255, .54)) !important;
+  color: var(--ink, #141C30) !important;
+  border: 1px solid var(--cardBorder, rgba(24, 32, 52, .12)) !important;
+}
+
+@media (max-width: 760px) {
+  html body #content#content :is(.tt-home-quick-actions a, #email-link, #email-copy-button, .tt-inquiry-submit) {
+    padding: 0 20px !important;
+  }
+}
