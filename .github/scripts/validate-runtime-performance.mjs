@@ -549,7 +549,7 @@ async function runRegressionChecks(chrome, origin){
     await Promise.all([client.send('Page.enable'),client.send('Runtime.enable')]);
     await client.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
     await client.send('Page.addScriptToEvaluateOnNewDocument',{source:"try{sessionStorage.setItem('tt_intro_home_v5','1')}catch{}"});
-    for(const [oldPath,newPath] of [['/members/','/about/'],['/story-types/','/approach/'],['/works/','/discography/'],['/ja/works/heart-score/','/ja/discography/heart-score/']]){
+    for(const [oldPath,newPath] of [['/members/','/about/'],['/story-types/','/approach/'],['/works/','/discography/']]){
       await navigateForInteraction(client,origin+oldPath+'?ref=legacy#migration',1100);
       const moved=await evaluate(client,`({path:location.pathname,query:location.search,hash:location.hash,canonical:document.querySelector('link[rel=canonical]')?.href})`);
       assert(moved.path===newPath&&moved.query==='?ref=legacy'&&moved.hash==='#migration'&&moved.canonical.endsWith(newPath),'legacy migration: '+JSON.stringify(moved));

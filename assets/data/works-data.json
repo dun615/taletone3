@@ -11,7 +11,7 @@
       "credits": "Creative Directed by DOLONGCHA\nMusic Produced by N4ML (TALETONE)\nInvested by DOLONGCHA\nProject Management by Kimbeaver\n\nSong by DOLONGCHA\nComposed by N4ML (TALETONE)\nLyrics by N4ML (TALETONE)\nArranged by N4ML (TALETONE)\n\nBass Guitar by Jaeha Yoon (TALETONE)\nAcoustic Guitar by JJ Kim\nSynthesizers by N4ML (TALETONE)\nDrum Programming by N4ML (TALETONE)\n\nVocal Recorded by Moonsoo Park (U-il SoundWorks)\nMixed by Moonsoo Park (U-il SoundWorks)\nMastered by Junyong Lee (U-il SoundWorks)",
       "image": "assets/works/images/bubblesweet-work-1024.webp",
       "thumb": "assets/works/images/bubblesweet-work-1024-w320.webp",
-      "audio": "assets//works//audio//Fix-Bubblesweet.mp3",
+      "audio": "assets/works/audio/Fix-Bubblesweet.mp3",
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
@@ -939,7 +939,7 @@
       "credits": "Planned by V-llage\nInvested by V-llage\nExecutive Produced by N4ML\nSong by Floweress Loe, Yona, Epione Naxia, Asteri Ephta\nComposed by N4ML\nArranged by N4ML\nLyrics Written by Ruafka\nElectric Guitar by JJ Kim\nBass by Akikawa Yoshizumi\nChorus Designed by Ruafka\nRecorded by Moonsoo Park (U-il SoundWorks)\nRecording Operated by N4ML\nMixed by N4ML\nMastered by Junyong Lee (U-il SoundWorks)",
       "image": "assets/works/images/asset-mq83ootf-hwdf-my-village.jpg-83c0d47a3b6c.webp",
       "thumb": "assets/works/images/asset-mq83ootf-hwdf-my-village.jpg-83c0d47a3b6c-w320.webp",
-      "audio": "assets//works//audio//Master-Fix-My-Village-AR-MP3-320Kbps.mp3",
+      "audio": "assets/works/audio/Master-Fix-My-Village-AR-MP3-320Kbps.mp3",
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
@@ -1284,7 +1284,7 @@
       "credits": "Producer. 침대점령 BED TAKER\nVocal. 침대점령 BED TAKER\nLyrics. 침대점령 BED TAKER, N4ML\nComposition & Arrangement & Audio Mix. N4ML\nAudio Mix & Master. 마감요정 (DREAMSCAPEY)\nGuitar. 나원호\nBass. 이주영\nDrum. 김승우, N4ML\nArtworks. 한울넴",
       "image": "assets/works/images/asset-mq6c610d-mf2j-.jpg-4cd6791b5d5f.webp",
       "thumb": "assets/works/images/asset-mq6c610d-mf2j-.jpg-4cd6791b5d5f-w320.webp",
-      "audio": "assets//works//audio//Night-Sky.mp3",
+      "audio": "assets/works/audio/Night-Sky.mp3",
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
@@ -2935,7 +2935,7 @@
     "target": -14,
     "ceiling": -1,
     "files": {
-      "assets//works//audio//Fix-Bubblesweet.mp3": {
+      "assets/works/audio/Fix-Bubblesweet.mp3": {
         "lufs": -6.4,
         "peak": 0,
         "gain": -7.6
@@ -3052,7 +3052,7 @@
         "trim": 0.4,
         "gain": -6.2
       },
-      "assets//works//audio//Master-Fix-My-Village-AR-MP3-320Kbps.mp3": {
+      "assets/works/audio/Master-Fix-My-Village-AR-MP3-320Kbps.mp3": {
         "lufs": -6.6,
         "peak": -0.1,
         "gain": -7.4
@@ -3091,7 +3091,7 @@
         "trim": 0.3,
         "gain": -6.6
       },
-      "assets//works//audio//Night-Sky.mp3": {
+      "assets/works/audio/Night-Sky.mp3": {
         "lufs": -11.5,
         "peak": 0,
         "trim": 0.6,
