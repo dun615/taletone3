@@ -988,22 +988,7 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
    and let the others sink into the dark. The chosen disc rises to the player, which rides beside the sea.
    ===================================================================== */
 /* the lanterns: plain words with a lamp that is lit when on, not shop chips */
-.tt-lanterns {display:grid;gap:12px;margin:0 0 8px}
-.tt-lantern-row {display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
-.tt-lantern-row .tt-filter-caption {min-width:2.8em}
-.tt-lamp {appearance:none;display:inline-flex;align-items:center;gap:8px;padding:6px 2px;border:0;background:none;color:rgba(232,246,250,.62);font:700 14px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;cursor:pointer}
-.tt-lamp::before {content:'';width:9px;height:9px;border-radius:50%;background:rgba(232,246,250,.22);transition:background .3s,box-shadow .3s}
-.tt-lamp:hover, .tt-lamp:focus-visible {color:#f4f9ff}
-.tt-lamp.is-on {color:#fbffff}
-.tt-lamp.is-on::before {background:#ffd98c;box-shadow:0 0 0 3px rgba(255,217,140,.18),0 0 14px rgba(255,217,140,.8)}
 /* the credits as a list: liner notes, for anyone checking who did what */
-.tt-credit-table {width:100%;margin:22px 0 0;border-collapse:collapse;font:500 14px/1.45 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.82)}
-.tt-credit-table th {padding:0 12px 10px 0;text-align:left;font-weight:800;font-size:13px;color:#bfe9f2;border-bottom:1px solid rgba(232,246,250,.2)}
-.tt-credit-table td {padding:10px 12px 10px 0;border-bottom:1px solid rgba(232,246,250,.08);vertical-align:top}
-.tt-credit-table td:last-child {color:#8decfc}
-.tt-credit-table tr.is-current td {color:#fbffff}
-.tt-credit-play {appearance:none;padding:0;border:0;background:none;color:#fbffff;font:700 14px/1.45 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;text-align:left;cursor:pointer}
-.tt-credit-play:hover, .tt-credit-play:focus-visible {text-decoration:underline;text-underline-offset:3px}
 
 /* =====================================================================
    Discography, desktop: the current. One slow S runs down the sea (a faint line); the records sit on either
@@ -1034,42 +1019,62 @@ body.tt-listening #c-works :is(.tt-shelf-head, .tt-works-tabs, .tt-mix-head, .tt
   .tt-float-pick {animation:tt-float-drift var(--t,9s) ease-in-out infinite;animation-delay:var(--d,0s)}
   @keyframes tt-float-drift {0%,100% {translate:0 0;rotate:0deg} 25% {translate:2px -4px;rotate:.7deg} 50% {translate:0 -7px;rotate:0deg} 75% {translate:-2px -3px;rotate:-.7deg}}
 }
-.tt-credit-wrap {max-width:900px;margin:24px auto 0;padding-bottom:200px}
 
-/* the console */
-.tt-console-host {position:fixed;left:50%;bottom:22px;z-index:60;width:min(1040px,calc(100vw - 220px));translate:-50% 24px;opacity:0;pointer-events:none;transition:opacity .45s ease,translate .45s ease}
+/* the console: a frosted bar. Top: the song in hand (one button that opens its details), the album's tracks and
+   one capsule for play and volume. Below a hairline: field and role filters, stacked, and the details button. */
+.tt-console-host {position:fixed;left:50%;bottom:22px;z-index:60;width:min(var(--console-w,640px),calc(100vw - 220px));translate:-50% 24px;opacity:0;pointer-events:none;transition:opacity .45s ease,translate .45s ease}
 .tt-console-host.is-on {opacity:1;translate:-50% 0;pointer-events:auto}
-.tt-console {display:grid;border-radius:22px;background:rgba(3,20,30,.9);box-shadow:0 0 0 1px rgba(141,236,252,.16),0 24px 60px -20px rgba(0,6,14,.9);color:#f4f9ff}
-.tt-console-now {display:grid;align-items:center;gap:14px}
-.tt-console-now .tt-disc {position:relative;inset:auto;}
-.tt-console-text {min-width:0}
-.tt-console-text p {margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tt-console-title {font:800 15px/1.3 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:#fbffff}
-.tt-console-artist {font:500 13px/1.35 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.7)}
-.tt-console-story {margin-top:2px!important;font:500 13px/1.4 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:#f2dcaa}
-.tt-console-play {position:relative;width:48px;height:48px;border-radius:50%;border:0;background:#f4f9ff;color:#0b1330;cursor:pointer}
-.tt-console-volume {display:flex;align-items:center}
-.tt-console-volume input {width:100%}
-.tt-console-more {appearance:none;padding:9px 14px;border-radius:999px;border:1px solid rgba(244,249,255,.35);background:none;color:#f4f9ff;font:700 13px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;cursor:pointer;white-space:nowrap}
-.tt-console-tracks {display:flex;}
-.tt-console-track {appearance:none;border-radius:999px;border:1px solid rgba(244,249,255,.28);background:none;color:#f4f9ff;font:700 13px/1 'Quicksand',sans-serif;cursor:pointer}
-.tt-console-track.is-on {background:#f4f9ff;color:#0b1330;border-color:#f4f9ff}
-.tt-console-lamps {display:flex;align-items:center;gap:18px;padding-top:10px;border-top:1px solid rgba(232,246,250,.1)}
-.tt-console-lamps .tt-lanterns {flex:1 1 auto;display:flex;flex-wrap:wrap;gap:4px 28px;margin:0}
-.tt-console-lamps .tt-lantern-row {gap:4px 14px}
-.tt-console-view {appearance:none;flex:none;padding:9px 16px;border-radius:999px;border:1px solid rgba(244,249,255,.35);background:none;color:#f4f9ff;font:700 13px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;cursor:pointer}
-.tt-console-view:hover, .tt-console-more:hover, .tt-console-track:hover {border-color:rgba(244,249,255,.7)}
+/* as narrow as the field filters allow in each language */
+:lang(en) .tt-console-host {--console-w:700px}
+:lang(ja) .tt-console-host {--console-w:800px}
+.tt-console {display:grid;padding:8px 12px 8px 8px;border-radius:24px;background:rgba(4,20,30,.82);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(141,236,252,.14),0 24px 60px -20px rgba(0,6,14,.9);color:#f4f9ff}
+.tt-console-now {display:flex;align-items:center;gap:12px;padding-bottom:8px}
+.tt-console button {appearance:none;border:0;cursor:pointer;font:700 13px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;white-space:nowrap}
+/* the song: disc, title, artist */
+.tt-console-song {flex:1 1 auto;min-width:0;display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:12px;padding:6px}
+.tt-console-song .tt-disc {position:relative;inset:auto;width:48px}
+.tt-console-text {min-width:0;display:grid;gap:4px;margin:0}
+.tt-console-text span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tt-console-title {font:800 16px/1.25 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:#fbffff}
+.tt-console-artist {font:400 13px/1.3 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.66)}
+.tt-console-chev {width:7px;height:7px;margin-left:2px;border-top:2px solid currentColor;border-right:2px solid currentColor;rotate:45deg;opacity:.5;transition:opacity .2s ease,translate .2s ease}
+.tt-console-more:hover .tt-console-chev {opacity:1;translate:2px 0}
+/* details: a quiet pill */
+.tt-console-more {flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 16px 0 18px;border-radius:999px;background:rgba(251,255,255,.08);color:#f4f9ff;transition:background .2s ease}
+.tt-console-more:hover {background:rgba(251,255,255,.16)}
+/* the album's tracks */
+.tt-console-tracks {display:flex;gap:4px}
+.tt-console-track {min-width:36px;height:30px;padding:0 10px;border-radius:999px;background:rgba(251,255,255,.07);color:#f4f9ff;font-family:'Quicksand',sans-serif!important}
+.tt-console-track:hover {background:rgba(251,255,255,.15)}
+/* play and volume in one capsule */
+.tt-console-deck {flex:none;display:flex;align-items:center;gap:12px;padding:4px 16px 4px 4px;border-radius:999px;background:rgba(251,255,255,.08)}
+.tt-console-play {position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fbffff;color:#05303a;box-shadow:none;transition:scale .2s ease}
+.tt-console-play:hover {scale:1.06}
+.tt-console-play .tt-shelf-play-icon {border-left-width:13px;border-top-width:8px;border-bottom-width:8px;margin-left:3px}
+.tt-console-play.is-playing .tt-shelf-play-icon {width:12px;height:14px;margin:0}
+.tt-console-volume {display:flex;align-items:center;gap:8px;width:120px;color:rgba(232,246,250,.6)}
+.tt-console-volume::before {content:'';flex:none;width:16px;height:16px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6h3l4-3v10l-4-3H2z' fill='%23000'/%3E%3Cpath d='M11.5 5.5a3.5 3.5 0 0 1 0 5M13.5 3.5a6.5 6.5 0 0 1 0 9'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6h3l4-3v10l-4-3H2z' fill='%23000'/%3E%3Cpath d='M11.5 5.5a3.5 3.5 0 0 1 0 5M13.5 3.5a6.5 6.5 0 0 1 0 9'/%3E%3C/svg%3E") center/contain no-repeat}
+.tt-console-volume input {flex:1 1 auto;min-width:0;height:20px;margin:0;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+.tt-console-volume input:focus-visible {outline:2px solid #8decfc;outline-offset:3px;border-radius:6px}
+.tt-console-volume input::-webkit-slider-runnable-track {height:4px;border-radius:4px;background:linear-gradient(90deg,#a9e9f4 calc(var(--v) * 100%),rgba(251,255,255,.18) calc(var(--v) * 100%))}
+.tt-console-volume input::-moz-range-track {height:4px;border-radius:4px;background:rgba(251,255,255,.18)}
+.tt-console-volume input::-moz-range-progress {height:4px;border-radius:4px;background:#a9e9f4}
+.tt-console-volume input::-webkit-slider-thumb {-webkit-appearance:none;width:12px;height:12px;margin-top:-4px;border-radius:50%;border:0;background:#fbffff;box-shadow:0 1px 4px rgba(0,16,22,.5)}
+.tt-console-volume input::-moz-range-thumb {width:12px;height:12px;border-radius:50%;border:0;background:#fbffff}
+/* filters: one tray. Field on top; role nested under it (indented, hooked by an L-shaped line from the field
+   caption, a step smaller), so it reads as a sub-filter. The chosen chip is lit amber; details at the end. */
+.tt-console-lamps {display:flex;align-items:center;gap:16px;padding:10px 0 0 6px;border-top:1px solid rgba(232,246,250,.1)}
+.tt-lanterns {flex:0 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0;padding:4px 8px 6px 0;border-radius:20px;background:rgba(251,255,255,.05);box-shadow:inset 0 0 0 1px rgba(251,255,255,.06)}
+.tt-lantern-row {position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:2px}
+.tt-lantern-row .tt-filter-caption {margin:0 4px 0 14px;font:700 12px/1 'Hanken Grotesk',var(--tt-noto-primary),sans-serif;color:rgba(232,246,250,.55)}
+.tt-lantern-row + .tt-lantern-row {margin-left:22px}
+.tt-lantern-row + .tt-lantern-row::before {content:'';position:absolute;left:0;top:-12px;width:10px;height:26px;border-left:1.5px solid rgba(232,246,250,.3);border-bottom:1.5px solid rgba(232,246,250,.3);border-bottom-left-radius:6px}
+.tt-console .tt-lantern-row + .tt-lantern-row .tt-lamp {height:26px;padding:0 10px;font-size:13px}
+.tt-console .tt-lamp {height:30px;padding:0 12px;border-radius:999px;background:none;color:rgba(232,246,250,.78);font-size:14px;transition:background .2s ease,color .2s ease}
+.tt-console .tt-lamp:hover {background:rgba(251,255,255,.08);color:#fbffff}
+.tt-console .tt-lamp.is-on, .tt-console .tt-console-track.is-on {background:rgba(255,217,140,.16);color:#ffd98c;box-shadow:inset 0 0 0 1px rgba(255,217,140,.42)}
 @media (max-width:760px) {.tt-console-host {display:none}}
 .tt-float.is-current, .tt-float:hover, .tt-float:focus-within {z-index:6}
-.tt-console-volume input {accent-color:#8decfc}
-
-.tt-console {gap:0;padding:10px 14px 10px 10px}
-.tt-console-now {grid-template-columns:52px minmax(0,1fr) auto auto 120px auto auto}
-.tt-console-now .tt-disc {width:52px}
-.tt-console-story {white-space:nowrap}
-.tt-console-tracks {padding-left:0;gap:4px}
-.tt-console-track {min-width:34px;height:28px}
-.tt-console-lamps {margin-top:10px}
 /* an album: a branch current splits off at its disc and runs sideways, one smaller disc per track on it,
    each named under its disc */
 .tt-current .tt-branch {stroke:rgba(141,236,252,.3);stroke-width:2px}
