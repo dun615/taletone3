@@ -1853,6 +1853,7 @@ html body #content#content .tt-case-body { padding: 30px 34px 30px 0 !important;
 /* tagline under the title; one-colour contact title; Parable's thin wordmark sized up; player row after a pick */
 html body #content#content .tt-home-tagline { font-weight: 700 !important; }
 html body #content#content .tt-contact-title .tt-s-color-var-accent-9aa3 { color: inherit !important; }
-.tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(26px, 2.6vw, 34px); }
+.tt-shelf > .tt-shelf-clients .tt-shelf-clients-row img[alt="Parable"] { height: clamp(21px, 2.1vw, 28px); }
 .tt-shelf:not(.is-engaged) .tt-console-now { display: none; }
 .tt-shelf:not(.is-engaged) .tt-console-lamps { padding-top: 0; border-top: 0; }
+@media (max-width: 760px) { .tt-shelf-clients-row { display: grid; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 18px 36px; } }
