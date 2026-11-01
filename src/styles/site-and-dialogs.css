@@ -1891,20 +1891,21 @@ html body #content#content :is(.tt-audience-hook, .tt-process .tt-cmp-result, .t
 html body #content#content .tt-audience-title { margin: 0 0 8px !important; }
 html body #content#content .tt-audience-hook { margin: 0 0 14px !important; padding: 0 !important; border: 0 !important; color: var(--ink, #141C30) !important; }
 html body #content#content .tt-audience-hook::before { content: none !important; }
-html body #content#content .tt-audience-services { display: block !important; margin: auto 0 0 !important; padding: 12px 0 0 !important; border-top: 1px solid color-mix(in srgb, var(--ink, #141C30) 12%, transparent); }
+html body #content#content .tt-audience-services { display: block !important; margin: 0 !important; padding: 12px 0 0 !important; border-top: 1px solid color-mix(in srgb, var(--ink, #141C30) 12%, transparent); }
 html body #content#content .tt-audience-services li { display: inline !important; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; font-size: 14px !important; font-weight: 400 !important; color: var(--soft, #44505F) !important; }
 html body #content#content .tt-audience-services li:not(:last-child)::after { content: ', '; }
 
 html body #content#content .tt-network-title { font-family: var(--tt-noto-primary), sans-serif !important; font-weight: 800 !important; }
 html body #content#content .tt-network-cta { flex: none; font-size: var(--fs-s); font-weight: 700; color: var(--accent, #0E6E7D); white-space: nowrap; }
 
-html body #content#content .tt-process .tt-cmp-card[data-ours=true] { text-align: left !important; align-items: flex-start !important; }
-html body #content#content .tt-process .tt-cmp-head,
-html body #content#content .tt-process .tt-cmp-flow { justify-content: flex-start !important; }
-html body #content#content .tt-process .tt-cmp-result { text-align: left !important; align-self: stretch; }
-@media (max-width: 760px) {
-  html body #content#content .tt-process .tt-cmp-card[data-ours=true] { padding: 22px 4px !important; }
-  html body #content#content .tt-process .tt-cmp-card:not(:last-child)::after { right: auto !important; left: 4px !important; }
+/* Centred where a block stands alone on the page's centre line: the About label and columns, the Approach process
+   cards, and on phones the head of the case card. Paragraph-length text inside tiles and forms stays left. */
+html body #content#content .tt-about-label { align-self: center; text-align: center; }
+html body #content#content .tt-audience { text-align: center !important; align-items: center; }
+html body #content#content .tt-audience-services { align-self: stretch; }
+@media (max-width: 900px) {
+  html body #content#content .tt-case-art { margin: 0 auto; }
+  html body #content#content :is(.tt-case-eyebrow, .tt-case-title, .tt-case-meta) { text-align: center; }
 }
 
 /* case card: one tile style, only the answer highlighted; no + / = when stacked */
@@ -1917,4 +1918,16 @@ html body #content#content .tt-case-steps > li[data-kind=question]::before { fon
   html body #content#content .tt-case-steps { gap: 10px !important; }
   html body #content#content .tt-case-steps > li[data-kind=strength]::before,
   html body #content#content .tt-case-steps > li[data-kind=question]::before { content: none !important; }
+}
+
+/* Case card: the cover is one face of the card, edge to edge, so no uneven margin is left around it. Wide
+   screens: the left column, as tall as the text. Phones: a banner across the top. */
+html body #content#content .tt-case { padding: 0 !important; grid-template-columns: minmax(0, 340px) minmax(0, 1fr) !important; align-items: stretch !important; overflow: hidden; }
+html body #content#content .tt-case-art { aspect-ratio: auto !important; height: 100%; min-height: 340px; border-radius: 0 !important; }
+html body #content#content .tt-case-body { padding: 30px 34px 30px 0 !important; justify-content: center; }
+@media (max-width: 900px) {
+  html body #content#content .tt-case { grid-template-columns: minmax(0, 1fr) !important; }
+  html body #content#content .tt-case-art { width: 100% !important; max-width: none !important; min-height: 0; aspect-ratio: 4 / 3 !important; margin: 0 !important; }
+  html body #content#content .tt-case-art > img { object-position: 50% 22%; }
+  html body #content#content .tt-case-body { padding: 22px 20px 24px !important; }
 }
