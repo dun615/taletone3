@@ -431,7 +431,7 @@ img{max-width:100%}
 .jy-stage-mode .jy-trail .jy-say.on{display:flex;opacity:1;animation:jy-hang .8s var(--tt-spring)}
 .jy-stage-mode .jy-trail .jy-av{display:none}
 .jy-stage-mode .jy-trail .jy-bub{border-radius:6px 22px 22px 22px;font-size:15px}
-.jy-stage-mode .jy-trail .jy-bub::before{content:"";position:absolute;left:6px;top:-26px;width:1.5px;height:26px;background:var(--tt-ink)}
+.jy-stage-mode .jy-trail .jy-step .jy-bub::before{content:"";position:absolute;left:6px;top:-26px;width:1.5px;height:26px;background:var(--tt-ink)}
 .jy-stage-mode .jy-trail .jy-bub{position:relative}
 .jy-stage-mode .jy-trail .jy-tx b{font-size:16px}
 .jy-stage-mode .jy-trail .jy-tx small{font-size:13px}
@@ -461,3 +461,10 @@ img{max-width:100%}
 .jy-stage-mode .jy-case-marks{display:block;padding:0}
 .jy-stage-mode .jy-case-mark{position:absolute;left:0;top:0;max-width:min(300px,24vw);padding:8px 12px;border-radius:12px;background:rgba(254,254,254,.94);transform:translate(calc(var(--x) + 14px),calc(var(--y) - 50%));opacity:0;transition:opacity .4s}
 .jy-stage-mode .jy-case-mark.on{opacity:1;animation:jy-arrive .6s var(--tt-spring)}
+
+/* messages written along the line: journey.js places each one at its point of the line, scaled by depth */
+.jy-stage-mode .jy-chat.jy-voice,.jy-stage-mode .jy-case.jy-voice,.jy-stage-mode .jy-trail.jy-voice{display:block!important;position:absolute!important;inset:0!important;width:auto!important;transform:none!important;pointer-events:none}
+.jy-stage-mode .jy-case-marks{position:absolute;inset:0}
+.jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:none!important;animation:none!important;pointer-events:none;will-change:transform,opacity}
+.jy-stage-mode [data-anchor].on{pointer-events:auto}
+.jy-stage-mode .jy-case-mark[data-anchor]{display:block!important;max-width:min(300px,24vw)!important}

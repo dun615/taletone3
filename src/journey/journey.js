@@ -320,7 +320,6 @@
   const stage = (() => {
     if (!STAGE) return { paintRecord() {}, reset() {}, syncInert() {}, go() {} };
     const stageEl = $('#jy-stage'), cv = $('#jy-cv'), ctx = cv.getContext('2d');
-    const wash = document.createElement('canvas'), wctx = wash.getContext('2d');
     const track = $('#jy-track');
     track.style.setProperty('--track', (TOTAL * 100 + 100) + 'vh');
     const sections = $$('.jy-ch');
@@ -331,36 +330,8 @@
     const items = $$('.jy-sw', spiral);
     const N = items.length;
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
-    let palette = [], blots = [];
-    let line = [], accents = [], trail = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
-    let wireA = 1, cam = 0, recBuilt = false, chapter = '', caseOffer = false, caseLaid = false, casePath = null;
-    // the case's path: from under her request (top right) down to our answer (bottom left), an S of the pen
-    const caseReq = $('#jy-case-req'), caseAns = $('#jy-case-ans'), caseMarks = [$('#jy-case-m0'), $('#jy-case-m1')];
-    const bez = (p, t) => { const u2 = 1 - t; return [0, 1].map((k) => u2 * u2 * u2 * p[0][k] + 3 * u2 * u2 * t * p[1][k] + 3 * u2 * t * t * p[2][k] + t * t * t * p[3][k]); };
-    function placeCase(lc) {
-      if (!caseReq) return;
-      if (!caseLaid) {
-        caseLaid = true;
-        caseReq.style.setProperty('--x', W * 0.5 + 'px'); caseReq.style.setProperty('--y', H * 0.16 + 'px');
-        caseAns.style.setProperty('--x', W * 0.07 + 'px'); caseAns.style.setProperty('--y', H * 0.6 + 'px');
-        const rh = caseReq.offsetHeight || 90;
-        const a = [W * 0.5 + 60, H * 0.16 + rh + 6], b = [W * 0.07 + 70, H * 0.6 - 10];
-        casePath = [a, [a[0] + W * 0.22, a[1] + H * 0.1], [b[0] + W * 0.34, b[1] - H * 0.02], b];
-        caseMarks.forEach((m, n) => { const q = bez(casePath, n ? 0.66 : 0.3); m.style.setProperty('--x', q[0] + 'px'); m.style.setProperty('--y', q[1] + 'px'); });
-      }
-      const pen = clamp((lc - 0.14) / 0.56);
-      on(caseReq, lc > 0.04); on(caseMarks[0], pen >= 0.3); on(caseMarks[1], pen >= 0.66); on(caseAns, pen >= 1);
-    }
-    function drawCase(lc) {
-      if (!casePath || !caseLaid) return;
-      const pen = clamp((lc - 0.14) / 0.56), fade = 1 - ease((lc - 0.94) / 0.08);
-      if (pen <= 0 || fade <= 0) return;
-      ctx.strokeStyle = `rgba(${INK},${fade})`; ctx.lineCap = 'round'; ctx.lineWidth = 2.2; ctx.beginPath();
-      for (let t = 0; t <= pen + 1e-6; t += 0.01) { const q = bez(casePath, Math.min(t, pen)); t ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
-      ctx.stroke();
-      [0.3, 0.66].forEach((t) => { if (pen < t) return; const q = bez(casePath, t); ctx.fillStyle = `rgba(${INK},${fade})`; ctx.beginPath(); ctx.arc(q[0], q[1], 4, 0, Math.PI * 2); ctx.fill(); });
-      if (pen < 1) { const q = bez(casePath, pen); ctx.beginPath(); ctx.arc(q[0], q[1], 3.2, 0, Math.PI * 2); ctx.fill(); }
-    }
+    let palette = [];
+    let chapter = '', caseOffer = false, recBuilt = false;
     const CASE = ($('.jy-case-btn') || {}).dataset ? $('.jy-case-btn').dataset.open : null;
     const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', case: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
 
@@ -373,155 +344,149 @@
       $('#jy-clock').textContent = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
       try { $('#jy-date').textContent = d.toLocaleDateString(loc, { month: 'long', day: 'numeric', weekday: 'long' }); } catch (_) {} }
 
-    /* ---- camera: depth z; the scroll walks forward ---- */
-    const CX = () => W / 2, CY = () => H * 0.5;
-    const sc = (z, c = cam) => z / Math.max(0.05, z - c);
-    const P = (p, c = cam) => { const s = sc(p[2], c); return [CX() + (p[0] - CX()) * s, CY() + (p[1] - CY()) * s, s]; };
-
-    /* ---- one landscape skeleton: the bones are ours, the colour is theirs ---- */
-    const HILL = {
-      near: { z: 1.6, y: (x) => 0.75 + 0.045 * Math.sin(x * 3.1 + 0.4) + 0.018 * Math.sin(x * 7.3) },
-      mid: { z: 2.5, y: (x) => 0.625 + 0.04 * Math.sin(x * 2.3 + 1.6) + 0.014 * Math.sin(x * 9.1) },
-      far: { z: 4, y: (x) => { const pk = (c, w, h) => { const d = Math.abs(x - c) / w; return d >= 1 ? 0 : h * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * d), 1.1); }; return 0.53 - Math.max(pk(0.12, 0.2, 0.13), pk(0.38, 0.17, 0.09), pk(0.7, 0.24, 0.15), pk(0.98, 0.18, 0.1)) - 0.012 * Math.sin(x * 23); } },
-    };
-    // the signature songs (pinned in the data) bring the colours
+    /* ---- one world in depth. The pen draws a single line forward through it and the camera follows the pen,
+       a few steps behind. Hills, poles, the wire, grass and clouds stand along the way; every message is written
+       at a point of the line and recedes as the visitor passes it. At the end the same line coils around the
+       view, and in the next chapter it splits into the five lines of the staff. ---- */
     const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
     Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
-    const startPoint = () => [W * 0.22, H * 0.86];
-    function spline(ctrl, n, z) {
-      const out = [];
-      for (let i = 0; i < n; i++) {
-        const t = (i / (n - 1)) * (ctrl.length - 1), k = Math.min(ctrl.length - 2, Math.floor(t)), f = t - k;
-        const p0 = ctrl[Math.max(0, k - 1)], p1 = ctrl[k], p2 = ctrl[k + 1], p3 = ctrl[Math.min(ctrl.length - 1, k + 2)];
-        const c = (a, b, cc, d) => 0.5 * (2 * b + (-a + cc) * f + (2 * a - 5 * b + 4 * cc - d) * f * f + (-a + 3 * b - 3 * cc + d) * f * f * f);
-        out.push([c(p0[0], p1[0], p2[0], p3[0]), c(p0[1], p1[1], p2[1], p3[1]), z]);
-      }
-      return out;
+    const layerColour = (i) => { const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (palette[i % Math.max(1, palette.length)] || { c: fall[i % 3] }).c; };
+    const PEN = { tale: [2, 10], tone: [10, 22], case: [22, 30], music: [30, 42] };
+    const WIRE = [10.5, 21.5], POLE = 3, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, COIL = 38.5;
+    const penAt = (u) => { for (const k of ['music', 'case', 'tone', 'tale']) { const l = local(u, k); if (l > 0) return lerp(PEN[k][0], PEN[k][1], clamp(k === 'tale' ? (l - 0.08) / 0.92 : l)); } return PEN.tale[0]; };
+    const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
+    const coilK = (z) => ease((z - COIL) / 3);
+    function pathAt(z) {
+      let x = 0.85 * Math.sin(z * 0.33) + 0.3 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.22 * Math.sin(z * 0.47);
+      const ww = wireW(z);
+      if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
+      const ck = coilK(z);
+      if (ck > 0) { const a = (z - COIL) * 1.6, r = 0.9 * ck; x = lerp(x, r * Math.cos(a), ck); y = lerp(y, r * Math.sin(a), ck); }
+      return [x, y, z];
     }
-    const hillPts = (name, from, to, n) => { const h = HILL[name], o = []; for (let i = 0; i < n; i++) { const x = lerp(from, to, i / (n - 1)); o.push([x * W, h.y(x) * H, h.z]); } return o; };
-    function buildLine() {
-      const [sx, sy] = startPoint();
-      const PX = [0.04, 0.28, 0.52, 0.76, 1.0].map((v) => v * W), PY = H * 0.28, SAG = H * 0.075, ZP = 1.3;
-      // rise: from the chosen reply up to the first pole, with a slack loop the winder keeps
-      const rise = spline([[sx, H * 1.08], [sx, sy], [lerp(sx, PX[0], 0.45), H * 0.7], [W * 0.1, H * 0.5], [PX[0], PY]], 240, ZP);
-      const li = Math.round(rise.length * 0.62), a = rise[li], b = rise[li + 3], ang = Math.atan2(b[1] - a[1], b[0] - a[0]), rr = 20, loop = [];
-      for (let j = 1; j < 56; j++) { const th = (j / 56) * Math.PI * 2, cx = a[0] - Math.sin(ang) * rr, cy = a[1] + Math.cos(ang) * rr; loop.push([cx + Math.sin(ang + th) * rr, cy - Math.cos(ang + th) * rr, ZP]); }
-      rise.splice(li, 0, ...loop);
-      line = [...rise]; knot = Math.round(rise.length * 0.3);
-      // the wire between poles: the works were already hanging here
-      poles = [{ x: PX[0], i: line.length - 1 }]; const mids = [];
-      for (let k = 0; k < 4; k++) { for (let j = 1; j <= 120; j++) { const f = j / 120; line.push([lerp(PX[k], PX[k + 1], f), PY + SAG * 4 * f * (1 - f), ZP, 4 * f * (1 - f), k]); if (j === 60) mids.push(line.length - 1); } poles.push({ x: PX[k + 1], i: line.length - 1 }); }
-      poles.forEach((p) => { p.top = PY; p.base = HILL.near.y(p.x / W) * H + H * 0.04; });
-      // then the land, back and forth like one stroke of a pen
-      line.push(...spline([[PX[4], PY], [W * 1.08, H * 0.5], [W * 1.08, HILL.near.y(1.08) * H]], 40, ZP).slice(1));
-      const nearStart = line.length; line.push(...hillPts('near', 1.08, -0.08, 320));
-      line.push(...hillPts('mid', -0.08, 1.08, 320));
-      line.push(...hillPts('far', 1.08, -0.08, 320));
-      layers = ['far', 'mid', 'near'].map((n) => ({ n, z: HILL[n].z, pts: hillPts(n, -0.1, 1.1, 90) }));
+    let penZ = PEN.tale[0], camX = 0, camY = 0, camZ = -1, F3 = 800;
+    const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
+    const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
+
+    let ridges = [], clouds = [], grass = [], dots = [], poles = [];
+    function buildWorld() {
+      F3 = Math.min(W, H * 1.6) * 0.62;
+      let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      ridges = [];
+      for (let k = 0, z = 4.5; z < 64; k++, z += 2.6 + rnd() * 1.4) {
+        const amp = 0.35 + rnd() * 0.55 + (k % 4 === 3 ? 0.4 : 0), f1 = 0.5 + rnd() * 0.7, f2 = 1.4 + rnd(), p1 = rnd() * 6, p2 = rnd() * 6, pts = [];
+        for (let x = -8; x <= 8.001; x += 0.2) pts.push([x, GROUND - amp * (0.55 + 0.45 * Math.sin(x * f1 + p1)) * (0.7 + 0.3 * Math.sin(x * f2 + p2)), z]);
+        ridges.push({ z, k, pts });
+      }
+      ridges.sort((a, b) => b.z - a.z);
+      clouds = [];
+      for (let z = 7; z < 64; z += 4 + rnd() * 4) {
+        const X = (rnd() - 0.5) * 7, Y = -2.1 + rnd() * 0.6, wd = 0.9 + rnd() * 0.9, pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
+        for (let j = 0; j <= 40; j++) { const x = -0.5 + j / 40; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts.push([X + x * wd, Y - top * wd * 1.05, z]); }
+        for (let j = 1; j <= 10; j++) pts.push([X + (0.5 - j / 10) * wd, Y + Math.sin((j / 10) * Math.PI) * 0.03, z]);
+        clouds.push({ z, pts, ci: clouds.length });
+      }
       grass = [];
-      let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      for (let xf = -0.04; xf <= 1.04; xf += 0.012 + rnd() * 0.03) { const m = 2 + ((rnd() * 3) | 0); for (let q = 0; q < m; q++) { const x = xf + q * 0.0035, yb = HILL.near.y(x) * H; grass.push({ x: x * W, y: yb + 1, h: (q === 1 ? 14 : 6) + rnd() * 10, lean: (q - 1) * 3 + (rnd() - 0.5) * 2, i: nearStart + Math.round(clamp((1.08 - x) / 1.16) * 319) }); } }
-      clouds = [[0.2, 0.17, 0.13, 0.86], [0.6, 0.13, 0.17, 0.89], [0.88, 0.21, 0.1, 0.92]].map(([cx, cy, w, a], ci) => {
-        const pts2 = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]], X = cx * W, Y = cy * H, Wd = w * W;
-        for (let j = 0; j <= 80; j++) { const x = -0.5 + j / 80; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts2.push([X + x * Wd, Y - top * Wd * 1.05, 5]); }
-        for (let j = 1; j <= 20; j++) { const x = 0.5 - j / 20; pts2.push([X + x * Wd, Y + Math.sin((j / 20) * Math.PI) * 4, 5]); }
-        return { pts: pts2, a, b: a + 0.05, ci };
-      });
-      accents = mids.slice(0, 3).map((idx) => idx / (line.length - 1));
-      // the messages of the philosophy are left where the pen passes: the creed on the rise, the steps on the swells
-      trail = [[Math.round(li * 0.45), '#jy-creed'], ...mids.slice(0, 3).map((idx, n) => [idx, '#jy-step-' + n])].map(([i, sel]) => ({ i, el: $(sel) })).filter((a) => a.el);
+      for (let z = 1; z < 44; z += 0.07 + rnd() * 0.12) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
+      poles = [];
+      for (let z = WIRE[0]; z <= WIRE[1] - 1.9; z += POLE) poles.push(z);
+      const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = [];
+      for (let i = 0; i < n; i++) { const z = rnd() * 15; dots.push({ x: (rnd() - 0.5) * 9, y: -2.4 + rnd() * 3.8, z, pz: clamp(z + (rnd() - 0.3) * 2, 2.2, 14), s: rnd() }); }
     }
-    function buildDots() { const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = []; for (let i = 0; i < n; i++) dots.push({ x: lerp(-0.3, 1.3, Math.random()) * W, y: lerp(-0.05, 1.05, Math.random()) * H, z: lerp(1.2, 6, Math.random()), t: Math.random(), s: Math.random() }); }
 
-    function paintBlot(b, k, c = wctx) {
-      const g = c.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * k);
-      g.addColorStop(0, `rgba(${b.c},${b.a})`); g.addColorStop(0.7, `rgba(${b.c},${b.a * 0.6})`); g.addColorStop(1, `rgba(${b.c},0)`);
-      c.fillStyle = g; c.beginPath();
-      for (let j = 0; j <= 18; j++) { const an = (j / 18) * Math.PI * 2, rr = b.r * k * (0.8 + 0.25 * Math.sin(an * 3 + b.x)), x = b.x + Math.cos(an) * rr, y = b.y + Math.sin(an) * rr; j ? c.lineTo(x, y) : c.moveTo(x, y); }
-      c.fill();
-    }
-    const redrawWash = () => { wctx.clearRect(0, 0, W, H); for (const b of blots) if (b.done) paintBlot(b, 1); };
-
-    /* ---- the hills fill with the colours they were brought ---- */
-    const layerColour = (i) => { const p = [...palette].sort((a, b) => b.s - a.s); const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (p[i % Math.max(1, p.length)] || { c: fall[i % 3] }).c; };
-    function facePath(L) { ctx.beginPath(); L.pts.forEach((p, i) => { const q = P(p); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); const e = P(L.pts[L.pts.length - 1]), s0 = P(L.pts[0]); ctx.lineTo(e[0], H * 3); ctx.lineTo(s0[0], H * 3); ctx.closePath(); }
-    function drawFaces(k, alpha) {
-      if (alpha <= 0 || k <= 0) return;
-      const ks = ease((k - 0.3) / 0.5);
-      if (ks > 0) { const c = layerColour(3), g = ctx.createLinearGradient(0, 0, 0, H * 0.6); g.addColorStop(0, `rgba(${c},${0.3 * ks * alpha})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H * 0.6); }
-      const delay = { near: 0, mid: 0.18, far: 0.36 };
-      layers.forEach((L, li) => {
-        const kk = ease((k - delay[L.n]) / 0.5); if (kk <= 0) return;
-        const c = layerColour(2 - li);
-        facePath(L); const top = P(L.pts[45])[1], g = ctx.createLinearGradient(0, top - 40, 0, top + H * 0.45);
-        g.addColorStop(0, `rgba(${c},${0.42 * kk * alpha})`); g.addColorStop(1, `rgba(${c},${0.14 * kk * alpha})`); ctx.fillStyle = g; ctx.fill();
-        ctx.beginPath(); L.pts.forEach((p, i) => { const q = P(p); i ? ctx.lineTo(q[0], q[1] + 3) : ctx.moveTo(q[0], q[1] + 3); }); ctx.strokeStyle = `rgba(${c},${0.35 * kk * alpha})`; ctx.lineWidth = 5; ctx.stroke();
-      });
-    }
-    function drawClouds(rv, k, alpha) {
-      for (const c of clouds) {
-        const g = clamp((rv - c.a) / (c.b - c.a)); if (g <= 0) continue;
-        const dx = reduce ? 0 : Math.sin(T * 0.08 + c.ci * 2) * 24;
-        const Q = c.pts.map((p) => P([p[0] + dx, p[1], p[2]])), n = Math.max(2, Math.round(g * Q.length));
-        if (k > 0 && g >= 1) {
-          const col = layerColour(1); ctx.beginPath(); Q.forEach((q, i) => (i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath();
-          const top = Math.min(...Q.map((q) => q[1])), bot = Math.max(...Q.map((q) => q[1])), gr = ctx.createLinearGradient(0, top, 0, bot);
-          gr.addColorStop(0, `rgba(254,254,254,${0.97 * k * alpha})`); gr.addColorStop(0.6, `rgba(254,254,254,${0.9 * k * alpha})`); gr.addColorStop(1, `rgba(${col},${0.22 * k * alpha})`); ctx.fillStyle = gr; ctx.fill();
-        }
-        ctx.strokeStyle = `rgba(${INK},${alpha * 0.85})`; ctx.lineWidth = 1.3 * Q[0][2]; ctx.lineJoin = 'round'; ctx.beginPath();
-        for (let i = 0; i < n; i++) { const q = Q[i]; i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
-        ctx.stroke();
+    // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
+    const ANCHORS = [
+      ['#jy-hello', 3.6, 1], ['#jy-pcard', 5.4, -1], ['#jy-types', 7.2, 1], ['#jy-clients', 9.0, -1],
+      ['#jy-creed', 10.2, 1], ['#jy-step-0', 12, 0], ['#jy-step-1', 15, 0], ['#jy-step-2', 18, 0],
+      ['#jy-case-req', 23.2, 1], ['#jy-case-m0', 25, 0.5], ['#jy-case-m1', 26.8, -0.5], ['#jy-case-ans', 28.8, -1],
+      ['#jy-landscape', 33.5, 1], ['#jy-fact', 35.6, -1],
+    ].map(([sel, z, side]) => ({ el: $(sel), z, side, w: 0, h: 0 })).filter((a) => a.el);
+    ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
+    const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
+    function placeAnchors() {
+      for (const a of ANCHORS) {
+        const p = V(pathAt(a.z)), written = penZ >= a.z;
+        let A = 0;
+        if (p && written) A = clamp((p[2] - 1.1) / 0.6) * clamp((15 - p[2]) / 4) * clamp((penZ - a.z) / 0.25);
+        a.el.classList.toggle('on', A > 0.35);
+        a.el.style.setProperty('--aa', A.toFixed(3));
+        if (A <= 0) continue;
+        if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; }
+        const s3 = clamp(Math.pow(AHEAD / p[2], 0.55), 0.6, 1.3), w = a.w * s3, h = a.h * s3;
+        let x, y;
+        if (a.side === 1) { x = p[0] + 30; y = p[1] - h / 2; }
+        else if (a.side === -1) { x = p[0] - 30 - w; y = p[1] - h / 2; }
+        else if (a.side === 0) { x = p[0] - 6 * s3; y = p[1] + 26 * s3; }
+        else if (a.side === 0.5) { x = p[0] + 16; y = p[1] - h / 2; }
+        else { x = p[0] - 16 - w; y = p[1] - h / 2; }
+        a.el.style.setProperty('--ax', x.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', s3.toFixed(3));
       }
     }
-    // the line swells near the works, like a crescendo, and thins where it rests
-    function drawLine(rv, alpha) {
-      if (alpha <= 0) return;
-      const n = Math.max(2, Math.round(rv * (line.length - 1)));
+    function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
+    function drawWorld(A, lm, now) {
+      const fillK = ease(lm / 0.45), land = A * (1 - ease((lm - 0.72) / 0.22));
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      const Q = line.map((p) => { const q = P(p); if (p[3] && !reduce) q[1] += Math.sin(T * 1.3 + p[4] * 1.7) * 5 * p[3] * q[2]; return q; });
-      ctx.lineWidth = 1.2; ctx.strokeStyle = `rgba(${INK},${alpha * 0.8})`; ctx.beginPath();
-      for (const g of grass) { if (g.i > n) continue; const a = P([g.x, g.y, 1.6]), s = a[2], sw = reduce ? 0 : Math.sin(T * 1.8 + g.x * 0.03) * 3; ctx.moveTo(a[0], a[1]); ctx.quadraticCurveTo(a[0] + g.lean * s * 0.5, a[1] - g.h * s * 0.6, a[0] + (g.lean + sw) * s, a[1] - g.h * s); }
-      ctx.stroke();
-      for (let i = 1; i < n; i += 3) {
-        const j = Math.min(n - 1, i + 3), t = i / (line.length - 1);
-        let w = 1.5; for (const a of accents) w += 2.2 * Math.exp(-Math.pow((t - a) / 0.03, 2));
-        w *= clamp(Q[i][2], 1, 3) * (line[i][2] >= 4 ? 0.75 : 1);
-        const B = (k) => (reduce ? 0 : Math.sin(T * 6 + k * 0.08) * 0.45);
-        ctx.strokeStyle = `rgba(${INK},${alpha * (line[i][2] < 1.5 ? wireA : 1)})`; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(Q[i - 1][0], Q[i - 1][1] + B(i - 1));
-        for (let k = i; k <= j; k++) ctx.lineTo(Q[k][0], Q[k][1] + B(k));
-        ctx.stroke();
+      if (land > 0) {
+        // the sky takes a faint colour as the songs play
+        if (fillK > 0) { const c = layerColour(2), g = ctx.createLinearGradient(0, 0, 0, H * 0.6); g.addColorStop(0, `rgba(${c},${0.28 * fillK * land})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H * 0.6); }
+        for (const cl of clouds) {
+          const dz = cl.z - camZ; if (dz < 0.4 || dz > FAR3 || penZ < cl.z - 10) continue;
+          const reveal = clamp((penZ - (cl.z - 10)) / 2), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
+          const a = fogA(dz) * land;
+          if (fillK > 0) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = `rgba(254,254,254,${0.9 * fillK * a})`; ctx.fill(); }
+          ctx.strokeStyle = `rgba(${INK},${0.8 * a})`; ctx.lineWidth = clamp(1.3 * AHEAD / dz, 0.5, 2.2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+        }
+        for (const r of ridges) {
+          const dz = r.z - camZ; if (dz < 0.3 || dz > FAR3) continue;
+          const reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
+          const a = fogA(dz) * land, Q = r.pts.map(V), n = Math.max(2, Math.round(reveal * Q.length));
+          if (fillK > 0 && reveal >= 1) {
+            const c = layerColour(r.k % 3), last = Q[Q.length - 1], first = Q[0];
+            polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath();
+            ctx.fillStyle = `rgba(${c},${0.42 * fillK * a})`; ctx.fill();
+          }
+          ctx.strokeStyle = `rgba(${INK},${0.85 * a})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.5, 2.6); polyline(Q, n); ctx.stroke();
+        }
+        ctx.lineWidth = 1.1; ctx.beginPath();
+        for (const g of grass) {
+          const dz = g.z - camZ; if (dz < 0.3 || dz > 10 || penZ < g.z) continue;
+          const a = V([g.x, GROUND, g.z]); if (!a) continue;
+          const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
+          ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
+        }
+        ctx.strokeStyle = `rgba(${INK},${0.7 * land})`; ctx.stroke();
+        for (const z of poles) {
+          if (penZ < z) continue; const dz = z - camZ; if (dz < 0.3) continue;
+          const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
+          if (!a || !b) continue;
+          ctx.strokeStyle = `rgba(${INK},${fogA(dz) * land})`; ctx.lineWidth = clamp(2 * AHEAD / dz, 0.6, 3.2);
+          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
+        }
       }
-      ctx.strokeStyle = `rgba(${INK},${alpha * wireA})`;
-      for (const p of poles) {
-        const g = ease((n - p.i) / 90); if (g <= 0 || wireA <= 0) continue;
-        const a = P([p.x, p.top, 1.3]), b = P([p.x, lerp(p.top, p.base, g), 1.3]);
-        ctx.lineWidth = 2 * a[2]; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-        const c1 = P([p.x - 11, p.top + 10, 1.3]), c2 = P([p.x + 11, p.top + 10, 1.3]); ctx.lineWidth = 1.5 * a[2]; ctx.beginPath(); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
+      // the dots of the Tale drift, and each is gathered into the line once the pen passes it
+      if (penZ < 15) {
+        ctx.fillStyle = `rgb(${INK})`;
+        for (const d of dots) {
+          const g = clamp((penZ - d.pz) / 1.4); if (g >= 1) continue;
+          const tgt = pathAt(d.pz), wx = reduce ? 0 : Math.sin(T * 0.6 + d.s * 20) * 0.04, wy = reduce ? 0 : Math.cos(T * 0.4 + d.s * 9) * 0.03;
+          const q = V([lerp(d.x + wx, tgt[0], ease(g)), lerp(d.y + wy, tgt[1], ease(g)), lerp(d.z, tgt[2], ease(g))]); if (!q || q[2] > 16) continue;
+          const r = clamp(2.6 * AHEAD / q[2], 0.8, 4);
+          ctx.globalAlpha = A * 0.75 * fogA(q[2]) * clamp(q[2] / 1.5); ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
+        }
+        ctx.globalAlpha = 1;
       }
-      if (n > knot + 2 && wireA > 0) {
-        ctx.globalAlpha = wireA; const p = Q[knot], q = Q[knot + 3], an = Math.atan2(q[1] - p[1], q[0] - p[0]);
-        ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(an); ctx.scale(p[2], p[2]); ctx.fillStyle = `rgba(254,254,254,${alpha})`; ctx.lineWidth = 1.5; ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(-13, -8, 26, 16, 8); else ctx.rect(-13, -8, 26, 16);
-        ctx.fill(); ctx.stroke(); ctx.fillStyle = `rgba(${INK},${alpha})`; for (const dx of [-6, 0, 6]) { ctx.beginPath(); ctx.arc(dx, 0, 1.6, 0, Math.PI * 2); ctx.fill(); }
-        ctx.restore(); ctx.globalAlpha = 1;
+      // the line: thick close by, a hair far away, swelling where something is written on it
+      let run = [], wPrev = -1, aPrev = -1;
+      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${INK},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
+      for (let z = Math.max(PEN.tale[0], camZ + 0.15); z <= penZ + 1e-6; z += 0.03) {
+        const p = V(pathAt(Math.min(z, penZ))); if (!p) continue;
+        let sw = 1; for (const az of swellZ) sw += 0.8 * Math.exp(-Math.pow((z - az) / 0.35, 2));
+        const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * 20) / 20;
+        if (wd !== wPrev || al !== aPrev) { const lastP = run[run.length - 1]; flush(); run = lastP ? [lastP] : []; wPrev = wd; aPrev = al; }
+        run.push(p);
       }
-      if (n < line.length - 1) { const p = Q[n]; ctx.fillStyle = `rgba(${INK},${alpha})`; ctx.beginPath(); ctx.arc(p[0], p[1], 3.2, 0, Math.PI * 2); ctx.fill(); }
-    }
-
-    /* ---- the turn: the faces scatter to points, the points curl like the mark, then find the groove ---- */
-    const CURL = [[0.55,0.98],[0.617,0.972],[0.682,0.96],[0.744,0.938],[0.797,0.906],[0.845,0.865],[0.883,0.817],[0.908,0.764],[0.919,0.711],[0.914,0.65],[0.893,0.598],[0.858,0.55],[0.81,0.51],[0.754,0.479],[0.692,0.458],[0.627,0.445],[0.559,0.441],[0.491,0.445],[0.428,0.46],[0.369,0.484],[0.315,0.525],[0.281,0.57],[0.26,0.624],[0.26,0.681],[0.286,0.73],[0.334,0.728],[0.357,0.676],[0.418,0.652],[0.476,0.673],[0.498,0.727],[0.466,0.775],[0.412,0.796],[0.338,0.794],[0.274,0.78],[0.213,0.756],[0.158,0.723],[0.113,0.681],[0.081,0.632],[0.062,0.577],[0.056,0.521],[0.065,0.464],[0.085,0.41],[0.115,0.359],[0.154,0.313],[0.201,0.273],[0.256,0.24],[0.317,0.216],[0.381,0.2],[0.448,0.192],[0.515,0.194],[0.581,0.204],[0.646,0.22],[0.712,0.223],[0.762,0.185],[0.758,0.132],[0.751,0.087],[0.812,0.11],[0.862,0.148],[0.897,0.112],[0.923,0.091],[0.943,0.144],[0.948,0.202],[0.938,0.258],[0.909,0.305],[0.855,0.343],[0.79,0.356],[0.724,0.351],[0.658,0.339],[0.619,0.353],[0.683,0.368],[0.746,0.379],[0.821,0.378],[0.88,0.361],[0.93,0.322],[0.961,0.274],[0.976,0.217],[0.975,0.161],[0.961,0.106],[0.933,0.055],[0.885,0.022],[0.873,0.08],[0.833,0.091],[0.774,0.063],[0.711,0.048],[0.658,0.064],[0.707,0.105],[0.738,0.15],[0.708,0.199],[0.642,0.195],[0.579,0.178],[0.512,0.167],[0.442,0.167],[0.378,0.175],[0.314,0.191],[0.254,0.213],[0.197,0.243],[0.143,0.283],[0.101,0.325],[0.066,0.372],[0.041,0.425],[0.027,0.479],[0.023,0.539],[0.033,0.593],[0.056,0.647],[0.09,0.696],[0.135,0.74],[0.186,0.773],[0.247,0.8],[0.31,0.815],[0.385,0.818],[0.445,0.81],[0.499,0.779],[0.525,0.729],[0.51,0.672],[0.46,0.636],[0.395,0.63],[0.338,0.66],[0.296,0.695],[0.286,0.636],[0.304,0.585],[0.339,0.539],[0.391,0.5],[0.452,0.477],[0.518,0.466],[0.586,0.467],[0.651,0.476],[0.714,0.495],[0.771,0.52],[0.828,0.561],[0.863,0.606],[0.883,0.658],[0.886,0.723],[0.873,0.771],[0.844,0.822],[0.803,0.866],[0.75,0.903],[0.691,0.929],[0.628,0.945],[0.557,0.955],[0.496,0.969]];
-    function buildPoints() {
-      const n = W <= 760 ? TURN_POINTS.narrow : TURN_POINTS.wide; pts = [];
-      const LN = Math.round(n * 0.5);
-      const vis = line.map((p) => P(p)).filter((q) => q[0] > -80 && q[0] < W + 80 && q[1] > -80 && q[1] < H + 80), src = vis.length > 50 ? vis : line.map((p) => P(p));
-      for (let i = 0; i < LN; i++) { const t = i / LN, q = src[Math.round(t * (src.length - 1))]; pts.push({ x0: q[0], y0: q[1], t, ring: true, s: Math.random() }); }
-      for (let i = LN, guard = 0; i < n && guard < n * 6; i++, guard++) {
-        const li = (Math.random() * layers.length) | 0, L = layers[li], x = Math.random() * W;
-        let ey = H; for (let j = 1; j < L.pts.length; j++) { const a = P(L.pts[j - 1]), b = P(L.pts[j]); if (a[0] <= x && b[0] >= x) { ey = lerp(a[1], b[1], (x - a[0]) / (b[0] - a[0] || 1)); break; } }
-        if (ey >= H) { i--; continue; }
-        const y = lerp(Math.max(ey, 0), H, Math.random() * 0.9);
-        pts.push({ x0: x, y0: y, t: Math.random(), col: layerColour(2 - li), ring: false, s: Math.random(), rr: 0.42 + Math.random() * 0.56, th: Math.random() * Math.PI * 2 });
-      }
+      flush();
+      const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${INK},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); }
     }
     function buildRecordWash() {
       recBuilt = true;
@@ -578,7 +543,8 @@
       const k = recK, focusZ = k * DZ;
       const dive = ease(lr / 0.1), out = ease((lr - 0.92) / 0.08);
       // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
-      const camZ = lerp(-2 - VIEW * Math.pow(cur.Rf / (Math.min(W, H) * 0.34), 1 / OPEN), focusZ - VIEW, dive) + out * 3.5;
+      const camZ = lerp(-VIEW - 2.2, focusZ - VIEW, dive) + out * 3.5;
+      cur.split = ease(lr / 0.09);
       cur.cx = lerp(W / 2, W * 0.36, dive); cur.cy = H * 0.5;
       const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN;
       cur.camZ = camZ; cur.roll = roll;
@@ -628,7 +594,7 @@
       // the staff: five ink lines swirling in, thick close by, a hair far away
       const z0 = Math.max(-1.6, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR);
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      for (let l = 0; l < 5; l++) staffLine(radiusOf(l * 2), z0, z1, camZ, roll, alpha, 1.3);
+      for (let l = 0; l < 5; l++) staffLine(1 + (l * 2 - 4) * GAP * 0.5 * (cur.split == null ? 1 : cur.split), z0, z1, camZ, roll, alpha, 1.3);
       // bar lines every four notes
       for (let i = 3; i < N; i += 4) {
         const z = (i + 0.5) * DZ, a = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(0)), b2 = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(8));
@@ -733,29 +699,19 @@
       screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';
       lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
       lock.style.opacity = String(1 - ease((ip - 0.55) / 0.25));
-      // Tale: a quiet stretch, then TALETONE introduces itself, message by message
-      const lt = local(u, 'tale');
-      on($('#jy-hello'), lt > 0.14 && lt < 1.04); on($('#jy-pcard'), lt > 0.3 && lt < 1.04); on($('#jy-types'), lt > 0.46 && lt < 1.04); on($('#jy-clients'), lt > 0.62 && lt < 1.04);
-      // Tone: the line draws while the philosophy arrives
-      const lo = local(u, 'tone');
-      let reveal = lerp(0, 0.05, ease((lt - 0.45) / 0.5)); if (lo > 0) reveal = lerp(0.05, 1, ease((lo - 0.1) / 0.78));
-      const pen = reveal * (line.length - 1);
-      // one message per beat: the pen must have passed its point, and the scroll its turn
-      trail.forEach((a, n) => { const q = P(line[a.i]); a.el.style.setProperty('--x', q[0] + 'px'); a.el.style.setProperty('--y', q[1] + 'px'); on(a.el, lo > 0.02 + n * 0.17 && pen >= a.i && lo < 1.02); });
-      // Case: the request comes in from the client; TALETONE answers with her strength, a question, the story
-      const lc = local(u, 'case');
-      const caseOn = lc > 0 && lc < 1.02;
-      if (caseOn) placeCase(lc); else if (caseLaid) { caseLaid = false; ['#jy-case-req', '#jy-case-ans', '#jy-case-m0', '#jy-case-m1'].forEach((sel) => on($(sel), false)); }
+      // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
+      const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
+      penZ = penAt(u);
+      camZ = ip < 1 ? lerp(-2.6, penZ - AHEAD, ease(ip)) : penZ - AHEAD;
+      const ck = coilK(penZ + 1);
+      // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
+      const pc = pathAt(penZ - 1.2);
+      camX = lerp(pc[0] * 0.6, 0, ck); camY = lerp(pc[1] * 0.7 - 0.45, 0, ck);
+      placeAnchors();
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
-      const lm = local(u, 'music');
-      // Music
-      cam = lm > 0 ? lerp(0, 1.02, ease(lm / 0.5)) : lo > 0 ? 0 : lerp(-2.2, 0, ease(clamp(lt / 0.45)));
       if (lm > 0.03 && lm < 0.5) setNowPlaying(Math.min(pinned.length - 1, Math.floor(clamp(lm / 0.5) * pinned.length)));
       if (!(lm > 0.03 && lm < 0.5) && npShown >= 0) { npShown = -1; setOffer(null); }
-      on($('#jy-landscape'), lm > 0.55 && lm < 0.69);
-      on($('#jy-fact'), lm > 0.71 && lm < 0.86);
-      if (lm > 0.5 && !pts) buildPoints(); if (lm <= 0.5 && pts) pts = null;
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
@@ -785,54 +741,13 @@
       // ---- canvas ----
       ctx.clearRect(0, 0, W, H);
       if (inRecord) drawCurrent(lr);
-      if (u > CH.record[0] + 0.12) return;
-      if (ip > 0.8 && lm <= 0) {
-        const da = ease((ip - 0.8) / 0.2); ctx.fillStyle = `rgb(${INK})`;
-        for (const d of dots) {
-          const g = reveal > 0 ? ease(clamp((reveal - d.t + 0.08) / 0.08)) : 0; if (reveal > d.t + 0.004) continue;
-          const wind = reduce ? 0 : Math.sin(T * 0.6 + d.s * 20) * 6;
-          const q = P([d.x + wind, d.y + (reduce ? 0 : Math.cos(T * 0.4 + d.s * 9) * 3), d.z]);
-          const tgt = line[Math.min(line.length - 1, Math.round(d.t * (line.length - 1)))];
-          const x = lerp(q[0], tgt[0], g), y = lerp(q[1], tgt[1], g), r = 1.1 + 1.7 * q[2];
-          ctx.globalAlpha = da * clamp(0.3 + 0.5 * q[2], 0.3, 0.85) * (1 - g * 0.5); ctx.fillRect(x - r / 2, y - r / 2, r, r);
-        }
-        ctx.globalAlpha = 1;
-      }
-      const faceK = lm > 0 ? ease(lm / 0.42) : 0, faceA = lm > 0.5 ? 1 - ease((lm - 0.5) / 0.08) : 1;
-      if (reveal > 0 && lm <= 0.58) {
-        for (const b of blots) if (!b.done && now - b.born >= 1200) { paintBlot(b, 1); b.done = true; }
-        const wa = 1 - ease(lm / 0.2);
-        if (wa > 0) { ctx.globalAlpha = wa; ctx.drawImage(wash, 0, 0, W, H); for (const b of blots) if (!b.done) { const k = clamp((now - b.born) / 1200); if (k > 0) paintBlot(b, 0.3 + 0.7 * ease(k), ctx); } ctx.globalAlpha = 1; }
-        wireA = 1 - ease(lm / 0.16);
-        const back = 1 - 0.78 * ease(lc / 0.1) * (1 - ease((lc - 0.92) / 0.08));
-        drawClouds(reveal, faceK, faceA * back); drawFaces(faceK, faceA); drawLine(reveal, faceA * back);
-        if (lc > 0 && lc < 1) drawCase(lc);
-      }
-      if (pts && lr <= 0.08) {
-        const lp = clamp((lm - 0.5) / 0.5), k = ease(lp / 0.85), fade = lr > 0 ? 1 - ease(lr / 0.06) : 1, cx = W / 2, cy = H * 0.5;
-        const tilt = lerp(1.15, 0, ease((lp - 0.6) / 0.35)), spin = (reduce ? 0 : T * 0.35) + k * 2;
-        for (const p of pts) {
-          let tx, ty;
-          if (p.ring) { const th = p.t * Math.PI * 2 * 10 + spin, r = RR * (0.97 - p.t * 0.53); tx = Math.cos(th) * r; ty = Math.sin(th) * r; }
-          else { const th = p.th + spin, r = RR * p.rr; tx = Math.cos(th) * r; ty = Math.sin(th) * r; }
-          const tz = ty * Math.sin(tilt); ty *= Math.cos(tilt);
-          const k1 = ease((lp - p.s * 0.08) / 0.32), k2 = ease((lp - 0.36 - p.s * 0.1) / 0.4);
-          let mx, my;
-          if (p.ring) { const c = CURL[Math.min(CURL.length - 1, Math.floor(p.t * CURL.length))]; mx = cx + (c[0] - 0.5) * RR * 1.7 * (1079 / 1275); my = cy + (c[1] - 0.5) * RR * 1.7; }
-          else { mx = lerp(p.x0, cx, 0.35); my = lerp(p.y0, cy, 0.35); }
-          const bx = lerp(p.x0, mx, k1), by = lerp(p.y0, my, k1), x = lerp(bx, cx + tx, k2), y = lerp(by, cy + ty, k2), z = lerp(0, tz, k2);
-          const f = 900 / (900 + z), depth = clamp(0.5 - z / (2 * RR)), r = (p.ring ? 1.3 : 2.2) * f * (0.6 + depth * 0.8);
-          const a = (p.ring ? 0.75 : 0.8) * fade * (0.5 + depth * 0.5) * ease(lp / 0.06);
-          ctx.fillStyle = p.ring ? `rgba(${INK},${a})` : `rgba(${p.col},${a})`;
-          ctx.fillRect(cx + (x - cx) * f - r / 2, cy + (y - cy) * f - r / 2, r, r);
-        }
-      }
+      const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.08));
+      if (worldA > 0) drawWorld(worldA, lm, now);
     }
     function resize() {
       DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
-      for (const c of [cv, wash]) { c.width = W * DPR; c.height = H * DPR; }
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0); wctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      caseLaid = false; buildLine(); buildDots(); buildCurrent(); blots.forEach((b) => { b.done = true; }); redrawWash(); recShown = -1;
+      cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1;
     }
     addEventListener('resize', resize);
     phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));
@@ -841,7 +756,7 @@
     let sampledAll = false;
     addEventListener('scroll', () => { if (!sampledAll && U() > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
 
-    function reset() { recBuilt = false; pts = null; $('#jy-charm-cd').style.background = ''; }
+    function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
     const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
     const target = { pro: 0, tale: at('tale', 0.7), tone: at('tone', 0.9), record: recordU(0), epi: CH.epi[0] + 0.5 };
     function goStage(where, smooth = true) {
