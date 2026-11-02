@@ -145,11 +145,15 @@ img{max-width:100%}
 .jy-spiral{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .jy-sw-btn{width:100%;display:flex;align-items:center;gap:14px;padding:6px;border:0;border-radius:16px;background:transparent;text-align:left;cursor:pointer;line-height:1.4}
 .jy-sw-btn:hover{background:var(--tt-canvas-hair)}
-.jy-sw-btn img{flex:none;width:56px;height:56px;border-radius:50%;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08)}
+/* a colour vinyl: the disc pressed in its cover's colour (--vinyl, set by journey.js), fine grooves, light on two
+   sides, the cover as the centre label, a hole */
+.jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:conic-gradient(from 20deg,rgb(254 254 254/0) 0 8%,rgb(254 254 254/.32) 12.5%,rgb(254 254 254/0) 17% 58%,rgb(254 254 254/.22) 62.5%,rgb(254 254 254/0) 67%),repeating-radial-gradient(circle,rgb(20 28 48/0) 0 2.4px,rgb(20 28 48/.07) 2.4px 3px),radial-gradient(circle,rgb(var(--vinyl,176 178 184)/.95) 0 34%,rgb(var(--vinyl,176 178 184)/.6) 56%,rgb(var(--vinyl,176 178 184)/.8) 96%,rgb(20 28 48/.3) 100%);box-shadow:inset 0 0 0 1px rgb(20 28 48/.08)}
+.jy-vy img{position:absolute;inset:19%;width:62%;height:62%;border-radius:50%;object-fit:cover}
+.jy-vy::after{content:"";position:absolute;left:50%;top:50%;width:7%;height:7%;transform:translate(-50%,-50%);border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgb(20 28 48/.2)}
 .jy-sw-t b{display:block;font-size:15px}
 .jy-sw-t span{display:block;font-size:13px;color:var(--tt-ink-muted)}
 .jy-sw.dim{opacity:.35}
-.jy-sw.dim img{filter:grayscale(1)}
+.jy-sw.dim .jy-vy{filter:grayscale(1)}
 .jy-readout{display:none}
 .jy-contact{display:flex;flex-direction:column;gap:22px}
 .jy-ct{margin:0;font-size:clamp(24px,2.6vw,34px);line-height:1.35;font-weight:400}
@@ -336,9 +340,9 @@ img{max-width:100%}
 .jy-stage-mode .jy-sw{position:absolute;left:0;top:0;width:var(--s,150px);height:var(--s,150px);margin:calc(var(--s,150px) / -2) 0 0 calc(var(--s,150px) / -2);will-change:transform,opacity;transition:filter .4s}
 .jy-stage-mode .jy-sw-btn{width:100%;height:100%;padding:0;border-radius:50%;transition:transform .5s var(--tt-spring)}
 .jy-stage-mode .jy-sw-btn:hover{background:none;transform:scale(1.06)}
-.jy-stage-mode .jy-sw-btn img{width:100%;height:100%;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08),0 0 0 3px var(--tt-canvas)}
+.jy-stage-mode .jy-sw-btn .jy-vy{width:100%;height:100%}
 .jy-stage-mode .jy-sw-t{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.jy-stage-mode .jy-sw.cur .jy-sw-btn img{box-shadow:0 0 0 3px var(--tt-canvas),0 0 0 5px var(--tt-ink)}
+.jy-stage-mode .jy-sw.cur .jy-vy{box-shadow:inset 0 0 0 1px rgb(20 28 48/.08),0 0 0 3px var(--tt-canvas),0 0 0 5px var(--tt-ink)}
 .jy-stage-mode .jy-sw[data-album] .jy-sw-btn::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px dashed var(--tt-silver);pointer-events:none}
 .jy-stage-mode .jy-sw.dim{filter:grayscale(1) contrast(.8) brightness(1.15)}
 .jy-tracks{display:none}
@@ -346,11 +350,11 @@ img{max-width:100%}
 .jy-trks{position:absolute;inset:0;pointer-events:none}
 .jy-trk{position:absolute;left:0;top:0;width:58px;height:58px;margin:-29px 0 0 -29px;padding:0;border:0;border-radius:50%;background:var(--tt-canvas);cursor:pointer;opacity:0;scale:.4;transition:opacity .35s,scale .6s var(--tt-spring)}
 .jy-trks.on .jy-trk{opacity:1;scale:1;pointer-events:auto}
-.jy-trk img{width:100%;height:100%;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 3px var(--tt-ink-line)}
+.jy-trk .jy-vy{width:100%;height:100%;box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 3px var(--tt-ink-line)}
 .jy-trk i{position:absolute;left:-6px;top:-6px;padding:3px 6px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font:700 11px/1 var(--tt-display);font-style:normal}
-.jy-trk span{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:180px;padding:3px 8px;border-radius:8px;background:var(--tt-ink);color:var(--tt-on-ink);font-size:12px;line-height:1.4;opacity:0;pointer-events:none;transition:opacity .2s}
-.jy-trk:hover span,.jy-trk:focus-visible span,.jy-trk[aria-pressed="true"] span{opacity:1}
-.jy-trk[aria-pressed="true"] img{box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 4px var(--tt-ink)}
+.jy-trk .jy-trk-t{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:180px;padding:3px 8px;border-radius:8px;background:var(--tt-ink);color:var(--tt-on-ink);font-size:12px;line-height:1.4;opacity:0;pointer-events:none;transition:opacity .2s}
+.jy-trk:hover .jy-trk-t,.jy-trk:focus-visible .jy-trk-t,.jy-trk[aria-pressed="true"] .jy-trk-t{opacity:1}
+.jy-trk[aria-pressed="true"] .jy-vy{box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 4px var(--tt-ink)}
 .jy-trk:disabled{cursor:default;opacity:.4!important}
 .jy-stage-mode .jy-readout{display:flex;flex-direction:column;position:absolute;z-index:1200;right:max(32px,4vw);top:50%;width:min(380px,30vw);padding:20px 22px;border-radius:22px;background:rgba(254,254,254,.88);transform:translateY(-40%);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s var(--tt-spring);line-height:1.5}
 .jy-stage-mode .jy-readout.on{opacity:1;transform:translateY(-50%);pointer-events:auto}
@@ -365,7 +369,7 @@ img{max-width:100%}
 .jy-stage-mode .jy-record.list .jy-spiral{opacity:1!important;left:max(48px,6vw);top:120px;width:min(720px,56vw);height:calc(100% - 200px);overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;align-content:start;padding:4px}
 .jy-stage-mode .jy-record.list .jy-sw{position:static;width:auto;height:auto;margin:0;transform:none!important}
 .jy-stage-mode .jy-record.list .jy-sw-btn{height:auto;padding:6px;border-radius:16px;transform:none}
-.jy-stage-mode .jy-record.list .jy-sw-btn img{width:48px;height:48px}
+.jy-stage-mode .jy-record.list .jy-sw-btn .jy-vy{width:48px;height:48px}
 .jy-stage-mode .jy-record.list .jy-sw-t{position:static;width:auto;height:auto;clip-path:none;overflow:visible}
 
 /* the Epilogue */

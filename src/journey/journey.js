@@ -96,6 +96,15 @@
     return sampling[w.slug];
   }
 
+  // every record is a colour vinyl: the disc takes its cover's colour once sampled
+  function tintVinyls() {
+    WORKS.forEach((w) => sample(w).then(() => {
+      const c = colorOf[w.slug]; if (!c) return;
+      document.querySelectorAll(`.jy-sw[data-slug="${w.slug}"], .jy-trks[data-slug="${w.slug}"]`).forEach((el) => el.style.setProperty('--vinyl', c.join(' ')));
+    }));
+  }
+  setTimeout(tintVinyls, 1200);
+
   /* ---------------- dialogs: focus stays inside, Esc closes, focus returns ---------------- */
   const outside = () => [$('.jy-top'), $('#journey'), $('#about'), $('.jy-skip')].filter(Boolean);
   function trap(box, closeFn) {
@@ -509,14 +518,14 @@
        pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
        at the same place, so the swirl turns around the visitor. The mark stands at the head of the staff as its
        clef. An album in focus branches off into a short staff of its tracks. */
-    const DZ = 1, TURN = (Math.PI * 2) / 5.2, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 15, GAP = 0.066;
+    const DZ = 0.56, TURN = 0.6, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 13, GAP = 0.066;
     const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: lines and spaces, bottom to top
     const radiusOf = (p) => 1 + (p - 4) * GAP * 0.5;
     const trackLayer = $('#jy-tracks');
     const clef = new Image(); clef.src = markImg.dataset.ink;
     let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -1;
     function buildCurrent() {
-      const Rf = Math.min(W * 0.25, H * 0.36), size = clamp(H * 0.17, 104, 156);
+      const Rf = Math.min(W * 0.26, H * 0.37), size = clamp(H * 0.14, 92, 128);
       cur = { cx: W * 0.36, cy: H * 0.5, F: Rf * VIEW, size, Rf };
       spiral.style.setProperty('--s', size + 'px');
       const n = W <= 760 ? FLOW_DOTS.narrow : FLOW_DOTS.wide;
@@ -526,13 +535,13 @@
     items.forEach((li, i) => {
       const w = bySlug[li.dataset.slug];
       if (!li.hasAttribute('data-album')) return;
-      const box = document.createElement('div'); box.className = 'jy-trks'; box.dataset.i = i;
+      const box = document.createElement('div'); box.className = 'jy-trks'; box.dataset.i = i; box.dataset.slug = w.slug;
       box.setAttribute('role', 'group'); box.setAttribute('aria-label', `${w.title} · ${COPY.albumTracks || COPY.tracks}`);
       w.tracks.forEach((t, j) => {
         const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-trk'; b.disabled = !t.audio; b.tabIndex = -1;
         b.setAttribute('aria-label', `${String(j + 1).padStart(2, '0')} ${t.title}`); b.setAttribute('aria-pressed', 'false');
-        b.innerHTML = '<img alt="" loading="lazy" decoding="async"><i></i><span></span>';
-        b.querySelector('img').src = ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('span').textContent = t.title;
+        b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
+        b.querySelector('img').src = ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
         b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
         box.appendChild(b);
       });
@@ -544,8 +553,8 @@
     const behind = (dz) => clamp((dz - VIEW * 0.45) / (VIEW * 0.4));
     const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = (cur.F * rad) / dz; return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
     // the branch staff of an album: an arc outside the swirl, its tracks as notes
-    const branchStaff = (n, fx) => { const y = H * 0.86, x0 = fx - 40, sp = Math.min(76, (x0 - 72) / Math.max(1, n)), gap = 11; return { y, x0, sp, gap, x1: x0 - n * sp - 24 }; };
-    const trackPitch = (j) => Math.round(4 + 2.5 * Math.sin(j * 1.1));
+    // an album's tracks hang on an earphone cord that runs out of the album along the bottom, with a little coil
+    const cord = (n, fx) => { const y = H * 0.84, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
       const k = recK, focusZ = k * DZ;
       const dive = ease(lr / 0.1), out = ease((lr - 0.92) / 0.08);
@@ -573,8 +582,8 @@
         box.classList.toggle('on', show);
         $$('.jy-trk', box).forEach((b) => { b.tabIndex = show ? 0 : -1; });
         if (!show) return;
-        const btns = $$('.jy-trk', box), fp = proj(near * TURN, near * DZ, camZ, roll, radiusOf(pitchOf(near))), g = branchStaff(btns.length, fp ? fp[0] : W * 0.5);
-        btns.forEach((b, n) => { const x = g.x0 - (n + 0.5) * g.sp, y = g.y - (trackPitch(n) - 4) * g.gap / 2; b.style.transform = `translate(${x}px,${y}px)`; b.style.transitionDelay = (n * 30) + 'ms'; });
+        const btns = $$('.jy-trk', box), fp = proj(near * TURN, near * DZ, camZ, roll, radiusOf(pitchOf(near))), pts2 = cord(btns.length, fp ? fp[0] : W * 0.5);
+        btns.forEach((b, n) => { b.style.transform = `translate(${pts2[n][0]}px,${pts2[n][1]}px)`; b.style.transitionDelay = (n * 30) + 'ms'; });
       });
       albumOpen = near;
     }
@@ -627,15 +636,19 @@
         ctx.globalAlpha = alpha * 0.45 * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.fillRect(p[0] - r / 2, p[1] - r / 2, r, r);
       }
       ctx.globalAlpha = 1;
-      // the album's branch staff: out of the album, down to five short lines along the bottom
+      // the album's earphone cord: out of the album, one coil, then along its tracks
       if (albumOpen >= 0 && trackEls[albumOpen]) {
-        const pi = pitchOf(albumOpen), p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pi)), n = $$('.jy-trk', trackEls[albumOpen]).length;
+        const p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pitchOf(albumOpen))), n = $$('.jy-trk', trackEls[albumOpen]).length;
         if (p) {
-          const g = branchStaff(n, p[0]);
-          ctx.strokeStyle = `rgba(${INK},${0.75 * alpha})`; ctx.lineWidth = 1.2;
-          for (let l = 0; l < 5; l++) { const y = g.y + (l - 2) * g.gap; ctx.beginPath(); ctx.moveTo(g.x0 + 16, y); ctx.lineTo(g.x1, y); ctx.stroke(); }
-          ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.quadraticCurveTo(p[0] + 30, g.y - 20, g.x0 + 16, g.y); ctx.stroke();
-          ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(g.x1, g.y - 2 * g.gap); ctx.lineTo(g.x1, g.y + 2 * g.gap); ctx.stroke();
+          const pts2 = cord(n, p[0]), c0 = [p[0] - 20, (p[1] + pts2[0][1]) / 2 + 10], rr = 13;
+          ctx.strokeStyle = `rgba(${INK},${0.85 * alpha})`; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0], p[1] + (cur.size / 2) * (VIEW / p[2]));
+          ctx.quadraticCurveTo(p[0] + 10, c0[1] - 30, c0[0], c0[1] - rr);
+          for (let t = 0; t <= Math.PI * 2 + 0.01; t += 0.2) ctx.lineTo(c0[0] - Math.sin(t) * rr, c0[1] - Math.cos(t) * rr); // the coil
+          let prev = [c0[0], c0[1] - rr];
+          for (const q of pts2) { const mx = (prev[0] + q[0]) / 2; ctx.bezierCurveTo(mx, prev[1] + 26, mx, q[1] + 26, q[0], q[1]); prev = q; }
+          ctx.stroke();
+          // the winder that keeps the cord, as on the wire before
+          ctx.save(); ctx.translate(c0[0], c0[1] + rr + 2); ctx.fillStyle = 'rgba(254,254,254,1)'; ctx.lineWidth = 1.4; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(-12, -7, 24, 14, 7); else ctx.rect(-12, -7, 24, 14); ctx.fill(); ctx.stroke(); ctx.fillStyle = `rgba(${INK},${alpha})`; for (const dx of [-5, 0, 5]) { ctx.beginPath(); ctx.arc(dx, 0, 1.5, 0, Math.PI * 2); ctx.fill(); } ctx.restore();
         }
       }
     }
@@ -674,7 +687,7 @@
     });
     // keyboard: focusing a work flies the current to it
     items.forEach((li, i) => $('.jy-sw-btn', li).addEventListener('focus', () => { if (!recordEl.classList.contains('list') && chapter === 'record') goU(recordU(i)); }));
-    function paintRecord() { WORKS.filter(lit).slice(0, 12).forEach(sample); }
+    function paintRecord() { tintVinyls(); }
 
     /* ---- the frame loop ---- */
     const steps = $$('.jy-step');
