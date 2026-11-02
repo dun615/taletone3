@@ -356,13 +356,11 @@
     // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
     // passed slowly takes on a pastel colour.
     const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
-    // one gate, from the land into the sea; the sea itself sinks into the dark and opens onto space at S0
-    const GATES = [PEN.tone[0]], S0 = PEN.case[0];
-    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = -1.3, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
-    // a gate's screen fills the whole view when the camera is GX before it: that is when one world becomes the next
-    const GX = 0.3;
-    // near a gate the camera lines up with the line, so both go through the middle of the screen
-    const gateK = (c) => { let k = 0; for (const G of GATES) k = Math.max(k, ease((c - (G - 3.2)) / 2.6) * (1 - ease((c - (G - GX)) / 2.5))); return k; };
+    // the land ends where the line lifts off the last pole and climbs into the sky. High up the sky has the colour of
+    // the sea just under its surface, and at ZS, when the screen is all that one colour, the world quietly becomes the
+    // sea: the line runs level a while, then sinks from SINK into the deep, which opens onto space at S0.
+    const S0 = PEN.case[0], ZS = 12, SINK = 16, LIFT = [8.8, 11.6], YT = -5;
+    const WIRE = [2.8, 9], POLE = 3, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
     const tint = (c, k, a) => `rgba(${Math.round(lerp(150, c[0], k))},${Math.round(lerp(152, c[1], k))},${Math.round(lerp(160, c[2], k))},${a})`;
@@ -371,11 +369,13 @@
     const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
     // the end of the constellation: the line leaves the last star for the head of the staff (set in buildCurrent),
     // where it splits in five and draws the record's staff
-    // the sea: the line sinks DEPTH deep between the gate and S0, slowly at first, steeply, then slowly into the dark.
-    // A shelf of sand carries kelp and rocks until SHELF, where it drops away. Space sits YS below the land.
-    const DEPTH = 14, SEA0 = -0.3, SHELF = 15.5, YS = DEPTH;
-    const seaD = (z) => { const u = clamp((z - PEN.tone[0]) / (S0 - PEN.tone[0])); return DEPTH * u * u * (3 - 2 * u); };
-    const bedAt = (z) => SEA0 + seaD(z) + 2.3 + (z > SHELF ? Math.pow(z - SHELF, 2) * 2.5 : 0);
+    // the sea: DEPTH deep between SINK and S0, slowly at first, steeply, then slowly into the dark. A shelf of sand
+    // carries kelp and rocks from SHELF0 until SHELF, where it drops away. Space sits YS below the sky the line rose to.
+    const DEPTH = 12, SHELF0 = 18, SHELF = 21.5, YS = YT + DEPTH + 0.25, SURF = YT - 1.7;
+    const seaD = (z) => { const u = clamp((z - SINK) / (S0 - SINK)); return DEPTH * u * u * (3 - 2 * u); };
+    const liftK = (z) => ease((z - LIFT[0]) / (LIFT[1] - LIFT[0]));
+    const baseAt = (z) => YT * liftK(z) + seaD(z); // how high the line runs here, roughly
+    const bedAt = (z) => YT + seaD(z) + 2.6 + (z > SHELF ? Math.pow(z - SHELF, 2) * 2.5 : 0);
     const dkAt = (z) => seaD(z) / DEPTH; // 0 the bright shallows, 1 the dark deep
     const spaceIn = () => ease(clamp((camZ - (S0 - 1.5)) / 2.5));
     const tailK = (z) => ease((z - TAIL) / (PEN.music[1] - TAIL));
@@ -396,9 +396,9 @@
       let x = -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.16 * Math.sin(z * 0.47);
       const ww = wireW(z);
       if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
-      // the sea: a fishing line, sinking deep
-      const sk = ease((z - GATES[0]) / 1.6);
-      if (sk > 0) y = lerp(y, SEA0 + seaD(z) + 0.15 * Math.sin(z * 0.6), sk);
+      // off the last pole up into the sky, level a while, then down into the deep like a fishing line
+      const lk = liftK(z);
+      if (lk > 0) y = lerp(y, YT + seaD(z) + 0.15 * Math.sin(z * 0.6), lk);
       // space: from star to star
       const ck2 = ease((z - S0) / 2.6);
       if (ck2 > 0) { const c = constAt(z); x = lerp(x, c[0], ck2); y = lerp(y, c[1], ck2); }
@@ -411,47 +411,64 @@
     const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let rocks = [], fish = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
+    let mounts = [], birds = [], rocks = [], fish = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
     let spaceDark = 0, lineRGB = INK;
     const dots = [];
     function buildWorld() {
       F3 = Math.min(W, H * 1.6) * 0.62;
       let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      const G1 = GATES[0], G2 = S0;
+      const G1 = ZS, G2 = S0;
+      // far ranges: triangular peaks, snow where they are highest
+      mounts = [[23, 3.4, [184, 198, 232]], [17, 2.4, [168, 206, 200]]].map(([z, hMax, c]) => {
+        const pk = []; for (let x = -30; x < 30;) { const h = hMax * (0.45 + rnd() * 0.55), w2 = 2.2 + rnd() * 2.6; pk.push([x + w2 * 0.5, h, w2]); x += w2 * (0.5 + rnd() * 0.35); }
+        const pts = []; for (let x = -31; x <= 31.001; x += 0.3) { let h = 0; for (const [px, ph, pw] of pk) h = Math.max(h, ph * Math.max(0, 1 - Math.abs(x - px) / (pw * 0.5))); pts.push([x, GROUND - h, z]); }
+        const peaks = pk.filter((p) => p[1] > hMax * 0.8).map(([px, ph, pw]) => [[px, GROUND - ph, z], [px - pw * 0.1, GROUND - ph * 0.8, z], [px + pw * 0.1, GROUND - ph * 0.8, z]]);
+        return { z, hMax, c, pts, peaks };
+      });
       ridges = [];
-      for (let k = 0, z = 2.2; z < G1 + 3; k++, z += 1.8 + rnd() * 1.2) {
+      for (let k = 0, z = 2.2; z < ZS; k++, z += 1.8 + rnd() * 1.2) {
         const amp = 0.35 + rnd() * 0.55 + (k % 4 === 3 ? 0.45 : 0), f1 = 0.5 + rnd() * 0.7, f2 = 1.4 + rnd(), p1 = rnd() * 6, p2 = rnd() * 6, pts = [];
-        for (let x = -8; x <= 8.001; x += 0.2) pts.push([x, GROUND - amp * (0.55 + 0.45 * Math.sin(x * f1 + p1)) * (0.7 + 0.3 * Math.sin(x * f2 + p2)), z]);
-        ridges.push({ z, k, pts });
+        for (let x = -14; x <= 14.001; x += 0.25) pts.push([x, GROUND - amp * (0.55 + 0.45 * Math.sin(x * f1 + p1)) * (0.7 + 0.3 * Math.sin(x * f2 + p2)), z]);
+        const trees = []; if (k % 3 !== 1) { const n = 2 + ((rnd() * 5) | 0); for (let j = 0; j < n; j++) trees.push({ i: 4 + ((rnd() * (pts.length - 8)) | 0), s: 0.7 + rnd() * 0.7 }); }
+        ridges.push({ z, k, pts, trees });
       }
       ridges.sort((a, b) => b.z - a.z);
       grass = [];
-      for (let z = 1.2; z < G1 - 0.3; z += 0.14 + rnd() * 0.18) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
+      for (let z = 1.2; z < 9.6; z += 0.08 + rnd() * 0.1) {
+        const x = pathAt(z)[0] + (rnd() - 0.5) * 5, blades = [];
+        for (let j = 0; j < 5; j++) blades.push({ dx: (j - 2) * 0.012, h: (j === 2 ? 0.12 : 0.06) + rnd() * 0.06, lean: (j - 2) * 0.02 + (rnd() - 0.5) * 0.02 });
+        grass.push({ x, z, blades, flower: rnd() < 0.3 ? 1 + ((rnd() * 3) | 0) : 0 });
+      }
       poles = [];
-      for (let z = WIRE[0]; z <= WIRE[1] - 1.2; z += POLE) poles.push(z);
+      for (let z = WIRE[0]; z <= WIRE[1] + 0.01; z += POLE) poles.push(z);
+      birds = [];
+      for (let i = 0; i + 1 < poles.length; i++) for (const s of [-0.2, 0.2]) { const n = (rnd() * 3) | 0; for (let j = 0; j < n; j++) birds.push({ i, s, f: 0.2 + rnd() * 0.6, dir: rnd() < 0.5 ? -1 : 1, ph: rnd() * 6 }); }
       clouds = [];
-      for (let z = 3; z < G1 + 3; z += 3 + rnd() * 3) {
-        const X = (rnd() - 0.5) * 7, Y = -2.1 + rnd() * 0.6, wd = 0.9 + rnd() * 0.9, pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
+      // low clouds over the land, and high ones the camera rises past at the end
+      const cloudAt = (z, X, Y, wd) => {
+        const pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
         for (let j = 0; j <= 40; j++) { const x = -0.5 + j / 40; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts.push([X + x * wd, Y - top * wd * 1.05, z]); }
         for (let j = 1; j <= 10; j++) pts.push([X + (0.5 - j / 10) * wd, Y + Math.sin((j / 10) * Math.PI) * 0.03, z]);
         clouds.push({ z, pts, ci: clouds.length });
-      }
+      };
+      for (let z = 3; z < 9; z += 3 + rnd() * 3) cloudAt(z, (rnd() - 0.5) * 7, -2.1 + rnd() * 0.6, 0.9 + rnd() * 0.9);
+      for (let z = 7.4; z < ZS - 1.4; z += 0.9 + rnd() * 0.6) cloudAt(z, (rnd() < 0.5 ? -1 : 1) * (0.9 + rnd() * 2.6), -2.6 - rnd() * 2.6, 1.2 + rnd() * 1.1);
       // the sea, by depth: the surface and the shelf near the top, fish and jellyfish further down, glowing plankton in the dark
-      const deepY = (z) => SEA0 + seaD(z);
+      const deepY = (z) => YT + seaD(z);
       surf = [];
       for (let z = G1 + 0.4; z < G1 + 9; z += 1.1) surf.push({ z, ph: rnd() * 6 });
       kelp = [];
-      for (let z = G1 + 1; z < SHELF; z += 0.35 + rnd() * 0.45) kelp.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.7 + rnd() * 2.8), z, h: 1 + rnd() * 1.4, ph: rnd() * 6 });
+      for (let z = SHELF0 + 0.6; z < SHELF; z += 0.35 + rnd() * 0.45) kelp.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.7 + rnd() * 2.8), z, h: 1 + rnd() * 1.4, ph: rnd() * 6 });
       rocks = [];
-      for (let z = G1 + 1.2; z < SHELF + 0.4; z += 0.6 + rnd() * 0.8) rocks.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.6 + rnd() * 3), z, r: 0.18 + rnd() * 0.4, c: (rnd() * 2) | 0, coral: rnd() < 0.45 });
+      for (let z = SHELF0 + 0.3; z < SHELF + 0.4; z += 0.6 + rnd() * 0.8) rocks.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.6 + rnd() * 3), z, r: 0.18 + rnd() * 0.4, c: (rnd() * 2) | 0, coral: rnd() < 0.45 });
       bubbles = [];
-      for (let i = 0; i < 70; i++) { const z = G1 + 0.8 + rnd() * (SHELF - G1 - 1); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
+      for (let i = 0; i < 70; i++) { const z = SHELF0 + 0.5 + rnd() * (SHELF - SHELF0 - 0.5); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
       fish = [];
-      for (let k = 0; k < 9; k++) { const z = G1 + 2 + k * ((G2 - G1 - 6) / 9) + rnd(), y = deepY(z) + (rnd() - 0.5) * 3.4, x0 = (rnd() - 0.5) * 8, dir = rnd() < 0.5 ? -1 : 1, n = 4 + ((rnd() * 6) | 0), c = (rnd() * 3) | 0; for (let j = 0; j < n; j++) fish.push({ z: z + (rnd() - 0.5) * 0.9, y: y + (rnd() - 0.5) * 0.5, x0: x0 + (rnd() - 0.5) * 1.1, dir, c, ph: rnd() * 6, sz: 0.05 + rnd() * 0.035 }); }
+      for (let k = 0; k < 9; k++) { const z = SINK + 3 + k * ((G2 - SINK - 6) / 9) + rnd(), y = deepY(z) + (rnd() - 0.5) * 3.4, x0 = (rnd() - 0.5) * 8, dir = rnd() < 0.5 ? -1 : 1, n = 4 + ((rnd() * 6) | 0), c = (rnd() * 3) | 0; for (let j = 0; j < n; j++) fish.push({ z: z + (rnd() - 0.5) * 0.9, y: y + (rnd() - 0.5) * 0.5, x0: x0 + (rnd() - 0.5) * 1.1, dir, c, ph: rnd() * 6, sz: 0.05 + rnd() * 0.035 }); }
       jellies = [];
-      for (let z = 15.5; z < G2 - 1.5; z += 1 + rnd()) jellies.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.5 + rnd() * 2.2), y: deepY(z) + (rnd() - 0.5) * 2.6, z, r: 0.13 + rnd() * 0.15, c: (rnd() * 3) | 0, ph: rnd() * 6 });
+      for (let z = 20; z < G2 - 1.5; z += 0.9 + rnd()) jellies.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.5 + rnd() * 2.2), y: deepY(z) + (rnd() - 0.5) * 2.6, z, r: 0.13 + rnd() * 0.15, c: (rnd() * 3) | 0, ph: rnd() * 6 });
       glows = [];
-      for (let i = 0; i < 170; i++) { const z = 18 + rnd() * (G2 + 1 - 18); glows.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 7, y: deepY(z) + (rnd() - 0.5) * 5, z, c: (rnd() * 3) | 0, s: rnd() }); }
+      for (let i = 0; i < 170; i++) { const z = 21 + rnd() * (G2 + 1 - 21); glows.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 7, y: deepY(z) + (rnd() - 0.5) * 5, z, c: (rnd() * 3) | 0, s: rnd() }); }
       snow = [];
       for (let i = 0; i < 220; i++) { const z = G1 + rnd() * (G2 + 1 - G1); snow.push({ x: (rnd() - 0.5) * 9, y: deepY(z) + (rnd() - 0.5) * 7, z, ph: rnd() }); }
       nebulae = [[G2 + 6, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 10, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 15, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 19, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y: y + YS, r, c }));
@@ -512,15 +529,16 @@
     function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
     function drawTip(rgb, A) { const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${rgb},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); } }
     // the sea: lighter under the surface, deeper below; slanting light from above
-    const SEA = { top: [[226, 234, 238], [212, 242, 246]], mid: [[196, 208, 218], [158, 214, 228]], bot: [[170, 182, 196], [104, 170, 200]], sand: [[206, 204, 198], [238, 224, 196]], ripple: [[150, 150, 146], [196, 170, 130]] };
+    const SEA = { top: [[228, 236, 240], [214, 240, 246]], mid: [[208, 218, 226], [180, 224, 236]], bot: [[188, 200, 212], [146, 198, 222]], sand: [[206, 204, 198], [238, 224, 196]], ripple: [[150, 150, 146], [196, 170, 130]] };
     const KELP = [[136, 158, 150], [104, 184, 150]], CORAL = [[176, 170, 178], [246, 156, 170]], ROCK = [[[150, 158, 170], [176, 168, 206]], [[160, 160, 164], [150, 184, 196]]];
     const FISH = [[[176, 184, 196], [248, 168, 156]], [[186, 186, 180], [252, 210, 128]], [[170, 180, 196], [140, 190, 238]]];
     const mixC = (pair, k, a) => `rgba(${pair[0].map((v, i) => Math.round(lerp(v, pair[1][i], k))).join(',')},${a})`;
     // deeper down the water turns navy, then the colour of the night sky it will open onto
     const SEA_DEEP = { top: [64, 112, 164], mid: [38, 74, 126], bot: [24, 44, 88] }, ABYSS = { top: [18, 22, 44], mid: [28, 28, 58], bot: [38, 33, 72] };
+    const TREE = [136, 190, 146], FLOWER = [[248, 186, 204], [252, 226, 150], [255, 255, 255]];
     const JELLY = ['246,190,222', '204,192,250', '172,230,240'], GLOW = ['150,236,240', '246,180,226', '240,236,170'];
     function seaBackdrop(a) {
-      const k = passed(GATES[0], 0.5), dk = dkAt(camZ + 2), hz = H * 0.46, t = reduce ? 0 : T;
+      const k = passed(8, 0.5), dk = dkAt(camZ + 2), hz = H * 0.46, t = reduce ? 0 : T;
       const f1 = clamp(dk / 0.55), f2 = clamp((dk - 0.55) / 0.45);
       const stop = (n) => `rgba(${SEA[n][0].map((v, i) => Math.round(lerp(lerp(lerp(v, SEA[n][1][i], k), SEA_DEEP[n][i], f1), ABYSS[n][i], f2))).join(',')},${a})`;
       const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, stop('top')); g.addColorStop(0.46, stop('mid')); g.addColorStop(1, stop('bot'));
@@ -552,7 +570,15 @@
     // the three worlds, each drawn whole from the same camera: 0 land, 1 sea, 2 space
     const spaceFade = () => 1 - ease(clamp((penZ - 47.8) / 1.1));
     function backdrop(w, A) {
-      if (w === 0) { const k = passed(2, 0), g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, tint(PASTEL.land.sky, 1, 0.75 * k * A)); g.addColorStop(0.6, tint(PASTEL.land.sky, 1, 0)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); return; }
+      if (w === 0) {
+        const k = passed(2, 0) * A, g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, tint(PASTEL.land.sky, 1, 0.85 * k)); g.addColorStop(0.5, tint([252, 240, 230], 1, 0.5 * k)); g.addColorStop(0.75, tint([252, 240, 230], 1, 0)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        // the sun, far away, so it stays where it is on the screen
+        const sx = W * 0.74, sy = H * 0.15, R = Math.min(W, H) * 0.045, gl = ctx.createRadialGradient(sx, sy, 0, sx, sy, R * 6);
+        gl.addColorStop(0, `rgba(255,246,222,${0.7 * k})`); gl.addColorStop(1, 'rgba(255,246,222,0)'); ctx.fillStyle = gl; ctx.fillRect(sx - R * 6, sy - R * 6, R * 12, R * 12);
+        ctx.fillStyle = `rgba(255,244,214,${0.95 * k})`; ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.fill();
+        return;
+      }
       if (w === 1) { seaBackdrop(A); return; }
       // night: deep indigo, nebulae of pastel light, the milky way far behind
       const d = A * spaceFade(); if (d <= 0) return; nightBackdrop(d);
@@ -575,41 +601,87 @@
     }
     // the world's things between zLo and zHi (so what stands behind a gate can be drawn before it, the rest after)
     function elements(w, A, zLo = -1e9, zHi = 1e9) {
-      const inR = (z) => z >= zLo && z < zHi, G1 = GATES[0];
+      const inR = (z) => z >= zLo && z < zHi, G1 = ZS;
       if (w === 0) {
-      for (const cl of clouds) {
-        if (!inR(cl.z) || !near(cl.z) || penZ < cl.z - 10) continue;
-        const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), k = passed(cl.z - 3), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
-        if (k > 0 && reveal >= 1) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, 1, 0.8 * k * fogA(dz) * A); ctx.fill(); }
-        ctx.strokeStyle = tint(PASTEL.land.cloud, k * 0.4, 0.5 * fogA(dz) * A); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
-      }
-      for (const r of ridges) {
-        if (!inR(r.z) || !near(r.z)) continue;
-        const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
-        const Q = r.pts.map(V), k = passed(r.z - 4), c = PASTEL.land.hill[r.k % 3], a = fogA(dz) * A;
-        if (k > 0 && reveal >= 1) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.55 * k * a); ctx.fill(); }
-        ctx.strokeStyle = tint([110, 140, 120], k, 0.5 * a); ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
-      }
-      ctx.lineWidth = 1.2;
-      for (const g of grass) {
-        if (!inR(g.z) || !near(g.z, 10) || penZ < g.z) continue;
-        const a = V([g.x, GROUND, g.z]); if (!a) continue;
-        const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
-        ctx.strokeStyle = tint(PASTEL.land.grass, passed(g.z), 0.5 * A); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-      }
-      for (const z of poles) {
-        if (!inR(z) || penZ < z || !near(z)) continue; const dz = z - camZ;
-        const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
-        if (!a || !b) continue;
-        ctx.strokeStyle = tint(PASTEL.land.pole, passed(z), 0.75 * fogA(dz) * A); ctx.lineWidth = clamp(1.8 * AHEAD / dz, 0.6, 3);
-        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
-      }
+        const t = reduce ? 0 : T, kL = passed(2, 0);
+        // far ranges: big and pale, bluer and hazier the farther, snow on the highest peaks
+        for (const mt of mounts) {
+          if (!near(mt.z, 40)) continue;
+          const dz = mt.z - camZ, Q = mt.pts.map(V), first = Q[0], last = Q[Q.length - 1]; if (!first || !last) continue;
+          const a = A * clamp((40 - dz) / 10) * clamp((penZ - 1) / 2), top = V([0, GROUND - mt.hMax, mt.z]), bot = V([0, GROUND, mt.z]);
+          const g = ctx.createLinearGradient(0, top ? top[1] : 0, 0, bot ? bot[1] : H); g.addColorStop(0, tint(mt.c, kL, 0.75 * a)); g.addColorStop(1, tint(mt.c, kL, 0.12 * a));
+          polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+          ctx.fillStyle = `rgba(255,255,255,${0.85 * a * (0.3 + 0.7 * kL)})`;
+          for (const pk of mt.peaks) { const p0 = V(pk[0]), p1 = V(pk[1]), p2 = V(pk[2]); if (!p0 || !p1 || !p2) continue; ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.closePath(); ctx.fill(); }
+        }
+        for (const cl of clouds) {
+          if (!near(cl.z) || penZ < cl.z - 10) continue;
+          const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), k = passed(cl.z - 3), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
+          if (k > 0 && reveal >= 1) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, 1, 0.8 * k * fogA(dz) * A); ctx.fill(); }
+          ctx.strokeStyle = tint(PASTEL.land.cloud, k * 0.4, 0.5 * fogA(dz) * A); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+        }
+        // the hills, hazier with distance, with round trees on their ridges
+        for (const r of ridges) {
+          if (!near(r.z)) continue;
+          const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
+          const Q = r.pts.map(V), k = passed(r.z - 4), haze = clamp(dz / 14) * 0.6, c = PASTEL.land.hill[r.k % 3].map((v, i) => lerp(v, PASTEL.land.sky[i], haze)), a = fogA(dz) * A;
+          if (k > 0 && reveal >= 1) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.62 * k * a); ctx.fill(); }
+          ctx.strokeStyle = tint([110, 140, 120], k, 0.5 * a); ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+          if (reveal < 1) continue;
+          const leaf = TREE.map((v, i) => lerp(v, PASTEL.land.sky[i], haze * 0.8)), wood = [170, 140, 120];
+          for (const tr of r.trees) {
+            const [x, y] = r.pts[tr.i], b0 = V([x, y + 0.02, r.z]), b1 = V([x, y - 0.12 * tr.s, r.z]), cc = V([x, y - 0.2 * tr.s, r.z]); if (!b0 || !b1 || !cc) continue;
+            const R = 0.1 * tr.s * F3 / dz;
+            ctx.strokeStyle = tint(wood, k, 0.8 * a); ctx.lineWidth = Math.max(1, R * 0.28); ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(b1[0], b1[1]); ctx.stroke();
+            ctx.fillStyle = tint(leaf, k, 0.9 * a); ctx.beginPath(); ctx.arc(cc[0], cc[1], R, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = `rgba(255,255,255,${0.22 * a * k})`; ctx.beginPath(); ctx.arc(cc[0] - R * 0.3, cc[1] - R * 0.3, R * 0.45, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+        // the other wires, crossarm to crossarm, sagging between the poles, drawn as far as the pen has gone
+        const wireAt = (i, s, f) => { const t0 = pathAt(poles[i]), t1 = pathAt(poles[i + 1]); return [lerp(t0[0], t1[0], f) + s, lerp(t0[1], t1[1], f) + 0.07 + 0.24 * 4 * f * (1 - f), lerp(poles[i], poles[i + 1], f)]; };
+        for (let i = 0; i + 1 < poles.length; i++) {
+          if (penZ < poles[i]) continue;
+          const fMax = clamp((penZ - poles[i]) / (poles[i + 1] - poles[i])), k = passed(poles[i]);
+          for (const s of [-0.2, 0.2]) {
+            const Q = []; for (let n = 0; n <= 20; n++) { const p = wireAt(i, s, (n / 20) * fMax); Q.push(p[2] - camZ > 0.2 ? V(p) : null); }
+            const mid = wireAt(i, s, 0.5), dz = Math.max(0.3, mid[2] - camZ);
+            ctx.strokeStyle = tint([120, 126, 146], k, 0.55 * fogA(dz) * A); ctx.lineWidth = clamp(1 * AHEAD / dz, 0.5, 1.6); polyline(Q, Q.length); ctx.stroke();
+          }
+        }
+        for (const z of poles) {
+          if (penZ < z || !near(z)) continue; const dz = z - camZ;
+          const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), ca = V([top[0] - 0.26, top[1] + 0.1, z]), cb = V([top[0] + 0.26, top[1] + 0.1, z]);
+          if (!a || !b) continue;
+          const k = passed(z), al = 0.85 * fogA(dz) * A;
+          ctx.strokeStyle = tint(PASTEL.land.pole, k, al); ctx.lineWidth = clamp(2.8 * AHEAD / dz, 0.8, 5.5); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+          if (ca && cb) { ctx.lineWidth = clamp(1.8 * AHEAD / dz, 0.6, 3.5); ctx.beginPath(); ctx.moveTo(ca[0], ca[1]); ctx.lineTo(cb[0], cb[1]); ctx.stroke(); }
+          ctx.fillStyle = tint([206, 220, 232], k, al);
+          for (const s of [-0.2, 0.2]) { const ins = V([top[0] + s, top[1] + 0.06, z]); if (ins) { ctx.beginPath(); ctx.arc(ins[0], ins[1], clamp(0.03 * F3 / dz, 1, 4.5), 0, Math.PI * 2); ctx.fill(); } }
+        }
+        // birds on the wires, which take off as the camera comes near
+        for (const bd of birds) {
+          const p = wireAt(bd.i, bd.s, bd.f); if (penZ < p[2]) continue;
+          const fly = reduce ? 0 : clamp((camZ - (p[2] - 2.4)) / 1.4), q = V([p[0] + fly * 1.5 * bd.dir, p[1] - fly * 1.8, p[2] + fly * 0.7]); if (!q || q[2] > FAR3) continue;
+          const L = 0.04 * F3 / q[2], a = fogA(q[2]) * A * (1 - clamp((fly - 0.75) / 0.25)); if (a <= 0.02) continue;
+          ctx.fillStyle = ctx.strokeStyle = tint([92, 100, 124], passed(p[2]), 0.9 * a);
+          if (fly <= 0) { ctx.beginPath(); ctx.ellipse(q[0], q[1] - L * 0.55, L * 0.75, L * 0.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(q[0] + bd.dir * L * 0.6, q[1] - L * 1.05, L * 0.32, 0, Math.PI * 2); ctx.fill(); }
+          else { const fl = Math.sin(t * 14 + bd.ph) * 0.6; ctx.lineWidth = Math.max(1, L * 0.22); ctx.beginPath(); ctx.moveTo(q[0] - L * 1.3, q[1] - L * fl); ctx.quadraticCurveTo(q[0] - L * 0.4, q[1] - L * 0.5, q[0], q[1]); ctx.quadraticCurveTo(q[0] + L * 0.4, q[1] - L * 0.5, q[0] + L * 1.3, q[1] - L * fl); ctx.stroke(); }
+        }
+        // grass in tufts, some with a flower
+        for (const g of grass) {
+          if (!near(g.z, 10) || penZ < g.z) continue;
+          const dz = g.z - camZ, k = passed(g.z), sw = reduce ? 0 : Math.sin(t * 1.8 + g.z * 3) * 0.012, al = 0.7 * A * clamp((dz - 0.3) / 0.6);
+          ctx.strokeStyle = tint(PASTEL.land.grass, k, al); ctx.lineWidth = clamp(1.3 * AHEAD / dz, 0.6, 2.4); ctx.beginPath();
+          for (const b of g.blades) { const base = V([g.x + b.dx, GROUND, g.z]), mid = V([g.x + b.dx + b.lean * 0.3, GROUND - b.h * 0.55, g.z]), tip = V([g.x + b.dx + b.lean + sw, GROUND - b.h, g.z]); if (!base || !mid || !tip) continue; ctx.moveTo(base[0], base[1]); ctx.quadraticCurveTo(mid[0], mid[1], tip[0], tip[1]); }
+          ctx.stroke();
+          if (g.flower) { const b = g.blades[2], f = V([g.x + b.dx + b.lean + sw, GROUND - b.h - 0.012, g.z]); if (f) { ctx.fillStyle = tint(FLOWER[g.flower - 1], k, al / 0.7); ctx.beginPath(); ctx.arc(f[0], f[1], clamp(0.024 * F3 / dz, 1.2, 5), 0, Math.PI * 2); ctx.fill(); } }
+        }
         return;
       }
       if (w === 1) {
         const t = reduce ? 0 : T, kS = passed(G1, 0.5);
         // the shelf: rows of sand from far to near, ending where it drops into the deep
-        for (let z = Math.min(SHELF + 1.6, camZ + 14); z >= Math.max(G1 + 0.2, camZ + 0.5); z -= 0.5) {
+        for (let z = Math.min(SHELF + 1.6, camZ + 14); z >= Math.max(SHELF0, camZ + 0.5); z -= 0.5) {
           if (!inR(z)) continue;
           // once the camera has sunk below the shelf, its sand is overhead and out of sight
           const yb = bedAt(z), below = clamp((yb - camY - 0.3) / 0.6); if (below <= 0) continue;
@@ -666,7 +738,7 @@
         ctx.fillStyle = 'rgb(255,255,255)';
         for (const sn of snow) {
           if (!inR(sn.z) || !near(sn.z, 10)) continue; const q = V([sn.x + Math.sin(t * 0.4 + sn.ph * 6) * 0.05, sn.y + ((sn.ph + t * 0.02) % 1) * 0.5, sn.z]); if (!q) continue;
-          const r = clamp(1.6 * AHEAD / q[2], 0.6, 2.6), dk = dkAt(sn.z); ctx.globalAlpha = A * fogA(q[2]) * (0.55 + 0.35 * dk * (reduce ? 0 : Math.sin(t * 2 + sn.ph * 30))); ctx.fillRect(q[0], q[1], r, r);
+          const r = clamp(1.6 * AHEAD / q[2], 0.6, 2.6), dk = dkAt(sn.z); ctx.globalAlpha = A * fogA(q[2]) * clamp((sn.z - ZS) / 3) * (0.55 + 0.35 * dk * (reduce ? 0 : Math.sin(t * 2 + sn.ph * 30))); ctx.fillRect(q[0], q[1], r, r);
         }
         ctx.globalAlpha = 1;
         for (let i = surf.length - 1; i >= 0; i--) {
@@ -699,33 +771,22 @@
     }
     function drawWorld(A) {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      const G1 = GATES[0];
-      if (camZ < G1 - GX) {
+      if (camZ < ZS) {
+        // the land, then up into the sky; the sky takes on the colour of the sea under its surface, the land falls
+        // away below, and what lies ahead is already the sea, seen as sky
+        const rise = ease((camZ - 6.5) / (ZS - 0.4 - 6.5)), fade = 1 - ease((camZ - 8.5) / (ZS - 0.6 - 8.5));
         backdrop(0, A);
-        // the gate: a phone's screen standing on the line. Through it the sea is really there, seen from the same
-        // camera, so when the screen fills the view the two are one and the same picture.
-        const dz = G1 - camZ, q = dz < FAR3 ? V(pathAt(G1)) : null;
-        if (!q) { elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
-        elements(0, A, G1);
-        const s3 = F3 / dz, w = 0.95 * s3, h = 2.05 * s3, a = A * clamp((FAR3 - dz) / 8), m = 0.06 * s3, rr = (x, y, ww, hh, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, ww, hh, r); else ctx.rect(x, y, ww, hh); };
-        const x0 = q[0] - w / 2 + m, y0 = q[1] - h / 2 + m, iw = w - 2 * m, ih = h - 2 * m;
-        ctx.save(); rr(x0, y0, iw, ih, 0.11 * s3); ctx.clip();
-        ctx.fillStyle = `rgba(251,251,250,${a})`; ctx.fillRect(x0, y0, iw, ih);
-        backdrop(1, a); elements(1, a, G1);
-        if (penZ > G1) { drawLine(G1, penZ, INK, a); drawTip(INK, a); }
-        ctx.restore();
-        ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = clamp(2.2 * AHEAD / dz, 1, 4.5); rr(q[0] - w / 2, q[1] - h / 2, w, h, 0.17 * s3); ctx.stroke();
-        ctx.lineWidth = clamp(1 * AHEAD / dz, 0.5, 2); rr(x0, y0, iw, ih, 0.11 * s3); ctx.stroke();
-        elements(0, A, -1e9, G1);
-        drawLine(-1e9, Math.min(penZ, G1), lineRGB, A);
-        if (penZ <= G1) drawTip(lineRGB, A);
-        drawLead(A); return;
+        // (only what could pass for sky: the light, the bright streaks of the surface, specks)
+        if (rise > 0) { seaBackdrop(A * rise); elements(1, A * rise, ZS, SINK + 1); }
+        if (fade > 0) elements(0, A * fade);
+        drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return;
       }
       // the sea sinks into the dark, and the dark opens onto space
       const si = spaceIn();
       if (si < 1) backdrop(1, A);
       if (si > 0) backdrop(2, A * si);
-      if (camZ < S0 + 2) elements(1, A);
+      // the life of the sea shows only once the line has begun to sink
+      if (camZ < S0 + 2) { elements(1, A, -1e9, SINK + 1); elements(1, A * ease((camZ - ZS) / 1.6), SINK + 1); }
       if (camZ > S0 - 5) elements(2, A);
       drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A);
     }
@@ -960,12 +1021,11 @@
       const ck = tailK(penZ);
       // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
       // (in the sea, around how deep the line is there, and a little further down while it sinks fast)
-      const pc = pathAt(penZ - 1.2), base = seaD(penZ - 1.2);
-      camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp((pc[1] - base) * 0.7 + base - 0.45 + 0.6 * (seaD(penZ) - base), YS, ck);
-      { const gk = gateK(camZ); if (gk > 0) { const gc = pathAt(GATES[0]); camX = lerp(camX, gc[0], gk); camY = lerp(camY, gc[1], gk); } }
+      const pc = pathAt(penZ - 1.2), base = baseAt(penZ - 1.2);
+      camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp((pc[1] - base) * 0.7 + base - 0.45 + 0.6 * (baseAt(penZ) - base), YS, ck);
       placeAnchors();
       // how dark the scene is: the deep sea, then the night sky, until the record
-      spaceDark = Math.max(spaceIn(), camZ > GATES[0] - GX ? clamp((dkAt(camZ + 2) - 0.3) / 0.35) : 0) * spaceFade();
+      spaceDark = Math.max(spaceIn(), camZ > ZS ? clamp((dkAt(camZ + 2) - 0.3) / 0.35) : 0) * spaceFade();
       { const m = (c0, c1) => Math.round(lerp(c0, c1, spaceDark)); lineRGB = `${m(20, 244)},${m(28, 244)},${m(48, 252)}`; }
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
