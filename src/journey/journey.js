@@ -377,7 +377,8 @@
     const baseAt = (z) => YT * liftK(z) + seaD(z); // how high the line runs here, roughly
     const bedAt = (z) => YT + seaD(z) + 2.6 + (z > SHELF ? Math.pow(z - SHELF, 2) * 2.5 : 0);
     const dkAt = (z) => seaD(z) / DEPTH; // 0 the bright shallows, 1 the dark deep
-    const spaceIn = () => ease(clamp((camZ - (S0 - 1.5)) / 2.5));
+    // the camera position where the deep becomes space (inside the phone that comes to meet it)
+    const X2 = S0 - 0.4, spaceIn = () => (camZ >= X2 ? 1 : 0);
     const tailK = (z) => ease((z - TAIL) / (PEN.music[1] - TAIL));
     // tail.T: the staff's head on screen, tail.tg: the way the staff leaves it (both from the final camera)
     let tail = { T: [0, 0], tg: [1, 0], L: 0 };
@@ -769,6 +770,54 @@
         if (lit) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3); gl.addColorStop(0, tint(PASTEL.space.star[i % 3], 1, 0.35 * a)); gl.addColorStop(1, tint(PASTEL.space.star[i % 3], 1, 0)); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3, q[1] - R * 3, R * 6, R * 6); }
       }
     }
+    // a phone at each change of world: it comes flying along the line from far ahead, turning to face the visitor,
+    // faster and faster, and the visitor is drawn into its screen. Through the screen the next world is really there,
+    // seen from the same camera, so when the screen fills the view it simply is the next scene. P_RUN is how far the
+    // camera travels while the phone comes; it ends at the camera position where the world changes (zc: where the
+    // next world begins along the line, kept for reference by the callers).
+    const P_RUN = 3.2;
+    function portal(id, Xc, zc, drawNext, nextRGB, A) {
+      const p = clamp((camZ - (Xc - P_RUN)) / P_RUN);
+      if (p <= 0) { drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
+      const dzP = 14 * (1 - p) * (1 - p) + 0.15, s3 = F3 / dzP, show = ease(p / 0.12), dark = id === 'space';
+      // it flies in along the line, the line through the middle of its screen, and ends square in the middle
+      const zP = camZ + dzP, an = V(pathAt(zP)) || [W / 2, H * 0.5], k = ease((p - 0.68) / 0.3), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
+      const roll = (1 - ease(p / 0.75)) * 0.42 * (dark ? -1 : 1), sq = lerp(0.3, 1, ease(p / 0.72)), t = reduce ? 0 : T;
+      const w = 0.95 * s3, h = 2.05 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
+      const rr = (x, y, ww, hh, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, ww, hh, r); else ctx.rect(x, y, ww, hh); };
+      // being drawn in: streaks of light running into the screen
+      const st = clamp((p - 0.45) / 0.4) * (1 - clamp((p - 0.93) / 0.07));
+      if (st > 0 && !reduce) {
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < 22; i++) {
+          const ang = i * 2.39996, ph = (t * 1.3 + i * 0.37) % 1, r0 = lerp(0.62, 0.2, ph) * D, r1 = r0 + 0.1 * D;
+          ctx.strokeStyle = dark ? `rgba(220,226,255,${0.32 * st * (1 - ph)})` : `rgba(255,255,255,${0.7 * st * (1 - ph)})`;
+          ctx.beginPath(); ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0); ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1); ctx.stroke();
+        }
+      }
+      ctx.save();
+      ctx.globalAlpha = show;
+      if (dark) { const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.9); gl.addColorStop(0, `rgba(200,206,255,${0.28 * A})`); gl.addColorStop(1, 'rgba(200,206,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h, cy - h, h * 2, h * 2); }
+      ctx.translate(cx, cy); ctx.rotate(roll); ctx.scale(sq, 1);
+      // the body, a side button, a rim catching the light
+      ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.17 * s3); ctx.fill();
+      ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${0.28 * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
+      ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
+      rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.11 * s3); ctx.clip();
+      // the next world, from the same camera
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
+      drawNext();
+      if (penZ > zP) { drawLine(zP, penZ, nextRGB, A); drawTip(nextRGB, A); }
+      // the island at the top of the screen, while the phone is still a phone
+      ctx.translate(cx, cy); ctx.rotate(roll); ctx.scale(sq, 1);
+      ctx.fillStyle = `rgba(${INK},${A * (1 - clamp((p - 0.8) / 0.12))})`; rr(-0.14 * s3, -h / 2 + m + 0.04 * s3, 0.28 * s3, 0.07 * s3, 0.035 * s3); ctx.fill();
+      ctx.restore();
+      // this side of the phone: the line runs into it
+      drawLine(-1e9, Math.min(penZ, zP), lineRGB, A);
+      if (penZ <= zP) drawTip(lineRGB, A);
+      drawLead(A);
+    }
     function drawWorld(A) {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       if (camZ < ZS) {
@@ -779,15 +828,17 @@
         // (only what could pass for sky: the light, the bright streaks of the surface, specks)
         if (rise > 0) { seaBackdrop(A * rise); elements(1, A * rise, ZS, SINK + 1); }
         if (fade > 0) elements(0, A * fade);
-        drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return;
+        portal('sea', ZS, ZS, () => { backdrop(1, A); elements(1, A, ZS, SINK + 1); }, INK, A);
+        return;
       }
-      // the sea sinks into the dark, and the dark opens onto space
-      const si = spaceIn();
-      if (si < 1) backdrop(1, A);
-      if (si > 0) backdrop(2, A * si);
-      // the life of the sea shows only once the line has begun to sink
-      if (camZ < S0 + 2) { elements(1, A, -1e9, SINK + 1); elements(1, A * ease((camZ - ZS) / 1.6), SINK + 1); }
-      if (camZ > S0 - 5) elements(2, A);
+      if (camZ < X2) {
+        // the sea sinks into the dark; the life of the sea shows only once the line has begun to sink
+        backdrop(1, A);
+        elements(1, A, -1e9, SINK + 1); elements(1, A * ease((camZ - ZS) / 1.6), SINK + 1);
+        portal('space', X2, S0, () => { backdrop(2, A); elements(2, A); }, '244,244,252', A);
+        return;
+      }
+      backdrop(2, A); elements(2, A);
       drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A);
     }
     function buildRecordWash() {
