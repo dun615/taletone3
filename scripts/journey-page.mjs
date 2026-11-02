@@ -26,7 +26,7 @@ export function journeyWorks(worksData, lang) {
   return worksData.works.map((w) => {
     const u = unit(w);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || '' }; });
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
     return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, journey: w.journey || null };
   }).sort((a, b) => b.date.localeCompare(a.date));
@@ -104,7 +104,7 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
 ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${assets.lineSeedJp}">\n` : ''}<link rel="stylesheet" href="${assets.css}">
 <script>document.documentElement.classList.add('jy-js')</script>
 </head>
-<body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}">
+<body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}" data-assets="/">
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
 <header class="jy-top">
   <a class="jy-mark" href="${href('/')}" aria-label="${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"></a>
@@ -157,11 +157,6 @@ ${c.steps.map((s, i) => `    <li>${bubble(`jy-step-${i}`, `<b>${esc(s.title)}</b
   <div class="jy-voice" aria-live="polite">${bubble('jy-landscape', lines(c.landscape))}${c.fact ? bubble('jy-fact', `<b class="jy-fact-v">${esc(c.fact.value)}</b> ${esc(c.fact.label)}<small>${esc(c.fact.note)}</small>`) : ''}</div>
 </section>
 
-<section class="jy-ch" data-ch="done" aria-labelledby="jy-h-done">
-  <h2 class="jy-chl" id="jy-h-done">${esc(labels[3])} · ${esc(labels[4])}</h2>
-  <div class="jy-voice" aria-live="polite">${bubble('jy-letter', lines(c.letter))}</div>
-</section>
-
 <section class="jy-ch" data-ch="record" id="discography" aria-labelledby="jy-h-record">
   <h2 class="jy-chl" id="jy-h-record">${esc(labels[4])}</h2>
   <div class="jy-voice" aria-live="polite">${bubble('jy-found', lines(c.found))}</div>
@@ -171,11 +166,10 @@ ${c.steps.map((s, i) => `    <li>${bubble(`jy-step-${i}`, `<b>${esc(s.title)}</b
     <div class="jy-frow jy-frow-sub" role="group" aria-label="${esc(c.roleCaption)}"><span class="jy-fcap" aria-hidden="true">${esc(c.roleCaption)}</span>${['all', 'produce', 'compose', 'arrange', 'lyrics'].map((r) => `<button type="button" class="jy-fchip" data-role="${r}" aria-pressed="${r === 'all'}">${esc(r === 'all' ? c.all : c.roles[r])}</button>`).join('')}</div>
   </div>
   <div class="jy-record" id="jy-record">
-    <div class="jy-platter" id="jy-platter" aria-hidden="true"><span class="jy-wash" id="jy-wash"></span><span class="jy-groove"></span><span class="jy-rlabel"><img src="${markPaper}" alt=""><span>${esc(c.recordLabel)}</span></span></div>
+    <div class="jy-tracks" id="jy-tracks"></div>
     <ol class="jy-spiral" id="jy-spiral" aria-label="${esc(c.discography)}">
-${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span></button></li>`).join('\n')}
+${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span></button></li>`).join('\n')}
     </ol>
-    <svg class="jy-arm" id="jy-arm" aria-hidden="true"><circle class="jy-arm-pivot" r="18"/><line class="jy-arm-bar"/><rect class="jy-arm-head" width="10" height="18" rx="3"/></svg>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">
     <p class="jy-ro-n"><span id="jy-ro-i">01</span> / ${String(works.length).padStart(2, '0')} ${esc(c.songs)}</p>
@@ -185,6 +179,11 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     <div class="jy-ro-btns"><button type="button" class="jy-btn jy-btn-ink" id="jy-ro-play">${esc(c.listen)}</button><button type="button" class="jy-btn" id="jy-ro-open">${esc(c.detail)}</button></div>
     <div class="jy-ro-nav"><button type="button" class="jy-round" id="jy-ro-prev" aria-label="${esc(c.prev)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-round" id="jy-ro-next" aria-label="${esc(c.next)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-btn jy-btn-quiet" id="jy-view" aria-pressed="false" data-on="${esc(c.recordView)}" data-off="${esc(c.listView)}">${esc(c.listView)}</button></div>
   </div>
+</section>
+
+<section class="jy-ch" data-ch="done" aria-labelledby="jy-h-done">
+  <h2 class="jy-chl" id="jy-h-done">${esc(labels[4])} · ${esc(labels[5])}</h2>
+  <div class="jy-voice" aria-live="polite">${bubble('jy-letter', lines(c.letter))}</div>
 </section>
 
 <section class="jy-ch" data-ch="epi" id="contact" aria-labelledby="jy-h-epi">

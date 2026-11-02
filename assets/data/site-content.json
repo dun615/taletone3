@@ -2259,7 +2259,7 @@
     "landscape": "우리가 걸어온 풍경은,\n한 곡의 노래였습니다.",
     "letter": "이 노래들도 처음에는,\n누군가의 메시지였습니다.",
     "found": "모든 이야기가 담긴 음반을,\n마침내 찾았습니다.",
-    "turnHint": "판을 돌려, 이야기를 하나씩 꺼내 보세요.",
+    "turnHint": "소용돌이를 따라, 이야기 속으로 들어가 보세요.",
     "empty": "그리고 한 자리는, 아직 비어 있습니다.",
     "contactTitle": "다음 페이지는,\n함께 써 내려갑니다.",
     "more": "더 적기",
@@ -2330,7 +2330,7 @@
         "landscape": "The landscape we walked through\nwas a single song.",
         "letter": "Each of these songs\nbegan as someone’s message.",
         "found": "At last, we found the record\nthat holds every story.",
-        "turnHint": "Turn the record to draw out each story.",
+        "turnHint": "Follow the swirl into the stories.",
         "empty": "And one groove is still empty.",
         "contactTitle": "The next page,\nwe write together.",
         "more": "Add more",
@@ -2388,7 +2388,8 @@
         "allCredits": "All credits",
         "education": "Education",
         "sns": "Instagram",
-        "skip": "Skip to content"
+        "skip": "Skip to content",
+        "albumTracks": "Tracks"
       },
       "jp": {
         "notifyNow": "今",
@@ -2401,7 +2402,7 @@
         "landscape": "歩いてきた風景は、\n一曲の歌でした。",
         "letter": "この歌たちも最初は、\n誰かのメッセージでした。",
         "found": "すべての物語が詰まったレコードを、\nついに見つけました。",
-        "turnHint": "レコードを回して、物語をひとつずつ取り出してみてください。",
+        "turnHint": "渦をたどって、物語の中へ入ってみてください。",
         "empty": "そして一つの溝は、まだ空いています。",
         "contactTitle": "次のページは、\n一緒に綴っていきます。",
         "more": "さらに書く",
@@ -2459,8 +2460,10 @@
         "allCredits": "すべてのクレジット",
         "education": "学歴",
         "sns": "Instagram",
-        "skip": "本文へ移動"
+        "skip": "本文へ移動",
+        "albumTracks": "収録曲"
       }
-    }
+    },
+    "albumTracks": "수록곡"
   }
 }

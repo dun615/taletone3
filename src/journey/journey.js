@@ -5,8 +5,9 @@
 //   Tone      a line runs from the chosen reply into wires, hills and clouds; that path's works hang on the wire
 //   Music     the works' colours fill the hills; three messages tell how we work; the landscape turns to dots
 //             that curl like the logo and settle into a record's groove
+//   Record    the record of every story: diving into its groove, the groove becomes a swirling current in 3D;
+//             every work sits on it, newest first; an album in focus branches off into its tracks
 //   Done      the phone is seen again from outside, the record in it
-//   Record    the record of every story: all works on one spiral groove, turned by scroll, drag or buttons
 //   Epilogue  the only dark place: one groove is still empty; the visitor writes it (the inquiry form)
 //
 // Wide screens with JS get the fixed stage (html.jy-stage-mode). Elsewhere the same document reads as a column,
@@ -18,8 +19,9 @@
   const COPY = DATA.copy, WORKS = DATA.works;
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.4], music: [4.4, 6.8], done: [6.8, 7.7], record: [7.7, 9.7], epi: [9.7, 10.7] };
-  const TOTAL = 10.7;
+  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.4], music: [4.4, 6.8], record: [6.8, 10.8], done: [10.8, 11.7], epi: [11.7, 12.7] };
+  const TOTAL = 12.7;
+  const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -29,6 +31,7 @@
   const STAGE = wideQuery.matches;
   const LANG = body.dataset.lang || 'kr';
   const BASE = body.dataset.base || '/preview';
+  const ASSET = body.dataset.assets || '/';
   const bySlug = Object.fromEntries(WORKS.map((w) => [w.slug, w]));
   const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
@@ -57,7 +60,7 @@
   function play(w, track) {
     const src = sourceOf(w, track);
     if (!src) return;
-    const url = '/' + src.audio;
+    const url = ASSET + src.audio;
     if (!audio.src.endsWith(url)) { audio.src = url; }
     audio.volume = Math.min(1, Math.pow(10, (src.gain || 0) / 20));
     nowSlug = w.slug; nowTrack = track == null ? null : track;
@@ -88,7 +91,7 @@
         done();
       };
       im.onerror = () => { colorOf[w.slug] = [163, 168, 181]; done(); };
-      im.src = '/' + w.thumb;
+      im.src = ASSET + w.thumb;
     });
     return sampling[w.slug];
   }
@@ -117,8 +120,8 @@
     const w = bySlug[slug];
     if (!w) return;
     storyWork = w; storyReturn = from || document.activeElement;
-    ['jy-s-bg', 'jy-s-v'].forEach((id) => { $('#' + id).src = '/' + w.thumb; });
-    const art = $('#jy-s-a'); art.src = '/' + w.image; art.alt = w.title;
+    ['jy-s-bg', 'jy-s-v'].forEach((id) => { $('#' + id).src = ASSET + w.thumb; });
+    const art = $('#jy-s-a'); art.src = ASSET + w.image; art.alt = w.title;
     $('#jy-s-title').textContent = w.title;
     $('#jy-s-meta').textContent = [w.artist, w.type, w.date].filter(Boolean).join(' · ');
     $('#jy-s-desc').textContent = w.description || '';
@@ -308,7 +311,7 @@
     const phone = $('#jy-phone'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
     const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
     const markImg = $('.jy-mark img');
-    const recordEl = $('#jy-record'), platter = $('#jy-platter'), spiral = $('#jy-spiral'), arm = $('#jy-arm'), readout = $('#jy-readout');
+    const recordEl = $('#jy-record'), spiral = $('#jy-spiral'), readout = $('#jy-readout');
     const items = $$('.jy-sw', spiral);
     const N = items.length;
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
@@ -495,46 +498,146 @@
     }
     function buildRecordWash() {
       recBuilt = true;
-      const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : [{ c: [163, 168, 181] }]).slice(0, 4).map((p) => `rgb(${p.c})`);
+      const held = WORKS.filter(lit).map((w) => colorOf[w.slug]).filter(Boolean).slice(0, 6).map((c) => ({ c }));
+      const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [163, 168, 181] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
       const stops = cols.length === 1 ? [cols[0], cols[0]] : cols, g = `conic-gradient(${[...stops, stops[0]].join(',')})`;
       $('#jy-rwash').style.background = g; $('#jy-charm-cd').style.background = g;
     }
 
-    /* ---- the record of every story: one spiral groove, newest at the rim ---- */
-    let geo = null, recK = 0, recShown = -1;
-    function buildSpiral() {
-      const R = Math.min(H * 0.4, W * 0.27), cx = W * 0.42, cy = H * 0.56;
-      const s = clamp(R * 0.13, 38, 56), rOut = R * 0.9, rIn = R * 0.46;
-      const ang = [], rad = []; let th = 0;
-      for (let i = 0; i < N; i++) { const r = rOut - (rOut - rIn) * (N > 1 ? i / (N - 1) : 0); rad.push(r); ang.push(th); th += (s * 1.32) / r; }
-      // the tonearm: a pivot up and to the right, a fixed arm; its tip meets each radius at one angle
-      const pv = [cx + R * 1.08, cy - R * 0.95], L = R * 1.15, d = Math.hypot(pv[0] - cx, pv[1] - cy), al = Math.atan2(pv[1] - cy, pv[0] - cx);
-      const tipAngle = (r) => al - Math.acos(clamp((r * r + d * d - L * L) / (2 * r * d), -1, 1));
-      geo = { R, cx, cy, s, ang, rad, pv, L, tipAngle, step: (ang[N - 1] - ang[0]) / Math.max(1, N - 1) };
-      spiral.style.setProperty('--s', s + 'px');
-      arm.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      $('.jy-arm-pivot', arm).setAttribute('cx', pv[0]); $('.jy-arm-pivot', arm).setAttribute('cy', pv[1]);
+    /* ---- the record of every story: its groove opens into a staff swirling into the screen ----
+       World: five helices around the view axis (a staff); work i is a note on it at depth i*DZ, angle i*TURN and a
+       pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
+       at the same place, so the swirl turns around the visitor. The mark stands at the head of the staff as its
+       clef. An album in focus branches off into a short staff of its tracks. */
+    const DZ = 1, TURN = (Math.PI * 2) / 5.2, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 15, GAP = 0.066;
+    const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: lines and spaces, bottom to top
+    const radiusOf = (p) => 1 + (p - 4) * GAP * 0.5;
+    const trackLayer = $('#jy-tracks');
+    const clef = new Image(); clef.src = markImg.dataset.ink;
+    let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -1;
+    function buildCurrent() {
+      const Rf = Math.min(W * 0.25, H * 0.36), size = clamp(H * 0.17, 104, 156);
+      cur = { cx: W * 0.36, cy: H * 0.5, F: Rf * VIEW, size, Rf };
+      spiral.style.setProperty('--s', size + 'px');
+      const n = W <= 760 ? FLOW_DOTS.narrow : FLOW_DOTS.wide;
+      flow = Array.from({ length: n }, () => ({ z: Math.random() * (N + 4) - 2, a: Math.random() * Math.PI * 2, r: 0.7 + Math.random() * 0.6, v: 0.15 + Math.random() * 0.3 }));
     }
-    const recordU = (k) => CH.record[0] + (CH.record[1] - CH.record[0]) * (0.15 + 0.8 * (N > 1 ? k / (N - 1) : 0));
-    function placeRecord(k, enter) {
-      const g = geo, i0 = Math.floor(k), i1 = Math.min(N - 1, i0 + 1), f = k - i0;
-      const r = lerp(g.rad[i0], g.rad[i1], f), th = lerp(g.ang[i0], g.ang[i1], f);
-      const phi = g.tipAngle(r) - th;
-      // entering: the platter grows from the record in the phone
-      const sMin = 96 / g.R, sc2 = lerp(sMin, 1, enter), x = lerp(W / 2, g.cx, enter), y = lerp(H / 2, g.cy, enter);
-      platter.style.left = (x - g.R) + 'px'; platter.style.top = (y - g.R) + 'px'; platter.style.width = platter.style.height = (2 * g.R) + 'px';
-      platter.style.transform = `scale(${sc2}) rotate(${phi}rad)`; platter.style.opacity = String(enter > 0 ? 1 : 0);
+    // tracks of each album, built once
+    items.forEach((li, i) => {
+      const w = bySlug[li.dataset.slug];
+      if (!li.hasAttribute('data-album')) return;
+      const box = document.createElement('div'); box.className = 'jy-trks'; box.dataset.i = i;
+      box.setAttribute('role', 'group'); box.setAttribute('aria-label', `${w.title} · ${COPY.albumTracks || COPY.tracks}`);
+      w.tracks.forEach((t, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-trk'; b.disabled = !t.audio; b.tabIndex = -1;
+        b.setAttribute('aria-label', `${String(j + 1).padStart(2, '0')} ${t.title}`); b.setAttribute('aria-pressed', 'false');
+        b.innerHTML = '<img alt="" loading="lazy" decoding="async"><i></i><span></span>';
+        b.querySelector('img').src = ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('span').textContent = t.title;
+        b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
+        box.appendChild(b);
+      });
+      trackLayer.appendChild(box); trackEls[i] = box;
+    });
+    listeners.add(() => Object.entries(trackEls).forEach(([i, box]) => { const w = bySlug[items[i].dataset.slug]; $$('.jy-trk', box).forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j)))); }));
+    const recordU = (k) => CH.record[0] + (CH.record[1] - CH.record[0]) * (0.1 + 0.82 * (N > 1 ? k / (N - 1) : 0));
+    // whatever has passed the note in focus fades out, so nothing covers the words on the right
+    const behind = (dz) => clamp((dz - VIEW * 0.45) / (VIEW * 0.4));
+    const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = (cur.F * rad) / dz; return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
+    // the branch staff of an album: an arc outside the swirl, its tracks as notes
+    const branchStaff = (n, fx) => { const y = H * 0.86, x0 = fx - 40, sp = Math.min(76, (x0 - 72) / Math.max(1, n)), gap = 11; return { y, x0, sp, gap, x1: x0 - n * sp - 24 }; };
+    const trackPitch = (j) => Math.round(4 + 2.5 * Math.sin(j * 1.1));
+    function placeCurrent(lr) {
+      const k = recK, focusZ = k * DZ;
+      const dive = ease(lr / 0.1), out = ease((lr - 0.92) / 0.08);
+      // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
+      const camZ = lerp(-2 - cur.F / (Math.min(W, H) * 0.34), focusZ - VIEW, dive) + out * 3.5;
+      cur.cx = lerp(W / 2, W * 0.36, dive); cur.cy = H * 0.5;
+      const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN;
+      cur.camZ = camZ; cur.roll = roll;
       const list = recordEl.classList.contains('list');
-      spiral.style.opacity = String(ease((enter - 0.6) / 0.4));
-      if (!list) items.forEach((li, i) => { const a = g.ang[i] + phi, rr = g.rad[i] * sc2; li.style.transform = `translate(${x + Math.cos(a) * rr}px,${y + Math.sin(a) * rr}px)`; });
-      const tip = [g.cx + Math.cos(g.tipAngle(r)) * r, g.cy + Math.sin(g.tipAngle(r)) * r];
-      $('.jy-arm-bar', arm).setAttribute('x1', g.pv[0]); $('.jy-arm-bar', arm).setAttribute('y1', g.pv[1]);
-      $('.jy-arm-bar', arm).setAttribute('x2', tip[0]); $('.jy-arm-bar', arm).setAttribute('y2', tip[1]);
-      const head = $('.jy-arm-head', arm), deg = (Math.atan2(tip[1] - g.pv[1], tip[0] - g.pv[0]) * 180) / Math.PI - 90;
-      head.setAttribute('x', tip[0] - 5); head.setAttribute('y', tip[1] - 16); head.setAttribute('transform', `rotate(${deg} ${tip[0]} ${tip[1]})`);
-      arm.style.opacity = String(ease((enter - 0.7) / 0.3));
-      const cur = Math.round(k);
-      if (cur !== recShown) { recShown = cur; showReadout(cur); }
+      spiral.style.opacity = list ? '1' : String(ease((lr - 0.02) / 0.06) * (1 - out));
+      if (!list) items.forEach((li, i) => {
+        const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
+        if (!p || p[2] > FAR) { li.style.visibility = 'hidden'; return; }
+        // a note fades as soon as it has passed the focus, so it never covers the words on the right
+        const sc2 = VIEW / p[2], a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5);
+        li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
+        li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
+        li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
+      });
+      const i = Math.round(k);
+      if (i !== recShown) { recShown = i; showReadout(i); }
+      const near = Math.abs(k - i) < 0.32 && lr > 0.1 && lr < 0.92 && !list ? i : -1;
+      Object.entries(trackEls).forEach(([j, box]) => {
+        const show = Number(j) === near;
+        box.classList.toggle('on', show);
+        $$('.jy-trk', box).forEach((b) => { b.tabIndex = show ? 0 : -1; });
+        if (!show) return;
+        const btns = $$('.jy-trk', box), fp = proj(near * TURN, near * DZ, camZ, roll, radiusOf(pitchOf(near))), g = branchStaff(btns.length, fp ? fp[0] : W * 0.5);
+        btns.forEach((b, n) => { const x = g.x0 - (n + 0.5) * g.sp, y = g.y - (trackPitch(n) - 4) * g.gap / 2; b.style.transform = `translate(${x}px,${y}px)`; b.style.transitionDelay = (n * 30) + 'ms'; });
+      });
+      albumOpen = near;
+    }
+    // one helix of the staff, stroked in short runs so the width can follow the depth
+    function staffLine(rad, z0, z1, camZ, roll, alpha, width) {
+      let run = [], wPrev = -1, aPrev = -1;
+      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${INK},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n = 1; n < run.length; n++) ctx.lineTo(run[n][0], run[n][1]); ctx.stroke(); } };
+      for (let z = z0; z <= z1; z += 0.04) {
+        const p = proj((z / DZ) * TURN, z, camZ, roll, rad); if (!p) continue;
+        const wd = Math.round(clamp(width * VIEW / p[2], 0.4, 3.2) * 4) / 4, al = Math.round(0.85 * alpha * behind(p[2]) * clamp((FAR - p[2]) / 6) * 20) / 20;
+        if (wd !== wPrev || al !== aPrev) { const last = run[run.length - 1]; flush(); run = last ? [last] : []; wPrev = wd; aPrev = al; }
+        run.push(p);
+      }
+      flush();
+    }
+    function drawCurrent(lr) {
+      if (!cur || cur.camZ == null) return;
+      const { camZ, roll } = cur, alpha = ease(lr / 0.05) * (1 - ease((lr - 0.94) / 0.06));
+      if (alpha <= 0) return;
+      // the colour of the note in focus, faint, around the swirl
+      const w = recShown >= 0 && bySlug[items[recShown].dataset.slug], c = w && colorOf[w.slug];
+      if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+      // the staff: five ink lines swirling in, thick close by, a hair far away
+      const z0 = Math.max(-1.6, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (let l = 0; l < 5; l++) staffLine(radiusOf(l * 2), z0, z1, camZ, roll, alpha, 1.3);
+      // bar lines every four notes
+      for (let i = 3; i < N; i += 4) {
+        const z = (i + 0.5) * DZ, a = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(0)), b2 = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(8));
+        if (!a || !b2 || a[2] > FAR) continue;
+        ctx.strokeStyle = `rgba(${INK},${0.85 * alpha * behind(a[2]) * clamp((FAR - a[2]) / 6)})`; ctx.lineWidth = clamp(1.6 * VIEW / a[2], 0.4, 3); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b2[0], b2[1]); ctx.stroke();
+      }
+      // stems: from each note, across the staff, away from the middle line
+      for (let i = 0; i < N; i++) {
+        const pi = pitchOf(i), up = pi < 4, th = i * TURN, z = i * DZ;
+        const a = proj(th, z, camZ, roll, radiusOf(pi)); if (!a || a[2] > FAR || a[2] < VIEW * 0.72) continue;
+        const rr = (cur.size / 2) * (VIEW / a[2]), dir = up ? 1 : -1, ang = th + roll, len = (cur.F * GAP * 3.4) / a[2];
+        const sx = a[0] + Math.cos(ang) * rr * dir, sy = a[1] + Math.sin(ang) * rr * dir;
+        ctx.strokeStyle = `rgba(${INK},${0.85 * alpha * clamp((FAR - a[2]) / 6) * clamp((a[2] - VIEW * 0.72) / (VIEW * 0.22))})`; ctx.lineWidth = clamp(2 * VIEW / a[2], 0.5, 3);
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + Math.cos(ang) * len * dir, sy + Math.sin(ang) * len * dir); ctx.stroke();
+      }
+      // the mark at the head of the staff, as its clef
+      { const z = -1.1, p = proj((z / DZ) * TURN, z, camZ, roll, 1); if (p && clef.complete && clef.naturalWidth) { const h = (cur.F * GAP * 9) / p[2], wd = h * (1079 / 1275); ctx.globalAlpha = alpha * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.drawImage(clef, p[0] - wd / 2, p[1] - h / 2, wd, h); ctx.globalAlpha = 1; } }
+      // specks drifting down the swirl
+      ctx.fillStyle = `rgb(${INK})`;
+      for (const d of flow) {
+        if (!reduce) d.z -= d.v * 0.016; if (d.z < camZ) d.z += FAR;
+        const p = proj((d.z / DZ) * TURN + d.a * 0.08, d.z, camZ, roll, d.r); if (!p) continue;
+        const r = clamp(2.4 * VIEW / p[2], 0.6, 3.5);
+        ctx.globalAlpha = alpha * 0.45 * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.fillRect(p[0] - r / 2, p[1] - r / 2, r, r);
+      }
+      ctx.globalAlpha = 1;
+      // the album's branch staff: out of the album, down to five short lines along the bottom
+      if (albumOpen >= 0 && trackEls[albumOpen]) {
+        const pi = pitchOf(albumOpen), p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pi)), n = $$('.jy-trk', trackEls[albumOpen]).length;
+        if (p) {
+          const g = branchStaff(n, p[0]);
+          ctx.strokeStyle = `rgba(${INK},${0.75 * alpha})`; ctx.lineWidth = 1.2;
+          for (let l = 0; l < 5; l++) { const y = g.y + (l - 2) * g.gap; ctx.beginPath(); ctx.moveTo(g.x0 + 16, y); ctx.lineTo(g.x1, y); ctx.stroke(); }
+          ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.quadraticCurveTo(p[0] + 30, g.y - 20, g.x0 + 16, g.y); ctx.stroke();
+          ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(g.x1, g.y - 2 * g.gap); ctx.lineTo(g.x1, g.y + 2 * g.gap); ctx.stroke();
+        }
+      }
     }
     function showReadout(i) {
       const w = bySlug[items[i].dataset.slug];
@@ -543,6 +646,7 @@
       $('#jy-ro-t').textContent = w.title; $('#jy-ro-a').textContent = w.artist;
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
       $('#jy-ro-play').hidden = !sourceOf(w);
+      sample(w);
       syncReadout();
     }
     function syncReadout() {
@@ -565,42 +669,16 @@
       const b = e.currentTarget, list = !recordEl.classList.contains('list');
       recordEl.classList.toggle('list', list); b.setAttribute('aria-pressed', String(list));
       b.textContent = list ? b.dataset.on : b.dataset.off;
-      if (!list) items.forEach((li) => { li.style.transform = ''; });
+      items.forEach((li) => { li.style.transform = ''; li.style.opacity = ''; li.style.visibility = ''; li.style.zIndex = ''; });
       recShown = -1;
     });
-    // spiral items: open, and turn the record to them
+    // keyboard: focusing a work flies the current to it
     items.forEach((li, i) => $('.jy-sw-btn', li).addEventListener('focus', () => { if (!recordEl.classList.contains('list') && chapter === 'record') goU(recordU(i)); }));
-    // drag the platter to turn it
-    {
-      let dragging = null;
-      recordEl.addEventListener('pointerdown', (e) => {
-        if (e.target.closest('button') || recordEl.classList.contains('list') || !geo) return;
-        const a0 = Math.atan2(e.clientY - geo.cy, e.clientX - geo.cx);
-        if (Math.hypot(e.clientX - geo.cx, e.clientY - geo.cy) > geo.R) return;
-        dragging = { a: a0, k: recK, id: e.pointerId }; recordEl.setPointerCapture(e.pointerId);
-      });
-      recordEl.addEventListener('pointermove', (e) => {
-        if (!dragging || e.pointerId !== dragging.id) return;
-        let da = Math.atan2(e.clientY - geo.cy, e.clientX - geo.cx) - dragging.a;
-        if (da > Math.PI) da -= 2 * Math.PI; if (da < -Math.PI) da += 2 * Math.PI;
-        dragging.a += da; dragging.k = clamp(dragging.k - da / geo.step, 0, N - 1);
-        goU(recordU(dragging.k), false);
-      });
-      const end = (e) => { if (dragging && e.pointerId === dragging.id) dragging = null; };
-      recordEl.addEventListener('pointerup', end); recordEl.addEventListener('pointercancel', end);
-    }
-    function paintRecord() {
-      const ws = WORKS.filter(lit);
-      Promise.all(ws.slice(0, 12).map(sample)).then(() => {
-        const cols = ws.slice(0, 6).map((w) => colorOf[w.slug]).filter(Boolean).map((c) => `rgb(${c})`);
-        const stops = cols.length ? (cols.length === 1 ? [cols[0], cols[0]] : cols) : ['#b0b2b8', '#e5e6e8'];
-        $('#jy-wash').style.background = `conic-gradient(${[...stops, stops[0]].join(',')})`;
-      });
-    }
+    function paintRecord() { WORKS.filter(lit).slice(0, 12).forEach(sample); }
 
     /* ---- the frame loop ---- */
     const steps = $$('.jy-step');
-    function setNowPlaying() { const w = featured()[0]; if (!w) return; $('#jy-npd').style.backgroundImage = `url(/${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
+    function setNowPlaying() { const w = featured()[0]; if (!w) return; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
     function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
     function syncInert() {
       if (story && !story.hidden) return;
@@ -643,40 +721,39 @@
       const si = lm > 0.08 && lm < 0.47 ? Math.min(2, Math.floor((lm - 0.08) / 0.13)) : -1;
       if (si !== stepShown) { stepShown = si; steps.forEach((s2, i) => { s2.classList.remove('on'); if (i === si) { void s2.offsetWidth; s2.classList.add('on'); } }); }
       on($('#jy-np'), lm > 0.03 && lm < 0.5);
-      on($('#jy-landscape'), lm > 0.58 && lm < 0.8);
-      on($('#jy-fact'), lm > 0.82 && lm < 1);
+      on($('#jy-landscape'), lm > 0.55 && lm < 0.69);
+      on($('#jy-fact'), lm > 0.71 && lm < 0.86);
       if (lm > 0.5 && !pts) buildPoints(); if (lm <= 0.5 && pts) pts = null;
-      // Done
-      const ld = local(u, 'done'), lr = local(u, 'record'), le = local(u, 'epi');
+      // Record: the dive into the current
+      const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
+      const inRecord = lr > 0 && lr < 1;
+      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
+      on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
+      if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
+      else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
+      // Done: out of the current, the phone is seen from outside, the record in it
       const ink = le > 0;
       stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
       markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
       on($('#jy-letter'), ld > 0.1 && ld < 0.92);
-      if (ld > 0 && !recBuilt) buildRecordWash();
+      if (lr > 0.8 && !recBuilt) buildRecordWash();
       const RR = Math.min(W, H) * 0.34;
-      if (ld > 0 && lr <= 0) {
+      if (ld > 0 && le <= 0) {
         const s0 = (2 * RR) / 192, s = lerp(s0, 1, ease(ld / 0.7));
-        frame.style.opacity = String(ease(ld / 0.3)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = '50%';
+        frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = '50%';
         const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
       } else if (le > 0) {
         frame.style.opacity = '1'; frame.style.transform = `scale(${lerp(1, 1.25, ease(le / 0.3))})`; frame.style.left = '72%'; frame.style.top = '50%';
         frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
-      } else frame.style.opacity = lr > 0 ? String(1 - ease(lr / 0.08)) : '0';
-      // Record
-      const inRecord = lr > 0 && lr < 1.0 && le <= 0;
-      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.12 && le <= 0); on(readout, lr > 0.12 && le <= 0);
-      on($('#jy-found'), lr > 0.02 && lr < 0.2); on($('#jy-hint'), lr > 0.08 && lr < 0.3);
-      if (lr > 0 && le <= 0) {
-        recK = clamp((lr - 0.15) / 0.8) * (N - 1);
-        placeRecord(recK, ease(lr / 0.15));
-      } else if (platter.style.opacity !== '0') { platter.style.opacity = '0'; spiral.style.opacity = '0'; arm.style.opacity = '0'; }
+      } else frame.style.opacity = '0';
       // Epilogue
       on($('#jy-empty'), le > 0.05 && le < 0.4);
       on($('#jy-contact'), le > 0.2);
 
       // ---- canvas ----
       ctx.clearRect(0, 0, W, H);
-      if (u > CH.done[0] + 0.3) return;
+      if (inRecord) drawCurrent(lr);
+      if (u > CH.record[0] + 0.12) return;
       if (ip > 0.8 && lm <= 0) {
         const da = ease((ip - 0.8) / 0.2); ctx.fillStyle = `rgb(${INK})`;
         for (const d of dots) {
@@ -697,8 +774,8 @@
         wireA = 1 - ease(lm / 0.16);
         drawClouds(reveal, faceK, faceA); drawFaces(faceK, faceA); drawLine(reveal, faceA);
       }
-      if (pts && ld <= 0.3) {
-        const lp = clamp((lm - 0.5) / 0.5), k = ease(lp / 0.85), fade = ld > 0 ? 1 - ld / 0.3 : 1, cx = W / 2, cy = H * 0.5;
+      if (pts && lr <= 0.08) {
+        const lp = clamp((lm - 0.5) / 0.5), k = ease(lp / 0.85), fade = lr > 0 ? 1 - ease(lr / 0.06) : 1, cx = W / 2, cy = H * 0.5;
         const tilt = lerp(1.15, 0, ease((lp - 0.6) / 0.35)), spin = (reduce ? 0 : T * 0.35) + k * 2;
         for (const p of pts) {
           let tx, ty;
@@ -721,7 +798,7 @@
       DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
       for (const c of [cv, wash]) { c.width = W * DPR; c.height = H * DPR; }
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0); wctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildLine(); buildDots(); buildSpiral(); blots.forEach((b) => { b.done = true; }); redrawWash(); recShown = -1;
+      buildLine(); buildDots(); buildCurrent(); blots.forEach((b) => { b.done = true; }); redrawWash(); recShown = -1;
     }
     addEventListener('resize', resize);
     phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));
