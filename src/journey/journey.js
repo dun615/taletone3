@@ -558,7 +558,7 @@
     const AUTO = [
       [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
       [0.33, 1.37, 2300],   // into the phone, onto the land: the first hello
-      [2.30, 3.36, 2800, 1],   // up into the sky, a phone flies in, and it was the sea: the philosophy begins
+      [2.30, 3.36, 4600, 1],   // straight up into the sky, a phone comes down the line, and it was the sea: the fishing line plunges in
       [4.30, 5.42, 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
       [6.15, 7.70, 2400, 1],   // along the stars to the record: found
       [7.74, 8.20, 1500],   // the line splits in five and draws the staff: the first song
@@ -644,10 +644,12 @@
     // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
     // passed slowly takes on a pastel colour.
     const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
-    // the land ends where the line lifts off the last pole and climbs into the sky. High up the sky has the colour of
-    // the sea just under its surface, and at ZS, when the screen is all that one colour, the world quietly becomes the
-    // sea: the line runs level a while, then sinks from SINK into the deep, which opens onto space at S0.
-    const S0 = PEN.case[0], ZS = 12, SINK = 16, LIFT = [8.8, 11.6], YT = -5;
+    // the land ends where the line lifts off the last pole and swings up, steeper and steeper, until it runs straight
+    // up into the sky (from CL0, CLH high at ZS); the camera rides the line and ends up looking straight up. High up the
+    // sky has the colour of the sea seen from above, and at ZS a phone comes down the line and the world becomes the
+    // sea: the end of the line is a fishing line hanging from high above, which plunges through the surface, runs level
+    // a while under it, then sinks from SINK into the deep, which opens onto space at S0.
+    const S0 = PEN.case[0], ZS = 12, SINK = 16, YT = -5, CL0 = 8.8, CLH = 40, CLX = 2.6;
     const WIRE = [2.8, 9], POLE = 3, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
@@ -659,10 +661,18 @@
     // where it splits in five and draws the record's staff
     // the sea: DEPTH deep between SINK and S0, slowly at first, steeply, then slowly into the dark. A shelf of sand
     // carries kelp and rocks from SHELF0 until SHELF, where it drops away. Space sits YS below the sky the line rose to.
-    const DEPTH = 12, SHELF0 = 18, SHELF = 21.5, YS = YT + DEPTH + 0.25, SURF = YT - 1.7;
+    const DEPTH = 12, SHELF0 = 18, SHELF = 21.5, YS = YT + DEPTH + 0.25, SURF = YT - 3.5;
     const seaD = (z) => { const u = clamp((z - SINK) / (S0 - SINK)); return DEPTH * u * u * (3 - 2 * u); };
-    const liftK = (z) => ease((z - LIFT[0]) / (LIFT[1] - LIFT[0]));
-    const baseAt = (z) => YT * liftK(z) + seaD(z); // how high the line runs here, roughly
+    const climbK = (z) => clamp((z - CL0) / (ZS - CL0));
+    // the fishing line: Y0 high at ZS (and straight on up before it), down through the surface, level at YT after PL
+    const PL = 2.2, Y0 = SURF - 4.5, SL0 = (2 * (YT - Y0)) / PL;
+    const plungeY = (z) => (z < ZS ? Y0 - (ZS - z) * SL0 : z < ZS + PL ? Y0 + (YT - Y0) * (1 - Math.pow(1 - (z - ZS) / PL, 2)) : YT + seaD(z));
+    // where the fishing line meets the surface (the float sits there)
+    const ZF = ZS + PL * (1 - Math.sqrt(1 - (SURF - Y0) / (YT - Y0)));
+    // how high the line runs, without its small waves: on the land (climbing) or in the sea (sea: the fishing line,
+    // which before ZS hangs from the sky)
+    const baseOf = (z, sea) => (sea || z >= ZS ? plungeY(z) : -CLH * Math.pow(climbK(z), CLX));
+    const xAt = (z) => -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2);
     const bedAt = (z) => YT + seaD(z) + 2.6 + (z > SHELF ? Math.pow(z - SHELF, 2) * 2.5 : 0);
     const dkAt = (z) => seaD(z) / DEPTH; // 0 the bright shallows, 1 the dark deep
     // the camera position where the deep becomes space (inside the phone that comes to meet it)
@@ -682,12 +692,16 @@
       return STARS[STARS.length - 1];
     }
     function pathAt(z) {
-      let x = -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.16 * Math.sin(z * 0.47);
-      const ww = wireW(z);
-      if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
-      // off the last pole up into the sky, level a while, then down into the deep like a fishing line
-      const lk = liftK(z);
-      if (lk > 0) y = lerp(y, YT + seaD(z) + 0.15 * Math.sin(z * 0.6), lk);
+      let x = xAt(z), y = 0.35 + 0.16 * Math.sin(z * 0.47);
+      if (z < ZS) {
+        const ww = wireW(z);
+        if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
+        // off the last pole and up into the sky
+        if (z > CL0) y = -0.55 + baseOf(z, false);
+      } else {
+        // the fishing line: down through the surface, then level, then sinking, with a slow wave once it runs on
+        y = plungeY(z) + 0.15 * Math.sin(z * 0.6) * clamp((z - ZS - PL) / 1.5);
+      }
       // space: from star to star
       const ck2 = ease((z - S0) / 2.6);
       if (ck2 > 0) { const c = constAt(z); x = lerp(x, c[0], ck2); y = lerp(y, c[1], ck2); }
@@ -696,11 +710,35 @@
       if (tk > 0) { const t2 = tailAt(z); x = lerp(x, t2[0], tk); y = lerp(y, t2[1], tk); }
       return [x, y, z];
     }
-    let penZ = PEN.tale[0], camX = 0, camY = 0, camZ = -1, F3 = 800;
-    const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * HZ + (p[1] - camY) * s3, dz]; };
+    // the line as the sea world has it: before ZS the fishing line still hangs from high above
+    const seaPath = (z) => (z >= ZS ? pathAt(z) : [xAt(z), plungeY(z), z]);
+    let penZ = PEN.tale[0], camX = 0, camY = 0, camZ = -1, camP = 0, cP = 1, sP = 0, F3 = 800;
+    // the camera looks along +z, tilted up by camP (down when negative); y runs downward
+    const setCam = (c) => { camX = c.x; camY = c.y; camZ = c.z; camP = c.p; cP = Math.cos(c.p); sP = Math.sin(c.p); };
+    const getCam = () => ({ x: camX, y: camY, z: camZ, p: camP });
+    const V = (p) => { const rx = p[0] - camX, ry = p[1] - camY, rz = p[2] - camZ, d = rz * cP - ry * sP; if (d < 0.12) return null; const s3 = F3 / d; return [W / 2 + rx * s3, H * HZ + (ry * cP + rz * sP) * s3, d]; };
+    // how far above the horizon (radians) the camera looks at screen row y
+    const elevAt = (y) => camP - Math.atan((y - H * HZ) / F3);
+    // the camera rides the line AHEAD behind the pen (measured along the line), a little above it, looking along the
+    // chord to the pen: on the level it is the old view, where the line bends up or down the camera turns with it
+    function rig(pz, sea) {
+      let z = pz, y = baseOf(z, sea), L = 0;
+      while (L < AHEAD && z > -4) { const z2 = z - 0.02, y2 = baseOf(z2, sea); L += Math.hypot(0.02, y - y2); z = z2; y = y2; }
+      const p = Math.atan2(y - baseOf(pz, sea), pz - z), ck = tailK(pz), cp = Math.cos(p), sp = Math.sin(p);
+      // where the line bows up between the camera and the pen (as it goes over into a dive), the camera rises just
+      // enough above it that no part of the line shows above the pen on the screen (h high, d deep: o >= h L / (L - d))
+      const Lc = Math.hypot(pz - z, baseOf(pz, sea) - y); let o = 0.45;
+      for (let i = 1; i < 12; i++) { const zi = lerp(z, pz, i / 12), dy = baseOf(zi, sea) - y, h = -dy * cp - (zi - z) * sp, d = (zi - z) * cp - dy * sp; if (h > 0 && d < Lc - 0.05) o = Math.max(o, Math.min(3, (1.1 * h * Lc) / (Lc - d))); }
+      // (and, while it runs level, partly follows the line's small waves and sags, and its stars sideways)
+      const pc = (sea ? seaPath : pathAt)(pz - 1.2), wob = 0.7 * (pc[1] - baseOf(pz - 1.2, sea)) * cp * cp;
+      // (raised, it looks down at the pen so the pen stays where it always is on the screen; turning does not change
+      // which points show above which)
+      const cy = y - o * cp, cz = z - o * sp, p2 = Math.atan2(cy - baseOf(pz, sea), pz - cz) + Math.atan(0.45 / Lc);
+      return { x: lerp(pc[0] * 0.35, 0, ck), y: lerp(cy + wob, YS, ck), z: cz, p: p2 };
+    }
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let mounts = [], birds = [], rocks = [], fish = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
+    let puffs = [], sparks = [], waves = [], mounts = [], birds = [], rocks = [], fish = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
     let spaceDark = 0, lineRGB = INK;
     const dots = [];
     function buildWorld() {
@@ -742,7 +780,15 @@
         clouds.push({ z, pts, ci: clouds.length });
       };
       for (let z = 3; z < 9; z += 3 + rnd() * 3) cloudAt(z, (rnd() - 0.5) * 7, -2.1 + rnd() * 0.6, 0.9 + rnd() * 0.9);
-      for (let z = 7.4; z < ZS - 1.4; z += 0.9 + rnd() * 0.6) cloudAt(z, (rnd() < 0.5 ? -1 : 1) * (0.9 + rnd() * 2.6), -2.6 - rnd() * 2.6, 1.2 + rnd() * 1.1);
+      puffs = [];
+      for (let i = 0; i < 34; i++) {
+        const y = -2.4 - i * 1.15 - rnd() * 0.6, c = Math.pow(-y / CLH, 1 / CLX); if (c >= 1) break;
+        const z = CL0 + c * (ZS - CL0), an = rnd() * Math.PI * 2, rad = 1.1 + rnd() * 2.6, X = xAt(z) + Math.cos(an) * rad, Z = z + Math.sin(an) * rad * 0.8, blobs = [];
+        for (let j = 0, n = 4 + ((rnd() * 4) | 0); j < n; j++) blobs.push([X + (rnd() - 0.5) * 1.4, y + (rnd() - 0.5) * 0.4, Z + (rnd() - 0.5) * 0.9, 0.3 + rnd() * 0.45]);
+        puffs.push(blobs);
+      }
+      sparks = []; for (let i = 0; i < 90; i++) sparks.push([(rnd() - 0.5) * 16, ZS - 4 + rnd() * 12, rnd()]);
+      waves = []; for (let i = 0; i < 260; i++) waves.push([(rnd() - 0.5) * 18, ZS - 5 + rnd() * 15, 0.25 + rnd() * 0.5, rnd()]);
       // the sea, by depth: the surface and the shelf near the top, fish and jellyfish further down, glowing plankton in the dark
       const deepY = (z) => YT + seaD(z);
       surf = [];
@@ -788,7 +834,7 @@
 
       let latest = -1;
       ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
-      const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && penZ > ANCHORS[latest].z + 4.5;
+      const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 4.5 || (g === 0 && penZ > CL0 + 0.75));
       // a tall thread sits lower so its first message stays on screen
       const stack = ANCHORS.reduce((t, a, i) => t + (!gone && i <= latest && groupOf(a.z) === g ? (a.h || a.el.offsetHeight) + 10 : 0), 0);
       let y = NARROW ? bottom : Math.min(H - 28, Math.max(bottom, stack + 84));
@@ -819,7 +865,18 @@
       ctx.beginPath(); ctx.arc(leadOf.x - 8, leadOf.y, 2.5, 0, Math.PI * 2); ctx.fill();
     }
     function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
-    function drawTip(rgb, A) { const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${rgb},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); } }
+    function drawTip(rgb, A, P = pathAt, hook = false) {
+      const tip = V(P(penZ)); if (!tip || penZ <= PEN.tale[0] + 0.05) return;
+      ctx.fillStyle = `rgba(${rgb},${A})`;
+      if (!hook) { ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); return; }
+      // a fishing hook on the end, turned the way the line runs on the screen
+      const pr = V(P(penZ - 0.08)); if (!pr) return;
+      const r = clamp(6 * AHEAD / tip[2], 4, 11);
+      ctx.save(); ctx.translate(tip[0], tip[1]); ctx.rotate(Math.atan2(tip[1] - pr[1], tip[0] - pr[0]));
+      ctx.strokeStyle = `rgba(${rgb},${A})`; ctx.lineWidth = Math.max(1.4, r * 0.2); ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(r * 1.5, 0); ctx.arc(r * 1.5, r * 0.55, r * 0.55, -Math.PI / 2, Math.PI * 0.92); ctx.lineTo(r * 1.2, r * 0.36); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, Math.max(1.6, r * 0.22), 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    }
     // the sea: lighter under the surface, deeper below; slanting light from above
     const SEA = { top: [[228, 236, 240], [214, 240, 246]], mid: [[208, 218, 226], [180, 224, 236]], bot: [[188, 200, 212], [146, 198, 222]], sand: [[206, 204, 198], [238, 224, 196]], ripple: [[150, 150, 146], [196, 170, 130]] };
     const KELP = [[136, 158, 150], [104, 184, 150]], CORAL = [[176, 170, 178], [246, 156, 170]], ROCK = [[[150, 158, 170], [176, 168, 206]], [[160, 160, 164], [150, 184, 196]]];
@@ -829,30 +886,55 @@
     const SEA_DEEP = { top: [64, 112, 164], mid: [38, 74, 126], bot: [24, 44, 88] }, ABYSS = { top: [18, 22, 44], mid: [28, 28, 58], bot: [38, 33, 72] };
     const TREE = [136, 190, 146], FLOWER = [[248, 186, 204], [252, 226, 150], [255, 255, 255]];
     const JELLY = ['246,190,222', '204,192,250', '172,230,240'], GLOW = ['150,236,240', '246,180,226', '240,236,170'];
+    // the sky at the zenith and the sea seen from above share one colour: that is the change of world
+    const ZEN = [196, 228, 242], HAZE = [252, 240, 230];
+    const mixA = (c0, c1, k) => c0.map((v, i) => lerp(v, c1[i], k));
+    const rgbA = (c, a) => `rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${a})`;
+    // a gradient down the screen, coloured row by row by how far up or down that row looks
+    // (drawn as a one-pixel-wide strip, row by row, stretched over the screen: much lighter than a many-stop gradient)
+    const strip = document.createElement('canvas'), sctx = strip.getContext('2d'), SN = 96; strip.width = 1; strip.height = SN;
+    const sdata = sctx.createImageData(1, SN);
+    function skyFill(colAt, a) {
+      for (let i = 0; i < SN; i++) { const [c, al] = colAt(elevAt(((i + 0.5) / SN) * H)), o = i * 4; sdata.data[o] = c[0]; sdata.data[o + 1] = c[1]; sdata.data[o + 2] = c[2]; sdata.data[o + 3] = 255 * clamp(al * a); }
+      sctx.putImageData(sdata, 0, 0); ctx.imageSmoothingEnabled = true; ctx.drawImage(strip, 0, 0, 1, SN, 0, 0, W, H);
+    }
+    const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
     function seaBackdrop(a) {
-      const k = passed(8, 0.5), dk = dkAt(camZ + 2), hz = H * HZ, t = reduce ? 0 : T;
+      const k = passed(8, 0.5), dk = dkAt(camZ + 2), t = reduce ? 0 : T;
+      if (camY < SURF) {
+        // above the water: the sky's colour at the horizon, the sea's below it, deeper the steeper one looks down
+        skyFill((e) => (e > 0 ? [mixA(HAZE, PASTEL.land.sky, clamp(e / 0.3)), 0.9] : [mixA(mixA(ZEN, [255, 255, 255], 0.45), ZEN, clamp(-e / 0.5)), 1]), a);
+        return;
+      }
       const f1 = clamp(dk / 0.55), f2 = clamp((dk - 0.55) / 0.45);
-      const stop = (n) => `rgba(${SEA[n][0].map((v, i) => Math.round(lerp(lerp(lerp(v, SEA[n][1][i], k), SEA_DEEP[n][i], f1), ABYSS[n][i], f2))).join(',')},${a})`;
-      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, stop('top')); g.addColorStop(0.46, stop('mid')); g.addColorStop(1, stop('bot'));
-      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-      // light from the surface, fading as the line sinks
-      const light = a * clamp(1 - dk / 0.45); if (light <= 0) return;
-      const g2 = ctx.createLinearGradient(0, 0, 0, hz); g2.addColorStop(0, `rgba(255,255,255,${0.5 * light})`); g2.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = g2; ctx.fillRect(0, 0, W, hz);
-      for (let i = 0; i < 6; i++) {
-        const x = W * (0.02 + i * 0.17) + Math.sin(t * 0.25 + i * 1.7) * W * 0.03, wd = W * (0.03 + (i % 3) * 0.02), len = H * (0.7 + (i % 2) * 0.25), sl = W * 0.1;
-        const gr = ctx.createLinearGradient(0, 0, 0, len); gr.addColorStop(0, `rgba(255,255,255,${(0.26 + 0.1 * Math.sin(t * 0.6 + i * 2)) * light})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + wd, 0); ctx.lineTo(x + wd * 2.4 + sl, len); ctx.lineTo(x + sl, len); ctx.closePath(); ctx.fill();
+      const col = (n) => SEA[n][0].map((v, i) => lerp(lerp(lerp(v, SEA[n][1][i], k), SEA_DEEP[n][i], f1), ABYSS[n][i], f2));
+      const top = col('top'), mid = col('mid'), bot = col('bot'), lit = clamp(1 - dk / 0.45);
+      // under the water: bright towards the surface, dark straight down
+      skyFill((e) => [e > 0.45 ? mixA(top, [255, 255, 255], clamp((e - 0.45) / 1.1) * 0.4 * lit) : e > 0 ? mixA(mid, top, e / 0.45) : e > -0.5 ? mixA(mid, bot, -e / 0.5) : mixA(bot, mixA(bot, [52, 104, 164], 0.55), clamp((-e - 0.5) / 1)), 1], a);
+      // shafts of light from the surface, slanting down into the water; they meet far below
+      const light = a * lit; if (light <= 0) return;
+      const j0 = Math.floor(camZ / 1.3) - 1;
+      for (let j = j0; j < j0 + 11; j++) {
+        const z = j * 1.3 + hash(j) * 0.7, x = (hash(j + 7) - 0.5) * 9 + Math.sin(t * 0.25 + j) * 0.3, wd = 0.14 + hash(j + 3) * 0.22, L = 8;
+        const q = [V([x - wd, SURF, z]), V([x + wd, SURF, z]), V([x + wd + 0.35 * L, SURF + L, z + 0.2 * L]), V([x - wd + 0.35 * L, SURF + L, z + 0.2 * L])];
+        if (q.some((v) => !v)) continue;
+        const al = (0.2 + 0.08 * Math.sin(t * 0.6 + j * 2)) * light * fogA(q[0][2]);
+        const gr = ctx.createLinearGradient((q[0][0] + q[1][0]) / 2, (q[0][1] + q[1][1]) / 2, (q[2][0] + q[3][0]) / 2, (q[2][1] + q[3][1]) / 2);
+        gr.addColorStop(0, `rgba(255,255,255,${al})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]); for (let n = 1; n < 4; n++) ctx.lineTo(q[n][0], q[n][1]); ctx.closePath(); ctx.fill();
       }
     }
     function nightBackdrop(a) { const g = ctx.createLinearGradient(0, 0, W * 0.3, H); g.addColorStop(0, `rgba(18,22,44,${a})`); g.addColorStop(1, `rgba(40,34,74,${a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
     // what the pen's line looks like from z0 to z1: thick close by, a hair far away, swelling where something is written
-    function drawLine(z0, z1, rgb, A) {
+    function drawLine(z0, z1, rgb, A, P = pathAt) {
       let run = [], wPrev = -1, aPrev = -1;
       const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.lineCap = aPrev < 1 ? 'butt' : 'round'; ctx.strokeStyle = `rgba(${rgb},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
-      for (let z = Math.max(PEN.tale[0], camZ + 0.15, z0); z <= z1 + 1e-6; z += 0.03) {
-        const p = V(pathAt(Math.min(z, z1))); if (!p) continue;
+      const sea = P === seaPath;
+      for (let z = Math.max(PEN.tale[0], camZ - 3, z0); z <= z1 + 1e-6; z += 0.03 / Math.max(1, Math.abs(baseOf(z + 0.01, sea) - baseOf(z, sea)) * 50)) {
+        const p = V(P(Math.min(z, z1))); if (!p) continue;
         let sw = 1; for (const az of swellZ) sw += 0.8 * Math.exp(-Math.pow((z - az) / 0.35, 2));
-        const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * 20) / 20;
+        const wet = camY < SURF && sea && P(Math.min(z, z1))[1] > SURF ? 0.4 : 1;
+        const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * wet * 20) / 20;
         if (wd !== wPrev || al !== aPrev) { const lastP = run[run.length - 1]; flush(); run = lastP ? [lastP] : []; wPrev = wd; aPrev = al; }
         run.push(p);
       }
@@ -863,10 +945,11 @@
     const spaceFade = () => 1 - ease(clamp((penZ - 48.2) / 0.7));
     function backdrop(w, A) {
       if (w === 0) {
-        const k = passed(2, 0) * A, g = ctx.createLinearGradient(0, 0, 0, H);
-        g.addColorStop(0, tint(PASTEL.land.sky, 1, 0.85 * k)); g.addColorStop(0.5, tint([252, 240, 230], 1, 0.5 * k)); g.addColorStop(0.75, tint([252, 240, 230], 1, 0)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-        // the sun, far away, so it stays where it is on the screen
-        const sx = W * 0.74, sy = H * 0.15, R = Math.min(W, H) * 0.045, gl = ctx.createRadialGradient(sx, sy, 0, sx, sy, R * 6);
+        const k = passed(2, 0) * A;
+        skyFill((e) => (e < 0.3 ? [mixA(HAZE, PASTEL.land.sky, clamp(e / 0.3)), e < 0 ? 0.5 * clamp(1 + e / 0.25) : lerp(0.5, 0.85, e / 0.3)] : [mixA(PASTEL.land.sky, ZEN, ease((e - 0.3) / 0.9)), lerp(0.85, 1, ease((e - 0.3) / 0.9))]), k);
+        // the sun, far away in one direction, so it only moves when the camera turns
+        const sd = 1 * cP + 0.31 * sP; if (sd < 0.05) return;
+        const sx = W / 2 + (0.39 * F3) / sd, sy = H * HZ + ((-0.31 * cP + sP) * F3) / sd, R = Math.min(W, H) * 0.045, gl = ctx.createRadialGradient(sx, sy, 0, sx, sy, R * 6);
         gl.addColorStop(0, `rgba(255,246,222,${0.7 * k})`); gl.addColorStop(1, 'rgba(255,246,222,0)'); ctx.fillStyle = gl; ctx.fillRect(sx - R * 6, sy - R * 6, R * 12, R * 12);
         ctx.fillStyle = `rgba(255,244,214,${0.95 * k})`; ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.fill();
         return;
@@ -917,7 +1000,7 @@
           if (!near(r.z)) continue;
           const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
           const Q = r.pts.map(V), k = passed(r.z - 4), haze = clamp(dz / 14) * 0.6, c = PASTEL.land.hill[r.k % 3].map((v, i) => lerp(v, PASTEL.land.sky[i], haze)), a = fogA(dz) * A;
-          if (k > 0 && reveal >= 1) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.62 * k * a); ctx.fill(); }
+          if (k > 0 && reveal >= 1 && Q[0] && Q[Q.length - 1]) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.62 * k * a); ctx.fill(); }
           ctx.strokeStyle = tint([110, 140, 120], k, 0.5 * a); ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
           if (reveal < 1) continue;
           const leaf = TREE.map((v, i) => lerp(v, PASTEL.land.sky[i], haze * 0.8)), wood = [170, 140, 120];
@@ -968,16 +1051,30 @@
           ctx.stroke();
           if (g.flower) { const b = g.blades[2], f = V([g.x + b.dx + b.lean + sw, GROUND - b.h - 0.012, g.z]); if (f) { ctx.fillStyle = tint(FLOWER[g.flower - 1], k, al / 0.7); ctx.beginPath(); ctx.arc(f[0], f[1], clamp(0.024 * F3 / dz, 1.2, 5), 0, Math.PI * 2); ctx.fill(); } }
         }
+        // the clouds high up, which the camera rises through: far ones first
+        if (penZ > CL0) {
+          const seen = [];
+          for (const pf of puffs) { const q = pf.map((b) => [V(b), b[3]]); const d = Math.max(...q.map(([v]) => (v ? v[2] : 0))); if (d > 0.3 && d < 30) seen.push([d, q]); }
+          seen.sort((a, b) => b[0] - a[0]);
+          for (const [d, q] of seen) {
+            const al = A * clamp((d - 0.4) / 1.6) * clamp((30 - d) / 10) * clamp((camP - 0.25) / 0.5); if (al < 0.02) continue;
+            const blob = (sc, dx) => { ctx.beginPath(); for (const [v, r] of q) { if (!v) continue; const R = (r * F3 * sc) / v[2]; if (R > W * 2) continue; ctx.moveTo(v[0] + dx * R + R, v[1] + dx * R); ctx.arc(v[0] + dx * R, v[1] + dx * R, R, 0, Math.PI * 2); } };
+            blob(1, 0); ctx.fillStyle = rgbA(mixA(PASTEL.land.cloud, [255, 255, 255], 0.35), 0.62 * al); ctx.fill();
+            blob(0.72, -0.18); ctx.fillStyle = `rgba(255,255,255,${0.55 * al})`; ctx.fill();
+          }
+        }
         return;
       }
       if (w === 1) {
         const t = reduce ? 0 : T, kS = passed(G1, 0.5);
+        // (the surface once, with the first part; from above the water nothing under it shows)
+        if (inR(ZF)) { if (surface(A, t)) return; } else if (camY < SURF) return;
         // the shelf: rows of sand from far to near, ending where it drops into the deep
         for (let z = Math.min(SHELF + 1.6, camZ + 14); z >= Math.max(SHELF0, camZ + 0.5); z -= 0.5) {
           if (!inR(z)) continue;
           // once the camera has sunk below the shelf, its sand is overhead and out of sight
           const yb = bedAt(z), below = clamp((yb - camY - 0.3) / 0.6); if (below <= 0) continue;
-          const Q = []; for (let x = -9; x <= 9.001; x += 0.45) Q.push(V([x, yb - 0.04 * Math.sin(x * 2.6 + z * 3.1), z]));
+          const Q = []; for (let x = -30; x <= 30.001; x += Math.abs(x) < 9 ? 0.45 : 1.5) Q.push(V([x, yb - 0.04 * Math.sin(x * 2.6 + z * 3.1), z]));
           const a = fogA(z - camZ) * A * below, first = Q[0], last = Q[Q.length - 1]; if (!first || !last) continue;
           polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = mixC(SEA.sand, kS, 0.5 * a); ctx.fill();
           ctx.strokeStyle = mixC(SEA.ripple, kS, 0.45 * a); ctx.lineWidth = 1; polyline(Q, Q.length); ctx.stroke();
@@ -1033,14 +1130,62 @@
           const r = clamp(1.6 * AHEAD / q[2], 0.6, 2.6), dk = dkAt(sn.z); ctx.globalAlpha = A * fogA(q[2]) * clamp((sn.z - ZS) / 3) * (0.55 + 0.35 * dk * (reduce ? 0 : Math.sin(t * 2 + sn.ph * 30))); ctx.fillRect(q[0], q[1], r, r);
         }
         ctx.globalAlpha = 1;
+        surfLines(A, t, inR);
+        return;
+      }
+      spaceElements(A, inR);
+    }
+    function surfLines(A, t, inR = () => true) {
         for (let i = surf.length - 1; i >= 0; i--) {
           const sv = surf[i]; if (!inR(sv.z) || !near(sv.z, 12)) continue;
           const dz = sv.z - camZ, reveal = clamp((penZ - (sv.z - 8)) / 2); if (reveal <= 0) continue;
           const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SURF + 0.05 * Math.sin(x * 2.1 + sv.ph + t * 0.9), sv.z]));
           ctx.strokeStyle = `rgba(255,255,255,${0.75 * fogA(dz) * A})`; ctx.lineWidth = clamp(2 * AHEAD / dz, 0.5, 3); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
         }
-        return;
+    }
+    // the surface where the fishing line goes in: glints on the water seen from above, a float on the line, rings
+    // spreading from it, and a trail of bubbles under it. Returns true when the camera is still above the water.
+    function surface(A, t) {
+      const above = camY < SURF, fl = pathAt(ZF), inn = clamp((penZ - ZF) / 0.25);
+      if (above) {
+        surfLines(A * 0.7, t);
+        // little waves all over the water, light on their crests and a darker trough under each
+        ctx.lineWidth = 1.6;
+        for (const [x, z, L, ph] of waves) {
+          const sh = reduce ? 0 : Math.sin(t * 0.8 + ph * 20) * 0.08, a0 = V([x - L / 2 + sh, SURF, z]), a1 = V([x + sh, SURF, z - 0.06]), a2 = V([x + L / 2 + sh, SURF, z]); if (!a0 || !a1 || !a2) continue;
+          const al = A * fogA(a1[2]) * (0.55 + 0.45 * Math.sin(t * 1.3 + ph * 30));
+          ctx.strokeStyle = `rgba(255,255,255,${0.9 * al})`; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.quadraticCurveTo(a1[0], a1[1], a2[0], a2[1]); ctx.stroke();
+          ctx.strokeStyle = `rgba(110,170,204,${0.55 * al})`; ctx.beginPath(); ctx.moveTo(a0[0], a0[1] + 2); ctx.quadraticCurveTo(a1[0], a1[1] + 2, a2[0], a2[1] + 2); ctx.stroke();
+        }
+        for (const [x, z, ph] of sparks) {
+          const q = V([x, SURF, z]); if (!q) continue;
+          const tw = reduce ? 0.6 : Math.max(0, Math.sin(t * 2.2 + ph * 40)), R = clamp((0.05 * F3) / q[2], 1.5, 7), al = A * tw * fogA(q[2]) * 0.9; if (al < 0.03) continue;
+          ctx.strokeStyle = `rgba(255,255,255,${al})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(q[0] - R, q[1]); ctx.lineTo(q[0] + R, q[1]); ctx.moveTo(q[0], q[1] - R * 0.6); ctx.lineTo(q[0], q[1] + R * 0.6); ctx.stroke();
+        }
       }
+      if (inn > 0) {
+        // rings on the water, spreading from where the line went in (a big one at the moment it did)
+        const ring = (R, al, wd) => { const Q = []; for (let n = 0; n <= 36; n++) { const a2 = (n / 36) * Math.PI * 2; Q.push(V([fl[0] + Math.cos(a2) * R, SURF, fl[2] + Math.sin(a2) * R])); } ctx.strokeStyle = `rgba(255,255,255,${al})`; ctx.lineWidth = wd; polyline(Q, Q.length); ctx.stroke(); };
+        const since = penZ - ZF;
+        if (since < 2.5) ring(0.2 + since * 1.4, A * 0.8 * (1 - since / 2.5), 2.4);
+        for (let j = 0; j < 4; j++) { const ph = reduce ? j / 4 : (t * 0.3 + j / 4) % 1; ring(0.15 + ph * 1.8, A * 0.6 * (1 - ph) * inn, 1.4); }
+        // the float, red above the water and white below
+        const q = V([fl[0], SURF - 0.04, fl[2]]);
+        if (q) { const R = clamp((0.06 * F3) / q[2], 3, 26); ctx.fillStyle = `rgba(255,255,255,${A})`; ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = `rgba(246,140,156,${A})`; ctx.beginPath(); ctx.arc(q[0], q[1], R, Math.PI * (above ? 0.85 : 1.15), Math.PI * (above ? 2.15 : 1.85)); ctx.fill(); ctx.strokeStyle = `rgba(${INK},${0.5 * A})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.stroke(); }
+      }
+      if (above) return true;
+      // the bubbles the line pulled in with it
+      for (let i = 0; i < 26; i++) {
+        const z = ZF + 0.05 + i * 0.07; if (z > penZ) break;
+        const b = pathAt(z), rise = reduce ? 0.3 : (hash(i) + t * 0.25) % 1, y = Math.max(SURF + 0.05, b[1] - rise * (b[1] - SURF));
+        const q = V([b[0] + (hash(i + 9) - 0.5) * 0.3 + Math.sin(t * 2 + i) * 0.03, y, z + (hash(i + 4) - 0.5) * 0.3]); if (!q) continue;
+        const r = clamp(((0.025 + hash(i + 2) * 0.04) * F3) / q[2], 1, 12), al = A * fogA(q[2]) * (1 - rise * 0.6) * clamp(1.6 - (penZ - ZF) / 4);
+        if (al < 0.03) continue;
+        ctx.fillStyle = `rgba(255,255,255,${0.3 * al})`; ctx.strokeStyle = `rgba(255,255,255,${0.9 * al})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      return false;
+    }
+    function spaceElements(A, inR) {
       // space: stars all around; the stars of the constellation are where the line turns
       for (const st of stars) {
         if (!inR(st.z) || !near(st.z, 20) || penZ < st.z - 12) continue;
@@ -1062,19 +1207,24 @@
       }
     }
     // a phone at each change of world: it comes flying along the line from far ahead, turning to face the visitor,
-    // faster and faster, and the visitor is drawn into its screen. Through the screen the next world is really there,
-    // seen from the same camera, so when the screen fills the view it simply is the next scene. P_RUN is how far the
-    // camera travels while the phone comes; it ends at the camera position where the world changes (zc: where the
-    // next world begins along the line, kept for reference by the callers).
-    const P_RUN = 3.2;
-    function portal(id, Xc, zc, drawNext, nextRGB, A) {
-      const p = clamp((camZ - (Xc - P_RUN)) / P_RUN);
-      if (p <= 0) { drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
-      const dzP = 14 * (1 - p) * (1 - p) + 0.15, s3 = F3 / dzP, show = ease(p / 0.12), dark = id === 'space';
+    // faster and faster, and the visitor is drawn into its screen. Through the screen the next world is really there
+    // (inside draws it), so when the screen fills the view it simply is the next scene. p runs 0 to 1; an is where on
+    // the screen the phone starts, on the line.
+    const P_RUN = 3.2, phoneDepth = (p) => 14 * (1 - p) * (1 - p) + 0.15;
+    // where along the path P (between lo and hi) the line is d deep in front of the camera
+    function atDepth(P, d, lo, hi) {
+      const dep = (z) => { const q = P(z); return (q[2] - camZ) * cP - (q[1] - camY) * sP; };
+      if (dep(hi) <= d) return hi; if (dep(lo) >= d) return lo;
+      for (let i = 0; i < 22; i++) { const m = (lo + hi) / 2; if (dep(m) < d) lo = m; else hi = m; }
+      return (lo + hi) / 2;
+    }
+    function phoneIn(p, an, dark, A, inside) {
+      const dzP = phoneDepth(p), s3 = F3 / dzP, show = ease(p / 0.12);
       // it flies in along the line, the line through the middle of its screen, and ends square in the middle
-      const zP = camZ + dzP, an = V(pathAt(zP)) || [W / 2, H * 0.5], k = ease((p - 0.68) / 0.3), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
+      const k = ease((p - 0.68) / 0.3), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
       const roll = (1 - ease(p / 0.75)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / 0.72)) * 1.05 * (dark ? 1 : -1), t = reduce ? 0 : T;
-      const w = 0.98 * s3, h = 2.02 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
+      // a 9:16 phone
+      const w = 1.1 * s3, h = 1.9556 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
       // the phone's own plane (u across, v down), turned by yaw about its upright axis and seen in perspective, so a
       // turned phone narrows to its far edge instead of just getting thinner; then rolled
       const cyw = Math.cos(yaw), syw = Math.sin(yaw), cr = Math.cos(roll), sr = Math.sin(roll), fp = h * 1.6;
@@ -1099,40 +1249,50 @@
       ctx.globalAlpha = show;
       if (dark) { const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.9); gl.addColorStop(0, `rgba(200,206,255,${0.28 * A})`); gl.addColorStop(1, 'rgba(200,206,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h, cy - h, h * 2, h * 2); }
       // the body, a side button, a rim catching the light
-      ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.17 * s3); ctx.fill();
+      ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.16 * s3); ctx.fill();
       ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${0.28 * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
       ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
-      rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.11 * s3); ctx.clip();
-      // the next world, from the same camera
+      rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.1 * s3); ctx.clip();
+      // the next world
       ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
-      drawNext();
-      if (penZ > zP) { drawLine(zP, penZ, nextRGB, A); drawTip(nextRGB, A); }
+      inside();
       // the island at the top of the screen, while the phone is still a phone
       ctx.fillStyle = `rgba(${INK},${A * (1 - clamp((p - 0.8) / 0.12))})`; rr(-0.14 * s3, -h / 2 + m + 0.04 * s3, 0.28 * s3, 0.07 * s3, 0.035 * s3); ctx.fill();
       ctx.restore();
-      // this side of the phone: the line runs into it
-      drawLine(-1e9, Math.min(penZ, zP), lineRGB, A);
-      if (penZ <= zP) drawTip(lineRGB, A);
-      drawLead(A);
     }
     function drawWorld(A) {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      if (camZ < ZS) {
-        // the land, then up into the sky; the sky takes on the colour of the sea under its surface, the land falls
-        // away below, and what lies ahead is already the sea, seen as sky
-        const rise = ease((camZ - 6.5) / (ZS - 0.4 - 6.5)), fade = 1 - ease((camZ - 8.5) / (ZS - 0.6 - 8.5));
-        backdrop(0, A);
-        // (only what could pass for sky: the light, the bright streaks of the surface, specks)
-        if (rise > 0) { seaBackdrop(A * rise); elements(1, A * rise, ZS, SINK + 1); }
-        if (fade > 0) elements(0, A * fade);
-        portal('sea', ZS, ZS, () => { backdrop(1, A); elements(1, A, ZS, SINK + 1); }, INK, A);
+      if (penZ < ZS) {
+        // the land, then up into the sky, looking straight up at the end; a phone comes down the line, and through
+        // it is the sea, seen from high above, with the line hanging down into it
+        backdrop(0, A); elements(0, A);
+        const p = clamp((penZ - (ZS - 1.2)) / 1.2);
+        if (p <= 0) { drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
+        const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001);
+        phoneIn(p, V(pathAt(zP)) || [W / 2, H * 0.5], false, A, () => {
+          const c0 = getCam(); setCam(rig(penZ, true));
+          backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, INK, A, seaPath); drawTip(INK, A, seaPath, true);
+          setCam(c0);
+        });
+        // this side of the phone: the line runs into it
+        drawLine(-1e9, Math.min(penZ, zP), lineRGB, A);
+        if (penZ <= zP) drawTip(lineRGB, A);
+        drawLead(A);
         return;
       }
       if (camZ < X2) {
-        // the sea sinks into the dark; the life of the sea shows only once the line has begun to sink
+        // the fishing line goes into the water and on, and sinks into the dark; the life of the deep shows once it sinks
         backdrop(1, A);
-        elements(1, A, -1e9, SINK + 1); elements(1, A * ease((camZ - ZS) / 1.6), SINK + 1);
-        portal('space', X2, S0, () => { backdrop(2, A); elements(2, A); }, '244,244,252', A);
+        elements(1, A, -1e9, SINK + 1); elements(1, A * ease((penZ - 15.2) / 1.6), SINK + 1);
+        // through the surface: a flash of white water
+        { const sp = clamp(1 - Math.abs(camY - SURF) / 0.6); if (sp > 0) { ctx.fillStyle = `rgba(255,255,255,${0.75 * sp * sp * A})`; ctx.fillRect(0, 0, W, H); } }
+        const p = clamp((camZ - (X2 - P_RUN)) / P_RUN), hook = penZ < S0 + 0.5;
+        if (p <= 0) { drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, hook); drawLead(A); return; }
+        const zP = atDepth(seaPath, phoneDepth(p), camZ - 1, penZ + 20);
+        phoneIn(p, V(seaPath(zP)) || [W / 2, H * 0.5], true, A, () => { backdrop(2, A); elements(2, A); if (penZ > zP) { drawLine(zP, penZ, '244,244,252', A); drawTip('244,244,252', A); } });
+        drawLine(ZS - 4, Math.min(penZ, zP), lineRGB, A, seaPath);
+        if (penZ <= zP) drawTip(lineRGB, A, seaPath, hook);
+        drawLead(A);
         return;
       }
       backdrop(2, A); elements(2, A);
@@ -1374,8 +1534,8 @@
       mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
       if (ch !== chapter) { chapter = ch; syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
       // Prologue: fall into the phone
-      const ip = clamp(local(u, 'pro')), cover = Math.max(W / 224, H / 504) * 1.08;
-      const ps = NARROW ? Math.min(1, (H * 0.47) / 520, (W - 40) / 240) : 1;
+      const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
+      const ps = NARROW ? Math.min(1, (H * 0.47) / 416, (W - 40) / 234) : 1;
       phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * Math.pow(cover / ps, ease((ip - 0.3) / 0.7))})`;
       card.style.transform = `rotateY(${180 * ease(ip / 0.28)}deg)`;
       phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
@@ -1386,12 +1546,8 @@
       // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
       const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
       penZ = penAt(u);
-      camZ = ip < 1 ? lerp(-2.6, penZ - AHEAD, ease(ip)) : penZ - AHEAD;
-      const ck = tailK(penZ);
-      // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
-      // (in the sea, around how deep the line is there, and a little further down while it sinks fast)
-      const pc = pathAt(penZ - 1.2), base = baseAt(penZ - 1.2);
-      camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp((pc[1] - base) * 0.7 + base - 0.45 + 0.6 * (baseAt(penZ) - base), YS, ck);
+      // the camera rides the line behind the pen, turning up and down with it (see rig)
+      { const cam = rig(penZ, penZ >= ZS); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }
       placeAnchors();
       // how dark the scene is: the deep sea, then the night sky, until the record
       spaceDark = Math.max(spaceIn(), camZ > ZS ? clamp((dkAt(camZ + 2) - 0.3) / 0.35) : 0) * spaceFade();
@@ -1411,14 +1567,14 @@
       markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
       on($('#jy-letter'), ld > 0.1 && ld < 0.92);
       if (lr > 0.8 && !recBuilt) buildRecordWash();
-      // the phone (520px with its charm below) keeps inside short screens
-      const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.6) / 590) : Math.min(1, (H - 110) / 590);
+      // the phone (416px with its charm below) keeps inside short screens
+      const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.6) / 486) : Math.min(1, (H - 110) / 486);
       if (ld > 0 && le <= 0) {
         const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
         frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 43, ease(ld / 0.7)) + '%' : '50%';
         const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
       } else if (le > 0) {
-        frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 590), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = '50%';
+        frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 486), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = '50%';
         frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
       } else frame.style.opacity = '0';
       // Epilogue
