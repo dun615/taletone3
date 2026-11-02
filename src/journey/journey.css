@@ -477,3 +477,6 @@ img{max-width:100%}
 .jy-snap{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;pointer-events:none}
 .jy-stage-mode [data-anchor].on{pointer-events:auto}
 .jy-stage-mode .jy-case-mark[data-anchor]{display:block!important;max-width:min(300px,24vw)!important}
+/* the case notes keep ink text on their paper, even on the night sky */
+.jy-case-mark{color:var(--tt-ink)}
+.jy-stage-mode .jy-case-mark[data-anchor]{background:rgba(254,254,254,.96)}
