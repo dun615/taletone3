@@ -274,7 +274,10 @@
   story.addEventListener('click', (e) => { if (e.target === story) closeStory(); });
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-open]');
-    if (b && !story.contains(b)) openStory(b.dataset.open, b);
+    if (!b || story.contains(b)) return;
+    // on the stage a record on the staff (or in the list) is picked: its card shows; the detail opens from the card
+    if (STAGE && b.classList.contains('jy-sw-btn')) { stage.pick(b.dataset.open); return; }
+    openStory(b.dataset.open, b);
   });
 
   /* ---------------- the player: what is playing, from anywhere ---------------- */
@@ -343,7 +346,10 @@
   function applyFilter() {
     $$('.jy-fchip[data-field]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.field === filter.field)));
     $$('.jy-fchip[data-role]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.role === 'all' ? !filter.roles.size : filter.roles.has(b.dataset.role))));
-    $$('.jy-fchip[data-field]').forEach((b) => { let n = b.querySelector('small'); if (!n) { n = document.createElement('small'); b.appendChild(n); } n.textContent = WORKS.filter((w) => (b.dataset.field === 'all' || w.field === b.dataset.field) && roleOk(w)).length; });
+    // songs are counted one by one, an album's tracks each as a song (as on the live site); a role counts the
+    // songs (or tracks) credited with every chosen role
+    const songsOf = (w) => (w.tracks && w.tracks.length > 1 ? w.tracks : [w]);
+    $$('.jy-fchip[data-field]').forEach((b) => { let n = b.querySelector('small'); if (!n) { n = document.createElement('small'); b.appendChild(n); } n.textContent = WORKS.filter((w) => b.dataset.field === 'all' || w.field === b.dataset.field).reduce((t, w) => t + songsOf(w).filter((u) => [...filter.roles].every((r) => (u.roles || []).includes(r))).length, 0); });
     $$('.jy-sw').forEach((li) => li.classList.toggle('dim', !lit(bySlug[li.dataset.slug])));
     const chosen = $$('.jy-fchip[aria-pressed="true"]').filter((b) => (b.dataset.field || b.dataset.role) !== 'all').map((b) => b.firstChild.textContent.trim());
     $('#jy-fbtn').textContent = [COPY.filter, ...chosen].join(' · ');
@@ -1301,6 +1307,7 @@
       const w = bySlug[items[i].dataset.slug];
       items.forEach((li, j) => li.classList.toggle('cur', j === i));
       $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
+      $('#jy-ro-c').textContent = w.tracks && w.tracks.length > 1 ? ` · ${w.tracks.length}${LANG === 'en' ? ' ' : ''}${COPY.songs}` : '';
       $('#jy-ro-t').textContent = w.title; $('#jy-ro-a').textContent = w.artist;
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
       $('#jy-ro-r').textContent = roleLine(w.roles);
@@ -1451,7 +1458,12 @@
     }
     resize();
     requestAnimationFrame(frameLoop);
-    return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory };
+    // pick a record: bring it to the front of the staff (a glide when near, at once when far) and show its card
+    function pick(slug) {
+      const i = items.findIndex((li) => li.dataset.slug === slug); if (i < 0) return;
+      goU(recordU(i), !recordEl.classList.contains('list') && Math.abs(i - recK) < 6);
+    }
+    return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };
   })();
 
   /* ---------------- where the visitor came in ---------------- */

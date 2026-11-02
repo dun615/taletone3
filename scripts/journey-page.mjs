@@ -206,7 +206,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     </ol>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">
-    <p class="jy-ro-n"><span id="jy-ro-i">01</span> / ${String(works.length).padStart(2, '0')} ${esc(c.songs)}</p>
+    <p class="jy-ro-n"><span id="jy-ro-i">01</span> / ${String(works.length).padStart(2, '0')}<span id="jy-ro-c"></span></p>
     <p class="jy-ro-t" id="jy-ro-t"></p>
     <p class="jy-ro-a" id="jy-ro-a"></p>
     <p class="jy-ro-m" id="jy-ro-m"></p>
@@ -216,7 +216,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     <div class="jy-ro-btns"><button type="button" class="jy-btn jy-btn-ink" id="jy-ro-play">${esc(c.listen)}</button><button type="button" class="jy-btn" id="jy-ro-open">${esc(c.detail)}</button></div>
     <div class="jy-ro-nav"><button type="button" class="jy-round" id="jy-ro-prev" aria-label="${esc(c.prev)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-round" id="jy-ro-next" aria-label="${esc(c.next)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-btn jy-btn-quiet" id="jy-view" aria-pressed="false" data-on="${esc(c.recordView)}" data-off="${esc(c.listView)}">${esc(c.listView)}</button></div>
   </div>
-  <div class="jy-tabs" id="jy-tabs" role="tablist" aria-label="${esc(c.discography)}">${[['songs', works.length], ['mix', extras[0].items.length], ['etc', extras[1].items.length]].map(([k, n], i) => `<button type="button" role="tab" class="jy-tab" data-tab="${k}" aria-selected="${i === 0}"${i ? ' aria-controls="jy-shelf"' : ''}>${esc(c.tabs[k])}<small>${n}</small></button>`).join('')}<button type="button" class="jy-hist" data-history="">${esc(wm.historyLabel || c.history)}</button></div>
+  <div class="jy-tabs" id="jy-tabs" role="tablist" aria-label="${esc(c.discography)}">${[['songs', works.reduce((n, w) => n + (w.tracks.length > 1 ? w.tracks.length : 1), 0)], ['mix', extras[0].items.length], ['etc', extras[1].items.length]].map(([k, n], i) => `<button type="button" role="tab" class="jy-tab" data-tab="${k}" aria-selected="${i === 0}"${i ? ' aria-controls="jy-shelf"' : ''}>${esc(c.tabs[k])}<small>${n}</small></button>`).join('')}<button type="button" class="jy-hist" data-history="">${esc(wm.historyLabel || c.history)}</button></div>
   <section class="jy-shelf" id="jy-shelf" aria-labelledby="jy-shelf-h" hidden>
     <button class="jy-x" type="button" id="jy-shelf-x" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
     <div class="jy-shelf-in"><p class="jy-shelf-k" id="jy-shelf-k"></p><h3 id="jy-shelf-h"></h3><p class="jy-shelf-n" id="jy-shelf-n"></p><div class="jy-shelf-roles" id="jy-shelf-roles" role="group"></div><ul class="jy-cards" id="jy-cards"></ul><button type="button" class="jy-btn jy-more-btn" id="jy-more" hidden></button></div>
