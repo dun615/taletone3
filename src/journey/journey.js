@@ -357,7 +357,7 @@
     // passed slowly takes on a pastel colour.
     const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
     const GATES = [PEN.tone[0], PEN.case[0]];
-    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = 0.95, DEEP = 2.7, BED = 4.4, AHEAD = 4.2, FAR3 = 26, COIL = 45.5;
+    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = 0.95, DEEP = 2.7, BED = 4.4, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
       sea: { water: [204, 236, 238], kelp: [150, 206, 182], bubble: [168, 214, 236], surf: [150, 200, 214] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
@@ -365,7 +365,15 @@
     const passed = (z, lag = 0.4) => ease(clamp((penZ - z - lag) / 2.6)); // 0 pale, 1 fully coloured
     const penAt = (u) => { for (const k of ['music', 'case', 'tone', 'tale']) { const l = local(u, k); if (l > 0) return lerp(PEN[k][0], PEN[k][1], clamp(k === 'tale' ? (l - 0.08) / 0.92 : l)); } return PEN.tale[0]; };
     const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
-    const coilK = (z) => ease((z - COIL) / 3);
+    // the end of the constellation: the line leaves the last star for the head of the staff (set in buildCurrent),
+    // where it splits in five and draws the record's staff
+    const tailK = (z) => ease((z - TAIL) / (PEN.music[1] - TAIL));
+    // tail.T: the staff's head on screen, tail.tg: the way the staff leaves it (both from the final camera)
+    let tail = { T: [0, 0], tg: [1, 0], L: 0 };
+    function tailAt(z) {
+      const cz = PEN.music[1] - AHEAD, s = clamp((z - TAIL) / (PEN.music[1] - TAIL)), d = Math.max(0.2, z - cz) / F3;
+      return [(tail.T[0] - tail.tg[0] * tail.L * (1 - s) - W / 2) * d, (tail.T[1] - tail.tg[1] * tail.L * (1 - s) - H * 0.46) * d];
+    }
     // the constellation: stars at fixed points, the line runs straight from one to the next
     const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const out = []; for (let z = GATES[1] + 1.2; z < 50; z += 1.5 + r() * 0.5) out.push([-0.4 + (r() - 0.5) * 1.6, -0.55 + (r() - 0.5) * 1.1, z]); return out; })();
     function constAt(z) {
@@ -383,8 +391,9 @@
       // space: from star to star
       const ck2 = ease((z - GATES[1] + 0.4) / 2.2);
       if (ck2 > 0) { const c = constAt(z); x = lerp(x, c[0], ck2); y = lerp(y, c[1], ck2); }
-      const ck = coilK(z);
-      if (ck > 0) { const a = (z - COIL) * 1.6, r = 0.9 * ck; x = lerp(x, r * Math.cos(a), ck); y = lerp(y, r * Math.sin(a), ck); }
+      // aimed in screen terms: from the last star the line swings onto the way the staff leaves, and comes in along it
+      const tk = ease((z - TAIL) / 2.1);
+      if (tk > 0) { const t2 = tailAt(z); x = lerp(x, t2[0], tk); y = lerp(y, t2[1], tk); }
       return [x, y, z];
     }
     let penZ = PEN.tale[0], camX = 0, camY = 0, camZ = -1, F3 = 800;
@@ -592,7 +601,7 @@
         else { ctx.fillStyle = col; ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r); }
       }
       for (let i = 0; i < STARS.length; i++) {
-        const sp = STARS[i]; if (sp[2] > COIL || !near(sp[2]) || penZ < sp[2] - 10) continue;
+        const sp = STARS[i]; if (sp[2] > TAIL || !near(sp[2]) || penZ < sp[2] - 10) continue;
         const q = V(sp); if (!q) continue;
         const k = passed(sp[2], 0), lit = penZ >= sp[2], a = land * fogA(q[2]), R = clamp(0.07 * F3 / q[2], 3, 14) * (lit ? 1.3 : 1);
         const col = lit ? tint(PASTEL.space.star[i % 3], Math.max(0.6, k), a) : `rgba(200,204,222,${0.45 * a})`;
@@ -640,19 +649,27 @@
     /* ---- the record of every story: its groove opens into a staff swirling into the screen ----
        World: five helices around the view axis (a staff); work i is a note on it at depth i*DZ, angle i*TURN and a
        pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
-       at the same place, so the swirl turns around the visitor. The mark stands at the head of the staff as its
-       clef. An album in focus lets its tracks out on an earphone cord. */
-    const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066;
+       at the same place, so the swirl turns around the visitor.
+       The staff is the pen line itself: it arrives as one line and splits in five. An album in focus lets its tracks out on an earphone cord. */
+    const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066, HEAD = -1.6;
+    // the five lines open out of one over the first stretch of the staff
+    const splitAt = (z) => ease((z - HEAD) / 1.1), lineRad = (l, z) => 1 + (l * 2 - 4) * GAP * 0.5 * splitAt(z);
     // depth shrinks the swirl gently (a power below 1), so the far turns open out instead of knotting at the centre
     const OPEN = 0.55, shrink = (dz) => Math.pow(VIEW / dz, OPEN);
     const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: lines and spaces, bottom to top
     const radiusOf = (p) => 1 + (p - 4) * GAP * 0.5;
     const trackLayer = $('#jy-tracks');
-    const clef = new Image(); clef.src = markImg.dataset.ink;
     let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -1;
     function buildCurrent() {
       const Rf = Math.min(W * 0.26, H * 0.37), size = clamp(H * 0.14, 92, 128);
       cur = { cx: W * 0.36, cy: H * 0.5, F: Rf * VIEW, size, Rf };
+      // where the staff begins on screen when the record opens: the world's line comes in there along the way the
+      // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
+      { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, H * 0.5 + Math.sin(a) * r]; };
+        cur.off = 0; cur.off = -0.8 - ((HEAD / DZ) * TURN + r0);
+        cur.off = Math.atan2(Math.sin(cur.off), Math.cos(cur.off));
+        const T = at(HEAD), T2 = at(HEAD + 0.12), n = Math.hypot(T2[0] - T[0], T2[1] - T[1]) || 1;
+        tail = { T, tg: [(T2[0] - T[0]) / n, (T2[1] - T[1]) / n], L: Math.min(W, H) * 0.42 }; }
       spiral.style.setProperty('--s', size + 'px');
       const n = W <= 760 ? FLOW_DOTS.narrow : FLOW_DOTS.wide;
       flow = Array.from({ length: n }, () => ({ z: Math.random() * (N + 4) - 2, a: Math.random() * Math.PI * 2, r: 0.7 + Math.random() * 0.6, v: 0.15 + Math.random() * 0.3 }));
@@ -682,20 +699,21 @@
     const cord = (n, fx) => { const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
       const k = recK, focusZ = k * DZ;
-      const dive = ease(lr / 0.1), out = ease((lr - 0.92) / 0.08);
+      const dive = ease((lr - 0.02) / 0.1), out = ease((lr - 0.92) / 0.08);
       // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
       const camZ = lerp(-VIEW - 2.2, focusZ - VIEW, dive) + out * 3.5;
-      cur.split = ease(lr / 0.09);
       cur.cx = lerp(W / 2, W * 0.36, dive); cur.cy = H * 0.5;
-      const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN;
+      const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);
       cur.camZ = camZ; cur.roll = roll;
+      // the pen draws the staff forward from its head; works appear once their part of the staff is drawn
+      cur.zMax = HEAD + (camZ + FAR - HEAD) * ease(lr / 0.15);
       const list = recordEl.classList.contains('list');
       spiral.style.opacity = list ? '1' : String(ease((lr - 0.02) / 0.06) * (1 - out));
       if (!list) items.forEach((li, i) => {
         const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
         if (!p || p[2] > FAR) { li.style.visibility = 'hidden'; return; }
         // a note fades as soon as it has passed the focus, so it never covers the words on the right
-        const sc2 = Math.pow(VIEW / p[2], 0.8), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5);
+        const sc2 = Math.pow(VIEW / p[2], 0.8), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
         li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
         li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
         li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
@@ -714,12 +732,13 @@
       albumOpen = near;
     }
     // one helix of the staff, stroked in short runs so the width can follow the depth
-    function staffLine(rad, z0, z1, camZ, roll, alpha, width) {
+    function staffLine(l, z0, z1, camZ, roll, alpha, width) {
       let run = [], wPrev = -1, aPrev = -1;
       const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${lineRGB},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n = 1; n < run.length; n++) ctx.lineTo(run[n][0], run[n][1]); ctx.stroke(); } };
       for (let z = z0; z <= z1; z += 0.04) {
-        const p = proj((z / DZ) * TURN, z, camZ, roll, rad); if (!p) continue;
-        const wd = Math.round(clamp(width * VIEW / p[2], 0.4, 3.2) * 4) / 4, al = Math.round(0.85 * alpha * behind(p[2]) * clamp((FAR - p[2]) / 6) * 20) / 20;
+        const p = proj((z / DZ) * TURN, z, camZ, roll, lineRad(l, z)); if (!p) continue;
+        // still one line before it splits: as thick as the pen line it continues
+        const wd = Math.round(clamp(width * VIEW / p[2] * (1 + 1.4 * (1 - splitAt(z))), 0.4, 3.2) * 4) / 4, al = Math.round(0.85 * alpha * behind(p[2]) * clamp((FAR - p[2]) / 6) * 20) / 20;
         if (wd !== wPrev || al !== aPrev) { const last = run[run.length - 1]; flush(); run = last ? [last] : []; wPrev = wd; aPrev = al; }
         run.push(p);
       }
@@ -727,36 +746,39 @@
     }
     function drawCurrent(lr) {
       if (!cur || cur.camZ == null) return;
-      const { camZ, roll } = cur, alpha = ease(lr / 0.05) * (1 - ease((lr - 0.94) / 0.06));
+      const { camZ, roll, zMax } = cur, alpha = 1 - ease((lr - 0.94) / 0.06);
       if (alpha <= 0) return;
       // the colour of the note in focus, faint, around the swirl
       const w = recShown >= 0 && bySlug[items[recShown].dataset.slug], c = w && colorOf[w.slug];
-      if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+      if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha * ease(lr / 0.12)})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
       // the staff: five ink lines swirling in, thick close by, a hair far away
-      const z0 = Math.max(-1.6, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR);
+      const z0 = Math.max(HEAD, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR, zMax);
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      for (let l = 0; l < 5; l++) staffLine(1 + (l * 2 - 4) * GAP * 0.5 * (cur.split == null ? 1 : cur.split), z0, z1, camZ, roll, alpha, 1.3);
+      for (let l = 0; l < 5; l++) staffLine(l, z0, z1, camZ, roll, alpha, 1.3);
+      // while it is still being drawn, the five pen tips at the front
+      if (z1 >= z0 && zMax < camZ + FAR - 0.05) {
+        ctx.fillStyle = `rgba(${lineRGB},${alpha})`;
+        for (let l = 0; l < 5; l++) { const p = proj((z1 / DZ) * TURN, z1, camZ, roll, lineRad(l, z1)); if (!p) continue; ctx.beginPath(); ctx.arc(p[0], p[1], clamp(2.6 * VIEW / p[2], 1.2, 4), 0, Math.PI * 2); ctx.fill(); }
+      }
       // bar lines every four notes
       for (let i = 3; i < N; i += 4) {
         const z = (i + 0.5) * DZ, a = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(0)), b2 = proj((z / DZ) * TURN, z, camZ, roll, radiusOf(8));
-        if (!a || !b2 || a[2] > FAR) continue;
+        if (!a || !b2 || a[2] > FAR || z > zMax) continue;
         ctx.strokeStyle = `rgba(${INK},${0.85 * alpha * behind(a[2]) * clamp((FAR - a[2]) / 6)})`; ctx.lineWidth = clamp(1.6 * VIEW / a[2], 0.4, 3); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b2[0], b2[1]); ctx.stroke();
       }
       // stems: from each note, across the staff, away from the middle line
       for (let i = 0; i < N; i++) {
         const pi = pitchOf(i), up = pi < 4, th = i * TURN, z = i * DZ;
-        const a = proj(th, z, camZ, roll, radiusOf(pi)); if (!a || a[2] > FAR || a[2] < VIEW * 0.72) continue;
+        const a = proj(th, z, camZ, roll, radiusOf(pi)); if (!a || a[2] > FAR || a[2] < VIEW * 0.72 || z > zMax) continue;
         const rr = (cur.size / 2) * Math.pow(VIEW / a[2], 0.8), dir = up ? 1 : -1, ang = th + roll, len = cur.Rf * GAP * 3.4 * shrink(a[2]);
         const sx = a[0] + Math.cos(ang) * rr * dir, sy = a[1] + Math.sin(ang) * rr * dir;
         ctx.strokeStyle = `rgba(${INK},${0.85 * alpha * clamp((FAR - a[2]) / 6) * clamp((a[2] - VIEW * 0.72) / (VIEW * 0.22))})`; ctx.lineWidth = clamp(2 * VIEW / a[2], 0.5, 3);
         ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + Math.cos(ang) * len * dir, sy + Math.sin(ang) * len * dir); ctx.stroke();
       }
-      // the mark at the head of the staff, as its clef
-      { const z = -1.1, p = proj((z / DZ) * TURN, z, camZ, roll, 1); if (p && clef.complete && clef.naturalWidth) { const h = cur.Rf * GAP * 9 * shrink(p[2]), wd = h * (1079 / 1275); ctx.globalAlpha = alpha * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.drawImage(clef, p[0] - wd / 2, p[1] - h / 2, wd, h); ctx.globalAlpha = 1; } }
       // specks drifting down the swirl
       ctx.fillStyle = `rgb(${INK})`;
       for (const d of flow) {
-        if (!reduce) d.z -= d.v * 0.016; if (d.z < camZ) d.z += FAR;
+        if (!reduce) d.z -= d.v * 0.016; if (d.z < camZ) d.z += FAR; if (d.z > zMax) continue;
         const p = proj((d.z / DZ) * TURN + d.a * 0.08, d.z, camZ, roll, d.r); if (!p) continue;
         const r = clamp(2.4 * VIEW / p[2], 0.6, 3.5);
         ctx.globalAlpha = alpha * 0.45 * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.fillRect(p[0] - r / 2, p[1] - r / 2, r, r);
@@ -844,7 +866,7 @@
       const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
       penZ = penAt(u);
       camZ = ip < 1 ? lerp(-2.6, penZ - AHEAD, ease(ip)) : penZ - AHEAD;
-      const ck = coilK(penZ + 1);
+      const ck = tailK(penZ);
       // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
       const pc = pathAt(penZ - 1.2);
       camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp(pc[1] * 0.7 - 0.45, 0, ck);
@@ -882,7 +904,7 @@
       // ---- canvas ----
       ctx.clearRect(0, 0, W, H);
       if (inRecord) drawCurrent(lr);
-      const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.08));
+      const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
       if (worldA > 0) drawWorld(worldA, lm, now);
     }
     function resize() {
