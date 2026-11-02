@@ -333,7 +333,34 @@
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
     let palette = [], blots = [];
     let line = [], accents = [], trail = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
-    let wireA = 1, cam = 0, recBuilt = false, chapter = '', caseOffer = false;
+    let wireA = 1, cam = 0, recBuilt = false, chapter = '', caseOffer = false, caseLaid = false, casePath = null;
+    // the case's path: from under her request (top right) down to our answer (bottom left), an S of the pen
+    const caseReq = $('#jy-case-req'), caseAns = $('#jy-case-ans'), caseMarks = [$('#jy-case-m0'), $('#jy-case-m1')];
+    const bez = (p, t) => { const u2 = 1 - t; return [0, 1].map((k) => u2 * u2 * u2 * p[0][k] + 3 * u2 * u2 * t * p[1][k] + 3 * u2 * t * t * p[2][k] + t * t * t * p[3][k]); };
+    function placeCase(lc) {
+      if (!caseReq) return;
+      if (!caseLaid) {
+        caseLaid = true;
+        caseReq.style.setProperty('--x', W * 0.5 + 'px'); caseReq.style.setProperty('--y', H * 0.16 + 'px');
+        caseAns.style.setProperty('--x', W * 0.07 + 'px'); caseAns.style.setProperty('--y', H * 0.6 + 'px');
+        const rh = caseReq.offsetHeight || 90;
+        const a = [W * 0.5 + 60, H * 0.16 + rh + 6], b = [W * 0.07 + 70, H * 0.6 - 10];
+        casePath = [a, [a[0] + W * 0.22, a[1] + H * 0.1], [b[0] + W * 0.34, b[1] - H * 0.02], b];
+        caseMarks.forEach((m, n) => { const q = bez(casePath, n ? 0.66 : 0.3); m.style.setProperty('--x', q[0] + 'px'); m.style.setProperty('--y', q[1] + 'px'); });
+      }
+      const pen = clamp((lc - 0.14) / 0.56);
+      on(caseReq, lc > 0.04); on(caseMarks[0], pen >= 0.3); on(caseMarks[1], pen >= 0.66); on(caseAns, pen >= 1);
+    }
+    function drawCase(lc) {
+      if (!casePath || !caseLaid) return;
+      const pen = clamp((lc - 0.14) / 0.56), fade = 1 - ease((lc - 0.94) / 0.08);
+      if (pen <= 0 || fade <= 0) return;
+      ctx.strokeStyle = `rgba(${INK},${fade})`; ctx.lineCap = 'round'; ctx.lineWidth = 2.2; ctx.beginPath();
+      for (let t = 0; t <= pen + 1e-6; t += 0.01) { const q = bez(casePath, Math.min(t, pen)); t ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }
+      ctx.stroke();
+      [0.3, 0.66].forEach((t) => { if (pen < t) return; const q = bez(casePath, t); ctx.fillStyle = `rgba(${INK},${fade})`; ctx.beginPath(); ctx.arc(q[0], q[1], 4, 0, Math.PI * 2); ctx.fill(); });
+      if (pen < 1) { const q = bez(casePath, pen); ctx.beginPath(); ctx.arc(q[0], q[1], 3.2, 0, Math.PI * 2); ctx.fill(); }
+    }
     const CASE = ($('.jy-case-btn') || {}).dataset ? $('.jy-case-btn').dataset.open : null;
     const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', case: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
 
@@ -717,7 +744,8 @@
       trail.forEach((a, n) => { const q = P(line[a.i]); a.el.style.setProperty('--x', q[0] + 'px'); a.el.style.setProperty('--y', q[1] + 'px'); on(a.el, lo > 0.02 + n * 0.17 && pen >= a.i && lo < 1.02); });
       // Case: the request comes in from the client; TALETONE answers with her strength, a question, the story
       const lc = local(u, 'case');
-      for (let n = 0; n < 6; n++) on($('#jy-case-' + n), lc > 0.04 + n * 0.14 && lc < 1.02);
+      const caseOn = lc > 0 && lc < 1.02;
+      if (caseOn) placeCase(lc); else if (caseLaid) { caseLaid = false; ['#jy-case-req', '#jy-case-ans', '#jy-case-m0', '#jy-case-m1'].forEach((sel) => on($(sel), false)); }
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
       const lm = local(u, 'music');
@@ -776,7 +804,9 @@
         const wa = 1 - ease(lm / 0.2);
         if (wa > 0) { ctx.globalAlpha = wa; ctx.drawImage(wash, 0, 0, W, H); for (const b of blots) if (!b.done) { const k = clamp((now - b.born) / 1200); if (k > 0) paintBlot(b, 0.3 + 0.7 * ease(k), ctx); } ctx.globalAlpha = 1; }
         wireA = 1 - ease(lm / 0.16);
-        drawClouds(reveal, faceK, faceA); drawFaces(faceK, faceA); drawLine(reveal, faceA);
+        const back = 1 - 0.78 * ease(lc / 0.1) * (1 - ease((lc - 0.92) / 0.08));
+        drawClouds(reveal, faceK, faceA * back); drawFaces(faceK, faceA); drawLine(reveal, faceA * back);
+        if (lc > 0 && lc < 1) drawCase(lc);
       }
       if (pts && lr <= 0.08) {
         const lp = clamp((lm - 0.5) / 0.5), k = ease(lp / 0.85), fade = lr > 0 ? 1 - ease(lr / 0.06) : 1, cx = W / 2, cy = H * 0.5;
@@ -802,7 +832,7 @@
       DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
       for (const c of [cv, wash]) { c.width = W * DPR; c.height = H * DPR; }
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0); wctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildLine(); buildDots(); buildCurrent(); blots.forEach((b) => { b.done = true; }); redrawWash(); recShown = -1;
+      caseLaid = false; buildLine(); buildDots(); buildCurrent(); blots.forEach((b) => { b.done = true; }); redrawWash(); recShown = -1;
     }
     addEventListener('resize', resize);
     phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));

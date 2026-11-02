@@ -156,12 +156,17 @@ ${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">$
 <section class="jy-ch" data-ch="case" aria-labelledby="jy-h-case">
   <h2 class="jy-chl" id="jy-h-case">${esc(c.caseStudy ? c.caseStudy.eyebrow : '')}</h2>
 ${c.caseStudy ? (() => {
-    const cs = c.caseStudy, w = works.find((x) => x.slug === cs.slug), face = w ? `<span class="jy-av jy-av-them"><img src="/${esc(w.thumb)}" alt=""></span>` : avatar();
-    const msg = (id, html, extra = '', who = avatar()) => `<div class="jy-say${extra}" id="${id}">${who}<p class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx">${html}</span></p></div>`;
-    return `  <div class="jy-chat jy-case jy-voice" aria-live="polite">
-    ${msg('jy-case-0', `<span class="jy-step-l">${esc(cs.eyebrow)}</span><b>${esc(cs.title)}</b><small>${esc(cs.meta)}</small>`)}
-${cs.steps.map((st, n) => `    ${msg(`jy-case-${n + 1}`, `<span class="jy-step-l">${esc(st.label)}</span>${st.kind === 'answer' || st.kind === 'question' ? `<b>${esc(st.text)}</b>` : esc(st.text)}`, st.kind === 'request' ? ' jy-them' : '', st.kind === 'request' ? face : avatar())}`).join('\n')}
-    ${msg('jy-case-5', `${esc(cs.lesson)}${w ? `<button type="button" class="jy-btn jy-btn-ink jy-case-btn" data-open="${esc(w.slug)}">${esc(cs.listenLabel)}</button>` : ''}`)}
+    // a real project: her request comes in on the right, our answer goes out on the left, and the pen draws the
+    // way between them, leaving her strength and our question on the line
+    const cs = c.caseStudy, w = works.find((x) => x.slug === cs.slug), st = Object.fromEntries(cs.steps.map((x) => [x.kind, x]));
+    const face = w ? `<span class="jy-av jy-av-them"><img src="/${esc(w.thumb)}" alt=""></span>` : avatar();
+    return `  <div class="jy-case jy-voice" aria-live="polite">
+    <div class="jy-say jy-them jy-case-req" id="jy-case-req">${face}<p class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-step-l">${esc(cs.eyebrow)} · ${esc(cs.title)}</span><span class="jy-case-who">${esc(st.request.label)}</span>${esc(st.request.text)}</span></p></div>
+    <ol class="jy-case-marks">
+      <li class="jy-case-mark" id="jy-case-m0"><span>${esc(st.strength.label)}</span>${esc(st.strength.text)}</li>
+      <li class="jy-case-mark" id="jy-case-m1"><span>${esc(st.question.label)}</span><b>${esc(st.question.text)}</b></li>
+    </ol>
+    <div class="jy-say jy-case-ans" id="jy-case-ans">${avatar()}<div class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-case-who">${esc(st.answer.label)}</span><b>${esc(st.answer.text)}</b><small>${esc(cs.lesson)}</small>${w ? `<button type="button" class="jy-btn jy-btn-ink jy-case-btn" data-open="${esc(w.slug)}">${esc(cs.listenLabel)}</button>` : ''}</span></div></div>
   </div>`;
   })() : ''}
 </section>
