@@ -15,20 +15,23 @@ const merge = (base, lang) => {
 };
 
 // Each work localized, with only the fields the page and its script use.
+const ytId = (url) => { const m = String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/) || String(url || '').match(/^([\w-]{11})$/); return m ? m[1] : ''; };
+
 export function journeyWorks(worksData, lang) {
   const local = (item) => (lang === 'kr' ? item : merge(item, lang));
   const unit = (item) => {
     const u = local(item);
-    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), image: item.image || '', thumb: item.thumb || item.image || '', audio: item.audio || '', youtube: item.youtube || '', date: item.date || '', roles: item.roles || [] };
+    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), image: item.image || '', thumb: item.thumb || item.image || '', audio: item.audio || '', youtube: item.youtube || '', yt: ytId(item.youtube), date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
   };
   const gains = (worksData.loudness && worksData.loudness.files) || {};
   const gainOf = (src) => (src && gains[src] && typeof gains[src].gain === 'number' ? gains[src].gain : 0);
   return worksData.works.map((w) => {
     const u = unit(w);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || '' }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || '', credits: tu.credits, yt: tu.yt }; });
+    const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
-    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0 };
+    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers };
   }).sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -68,6 +71,8 @@ const grain = `<svg class="jy-grain" aria-hidden="true" focusable="false"><filte
 export function renderJourney({ lang, route, seoPage, site, worksData, assets, base }) {
   const c = journeyCopy(site, lang.key);
   const works = journeyWorks(worksData, lang.key);
+  const extras = journeyExtras(site, worksData, lang.key);
+  const wm = merge(site.worksMeta || {}, lang.key);
   const html = lang.html;
   const prefix = `${base}${lang.prefix}`; // e.g. /preview or /preview/en
   const href = (p) => `${prefix}${p}`;
@@ -82,8 +87,15 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const year = (w) => (w.date || '').slice(0, 4);
   const formOpts = (c.form.songOptions || []).map((o) => `<label class="jy-chip"><input type="checkbox" name="song" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('');
   const field2 = (id, label, input) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}</div>`;
-  const creditLines = String(member.creditsText || '').split('\n').map((line) => line.trim()).filter(Boolean)
-    .map((line) => line.startsWith('|') ? `<li class="jy-cr-year">${esc(line.replace(/^\|\s*/, ''))}</li>` : `<li>${esc(line.replace(/^\*\s*/, ''))}</li>`).join('');
+  // the history, as the live sheet reads it: '| 2026' opens a year, '* work — roles' an entry, an indented '* track'
+  // belongs to the entry above, '[text](url)' links it, '#tags' lines are dropped
+  const creditLines = String(member.creditsText || '').split('\n').filter((line) => line.trim() && !/^\s*#/.test(line)).map((line) => {
+    const t = line.trim(), link = t.match(/^\[(.+)\]\((https?:[^)]+)\)$/);
+    if (link) return `<li class="jy-cr-link"><a href="${esc(link[2])}" target="_blank" rel="noopener">${esc(link[1])} ↗</a></li>`;
+    if (t.startsWith('|')) return `<li class="jy-cr-year">${esc(t.replace(/^\|\s*/, ''))}</li>`;
+    const [work, roles] = t.replace(/^\*\s*/, '').split(/\s+—\s+/);
+    return `<li${/^\s/.test(line) ? ' class="jy-cr-sub"' : ''}><b>${esc(work)}</b>${roles ? `<span>${esc(roles)}</span>` : ''}</li>`;
+  }).join('');
   const langLinks = [['kr', '', 'KR', '한국어'], ['en', '/en', 'EN', 'English'], ['jp', '/ja', 'JP', '日本語']]
     .map(([key, p, short, name]) => `<a href="${base}${p}${route}" hreflang="${key === 'kr' ? 'ko' : key === 'jp' ? 'ja' : 'en'}" lang="${key === 'kr' ? 'ko' : key === 'jp' ? 'ja' : 'en'}"${key === lang.key ? ' aria-current="true"' : ''} aria-label="${esc(name)}">${short}</a>`).join('');
 
@@ -199,10 +211,17 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     <p class="jy-ro-a" id="jy-ro-a"></p>
     <p class="jy-ro-m" id="jy-ro-m"></p>
     <p class="jy-ro-r" id="jy-ro-r"></p>
+    <div class="jy-ro-vers jy-s-vers" id="jy-ro-vers" role="group" aria-label="${esc(c.versionLabel)}" hidden></div>
     <div class="jy-ro-trk" id="jy-ro-trk" role="group" hidden></div>
     <div class="jy-ro-btns"><button type="button" class="jy-btn jy-btn-ink" id="jy-ro-play">${esc(c.listen)}</button><button type="button" class="jy-btn" id="jy-ro-open">${esc(c.detail)}</button></div>
     <div class="jy-ro-nav"><button type="button" class="jy-round" id="jy-ro-prev" aria-label="${esc(c.prev)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-round" id="jy-ro-next" aria-label="${esc(c.next)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-btn jy-btn-quiet" id="jy-view" aria-pressed="false" data-on="${esc(c.recordView)}" data-off="${esc(c.listView)}">${esc(c.listView)}</button></div>
   </div>
+  <div class="jy-tabs" id="jy-tabs" role="tablist" aria-label="${esc(c.discography)}">${[['songs', works.length], ['mix', extras[0].items.length], ['etc', extras[1].items.length]].map(([k, n], i) => `<button type="button" role="tab" class="jy-tab" data-tab="${k}" aria-selected="${i === 0}"${i ? ' aria-controls="jy-shelf"' : ''}>${esc(c.tabs[k])}<small>${n}</small></button>`).join('')}<button type="button" class="jy-hist" data-history="">${esc(wm.historyLabel || c.history)}</button></div>
+  <section class="jy-shelf" id="jy-shelf" aria-labelledby="jy-shelf-h" hidden>
+    <button class="jy-x" type="button" id="jy-shelf-x" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
+    <div class="jy-shelf-in"><p class="jy-shelf-k" id="jy-shelf-k"></p><h3 id="jy-shelf-h"></h3><p class="jy-shelf-n" id="jy-shelf-n"></p><div class="jy-shelf-roles" id="jy-shelf-roles" role="group"></div><ul class="jy-cards" id="jy-cards"></ul><button type="button" class="jy-btn jy-more-btn" id="jy-more" hidden></button></div>
+  </section>
+  <div class="jy-extra">${extras.map((g) => `<details><summary>${esc(g.label)} · ${g.items.length}</summary><p>${esc(g.note)}</p><ul>${g.items.map((it) => `<li><b>${esc(it.title)}</b> — ${esc(it.artist)}${it.cover ? ` · ${esc(g.coverTag)}` : ''}${it.own ? ` · ${esc(c.ownSong)}` : ''} · ${esc(it.roles)}${it.dateText ? ` · <time datetime="${esc(it.date)}">${esc(it.dateText)}</time>` : ''}${it.yt ? ` <a href="https://www.youtube.com/watch?v=${esc(it.yt)}" target="_blank" rel="noopener">YouTube ↗</a>` : ''}</li>`).join('')}</ul></details>`).join('')}</div>
 </section>
 
 <section class="jy-ch" data-ch="done" aria-labelledby="jy-h-done">
@@ -237,7 +256,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
 </section>
 
 <div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core">${signal}</span></div></div>${charm('jy-charm-cd')}</div>
-<div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span></div>
+<div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span><input type="range" class="jy-vol" id="jy-vol" min="0" max="100" value="100" aria-label="${esc(c.volume)}"></div>
 <div class="jy-scrim" id="jy-scrim" hidden></div>
 <div class="jy-cue" id="jy-cue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></div>
 <div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
@@ -262,11 +281,14 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
   <div class="jy-box" role="dialog" aria-modal="true" aria-labelledby="jy-s-title">
     <button class="jy-x" id="jy-s-close" type="button" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
     <div class="jy-in">
-      <div class="jy-artside"><img class="jy-s-bg" id="jy-s-bg" alt=""><span class="jy-lp jy-s-lp" id="jy-s-lp"><img class="jy-vinyl" id="jy-s-v" alt=""><span class="jy-groove"></span><img class="jy-art" id="jy-s-a" alt=""><span class="jy-hole"></span></span></div>
+      <div class="jy-artside"><img class="jy-s-bg" id="jy-s-bg" alt=""><figure class="jy-s-cover"><span class="jy-lp jy-s-lp" id="jy-s-lp"><img class="jy-vinyl" id="jy-s-v" alt=""><span class="jy-groove"></span><span class="jy-hole"></span></span><img class="jy-art" id="jy-s-a" alt=""></figure><div class="jy-s-video" id="jy-s-video" hidden></div><button type="button" class="jy-btn jy-s-vbtn" id="jy-s-vbtn" hidden><svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg>${esc(c.video)}</button></div>
       <div class="jy-info">
-        <h3 id="jy-s-title"></h3><p class="jy-s-meta" id="jy-s-meta"></p><p class="jy-s-desc" id="jy-s-desc"></p><p class="jy-s-roles" id="jy-s-roles"></p>
+        <p class="jy-s-fmt" id="jy-s-fmt"></p><h3 id="jy-s-title"></h3><p class="jy-s-meta" id="jy-s-meta"></p><p class="jy-s-desc" id="jy-s-desc"></p><p class="jy-s-roles" id="jy-s-roles"></p>
+        <dl class="jy-s-facts" id="jy-s-facts" data-date="${esc(wm.yearLabel || '')}" data-format="${esc(wm.typeLabel || '')}" data-type="${esc(wm.releaseLabel || '')}"></dl>
+        <div class="jy-s-vers" id="jy-s-vers" role="group" aria-label="${esc(c.versionLabel)}" hidden></div>
         <ol class="jy-s-tracks" id="jy-s-tracks" aria-label="${esc(c.tracks)}"></ol>
-        <details class="jy-s-cr" id="jy-s-cr"><summary>${esc(c.credits)}</summary><p id="jy-s-credits"></p></details>
+        <section class="jy-s-cr" id="jy-s-cr" hidden><p class="jy-s-crh" id="jy-s-crh"></p><div class="jy-s-crl" id="jy-s-credits" tabindex="0"></div></section>
+        <section class="jy-s-covers" id="jy-s-covers" hidden><p class="jy-s-crh">${esc(c.covers)}</p><ul id="jy-s-covl"></ul></section>
         <p class="jy-s-yt"><a id="jy-s-yt" target="_blank" rel="noopener">${esc(c.youtube)} ↗</a></p>
         <div class="jy-player"><button class="jy-play" id="jy-play" type="button" aria-pressed="false" aria-label="${esc(c.listen)}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-pi" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><svg class="jy-prog" viewBox="0 0 360 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 60 6, 120 2, 180 6 S 300 10, 358 6" fill="none" stroke="#e5e6e8" stroke-width="1.5" stroke-linecap="round"/><path id="jy-pg" d="M2 6 C 60 6, 120 2, 180 6 S 300 10, 358 6" fill="none" stroke="#141c30" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg></div>
       </div>
@@ -280,20 +302,50 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
 `;
 }
 
-// the other work: sound engineering (mixWorks) and other commissions (bgmWorks), titled in the page's language
-export function journeyExtras(site, lang) {
+// The other work, built as the live Discography's Sound Engineering and ETC tabs: Sound Engineering lists
+// mixWorks, plus the studio's own songs and tracks credited with recording, editing, mixing or mastering (with a
+// video or audio), plus ETC cards with those credits; duplicates go, newest video first. ETC lists bgmWorks.
+const POST = { rec: 'Rec', edit: 'Edit', mix: 'Mix', master: 'Master' };
+export function journeyExtras(site, worksData, lang) {
+  const c = journeyCopy(site, lang), cardRoles = c.cardRoles || {}, dates = site.videoDates || {};
   const titleKey = { en: 'titleEn', jp: 'titleJp' }[lang];
-  return ['mixWorks', 'bgmWorks'].map((key) => {
-    const g = merge(site[key] || {}, lang);
-    return { key, label: g.label || '', note: g.note || '', coverTag: g.coverTag || '',
-      items: ((site[key] || {}).items || []).map((it) => ({ title: (titleKey && it[titleKey]) || it.title, artist: it.artist || '', roles: it.roles || '', youtube: it.youtube || '', date: it.date || '', cover: !!it.cover })) };
-  });
+  const keysOf = (roles) => String(roles || '').split(/\s*·\s*/).map((w) => w.replace(/\s*\(.*\)$/, '')).filter(Boolean);
+  const roleText = (roles) => String(roles || '').split(/\s*·\s*/).filter(Boolean).map((word) => { const m = word.match(/^(.*?)(\s*\(.*\))?$/); return (cardRoles[m[1]] || m[1]) + (m[2] || ''); }).join(' · ');
+  const dateText = (d) => { const m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})$/); if (!m) return String(d); return lang === 'en' ? `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${m[1]}.${m[2]}.${m[3]}`; };
+  const gains = (worksData.loudness && worksData.loudness.files) || {};
+  const card = (it, extra = {}) => {
+    const yt = ytId(it.youtube), shown = String((yt && dates[yt]) || it.date || '');
+    return { title: (titleKey && it[titleKey]) || it.title, artist: it.artist || '', roles: roleText(it.roles), keys: keysOf(it.roles), yt, audio: yt ? '' : (it.audio || ''), gain: (it.audio && gains[it.audio] && gains[it.audio].gain) || 0, date: shown, dateText: dateText(shown), cover: !!it.cover, ...extra };
+  };
+  const own = [];
+  for (const w of worksData.works) {
+    const album = lang === 'kr' ? w : merge(w, lang);
+    const units = (w.kind === 'album' && (w.tracks || []).length) ? w.tracks : [w];
+    for (const u of units) {
+      const post = Object.keys(POST).filter((r) => (u.roles || []).includes(r));
+      const yt = ytId(u.youtube || (u === w ? w.youtube : ''));
+      if (!post.length || !(yt || u.audio)) continue;
+      const lu = lang === 'kr' ? u : merge(u, lang);
+      own.push({ title: plain(lu.title || u.title), artist: plain(album.artist || w.artist), roles: post.map((r) => POST[r]).join(' · '), youtube: yt, audio: yt ? '' : u.audio, date: String(u.date || w.date || '').replace(/\./g, '-'), own: true });
+    }
+  }
+  const etcPost = ((site.bgmWorks || {}).items || []).filter((it) => keysOf(it.roles).some((k) => Object.values(POST).includes(k)));
+  const group = (key, items, roles) => {
+    const g = merge(site[key] || {}, lang), seen = new Set();
+    const list = items.filter((it) => { const k = ytId(it.youtube) || it.audio; if (!k || seen.has(k)) return false; seen.add(k); return true; })
+      .map((it) => card(it, it.own ? { own: true } : {})).sort((a, b) => b.date.localeCompare(a.date));
+    return { key, label: g.label || '', note: g.note || '', coverTag: g.coverTag || '', roles, items: list };
+  };
+  return [
+    group('mixWorks', [...((site.mixWorks || {}).items || []), ...own, ...etcPost], [['Rec', c.roleRec], ['Edit', c.roleEdit], ['Mix', c.roleMix], ['Master', c.roleMaster]]),
+    group('bgmWorks', (site.bgmWorks || {}).items || [], null),
+  ];
 }
 
 export function journeyData(site, worksData, lang) {
   const c = journeyCopy(site, lang);
   const works = journeyWorks(worksData, lang);
-  const extras = journeyExtras(site, lang);
+  const extras = journeyExtras(site, worksData, lang);
   const drop = ({ chapterLabels, translations, ...rest }) => rest;
   return `window.TT_JOURNEY=${JSON.stringify({ copy: drop(c), works, extras }).replace(/</g, '\\u003c')};\n`;
 }

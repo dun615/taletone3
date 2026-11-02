@@ -17,7 +17,8 @@
   'use strict';
   const DATA = window.TT_JOURNEY;
   if (!DATA) return;
-  const COPY = DATA.copy, WORKS = DATA.works;
+  const COPY = DATA.copy, WORKS = DATA.works, EXTRAS = DATA.extras || [];
+  const esc = (t) => String(t).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
   const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.8], case: [4.8, 6.2], music: [6.2, 7.8], record: [7.8, 11.8], done: [11.8, 12.7], epi: [12.7, 13.7] };
@@ -50,24 +51,52 @@
   const listeners = new Set();
   const emit = () => listeners.forEach((fn) => fn());
   const versionLang = { kr: 'KR', en: 'EN', jp: 'JP' }[LANG];
+  const chosen = {};
+  const versionOf = (w) => { const vs = w.versions || []; return vs.find((x) => x.language === chosen[w.slug]) || vs.find((x) => x.language === versionLang) || vs.find((x) => x.language === 'KR') || vs[0] || null; };
   function sourceOf(w, track) {
     if (track != null && w.tracks[track] && w.tracks[track].audio) return w.tracks[track];
-    const v = (w.versions || []).find((x) => x.language === versionLang);
+    const v = versionOf(w);
     if (v) return v;
     if (w.tracks && w.tracks.length > 1) { const t = w.tracks[w.titleTrack] && w.tracks[w.titleTrack].audio ? w.tracks[w.titleTrack] : w.tracks.find((x) => x.audio); if (t && !w.audio) return t; }
     return w.audio ? { audio: w.audio, gain: w.gain } : null;
   }
-  function play(w, track) {
+  let actx = null, trackGain = null, master = null, curGain = 0, vol = 1;
+  try { const v = parseFloat(localStorage.getItem('tt_vol')); if (v >= 0 && v <= 1) vol = v; } catch (_) {}
+  function wire() {
+    if (actx !== null) return;
+    try { const AC = window.AudioContext || window.webkitAudioContext; actx = new AC(); const node = actx.createMediaElementSource(audio); trackGain = actx.createGain(); master = actx.createGain(); node.connect(trackGain); trackGain.connect(master); master.connect(actx.destination); } catch (_) { actx = false; }
+  }
+  function applyGain() {
+    const g = Math.pow(10, (curGain || 0) / 20);
+    if (actx) { trackGain.gain.value = g; master.gain.value = vol; audio.volume = 1; } else audio.volume = Math.min(1, vol * g);
+    $$('.jy-wc audio').forEach((a) => { a.volume = Math.min(1, vol * Math.pow(10, (+a.dataset.gain || 0) / 20)); });
+  }
+  function setVolume(v) { vol = clamp(v); applyGain(); try { localStorage.setItem('tt_vol', String(vol)); } catch (_) {} }
+  // only one sound at a time: the record, a card's audio, or a video
+  function quietOthers(except) {
+    $$('.jy-wc audio').forEach((a) => { if (a !== except && !a.paused) a.pause(); });
+    $$('.jy-embed').forEach((f) => { if (f !== except) unEmbed(f); });
+  }
+  function play(w, track, keepTime) {
     const src = sourceOf(w, track);
     if (!src) return;
-    const url = ASSET + src.audio;
-    if (!audio.src.endsWith(url)) { audio.src = url; }
-    audio.volume = Math.min(1, Math.pow(10, (src.gain || 0) / 20));
+    const url = ASSET + src.audio, at = keepTime ? audio.currentTime : 0;
+    if (!audio.src.endsWith(url)) { audio.src = url; if (at) audio.addEventListener('loadedmetadata', () => { try { audio.currentTime = at; } catch (_) {} }, { once: true }); }
+    curGain = src.gain || 0; wire(); if (actx && actx.state === 'suspended') actx.resume().catch(() => {}); applyGain();
+    quietOthers(null);
     nowSlug = w.slug; nowTrack = track == null ? null : track;
     audio.play().catch(() => {});
     emit();
   }
   function pause() { audio.pause(); emit(); }
+  // a language version: switch at the same moment of the song
+  function setVersion(w, lang) {
+    chosen[w.slug] = lang;
+    if (nowSlug === w.slug && nowTrack == null) { const was = !audio.paused; play(w, null, true); if (!was) audio.pause(); }
+    emit();
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden && !audio.paused) pause(); });
+  { const vs = $('#jy-vol'); if (vs) { vs.value = Math.round(vol * 100); vs.setAttribute('aria-valuetext', `${vs.value}%`); vs.addEventListener('input', () => { setVolume(vs.value / 100); vs.setAttribute('aria-valuetext', `${vs.value}%`); }); } }
   const isPlaying = (slug, track) => !audio.paused && nowSlug === slug && (track === undefined || nowTrack === track);
   ['play', 'pause', 'ended'].forEach((e) => audio.addEventListener(e, emit));
 
@@ -125,30 +154,86 @@
   const story = $('#jy-story'), storyBox = $('.jy-box', story), playBtn = $('#jy-play'), prog = $('#jy-pg'), sLp = $('#jy-s-lp');
   let storyWork = null, storyReturn = null, untrapStory = null;
   function roleLine(roles) { const t = (roles || []).map((r) => COPY.roles[r]).filter(Boolean).join(' · '); return t ? 'TALETONE · ' + t : ''; }
+  // ---- videos: a YouTube card or stage turns into the player in place (or opens YouTube where embedding is not allowed) ----
+  const EMBED = !window.TT_NO_EMBED;
+  const ytWatch = (id) => `https://www.youtube.com/watch?v=${id}`;
+  function embed(box, id, title) {
+    if (!EMBED) { const l = document.createElement('a'); l.href = ytWatch(id); l.target = '_blank'; l.rel = 'noopener'; document.body.appendChild(l); l.click(); l.remove(); return; }
+    pause(); quietOthers(null);
+    const f = document.createElement('iframe');
+    f.className = 'jy-embed'; f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`; f.title = title || 'YouTube';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
+    f._was = [...box.childNodes]; box.replaceChildren(f); box.classList.add('playing');
+  }
+  function unEmbed(f) { const box = f.parentNode; if (!box) return; box.replaceChildren(...(f._was || [])); box.classList.remove('playing'); }
+  const thumb = (img, box) => { img.addEventListener('error', () => box.classList.add('noimg'), { once: true }); };
+  // credits keep their wording: blank lines split groups, '[Music Credits]' or '1. Song' lines head them
+  function creditsInto(el, text) {
+    el.textContent = '';
+    text.replace(/\r/g, '').split(/\n\s*\n/).forEach((group) => {
+      const p = document.createElement('p');
+      group.split('\n').map((l) => l.trim()).filter(Boolean).forEach((line) => { const head = /^\[.+\]$/.test(line) || /^\d+\.\s/.test(line); const e = document.createElement(head ? 'strong' : 'span'); e.textContent = head ? line.replace(/^\[|\]$/g, '') : line; p.appendChild(e); });
+      if (p.children.length) el.appendChild(p);
+    });
+  }
+  const pad2 = (n) => String(n).padStart(2, '0');
+  // language versions as chips (KR / EN / JP), wherever a work has them
+  function versionChips(box, w) {
+    const vs = w.versions || []; box.textContent = ''; box.hidden = vs.length < 2;
+    vs.forEach((v) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-vchip'; b.textContent = v.language; b.dataset.lang = v.language; b.addEventListener('click', () => setVersion(w, v.language)); box.appendChild(b); });
+    syncVersionChips();
+  }
+  function syncVersionChips() { $$('.jy-vchip').forEach((b) => { const w = bySlug[b.closest('[data-slug]') ? b.closest('[data-slug]').dataset.slug : (storyWork && storyWork.slug)]; const v = w && versionOf(w); b.setAttribute('aria-pressed', String(!!v && v.language === b.dataset.lang)); }); }
+  listeners.add(syncVersionChips);
+  // the track the detail shows: the one playing, else the album's title track
+  const shownTrack = (w) => (nowSlug === w.slug && nowTrack != null ? nowTrack : w.titleTrack || 0);
+  function storyTrackView(w) {
+    const album = w.tracks && w.tracks.length > 1, i = shownTrack(w), t = album ? w.tracks[i] : null;
+    const text = String((t && t.credits) || w.credits || '').trim();
+    $('#jy-s-cr').hidden = !text; creditsInto($('#jy-s-credits'), text);
+    $('#jy-s-crh').textContent = COPY.credits + (album ? ` · ${pad2(i + 1)} ${t.title}` : '');
+    const vid = (t && t.yt) || w.yt;
+    const vb = $('#jy-s-vbtn'); vb.hidden = !vid; vb.dataset.yt = vid || '';
+    const yt = $('#jy-s-yt'); yt.href = vid ? ytWatch(vid) : (w.youtube || '#'); yt.parentNode.hidden = !(vid || w.youtube);
+  }
   function openStory(slug, from) {
     const w = bySlug[slug];
     if (!w) return;
     storyWork = w; storyReturn = from || document.activeElement;
+    story.dataset.slug = w.slug;
     ['jy-s-bg', 'jy-s-v'].forEach((id) => { $('#' + id).src = ASSET + w.thumb; });
-    const art = $('#jy-s-a'); art.src = ASSET + w.image; art.alt = w.title;
+    const art = $('#jy-s-a'); art.src = ASSET + (w.image || w.thumb); art.alt = w.title; art.style.objectFit = w.fit || 'cover'; art.style.objectPosition = w.pos || '50% 50%';
+    $('#jy-s-video').hidden = true; $('#jy-s-video').textContent = '';
+    $('#jy-s-fmt').textContent = [w.format, (w.date || '').slice(0, 4)].filter(Boolean).join(' · ');
     $('#jy-s-title').textContent = w.title;
-    $('#jy-s-meta').textContent = [w.artist, w.type, w.date].filter(Boolean).join(' · ');
+    $('#jy-s-meta').textContent = w.artist || '';
     $('#jy-s-desc').textContent = w.description || '';
     $('#jy-s-roles').textContent = roleLine(w.roles);
+    const facts = $('#jy-s-facts'); facts.textContent = '';
+    [['date', w.date], ['format', w.format], ['type', w.type]].forEach(([k, v]) => { if (!v || !facts.dataset[k]) return; const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = facts.dataset[k]; dd.textContent = v; facts.append(dt, dd); });
+    versionChips($('#jy-s-vers'), w);
     const tracks = $('#jy-s-tracks'); tracks.innerHTML = '';
     if (w.tracks && w.tracks.length > 1) {
       w.tracks.forEach((t, i) => {
         const li = document.createElement('li'), b = document.createElement('button');
         b.type = 'button'; b.disabled = !t.audio; b.dataset.track = i; b.setAttribute('aria-pressed', 'false');
-        b.innerHTML = '<i></i><span></span>'; b.firstChild.textContent = String(i + 1).padStart(2, '0'); b.lastChild.textContent = t.title;
+        b.innerHTML = '<i></i><span></span>'; b.firstChild.textContent = pad2(i + 1); b.lastChild.textContent = t.title;
         b.addEventListener('click', () => (isPlaying(w.slug, i) ? pause() : play(w, i)));
         li.appendChild(b); tracks.appendChild(li);
       });
     }
     tracks.hidden = !tracks.children.length;
-    $('#jy-s-credits').textContent = w.credits || '';
-    $('#jy-s-cr').hidden = !w.credits; $('#jy-s-cr').open = false;
-    const yt = $('#jy-s-yt'); yt.href = w.youtube || '#'; yt.parentNode.hidden = !w.youtube;
+    storyTrackView(w);
+    const cov = $('#jy-s-covl'); cov.textContent = '';
+    (w.covers || []).forEach((c) => {
+      const li = document.createElement('li'), a = document.createElement('a'), img = document.createElement('img'), name = document.createElement('span');
+      a.href = ytWatch(c.yt); a.target = '_blank'; a.rel = 'noopener'; a.className = 'jy-cov';
+      img.src = `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`; img.alt = ''; img.loading = 'lazy'; thumb(img, a);
+      name.textContent = c.artist; a.append(img, name);
+      a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); const st = $('#jy-s-video'); st.hidden = false; st.textContent = ''; embed(st, c.yt, `${w.title} — ${c.artist}`); });
+      li.appendChild(a); cov.appendChild(li);
+    });
+    $('#jy-s-covers').hidden = !cov.children.length;
     playBtn.hidden = !sourceOf(w);
     story.hidden = false;
     outside().forEach((el) => { el.inert = true; });
@@ -157,8 +242,11 @@
     $('#jy-s-close').focus();
     syncStory();
   }
+  $('#jy-s-vbtn').addEventListener('click', (e) => { const st = $('#jy-s-video'); st.hidden = false; st.textContent = ''; embed(st, e.currentTarget.dataset.yt, storyWork && storyWork.title); });
+  listeners.add(() => { if (storyWork && !story.hidden) storyTrackView(storyWork); });
   function closeStory() {
     if (story.hidden) return;
+    $$('#jy-story .jy-embed').forEach(unEmbed); $('#jy-s-video').hidden = true; $('#jy-s-video').textContent = '';
     story.classList.remove('open');
     setTimeout(() => { story.hidden = true; }, reduce ? 0 : 250);
     outside().forEach((el) => { el.inert = false; });
@@ -249,18 +337,22 @@
 
   $$('[data-profile]').forEach((b) => b.addEventListener('click', () => openProfile(b)));
   /* ---------------- discography filters: they light works, they never hide them ---------------- */
-  const filter = { field: 'all', role: 'all' };
-  const lit = (w) => (filter.field === 'all' || w.field === filter.field) && (filter.role === 'all' || (w.roles || []).includes(filter.role));
+  const filter = { field: 'all', roles: new Set() };
+  const roleOk = (w) => [...filter.roles].every((r) => (w.roles || []).includes(r));
+  const lit = (w) => (filter.field === 'all' || w.field === filter.field) && roleOk(w);
   function applyFilter() {
     $$('.jy-fchip[data-field]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.field === filter.field)));
-    $$('.jy-fchip[data-role]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.role === filter.role)));
+    $$('.jy-fchip[data-role]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.role === 'all' ? !filter.roles.size : filter.roles.has(b.dataset.role))));
+    $$('.jy-fchip[data-field]').forEach((b) => { let n = b.querySelector('small'); if (!n) { n = document.createElement('small'); b.appendChild(n); } n.textContent = WORKS.filter((w) => (b.dataset.field === 'all' || w.field === b.dataset.field) && roleOk(w)).length; });
     $$('.jy-sw').forEach((li) => li.classList.toggle('dim', !lit(bySlug[li.dataset.slug])));
-    const chosen = $$('.jy-fchip[aria-pressed="true"]').filter((b) => (b.dataset.field || b.dataset.role) !== 'all').map((b) => b.textContent.trim());
+    const chosen = $$('.jy-fchip[aria-pressed="true"]').filter((b) => (b.dataset.field || b.dataset.role) !== 'all').map((b) => b.firstChild.textContent.trim());
     $('#jy-fbtn').textContent = [COPY.filter, ...chosen].join(' · ');
     if (STAGE) stage.paintRecord();
   }
   $$('.jy-fchip').forEach((b) => b.addEventListener('click', () => {
-    if (b.dataset.field) filter.field = b.dataset.field; else filter.role = b.dataset.role;
+    if (b.dataset.field) filter.field = b.dataset.field;
+    else if (b.dataset.role === 'all') filter.roles.clear();
+    else if (filter.roles.has(b.dataset.role)) filter.roles.delete(b.dataset.role); else filter.roles.add(b.dataset.role);
     applyFilter();
   }));
 
@@ -306,8 +398,84 @@
   });
 
   /* ---------------- moving between scenes ---------------- */
+  /* ---- Sound Engineering and ETC: the other work, as cards on a shelf over the record ----
+     Each card is a video (its thumbnail turns into the player) or, without a video, the song's own audio. Sound
+     Engineering can be narrowed by role (every chosen role must be credited) and shows 12 more at a time. */
+  const shelf = $('#jy-shelf'), cards = $('#jy-cards'), moreBtn = $('#jy-more'), shelfRoles = new Set();
+  let shelfG = null, shelfShown = 12, shelfReturn = null;
+  const cardKey = (k) => (k === 'Inst Mix' ? 'Mix' : k);
+  function cardEl(it, g) {
+    const li = document.createElement('li'); li.className = 'jy-wc';
+    const box = document.createElement('div'); box.className = 'jy-wc-m';
+    if (it.yt) {
+      const a = document.createElement('a'); a.href = ytWatch(it.yt); a.target = '_blank'; a.rel = 'noopener'; a.className = 'jy-wc-v';
+      a.setAttribute('aria-label', `${it.title} — ${it.artist} · ${COPY.video}`);
+      const img = document.createElement('img'); img.src = `https://i.ytimg.com/vi/${it.yt}/hqdefault.jpg`; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; thumb(img, box);
+      const pl = document.createElement('span'); pl.className = 'jy-wc-play'; pl.setAttribute('aria-hidden', 'true');
+      const fb = document.createElement('span'); fb.className = 'jy-wc-fb'; fb.textContent = it.title;
+      a.append(img, fb, pl); box.appendChild(a);
+      a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); embed(box, it.yt, `${it.title} — ${it.artist}`); });
+    } else {
+      box.classList.add('jy-wc-au');
+      const tag = document.createElement('span'); tag.className = 'jy-wc-tag'; tag.textContent = it.roles;
+      const au = document.createElement('audio'); au.controls = true; au.preload = 'none'; au.src = ASSET + it.audio; au.dataset.gain = it.gain; au.setAttribute('aria-label', it.title);
+      au.addEventListener('play', () => { if (!audio.paused) pause(); quietOthers(au); applyGain(); });
+      box.append(tag, au);
+    }
+    const copy = document.createElement('div'); copy.className = 'jy-wc-c';
+    const st = document.createElement('strong'); st.textContent = it.title;
+    const ar = document.createElement('span'); ar.textContent = it.artist + (it.cover ? ` · ${g.coverTag}` : '') + (it.own ? ` · ${COPY.ownSong}` : '');
+    const sm = document.createElement('small'); sm.innerHTML = esc(it.roles).replace(/\(([^)]*)\)/g, '(<i>$1</i>)');
+    copy.append(st, ar, sm);
+    if (it.dateText) { const t = document.createElement('time'); t.dateTime = it.date; t.textContent = it.dateText; copy.appendChild(t); }
+    li.append(box, copy);
+    return li;
+  }
+  function renderShelf(focusKey) {
+    const g = shelfG; if (!g) return;
+    const list = g.items.filter((it) => [...shelfRoles].every((r) => it.keys.map(cardKey).includes(r)));
+    const shown = g.roles ? list.slice(0, shelfShown) : list;
+    cards.replaceChildren(...shown.map((it) => cardEl(it, g)));
+    const rest = list.length - shown.length; moreBtn.hidden = rest <= 0; moreBtn.innerHTML = `${esc(COPY.more)} <span>${rest}</span>`;
+    const rr = $('#jy-shelf-roles'); rr.hidden = !g.roles; rr.textContent = '';
+    if (g.roles) [['all', COPY.all], ...g.roles].forEach(([k, label]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-fchip'; b.dataset.k = k; b.textContent = label;
+      b.setAttribute('aria-pressed', String(k === 'all' ? !shelfRoles.size : shelfRoles.has(k)));
+      b.addEventListener('click', () => { if (k === 'all') shelfRoles.clear(); else if (shelfRoles.has(k)) shelfRoles.delete(k); else shelfRoles.add(k); shelfShown = 12; renderShelf(k); });
+      rr.appendChild(b);
+    });
+    $('#jy-shelf-roles').setAttribute('aria-label', COPY.roleCaption || '');
+    if (focusKey) { const b = rr.querySelector(`[data-k="${focusKey}"]`); if (b) b.focus({ preventScroll: true }); }
+  }
+  function openShelf(key, from) {
+    const g = EXTRAS[key === 'mix' ? 0 : 1]; if (!g) return;
+    const was = !shelf.hidden;
+    if (was) $$('#jy-shelf .jy-embed').forEach(unEmbed);
+    shelfG = g; shelfShown = 12; shelfRoles.clear(); if (!was) shelfReturn = from || document.activeElement;
+    $('#jy-shelf-k').textContent = COPY.tabs[key]; $('#jy-shelf-h').textContent = g.label; $('#jy-shelf-n').textContent = g.note;
+    renderShelf(); shelf.hidden = false; shelf.scrollTop = 0; requestAnimationFrame(() => shelf.classList.add('open'));
+    $$('.jy-tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === key)));
+    if (!was && STAGE) stage.hold(true);
+    if (from) from.focus({ preventScroll: true });
+  }
+  function closeShelf() {
+    if (shelf.hidden) return;
+    $$('#jy-shelf .jy-embed').forEach(unEmbed); $$('#jy-shelf audio').forEach((a) => a.pause());
+    shelf.classList.remove('open'); shelf.hidden = true; shelfG = null;
+    $$('.jy-tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === 'songs')));
+    if (STAGE) stage.hold(false);
+    if (shelfReturn && shelfReturn.focus) shelfReturn.focus({ preventScroll: true });
+  }
+  $$('.jy-tab').forEach((t) => t.addEventListener('click', () => (t.dataset.tab === 'songs' ? closeShelf() : openShelf(t.dataset.tab, t))));
+  $('#jy-shelf-x').addEventListener('click', closeShelf);
+  moreBtn.addEventListener('click', () => { shelfShown += 12; renderShelf(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !shelf.hidden && story.hidden && !profile.classList.contains('open')) closeShelf(); });
+  // the history: the profile's full credits, by year
+  $$('[data-history]').forEach((b) => b.addEventListener('click', () => { openProfile(b); const d = $('.jy-p-all'); if (d) { d.open = true; setTimeout(() => d.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }), 350); } }));
+
   function go(where, from) {
     if (where === 'profile') { openProfile(from); return; }
+    closeShelf();
     if (!STAGE) {
       const id = { pro: 'journey', tale: 'intro', tone: 'approach', record: 'discography', epi: 'contact' }[where];
       const el = document.getElementById(id);
@@ -342,16 +510,20 @@
     const mchap = $('#jy-mchap'), mprog = $('#jy-mprog'), fbtn = $('#jy-fbtn'), filtersEl = $('#jy-filters'), scrim = $('#jy-scrim');
     const contactEl = $('#jy-contact'), fopen = $('#jy-fopen');
     mchap.addEventListener('click', (e) => { e.stopPropagation(); setMenu(true); });
-    let sheet = null, sheetY = 0;
+    let sheet = null, heldY = 0, holds = 0;
+    function holdStory(on) {
+      if (on) { if (holds++ === 0) { heldY = scrollY; frozenU = U(); html.classList.add('jy-held'); } return; }
+      if (holds > 0 && --holds === 0) { html.classList.remove('jy-held'); frozenU = null; scrollTo(0, heldY); }
+    }
     // one sheet at a time: the filters, or the inquiry (which also holds the page still, so typing never scrolls the story)
     function setSheet(which, opener) {
       if (sheet === which) return;
-      if (sheet === 'form') { html.classList.remove('jy-held'); frozenU = null; scrollTo(0, sheetY); }
+      if (sheet === 'form') holdStory(false);
       sheet = which;
       filtersEl.classList.toggle('open', which === 'filters'); fbtn.setAttribute('aria-expanded', String(which === 'filters'));
       contactEl.classList.toggle('open', which === 'form'); fopen.setAttribute('aria-expanded', String(which === 'form'));
       scrim.hidden = which !== 'filters';
-      if (which === 'form') { sheetY = scrollY; frozenU = U(); html.classList.add('jy-held'); setTimeout(() => $('#jy-f-project').focus({ preventScroll: true }), 60); }
+      if (which === 'form') { holdStory(true); setTimeout(() => $('#jy-f-project').focus({ preventScroll: true }), 60); }
       if (which === 'filters') setTimeout(() => $('.jy-fchip[aria-pressed="true"]', filtersEl)?.focus({ preventScroll: true }), 60);
       if (!which && opener) opener.focus({ preventScroll: true });
     }
@@ -1099,6 +1271,7 @@
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
       $('#jy-ro-r').textContent = roleLine(w.roles);
       $('#jy-ro-play').hidden = !sourceOf(w);
+      const rv = $('#jy-ro-vers'); rv.dataset.slug = w.slug; versionChips(rv, w);
       // on a phone an album's tracks are chips in the card (the cord would cross the swirl)
       const tr = $('#jy-ro-trk'); tr.textContent = '';
       tr.hidden = !(NARROW && w.tracks.length > 1);
@@ -1187,7 +1360,7 @@
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
-      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
+      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
       on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
       if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
       else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
@@ -1240,7 +1413,7 @@
     }
     resize();
     requestAnimationFrame(frameLoop);
-    return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items };
+    return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory };
   })();
 
   /* ---------------- where the visitor came in ---------------- */
