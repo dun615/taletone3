@@ -782,9 +782,18 @@
       const dzP = 14 * (1 - p) * (1 - p) + 0.15, s3 = F3 / dzP, show = ease(p / 0.12), dark = id === 'space';
       // it flies in along the line, the line through the middle of its screen, and ends square in the middle
       const zP = camZ + dzP, an = V(pathAt(zP)) || [W / 2, H * 0.5], k = ease((p - 0.68) / 0.3), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
-      const roll = (1 - ease(p / 0.75)) * 0.42 * (dark ? -1 : 1), sq = lerp(0.3, 1, ease(p / 0.72)), t = reduce ? 0 : T;
-      const w = 0.95 * s3, h = 2.05 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
-      const rr = (x, y, ww, hh, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, ww, hh, r); else ctx.rect(x, y, ww, hh); };
+      const roll = (1 - ease(p / 0.75)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / 0.72)) * 1.05 * (dark ? 1 : -1), t = reduce ? 0 : T;
+      const w = 0.98 * s3, h = 2.02 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
+      // the phone's own plane (u across, v down), turned by yaw about its upright axis and seen in perspective, so a
+      // turned phone narrows to its far edge instead of just getting thinner; then rolled
+      const cyw = Math.cos(yaw), syw = Math.sin(yaw), cr = Math.cos(roll), sr = Math.sin(roll), fp = h * 1.6;
+      const P = (u, v) => { const k2 = fp / (fp + u * syw), X = u * cyw * k2, Y = v * k2; return [cx + X * cr - Y * sr, cy + X * sr + Y * cr]; };
+      const rr = (x0, y0, ww, hh, r) => {
+        ctx.beginPath(); let first = true;
+        for (const [ax, ay, a0] of [[x0 + ww - r, y0 + r, -Math.PI / 2], [x0 + ww - r, y0 + hh - r, 0], [x0 + r, y0 + hh - r, Math.PI / 2], [x0 + r, y0 + r, Math.PI]])
+          for (let i = 0; i <= 6; i++) { const a = a0 + (i / 6) * (Math.PI / 2), q = P(ax + Math.cos(a) * r, ay + Math.sin(a) * r); if (first) { ctx.moveTo(q[0], q[1]); first = false; } else ctx.lineTo(q[0], q[1]); }
+        ctx.closePath();
+      };
       // being drawn in: streaks of light running into the screen
       const st = clamp((p - 0.45) / 0.4) * (1 - clamp((p - 0.93) / 0.07));
       if (st > 0 && !reduce) {
@@ -798,19 +807,16 @@
       ctx.save();
       ctx.globalAlpha = show;
       if (dark) { const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.9); gl.addColorStop(0, `rgba(200,206,255,${0.28 * A})`); gl.addColorStop(1, 'rgba(200,206,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h, cy - h, h * 2, h * 2); }
-      ctx.translate(cx, cy); ctx.rotate(roll); ctx.scale(sq, 1);
       // the body, a side button, a rim catching the light
       ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.17 * s3); ctx.fill();
       ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${0.28 * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
       ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
       rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.11 * s3); ctx.clip();
       // the next world, from the same camera
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
       drawNext();
       if (penZ > zP) { drawLine(zP, penZ, nextRGB, A); drawTip(nextRGB, A); }
       // the island at the top of the screen, while the phone is still a phone
-      ctx.translate(cx, cy); ctx.rotate(roll); ctx.scale(sq, 1);
       ctx.fillStyle = `rgba(${INK},${A * (1 - clamp((p - 0.8) / 0.12))})`; rr(-0.14 * s3, -h / 2 + m + 0.04 * s3, 0.28 * s3, 0.07 * s3, 0.035 * s3); ctx.fill();
       ctx.restore();
       // this side of the phone: the line runs into it
