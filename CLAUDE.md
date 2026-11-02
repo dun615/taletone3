@@ -8,4 +8,6 @@ See README.md for which file to edit for each kind of change.
 - Korean text uses Nanum Gothic via the `--tt-noto-primary` CSS variable (JP pages swap in Noto Sans JP); don't add other Korean font names to font stacks.
 - `npm install` is only needed for the optional tools in `scripts/optimize-assets.mjs` (sharp); build and checks have no dependencies.
 
-Styles: edit src/styles/site-and-dialogs.css and src/styles/discography.css. assets/css/works.css is generated. Preview shares live sources; do not recreate duplicate preview-src code. News and RSS are retired; the five chapter routes in seo-content.json are the indexable navigation source.
+Styles: edit src/styles/site-and-dialogs.css and src/styles/discography.css. assets/css/works.css is generated.
+
+/preview/ is the new journey site (a phone, a line, the record of every story), built from its own sources: `scripts/journey-page.mjs` (the document), `src/journey/journey.css` and `src/journey/journey.js`, reading the same data files (`journey` block in site-content.json, `journey` field on featured works). Its Korean font is LINE Seed KR (self-hosted subsets in assets/fonts, made by `scripts/subset-line-seed.py`; Japanese pages add LINE Seed JP); the Nanum Gothic rule above applies to the live site only. Never copy live sources into preview; the live site stays untouched until the journey replaces it. News and RSS are retired; the five chapter routes in seo-content.json are the indexable navigation source.

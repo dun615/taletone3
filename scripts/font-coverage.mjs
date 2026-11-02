@@ -8,6 +8,7 @@ const SOURCES = [
   'src/app/template.html', 'src/app/component.js', 'src/app/parts/content.js', 'src/app/parts/intro.js', 'src/app/parts/scene.js', 'src/app/parts/bridges.js', 'src/app/parts/routing.js', 'src/page.html',
   'assets/data/site-content.json', 'assets/data/seo-content.json', 'assets/data/works-data.json',
   'assets/js/works.js', 'assets/js/site-ux.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
+  'src/journey/journey.js', 'scripts/journey-page.mjs',
 ];
 
 // ASCII is drawn by the Latin fonts; kana/kanji by Noto Sans JP.

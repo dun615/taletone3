@@ -44,7 +44,11 @@
         "lyrics",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "journey": {
+        "branch": "artist",
+        "order": 2
+      }
     },
     {
       "id": "work-soraniwa",
@@ -89,7 +93,11 @@
         "edit"
       ],
       "field": "artist",
-      "pinned": 1
+      "pinned": 1,
+      "journey": {
+        "branch": "artist",
+        "order": 1
+      }
     },
     {
       "id": "work-run-galaxy",
@@ -135,7 +143,11 @@
         "edit"
       ],
       "field": "game",
-      "pinned": 2
+      "pinned": 2,
+      "journey": {
+        "branch": "game",
+        "order": 1
+      }
     },
     {
       "id": "work-taletones",
@@ -225,7 +237,11 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "journey": {
+        "branch": "artist",
+        "order": 4
+      }
     },
     {
       "id": "work-daisy-in-eternity",
@@ -311,7 +327,11 @@
         "mix",
         "master"
       ],
-      "field": "game"
+      "field": "game",
+      "journey": {
+        "branch": "anim",
+        "order": 1
+      }
     },
     {
       "id": "work-parable",
@@ -356,7 +376,11 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "journey": {
+        "branch": "artist",
+        "order": 3
+      }
     },
     {
       "id": "work-bubble-sweet",
@@ -964,7 +988,11 @@
         "edit",
         "mix"
       ],
-      "field": "game"
+      "field": "game",
+      "journey": {
+        "branch": "game",
+        "order": 3
+      }
     },
     {
       "id": "work-mix-archive-01",
@@ -2530,7 +2558,11 @@
         }
       ],
       "field": "game",
-      "pinned": 3
+      "pinned": 3,
+      "journey": {
+        "branch": "game",
+        "order": 2
+      }
     },
     {
       "id": "work-tt-unmyeong-35",

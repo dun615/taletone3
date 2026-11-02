@@ -15,6 +15,7 @@ import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { nanumCharacters, japaneseCharacters } from './font-coverage.mjs';
+import { renderJourney, journeyData } from './journey-page.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -303,30 +304,26 @@ ${urls.join('\n')}
 `;
 }
 
-// ---- Preview of work in progress (taletone.net/preview/, not indexed) ----
-// The same sources under isolated URLs with noindex, so a reload or a shared link stays in the preview.
-const previewTemplate = String(template)
-  .replace(/assets\/js\/image-slot\.js\?v=[\w-]+/, `assets/js/image-slot.js?v=${version(imageSlotJs)}`)
-  .replace(/assets\/css\/works\.css\?v=[\w-]+/, `preview/assets/css/works.css?v=${version(worksCssText)}`)
-  .replace(/assets\/js\/works\.js\?v=[\w-]+/, `preview/assets/js/works.js?v=${version(worksJsText + worksDataText)}`)
-  .replace(/assets\/css\/responsive\.css\?v=[\w-]+/, `assets/css/responsive.css?v=${version(responsiveCss)}`)
-  .replace(/assets\/js\/site-ux\.js\?v=[\w-]+/, `preview/assets/js/site-ux.js?v=${version(siteUxJs)}`);
-const previewApp = makeAppBundle(previewTemplate, componentText);
-const previewPage = (page, lang) => renderPage(page, lang, { APP_VERSION: version(previewApp) })
-  .replace(/href="(\/(?:en\/|ja\/)?discography\/[^"]*)"/g, 'href="/preview$1"')
-  .replace('<meta name="robots" content="index, follow">', '<meta name="robots" content="noindex, nofollow">')
-  .replaceAll('"assets/app/app.js?v=', '"preview/assets/app/app.js?v=')
-  .replace('"assets/data/site-content.js?v=', '"preview/assets/data/site-content.js?v=')
-  .replace(/\.\/support\.js\?v=[\w-]+/, `preview/support.js?v=${version(supportJs)}`);
+// ---- Preview: the new journey site (taletone.net/preview/, not indexed) ----
+// The live chapters above stay as they are until the journey replaces them. The journey has its own sources
+// (src/journey/*, scripts/journey-page.mjs) and reads the same data files; see scripts/journey-page.mjs.
+const journeyCss = await read('src/journey/journey.css');
+const journeyJs = await read('src/journey/journey.js');
+const lineSeedJpUrl = `https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700&display=swap&text=${encodeURIComponent(await japaneseCharacters(root))}`;
+const journeyDataFor = (lang) => journeyData(site, works, lang.key);
 const previewOutputs = [
-  ...seo.pages.flatMap((page) => languages.map((lang) => [`preview/${fileFor(lang, page.path)}`, previewPage(page, lang)])),
-  ['preview/support.js', supportJs],
-  ['preview/assets/app/app.js', previewApp],
-  ['preview/assets/data/site-content.js', siteScript],
-  ['preview/assets/data/works-data.json', worksDataText],
-  ['preview/assets/js/works.js', worksJsText],
-  ['preview/assets/js/site-ux.js', siteUxJs],
-  ['preview/assets/css/works.css', worksCssText],
+  ...seo.pages.flatMap((page) => languages.map((lang) => [`preview/${fileFor(lang, page.path)}`, renderJourney({
+    lang, route: page.path, seoPage: localized(page, lang.key), site, worksData: works, base: '/preview',
+    assets: {
+      css: `/preview/assets/journey/journey.css?v=${version(journeyCss)}`,
+      js: `/preview/assets/journey/journey.js?v=${version(journeyJs)}`,
+      data: `/preview/assets/journey/data-${lang.key}.js?v=${version(journeyDataFor(lang))}`,
+      lineSeedJp: lineSeedJpUrl.replace(/&/g, '&amp;'),
+    },
+  })])),
+  ['preview/assets/journey/journey.css', journeyCss],
+  ['preview/assets/journey/journey.js', journeyJs],
+  ...languages.map((lang) => [`preview/assets/journey/data-${lang.key}.js`, journeyDataFor(lang)]),
 ];
 
 // Retired News and RSS have no replacement. Remove prior generated artifacts so Pages serves 404.
