@@ -2386,7 +2386,12 @@
         "service": "Music for games, virtual artists and animation",
         "listenNow": "Listen now",
         "scrollHint": "Scroll to enter",
-        "playerLabel": "Now playing"
+        "playerLabel": "Now playing",
+        "gates": {
+          "tone": "Philosophy",
+          "case": "A real project",
+          "music": "Signature songs"
+        }
       },
       "jp": {
         "notifyNow": "今",
@@ -2465,7 +2470,12 @@
         "service": "ゲーム・バーチャル・アニメーションの音楽制作",
         "listenNow": "音楽を聴く",
         "scrollHint": "スクロールして入る",
-        "playerLabel": "再生中の曲"
+        "playerLabel": "再生中の曲",
+        "gates": {
+          "tone": "哲学",
+          "case": "制作事例",
+          "music": "代表曲"
+        }
       }
     },
     "albumTracks": "수록곡",
@@ -2480,6 +2490,11 @@
     "service": "게임 · 버추얼 · 애니메이션 음악 제작",
     "listenNow": "음악 듣기",
     "scrollHint": "아래로 내려가 보세요",
-    "playerLabel": "재생 중인 곡"
+    "playerLabel": "재생 중인 곡",
+    "gates": {
+      "tone": "철학",
+      "case": "실제 제작 사례",
+      "music": "대표곡"
+    }
   }
 }

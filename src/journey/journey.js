@@ -20,8 +20,8 @@
   const COPY = DATA.copy, WORKS = DATA.works;
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.4], case: [4.4, 5.8], music: [5.8, 8.2], record: [8.2, 12.2], done: [12.2, 13.1], epi: [13.1, 14.1] };
-  const TOTAL = 14.1;
+  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.8], case: [4.8, 6.2], music: [6.2, 8.6], record: [8.6, 12.6], done: [12.6, 13.5], epi: [13.5, 14.5] };
+  const TOTAL = 14.5;
   const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
@@ -351,8 +351,11 @@
     const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
     Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
     const layerColour = (i) => { const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (palette[i % Math.max(1, palette.length)] || { c: fall[i % 3] }).c; };
-    const PEN = { tale: [2, 10], tone: [10, 22], case: [22, 30], music: [30, 42] };
-    const WIRE = [10.5, 21.5], POLE = 3, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, COIL = 38.5;
+    // four worlds, one after another along the line, with a gate (a phone's screen) between each two:
+    // the dots of the Tale, the land of the philosophy, the sea of the case, the space of the signature songs
+    const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
+    const GATES = [PEN.tone[0], PEN.case[0], PEN.music[0]];
+    const WIRE = [15, 25.5], POLE = 3, GROUND = 1.35, SEA = 1.0, AHEAD = 4.2, FAR3 = 26, COIL = 45.5;
     const penAt = (u) => { for (const k of ['music', 'case', 'tone', 'tale']) { const l = local(u, k); if (l > 0) return lerp(PEN[k][0], PEN[k][1], clamp(k === 'tale' ? (l - 0.08) / 0.92 : l)); } return PEN.tale[0]; };
     const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
     const coilK = (z) => ease((z - COIL) / 3);
@@ -368,38 +371,50 @@
     const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let ridges = [], clouds = [], grass = [], dots = [], poles = [];
+    let ridges = [], clouds = [], grass = [], dots = [], poles = [], waves = [], stars = [], planets = [];
+    const gateNames = $$('#jy-gates li').map((li) => li.textContent);
     function buildWorld() {
       F3 = Math.min(W, H * 1.6) * 0.62;
       let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const [G1, G2, G3] = GATES;
+      // land: mountains, grass, poles on the wire
       ridges = [];
-      for (let k = 0, z = 4.5; z < 64; k++, z += 2.6 + rnd() * 1.4) {
-        const amp = 0.35 + rnd() * 0.55 + (k % 4 === 3 ? 0.4 : 0), f1 = 0.5 + rnd() * 0.7, f2 = 1.4 + rnd(), p1 = rnd() * 6, p2 = rnd() * 6, pts = [];
+      for (let k = 0, z = G1 + 1; z < G2 - 0.5; k++, z += 2.2 + rnd() * 1.2) {
+        const amp = 0.35 + rnd() * 0.55 + (k % 4 === 3 ? 0.45 : 0), f1 = 0.5 + rnd() * 0.7, f2 = 1.4 + rnd(), p1 = rnd() * 6, p2 = rnd() * 6, pts = [];
         for (let x = -8; x <= 8.001; x += 0.2) pts.push([x, GROUND - amp * (0.55 + 0.45 * Math.sin(x * f1 + p1)) * (0.7 + 0.3 * Math.sin(x * f2 + p2)), z]);
         ridges.push({ z, k, pts });
       }
       ridges.sort((a, b) => b.z - a.z);
+      grass = [];
+      for (let z = G1 + 0.5; z < G2 - 0.5; z += 0.16 + rnd() * 0.2) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
+      poles = [];
+      for (let z = WIRE[0]; z <= WIRE[1] - 1.4; z += POLE) poles.push(z);
+      // land and sea: clouds
       clouds = [];
-      for (let z = 7; z < 64; z += 4 + rnd() * 4) {
+      for (let z = G1 + 2; z < G3 - 1; z += 4 + rnd() * 4) {
         const X = (rnd() - 0.5) * 7, Y = -2.1 + rnd() * 0.6, wd = 0.9 + rnd() * 0.9, pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
         for (let j = 0; j <= 40; j++) { const x = -0.5 + j / 40; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts.push([X + x * wd, Y - top * wd * 1.05, z]); }
         for (let j = 1; j <= 10; j++) pts.push([X + (0.5 - j / 10) * wd, Y + Math.sin((j / 10) * Math.PI) * 0.03, z]);
         clouds.push({ z, pts, ci: clouds.length });
       }
-      grass = [];
-      for (let z = 1; z < 44; z += 0.16 + rnd() * 0.2) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
-      poles = [];
-      for (let z = WIRE[0]; z <= WIRE[1] - 1.9; z += POLE) poles.push(z);
+      // sea: rows of waves out to the next gate
+      waves = [];
+      for (let z = G2 + 0.6; z < G3 - 0.3; z += 0.55) waves.push({ z, ph: rnd() * 6 });
+      // space: stars all around, and one planet for each signature song
+      stars = [];
+      for (let i = 0; i < 320; i++) stars.push({ x: (rnd() - 0.5) * 12, y: -3.4 + rnd() * 5.2, z: G3 + 0.5 + rnd() * 16, s: rnd(), sparkle: rnd() < 0.14 });
+      planets = [[G3 + 5.2, -1.9, -0.95, 0.42], [G3 + 7.4, -0.6, -1.75, 0.5], [G3 + 9.4, -2.3, 0.15, 0.36]].map(([z, x, y, r], i) => ({ z, x, y, r, i, tilt: -0.35 + i * 0.3 }));
+      // the Tale: a field of dots
       const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = [];
-      for (let i = 0; i < n; i++) { const z = rnd() * 15; dots.push({ x: (rnd() - 0.5) * 9, y: -2.4 + rnd() * 3.8, z, pz: clamp(z + (rnd() - 0.3) * 2, 2.2, 14), s: rnd() }); }
+      for (let i = 0; i < n; i++) { const z = rnd() * 12; dots.push({ x: (rnd() - 0.5) * 9, y: -2.4 + rnd() * 3.8, z, pz: clamp(z + (rnd() - 0.3) * 2, 2.2, 9.6), s: rnd() }); }
     }
 
     // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
     const ANCHORS = [
       ['#jy-hello', 3.6, 1], ['#jy-pcard', 5.4, -1], ['#jy-types', 7.2, 1], ['#jy-clients', 9.0, -1],
-      ['#jy-creed', 10.2, 1], ['#jy-step-0', 12, 0], ['#jy-step-1', 15, 0], ['#jy-step-2', 18, 0],
-      ['#jy-case-req', 23.2, 1], ['#jy-case-m0', 25, 0.5], ['#jy-case-m1', 26.8, -0.5], ['#jy-case-ans', 28.8, -1],
-      ['#jy-landscape', 33.5, 1], ['#jy-fact', 35.6, -1],
+      ['#jy-creed', 14.6, 1], ['#jy-step-0', 16.5, 0], ['#jy-step-1', 19.5, 0], ['#jy-step-2', 22.5, 0],
+      ['#jy-case-req', 31, 1], ['#jy-case-m0', 32.6, 0.5], ['#jy-case-m1', 34.2, -0.5], ['#jy-case-ans', 35.8, -1],
+      ['#jy-landscape', 41.8, 1], ['#jy-fact', 43.6, -1],
     ].map(([sel, z, side]) => ({ el: $(sel), z, side, w: 0, h: 0 })).filter((a) => a.el);
     ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
     const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
@@ -435,7 +450,7 @@
     }
     // resting points: scrolling stops on a message rather than between two
     const zToU = (z) => { for (const k of ['tale', 'tone', 'case', 'music']) { const [z0, z1] = PEN[k]; if (z >= z0 && z <= z1) { let l = (z - z0) / (z1 - z0); if (k === 'tale') l = 0.08 + 0.92 * l; return CH[k][0] + l * (CH[k][1] - CH[k][0]); } } return 0; };
-    const snaps = ANCHORS.map((a) => { const d = document.createElement('div'); d.className = 'jy-snap'; track.appendChild(d); return { d, u: zToU(a.z + 0.45) }; });
+    const snaps = [...ANCHORS.map((a) => a.z + 0.45), ...GATES.map((g) => g + 0.8)].map((z) => { const d = document.createElement('div'); d.className = 'jy-snap'; track.appendChild(d); return { d, u: zToU(z) }; });
     function placeSnaps() { const m = document.documentElement.scrollHeight - innerHeight; snaps.forEach((sp) => { sp.d.style.top = ((sp.u / TOTAL) * m).toFixed(0) + 'px'; }); }
     function drawLead(A) {
       if (!leadOf) return;
@@ -448,45 +463,77 @@
     }
     function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
     function drawWorld(A, lm, now) {
-      const fillK = ease(lm / 0.45), land = A * (1 - ease((lm - 0.72) / 0.22));
+      const land = A;
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      if (land > 0) {
-        // the sky takes a faint colour as the songs play
-        if (fillK > 0) { const c = layerColour(2), g = ctx.createLinearGradient(0, 0, 0, H * 0.6); g.addColorStop(0, `rgba(${c},${0.28 * fillK * land})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H * 0.6); }
-        for (const cl of clouds) {
-          const dz = cl.z - camZ; if (dz < 0.4 || dz > FAR3 || penZ < cl.z - 10) continue;
-          const reveal = clamp((penZ - (cl.z - 10)) / 2), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
-          const a = fogA(dz) * land;
-          if (fillK > 0) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = `rgba(254,254,254,${0.9 * fillK * a})`; ctx.fill(); }
-          ctx.strokeStyle = `rgba(${INK},${0.4 * a})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
-        }
-        for (const r of ridges) {
-          const dz = r.z - camZ; if (dz < 0.3 || dz > FAR3) continue;
-          const reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
-          const a = fogA(dz) * land, Q = r.pts.map(V), n = Math.max(2, Math.round(reveal * Q.length));
-          if (fillK > 0 && reveal >= 1) {
-            const c = layerColour(r.k % 3), last = Q[Q.length - 1], first = Q[0];
-            polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath();
-            ctx.fillStyle = `rgba(${c},${0.42 * fillK * a})`; ctx.fill();
-          }
-          ctx.strokeStyle = `rgba(${INK},${0.45 * a})`; ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, n); ctx.stroke();
-        }
-        ctx.lineWidth = 1.1; ctx.beginPath();
-        for (const g of grass) {
-          const dz = g.z - camZ; if (dz < 0.3 || dz > 10 || penZ < g.z) continue;
-          const a = V([g.x, GROUND, g.z]); if (!a) continue;
-          const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
-          ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
-        }
-        ctx.strokeStyle = `rgba(${INK},${0.35 * land})`; ctx.stroke();
-        for (const z of poles) {
-          if (penZ < z) continue; const dz = z - camZ; if (dz < 0.3) continue;
-          const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
-          if (!a || !b) continue;
-          ctx.strokeStyle = `rgba(${INK},${0.6 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.6, 2.6);
-          ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
-        }
+      const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < far; };
+      // land: clouds, mountains, grass, poles
+      for (const cl of clouds) {
+        if (!near(cl.z) || penZ < cl.z - 10) continue;
+        const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
+        ctx.strokeStyle = `rgba(${INK},${0.4 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
       }
+      for (const r of ridges) {
+        if (!near(r.z)) continue;
+        const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
+        const Q = r.pts.map(V);
+        ctx.strokeStyle = `rgba(${INK},${0.45 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+      }
+      ctx.lineWidth = 1.1; ctx.beginPath();
+      for (const g of grass) {
+        if (!near(g.z, 10) || penZ < g.z) continue;
+        const a = V([g.x, GROUND, g.z]); if (!a) continue;
+        const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
+        ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
+      }
+      ctx.strokeStyle = `rgba(${INK},${0.35 * land})`; ctx.stroke();
+      for (const z of poles) {
+        if (penZ < z || !near(z)) continue; const dz = z - camZ;
+        const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
+        if (!a || !b) continue;
+        ctx.strokeStyle = `rgba(${INK},${0.6 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.6, 2.6);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
+      }
+      // sea: rows of waves, rocking
+      for (let wi = waves.length - 1; wi >= 0; wi--) {
+        const wv = waves[wi]; if (!near(wv.z, 18)) continue;
+        const dz = wv.z - camZ, reveal = clamp((penZ - (wv.z - 8)) / 2); if (reveal <= 0) continue;
+        const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SEA + 0.05 * Math.sin(x * 2.1 + wv.ph + (reduce ? 0 : T * 0.9)), wv.z]));
+        ctx.strokeStyle = `rgba(${INK},${0.38 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.4, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+      }
+      // space: stars, and a planet for each signature song in its cover's colour
+      ctx.fillStyle = `rgb(${INK})`;
+      for (const st of stars) {
+        if (!near(st.z, 20) || penZ < st.z - 12) continue;
+        const q = V([st.x, st.y, st.z]); if (!q) continue;
+        const a = land * fogA(q[2]) * clamp((penZ - (st.z - 12)) / 2) * (reduce ? 0.7 : 0.55 + 0.35 * Math.sin(T * 1.4 + st.s * 30));
+        const r = clamp(2.2 * AHEAD / q[2], 0.7, 3.2);
+        ctx.globalAlpha = a;
+        if (st.sparkle) { const L = r * 3; ctx.strokeStyle = `rgb(${INK})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q[0] - L, q[1]); ctx.lineTo(q[0] + L, q[1]); ctx.moveTo(q[0], q[1] - L); ctx.lineTo(q[0], q[1] + L); ctx.stroke(); }
+        else ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
+      }
+      ctx.globalAlpha = 1;
+      for (const pl of planets) {
+        if (!near(pl.z) || penZ < pl.z - 12) continue;
+        const q = V([pl.x, pl.y, pl.z]); if (!q) continue;
+        const s3 = F3 / q[2], R = pl.r * s3, a = land * fogA(q[2]) * clamp((penZ - (pl.z - 12)) / 2);
+        const w = pinned[pl.i], c = w && colorOf[w.slug] ? colorOf[w.slug] : [176, 178, 184], lit = w && (offer === w || nowSlug === w.slug);
+        ctx.fillStyle = `rgba(${c},${0.85 * a})`; ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = lit ? 2.4 : 1.3; ctx.stroke();
+        ctx.save(); ctx.translate(q[0], q[1]); ctx.rotate(pl.tilt); ctx.beginPath(); ctx.ellipse(0, 0, R * 1.75, R * 0.42, 0, Math.PI * 0.04, Math.PI * 0.96, true); ctx.stroke(); ctx.restore();
+        if (w) { ctx.fillStyle = `rgba(${INK},${a})`; ctx.font = `700 ${Math.round(clamp(0.11 * s3, 11, 22))}px "LINE Seed KR", "LINE Seed JP", sans-serif`; ctx.textAlign = 'center'; ctx.fillText(w.title, q[0], q[1] + R + clamp(0.16 * s3, 14, 30)); }
+      }
+      // gates: a phone's screen standing on the line, the next world's name above it; passing through starts it
+      for (let gi = 0; gi < GATES.length; gi++) {
+        const G = GATES[gi], dz = G - camZ; if (dz < 0.25 || dz > FAR3) continue;
+        if (gi > 0 && camZ < GATES[gi - 1]) continue; // only the next gate: one world at a time
+        const c = pathAt(G), q = V([c[0], c[1] - 0.3, G]); if (!q) continue;
+        const s3 = F3 / dz, w = 0.95 * s3, h = 2.05 * s3, a = land * clamp((dz - 0.25) / 0.7) * clamp((FAR3 - dz) / 8);
+        ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = clamp(2.2 * AHEAD / dz, 1, 4.5);
+        ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(q[0] - w / 2, q[1] - h / 2, w, h, 0.17 * s3); else ctx.rect(q[0] - w / 2, q[1] - h / 2, w, h); ctx.stroke();
+        ctx.lineWidth = clamp(1 * AHEAD / dz, 0.5, 2); ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(q[0] - w / 2 + 0.06 * s3, q[1] - h / 2 + 0.06 * s3, w - 0.12 * s3, h - 0.12 * s3, 0.11 * s3); ctx.stroke();
+        const name = gateNames[gi]; if (name) { ctx.fillStyle = `rgba(${INK},${a})`; ctx.font = `700 ${Math.round(clamp(0.17 * s3, 12, 64))}px "LINE Seed KR", "LINE Seed JP", sans-serif`; ctx.textAlign = 'center'; ctx.fillText(name, q[0], q[1] - h / 2 - clamp(0.14 * s3, 10, 40)); }
+      }
+      ctx.textAlign = 'start';
       // the dots of the Tale drift, and each is gathered into the line once the pen passes it
       if (penZ < 15) {
         ctx.fillStyle = `rgb(${INK})`;

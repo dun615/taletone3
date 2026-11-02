@@ -43,7 +43,7 @@ export function journeyCopy(site, lang) {
   const record = (site.trackRecord || [])[0];
   const fact = record ? merge(record, lang) : null;
   const cs = (projects.proof && projects.proof.case) || null;
-  return { ...j, intro, caseStudy: cs, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
+  return { ...j, intro, caseStudy: cs, gates: j.gates || site.journey.gates, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
 }
 
 const markInk = '/assets/logo/mark-ink.svg';
@@ -123,6 +123,7 @@ ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href
 <div class="jy-stage" id="jy-stage">
 ${grain}
 <canvas class="jy-cv" id="jy-cv" aria-hidden="true"></canvas>
+<ol class="jy-gates" id="jy-gates" hidden>${['tone', 'case', 'music'].map((k, i) => `<li>0${i + 2} · ${esc((c.gates || {})[k] || '')}</li>`).join('')}</ol>
 
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
