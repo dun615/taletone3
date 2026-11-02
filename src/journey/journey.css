@@ -115,22 +115,6 @@ img{max-width:100%}
 .jy-cd::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgba(121,124,133,.6)}
 .jy-lead{margin:32px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center}
 .jy-voice{display:flex;flex-direction:column;gap:12px}
-.jy-replies{display:grid;gap:10px;align-self:flex-end;width:min(460px,100%)}
-.jy-reply{min-height:44px;padding:14px 20px;border:1px solid var(--tt-ink-line);border-radius:22px 22px 6px 22px;background:var(--tt-canvas);text-align:left;display:flex;flex-direction:column;gap:6px;cursor:pointer;line-height:1.45;transition:transform .5s var(--tt-spring),background .25s,color .25s,opacity .4s}
-.jy-reply:hover{transform:translateY(-3px)}
-.jy-rl{font-family:var(--tt-display);font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--tt-ink-muted)}
-.jy-rt{font-size:16px;font-weight:700}
-.jy-reply[aria-pressed="true"]{background:var(--tt-ink);color:var(--tt-on-ink);border-color:var(--tt-ink)}
-.jy-reply[aria-pressed="true"] .jy-rl{color:var(--tt-on-ink-muted)}
-.jy-replies.chosen .jy-reply[aria-pressed="false"]{opacity:.35}
-.jy-wire{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:24px}
-.jy-wk{display:flex;flex-direction:column;align-items:center;gap:12px}
-.jy-wk-lp{width:100%;padding:0;border:0;border-radius:50%;background:none;cursor:pointer;transition:transform .6s var(--tt-spring)}
-.jy-wk-lp:hover{transform:scale(1.06) rotate(8deg)}
-.jy-wname{text-align:center;line-height:1.4}
-.jy-wname b{display:block;font-size:15px}
-.jy-wname span{display:block;font-size:13px;color:var(--tt-ink-muted);margin-top:2px}
-.jy-steps{list-style:none;margin:0;padding:0}
 .jy-hint{margin:0;font-size:15px;color:var(--tt-ink-muted)}
 .jy-filters{display:flex;flex-direction:column;gap:8px}
 .jy-frow{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
@@ -291,17 +275,8 @@ img{max-width:100%}
 .jy-stage-mode .jy-say.on .jy-tx{animation:jy-show .3s .75s forwards}
 .jy-stage-mode .jy-say.on .jy-typing{animation:jy-hide .2s .7s forwards}
 @keyframes jy-show{to{opacity:1}}@keyframes jy-hide{to{opacity:0;visibility:hidden}}
-.jy-stage-mode .jy-steps{display:contents}
-.jy-stage-mode .jy-steps li{display:contents}
 
-.jy-stage-mode .jy-replies{position:absolute;right:max(48px,6vw);bottom:14%;width:min(460px,40vw);opacity:0;transform:translateY(16px);transition:opacity .5s,transform .7s var(--tt-spring);pointer-events:none}
-.jy-stage-mode .jy-replies.on{opacity:1;transform:none;pointer-events:auto}
 
-/* works hanging on the wire */
-.jy-stage-mode .jy-wire{display:block;position:absolute;inset:0;pointer-events:none}
-.jy-stage-mode .jy-wk{position:absolute;width:var(--d,180px);margin-left:calc(var(--d,180px) / -2);margin-top:calc(var(--d,180px) / -2);gap:14px;opacity:0;transform:scale(.6);visibility:hidden;transition:opacity .5s,transform .8s var(--tt-spring),visibility 0s .5s}
-.jy-stage-mode .jy-wk.on{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .5s,transform .8s var(--tt-spring),visibility 0s}
-.jy-stage-mode .jy-wname{background:rgba(254,254,254,.82);border-radius:8px;padding:2px 6px}
 
 /* now playing pill */
 .jy-stage-mode .jy-np{display:flex;position:absolute;left:50%;top:22px;z-index:5;align-items:center;gap:12px;height:50px;padding:0 20px 0 9px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);opacity:0;transform:translate(-50%,-14px);transition:opacity .5s,transform .7s var(--tt-spring);line-height:1.3}
@@ -356,7 +331,7 @@ img{max-width:100%}
 .jy-trk:hover .jy-trk-t,.jy-trk:focus-visible .jy-trk-t,.jy-trk[aria-pressed="true"] .jy-trk-t{opacity:1}
 .jy-trk[aria-pressed="true"] .jy-vy{box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 4px var(--tt-ink)}
 .jy-trk:disabled{cursor:default;opacity:.4!important}
-.jy-stage-mode .jy-readout{display:flex;flex-direction:column;position:absolute;z-index:1200;right:max(32px,4vw);top:50%;width:min(380px,30vw);padding:20px 22px;border-radius:22px;background:rgba(254,254,254,.88);transform:translateY(-40%);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s var(--tt-spring);line-height:1.5}
+.jy-stage-mode .jy-readout{display:flex;flex-direction:column;position:absolute;z-index:1200;right:calc(max(20px,env(safe-area-inset-right,0px)) + 132px);top:50%;width:min(380px,30vw);padding:20px 22px;border-radius:22px;background:rgba(254,254,254,.88);transform:translateY(-40%);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s var(--tt-spring);line-height:1.5}
 .jy-stage-mode .jy-readout.on{opacity:1;transform:translateY(-50%);pointer-events:auto}
 .jy-ro-n{margin:0;font-family:var(--tt-display);font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--tt-ink-muted)}
 .jy-ro-t{margin:12px 0 0;font-size:clamp(24px,2.2vw,32px);font-weight:700;line-height:1.25}
@@ -392,3 +367,30 @@ img{max-width:100%}
   .jy-stage-mode .jy-tx{opacity:1}
   .jy-stage-mode .jy-typing{display:none}
 }
+
+/* the intro and the philosophy arrive as a chat: messages stack up, the newest at the bottom */
+.jy-chat{display:flex;flex-direction:column;gap:12px}
+.jy-pcard{gap:0}
+.jy-pc-head{display:flex;align-items:center;gap:12px}
+.jy-pc-head b{display:block;font-family:var(--tt-display);font-size:18px;letter-spacing:.16em}
+.jy-pc-head small{display:block;margin-top:2px;font-size:13px;color:var(--tt-ink-muted)}
+.jy-pc-tag{display:block;margin-top:12px;font-weight:100;font-size:24px;line-height:1.4}
+.jy-pc-btn{margin-top:14px;height:40px;font-size:14px}
+.jy-step-l{display:block;margin-bottom:4px;font-family:var(--tt-display);font-size:11px;font-weight:700;letter-spacing:.24em;color:var(--tt-ink-muted)}
+.jy-stage-mode .jy-chat.jy-voice{display:flex;position:absolute;left:max(48px,6vw);bottom:12%;width:min(520px,44vw);justify-content:flex-end}
+.jy-stage-mode .jy-chat .jy-say{position:static;max-width:100%;display:none}
+.jy-stage-mode .jy-chat.jy-voice{pointer-events:none}
+.jy-stage-mode .jy-chat .jy-say.on{display:flex;pointer-events:auto;animation:jy-arrive .7s var(--tt-spring)}
+@keyframes jy-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* chapters, always in reach: business visitors jump straight to the music */
+.jy-rail{display:none}
+.jy-stage-mode .jy-rail{display:block;position:fixed;z-index:55;right:max(20px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%)}
+.jy-rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.jy-rail a{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:36px;padding:0 4px 0 12px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;color:var(--tt-ink-muted);transition:color .25s}
+.jy-rail a i{display:block;width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;transition:transform .5s var(--tt-spring),background .25s}
+.jy-rail a:hover,.jy-rail a[aria-current]{color:var(--tt-ink)}
+.jy-rail a[aria-current] i{background:currentColor;transform:scale(1.25)}
+.jy-ink .jy-rail a{color:var(--tt-on-ink-muted)}
+.jy-ink .jy-rail a:hover,.jy-ink .jy-rail a[aria-current]{color:var(--tt-on-ink)}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-chat .jy-say.on{animation:none}}

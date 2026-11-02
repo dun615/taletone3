@@ -28,7 +28,7 @@ export function journeyWorks(worksData, lang) {
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
     const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || '' }; });
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
-    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, journey: w.journey || null };
+    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0 };
   }).sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -37,11 +37,12 @@ export function journeyCopy(site, lang) {
   const projects = merge(site.projects, lang);
   const contact = merge(site.contact, lang);
   const form = merge(contact.form || {}, lang);
-  const rows = ((projects.proof && projects.proof.rows) || []).map((row) => ({ title: plain(row.steps && row.steps[0] && row.steps[0].text), text: plain(row.result) }));
-  const hooks = { game: projects.audienceGameHook, artist: projects.audienceCreatorHook, anim: projects.audienceAnimationHook };
+  const rows = ((projects.proof && projects.proof.rows) || []).map((row, i) => ({ label: plain((site.projects.proof.rows[i] || {}).label || row.label), title: plain(row.steps && row.steps[0] && row.steps[0].text), text: plain(row.result) }));
+  const members = merge(site.membersMeta, lang), footer = merge(site.footerMeta, lang);
+  const intro = { hello: plain(members.subtitle), typesLabel: plain(members.typesLabel), types: [projects.audienceGameTitle, projects.audienceCreatorTitle, projects.audienceAnimationTitle].map(plain), creed: plain(String(footer.tagline || '').split(' · ')[0]).replace(/, /, ',\n') };
   const record = (site.trackRecord || [])[0];
   const fact = record ? merge(record, lang) : null;
-  return { ...j, branches: j.branches || site.journey.branches, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, hooks, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
+  return { ...j, intro, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
 }
 
 const markInk = '/assets/logo/mark-ink.svg';
@@ -74,8 +75,6 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const logos = worksData.clientLogos || [];
   const pageTitle = plain(seoPage.title);
   const description = plain(seoPage.description);
-  const featured = works.filter((w) => w.journey).sort((a, b) => a.journey.order - b.journey.order);
-  const branches = ['game', 'artist', 'anim'];
   const labels = c.chapterLabels;
   const field = (f) => (c.fields && c.fields[f]) || f;
   const roleText = (roles) => roles.map((r) => c.roles[r]).filter(Boolean).join(' · ');
@@ -111,15 +110,13 @@ ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com
   <button class="jy-menu-btn" type="button" aria-expanded="false" aria-controls="jy-menu"><span class="jy-menu-lines" aria-hidden="true"><i></i><i></i></span><span class="jy-sr">${esc(c.menu)}</span></button>
   <nav class="jy-menu" id="jy-menu" aria-label="${esc(c.menu)}">
     <ul>
-      <li><a href="${href('/')}" data-go="pro">${esc(c.home)}</a></li>
-      <li><a href="${href('/approach/')}" data-go="approach">${esc(c.approach)}</a></li>
-      <li><a href="${href('/discography/')}" data-go="record">${esc(c.discography)}</a></li>
-      <li><a href="${href('/about/')}" data-go="about">${esc(c.profile)}</a></li>
-      <li><a href="${href('/contact/')}" data-go="epi">${esc(c.contact)}</a></li>
+${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}">${esc(c.rail[k])}</a></li>`).join('\n')}
+      <li><a href="${href('/about/')}" data-go="profile">${esc(c.profile)}</a></li>
     </ul>
     <p class="jy-langs" aria-label="${esc(c.languages)}">${langLinks}</p>
   </nav>
 </header>
+<nav class="jy-rail" aria-label="${esc(c.menu)}"><ol>${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `<li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}"><span>${esc(c.rail[k])}</span><i aria-hidden="true"></i></a></li>`).join('')}</ol></nav>
 <div class="jy-track" id="jy-track" aria-hidden="true"></div>
 <main class="jy" id="journey">
 <div class="jy-stage" id="jy-stage">
@@ -132,28 +129,26 @@ ${grain}
   <h1 class="jy-lead" id="jy-lead">${esc(merge(site.home, lang.key).tagline)}</h1>
 </section>
 
-<section class="jy-ch" data-ch="tale" aria-labelledby="jy-h-tale">
-  <h2 class="jy-chl" id="jy-h-tale">${esc(labels[1])}</h2>
-  <div class="jy-voice" aria-live="polite">${bubble('jy-ask', lines(c.ask))}</div>
-  <div class="jy-replies" id="jy-replies" role="group" aria-label="${esc(c.branchesLabel)}">
-${branches.map((b) => `    <button class="jy-reply" type="button" data-branch="${b}" aria-pressed="false"><span class="jy-rl">${esc(c.branches[b])}</span><span class="jy-rt">${esc(c.hooks[b])}</span></button>`).join('\n')}
+<section class="jy-ch" data-ch="tale" id="intro" aria-labelledby="jy-h-tale">
+  <h2 class="jy-chl" id="jy-h-tale">${esc(c.rail.tale)}</h2>
+  <div class="jy-chat jy-voice" aria-live="polite">
+    ${bubble('jy-hello', lines(c.intro.hello))}
+    <div class="jy-say jy-card-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
+    ${bubble('jy-types', `<b>${esc(c.intro.typesLabel)}</b><small>${c.intro.types.map(esc).join('<br>')}</small>`)}
   </div>
 </section>
 
-<section class="jy-ch" data-ch="tone" aria-labelledby="jy-h-tone">
-  <h2 class="jy-chl" id="jy-h-tone">${esc(labels[2])}</h2>
-  <div class="jy-voice" aria-live="polite">${bubble('jy-wire-say', lines(c.wire))}</div>
-  <ul class="jy-wire" id="jy-wire">
-${featured.map((w) => `    <li class="jy-wk" data-branch="${w.journey.branch}" data-slug="${esc(w.slug)}"><button class="jy-wk-lp" type="button" data-open="${esc(w.slug)}" aria-label="${esc(w.title)} · ${esc(c.open)}">${lp(w)}</button><span class="jy-wname"><b>${esc(w.title)}</b><span>${esc(w.artist)}</span></span></li>`).join('\n')}
-  </ul>
+<section class="jy-ch" data-ch="tone" id="approach" aria-labelledby="jy-h-tone">
+  <h2 class="jy-chl" id="jy-h-tone">${esc(c.rail.tone)}</h2>
+  <div class="jy-chat jy-voice" aria-live="polite">
+    ${bubble('jy-creed', lines(c.intro.creed))}
+${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">${esc(s.label)}</span><b>${esc(s.title)}</b><small>${esc(s.text)}</small>`, ' jy-step')}`).join('\n')}
+  </div>
 </section>
 
-<section class="jy-ch" data-ch="music" id="approach" aria-labelledby="jy-h-music">
+<section class="jy-ch" data-ch="music" aria-labelledby="jy-h-music">
   <h2 class="jy-chl" id="jy-h-music">${esc(labels[3])}</h2>
   <div class="jy-np" id="jy-np" aria-hidden="true"><span class="jy-npd" id="jy-npd"></span><span class="jy-npt"><b id="jy-npt"></b><span id="jy-npa"></span></span><span class="jy-eq"><i></i><i></i></span></div>
-  <ol class="jy-steps jy-voice" aria-live="polite">
-${c.steps.map((s, i) => `    <li>${bubble(`jy-step-${i}`, `<b>${esc(s.title)}</b><small>${esc(s.text)}</small>`, ' jy-step')}</li>`).join('\n')}
-  </ol>
   <div class="jy-voice" aria-live="polite">${bubble('jy-landscape', lines(c.landscape))}${c.fact ? bubble('jy-fact', `<b class="jy-fact-v">${esc(c.fact.value)}</b> ${esc(c.fact.label)}<small>${esc(c.fact.note)}</small>`) : ''}</div>
 </section>
 

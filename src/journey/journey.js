@@ -1,12 +1,12 @@
 // TALETONE journey: a trip through a phone to find the record that holds every story.
 //
 //   Prologue  the back of a phone; scrolling turns it over and falls into the lock screen
-//   Tale      a field of ink dots; a message asks what story the visitor brought; three replies
-//   Tone      a line runs from the chosen reply into wires, hills and clouds; that path's works hang on the wire
-//   Music     the works' colours fill the hills; three messages tell how we work; the landscape turns to dots
+//   Tale      a field of ink dots; TALETONE introduces itself in messages (who, a profile card, what stories)
+//   Tone      a line runs into wires, hills and clouds while the philosophy arrives: TALE, TONE, MUSIC
+//   Music     the signature songs play and their colours fill the hills; the track record; the landscape turns to dots
 //             that curl like the logo and settle into a record's groove
 //   Record    the record of every story: diving into its groove, the groove becomes a swirling current in 3D;
-//             every work sits on it, newest first; an album in focus branches off into its tracks
+//             every work sits on it, newest first; an album in focus lets its tracks out on an earphone cord
 //   Done      the phone is seen again from outside, the record in it
 //   Epilogue  the only dark place: one groove is still empty; the visitor writes it (the inquiry form)
 //
@@ -156,7 +156,6 @@
     untrapStory = trap(storyBox, closeStory);
     $('#jy-s-close').focus();
     syncStory();
-    if (STAGE) stage.bleed(w, 1);
   }
   function closeStory() {
     if (story.hidden) return;
@@ -221,25 +220,14 @@
   menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
   document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !menuBtn.contains(e.target)) setMenu(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
-  $$('[data-go]', menu).forEach((a) => a.addEventListener('click', (e) => {
+  $$('[data-go]').forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault(); setMenu(false);
     try { history.replaceState(null, '', a.getAttribute('href')); } catch (_) {}
     go(a.dataset.go, a);
   }));
   $('.jy-mark').addEventListener('click', (e) => { e.preventDefault(); try { history.replaceState(null, '', BASE + '/'); } catch (_) {} go('pro'); });
 
-  /* ---------------- branch (the reply the visitor chose) ---------------- */
-  let branch = null;
-  const replies = $('#jy-replies');
-  function choose(b, jump) {
-    branch = b;
-    $$('.jy-reply', replies).forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.branch === b)));
-    replies.classList.toggle('chosen', !!b);
-    $$('.jy-wk').forEach((li) => { li.hidden = !STAGE && !!b && li.dataset.branch !== b; });
-    if (STAGE) stage.onBranch(jump);
-  }
-  $$('.jy-reply', replies).forEach((x) => x.addEventListener('click', () => choose(x.dataset.branch, true)));
-
+  $$('[data-profile]').forEach((b) => b.addEventListener('click', () => openProfile(b)));
   /* ---------------- discography filters: they light works, they never hide them ---------------- */
   const filter = { field: 'all', role: 'all' };
   const lit = (w) => (filter.field === 'all' || w.field === filter.field) && (filter.role === 'all' || (w.roles || []).includes(filter.role));
@@ -269,7 +257,6 @@
     const f = COPY.form || {}, contact = COPY.mail || {};
     const songs = $$('input[name="song"]:checked', form).map((x) => x.value).join(', ');
     const lines = [
-      [COPY.branchLine, branch ? (COPY.branches[branch] || branch) : COPY.noBranch],
       [f.nameLabel, value('name')], [f.contactLabel, value('reply')], [f.projectLabel, value('project')],
       [f.songLabel, songs], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')],
     ].filter((r) => r[0]).map((r) => r[0] + ': ' + (r[1] || '-'));
@@ -292,16 +279,15 @@
   });
   $('#jy-rewind').addEventListener('click', () => {
     rec.classList.remove('lit'); on(banner, false); $('#jy-rewind').hidden = true; say(''); form.reset(); label.textContent = '';
-    choose(null, false);
     if (STAGE) stage.reset();
     go('pro');
   });
 
   /* ---------------- moving between scenes ---------------- */
   function go(where, from) {
-    if (where === 'about') { openProfile(from); return; }
+    if (where === 'profile') { openProfile(from); return; }
     if (!STAGE) {
-      const id = { pro: 'journey', approach: 'approach', record: 'discography', epi: 'contact' }[where];
+      const id = { pro: 'journey', tale: 'intro', tone: 'approach', record: 'discography', epi: 'contact' }[where];
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
       return;
@@ -311,7 +297,7 @@
 
   /* ======================= the stage ======================= */
   const stage = (() => {
-    if (!STAGE) return { bleed() {}, onBranch() {}, paintRecord() {}, reset() {}, syncInert() {}, go() {} };
+    if (!STAGE) return { paintRecord() {}, reset() {}, syncInert() {}, go() {} };
     const stageEl = $('#jy-stage'), cv = $('#jy-cv'), ctx = cv.getContext('2d');
     const wash = document.createElement('canvas'), wctx = wash.getContext('2d');
     const track = $('#jy-track');
@@ -325,8 +311,9 @@
     const N = items.length;
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
     let palette = [], blots = [];
-    let line = [], workAt = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
-    let wireEls = [], wireA = 1, cam = 0, stepShown = -1, recBuilt = false, chapter = '';
+    let line = [], accents = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
+    let wireA = 1, cam = 0, recBuilt = false, chapter = '';
+    const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
 
     const U = () => { const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
     const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
@@ -348,12 +335,10 @@
       mid: { z: 2.5, y: (x) => 0.625 + 0.04 * Math.sin(x * 2.3 + 1.6) + 0.014 * Math.sin(x * 9.1) },
       far: { z: 4, y: (x) => { const pk = (c, w, h) => { const d = Math.abs(x - c) / w; return d >= 1 ? 0 : h * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * d), 1.1); }; return 0.53 - Math.max(pk(0.12, 0.2, 0.13), pk(0.38, 0.17, 0.09), pk(0.7, 0.24, 0.15), pk(0.98, 0.18, 0.1)) - 0.012 * Math.sin(x * 23); } },
     };
-    const featured = () => WORKS.filter((w) => w.journey && w.journey.branch === (branch || 'artist')).sort((a, b) => a.journey.order - b.journey.order);
-    function startPoint() {
-      const b = $(`.jy-reply[data-branch="${branch || 'artist'}"]`);
-      const r = b.getBoundingClientRect();
-      return r.width ? [r.left + r.width / 2, r.top] : [W * 0.78, H * 0.7];
-    }
+    // the signature songs (pinned in the data) bring the colours
+    const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
+    Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
+    const startPoint = () => [W * 0.22, H * 0.86];
     function spline(ctrl, n, z) {
       const out = [];
       for (let i = 0; i < n; i++) {
@@ -393,28 +378,10 @@
         for (let j = 1; j <= 20; j++) { const x = 0.5 - j / 20; pts2.push([X + x * Wd, Y + Math.sin((j / 20) * Math.PI) * 4, 5]); }
         return { pts: pts2, a, b: a + 0.05, ci };
       });
-      const list = featured();
-      workAt = list.map((w, i) => { const idx = mids[i] != null ? mids[i] : mids[mids.length - 1]; const p = line[idx]; return { t: idx / (line.length - 1), x: p[0], y: p[1], w, k: i }; });
-      wireEls = list.map((w) => $(`.jy-wk[data-slug="${w.slug}"]`));
-      $$('.jy-wk').forEach((li) => { if (!wireEls.includes(li)) on(li, false); });
-      const size = Math.min(180, W * 0.12);
-      wireEls.forEach((el, i) => { el.style.setProperty('--d', size + 'px'); el.style.left = workAt[i].x + 'px'; el.style.top = workAt[i].y + 'px'; });
-      list.forEach(sample);
+      accents = mids.slice(0, 3).map((idx) => idx / (line.length - 1));
     }
     function buildDots() { const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = []; for (let i = 0; i < n; i++) dots.push({ x: lerp(-0.3, 1.3, Math.random()) * W, y: lerp(-0.05, 1.05, Math.random()) * H, z: lerp(1.2, 6, Math.random()), t: Math.random(), s: Math.random() }); }
 
-    /* ---- watercolour: a work's colour leaks off the wire ---- */
-    function bleed(w, strength) {
-      const a = workAt.find((o) => o.w.slug === w.slug);
-      if (!a) return;
-      sample(w).then(() => {
-        const c = colorOf[w.slug];
-        const ex = palette.find((p) => p.slug === w.slug);
-        if (!ex) palette.push({ slug: w.slug, c, s: strength }); else { if (ex.s >= strength) return; ex.s = strength; }
-        const n = strength > 0.5 ? 40 : 14, now = performance.now();
-        for (let i = 0; i < n; i++) blots.push({ x: a.x + (Math.random() - 0.5) * 160, y: a.y + (Math.random() - 0.3) * 150, r: 20 + Math.random() * (strength > 0.5 ? 80 : 50), c, a: strength > 0.5 ? 0.07 : 0.035, born: now + i * 18 });
-      });
-    }
     function paintBlot(b, k, c = wctx) {
       const g = c.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * k);
       g.addColorStop(0, `rgba(${b.c},${b.a})`); g.addColorStop(0.7, `rgba(${b.c},${b.a * 0.6})`); g.addColorStop(1, `rgba(${b.c},0)`);
@@ -466,7 +433,7 @@
       ctx.stroke();
       for (let i = 1; i < n; i += 3) {
         const j = Math.min(n - 1, i + 3), t = i / (line.length - 1);
-        let w = 1.5; for (const a of workAt) w += 2.2 * Math.exp(-Math.pow((t - a.t) / 0.03, 2));
+        let w = 1.5; for (const a of accents) w += 2.2 * Math.exp(-Math.pow((t - a) / 0.03, 2));
         w *= clamp(Q[i][2], 1, 3) * (line[i][2] >= 4 ? 0.75 : 1);
         const B = (k) => (reduce ? 0 : Math.sin(T * 6 + k * 0.08) * 0.45);
         ctx.strokeStyle = `rgba(${INK},${alpha * (line[i][2] < 1.5 ? wireA : 1)})`; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(Q[i - 1][0], Q[i - 1][1] + B(i - 1));
@@ -517,7 +484,7 @@
        World: five helices around the view axis (a staff); work i is a note on it at depth i*DZ, angle i*TURN and a
        pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
        at the same place, so the swirl turns around the visitor. The mark stands at the head of the staff as its
-       clef. An album in focus branches off into a short staff of its tracks. */
+       clef. An album in focus lets its tracks out on an earphone cord. */
     const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066;
     // depth shrinks the swirl gently (a power below 1), so the far turns open out instead of knotting at the centre
     const OPEN = 0.55, shrink = (dz) => Math.pow(VIEW / dz, OPEN);
@@ -554,7 +521,6 @@
     // whatever has passed the note in focus fades out, so nothing covers the words on the right
     const behind = (dz) => clamp((dz - VIEW * 0.45) / (VIEW * 0.4));
     const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = cur.Rf * rad * shrink(dz); return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
-    // the branch staff of an album: an arc outside the swirl, its tracks as notes
     // an album's tracks hang on an earphone cord that runs out of the album along the bottom, with a little coil
     const cord = (n, fx) => { const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
@@ -692,8 +658,8 @@
     function paintRecord() { tintVinyls(); }
 
     /* ---- the frame loop ---- */
-    const steps = $$('.jy-step');
-    function setNowPlaying() { const w = featured()[0]; if (!w) return; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
+    let npShown = -1;
+    function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
     function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
     function syncInert() {
       if (story && !story.hidden) return;
@@ -705,7 +671,7 @@
       const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
       const u = U();
       const ch = chapterOf(u);
-      if (ch !== chapter) { chapter = ch; syncInert(); }
+      if (ch !== chapter) { chapter = ch; syncInert(); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
       // Prologue: fall into the phone
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 224, H / 504) * 1.08;
       phone.style.transform = `scale(${Math.pow(cover, ease((ip - 0.3) / 0.7))})`;
@@ -715,26 +681,18 @@
       screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';
       lead.style.opacity = String(1 - ease(ip * 3));
       lock.style.opacity = String(1 - ease((ip - 0.55) / 0.25));
-      // Tale: a quiet stretch first, then the question
+      // Tale: a quiet stretch, then TALETONE introduces itself, message by message
       const lt = local(u, 'tale');
-      on($('#jy-ask'), lt > 0.22 && lt < 1.02);
-      on(replies, lt > 0.38 && lt < 1.05);
-      if (lt > 0.8 && !branch) choose('artist', false);
-      // Tone
+      on($('#jy-hello'), lt > 0.18 && lt < 1.04); on($('#jy-pcard'), lt > 0.36 && lt < 1.04); on($('#jy-types'), lt > 0.56 && lt < 1.04);
+      // Tone: the line draws while the philosophy arrives
       const lo = local(u, 'tone');
-      on($('#jy-wire-say'), lo > 0.04 && lo < 0.26);
-      let reveal = 0;
-      if (branch) { reveal = lerp(0, 0.05, ease((lt - 0.45) / 0.5)); if (lo > 0) reveal = lerp(0.05, 1, ease((lo - 0.1) / 0.78)); }
+      on($('#jy-creed'), lo > 0.04 && lo < 1.02);
+      [0, 1, 2].forEach((i) => on($('#jy-step-' + i), lo > 0.24 + i * 0.2 && lo < 1.02));
+      let reveal = lerp(0, 0.05, ease((lt - 0.45) / 0.5)); if (lo > 0) reveal = lerp(0.05, 1, ease((lo - 0.1) / 0.78));
       const lm = local(u, 'music');
-      wireEls.forEach((el, i) => {
-        const a = workAt[i]; if (!el || !a) return;
-        if (!reduce) el.style.translate = `0 ${Math.sin(T * 1.3 + a.k * 1.7) * 5}px`;
-        const vis = reveal >= a.t && lo < 1.1 && lo > 0 && lm < 0.04; on(el, vis); if (vis) bleed(a.w, 0.3);
-      });
       // Music
       cam = lm > 0 ? lerp(0, 1.02, ease(lm / 0.5)) : lo > 0 ? 0 : lerp(-2.2, 0, ease(clamp(lt / 0.45)));
-      const si = lm > 0.08 && lm < 0.47 ? Math.min(2, Math.floor((lm - 0.08) / 0.13)) : -1;
-      if (si !== stepShown) { stepShown = si; steps.forEach((s2, i) => { s2.classList.remove('on'); if (i === si) { void s2.offsetWidth; s2.classList.add('on'); } }); }
+      if (lm > 0) setNowPlaying(Math.min(pinned.length - 1, Math.floor(clamp(lm / 0.5) * pinned.length)));
       on($('#jy-np'), lm > 0.03 && lm < 0.5);
       on($('#jy-landscape'), lm > 0.55 && lm < 0.69);
       on($('#jy-fact'), lm > 0.71 && lm < 0.86);
@@ -822,20 +780,15 @@
     let sampledAll = false;
     addEventListener('scroll', () => { if (!sampledAll && U() > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
 
-    function onBranch(jump) {
-      palette = []; blots = []; recBuilt = false; pts = null;
-      buildLine(); redrawWash(); setNowPlaying();
-      if (jump) setTimeout(() => goU(CH.tale[0] + (CH.tale[1] - CH.tale[0]) * 0.97), reduce ? 0 : 350);
-    }
-    function reset() { palette = []; blots = []; recBuilt = false; pts = null; $('#jy-charm-cd').style.background = ''; buildLine(); redrawWash(); }
-    const target = { pro: 0, approach: CH.music[0] + (CH.music[1] - CH.music[0]) * 0.12, record: recordU(0), epi: CH.epi[0] + 0.5 };
+    function reset() { recBuilt = false; pts = null; $('#jy-charm-cd').style.background = ''; }
+    const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
+    const target = { pro: 0, tale: at('tale', 0.7), tone: at('tone', 0.9), record: recordU(0), epi: CH.epi[0] + 0.5 };
     function goStage(where, smooth = true) {
-      if (where !== 'pro' && !branch) choose('artist', false);
       goU(target[where] != null ? target[where] : 0, smooth);
     }
-    setNowPlaying(); resize();
+    setNowPlaying(0); resize();
     requestAnimationFrame(frameLoop);
-    return { bleed, onBranch, paintRecord, reset, syncInert, go: goStage, recordU, goU, items };
+    return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items };
   })();
 
   /* ---------------- where the visitor came in ---------------- */
@@ -843,10 +796,9 @@
   const route = body.dataset.route || '/';
   const params = new URLSearchParams(location.search);
   const want = params.get('work');
-  const first = { '/approach/': 'approach', '/discography/': 'record', '/contact/': 'epi' }[route];
+  const first = { '/about/': 'tale', '/approach/': 'tone', '/discography/': 'record', '/contact/': 'epi' }[route];
   requestAnimationFrame(() => {
-    if (route === '/about/') openProfile();
-    else if (first && STAGE) stage.go(first, false);
+    if (first && STAGE) stage.go(first, false);
     else if (first) go(first);
     if (want && bySlug[want]) {
       if (STAGE) { const i = stage.items.findIndex((li) => li.dataset.slug === want); if (i >= 0) stage.goU(stage.recordU(i), false); }

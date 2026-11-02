@@ -2247,14 +2247,6 @@
       "Record",
       "Epilogue"
     ],
-    "ask": "어떤 이야기를, 가지고 오셨나요?",
-    "branchesLabel": "이야기의 갈래",
-    "branches": {
-      "game": "Game",
-      "artist": "Virtual · Artist",
-      "anim": "Animation · Webtoon"
-    },
-    "wire": "선 위에는,\n먼저 와 있던 이야기들이 있습니다.",
     "nowPlaying": "지금 재생 중",
     "landscape": "우리가 걸어온 풍경은,\n한 곡의 노래였습니다.",
     "letter": "이 노래들도 처음에는,\n누군가의 메시지였습니다.",
@@ -2270,8 +2262,6 @@
     "received": "메시지를 받았어요. 이야기를 읽고, 곧 답장 드릴게요.",
     "failed": "보내지 못해서, 메일 앱으로 이어서 보낼게요.",
     "rewind": "처음부터 다시 듣기",
-    "branchLine": "고른 갈래",
-    "noBranch": "고르지 않음",
     "listen": "듣기",
     "pause": "일시정지",
     "detail": "상세보기",
@@ -2323,9 +2313,6 @@
         "notifyNow": "now",
         "notify": "Let's go find the record that holds every story.",
         "enterLabel": "Enter the screen",
-        "ask": "What story have you brought with you?",
-        "branchesLabel": "Kinds of story",
-        "wire": "On the line,\nstories had already arrived.",
         "nowPlaying": "Now playing",
         "landscape": "The landscape we walked through\nwas a single song.",
         "letter": "Each of these songs\nbegan as someone’s message.",
@@ -2341,8 +2328,6 @@
         "received": "Message received. We’ll read your story and reply soon.",
         "failed": "It didn’t send, so we’ll continue in your mail app.",
         "rewind": "Listen again from the start",
-        "branchLine": "Chosen path",
-        "noBranch": "None",
         "listen": "Listen",
         "pause": "Pause",
         "detail": "Details",
@@ -2389,15 +2374,20 @@
         "education": "Education",
         "sns": "Instagram",
         "skip": "Skip to content",
-        "albumTracks": "Tracks"
+        "albumTracks": "Tracks",
+        "rail": {
+          "pro": "Start",
+          "tale": "About",
+          "tone": "Philosophy",
+          "record": "Discography",
+          "epi": "Contact"
+        },
+        "profileOpen": "View profile"
       },
       "jp": {
         "notifyNow": "今",
         "notify": "すべての物語が詰まったレコードを、探しに行きましょう。",
         "enterLabel": "画面に入る",
-        "ask": "どんな物語を、お持ちですか？",
-        "branchesLabel": "物語の種類",
-        "wire": "線の上には、\n先に来ていた物語があります。",
         "nowPlaying": "再生中",
         "landscape": "歩いてきた風景は、\n一曲の歌でした。",
         "letter": "この歌たちも最初は、\n誰かのメッセージでした。",
@@ -2413,8 +2403,6 @@
         "received": "メッセージを受け取りました。物語を読んで、すぐにお返事しますね。",
         "failed": "送信できなかったため、メールアプリで続けてお送りします。",
         "rewind": "最初からもう一度聴く",
-        "branchLine": "選んだ物語",
-        "noBranch": "未選択",
         "listen": "聴く",
         "pause": "一時停止",
         "detail": "詳しく",
@@ -2461,9 +2449,25 @@
         "education": "学歴",
         "sns": "Instagram",
         "skip": "本文へ移動",
-        "albumTracks": "収録曲"
+        "albumTracks": "収録曲",
+        "rail": {
+          "pro": "はじまり",
+          "tale": "紹介",
+          "tone": "哲学",
+          "record": "ディスコグラフィー",
+          "epi": "お問い合わせ"
+        },
+        "profileOpen": "プロフィールを見る"
       }
     },
-    "albumTracks": "수록곡"
+    "albumTracks": "수록곡",
+    "rail": {
+      "pro": "처음",
+      "tale": "소개",
+      "tone": "철학",
+      "record": "디스코그래피",
+      "epi": "문의"
+    },
+    "profileOpen": "프로필 보기"
   }
 }
