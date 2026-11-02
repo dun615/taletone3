@@ -357,7 +357,7 @@
     const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
     const coilK = (z) => ease((z - COIL) / 3);
     function pathAt(z) {
-      let x = 0.85 * Math.sin(z * 0.33) + 0.3 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.22 * Math.sin(z * 0.47);
+      let x = -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.16 * Math.sin(z * 0.47);
       const ww = wireW(z);
       if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
       const ck = coilK(z);
@@ -387,7 +387,7 @@
         clouds.push({ z, pts, ci: clouds.length });
       }
       grass = [];
-      for (let z = 1; z < 44; z += 0.07 + rnd() * 0.12) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
+      for (let z = 1; z < 44; z += 0.16 + rnd() * 0.2) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
       poles = [];
       for (let z = WIRE[0]; z <= WIRE[1] - 1.9; z += POLE) poles.push(z);
       const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = [];
@@ -403,24 +403,48 @@
     ].map(([sel, z, side]) => ({ el: $(sel), z, side, w: 0, h: 0 })).filter((a) => a.el);
     ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
     const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
+    ANCHORS.sort((a, b) => a.z - b.z);
+    // the messages of one chapter make one thread: each stays once written, the newest at the bottom of the
+    // reading spot and the older ones above it, quieter; a new chapter starts a new thread. What shows depends
+    // only on where the pen is, and the arrival itself is a short timed animation, so a quick scroll loses nothing.
+    const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
+    let leadOf = null;
     function placeAnchors() {
-      for (const a of ANCHORS) {
-        const p = V(pathAt(a.z)), written = penZ >= a.z;
-        let A = 0;
-        if (p && written) A = clamp((p[2] - 1.1) / 0.6) * clamp((15 - p[2]) / 4) * clamp((penZ - a.z) / 0.25);
-        a.el.classList.toggle('on', A > 0.35);
-        a.el.style.setProperty('--aa', A.toFixed(3));
-        if (A <= 0) continue;
+      const slotX = W * 0.58, bottom = H * 0.64;
+
+      let latest = -1;
+      ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
+      const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && penZ > ANCHORS[latest].z + 4.5;
+      // a tall thread sits lower so its first message stays on screen
+      const stack = ANCHORS.reduce((t, a, i) => t + (!gone && i <= latest && groupOf(a.z) === g ? (a.h || a.el.offsetHeight) + 10 : 0), 0);
+      let y = Math.min(H - 28, Math.max(bottom, stack + 84));
+      leadOf = null;
+      for (let i = ANCHORS.length - 1; i >= 0; i--) {
+        const a = ANCHORS[i], shown = !gone && i <= latest && groupOf(a.z) === g;
         if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; }
-        const s3 = clamp(Math.pow(AHEAD / p[2], 0.55), 0.6, 1.3), w = a.w * s3, h = a.h * s3;
-        let x, y;
-        if (a.side === 1) { x = p[0] + 30; y = p[1] - h / 2; }
-        else if (a.side === -1) { x = p[0] - 30 - w; y = p[1] - h / 2; }
-        else if (a.side === 0) { x = p[0] - 6 * s3; y = p[1] + 26 * s3; }
-        else if (a.side === 0.5) { x = p[0] + 16; y = p[1] - h / 2; }
-        else { x = p[0] - 16 - w; y = p[1] - h / 2; }
-        a.el.style.setProperty('--ax', x.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', s3.toFixed(3));
+        a.el.classList.toggle('on', shown);
+        a.el.classList.toggle('older', shown && i !== latest);
+        // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
+        if (!shown) { a.el.style.setProperty('--aa', '0'); a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', (bottom - a.h + 18).toFixed(1) + 'px'); a.el.style.setProperty('--as', '1'); continue; }
+        y -= a.h;
+        a.el.style.setProperty('--aa', i === latest ? '1' : '0.62');
+        a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', '1');
+        if (i === latest) leadOf = { a, A: 1, x: slotX, y: y + Math.min(a.h / 2, 40) };
+        y -= 10;
       }
+    }
+    // resting points: scrolling stops on a message rather than between two
+    const zToU = (z) => { for (const k of ['tale', 'tone', 'case', 'music']) { const [z0, z1] = PEN[k]; if (z >= z0 && z <= z1) { let l = (z - z0) / (z1 - z0); if (k === 'tale') l = 0.08 + 0.92 * l; return CH[k][0] + l * (CH[k][1] - CH[k][0]); } } return 0; };
+    const snaps = ANCHORS.map((a) => { const d = document.createElement('div'); d.className = 'jy-snap'; track.appendChild(d); return { d, u: zToU(a.z + 0.45) }; });
+    function placeSnaps() { const m = document.documentElement.scrollHeight - innerHeight; snaps.forEach((sp) => { sp.d.style.top = ((sp.u / TOTAL) * m).toFixed(0) + 'px'; }); }
+    function drawLead(A) {
+      if (!leadOf) return;
+      const p = V(pathAt(leadOf.a.z)); if (!p) return;
+      const al = A * leadOf.A;
+      ctx.save(); ctx.strokeStyle = `rgba(${INK},${0.55 * al})`; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
+      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(leadOf.x - 8, leadOf.y); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = `rgba(${INK},${al})`; ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(leadOf.x - 8, leadOf.y, 2.5, 0, Math.PI * 2); ctx.fill();
     }
     function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
     function drawWorld(A, lm, now) {
@@ -434,7 +458,7 @@
           const reveal = clamp((penZ - (cl.z - 10)) / 2), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
           const a = fogA(dz) * land;
           if (fillK > 0) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = `rgba(254,254,254,${0.9 * fillK * a})`; ctx.fill(); }
-          ctx.strokeStyle = `rgba(${INK},${0.8 * a})`; ctx.lineWidth = clamp(1.3 * AHEAD / dz, 0.5, 2.2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+          ctx.strokeStyle = `rgba(${INK},${0.4 * a})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
         }
         for (const r of ridges) {
           const dz = r.z - camZ; if (dz < 0.3 || dz > FAR3) continue;
@@ -445,7 +469,7 @@
             polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath();
             ctx.fillStyle = `rgba(${c},${0.42 * fillK * a})`; ctx.fill();
           }
-          ctx.strokeStyle = `rgba(${INK},${0.85 * a})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.5, 2.6); polyline(Q, n); ctx.stroke();
+          ctx.strokeStyle = `rgba(${INK},${0.45 * a})`; ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, n); ctx.stroke();
         }
         ctx.lineWidth = 1.1; ctx.beginPath();
         for (const g of grass) {
@@ -454,12 +478,12 @@
           const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
           ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
         }
-        ctx.strokeStyle = `rgba(${INK},${0.7 * land})`; ctx.stroke();
+        ctx.strokeStyle = `rgba(${INK},${0.35 * land})`; ctx.stroke();
         for (const z of poles) {
           if (penZ < z) continue; const dz = z - camZ; if (dz < 0.3) continue;
           const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
           if (!a || !b) continue;
-          ctx.strokeStyle = `rgba(${INK},${fogA(dz) * land})`; ctx.lineWidth = clamp(2 * AHEAD / dz, 0.6, 3.2);
+          ctx.strokeStyle = `rgba(${INK},${0.6 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.6, 2.6);
           ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
         }
       }
@@ -471,7 +495,7 @@
           const tgt = pathAt(d.pz), wx = reduce ? 0 : Math.sin(T * 0.6 + d.s * 20) * 0.04, wy = reduce ? 0 : Math.cos(T * 0.4 + d.s * 9) * 0.03;
           const q = V([lerp(d.x + wx, tgt[0], ease(g)), lerp(d.y + wy, tgt[1], ease(g)), lerp(d.z, tgt[2], ease(g))]); if (!q || q[2] > 16) continue;
           const r = clamp(2.6 * AHEAD / q[2], 0.8, 4);
-          ctx.globalAlpha = A * 0.75 * fogA(q[2]) * clamp(q[2] / 1.5); ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
+          ctx.globalAlpha = A * 0.5 * fogA(q[2]) * clamp(q[2] / 1.5); ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
         }
         ctx.globalAlpha = 1;
       }
@@ -486,6 +510,7 @@
         run.push(p);
       }
       flush();
+      drawLead(A);
       const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${INK},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); }
     }
     function buildRecordWash() {
@@ -706,7 +731,7 @@
       const ck = coilK(penZ + 1);
       // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
       const pc = pathAt(penZ - 1.2);
-      camX = lerp(pc[0] * 0.6, 0, ck); camY = lerp(pc[1] * 0.7 - 0.45, 0, ck);
+      camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp(pc[1] * 0.7 - 0.45, 0, ck);
       placeAnchors();
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
@@ -747,7 +772,7 @@
     function resize() {
       DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
       cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1;
+      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); placeSnaps(); recShown = -1;
     }
     addEventListener('resize', resize);
     phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));
