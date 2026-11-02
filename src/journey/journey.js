@@ -331,7 +331,7 @@
     const N = items.length;
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
     let palette = [], blots = [];
-    let line = [], accents = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
+    let line = [], accents = [], trail = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
     let wireA = 1, cam = 0, recBuilt = false, chapter = '';
     const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
 
@@ -399,6 +399,8 @@
         return { pts: pts2, a, b: a + 0.05, ci };
       });
       accents = mids.slice(0, 3).map((idx) => idx / (line.length - 1));
+      // the messages of the philosophy are left where the pen passes: the creed on the rise, the steps on the swells
+      trail = [[Math.round(li * 0.45), '#jy-creed'], ...mids.slice(0, 3).map((idx, n) => [idx, '#jy-step-' + n])].map(([i, sel]) => ({ i, el: $(sel) })).filter((a) => a.el);
     }
     function buildDots() { const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = []; for (let i = 0; i < n; i++) dots.push({ x: lerp(-0.3, 1.3, Math.random()) * W, y: lerp(-0.05, 1.05, Math.random()) * H, z: lerp(1.2, 6, Math.random()), t: Math.random(), s: Math.random() }); }
 
@@ -707,9 +709,10 @@
       on($('#jy-hello'), lt > 0.14 && lt < 1.04); on($('#jy-pcard'), lt > 0.3 && lt < 1.04); on($('#jy-types'), lt > 0.46 && lt < 1.04); on($('#jy-clients'), lt > 0.62 && lt < 1.04);
       // Tone: the line draws while the philosophy arrives
       const lo = local(u, 'tone');
-      on($('#jy-creed'), lo > 0.04 && lo < 1.02);
-      [0, 1, 2].forEach((i) => on($('#jy-step-' + i), lo > 0.24 + i * 0.2 && lo < 1.02));
       let reveal = lerp(0, 0.05, ease((lt - 0.45) / 0.5)); if (lo > 0) reveal = lerp(0.05, 1, ease((lo - 0.1) / 0.78));
+      const pen = reveal * (line.length - 1);
+      // one message per beat: the pen must have passed its point, and the scroll its turn
+      trail.forEach((a, n) => { const q = P(line[a.i]); a.el.style.setProperty('--x', q[0] + 'px'); a.el.style.setProperty('--y', q[1] + 'px'); on(a.el, lo > 0.02 + n * 0.17 && pen >= a.i && lo < 1.02); });
       const lm = local(u, 'music');
       // Music
       cam = lm > 0 ? lerp(0, 1.02, ease(lm / 0.5)) : lo > 0 ? 0 : lerp(-2.2, 0, ease(clamp(lt / 0.45)));

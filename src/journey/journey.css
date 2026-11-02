@@ -423,3 +423,17 @@ img{max-width:100%}
 .jy-logo-row img{height:20px;width:auto;filter:grayscale(1) brightness(.25)}
 .jy-ro-r{margin:10px 0 0;font-size:13px;font-weight:700}
 .jy-form-note{margin:-6px 0 0;font-size:14px;line-height:1.7;color:var(--tt-on-ink-muted)}
+
+/* the philosophy is left along the pen's trail: each message hangs from the point of the line it belongs to */
+.jy-stage-mode .jy-trail.jy-voice{display:block;position:absolute;inset:0;width:auto;pointer-events:none}
+.jy-stage-mode .jy-trail .jy-say{position:absolute;left:0;top:0;right:auto;bottom:auto;align-items:flex-start;display:flex;width:max-content;max-width:min(300px,21vw);transform:translate(calc(var(--x) - 6px),calc(var(--y) + 26px));opacity:0;transition:opacity .4s;animation:none}
+.jy-stage-mode .jy-trail .jy-say.on{display:flex;opacity:1;animation:jy-hang .8s var(--tt-spring)}
+.jy-stage-mode .jy-trail .jy-av{display:none}
+.jy-stage-mode .jy-trail .jy-bub{border-radius:6px 22px 22px 22px;font-size:15px}
+.jy-stage-mode .jy-trail .jy-bub::before{content:"";position:absolute;left:6px;top:-26px;width:1.5px;height:26px;background:var(--tt-ink)}
+.jy-stage-mode .jy-trail .jy-bub{position:relative}
+.jy-stage-mode .jy-trail .jy-tx b{font-size:16px}
+.jy-stage-mode .jy-trail .jy-tx small{font-size:13px}
+.jy-stage-mode #jy-creed .jy-bub{font-size:18px}
+@keyframes jy-hang{from{opacity:0;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 6px)) scale(.92)}to{opacity:1;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 26px))}}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-trail .jy-say.on{animation:none}}

@@ -146,7 +146,7 @@ ${grain}
 
 <section class="jy-ch" data-ch="tone" id="approach" aria-labelledby="jy-h-tone">
   <h2 class="jy-chl" id="jy-h-tone">${esc(c.rail.tone)}</h2>
-  <div class="jy-chat jy-voice" aria-live="polite">
+  <div class="jy-chat jy-trail jy-voice" aria-live="polite">
     ${bubble('jy-creed', lines(c.intro.creed))}
 ${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">${esc(s.label)}</span><b>${esc(s.title)}</b><small>${esc(s.text)}</small>`, ' jy-step')}`).join('\n')}
   </div>
