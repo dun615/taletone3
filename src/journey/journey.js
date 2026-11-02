@@ -3,6 +3,7 @@
 //   Prologue  the back of a phone; scrolling turns it over and falls into the lock screen
 //   Tale      a field of ink dots; TALETONE introduces itself in messages (who, a profile card, what stories)
 //   Tone      a line runs into wires, hills and clouds while the philosophy arrives: TALE, TONE, MUSIC
+//   Case      a real project as a conversation: HAEBOM's request, her strength, our question, the answer
 //   Music     the signature songs play and their colours fill the hills; the track record; the landscape turns to dots
 //             that curl like the logo and settle into a record's groove
 //   Record    the record of every story: diving into its groove, the groove becomes a swirling current in 3D;
@@ -19,8 +20,8 @@
   const COPY = DATA.copy, WORKS = DATA.works;
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.4], music: [4.4, 6.8], record: [6.8, 10.8], done: [10.8, 11.7], epi: [11.7, 12.7] };
-  const TOTAL = 12.7;
+  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.4], case: [4.4, 5.8], music: [5.8, 8.2], record: [8.2, 12.2], done: [12.2, 13.1], epi: [13.1, 14.1] };
+  const TOTAL = 14.1;
   const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
@@ -332,8 +333,9 @@
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
     let palette = [], blots = [];
     let line = [], accents = [], trail = [], knot = 0, poles = [], layers = [], grass = [], clouds = [], dots = [], pts = null;
-    let wireA = 1, cam = 0, recBuilt = false, chapter = '';
-    const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
+    let wireA = 1, cam = 0, recBuilt = false, chapter = '', caseOffer = false;
+    const CASE = ($('.jy-case-btn') || {}).dataset ? $('.jy-case-btn').dataset.open : null;
+    const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', case: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
 
     const U = () => { const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
     const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
@@ -713,6 +715,11 @@
       const pen = reveal * (line.length - 1);
       // one message per beat: the pen must have passed its point, and the scroll its turn
       trail.forEach((a, n) => { const q = P(line[a.i]); a.el.style.setProperty('--x', q[0] + 'px'); a.el.style.setProperty('--y', q[1] + 'px'); on(a.el, lo > 0.02 + n * 0.17 && pen >= a.i && lo < 1.02); });
+      // Case: the request comes in from the client; TALETONE answers with her strength, a question, the story
+      const lc = local(u, 'case');
+      for (let n = 0; n < 6; n++) on($('#jy-case-' + n), lc > 0.04 + n * 0.14 && lc < 1.02);
+      const caseWork = CASE && bySlug[CASE];
+      if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
       const lm = local(u, 'music');
       // Music
       cam = lm > 0 ? lerp(0, 1.02, ease(lm / 0.5)) : lo > 0 ? 0 : lerp(-2.2, 0, ease(clamp(lt / 0.45)));

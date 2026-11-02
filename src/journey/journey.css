@@ -438,3 +438,13 @@ img{max-width:100%}
 .jy-stage-mode #jy-creed .jy-bub{font-size:18px}
 @keyframes jy-hang{from{opacity:0;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 6px)) scale(.92)}to{opacity:1;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 26px))}}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-trail .jy-say.on{animation:none}}
+
+/* the case: a conversation; the client's message comes in on the right with her cover as the avatar */
+.jy-say.jy-them{flex-direction:row-reverse;align-self:flex-end}
+.jy-them .jy-bub{background:var(--tt-canvas);border-radius:22px 22px 6px 22px;box-shadow:inset 0 0 0 1px var(--tt-ink-line)}
+.jy-av-them{overflow:hidden}
+.jy-av-them img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.jy-case .jy-bub{font-size:16px;line-height:1.6}
+.jy-case .jy-tx b{display:inline;font-size:16px;line-height:1.6}
+.jy-case-btn{display:flex;width:max-content;margin-top:12px;height:40px;font-size:14px}
+.jy-stage-mode .jy-case.jy-chat{width:min(560px,46vw)}

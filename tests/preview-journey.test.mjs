@@ -33,9 +33,10 @@ test('the preview is the new journey: not indexed, every chapter and every work 
   for (const prefix of ['', 'en/', 'ja/']) for (const route of ['', 'about/', 'approach/', 'discography/', 'contact/']) {
     const html = await readFile(`preview/${prefix}${route}index.html`, 'utf8');
     assert.ok(html.includes('content="noindex, nofollow"'), `${prefix}${route}: preview must not be indexed`);
-    for (const ch of ['pro', 'tale', 'tone', 'music', 'done', 'record', 'epi']) assert.ok(html.includes(`data-ch="${ch}"`), `${prefix}${route}: chapter ${ch} missing`);
+    for (const ch of ['pro', 'tale', 'tone', 'case', 'music', 'done', 'record', 'epi']) assert.ok(html.includes(`data-ch="${ch}"`), `${prefix}${route}: chapter ${ch} missing`);
     assert.equal((html.match(/class="jy-sw"/g) || []).length, works.length, `${prefix}${route}: the record must list every work`);
-    // the intro comes first, then the philosophy; the chapter rail is always there
+    // the intro comes first, then the philosophy, then a real project; the chapter rail is always there
+    assert.ok(html.indexOf('id="jy-creed"') < html.indexOf('id="jy-case-1"') && html.includes('data-open="love-dopamine"'), 'the Love Dopamine case follows the philosophy');
     assert.ok(html.indexOf('id="jy-hello"') < html.indexOf('id="jy-creed"') && html.indexOf('id="jy-creed"') < html.indexOf('id="discography"'));
     assert.equal((html.match(/<a href="[^"]*" data-go="(?:pro|tale|tone|record|epi)">/g) || []).length, 10, 'rail and menu each list the five chapters');
     assert.ok(/name="project" required="required"/.test(html) && /name="reply" type="email" required="required"/.test(html), 'project and email are required');

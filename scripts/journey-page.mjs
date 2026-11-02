@@ -42,7 +42,8 @@ export function journeyCopy(site, lang) {
   const intro = { hello: plain(members.subtitle), typesLabel: plain(members.typesLabel), types: [projects.audienceGameTitle, projects.audienceCreatorTitle, projects.audienceAnimationTitle].map(plain), creed: plain(String(footer.tagline || '').split(' · ')[0]).replace(/, /, ',\n') };
   const record = (site.trackRecord || [])[0];
   const fact = record ? merge(record, lang) : null;
-  return { ...j, intro, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
+  const cs = (projects.proof && projects.proof.case) || null;
+  return { ...j, intro, caseStudy: cs, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
 }
 
 const markInk = '/assets/logo/mark-ink.svg';
@@ -150,6 +151,19 @@ ${grain}
     ${bubble('jy-creed', lines(c.intro.creed))}
 ${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">${esc(s.label)}</span><b>${esc(s.title)}</b><small>${esc(s.text)}</small>`, ' jy-step')}`).join('\n')}
   </div>
+</section>
+
+<section class="jy-ch" data-ch="case" aria-labelledby="jy-h-case">
+  <h2 class="jy-chl" id="jy-h-case">${esc(c.caseStudy ? c.caseStudy.eyebrow : '')}</h2>
+${c.caseStudy ? (() => {
+    const cs = c.caseStudy, w = works.find((x) => x.slug === cs.slug), face = w ? `<span class="jy-av jy-av-them"><img src="/${esc(w.thumb)}" alt=""></span>` : avatar();
+    const msg = (id, html, extra = '', who = avatar()) => `<div class="jy-say${extra}" id="${id}">${who}<p class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx">${html}</span></p></div>`;
+    return `  <div class="jy-chat jy-case jy-voice" aria-live="polite">
+    ${msg('jy-case-0', `<span class="jy-step-l">${esc(cs.eyebrow)}</span><b>${esc(cs.title)}</b><small>${esc(cs.meta)}</small>`)}
+${cs.steps.map((st, n) => `    ${msg(`jy-case-${n + 1}`, `<span class="jy-step-l">${esc(st.label)}</span>${st.kind === 'answer' || st.kind === 'question' ? `<b>${esc(st.text)}</b>` : esc(st.text)}`, st.kind === 'request' ? ' jy-them' : '', st.kind === 'request' ? face : avatar())}`).join('\n')}
+    ${msg('jy-case-5', `${esc(cs.lesson)}${w ? `<button type="button" class="jy-btn jy-btn-ink jy-case-btn" data-open="${esc(w.slug)}">${esc(cs.listenLabel)}</button>` : ''}`)}
+  </div>`;
+  })() : ''}
 </section>
 
 <section class="jy-ch" data-ch="music" aria-labelledby="jy-h-music">
