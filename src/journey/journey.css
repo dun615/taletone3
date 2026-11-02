@@ -10,12 +10,10 @@
 @font-face{font-family:Quicksand;font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/quicksand-latin-normal-v37.woff2) format("woff2")}
 
 :root{
-  /* TALETONE colours. Points: white #fefefe, cyan #c9ffff, magenta #ff97fe, lavender #dae0f1.
-     Harmony: charcoal #4c4c4c, sage #96b8ac, pink #e8b3d0, grey #888b8d. Ink #141c30 is the mark's own colour. */
-  --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-case:#dae0f1;
-  --tt-silver:#888b8d; --tt-silver-dark:#4c4c4c; --tt-silver-light:#b4b7bb;
-  --tt-ink:#141c30; --tt-ink-line:#1d2435; --tt-ink-muted:#4c4c4c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
-  --tt-magenta:#ff97fe; --tt-cyan:#c9ffff; --tt-lavender:#dae0f1; --tt-sage:#96b8ac; --tt-pink:#e8b3d0;
+  --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-case:#dfe2f4;
+  --tt-silver:#9fa1a6; --tt-silver-dark:#797c85; --tt-silver-light:#b0b2b8;
+  --tt-ink:#141c30; --tt-ink-line:#1d2435; --tt-ink-muted:#5b606c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
+  --tt-magenta:#ff97fe; --tt-cyan:#c9ffff;
   --tt-error:#9a3540; --tt-error-on-ink:#f0a3aa;
   --tt-sans:"LINE Seed KR","LINE Seed JP",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
   --tt-display:Quicksand,"LINE Seed KR","LINE Seed JP",system-ui,sans-serif;
@@ -133,7 +131,7 @@ img{max-width:100%}
 .jy-sw-btn:hover{background:var(--tt-canvas-hair)}
 /* a colour vinyl: the disc pressed in its cover's colour (--vinyl, set by journey.js), fine grooves, light on two
    sides, the cover as the centre label, a hole */
-.jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:conic-gradient(from 20deg,rgb(254 254 254/0) 0 8%,rgb(254 254 254/.32) 12.5%,rgb(254 254 254/0) 17% 58%,rgb(254 254 254/.22) 62.5%,rgb(254 254 254/0) 67%),repeating-radial-gradient(circle,rgb(20 28 48/0) 0 2.4px,rgb(20 28 48/.07) 2.4px 3px),radial-gradient(circle,rgb(var(--vinyl,218 224 241)/.95) 0 34%,rgb(var(--vinyl,218 224 241)/.6) 56%,rgb(var(--vinyl,218 224 241)/.8) 96%,rgb(20 28 48/.3) 100%);box-shadow:inset 0 0 0 1px rgb(20 28 48/.08)}
+.jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:conic-gradient(from 20deg,rgb(254 254 254/0) 0 8%,rgb(254 254 254/.32) 12.5%,rgb(254 254 254/0) 17% 58%,rgb(254 254 254/.22) 62.5%,rgb(254 254 254/0) 67%),repeating-radial-gradient(circle,rgb(20 28 48/0) 0 2.4px,rgb(20 28 48/.07) 2.4px 3px),radial-gradient(circle,rgb(var(--vinyl,176 178 184)/.95) 0 34%,rgb(var(--vinyl,176 178 184)/.6) 56%,rgb(var(--vinyl,176 178 184)/.8) 96%,rgb(20 28 48/.3) 100%);box-shadow:inset 0 0 0 1px rgb(20 28 48/.08)}
 .jy-vy img{position:absolute;inset:19%;width:62%;height:62%;border-radius:50%;object-fit:cover}
 .jy-vy::after{content:"";position:absolute;left:50%;top:50%;width:7%;height:7%;transform:translate(-50%,-50%);border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgb(20 28 48/.2)}
 .jy-sw-t b{display:block;font-size:15px}
@@ -292,7 +290,7 @@ img{max-width:100%}
 .jy-scr{position:relative;width:100%;height:100%;border-radius:22px;background:var(--tt-canvas);display:grid;place-items:center;transition:background .6s}
 .jy-stage.ink .jy-scr{background:var(--tt-ink)}
 .jy-rec{position:relative;width:192px;height:192px;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.1);animation:jy-spin 7s linear infinite}
-.jy-rwash{position:absolute;inset:-20%;filter:blur(22px) saturate(1.2);background:conic-gradient(#dae0f1,#96b8ac,#e8b3d0,#dae0f1)}
+.jy-rwash{position:absolute;inset:-20%;filter:blur(22px) saturate(1.2);background:conic-gradient(#b0b2b8,#e5e6e8,#b0b2b8)}
 .jy-rec .jy-groove{background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 2.5px,rgba(20,28,48,.12) 2.5px 3.5px)}
 .jy-rec-label{position:absolute;inset:31%;border-radius:50%;background:var(--tt-canvas);color:var(--tt-ink);display:grid;place-items:center;text-align:center;padding:10px;font-size:11px;line-height:1.3;font-weight:700;overflow:hidden;word-break:keep-all}
 .jy-core{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--tt-ink);display:grid;place-items:center;transition:width .6s var(--tt-spring),height .6s var(--tt-spring),margin .6s var(--tt-spring)}
@@ -440,28 +438,3 @@ img{max-width:100%}
 .jy-stage-mode #jy-creed .jy-bub{font-size:18px}
 @keyframes jy-hang{from{opacity:0;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 6px)) scale(.92)}to{opacity:1;transform:translate(calc(var(--x) - 6px),calc(var(--y) + 26px))}}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-trail .jy-say.on{animation:none}}
-
-/* the brand's points, on paper: cyan and magenta as fills behind ink, never as text */
-.jy-fchip[aria-pressed="true"]{background:var(--tt-cyan);border-color:var(--tt-ink);color:var(--tt-ink)}
-.jy-btn-quiet:hover,.jy-btn:not(.jy-btn-ink):hover{background:var(--tt-lavender)}
-.jy-rail a[aria-current] i{background:var(--tt-magenta);border-color:var(--tt-ink)}
-.jy-ink .jy-rail a[aria-current] i{border-color:var(--tt-on-ink)}
-.jy-scrollhint i::after{background:var(--tt-magenta)}
-.jy-stage-mode .jy-sw[data-album] .jy-sw-btn::after{border-color:var(--tt-magenta)}
-.jy-trk i{background:var(--tt-magenta);color:var(--tt-ink)}
-.jy-step-l{color:var(--tt-ink)}
-.jy-step-l::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;vertical-align:1px;background:var(--step-c,var(--tt-sage))}
-#jy-step-1 .jy-step-l{--step-c:var(--tt-pink)}
-#jy-step-2 .jy-step-l{--step-c:var(--tt-magenta)}
-.jy-pc-tag{color:var(--tt-ink-muted)}
-.jy-pcard .jy-pc-head .jy-av{background:var(--tt-pink)}
-.jy-fact-v{color:var(--tt-ink);background:linear-gradient(transparent 62%,var(--tt-cyan) 62%)}
-.jy-stage-mode .jy-readout{box-shadow:inset 0 0 0 1px var(--tt-lavender)}
-.jy-ro-n{color:var(--tt-ink-muted)}
-.jy-menu li a:hover{background:var(--tt-lavender)}
-.jy-langs a[aria-current]{background:var(--tt-ink)}
-
-/* the phone keeps its original colours (case #dfe2f4, silver #9fa1a6), apart from the palette above */
-.jy-front,.jy-stage-mode .jy-frame{background:#dfe2f4;box-shadow:inset 0 0 0 1.5px #9fa1a6,inset 0 0 0 3px var(--tt-canvas)}
-.jy-dia{border-color:#9fa1a6}
-.jy-charm svg *{stroke:#9fa1a6}
