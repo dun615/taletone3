@@ -87,10 +87,10 @@
           px.sort((a, b) => b[0] - a[0]);
           const top = px.slice(0, 140), s = top.reduce((a, p) => [a[0] + p[1], a[1] + p[2], a[2] + p[3]], [0, 0, 0]);
           colorOf[w.slug] = s.map((v) => Math.round(v / top.length));
-        } catch (_) { colorOf[w.slug] = [163, 168, 181]; }
+        } catch (_) { colorOf[w.slug] = [218, 224, 241]; }
         done();
       };
-      im.onerror = () => { colorOf[w.slug] = [163, 168, 181]; done(); };
+      im.onerror = () => { colorOf[w.slug] = [218, 224, 241]; done(); };
       im.src = ASSET + w.thumb;
     });
     return sampling[w.slug];
@@ -414,7 +414,7 @@
     const redrawWash = () => { wctx.clearRect(0, 0, W, H); for (const b of blots) if (b.done) paintBlot(b, 1); };
 
     /* ---- the hills fill with the colours they were brought ---- */
-    const layerColour = (i) => { const p = [...palette].sort((a, b) => b.s - a.s); const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (p[i % Math.max(1, p.length)] || { c: fall[i % 3] }).c; };
+    const layerColour = (i) => { const p = [...palette].sort((a, b) => b.s - a.s); const fall = [[150, 184, 172], [232, 179, 208], [218, 224, 241]]; /* sage, pink, lavender */ return (p[i % Math.max(1, p.length)] || { c: fall[i % 3] }).c; };
     function facePath(L) { ctx.beginPath(); L.pts.forEach((p, i) => { const q = P(p); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); const e = P(L.pts[L.pts.length - 1]), s0 = P(L.pts[0]); ctx.lineTo(e[0], H * 3); ctx.lineTo(s0[0], H * 3); ctx.closePath(); }
     function drawFaces(k, alpha) {
       if (alpha <= 0 || k <= 0) return;
@@ -497,7 +497,7 @@
     function buildRecordWash() {
       recBuilt = true;
       const held = WORKS.filter(lit).map((w) => colorOf[w.slug]).filter(Boolean).slice(0, 6).map((c) => ({ c }));
-      const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [163, 168, 181] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
+      const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [150, 184, 172] }, { c: [232, 179, 208] }, { c: [218, 224, 241] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
       const stops = cols.length === 1 ? [cols[0], cols[0]] : cols, g = `conic-gradient(${[...stops, stops[0]].join(',')})`;
       $('#jy-rwash').style.background = g; $('#jy-charm-cd').style.background = g;
     }
