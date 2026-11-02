@@ -123,7 +123,7 @@ ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href
 <div class="jy-stage" id="jy-stage">
 ${grain}
 <canvas class="jy-cv" id="jy-cv" aria-hidden="true"></canvas>
-<ol class="jy-gates" id="jy-gates" hidden>${['tone', 'case', 'music'].map((k, i) => `<li>0${i + 2} · ${esc((c.gates || {})[k] || '')}</li>`).join('')}</ol>
+<ol class="jy-gates" id="jy-gates" hidden>${['tone', 'case'].map((k, i) => `<li>0${i + 2} · ${esc((c.gates || {})[k] || '')}</li>`).join('')}</ol>
 
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>

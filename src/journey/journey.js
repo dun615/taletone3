@@ -351,18 +351,38 @@
     const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
     Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
     const layerColour = (i) => { const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (palette[i % Math.max(1, palette.length)] || { c: fall[i % 3] }).c; };
-    // four worlds, one after another along the line, with a gate (a phone's screen) between each two:
-    // the dots of the Tale, the land of the philosophy, the sea of the case, the space of the signature songs
+    // three worlds along one line, a gate (a phone's screen) between them: the land of the intro (mountains,
+    // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
+    // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
+    // passed slowly takes on a pastel colour.
     const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
-    const GATES = [PEN.tone[0], PEN.case[0], PEN.music[0]];
-    const WIRE = [15, 25.5], POLE = 3, GROUND = 1.35, SEA = 1.0, AHEAD = 4.2, FAR3 = 26, COIL = 45.5;
+    const GATES = [PEN.tone[0], PEN.case[0]];
+    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = 0.95, DEEP = 2.7, BED = 4.4, AHEAD = 4.2, FAR3 = 26, COIL = 45.5;
+    const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
+      sea: { water: [204, 236, 238], kelp: [150, 206, 182], bubble: [168, 214, 236], surf: [150, 200, 214] },
+      space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
+    const tint = (c, k, a) => `rgba(${Math.round(lerp(150, c[0], k))},${Math.round(lerp(152, c[1], k))},${Math.round(lerp(160, c[2], k))},${a})`;
+    const passed = (z, lag = 0.4) => ease(clamp((penZ - z - lag) / 2.6)); // 0 pale, 1 fully coloured
     const penAt = (u) => { for (const k of ['music', 'case', 'tone', 'tale']) { const l = local(u, k); if (l > 0) return lerp(PEN[k][0], PEN[k][1], clamp(k === 'tale' ? (l - 0.08) / 0.92 : l)); } return PEN.tale[0]; };
     const wireW = (z) => clamp((z - WIRE[0] + 0.8) / 0.8) * clamp((WIRE[1] + 0.8 - z) / 0.8);
     const coilK = (z) => ease((z - COIL) / 3);
+    // the constellation: stars at fixed points, the line runs straight from one to the next
+    const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const out = []; for (let z = GATES[1] + 1.2; z < 50; z += 1.5 + r() * 0.5) out.push([-0.4 + (r() - 0.5) * 1.6, -0.55 + (r() - 0.5) * 1.1, z]); return out; })();
+    function constAt(z) {
+      if (z <= STARS[0][2]) return STARS[0];
+      for (let i = 1; i < STARS.length; i++) if (z <= STARS[i][2]) { const a = STARS[i - 1], b = STARS[i], f = (z - a[2]) / (b[2] - a[2]); return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), z]; }
+      return STARS[STARS.length - 1];
+    }
     function pathAt(z) {
       let x = -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2), y = 0.35 + 0.16 * Math.sin(z * 0.47);
       const ww = wireW(z);
       if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
+      // the sea: the line dives in like a fishing line, then swims along under the surface
+      const sk = ease((z - GATES[0]) / 2.4) * (1 - ease((z - GATES[1] + 0.4) / 2.2));
+      if (sk > 0) y = lerp(y, DEEP + 0.2 * Math.sin(z * 0.6), sk);
+      // space: from star to star
+      const ck2 = ease((z - GATES[1] + 0.4) / 2.2);
+      if (ck2 > 0) { const c = constAt(z); x = lerp(x, c[0], ck2); y = lerp(y, c[1], ck2); }
       const ck = coilK(z);
       if (ck > 0) { const a = (z - COIL) * 1.6, r = 0.9 * ck; x = lerp(x, r * Math.cos(a), ck); y = lerp(y, r * Math.sin(a), ck); }
       return [x, y, z];
@@ -371,42 +391,39 @@
     const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let ridges = [], clouds = [], grass = [], dots = [], poles = [], waves = [], stars = [], planets = [];
+    let ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [];
+    const dots = [];
     const gateNames = $$('#jy-gates li').map((li) => li.textContent);
     function buildWorld() {
       F3 = Math.min(W, H * 1.6) * 0.62;
       let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-      const [G1, G2, G3] = GATES;
-      // land: mountains, grass, poles on the wire
+      const [G1, G2] = GATES;
       ridges = [];
-      for (let k = 0, z = G1 + 1; z < G2 - 0.5; k++, z += 2.2 + rnd() * 1.2) {
+      for (let k = 0, z = 2.2; z < G1 + 3; k++, z += 1.8 + rnd() * 1.2) {
         const amp = 0.35 + rnd() * 0.55 + (k % 4 === 3 ? 0.45 : 0), f1 = 0.5 + rnd() * 0.7, f2 = 1.4 + rnd(), p1 = rnd() * 6, p2 = rnd() * 6, pts = [];
         for (let x = -8; x <= 8.001; x += 0.2) pts.push([x, GROUND - amp * (0.55 + 0.45 * Math.sin(x * f1 + p1)) * (0.7 + 0.3 * Math.sin(x * f2 + p2)), z]);
         ridges.push({ z, k, pts });
       }
       ridges.sort((a, b) => b.z - a.z);
       grass = [];
-      for (let z = G1 + 0.5; z < G2 - 0.5; z += 0.16 + rnd() * 0.2) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
+      for (let z = 1.2; z < G1 - 0.3; z += 0.14 + rnd() * 0.18) { const cx = pathAt(z)[0] + (rnd() - 0.5) * 4.2; for (let q = 0; q < 3; q++) grass.push({ x: cx + q * 0.03, z, h: (q === 1 ? 0.09 : 0.05) + rnd() * 0.06, lean: (q - 1) * 0.02 + (rnd() - 0.5) * 0.015 }); }
       poles = [];
-      for (let z = WIRE[0]; z <= WIRE[1] - 1.4; z += POLE) poles.push(z);
-      // land and sea: clouds
+      for (let z = WIRE[0]; z <= WIRE[1] - 1.2; z += POLE) poles.push(z);
       clouds = [];
-      for (let z = G1 + 2; z < G3 - 1; z += 4 + rnd() * 4) {
+      for (let z = 3; z < G1 + 3; z += 3 + rnd() * 3) {
         const X = (rnd() - 0.5) * 7, Y = -2.1 + rnd() * 0.6, wd = 0.9 + rnd() * 0.9, pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
         for (let j = 0; j <= 40; j++) { const x = -0.5 + j / 40; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts.push([X + x * wd, Y - top * wd * 1.05, z]); }
         for (let j = 1; j <= 10; j++) pts.push([X + (0.5 - j / 10) * wd, Y + Math.sin((j / 10) * Math.PI) * 0.03, z]);
         clouds.push({ z, pts, ci: clouds.length });
       }
-      // sea: rows of waves out to the next gate
-      waves = [];
-      for (let z = G2 + 0.6; z < G3 - 0.3; z += 0.55) waves.push({ z, ph: rnd() * 6 });
-      // space: stars all around, and one planet for each signature song
+      surf = [];
+      for (let z = G1 + 0.4; z < G2 - 0.5; z += 1.3) surf.push({ z, ph: rnd() * 6 });
+      kelp = [];
+      for (let z = G1 + 1; z < G2 - 1; z += 0.5 + rnd() * 0.6) kelp.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.7 + rnd() * 2.6), z, h: 1.2 + rnd() * 1.4, ph: rnd() * 6 });
+      bubbles = [];
+      for (let i = 0; i < 90; i++) { const z = G1 + 1 + rnd() * (G2 - G1 - 2); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
       stars = [];
-      for (let i = 0; i < 320; i++) stars.push({ x: (rnd() - 0.5) * 12, y: -3.4 + rnd() * 5.2, z: G3 + 0.5 + rnd() * 16, s: rnd(), sparkle: rnd() < 0.14 });
-      planets = [[G3 + 5.2, -1.9, -0.95, 0.42], [G3 + 7.4, -0.6, -1.75, 0.5], [G3 + 9.4, -2.3, 0.15, 0.36]].map(([z, x, y, r], i) => ({ z, x, y, r, i, tilt: -0.35 + i * 0.3 }));
-      // the Tale: a field of dots
-      const n = W <= 760 ? DOTS.narrow : DOTS.wide; dots = [];
-      for (let i = 0; i < n; i++) { const z = rnd() * 12; dots.push({ x: (rnd() - 0.5) * 9, y: -2.4 + rnd() * 3.8, z, pz: clamp(z + (rnd() - 0.3) * 2, 2.2, 9.6), s: rnd() }); }
+      for (let i = 0; i < 300; i++) stars.push({ x: (rnd() - 0.5) * 12, y: -3.4 + rnd() * 5.2, z: G2 - 1 + rnd() * 26, s: rnd(), sparkle: rnd() < 0.14, c: (rnd() * 3) | 0 });
     }
 
     // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
@@ -466,66 +483,82 @@
       const land = A;
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < far; };
-      // land: clouds, mountains, grass, poles
+      const [G1, G2] = GATES;
+      // the backdrop of the world the visitor is in, coloured as far as the pen has gone
+      const wIn = (a, b) => clamp((camZ + 2 - a) / 2) * (1 - clamp((camZ + 2 - b) / 2));
+      const wl = wIn(-10, G1), ws = wIn(G1, G2), wp = wIn(G2, 80);
+      if (wl > 0) { const k = passed(2, 0) * wl, g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, tint(PASTEL.land.sky, 1, 0.75 * k * land)); g.addColorStop(0.6, tint(PASTEL.land.sky, 1, 0)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+      if (ws > 0) { const k = passed(G1, 0.5) * ws; ctx.fillStyle = tint(PASTEL.sea.water, 1, 0.8 * k * land); ctx.fillRect(0, 0, W, H); }
+      if (wp > 0) { const k = passed(G2, 0.5) * wp, g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, tint(PASTEL.space.sky, 1, 0.85 * k * land)); g.addColorStop(1, tint(PASTEL.space.sky, 1, 0.35 * k * land)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+      // land
       for (const cl of clouds) {
         if (!near(cl.z) || penZ < cl.z - 10) continue;
-        const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
-        ctx.strokeStyle = `rgba(${INK},${0.4 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+        const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), k = passed(cl.z - 3), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
+        if (k > 0 && reveal >= 1) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, 1, 0.8 * k * fogA(dz) * land); ctx.fill(); }
+        ctx.strokeStyle = tint(PASTEL.land.cloud, k * 0.4, 0.5 * fogA(dz) * land); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
       }
       for (const r of ridges) {
         if (!near(r.z)) continue;
         const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
-        const Q = r.pts.map(V);
-        ctx.strokeStyle = `rgba(${INK},${0.45 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+        const Q = r.pts.map(V), k = passed(r.z - 4), c = PASTEL.land.hill[r.k % 3], a = fogA(dz) * land;
+        if (k > 0 && reveal >= 1) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.55 * k * a); ctx.fill(); }
+        ctx.strokeStyle = tint([110, 140, 120], k, 0.5 * a); ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
       }
-      ctx.lineWidth = 1.1; ctx.beginPath();
+      ctx.lineWidth = 1.2;
       for (const g of grass) {
         if (!near(g.z, 10) || penZ < g.z) continue;
         const a = V([g.x, GROUND, g.z]); if (!a) continue;
         const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
-        ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]);
+        ctx.strokeStyle = tint(PASTEL.land.grass, passed(g.z), 0.5 * land); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
       }
-      ctx.strokeStyle = `rgba(${INK},${0.35 * land})`; ctx.stroke();
       for (const z of poles) {
         if (penZ < z || !near(z)) continue; const dz = z - camZ;
         const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
         if (!a || !b) continue;
-        ctx.strokeStyle = `rgba(${INK},${0.6 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.6 * AHEAD / dz, 0.6, 2.6);
+        ctx.strokeStyle = tint(PASTEL.land.pole, passed(z), 0.75 * fogA(dz) * land); ctx.lineWidth = clamp(1.8 * AHEAD / dz, 0.6, 3);
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
       }
-      // sea: rows of waves, rocking
-      for (let wi = waves.length - 1; wi >= 0; wi--) {
-        const wv = waves[wi]; if (!near(wv.z, 18)) continue;
-        const dz = wv.z - camZ, reveal = clamp((penZ - (wv.z - 8)) / 2); if (reveal <= 0) continue;
-        const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SEA + 0.05 * Math.sin(x * 2.1 + wv.ph + (reduce ? 0 : T * 0.9)), wv.z]));
-        ctx.strokeStyle = `rgba(${INK},${0.38 * fogA(dz) * land})`; ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.4, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+      // sea: the surface overhead, kelp from the bed, bubbles rising
+      for (let i = surf.length - 1; i >= 0; i--) {
+        const sv = surf[i]; if (!near(sv.z, 12) || camZ < GATES[0] - 3) continue;
+        const dz = sv.z - camZ, reveal = clamp((penZ - (sv.z - 8)) / 2); if (reveal <= 0) continue;
+        const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SURF + 0.05 * Math.sin(x * 2.1 + sv.ph + (reduce ? 0 : T * 0.9)), sv.z]));
+        ctx.strokeStyle = tint(PASTEL.sea.surf, passed(sv.z), 0.35 * fogA(dz) * land); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.4, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
       }
-      // space: stars, and a planet for each signature song in its cover's colour
-      ctx.fillStyle = `rgb(${INK})`;
+      for (const kp of kelp) {
+        if (!near(kp.z, 16) || penZ < kp.z - 9 || camZ < GATES[0] - 3) continue;
+        const dz = kp.z - camZ, k = passed(kp.z), Q = [];
+        for (let t = 0; t <= 1.001; t += 0.08) Q.push(V([kp.x + Math.sin(t * 5 + kp.ph + (reduce ? 0 : T * 1.1)) * 0.08 * t, BED - kp.h * t, kp.z]));
+        ctx.strokeStyle = tint(PASTEL.sea.kelp, k, 0.6 * fogA(dz) * land); ctx.lineWidth = clamp(2.2 * AHEAD / dz, 0.6, 4); polyline(Q, Q.length); ctx.stroke();
+      }
+      for (const bb of bubbles) {
+        if (!near(bb.z, 12) || penZ < bb.z - 6 || camZ < GATES[0] - 3) continue;
+        const rise = reduce ? bb.off : (bb.off + T * 0.08) % 1, y = DEEP + 0.8 - rise * (DEEP + 0.8 - SURF - 0.1);
+        const q = V([bb.x + Math.sin(T + bb.off * 9) * 0.03, y, bb.z]); if (!q) continue;
+        ctx.strokeStyle = tint(PASTEL.sea.bubble, passed(bb.z), 0.6 * fogA(q[2]) * land); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], bb.r * F3 / q[2], 0, Math.PI * 2); ctx.stroke();
+      }
+      // space: stars all around; the stars of the constellation are where the line turns
       for (const st of stars) {
         if (!near(st.z, 20) || penZ < st.z - 12) continue;
         const q = V([st.x, st.y, st.z]); if (!q) continue;
-        const a = land * fogA(q[2]) * clamp((penZ - (st.z - 12)) / 2) * (reduce ? 0.7 : 0.55 + 0.35 * Math.sin(T * 1.4 + st.s * 30));
-        const r = clamp(2.2 * AHEAD / q[2], 0.7, 3.2);
-        ctx.globalAlpha = a;
-        if (st.sparkle) { const L = r * 3; ctx.strokeStyle = `rgb(${INK})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q[0] - L, q[1]); ctx.lineTo(q[0] + L, q[1]); ctx.moveTo(q[0], q[1] - L); ctx.lineTo(q[0], q[1] + L); ctx.stroke(); }
-        else ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
+        const k = passed(st.z - 2), a = land * fogA(q[2]) * clamp((penZ - (st.z - 12)) / 2) * (reduce ? 0.7 : 0.6 + 0.3 * Math.sin(T * 1.4 + st.s * 30));
+        const r = clamp(2.2 * AHEAD / q[2], 0.7, 3.2), col = tint(PASTEL.space.star[st.c], k, a);
+        if (st.sparkle) { const L = r * 3; ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q[0] - L, q[1]); ctx.lineTo(q[0] + L, q[1]); ctx.moveTo(q[0], q[1] - L); ctx.lineTo(q[0], q[1] + L); ctx.stroke(); }
+        else { ctx.fillStyle = col; ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r); }
       }
-      ctx.globalAlpha = 1;
-      for (const pl of planets) {
-        if (!near(pl.z) || penZ < pl.z - 12) continue;
-        const q = V([pl.x, pl.y, pl.z]); if (!q) continue;
-        const s3 = F3 / q[2], R = pl.r * s3, a = land * fogA(q[2]) * clamp((penZ - (pl.z - 12)) / 2);
-        const w = pinned[pl.i], c = w && colorOf[w.slug] ? colorOf[w.slug] : [176, 178, 184], lit = w && (offer === w || nowSlug === w.slug);
-        ctx.fillStyle = `rgba(${c},${0.85 * a})`; ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = lit ? 2.4 : 1.3; ctx.stroke();
-        ctx.save(); ctx.translate(q[0], q[1]); ctx.rotate(pl.tilt); ctx.beginPath(); ctx.ellipse(0, 0, R * 1.75, R * 0.42, 0, Math.PI * 0.04, Math.PI * 0.96, true); ctx.stroke(); ctx.restore();
-        if (w) { ctx.fillStyle = `rgba(${INK},${a})`; ctx.font = `700 ${Math.round(clamp(0.11 * s3, 11, 22))}px "LINE Seed KR", "LINE Seed JP", sans-serif`; ctx.textAlign = 'center'; ctx.fillText(w.title, q[0], q[1] + R + clamp(0.16 * s3, 14, 30)); }
+      for (let i = 0; i < STARS.length; i++) {
+        const sp = STARS[i]; if (sp[2] > COIL || !near(sp[2]) || penZ < sp[2] - 10) continue;
+        const q = V(sp); if (!q) continue;
+        const k = passed(sp[2], 0), lit = penZ >= sp[2], a = land * fogA(q[2]), R = clamp(0.07 * F3 / q[2], 3, 14) * (lit ? 1.3 : 1);
+        const col = lit ? tint(PASTEL.space.star[i % 3], Math.max(0.6, k), a) : `rgba(${INK},${0.35 * a})`;
+        ctx.fillStyle = col; ctx.beginPath();
+        for (let j = 0; j < 8; j++) { const an = (j / 8) * Math.PI * 2 - Math.PI / 2, rr = j % 2 ? R * 0.38 : R; ctx.lineTo(q[0] + Math.cos(an) * rr, q[1] + Math.sin(an) * rr); }
+        ctx.closePath(); ctx.fill(); if (lit) { ctx.strokeStyle = `rgba(${INK},${0.6 * a})`; ctx.lineWidth = 1; ctx.stroke(); }
       }
       // gates: a phone's screen standing on the line, the next world's name above it; passing through starts it
       for (let gi = 0; gi < GATES.length; gi++) {
         const G = GATES[gi], dz = G - camZ; if (dz < 0.25 || dz > FAR3) continue;
-        if (gi > 0 && camZ < GATES[gi - 1]) continue; // only the next gate: one world at a time
+        if (gi > 0 && camZ < GATES[gi - 1]) continue;
         const c = pathAt(G), q = V([c[0], c[1] - 0.3, G]); if (!q) continue;
         const s3 = F3 / dz, w = 0.95 * s3, h = 2.05 * s3, a = land * clamp((dz - 0.25) / 0.7) * clamp((FAR3 - dz) / 8);
         ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = clamp(2.2 * AHEAD / dz, 1, 4.5);
@@ -534,18 +567,8 @@
         const name = gateNames[gi]; if (name) { ctx.fillStyle = `rgba(${INK},${a})`; ctx.font = `700 ${Math.round(clamp(0.17 * s3, 12, 64))}px "LINE Seed KR", "LINE Seed JP", sans-serif`; ctx.textAlign = 'center'; ctx.fillText(name, q[0], q[1] - h / 2 - clamp(0.14 * s3, 10, 40)); }
       }
       ctx.textAlign = 'start';
-      // the dots of the Tale drift, and each is gathered into the line once the pen passes it
-      if (penZ < 15) {
-        ctx.fillStyle = `rgb(${INK})`;
-        for (const d of dots) {
-          const g = clamp((penZ - d.pz) / 1.4); if (g >= 1) continue;
-          const tgt = pathAt(d.pz), wx = reduce ? 0 : Math.sin(T * 0.6 + d.s * 20) * 0.04, wy = reduce ? 0 : Math.cos(T * 0.4 + d.s * 9) * 0.03;
-          const q = V([lerp(d.x + wx, tgt[0], ease(g)), lerp(d.y + wy, tgt[1], ease(g)), lerp(d.z, tgt[2], ease(g))]); if (!q || q[2] > 16) continue;
-          const r = clamp(2.6 * AHEAD / q[2], 0.8, 4);
-          ctx.globalAlpha = A * 0.5 * fogA(q[2]) * clamp(q[2] / 1.5); ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r);
-        }
-        ctx.globalAlpha = 1;
-      }
+      // the fishing line's float, where the line enters the water
+      { const z = GATES[0] + 0.9, p = V([pathAt(z)[0], SURF, z]); if (p && penZ > z) { const s3 = F3 / p[2], r = 0.07 * s3, a = land * fogA(p[2]); ctx.fillStyle = tint([246, 170, 186], passed(z), a); ctx.beginPath(); ctx.arc(p[0], p[1], r, Math.PI, 0); ctx.fill(); ctx.fillStyle = `rgba(254,254,254,${a})`; ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, Math.PI); ctx.fill(); ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, Math.PI * 2); ctx.stroke(); } }
       // the line: thick close by, a hair far away, swelling where something is written on it
       let run = [], wPrev = -1, aPrev = -1;
       const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${INK},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
@@ -782,8 +805,6 @@
       placeAnchors();
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
-      if (lm > 0.03 && lm < 0.5) setNowPlaying(Math.min(pinned.length - 1, Math.floor(clamp(lm / 0.5) * pinned.length)));
-      if (!(lm > 0.03 && lm < 0.5) && npShown >= 0) { npShown = -1; setOffer(null); }
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
@@ -834,7 +855,7 @@
     function goStage(where, smooth = true) {
       goU(target[where] != null ? target[where] : 0, smooth);
     }
-    setNowPlaying(0); resize();
+    resize();
     requestAnimationFrame(frameLoop);
     return { paintRecord, reset, syncInert, go: goStage, recordU, goU, items };
   })();
