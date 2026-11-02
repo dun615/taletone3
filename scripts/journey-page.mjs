@@ -126,7 +126,12 @@ ${grain}
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
   <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card"><span class="jy-face jy-back">${caseBack()}<img class="jy-caselogo" src="${markPaper}" alt=""></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti">${avatar(26)}<span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb">${esc(c.notify)}</span></span></span></span></span></span></span>${charm()}</button>
-  <h1 class="jy-lead" id="jy-lead">${esc(merge(site.home, lang.key).tagline)}</h1>
+  <div class="jy-lead" id="jy-lead">
+    <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
+    <p class="jy-service">${esc(c.service)}</p>
+    <p class="jy-cta"><a class="jy-btn jy-btn-ink" href="${href('/discography/')}" data-go="record">${esc(c.listenNow)}</a><a class="jy-btn" href="${href('/contact/')}" data-go="epi">${esc(merge(site.home, lang.key).contactCtaLabel)}</a></p>
+    <p class="jy-scrollhint" aria-hidden="true"><span>${esc(c.scrollHint)}</span><i></i></p>
+  </div>
 </section>
 
 <section class="jy-ch" data-ch="tale" id="intro" aria-labelledby="jy-h-tale">
@@ -135,6 +140,7 @@ ${grain}
     ${bubble('jy-hello', lines(c.intro.hello))}
     <div class="jy-say jy-card-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
     ${bubble('jy-types', `<b>${esc(c.intro.typesLabel)}</b><small>${c.intro.types.map(esc).join('<br>')}</small>`)}
+    ${logos.length ? bubble('jy-clients', `<b>${esc(c.clients)}</b><span class="jy-logo-row">${logos.map((l) => `<img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy">`).join('')}</span>`) : ''}
   </div>
 </section>
 
@@ -148,7 +154,6 @@ ${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">$
 
 <section class="jy-ch" data-ch="music" aria-labelledby="jy-h-music">
   <h2 class="jy-chl" id="jy-h-music">${esc(labels[3])}</h2>
-  <div class="jy-np" id="jy-np" aria-hidden="true"><span class="jy-npd" id="jy-npd"></span><span class="jy-npt"><b id="jy-npt"></b><span id="jy-npa"></span></span><span class="jy-eq"><i></i><i></i></span></div>
   <div class="jy-voice" aria-live="polite">${bubble('jy-landscape', lines(c.landscape))}${c.fact ? bubble('jy-fact', `<b class="jy-fact-v">${esc(c.fact.value)}</b> ${esc(c.fact.label)}<small>${esc(c.fact.note)}</small>`) : ''}</div>
 </section>
 
@@ -171,6 +176,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     <p class="jy-ro-t" id="jy-ro-t"></p>
     <p class="jy-ro-a" id="jy-ro-a"></p>
     <p class="jy-ro-m" id="jy-ro-m"></p>
+    <p class="jy-ro-r" id="jy-ro-r"></p>
     <div class="jy-ro-btns"><button type="button" class="jy-btn jy-btn-ink" id="jy-ro-play">${esc(c.listen)}</button><button type="button" class="jy-btn" id="jy-ro-open">${esc(c.detail)}</button></div>
     <div class="jy-ro-nav"><button type="button" class="jy-round" id="jy-ro-prev" aria-label="${esc(c.prev)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-round" id="jy-ro-next" aria-label="${esc(c.next)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-btn jy-btn-quiet" id="jy-view" aria-pressed="false" data-on="${esc(c.recordView)}" data-off="${esc(c.listView)}">${esc(c.listView)}</button></div>
   </div>
@@ -186,6 +192,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
   <div class="jy-voice" aria-live="polite">${bubble('jy-empty', lines(c.empty))}</div>
   <div class="jy-contact" id="jy-contact">
     <h3 class="jy-ct">${lines(c.contactTitle)}</h3>
+    <p class="jy-form-note">${esc(c.form.mailNote)}</p>
     <form class="jy-form" id="jy-form" novalidate>
       ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}">`)}
       ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email">`)}
@@ -205,6 +212,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
 </section>
 
 <div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core">${signal}</span></div></div>${charm('jy-charm-cd')}</div>
+<div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span></div>
 <div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
 </div>
 </main>

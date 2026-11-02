@@ -159,7 +159,6 @@
   }
   function closeStory() {
     if (story.hidden) return;
-    if (storyWork && nowSlug === storyWork.slug) pause();
     story.classList.remove('open');
     setTimeout(() => { story.hidden = true; }, reduce ? 0 : 250);
     outside().forEach((el) => { el.inert = false; });
@@ -189,6 +188,27 @@
     const b = e.target.closest('[data-open]');
     if (b && !story.contains(b)) openStory(b.dataset.open, b);
   });
+
+  /* ---------------- the player: what is playing, from anywhere ---------------- */
+  const np = $('#jy-np'), npPlay = $('#jy-np-play');
+  let offer = null; // a song the Music chapter offers before anything has played
+  const shownWork = () => (nowSlug ? bySlug[nowSlug] : offer);
+  function syncPlayer() {
+    const w = shownWork();
+    np.hidden = !w;
+    if (!w) return;
+    const p = !audio.paused && nowSlug === w.slug;
+    $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`;
+    $('#jy-npt').textContent = nowSlug === w.slug && nowTrack != null && w.tracks[nowTrack] ? w.tracks[nowTrack].title : w.title;
+    $('#jy-npa').textContent = w.artist;
+    np.classList.toggle('is-playing', p);
+    npPlay.setAttribute('aria-label', (p ? COPY.pause : COPY.listen) + ': ' + w.title);
+    $('#jy-np-i').setAttribute('d', p ? 'M6 4h3v12H6zM11 4h3v12h-3z' : 'M6 4l10 6-10 6z');
+  }
+  listeners.add(syncPlayer);
+  const setOffer = (w) => { if (offer !== w) { offer = w; syncPlayer(); } };
+  npPlay.addEventListener('click', () => { const w = shownWork(); if (!w) return; if (!audio.paused && nowSlug === w.slug) pause(); else play(w, nowSlug === w.slug && nowTrack != null ? nowTrack : undefined); });
+  $('#jy-np-open').addEventListener('click', (e) => { const w = shownWork(); if (w) openStory(w.slug, e.currentTarget); });
 
   /* ---------------- profile sheet ---------------- */
   const profile = $('#about');
@@ -626,6 +646,7 @@
       $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
       $('#jy-ro-t').textContent = w.title; $('#jy-ro-a').textContent = w.artist;
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
+      $('#jy-ro-r').textContent = roleLine(w.roles);
       $('#jy-ro-play').hidden = !sourceOf(w);
       sample(w);
       syncReadout();
@@ -659,7 +680,7 @@
 
     /* ---- the frame loop ---- */
     let npShown = -1;
-    function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
+    function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; setOffer(w); return; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
     function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
     function syncInert() {
       if (story && !story.hidden) return;
@@ -674,16 +695,16 @@
       if (ch !== chapter) { chapter = ch; syncInert(); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
       // Prologue: fall into the phone
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 224, H / 504) * 1.08;
-      phone.style.transform = `scale(${Math.pow(cover, ease((ip - 0.3) / 0.7))})`;
+      phone.style.transform = `translateX(${-W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${Math.pow(cover, ease((ip - 0.3) / 0.7))})`;
       card.style.transform = `rotateY(${180 * ease(ip / 0.28)}deg)`;
       phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
       phone.tabIndex = ip > 0.3 ? -1 : 0;
       screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';
-      lead.style.opacity = String(1 - ease(ip * 3));
+      lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
       lock.style.opacity = String(1 - ease((ip - 0.55) / 0.25));
       // Tale: a quiet stretch, then TALETONE introduces itself, message by message
       const lt = local(u, 'tale');
-      on($('#jy-hello'), lt > 0.18 && lt < 1.04); on($('#jy-pcard'), lt > 0.36 && lt < 1.04); on($('#jy-types'), lt > 0.56 && lt < 1.04);
+      on($('#jy-hello'), lt > 0.14 && lt < 1.04); on($('#jy-pcard'), lt > 0.3 && lt < 1.04); on($('#jy-types'), lt > 0.46 && lt < 1.04); on($('#jy-clients'), lt > 0.62 && lt < 1.04);
       // Tone: the line draws while the philosophy arrives
       const lo = local(u, 'tone');
       on($('#jy-creed'), lo > 0.04 && lo < 1.02);
@@ -692,8 +713,8 @@
       const lm = local(u, 'music');
       // Music
       cam = lm > 0 ? lerp(0, 1.02, ease(lm / 0.5)) : lo > 0 ? 0 : lerp(-2.2, 0, ease(clamp(lt / 0.45)));
-      if (lm > 0) setNowPlaying(Math.min(pinned.length - 1, Math.floor(clamp(lm / 0.5) * pinned.length)));
-      on($('#jy-np'), lm > 0.03 && lm < 0.5);
+      if (lm > 0.03 && lm < 0.5) setNowPlaying(Math.min(pinned.length - 1, Math.floor(clamp(lm / 0.5) * pinned.length)));
+      if (!(lm > 0.03 && lm < 0.5) && npShown >= 0) { npShown = -1; setOffer(null); }
       on($('#jy-landscape'), lm > 0.55 && lm < 0.69);
       on($('#jy-fact'), lm > 0.71 && lm < 0.86);
       if (lm > 0.5 && !pts) buildPoints(); if (lm <= 0.5 && pts) pts = null;
