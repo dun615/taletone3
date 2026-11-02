@@ -366,7 +366,54 @@
     let frozenU = null;
     const U = () => { if (frozenU != null) return frozenU; const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
     const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
-    const goU = (u, smooth = true) => scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    // a jump (rail, menu, the record's arrows) passes through scene changes without playing them
+    let navUntil = 0;
+    const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };
+
+    /* ---- the story's two kinds of motion ----
+       Reading belongs to the visitor: the scroll moves the words, at the visitor's pace. A change of scene belongs
+       to the story: one scroll at its edge and it plays through at its own pace (backwards when scrolling up), stops
+       where the next words are, swallows the rest of that flick, and a small cue says it is the visitor's turn.
+       [from, to, ms] in story units; each 'to' is where the next words have just arrived. */
+    const AUTO = [
+      [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
+      [0.33, 1.37, 2300],   // into the phone, onto the land: the first hello
+      [2.30, 3.36, 2800],   // up into the sky, a phone flies in, and it was the sea: the philosophy begins
+      [4.30, 5.42, 2800],   // down into the dark, a phone flies in, out into space: the request of a real project
+      [6.15, 7.70, 2400],   // along the stars to the record: found
+      [7.74, 8.20, 1500],   // the line splits in five and draws the staff: the first song
+      [11.50, 12.45, 2300], // past the last song, the record goes into the phone: the letter
+      [12.50, 12.88, 1100], // the empty seat
+      [12.92, 13.25, 1000], // the inquiry
+    ];
+    let auto = null, hold = null, lastU = 0, inputAt = 0;
+    const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+    const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
+    function runAuto(from, to, ms) { auto = { from, to, t0: performance.now(), d: reduce ? 0 : ms }; cue(false); }
+    function autoStep(now) {
+      if (auto) {
+        const k = auto.d ? clamp((now - auto.t0) / auto.d) : 1;
+        scrollTo({ top: topFor(lerp(auto.from, auto.to, easeIO(k))), behavior: 'instant' });
+        if (k >= 1) { hold = { u: auto.to, t0: now }; lastU = auto.to; auto = null; }
+      } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { hold = null; cue(true); }
+    }
+    const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
+    addEventListener('wheel', swallow, { passive: false });
+    addEventListener('touchmove', swallow, { passive: false });
+    addEventListener('keydown', (e) => { if ((auto || hold) && [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key) && !e.target.closest('input,textarea,select')) e.preventDefault(); });
+    addEventListener('scrollend', () => { if (navUntil && !auto) { navUntil = 0; lastU = U(); } });
+    addEventListener('scroll', () => {
+      if (auto) return;
+      const u = U();
+      if (hold) { if (Math.abs(u - hold.u) > 0.002) scrollTo({ top: topFor(hold.u), behavior: 'instant' }); return; }
+      if (performance.now() < navUntil || frozenU != null) { lastU = u; return; }
+      cue(false);
+      for (const [a, b, ms] of AUTO) {
+        if (lastU <= a + 0.003 && u > a && u < b) { runAuto(u, b, (ms * (b - u)) / (b - a)); break; }
+        if (lastU >= b - 0.003 && u < b && u > a) { runAuto(u, a, (ms * (u - a)) / (b - a)); break; }
+      }
+      lastU = u;
+    }, { passive: true });
 
     // clock on the lock screen
     { const d = new Date(), loc = { kr: 'ko-KR', en: 'en-US', jp: 'ja-JP' }[LANG];
@@ -1106,6 +1153,7 @@
     }
     function frameLoop(now) {
       requestAnimationFrame(frameLoop);
+      autoStep(now);
       const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
       const u = U();
       const ch = chapterOf(u);
@@ -1185,7 +1233,8 @@
 
     function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
     const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
-    const target = { pro: 0, tale: at('tale', 0.7), tone: at('tone', 0.9), record: recordU(0), epi: CH.epi[0] + 0.5 };
+    // each chapter opens where its first words are
+    const target = { pro: 0, tale: 1.37, tone: 3.36, record: recordU(0), epi: 13.25 };
     function goStage(where, smooth = true) {
       goU(target[where] != null ? target[where] : 0, smooth);
     }

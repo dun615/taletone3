@@ -536,3 +536,12 @@ html.jy-held .jy-top{visibility:hidden}
 .jy-narrow.jy-stage-mode .jy-banner{z-index:1600}
 #discography:has(.jy-record.list) .jy-fbtn{display:none}
 .jy-narrow.jy-stage-mode .jy-readout{background:var(--tt-canvas)}
+
+/* after a scene has played: a small cue that the next part is the visitor's to scroll */
+.jy-cue{display:none}
+.jy-stage-mode .jy-cue{display:grid;place-items:center;position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:34px;height:34px;margin-left:-17px;border-radius:50%;color:var(--tt-ink);background:rgba(254,254,254,.7);box-shadow:0 0 0 1px rgba(159,161,166,.3);opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
+.jy-stage-mode .jy-cue.on{opacity:1;transform:none;animation:jy-cue 1.6s ease-in-out .4s infinite}
+.jy-ink .jy-cue{color:var(--tt-on-ink);background:rgba(20,28,48,.5);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+@keyframes jy-cue{50%{transform:translateY(5px)}}
+.jy-narrow.jy-stage-mode .jy-cue{left:auto;right:10px;margin:0;top:46%;bottom:auto}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-cue.on{animation:none}}
