@@ -280,9 +280,20 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
 `;
 }
 
+// the other work: sound engineering (mixWorks) and other commissions (bgmWorks), titled in the page's language
+export function journeyExtras(site, lang) {
+  const titleKey = { en: 'titleEn', jp: 'titleJp' }[lang];
+  return ['mixWorks', 'bgmWorks'].map((key) => {
+    const g = merge(site[key] || {}, lang);
+    return { key, label: g.label || '', note: g.note || '', coverTag: g.coverTag || '',
+      items: ((site[key] || {}).items || []).map((it) => ({ title: (titleKey && it[titleKey]) || it.title, artist: it.artist || '', roles: it.roles || '', youtube: it.youtube || '', date: it.date || '', cover: !!it.cover })) };
+  });
+}
+
 export function journeyData(site, worksData, lang) {
   const c = journeyCopy(site, lang);
   const works = journeyWorks(worksData, lang);
+  const extras = journeyExtras(site, lang);
   const drop = ({ chapterLabels, translations, ...rest }) => rest;
-  return `window.TT_JOURNEY=${JSON.stringify({ copy: drop(c), works }).replace(/</g, '\\u003c')};\n`;
+  return `window.TT_JOURNEY=${JSON.stringify({ copy: drop(c), works, extras }).replace(/</g, '\\u003c')};\n`;
 }
