@@ -518,7 +518,9 @@
        pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
        at the same place, so the swirl turns around the visitor. The mark stands at the head of the staff as its
        clef. An album in focus branches off into a short staff of its tracks. */
-    const DZ = 0.56, TURN = 0.6, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 13, GAP = 0.066;
+    const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066;
+    // depth shrinks the swirl gently (a power below 1), so the far turns open out instead of knotting at the centre
+    const OPEN = 0.55, shrink = (dz) => Math.pow(VIEW / dz, OPEN);
     const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: lines and spaces, bottom to top
     const radiusOf = (p) => 1 + (p - 4) * GAP * 0.5;
     const trackLayer = $('#jy-tracks');
@@ -551,15 +553,15 @@
     const recordU = (k) => CH.record[0] + (CH.record[1] - CH.record[0]) * (0.1 + 0.82 * (N > 1 ? k / (N - 1) : 0));
     // whatever has passed the note in focus fades out, so nothing covers the words on the right
     const behind = (dz) => clamp((dz - VIEW * 0.45) / (VIEW * 0.4));
-    const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = (cur.F * rad) / dz; return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
+    const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = cur.Rf * rad * shrink(dz); return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
     // the branch staff of an album: an arc outside the swirl, its tracks as notes
     // an album's tracks hang on an earphone cord that runs out of the album along the bottom, with a little coil
-    const cord = (n, fx) => { const y = H * 0.84, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
+    const cord = (n, fx) => { const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
       const k = recK, focusZ = k * DZ;
       const dive = ease(lr / 0.1), out = ease((lr - 0.92) / 0.08);
       // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
-      const camZ = lerp(-2 - cur.F / (Math.min(W, H) * 0.34), focusZ - VIEW, dive) + out * 3.5;
+      const camZ = lerp(-2 - VIEW * Math.pow(cur.Rf / (Math.min(W, H) * 0.34), 1 / OPEN), focusZ - VIEW, dive) + out * 3.5;
       cur.cx = lerp(W / 2, W * 0.36, dive); cur.cy = H * 0.5;
       const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN;
       cur.camZ = camZ; cur.roll = roll;
@@ -569,7 +571,7 @@
         const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
         if (!p || p[2] > FAR) { li.style.visibility = 'hidden'; return; }
         // a note fades as soon as it has passed the focus, so it never covers the words on the right
-        const sc2 = VIEW / p[2], a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5);
+        const sc2 = Math.pow(VIEW / p[2], 0.8), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5);
         li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
         li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
         li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
@@ -620,13 +622,13 @@
       for (let i = 0; i < N; i++) {
         const pi = pitchOf(i), up = pi < 4, th = i * TURN, z = i * DZ;
         const a = proj(th, z, camZ, roll, radiusOf(pi)); if (!a || a[2] > FAR || a[2] < VIEW * 0.72) continue;
-        const rr = (cur.size / 2) * (VIEW / a[2]), dir = up ? 1 : -1, ang = th + roll, len = (cur.F * GAP * 3.4) / a[2];
+        const rr = (cur.size / 2) * Math.pow(VIEW / a[2], 0.8), dir = up ? 1 : -1, ang = th + roll, len = cur.Rf * GAP * 3.4 * shrink(a[2]);
         const sx = a[0] + Math.cos(ang) * rr * dir, sy = a[1] + Math.sin(ang) * rr * dir;
         ctx.strokeStyle = `rgba(${INK},${0.85 * alpha * clamp((FAR - a[2]) / 6) * clamp((a[2] - VIEW * 0.72) / (VIEW * 0.22))})`; ctx.lineWidth = clamp(2 * VIEW / a[2], 0.5, 3);
         ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + Math.cos(ang) * len * dir, sy + Math.sin(ang) * len * dir); ctx.stroke();
       }
       // the mark at the head of the staff, as its clef
-      { const z = -1.1, p = proj((z / DZ) * TURN, z, camZ, roll, 1); if (p && clef.complete && clef.naturalWidth) { const h = (cur.F * GAP * 9) / p[2], wd = h * (1079 / 1275); ctx.globalAlpha = alpha * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.drawImage(clef, p[0] - wd / 2, p[1] - h / 2, wd, h); ctx.globalAlpha = 1; } }
+      { const z = -1.1, p = proj((z / DZ) * TURN, z, camZ, roll, 1); if (p && clef.complete && clef.naturalWidth) { const h = cur.Rf * GAP * 9 * shrink(p[2]), wd = h * (1079 / 1275); ctx.globalAlpha = alpha * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.drawImage(clef, p[0] - wd / 2, p[1] - h / 2, wd, h); ctx.globalAlpha = 1; } }
       // specks drifting down the swirl
       ctx.fillStyle = `rgb(${INK})`;
       for (const d of flow) {
@@ -641,7 +643,7 @@
         const p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pitchOf(albumOpen))), n = $$('.jy-trk', trackEls[albumOpen]).length;
         if (p) {
           const pts2 = cord(n, p[0]), c0 = [p[0] - 20, (p[1] + pts2[0][1]) / 2 + 10], rr = 13;
-          ctx.strokeStyle = `rgba(${INK},${0.85 * alpha})`; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0], p[1] + (cur.size / 2) * (VIEW / p[2]));
+          ctx.strokeStyle = `rgba(${INK},${0.85 * alpha})`; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0], p[1] + (cur.size / 2) * Math.pow(VIEW / p[2], 0.8));
           ctx.quadraticCurveTo(p[0] + 10, c0[1] - 30, c0[0], c0[1] - rr);
           for (let t = 0; t <= Math.PI * 2 + 0.01; t += 0.2) ctx.lineTo(c0[0] - Math.sin(t) * rr, c0[1] - Math.cos(t) * rr); // the coil
           let prev = [c0[0], c0[1] - rr];
