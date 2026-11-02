@@ -49,7 +49,7 @@ export function journeyCopy(site, lang) {
 const markInk = '/assets/logo/mark-ink.svg';
 const markPaper = '/assets/logo/mark-paper.svg';
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px"><img src="${markInk}" alt=""></span>`;
-const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx">${html}</span></p></div>`;
+const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
 const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
 const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="20" height="44" viewBox="0 0 20 44"><circle cx="10" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="10" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="36" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
 
@@ -108,6 +108,8 @@ ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
 <header class="jy-top">
   <a class="jy-mark" href="${href('/')}" aria-label="${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"></a>
+  <button class="jy-mchap" type="button" id="jy-mchap" aria-controls="jy-menu" aria-label="${esc(c.chapters)}">${esc(c.rail.pro)}</button>
+  <span class="jy-mprog" aria-hidden="true"><i id="jy-mprog"></i></span>
   <button class="jy-menu-btn" type="button" aria-expanded="false" aria-controls="jy-menu"><span class="jy-menu-lines" aria-hidden="true"><i></i><i></i></span><span class="jy-sr">${esc(c.menu)}</span></button>
   <nav class="jy-menu" id="jy-menu" aria-label="${esc(c.menu)}">
     <ul>
@@ -117,7 +119,7 @@ ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href
     <p class="jy-langs" aria-label="${esc(c.languages)}">${langLinks}</p>
   </nav>
 </header>
-<nav class="jy-rail" aria-label="${esc(c.menu)}"><ol>${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `<li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}"><span>${esc(c.rail[k])}</span><i aria-hidden="true"></i></a></li>`).join('')}</ol></nav>
+<nav class="jy-rail" aria-label="${esc(c.chapters || c.menu)}"><ol>${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `<li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}"><span>${esc(c.rail[k])}</span><i aria-hidden="true"></i></a></li>`).join('')}</ol></nav>
 <div class="jy-track" id="jy-track" aria-hidden="true"></div>
 <main class="jy" id="journey">
 <div class="jy-stage" id="jy-stage">
@@ -139,7 +141,7 @@ ${grain}
   <h2 class="jy-chl" id="jy-h-tale">${esc(c.rail.tale)}</h2>
   <div class="jy-chat jy-voice" aria-live="polite">
     ${bubble('jy-hello', lines(c.intro.hello))}
-    <div class="jy-say jy-card-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
+    <div class="jy-say jy-card-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
     ${bubble('jy-types', `<b>${esc(c.intro.typesLabel)}</b><small>${c.intro.types.map(esc).join('<br>')}</small>`)}
     ${logos.length ? bubble('jy-clients', `<b>${esc(c.clients)}</b><span class="jy-logo-row">${logos.map((l) => `<img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy">`).join('')}</span>`) : ''}
   </div>
@@ -161,12 +163,12 @@ ${c.caseStudy ? (() => {
     const cs = c.caseStudy, w = works.find((x) => x.slug === cs.slug), st = Object.fromEntries(cs.steps.map((x) => [x.kind, x]));
     const face = w ? `<span class="jy-av jy-av-them"><img src="/${esc(w.thumb)}" alt=""></span>` : avatar();
     return `  <div class="jy-case jy-voice" aria-live="polite">
-    <div class="jy-say jy-them jy-case-req" id="jy-case-req">${face}<p class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-step-l">${esc(cs.eyebrow)} · ${esc(cs.title)}</span><span class="jy-case-who">${esc(st.request.label)}</span>${esc(st.request.text)}</span></p></div>
+    <div class="jy-say jy-them jy-case-req" id="jy-case-req">${face}<p class="jy-bub"><span class="jy-tx"><span class="jy-step-l">${esc(cs.eyebrow)} · ${esc(cs.title)}</span><span class="jy-case-who">${esc(st.request.label)}</span>${esc(st.request.text)}</span></p></div>
     <ol class="jy-case-marks">
       <li class="jy-case-mark" id="jy-case-m0"><span>${esc(st.strength.label)}</span>${esc(st.strength.text)}</li>
       <li class="jy-case-mark" id="jy-case-m1"><span>${esc(st.question.label)}</span><b>${esc(st.question.text)}</b></li>
     </ol>
-    <div class="jy-say jy-case-ans" id="jy-case-ans">${avatar()}<div class="jy-bub"><span class="jy-typing" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-tx"><span class="jy-case-who">${esc(st.answer.label)}</span><b>${esc(st.answer.text)}</b><small>${esc(cs.lesson)}</small>${w ? `<button type="button" class="jy-btn jy-btn-ink jy-case-btn" data-open="${esc(w.slug)}">${esc(cs.listenLabel)}</button>` : ''}</span></div></div>
+    <div class="jy-say jy-case-ans" id="jy-case-ans">${avatar()}<div class="jy-bub"><span class="jy-tx"><span class="jy-case-who">${esc(st.answer.label)}</span><b>${esc(st.answer.text)}</b><small>${esc(cs.lesson)}</small>${w ? `<button type="button" class="jy-btn jy-btn-ink jy-case-btn" data-open="${esc(w.slug)}">${esc(cs.listenLabel)}</button>` : ''}</span></div></div>
   </div>`;
   })() : ''}
 </section>
@@ -179,7 +181,9 @@ ${c.caseStudy ? (() => {
   <h2 class="jy-chl" id="jy-h-record">${esc(labels[4])}</h2>
   <div class="jy-voice" aria-live="polite">${bubble('jy-found', lines(c.found))}</div>
   <p class="jy-hint" id="jy-hint">${esc(c.turnHint)}</p>
+  <button type="button" class="jy-fbtn" id="jy-fbtn" aria-expanded="false" aria-controls="jy-filters">${esc(c.filter)}</button>
   <div class="jy-filters" id="jy-filters">
+    <p class="jy-fhead"><b>${esc(c.filter)}</b><button class="jy-x jy-fclose" type="button" id="jy-fclose" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button></p>
     <div class="jy-frow" role="group" aria-label="${esc(c.fieldCaption)}"><span class="jy-fcap" aria-hidden="true">${esc(c.fieldCaption)}</span>${['all', 'game', 'artist', 'original'].map((f) => `<button type="button" class="jy-fchip" data-field="${f}" aria-pressed="${f === 'all'}">${esc(f === 'all' ? c.all : field(f))}</button>`).join('')}</div>
     <div class="jy-frow jy-frow-sub" role="group" aria-label="${esc(c.roleCaption)}"><span class="jy-fcap" aria-hidden="true">${esc(c.roleCaption)}</span>${['all', 'produce', 'compose', 'arrange', 'lyrics'].map((r) => `<button type="button" class="jy-fchip" data-role="${r}" aria-pressed="${r === 'all'}">${esc(r === 'all' ? c.all : c.roles[r])}</button>`).join('')}</div>
   </div>
@@ -195,6 +199,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
     <p class="jy-ro-a" id="jy-ro-a"></p>
     <p class="jy-ro-m" id="jy-ro-m"></p>
     <p class="jy-ro-r" id="jy-ro-r"></p>
+    <div class="jy-ro-trk" id="jy-ro-trk" role="group" hidden></div>
     <div class="jy-ro-btns"><button type="button" class="jy-btn jy-btn-ink" id="jy-ro-play">${esc(c.listen)}</button><button type="button" class="jy-btn" id="jy-ro-open">${esc(c.detail)}</button></div>
     <div class="jy-ro-nav"><button type="button" class="jy-round" id="jy-ro-prev" aria-label="${esc(c.prev)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-round" id="jy-ro-next" aria-label="${esc(c.next)}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="jy-btn jy-btn-quiet" id="jy-view" aria-pressed="false" data-on="${esc(c.recordView)}" data-off="${esc(c.listView)}">${esc(c.listView)}</button></div>
   </div>
@@ -209,8 +214,10 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
   <h2 class="jy-chl" id="jy-h-epi">${esc(labels[5])}</h2>
   <div class="jy-voice" aria-live="polite">${bubble('jy-empty', lines(c.empty))}</div>
   <div class="jy-contact" id="jy-contact">
+    <button class="jy-x jy-cclose" type="button" id="jy-cclose" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
     <h3 class="jy-ct">${lines(c.contactTitle)}</h3>
     <p class="jy-form-note">${esc(c.form.mailNote)}</p>
+    <button type="button" class="jy-btn jy-fopen" id="jy-fopen" aria-controls="jy-form" aria-expanded="false">${esc(c.writeUs)}</button>
     <form class="jy-form" id="jy-form" novalidate>
       ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}">`)}
       ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email">`)}
@@ -231,6 +238,7 @@ ${works.map((w, i) => `      <li class="jy-sw" data-i="${i}" data-slug="${esc(w.
 
 <div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core">${signal}</span></div></div>${charm('jy-charm-cd')}</div>
 <div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span></div>
+<div class="jy-scrim" id="jy-scrim" hidden></div>
 <div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
 </div>
 </main>

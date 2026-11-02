@@ -20,16 +20,17 @@
   const COPY = DATA.copy, WORKS = DATA.works;
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.8], case: [4.8, 6.2], music: [6.2, 8.6], record: [8.6, 12.6], done: [12.6, 13.5], epi: [13.5, 14.5] };
-  const TOTAL = 14.5;
+  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.8], case: [4.8, 6.2], music: [6.2, 7.8], record: [7.8, 11.8], done: [11.8, 12.7], epi: [12.7, 13.7] };
+  const TOTAL = 13.7;
   const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const html = document.documentElement, body = document.body;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const wideQuery = matchMedia('(min-width: 761px)');
-  const STAGE = wideQuery.matches;
+  // the stage needs room across: a screen taller than it is wide reads the story as one column
+  // with script, every screen gets the stage; narrow and upright screens get its narrow layout (NARROW, below)
+  const STAGE = true;
   const LANG = body.dataset.lang || 'kr';
   const BASE = body.dataset.base || '/preview';
   const ASSET = body.dataset.assets || '/';
@@ -41,8 +42,6 @@
   const on = (el, v) => el && el.classList.toggle('on', !!v);
 
   if (STAGE) html.classList.add('jy-stage-mode');
-  // crossing the breakpoint changes the whole layout; start again in the right one
-  wideQuery.addEventListener('change', () => location.reload());
 
   /* ---------------- audio ---------------- */
   const audio = new Audio();
@@ -256,6 +255,8 @@
     $$('.jy-fchip[data-field]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.field === filter.field)));
     $$('.jy-fchip[data-role]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.role === filter.role)));
     $$('.jy-sw').forEach((li) => li.classList.toggle('dim', !lit(bySlug[li.dataset.slug])));
+    const chosen = $$('.jy-fchip[aria-pressed="true"]').filter((b) => (b.dataset.field || b.dataset.role) !== 'all').map((b) => b.textContent.trim());
+    $('#jy-fbtn').textContent = [COPY.filter, ...chosen].join(' · ');
     if (STAGE) stage.paintRecord();
   }
   $$('.jy-fchip').forEach((b) => b.addEventListener('click', () => {
@@ -284,7 +285,7 @@
     const subject = (contact.mailSubject || 'TALETONE MUSIC') + ' — ' + value('project');
     const mailto = () => { location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n')); };
     const done = () => {
-      rec.classList.add('lit'); on(banner, true); say(STAGE ? '' : COPY.received);
+      rec.classList.add('lit'); on(banner, true); say(STAGE && !html.classList.contains('jy-narrow') ? '' : COPY.received);
       $('#jy-rewind').hidden = false;
       setTimeout(() => on(banner, false), 6000);
     };
@@ -330,12 +331,40 @@
     const items = $$('.jy-sw', spiral);
     const N = items.length;
     let W = 0, H = 0, DPR = 1, T = 0, last = 0;
+    // NARROW: a phone or an upright screen. The scene keeps to the upper part (horizon HZ higher), the words to the
+    // bottom, the record sits in the middle above its card.
+    let NARROW = false, HZ = 0.46;
     let palette = [];
     let chapter = '', caseOffer = false, recBuilt = false;
     const CASE = ($('.jy-case-btn') || {}).dataset ? $('.jy-case-btn').dataset.open : null;
     const rail = $$('.jy-rail a'), railOf = { pro: 'pro', tale: 'tale', tone: 'tone', case: 'tone', music: 'tone', record: 'record', done: 'record', epi: 'epi' };
+    // ---- on a phone: a chapter chip and a progress line instead of the rail, sheets instead of panels ----
+    const mchap = $('#jy-mchap'), mprog = $('#jy-mprog'), fbtn = $('#jy-fbtn'), filtersEl = $('#jy-filters'), scrim = $('#jy-scrim');
+    const contactEl = $('#jy-contact'), fopen = $('#jy-fopen');
+    mchap.addEventListener('click', (e) => { e.stopPropagation(); setMenu(true); });
+    let sheet = null, sheetY = 0;
+    // one sheet at a time: the filters, or the inquiry (which also holds the page still, so typing never scrolls the story)
+    function setSheet(which, opener) {
+      if (sheet === which) return;
+      if (sheet === 'form') { html.classList.remove('jy-held'); frozenU = null; scrollTo(0, sheetY); }
+      sheet = which;
+      filtersEl.classList.toggle('open', which === 'filters'); fbtn.setAttribute('aria-expanded', String(which === 'filters'));
+      contactEl.classList.toggle('open', which === 'form'); fopen.setAttribute('aria-expanded', String(which === 'form'));
+      scrim.hidden = which !== 'filters';
+      if (which === 'form') { sheetY = scrollY; frozenU = U(); html.classList.add('jy-held'); setTimeout(() => $('#jy-f-project').focus({ preventScroll: true }), 60); }
+      if (which === 'filters') setTimeout(() => $('.jy-fchip[aria-pressed="true"]', filtersEl)?.focus({ preventScroll: true }), 60);
+      if (!which && opener) opener.focus({ preventScroll: true });
+    }
+    fbtn.addEventListener('click', () => setSheet(sheet === 'filters' ? null : 'filters'));
+    $('#jy-fclose').addEventListener('click', () => setSheet(null, fbtn));
+    scrim.addEventListener('click', () => setSheet(null, fbtn));
+    fopen.addEventListener('click', () => setSheet('form'));
+    $('#jy-cclose').addEventListener('click', () => setSheet(null, fopen));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet) setSheet(null, sheet === 'form' ? fopen : fbtn); });
 
-    const U = () => { const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
+    // while the inquiry sheet is open the story holds still, whatever the browser does to the scroll as fields take focus
+    let frozenU = null;
+    const U = () => { if (frozenU != null) return frozenU; const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
     const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
     const goU = (u, smooth = true) => scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' });
 
@@ -384,7 +413,7 @@
     let tail = { T: [0, 0], tg: [1, 0], L: 0 };
     function tailAt(z) {
       const cz = PEN.music[1] - AHEAD, s = clamp((z - TAIL) / (PEN.music[1] - TAIL)), d = Math.max(0.2, z - cz) / F3;
-      return [(tail.T[0] - tail.tg[0] * tail.L * (1 - s) - W / 2) * d, (tail.T[1] - tail.tg[1] * tail.L * (1 - s) - H * 0.46) * d + YS];
+      return [(tail.T[0] - tail.tg[0] * tail.L * (1 - s) - W / 2) * d, (tail.T[1] - tail.tg[1] * tail.L * (1 - s) - H * HZ) * d + YS];
     }
     // the constellation: stars at fixed points, the line runs straight from one to the next
     const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const out = []; for (let z = S0 + 1.2; z < 50; z += 1.5 + r() * 0.5) out.push([-0.4 + (r() - 0.5) * 1.6, YS - 0.55 + (r() - 0.5) * 1.1, z]); return out; })();
@@ -409,14 +438,15 @@
       return [x, y, z];
     }
     let penZ = PEN.tale[0], camX = 0, camY = 0, camZ = -1, F3 = 800;
-    const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
+    const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * HZ + (p[1] - camY) * s3, dz]; };
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
     let mounts = [], birds = [], rocks = [], fish = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
     let spaceDark = 0, lineRGB = INK;
     const dots = [];
     function buildWorld() {
-      F3 = Math.min(W, H * 1.6) * 0.62;
+      F3 = Math.min(NARROW ? Math.max(W, H * 0.75) : W, H * 1.6) * 0.62;
+      const dens = NARROW ? 0.55 : 1;
       let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
       const G1 = ZS, G2 = S0;
       // far ranges: triangular peaks, snow where they are highest
@@ -463,21 +493,21 @@
       rocks = [];
       for (let z = SHELF0 + 0.3; z < SHELF + 0.4; z += 0.6 + rnd() * 0.8) rocks.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.6 + rnd() * 3), z, r: 0.18 + rnd() * 0.4, c: (rnd() * 2) | 0, coral: rnd() < 0.45 });
       bubbles = [];
-      for (let i = 0; i < 70; i++) { const z = SHELF0 + 0.5 + rnd() * (SHELF - SHELF0 - 0.5); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
+      for (let i = 0; i < Math.round(70 * dens); i++) { const z = SHELF0 + 0.5 + rnd() * (SHELF - SHELF0 - 0.5); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
       fish = [];
       for (let k = 0; k < 9; k++) { const z = SINK + 3 + k * ((G2 - SINK - 6) / 9) + rnd(), y = deepY(z) + (rnd() - 0.5) * 3.4, x0 = (rnd() - 0.5) * 8, dir = rnd() < 0.5 ? -1 : 1, n = 4 + ((rnd() * 6) | 0), c = (rnd() * 3) | 0; for (let j = 0; j < n; j++) fish.push({ z: z + (rnd() - 0.5) * 0.9, y: y + (rnd() - 0.5) * 0.5, x0: x0 + (rnd() - 0.5) * 1.1, dir, c, ph: rnd() * 6, sz: 0.05 + rnd() * 0.035 }); }
       jellies = [];
       for (let z = 20; z < G2 - 1.5; z += 0.9 + rnd()) jellies.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.5 + rnd() * 2.2), y: deepY(z) + (rnd() - 0.5) * 2.6, z, r: 0.13 + rnd() * 0.15, c: (rnd() * 3) | 0, ph: rnd() * 6 });
       glows = [];
-      for (let i = 0; i < 170; i++) { const z = 21 + rnd() * (G2 + 1 - 21); glows.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 7, y: deepY(z) + (rnd() - 0.5) * 5, z, c: (rnd() * 3) | 0, s: rnd() }); }
+      for (let i = 0; i < Math.round(170 * dens); i++) { const z = 21 + rnd() * (G2 + 1 - 21); glows.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 7, y: deepY(z) + (rnd() - 0.5) * 5, z, c: (rnd() * 3) | 0, s: rnd() }); }
       snow = [];
-      for (let i = 0; i < 220; i++) { const z = G1 + rnd() * (G2 + 1 - G1); snow.push({ x: (rnd() - 0.5) * 9, y: deepY(z) + (rnd() - 0.5) * 7, z, ph: rnd() }); }
+      for (let i = 0; i < Math.round(220 * dens); i++) { const z = G1 + rnd() * (G2 + 1 - G1); snow.push({ x: (rnd() - 0.5) * 9, y: deepY(z) + (rnd() - 0.5) * 7, z, ph: rnd() }); }
       nebulae = [[G2 + 6, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 10, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 15, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 19, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y: y + YS, r, c }));
       milky = [];
-      for (let i = 0; i < 520; i++) { const t = rnd(), sp = (rnd() + rnd() + rnd() - 1.5) * 0.9; milky.push({ x: -9 + t * 18, y: YS - 3.2 + t * 2.6 + sp, z: G2 + 22 + rnd() * 6, s: rnd() }); }
+      for (let i = 0; i < Math.round(520 * dens); i++) { const t = rnd(), sp = (rnd() + rnd() + rnd() - 1.5) * 0.9; milky.push({ x: -9 + t * 18, y: YS - 3.2 + t * 2.6 + sp, z: G2 + 22 + rnd() * 6, s: rnd() }); }
       bodies = [{ kind: 'ring', z: G2 + 7.5, x: 2.3, y: YS + -1.5, r: 0.55, c: [214, 200, 246], c2: [246, 206, 226] }, { kind: 'moon', z: G2 + 12, x: -2.6, y: YS + -1.9, r: 0.42, c: [252, 238, 196] }, { kind: 'ring', z: G2 + 16.5, x: -2.0, y: YS + 0.9, r: 0.32, c: [186, 226, 236], c2: [252, 232, 170] }];
       stars = [];
-      for (let i = 0; i < 300; i++) stars.push({ x: (rnd() - 0.5) * 12, y: YS - 3.4 + rnd() * 5.2, z: G2 - 1 + rnd() * 26, s: rnd(), sparkle: rnd() < 0.14, c: (rnd() * 3) | 0 });
+      for (let i = 0; i < Math.round(300 * dens); i++) stars.push({ x: (rnd() - 0.5) * 12, y: YS - 3.4 + rnd() * 5.2, z: G2 - 1 + rnd() * 26, s: rnd(), sparkle: rnd() < 0.14, c: (rnd() * 3) | 0 });
     }
 
     // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
@@ -495,14 +525,14 @@
     const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
     let leadOf = null;
     function placeAnchors() {
-      const slotX = W * 0.58, bottom = H * 0.64;
+      const slotX = NARROW ? 16 : W * 0.58, bottom = NARROW ? H - 24 : H * 0.64, ceil = NARROW ? H * 0.34 : 0;
 
       let latest = -1;
       ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
       const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && penZ > ANCHORS[latest].z + 4.5;
       // a tall thread sits lower so its first message stays on screen
       const stack = ANCHORS.reduce((t, a, i) => t + (!gone && i <= latest && groupOf(a.z) === g ? (a.h || a.el.offsetHeight) + 10 : 0), 0);
-      let y = Math.min(H - 28, Math.max(bottom, stack + 84));
+      let y = NARROW ? bottom : Math.min(H - 28, Math.max(bottom, stack + 84));
       leadOf = null;
       for (let i = ANCHORS.length - 1; i >= 0; i--) {
         const a = ANCHORS[i], shown = !gone && i <= latest && groupOf(a.z) === g;
@@ -511,6 +541,8 @@
         a.el.classList.toggle('older', shown && i !== latest);
         // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
         if (!shown) { a.el.style.setProperty('--aa', '0'); a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', (bottom - a.h + 18).toFixed(1) + 'px'); a.el.style.setProperty('--as', '1'); continue; }
+        // (on a narrow screen the older ones give way once the thread would climb into the scene)
+        if (NARROW && i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); a.el.style.setProperty('--aa', '0'); continue; }
         y -= a.h;
         a.el.style.setProperty('--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
         a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', '1');
@@ -539,7 +571,7 @@
     const TREE = [136, 190, 146], FLOWER = [[248, 186, 204], [252, 226, 150], [255, 255, 255]];
     const JELLY = ['246,190,222', '204,192,250', '172,230,240'], GLOW = ['150,236,240', '246,180,226', '240,236,170'];
     function seaBackdrop(a) {
-      const k = passed(8, 0.5), dk = dkAt(camZ + 2), hz = H * 0.46, t = reduce ? 0 : T;
+      const k = passed(8, 0.5), dk = dkAt(camZ + 2), hz = H * HZ, t = reduce ? 0 : T;
       const f1 = clamp(dk / 0.55), f2 = clamp((dk - 0.55) / 0.45);
       const stop = (n) => `rgba(${SEA[n][0].map((v, i) => Math.round(lerp(lerp(lerp(v, SEA[n][1][i], k), SEA_DEEP[n][i], f1), ABYSS[n][i], f2))).join(',')},${a})`;
       const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, stop('top')); g.addColorStop(0.46, stop('mid')); g.addColorStop(1, stop('bot'));
@@ -569,7 +601,7 @@
     }
     const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < far; };
     // the three worlds, each drawn whole from the same camera: 0 land, 1 sea, 2 space
-    const spaceFade = () => 1 - ease(clamp((penZ - 47.8) / 1.1));
+    const spaceFade = () => 1 - ease(clamp((penZ - 48.2) / 0.7));
     function backdrop(w, A) {
       if (w === 0) {
         const k = passed(2, 0) * A, g = ctx.createLinearGradient(0, 0, 0, H);
@@ -592,7 +624,7 @@
         for (const m of milky) { const q = V([m.x, m.y, m.z]); if (!q) continue; ctx.fillStyle = `rgba(230,232,250,${(0.25 + 0.5 * m.s) * d * (reduce ? 0.8 : 0.75 + 0.25 * Math.sin(T * 2 + m.s * 40))})`; ctx.fillRect(q[0], q[1], 1.2, 1.2); }
         for (const b of bodies) {
           const q = V([b.x, b.y, b.z]); if (!q || q[2] < 0.6 || q[2] > FAR3) continue;
-          const R = b.r * F3 / q[2], k = passed(b.z - 4), a = d * fogA(q[2]) * clamp((penZ - (b.z - 12)) / 2);
+          const R = b.r * F3 / q[2], k = passed(b.z - 4), a = d * fogA(q[2]) * clamp((penZ - (b.z - 12)) / 2) * clamp(1 - (R - H * 0.1) / (H * 0.1));
           ctx.fillStyle = tint(b.c, k, 0.95 * a); ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill();
           if (b.kind === 'moon') { ctx.fillStyle = `rgba(22,25,50,${a})`; ctx.beginPath(); ctx.arc(q[0] + R * 0.42, q[1] - R * 0.18, R * 0.92, 0, Math.PI * 2); ctx.fill(); }
           else { ctx.save(); ctx.translate(q[0], q[1]); ctx.rotate(-0.38); ctx.strokeStyle = tint(b.c2, k, 0.9 * a); ctx.lineWidth = Math.max(1.5, R * 0.12); ctx.beginPath(); ctx.ellipse(0, 0, R * 1.9, R * 0.5, 0, Math.PI * 1.02, Math.PI * 1.98, true); ctx.stroke(); ctx.restore(); }
@@ -870,11 +902,12 @@
     const trackLayer = $('#jy-tracks');
     let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -1;
     function buildCurrent() {
-      const Rf = Math.min(W * 0.26, H * 0.37), size = clamp(H * 0.14, 92, 128);
-      cur = { cx: W * 0.36, cy: H * 0.5, F: Rf * VIEW, size, Rf };
+      const Rf = NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * 0.26, H * 0.37), size = NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
+      const cy0 = NARROW ? H * 0.31 : H * 0.5;
+      cur = { cx: NARROW ? W / 2 : W * 0.36, cy: cy0, cy0, F: Rf * VIEW, size, Rf };
       // where the staff begins on screen when the record opens: the world's line comes in there along the way the
       // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
-      { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, H * 0.5 + Math.sin(a) * r]; };
+      { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
         cur.off = 0; cur.off = -0.8 - ((HEAD / DZ) * TURN + r0);
         cur.off = Math.atan2(Math.sin(cur.off), Math.cos(cur.off));
         const T = at(HEAD), T2 = at(HEAD + 0.12), n = Math.hypot(T2[0] - T[0], T2[1] - T[1]) || 1;
@@ -904,14 +937,20 @@
     // whatever has passed the note in focus fades out, so nothing covers the words on the right
     const behind = (dz) => clamp((dz - VIEW * 0.45) / (VIEW * 0.4));
     const proj = (theta, z, camZ, roll, rad = 1) => { const dz = z - camZ; if (dz < NEAR) return null; const r = cur.Rf * rad * shrink(dz); return [cur.cx + Math.cos(theta + roll) * r, cur.cy + Math.sin(theta + roll) * r, dz]; };
-    // an album's tracks hang on an earphone cord that runs out of the album along the bottom, with a little coil
-    const cord = (n, fx) => { const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
+    // an album's tracks hang on an earphone cord that runs out of the album along the bottom
+    const cord = (n, fx) => {
+      if (NARROW) {
+        // on a narrow screen: one or two rows across, just above the record's card
+        const top = (readout.getBoundingClientRect().top || H * 0.7) - 52, rows = n > 6 ? 2 : 1, per = Math.ceil(n / rows), sp = Math.min(64, (W - 56) / per);
+        return Array.from({ length: n }, (_, j) => { const r = Math.floor(j / per), c = j % per; return [W - 34 - (c + 0.5) * sp - (r ? sp / 2 : 0), top - r * 58 + Math.sin(c * 1.35 + 0.6) * 6]; });
+      }
+      const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
       const k = recK, focusZ = k * DZ;
       const dive = ease((lr - 0.02) / 0.1), out = ease((lr - 0.92) / 0.08);
       // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
       const camZ = lerp(-VIEW - 2.2, focusZ - VIEW, dive) + out * 3.5;
-      cur.cx = lerp(W / 2, W * 0.36, dive); cur.cy = H * 0.5;
+      cur.cx = lerp(W / 2, NARROW ? W / 2 : W * 0.36, dive); cur.cy = cur.cy0;
       const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);
       cur.camZ = camZ; cur.roll = roll;
       // the pen draws the staff forward from its head; works appear once their part of the staff is drawn
@@ -929,7 +968,7 @@
       });
       const i = Math.round(k);
       if (i !== recShown) { recShown = i; showReadout(i); }
-      const near = Math.abs(k - i) < 0.32 && lr > 0.1 && lr < 0.92 && !list ? i : -1;
+      const near = Math.abs(k - i) < 0.32 && lr > 0.1 && lr < 0.92 && !list && !NARROW ? i : -1;
       Object.entries(trackEls).forEach(([j, box]) => {
         const show = Number(j) === near;
         box.classList.toggle('on', show);
@@ -993,19 +1032,15 @@
         ctx.globalAlpha = alpha * 0.45 * clamp((FAR - p[2]) / 6) * behind(p[2]); ctx.fillRect(p[0] - r / 2, p[1] - r / 2, r, r);
       }
       ctx.globalAlpha = 1;
-      // the album's earphone cord: out of the album, one coil, then along its tracks
+      // the album's earphone cord: out of the album and along its tracks
       if (albumOpen >= 0 && trackEls[albumOpen]) {
         const p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pitchOf(albumOpen))), n = $$('.jy-trk', trackEls[albumOpen]).length;
         if (p) {
-          const pts2 = cord(n, p[0]), c0 = [p[0] - 20, (p[1] + pts2[0][1]) / 2 + 10], rr = 13;
-          ctx.strokeStyle = `rgba(${INK},${0.85 * alpha})`; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(p[0], p[1] + (cur.size / 2) * Math.pow(VIEW / p[2], 0.8));
-          ctx.quadraticCurveTo(p[0] + 10, c0[1] - 30, c0[0], c0[1] - rr);
-          for (let t = 0; t <= Math.PI * 2 + 0.01; t += 0.2) ctx.lineTo(c0[0] - Math.sin(t) * rr, c0[1] - Math.cos(t) * rr); // the coil
-          let prev = [c0[0], c0[1] - rr];
+          const pts2 = cord(n, p[0]);
+          let prev = [p[0], p[1] + (cur.size / 2) * Math.pow(VIEW / p[2], 0.8)];
+          ctx.strokeStyle = `rgba(${INK},${0.85 * alpha})`; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(prev[0], prev[1]);
           for (const q of pts2) { const mx = (prev[0] + q[0]) / 2; ctx.bezierCurveTo(mx, prev[1] + 26, mx, q[1] + 26, q[0], q[1]); prev = q; }
           ctx.stroke();
-          // the winder that keeps the cord, as on the wire before
-          ctx.save(); ctx.translate(c0[0], c0[1] + rr + 2); ctx.fillStyle = 'rgba(254,254,254,1)'; ctx.lineWidth = 1.4; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(-12, -7, 24, 14, 7); else ctx.rect(-12, -7, 24, 14); ctx.fill(); ctx.stroke(); ctx.fillStyle = `rgba(${INK},${alpha})`; for (const dx of [-5, 0, 5]) { ctx.beginPath(); ctx.arc(dx, 0, 1.5, 0, Math.PI * 2); ctx.fill(); } ctx.restore();
         }
       }
     }
@@ -1017,6 +1052,18 @@
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
       $('#jy-ro-r').textContent = roleLine(w.roles);
       $('#jy-ro-play').hidden = !sourceOf(w);
+      // on a phone an album's tracks are chips in the card (the cord would cross the swirl)
+      const tr = $('#jy-ro-trk'); tr.textContent = '';
+      tr.hidden = !(NARROW && w.tracks.length > 1);
+      if (!tr.hidden) {
+        tr.setAttribute('aria-label', `${w.title} · ${COPY.albumTracks || COPY.tracks}`);
+        w.tracks.forEach((t, j) => {
+          const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-rtk'; b.disabled = !t.audio;
+          b.innerHTML = '<i></i><span></span>'; b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('span').textContent = t.title;
+          b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
+          tr.appendChild(b);
+        });
+      }
       sample(w);
       syncReadout();
     }
@@ -1025,6 +1072,7 @@
       const w = bySlug[items[recShown].dataset.slug], p = isPlaying(w.slug);
       $('#jy-ro-play').textContent = p ? COPY.pause : COPY.listen;
       $('#jy-ro-play').setAttribute('aria-pressed', String(p));
+      $$('#jy-ro-trk .jy-rtk').forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j))));
     }
     listeners.add(syncReadout);
     $('#jy-ro-play').addEventListener('click', () => { const w = bySlug[items[recShown].dataset.slug]; if (isPlaying(w.slug)) pause(); else play(w); });
@@ -1061,10 +1109,12 @@
       const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
       const u = U();
       const ch = chapterOf(u);
-      if (ch !== chapter) { chapter = ch; syncInert(); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
+      mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
+      if (ch !== chapter) { chapter = ch; syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
       // Prologue: fall into the phone
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 224, H / 504) * 1.08;
-      phone.style.transform = `translateX(${-W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${Math.pow(cover, ease((ip - 0.3) / 0.7))})`;
+      const ps = NARROW ? Math.min(1, (H * 0.47) / 520, (W - 40) / 240) : 1;
+      phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * Math.pow(cover / ps, ease((ip - 0.3) / 0.7))})`;
       card.style.transform = `rotateY(${180 * ease(ip / 0.28)}deg)`;
       phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
       phone.tabIndex = ip > 0.3 ? -1 : 0;
@@ -1089,7 +1139,7 @@
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
-      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
+      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
       on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
       if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
       else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
@@ -1099,18 +1149,19 @@
       markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
       on($('#jy-letter'), ld > 0.1 && ld < 0.92);
       if (lr > 0.8 && !recBuilt) buildRecordWash();
-      const RR = Math.min(W, H) * 0.34;
+      // the phone (520px with its charm below) keeps inside short screens
+      const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.6) / 590) : Math.min(1, (H - 110) / 590);
       if (ld > 0 && le <= 0) {
-        const s0 = (2 * RR) / 192, s = lerp(s0, 1, ease(ld / 0.7));
-        frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = '50%';
+        const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
+        frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 43, ease(ld / 0.7)) + '%' : '50%';
         const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
       } else if (le > 0) {
-        frame.style.opacity = '1'; frame.style.transform = `scale(${lerp(1, 1.25, ease(le / 0.3))})`; frame.style.left = '72%'; frame.style.top = '50%';
+        frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 590), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = '50%';
         frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
       } else frame.style.opacity = '0';
       // Epilogue
-      on($('#jy-empty'), le > 0.05 && le < 0.4);
-      on($('#jy-contact'), le > 0.2);
+      on($('#jy-empty'), le > 0.05 && le < 0.3);
+      on($('#jy-contact'), le > 0.32);
 
       // ---- canvas ----
       ctx.clearRect(0, 0, W, H);
@@ -1119,7 +1170,9 @@
       if (worldA > 0) drawWorld(worldA);
     }
     function resize() {
-      DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+      W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
+      html.classList.toggle('jy-narrow', NARROW);
+      DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
       cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1;
     }

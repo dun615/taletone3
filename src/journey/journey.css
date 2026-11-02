@@ -44,9 +44,6 @@ img{max-width:100%}
 .jy-say{display:flex;align-items:flex-end;gap:12px;margin:0;max-width:min(540px,100%);font-size:clamp(18px,1.55vw,22px);line-height:1.5}
 .jy-bub{display:grid;margin:0;background:var(--tt-case);color:var(--tt-ink);border-radius:22px 22px 22px 6px;padding:14px 20px;box-shadow:inset 0 0 0 1px rgba(159,161,166,.7)}
 .jy-bub>*{grid-area:1/1}
-.jy-typing{display:none;gap:5px;align-items:center;align-self:center;justify-self:start}
-.jy-typing i{width:7px;height:7px;border-radius:50%;background:var(--tt-silver-dark);animation:jy-dot 1s ease-in-out infinite}
-.jy-typing i:nth-child(2){animation-delay:.15s}.jy-typing i:nth-child(3){animation-delay:.3s}
 .jy-tx b{display:block;font-size:18px}
 .jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
 .jy-fact-v{display:inline!important;font-family:var(--tt-display);font-size:22px!important;margin-right:4px}
@@ -113,7 +110,7 @@ img{max-width:100%}
 .jy-cd{width:24px;height:24px;border-radius:50%;transform:rotate(-45deg);position:relative;overflow:hidden;background:conic-gradient(#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);box-shadow:inset 0 0 0 1px rgba(121,124,133,.5)}
 .jy-cd::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,rgba(255,255,255,0) 0 1.5px,rgba(255,255,255,.35) 1.5px 2px)}
 .jy-cd::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgba(121,124,133,.6)}
-.jy-lead{margin:32px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center}
+.jy-lead{margin:72px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center}
 .jy-voice{display:flex;flex-direction:column;gap:12px}
 .jy-hint{margin:0;font-size:15px;color:var(--tt-ink-muted)}
 .jy-filters{display:flex;flex-direction:column;gap:8px}
@@ -227,7 +224,6 @@ img{max-width:100%}
 .jy-play:hover{transform:scale(1.06)}
 .jy-prog{flex:1;min-width:0;height:12px}
 
-@keyframes jy-dot{50%{opacity:.3;transform:translateY(-2px)}}
 @keyframes jy-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
 @keyframes jy-spin{to{transform:rotate(360deg)}}
 @keyframes jy-eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
@@ -266,15 +262,10 @@ img{max-width:100%}
 .jy-stage-mode .jy-noti{margin-bottom:58px}
 .jy-stage-mode .jy-lead{position:absolute;left:52%;top:50%;transform:translateY(-50%);width:min(500px,38vw);margin:0;padding:0;text-align:left;align-items:flex-start}
 
-/* messages arrive with a typing beat */
+/* messages rise into place */
 .jy-stage-mode .jy-voice{display:contents}
 .jy-stage-mode .jy-say{position:absolute;left:max(48px,6vw);bottom:14%;max-width:min(540px,58vw);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .7s var(--tt-spring);pointer-events:none}
 .jy-stage-mode .jy-say.on{opacity:1;transform:none}
-.jy-stage-mode .jy-typing{display:flex}
-.jy-stage-mode .jy-tx{opacity:0}
-.jy-stage-mode .jy-say.on .jy-tx{animation:jy-show .3s .75s forwards}
-.jy-stage-mode .jy-say.on .jy-typing{animation:jy-hide .2s .7s forwards}
-@keyframes jy-show{to{opacity:1}}@keyframes jy-hide{to{opacity:0;visibility:hidden}}
 
 
 
@@ -348,7 +339,7 @@ img{max-width:100%}
 /* the Epilogue */
 .jy-stage-mode .jy-contact{position:absolute;left:max(24px,10vw);top:50%;transform:translateY(-50%);width:min(460px,calc(100% - 48px));max-height:calc(100% - 120px);overflow:auto;padding:4px;opacity:0;pointer-events:none;transition:opacity .5s}
 .jy-stage-mode .jy-contact.on{opacity:1;pointer-events:auto}
-.jy-stage-mode .jy-ch[data-ch="epi"] .jy-say{bottom:auto;top:16%;left:auto;right:max(48px,6vw)}
+.jy-stage-mode .jy-ch[data-ch="epi"] .jy-say{bottom:auto;top:42%}
 .jy-stage-mode .jy-banner{display:flex;position:absolute;left:50%;top:22px;z-index:6;width:min(420px,calc(100% - 48px));transform:translate(-50%,-180%);opacity:0;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:20px;background:var(--tt-case);color:var(--tt-ink);box-shadow:inset 0 0 0 1px rgba(159,161,166,.7),0 10px 30px rgba(0,0,0,.25);transition:transform .7s var(--tt-spring),opacity .3s;line-height:1.5}
 .jy-stage-mode .jy-banner.on{transform:translate(-50%,0);opacity:1}
 .jy-banner b{display:block;font-size:13px}.jy-banner p{margin:2px 0 0;font-size:15px}
@@ -362,8 +353,6 @@ img{max-width:100%}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .jy-stage-mode .jy-tx{opacity:1}
-  .jy-stage-mode .jy-typing{display:none}
 }
 
 /* the intro and the philosophy arrive as a chat: messages stack up, the newest at the bottom */
@@ -391,6 +380,9 @@ img{max-width:100%}
 .jy-rail a[aria-current] i{background:currentColor;transform:scale(1.25)}
 .jy-ink .jy-rail a{color:var(--tt-on-ink-muted)}
 .jy-ink .jy-rail a:hover,.jy-ink .jy-rail a[aria-current]{color:var(--tt-on-ink)}
+/* a quiet backing, so the chapters stay readable over any sky, sea or night */
+.jy-stage-mode .jy-rail ol{padding:6px 2px;border-radius:22px;background:rgba(254,254,254,.74);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.22);transition:background .3s,box-shadow .3s}
+.jy-ink .jy-rail ol{background:rgba(20,28,48,.58);box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-chat .jy-say.on{animation:none}}
 
 /* first screen: what we do and the two ways in, beside the phone */
@@ -467,9 +459,6 @@ img{max-width:100%}
 .jy-stage-mode .jy-case-marks{position:absolute;inset:0}
 .jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .3s ease,transform .55s var(--tt-spring)!important;animation:none!important;pointer-events:none;will-change:transform,opacity}
 .jy-stage-mode [data-anchor]:not(.on){transition:opacity .2s ease!important}
-/* no typing dots on the stage: the words show at once, whatever the scroll speed */
-.jy-stage-mode [data-anchor] .jy-typing{display:none!important}
-.jy-stage-mode [data-anchor] .jy-tx{opacity:1!important;animation:none!important}
 .jy-stage-mode [data-anchor].older .jy-bub::before{opacity:0}
 .jy-stage-mode .jy-track{position:relative}
 .jy-stage-mode [data-anchor].on{pointer-events:auto}
@@ -477,3 +466,73 @@ img{max-width:100%}
 /* the case notes keep ink text on their paper, even on the night sky */
 .jy-case-mark{color:var(--tt-ink)}
 .jy-stage-mode .jy-case-mark[data-anchor]{background:rgba(254,254,254,.96)}
+
+/* ---- the stage on a phone or an upright screen (html.jy-narrow, set by the script) ----
+   The scene keeps to the upper part, the words to the bottom; the record sits in the middle above its card. */
+.jy-narrow.jy-stage-mode .jy-lead{left:50%;top:auto;bottom:max(28px,5vh);transform:translateX(-50%);width:calc(100% - 40px);text-align:center;align-items:center}
+.jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(24px,7vw,32px)}
+.jy-narrow.jy-stage-mode .jy-phone{top:34%}
+.jy-narrow.jy-stage-mode [data-anchor]{max-width:min(520px,calc(100vw - 32px))!important;font-size:16px}
+.jy-narrow.jy-stage-mode .jy-say{left:16px;right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:min(520px,calc(100vw - 32px));z-index:30}
+.jy-narrow.jy-stage-mode .jy-ch[data-ch="epi"] .jy-say{top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
+.jy-narrow.jy-stage-mode .jy-hint{left:16px;bottom:max(64px,8%)}
+.jy-narrow.jy-stage-mode .jy-fchip{flex:none;height:32px;padding:0 12px;font-size:13px}
+.jy-narrow.jy-stage-mode .jy-frow-sub .jy-fchip{height:30px}
+.jy-narrow.jy-stage-mode .jy-readout{left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:520px;margin:0 auto;padding:14px 16px;transform:translateY(10px)}
+.jy-narrow.jy-stage-mode .jy-readout.on{transform:none}
+.jy-narrow.jy-stage-mode .jy-np{left:max(16px,env(safe-area-inset-left,0px));top:calc(62px + env(safe-area-inset-top,0px));max-width:calc(100vw - 150px)}
+/* the record's card stays compact, so the swirl keeps the screen: words on top, every button on one row */
+.jy-narrow.jy-stage-mode .jy-readout{flex-flow:row wrap;align-items:center;column-gap:6px;padding:12px 14px}
+.jy-narrow.jy-stage-mode .jy-readout>p,.jy-narrow.jy-stage-mode .jy-readout>h2,.jy-narrow.jy-stage-mode .jy-readout>h3{flex:1 0 100%}
+.jy-narrow.jy-stage-mode .jy-ro-t{margin-top:4px;font-size:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.jy-narrow.jy-stage-mode .jy-ro-a{margin-top:2px;font-size:14px}
+.jy-narrow.jy-stage-mode .jy-ro-m{display:none}
+.jy-narrow.jy-stage-mode .jy-ro-r{margin-top:6px;font-size:12px}
+.jy-narrow.jy-stage-mode .jy-ro-btns,.jy-narrow.jy-stage-mode .jy-ro-nav{margin-top:10px;gap:6px;flex-wrap:nowrap}
+.jy-narrow.jy-stage-mode .jy-ro-nav{margin-left:auto}
+.jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:36px;padding:0 12px;font-size:13px}
+.jy-narrow.jy-stage-mode .jy-readout .jy-round{width:36px;height:36px}
+.jy-narrow.jy-stage-mode .jy-ro-nav .jy-btn{margin-left:0}
+.jy-narrow.jy-stage-mode .jy-fcap{flex:none;white-space:nowrap}
+
+/* ---- phone-only controls: a chapter chip and a progress line in place of the rail; sheets in place of panels ---- */
+.jy-mchap,.jy-mprog,.jy-fbtn,.jy-fhead,.jy-fopen,.jy-cclose,.jy-ro-trk{display:none}
+.jy-scrim{position:fixed;inset:0;z-index:1350;background:rgba(20,28,48,.32)}
+html.jy-held,html.jy-held body{overflow:hidden!important;overscroll-behavior:none}
+html.jy-held .jy-top{visibility:hidden}
+.jy-narrow.jy-stage-mode .jy-rail{display:none}
+.jy-narrow.jy-stage-mode .jy-mchap{display:inline-flex;align-items:center;height:32px;margin:0 auto 0 6px;padding:0 14px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:13px;font-weight:700;color:var(--tt-ink);cursor:pointer}
+.jy-narrow.jy-ink .jy-mchap{background:rgba(20,28,48,.6);border-color:rgba(255,255,255,.14);color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-mprog{display:block;position:fixed;left:0;right:0;top:0;height:3px;background:rgba(159,161,166,.22);pointer-events:none}
+.jy-mprog i{display:block;height:100%;background:var(--tt-ink);transform-origin:0 50%;transform:scaleX(0)}
+.jy-ink .jy-mprog i{background:var(--tt-on-ink)}
+/* the record: one filter button, its choices in a sheet from the bottom */
+.jy-narrow.jy-stage-mode .jy-fbtn{display:block;position:absolute;z-index:1200;left:auto;right:max(16px,env(safe-area-inset-right,0px));top:calc(62px + env(safe-area-inset-top,0px));max-width:calc(100% - 48px);height:36px;padding:0 16px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.94);font-size:13px;font-weight:700;color:var(--tt-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.jy-narrow.jy-stage-mode .jy-fbtn.on{opacity:1;transform:none;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;border:0;background:var(--tt-canvas);box-shadow:0 -10px 40px rgba(20,28,48,.16);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-spring)}
+.jy-narrow.jy-stage-mode .jy-filters.open{transform:none;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-fhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 4px;font-size:16px}
+.jy-narrow.jy-stage-mode .jy-fhead .jy-x{position:static}
+.jy-narrow.jy-stage-mode .jy-frow{flex-wrap:wrap;row-gap:6px}
+.jy-narrow.jy-stage-mode .jy-fchip{height:40px;font-size:14px}
+/* the card: an album's tracks as chips you can swipe through */
+.jy-narrow.jy-stage-mode .jy-ro-trk:not([hidden]){display:flex;flex:1 0 100%;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.jy-ro-trk::-webkit-scrollbar{display:none}
+.jy-rtk{flex:none;display:inline-flex;align-items:center;gap:6px;max-width:210px;height:36px;padding:0 12px 0 5px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-size:13px;cursor:pointer}
+.jy-rtk i{padding:5px 6px;border-radius:999px;background:var(--tt-case);font:700 11px/1 var(--tt-display);font-style:normal}
+.jy-rtk span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.jy-rtk[aria-pressed="true"]{background:var(--tt-ink);border-color:var(--tt-ink);color:var(--tt-on-ink)}
+.jy-rtk[aria-pressed="true"] i{background:rgba(255,255,255,.18)}
+.jy-rtk:disabled{opacity:.4;cursor:default}
+/* the list: a full-height sheet above which the card stays */
+.jy-narrow.jy-stage-mode .jy-record.list .jy-spiral{position:fixed;left:0;top:0;width:100%;height:100%;padding:calc(64px + env(safe-area-inset-top,0px)) 12px 260px;background:var(--tt-canvas);grid-template-columns:1fr;z-index:1150;overscroll-behavior:contain}
+/* the inquiry: a button, and the form in a full sheet that holds the page still while typing */
+.jy-narrow.jy-stage-mode .jy-contact{left:20px;width:min(520px,calc(100% - 40px))}
+.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-contact:not(.open) .jy-form>:not(.jy-mail){display:none}
+.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-ink);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-fopen{display:none}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-banner{z-index:1600}
+#discography:has(.jy-record.list) .jy-fbtn{display:none}
+.jy-narrow.jy-stage-mode .jy-readout{background:var(--tt-canvas)}
