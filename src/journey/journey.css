@@ -629,3 +629,13 @@ html.jy-held .jy-top{visibility:hidden}
 .jy-in{min-height:0}
 html.jy-held .jy-rail{visibility:hidden}
 .jy-narrow .jy-tab small{display:none}
+
+/* before the next place: the story waits and asks */
+.jy-ask{display:none}
+.jy-stage-mode .jy-ask{display:flex;align-items:center;gap:14px;position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:45;padding:8px 8px 8px 20px;border-radius:999px;background:rgba(254,254,254,.94);box-shadow:0 10px 30px rgba(20,28,48,.14),0 0 0 1px rgba(159,161,166,.3);font-size:14px;font-weight:700;color:var(--tt-ink);white-space:nowrap;transform:translate(-50%,12px);opacity:0;pointer-events:none;transition:opacity .35s,transform .45s var(--tt-spring)}
+.jy-stage-mode .jy-ask.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.jy-ask .jy-btn{height:38px;gap:6px;font-size:13px}
+.jy-ink .jy-ask{background:rgba(20,28,48,.86);color:var(--tt-on-ink);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.jy-ink .jy-ask .jy-btn{background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-ask{bottom:calc(18px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px);font-size:13px;gap:10px;padding:7px 7px 7px 16px}
+.jy-narrow.jy-asking .jy-say{bottom:calc(102px + env(safe-area-inset-bottom,0px))}

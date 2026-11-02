@@ -400,7 +400,7 @@
   /* ---------------- moving between scenes ---------------- */
   /* ---- Sound Engineering and ETC: the other work, as cards on a shelf over the record ----
      Each card is a video (its thumbnail turns into the player) or, without a video, the song's own audio. Sound
-     Engineering can be narrowed by role (every chosen role must be credited) and shows 12 more at a time. */
+     Engineering can be narrowed by role (every chosen role must be credited); both show 12 more at a time. */
   const shelf = $('#jy-shelf'), cards = $('#jy-cards'), moreBtn = $('#jy-more'), shelfRoles = new Set();
   let shelfG = null, shelfShown = 12, shelfReturn = null;
   const cardKey = (k) => (k === 'Inst Mix' ? 'Mix' : k);
@@ -434,7 +434,7 @@
   function renderShelf(focusKey) {
     const g = shelfG; if (!g) return;
     const list = g.items.filter((it) => [...shelfRoles].every((r) => it.keys.map(cardKey).includes(r)));
-    const shown = g.roles ? list.slice(0, shelfShown) : list;
+    const shown = list.slice(0, shelfShown);
     cards.replaceChildren(...shown.map((it) => cardEl(it, g)));
     const rest = list.length - shown.length; moreBtn.hidden = rest <= 0; moreBtn.innerHTML = `${esc(COPY.more)} <span>${rest}</span>`;
     const rr = $('#jy-shelf-roles'); rr.hidden = !g.roles; rr.textContent = '';
@@ -540,25 +540,27 @@
     const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
     // a jump (rail, menu, the record's arrows) passes through scene changes without playing them
     let navUntil = 0;
-    const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };
+    const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; if (asking) unask(); scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };
 
     /* ---- the story's two kinds of motion ----
        Reading belongs to the visitor: the scroll moves the words, at the visitor's pace. A change of scene belongs
-       to the story: one scroll at its edge and it plays through at its own pace (backwards when scrolling up), stops
+       to the story: one scroll down at its edge and it plays through at its own pace (going back up is plain scrolling), stops
        where the next words are, swallows the rest of that flick, and a small cue says it is the visitor's turn.
-       [from, to, ms] in story units; each 'to' is where the next words have just arrived. */
+       [from, to, ms, ask] in story units; each 'to' is where the next words have just arrived. Where a scene leaves
+       one place for the next (ask), the story first stops after the chapter's last words and asks whether to go on:
+       one more scroll down (a new one, not the rest of the last), the button or the down key goes on; up goes back. */
     const AUTO = [
       [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
       [0.33, 1.37, 2300],   // into the phone, onto the land: the first hello
-      [2.30, 3.36, 2800],   // up into the sky, a phone flies in, and it was the sea: the philosophy begins
-      [4.30, 5.42, 2800],   // down into the dark, a phone flies in, out into space: the request of a real project
-      [6.15, 7.70, 2400],   // along the stars to the record: found
+      [2.30, 3.36, 2800, 1],   // up into the sky, a phone flies in, and it was the sea: the philosophy begins
+      [4.30, 5.42, 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
+      [6.15, 7.70, 2400, 1],   // along the stars to the record: found
       [7.74, 8.20, 1500],   // the line splits in five and draws the staff: the first song
-      [11.50, 12.45, 2300], // past the last song, the record goes into the phone: the letter
-      [12.50, 12.88, 1100], // the empty seat
+      [11.50, 12.45, 2300, 1], // past the last song, the record goes into the phone: the letter
+      [12.50, 12.88, 1100, 1], // the empty seat
       [12.92, 13.25, 1000], // the inquiry
     ];
-    let auto = null, hold = null, lastU = 0, inputAt = 0;
+    let auto = null, hold = null, lastU = 0, inputAt = 0, asking = null;
     const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
     const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
     function runAuto(from, to, ms) { auto = { from, to, t0: performance.now(), d: reduce ? 0 : ms }; cue(false); }
@@ -570,19 +572,51 @@
       } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { hold = null; cue(true); }
     }
     const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
-    addEventListener('wheel', swallow, { passive: false });
-    addEventListener('touchmove', swallow, { passive: false });
+    // asking before the next place: the story waits at the scene's edge
+    const askEl = $('#jy-ask');
+    function ask(seg) { asking = { seg, t0: performance.now() }; scrollTo({ top: topFor(seg[0]), behavior: 'instant' }); lastU = seg[0]; askEl.classList.add('on'); html.classList.add('jy-asking'); $('#jy-ask-go').tabIndex = 0; cue(false); }
+    function unask() { if (!asking) return; asking = null; askEl.classList.remove('on'); html.classList.remove('jy-asking'); $('#jy-ask-go').tabIndex = -1; }
+    function goOn() { const s = asking && asking.seg; if (!s) return; unask(); runAuto(s[0], s[1], s[2]); }
+    $('#jy-ask-go').addEventListener('click', goOn);
+    addEventListener('wheel', (e) => {
+      if (asking) {
+        const now = performance.now(), fresh = now - inputAt > 260; inputAt = now;
+        if (e.deltaY < 0) { unask(); return; }
+        if (e.cancelable) e.preventDefault();
+        if (e.deltaY > 0 && fresh && now - asking.t0 > 500) goOn();
+        return;
+      }
+      swallow(e);
+    }, { passive: false });
+    let touchY = 0;
+    addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    addEventListener('touchmove', (e) => {
+      if (asking) {
+        const dy = touchY - e.touches[0].clientY; inputAt = performance.now();
+        if (dy < -12) { unask(); return; }
+        if (e.cancelable) e.preventDefault();
+        if (dy > 30 && performance.now() - asking.t0 > 500) goOn();
+        return;
+      }
+      swallow(e);
+    }, { passive: false });
+    addEventListener('keydown', (e) => {
+      if (!asking || e.target.closest('input,textarea,select')) return;
+      if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); if (performance.now() - asking.t0 > 300) goOn(); }
+      else if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) unask();
+    });
     addEventListener('keydown', (e) => { if ((auto || hold) && [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key) && !e.target.closest('input,textarea,select')) e.preventDefault(); });
     addEventListener('scrollend', () => { if (navUntil && !auto) { navUntil = 0; lastU = U(); } });
     addEventListener('scroll', () => {
       if (auto) return;
       const u = U();
       if (hold) { if (Math.abs(u - hold.u) > 0.002) scrollTo({ top: topFor(hold.u), behavior: 'instant' }); return; }
+      if (asking) { if (u < asking.seg[0] - 0.01) { unask(); lastU = u; } else if (Math.abs(u - asking.seg[0]) > 0.002) scrollTo({ top: topFor(asking.seg[0]), behavior: 'instant' }); return; }
       if (performance.now() < navUntil || frozenU != null) { lastU = u; return; }
       cue(false);
-      for (const [a, b, ms] of AUTO) {
-        if (lastU <= a + 0.003 && u > a && u < b) { runAuto(u, b, (ms * (b - u)) / (b - a)); break; }
-        if (lastU >= b - 0.003 && u < b && u > a) { runAuto(u, a, (ms * (u - a)) / (b - a)); break; }
+      // only going on plays a scene (from wherever in it the visitor is); going back is plain scrolling
+      if (u > lastU) for (const [a, b, ms, gate] of AUTO) {
+        if (u > a && u < b) { if (gate && lastU <= a + 0.003) ask([a, b, ms]); else runAuto(u, b, (ms * (b - u)) / (b - a)); break; }
       }
       lastU = u;
     }, { passive: true });
@@ -744,7 +778,7 @@
     const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
     let leadOf = null;
     function placeAnchors() {
-      const slotX = NARROW ? 16 : W * 0.58, bottom = NARROW ? H - 24 : H * 0.64, ceil = NARROW ? H * 0.34 : 0;
+      const slotX = NARROW ? 16 : W * 0.58, bottom = NARROW ? H - 24 - (asking ? 78 : 0) : H * 0.64, ceil = NARROW ? H * 0.34 : 0;
 
       let latest = -1;
       ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
@@ -1408,8 +1442,12 @@
     const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
     // each chapter opens where its first words are
     const target = { pro: 0, tale: 1.37, tone: 3.36, record: recordU(0), epi: 13.25 };
+    // a jump to the next chapter glides; across two or more it goes at once, without drawing everything between
+    const RAIL = ['pro', 'tale', 'tone', 'record', 'epi'];
     function goStage(where, smooth = true) {
-      goU(target[where] != null ? target[where] : 0, smooth);
+      const to = target[where] != null ? target[where] : 0;
+      const far = Math.abs(RAIL.indexOf(railOf[chapterOf(U())]) - RAIL.indexOf(railOf[chapterOf(to)])) >= 2;
+      goU(to, smooth && !far);
     }
     resize();
     requestAnimationFrame(frameLoop);
