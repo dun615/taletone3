@@ -357,9 +357,12 @@
     // passed slowly takes on a pastel colour.
     const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
     const GATES = [PEN.tone[0], PEN.case[0]];
-    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = 0.95, DEEP = 2.7, BED = 4.4, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
+    const WIRE = [2.8, 10.4], POLE = 3, GROUND = 1.35, SURF = -1.3, DEEP = 2.7, BED = 4.4, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
+    // a gate's screen fills the whole view when the camera is GX before it: that is when one world becomes the next
+    const GX = 0.3;
+    // near a gate the camera lines up with the line, so both go through the middle of the screen
+    const gateK = (c) => { let k = 0; for (const G of GATES) k = Math.max(k, ease((c - (G - 3.2)) / 2.6) * (1 - ease((c - (G - GX)) / 2.5))); return k; };
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
-      sea: { water: [204, 236, 238], kelp: [150, 206, 182], bubble: [168, 214, 236], surf: [150, 200, 214] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
     const tint = (c, k, a) => `rgba(${Math.round(lerp(150, c[0], k))},${Math.round(lerp(152, c[1], k))},${Math.round(lerp(160, c[2], k))},${a})`;
     const passed = (z, lag = 0.4) => ease(clamp((penZ - z - lag) / 2.6)); // 0 pale, 1 fully coloured
@@ -386,10 +389,10 @@
       const ww = wireW(z);
       if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
       // the sea: the line dives in like a fishing line, then swims along under the surface
-      const sk = ease((z - GATES[0]) / 2.4) * (1 - ease((z - GATES[1] + 0.4) / 2.2));
+      const sk = ease((z - GATES[0]) / 2.4) * (1 - ease((z - GATES[1]) / 2.6));
       if (sk > 0) y = lerp(y, DEEP + 0.2 * Math.sin(z * 0.6), sk);
       // space: from star to star
-      const ck2 = ease((z - GATES[1] + 0.4) / 2.2);
+      const ck2 = ease((z - GATES[1]) / 2.6);
       if (ck2 > 0) { const c = constAt(z); x = lerp(x, c[0], ck2); y = lerp(y, c[1], ck2); }
       // aimed in screen terms: from the last star the line swings onto the way the staff leaves, and comes in along it
       const tk = ease((z - TAIL) / 2.1);
@@ -400,7 +403,7 @@
     const V = (p) => { const dz = p[2] - camZ; if (dz < 0.12) return null; const s3 = F3 / dz; return [W / 2 + (p[0] - camX) * s3, H * 0.46 + (p[1] - camY) * s3, dz]; };
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
+    let rocks = [], fish = [], snow = [], ridges = [], clouds = [], grass = [], poles = [], kelp = [], bubbles = [], stars = [], surf = [], nebulae = [], milky = [], bodies = [];
     let spaceDark = 0, lineRGB = INK;
     const dots = [];
     function buildWorld() {
@@ -431,6 +434,12 @@
       for (let z = G1 + 1; z < G2 - 1; z += 0.5 + rnd() * 0.6) kelp.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.7 + rnd() * 2.6), z, h: 1.2 + rnd() * 1.4, ph: rnd() * 6 });
       bubbles = [];
       for (let i = 0; i < 90; i++) { const z = G1 + 1 + rnd() * (G2 - G1 - 2); bubbles.push({ x: pathAt(z)[0] + (rnd() - 0.5) * 3.5, z, r: 0.02 + rnd() * 0.045, off: rnd() }); }
+      rocks = [];
+      for (let z = G1 + 1.5; z < G2 - 1; z += 0.9 + rnd() * 1.2) rocks.push({ x: pathAt(z)[0] + (rnd() < 0.5 ? -1 : 1) * (0.9 + rnd() * 3), z, r: 0.18 + rnd() * 0.4, c: (rnd() * 2) | 0, coral: rnd() < 0.45 });
+      fish = [];
+      for (let k = 0; k < 8; k++) { const z = G1 + 2.5 + k * ((G2 - G1 - 4) / 8) + rnd(), y = SURF + 1 + rnd() * 3.4, x0 = (rnd() - 0.5) * 8, dir = rnd() < 0.5 ? -1 : 1, n = 4 + ((rnd() * 6) | 0), c = (rnd() * 3) | 0; for (let j = 0; j < n; j++) fish.push({ z: z + (rnd() - 0.5) * 0.9, y: y + (rnd() - 0.5) * 0.5, x0: x0 + (rnd() - 0.5) * 1.1, dir, c, ph: rnd() * 6, sz: 0.05 + rnd() * 0.035 }); }
+      snow = [];
+      for (let i = 0; i < 140; i++) snow.push({ x: (rnd() - 0.5) * 9, y: rnd() * (BED - SURF), z: G1 + rnd() * (G2 - G1), ph: rnd() * 6 });
       nebulae = [[G2 + 6, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 10, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 15, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 19, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y, r, c }));
       milky = [];
       for (let i = 0; i < 520; i++) { const t = rnd(), sp = (rnd() + rnd() + rnd() - 1.5) * 0.9; milky.push({ x: -9 + t * 18, y: -3.2 + t * 2.6 + sp, z: G2 + 22 + rnd() * 6, s: rnd() }); }
@@ -477,10 +486,6 @@
         y -= 10;
       }
     }
-    // resting points: scrolling stops on a message rather than between two
-    const zToU = (z) => { for (const k of ['tale', 'tone', 'case', 'music']) { const [z0, z1] = PEN[k]; if (z >= z0 && z <= z1) { let l = (z - z0) / (z1 - z0); if (k === 'tale') l = 0.08 + 0.92 * l; return CH[k][0] + l * (CH[k][1] - CH[k][0]); } } return 0; };
-    const snaps = [...ANCHORS.map((a) => a.z + 0.45), ...GATES.map((g) => g + 0.8)].map((z) => { const d = document.createElement('div'); d.className = 'jy-snap'; track.appendChild(d); return { d, u: zToU(z) }; });
-    function placeSnaps() { const m = document.documentElement.scrollHeight - innerHeight; snaps.forEach((sp) => { sp.d.style.top = ((sp.u / TOTAL) * m).toFixed(0) + 'px'; }); }
     function drawLead(A) {
       if (!leadOf) return;
       const p = V(pathAt(leadOf.a.z)); if (!p) return;
@@ -492,13 +497,13 @@
     }
     function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
     // through a gate's screen, the next world is already there: the sea under its surface, or the night sky
-    function previewWorld(gi, cx, cy, w, h, r, a) {
+    function previewWorld(gi, cx, cy, w, h, r, a, el) {
       if (a <= 0.02 || w < 8) return;
       const x0 = cx - w / 2, y0 = cy - h / 2;
       ctx.save(); ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x0, y0, w, h, r); else ctx.rect(x0, y0, w, h); ctx.clip();
       const t = reduce ? 0 : T, U2 = (fx, fy) => [x0 + fx * w, y0 + fy * h];
       if (gi === 0) {
-        const g = ctx.createLinearGradient(0, y0, 0, y0 + h); g.addColorStop(0, `rgba(214,240,242,${a})`); g.addColorStop(1, `rgba(178,224,230,${a})`); ctx.fillStyle = g; ctx.fillRect(x0, y0, w, h);
+        ctx.fillStyle = `rgba(254,254,254,${a})`; ctx.fillRect(x0, y0, w, h); seaBackdrop(a); a *= el;
         ctx.strokeStyle = `rgba(120,186,200,${0.8 * a})`; ctx.lineWidth = Math.max(1, w * 0.012);
         for (let k = 0; k < 3; k++) { ctx.beginPath(); for (let i = 0; i <= 24; i++) { const [px, py] = U2(i / 24, 0.08 + k * 0.05 + 0.012 * Math.sin(i * 0.9 + t * 1.2 + k)); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.stroke(); }
         ctx.strokeStyle = `rgba(120,190,160,${0.85 * a})`; ctx.lineWidth = Math.max(1.5, w * 0.03);
@@ -506,27 +511,45 @@
         ctx.strokeStyle = `rgba(140,196,224,${0.9 * a})`; ctx.lineWidth = 1;
         for (let i = 0; i < 9; i++) { const rise = ((i * 0.37 + t * 0.07) % 1), [px, py] = U2(0.2 + ((i * 0.53) % 0.6), 0.95 - rise * 0.8); ctx.beginPath(); ctx.arc(px, py, w * (0.015 + (i % 3) * 0.008), 0, Math.PI * 2); ctx.stroke(); }
       } else {
-        const g = ctx.createLinearGradient(x0, y0, x0 + w * 0.4, y0 + h); g.addColorStop(0, `rgba(18,22,44,${a})`); g.addColorStop(1, `rgba(44,36,80,${a})`); ctx.fillStyle = g; ctx.fillRect(x0, y0, w, h);
+        nightBackdrop(a); a *= el;
         for (const [fx, fy, fr, c] of [[0.3, 0.35, 0.45, '246,196,222'], [0.72, 0.62, 0.5, '200,190,246'], [0.4, 0.82, 0.4, '180,226,236']]) { const [px, py] = U2(fx, fy), R = fr * w, gr = ctx.createRadialGradient(px, py, 0, px, py, R); gr.addColorStop(0, `rgba(${c},${0.35 * a})`); gr.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = gr; ctx.fillRect(px - R, py - R, 2 * R, 2 * R); }
         for (let i = 0; i < 46; i++) { const [px, py] = U2(((i * 0.618) % 1), ((i * 0.377 + 0.05) % 1)); ctx.fillStyle = `rgba(236,238,252,${a * (0.45 + 0.4 * Math.sin(t * 2 + i))})`; const rr = i % 7 === 0 ? 2.2 : 1.2; ctx.fillRect(px, py, rr, rr); }
         const [mx, my] = U2(0.68, 0.2), mr = w * 0.12; ctx.fillStyle = `rgba(252,238,196,${a})`; ctx.beginPath(); ctx.arc(mx, my, mr, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = `rgba(22,25,50,${a})`; ctx.beginPath(); ctx.arc(mx + mr * 0.42, my - mr * 0.18, mr * 0.92, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
     }
+    function drawTip(rgb, A) { const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${rgb},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); } }
+    // the sea: lighter under the surface, deeper below; slanting light from above
+    const SEA = { top: [[226, 234, 238], [212, 242, 246]], mid: [[196, 208, 218], [158, 214, 228]], bot: [[170, 182, 196], [104, 170, 200]], sand: [[206, 204, 198], [238, 224, 196]], ripple: [[150, 150, 146], [196, 170, 130]] };
+    const KELP = [[136, 158, 150], [104, 184, 150]], CORAL = [[176, 170, 178], [246, 156, 170]], ROCK = [[[150, 158, 170], [176, 168, 206]], [[160, 160, 164], [150, 184, 196]]];
+    const FISH = [[[176, 184, 196], [248, 168, 156]], [[186, 186, 180], [252, 210, 128]], [[170, 180, 196], [140, 190, 238]]];
+    const mixC = (pair, k, a) => `rgba(${pair[0].map((v, i) => Math.round(lerp(v, pair[1][i], k))).join(',')},${a})`;
+    function seaBackdrop(a) {
+      const k = passed(GATES[0], 0.5), hz = H * 0.46, t = reduce ? 0 : T;
+      const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, mixC(SEA.top, k, a)); g.addColorStop(0.46, mixC(SEA.mid, k, a)); g.addColorStop(1, mixC(SEA.bot, k, a));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      const g2 = ctx.createLinearGradient(0, 0, 0, hz); g2.addColorStop(0, `rgba(255,255,255,${0.5 * a})`); g2.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = g2; ctx.fillRect(0, 0, W, hz);
+      for (let i = 0; i < 6; i++) {
+        const x = W * (0.02 + i * 0.17) + Math.sin(t * 0.25 + i * 1.7) * W * 0.03, wd = W * (0.03 + (i % 3) * 0.02), len = H * (0.7 + (i % 2) * 0.25), sl = W * 0.1;
+        const gr = ctx.createLinearGradient(0, 0, 0, len); gr.addColorStop(0, `rgba(255,255,255,${(0.26 + 0.1 * Math.sin(t * 0.6 + i * 2)) * a})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + wd, 0); ctx.lineTo(x + wd * 2.4 + sl, len); ctx.lineTo(x + sl, len); ctx.closePath(); ctx.fill();
+      }
+    }
+    function nightBackdrop(a) { const g = ctx.createLinearGradient(0, 0, W * 0.3, H); g.addColorStop(0, `rgba(18,22,44,${a})`); g.addColorStop(1, `rgba(40,34,74,${a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
     function drawWorld(A, lm, now) {
       const land = A;
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < far; };
       const [G1, G2] = GATES;
       // the backdrop of the world the visitor is in, coloured as far as the pen has gone
-      const wIn = (a, b) => clamp((camZ + 2 - a) / 2) * (1 - clamp((camZ + 2 - b) / 2));
-      const wl = wIn(-10, G1), ws = wIn(G1, G2), wp = wIn(G2, 80);
+      // one world gives way to the next while the gate's screen fills the view
+      const past = (G) => clamp((camZ - (G - GX)) / 0.1), wl = 1 - past(G1), ws = past(G1) * (1 - past(G2));
+      const inLand = camZ < G1 - GX, inSea = !inLand && camZ < G2 - GX, inSpace = camZ >= G2 - GX;
       if (wl > 0) { const k = passed(2, 0) * wl, g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, tint(PASTEL.land.sky, 1, 0.75 * k * land)); g.addColorStop(0.6, tint(PASTEL.land.sky, 1, 0)); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
-      if (ws > 0) { const k = passed(G1, 0.5) * ws; ctx.fillStyle = tint(PASTEL.sea.water, 1, 0.8 * k * land); ctx.fillRect(0, 0, W, H); }
+      if (ws > 0) seaBackdrop(ws * land);
       if (spaceDark > 0) {
         // night: deep indigo, nebulae of pastel light, the milky way far behind
-        const d = spaceDark * land, g = ctx.createLinearGradient(0, 0, W * 0.3, H);
-        g.addColorStop(0, `rgba(18,22,44,${d})`); g.addColorStop(1, `rgba(40,34,74,${d})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        const d = spaceDark * land; nightBackdrop(d);
         for (const nb of nebulae) {
           const q = V([nb.x, nb.y, nb.z]); if (!q || q[2] > FAR3 + 8) continue;
           const R = nb.r * F3 / q[2], k = 0.25 + 0.75 * passed(nb.z - 6), gr = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R);
@@ -546,13 +569,13 @@
       }
       // land
       for (const cl of clouds) {
-        if (!near(cl.z) || penZ < cl.z - 10) continue;
+        if (!inLand || !near(cl.z) || penZ < cl.z - 10) continue;
         const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), k = passed(cl.z - 3), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
         if (k > 0 && reveal >= 1) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, 1, 0.8 * k * fogA(dz) * land); ctx.fill(); }
         ctx.strokeStyle = tint(PASTEL.land.cloud, k * 0.4, 0.5 * fogA(dz) * land); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
       }
       for (const r of ridges) {
-        if (!near(r.z)) continue;
+        if (!inLand || !near(r.z)) continue;
         const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
         const Q = r.pts.map(V), k = passed(r.z - 4), c = PASTEL.land.hill[r.k % 3], a = fogA(dz) * land;
         if (k > 0 && reveal >= 1) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.55 * k * a); ctx.fill(); }
@@ -560,40 +583,73 @@
       }
       ctx.lineWidth = 1.2;
       for (const g of grass) {
-        if (!near(g.z, 10) || penZ < g.z) continue;
+        if (!inLand || !near(g.z, 10) || penZ < g.z) continue;
         const a = V([g.x, GROUND, g.z]); if (!a) continue;
         const b = V([g.x + g.lean + (reduce ? 0 : Math.sin(T * 1.8 + g.z * 3) * 0.01), GROUND - g.h, g.z]);
         ctx.strokeStyle = tint(PASTEL.land.grass, passed(g.z), 0.5 * land); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
       }
       for (const z of poles) {
-        if (penZ < z || !near(z)) continue; const dz = z - camZ;
+        if (!inLand || penZ < z || !near(z)) continue; const dz = z - camZ;
         const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), c1 = V([top[0] - 0.14, top[1] + 0.08, z]), c2 = V([top[0] + 0.14, top[1] + 0.08, z]);
         if (!a || !b) continue;
         ctx.strokeStyle = tint(PASTEL.land.pole, passed(z), 0.75 * fogA(dz) * land); ctx.lineWidth = clamp(1.8 * AHEAD / dz, 0.6, 3);
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c2[0], c2[1]); ctx.stroke();
       }
-      // sea: the surface overhead, kelp from the bed, bubbles rising
-      for (let i = surf.length - 1; i >= 0; i--) {
-        const sv = surf[i]; if (!near(sv.z, 12) || camZ < GATES[0] - 3) continue;
-        const dz = sv.z - camZ, reveal = clamp((penZ - (sv.z - 8)) / 2); if (reveal <= 0) continue;
-        const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SURF + 0.05 * Math.sin(x * 2.1 + sv.ph + (reduce ? 0 : T * 0.9)), sv.z]));
-        ctx.strokeStyle = tint(PASTEL.sea.surf, passed(sv.z), 0.35 * fogA(dz) * land); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.4, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
-      }
-      for (const kp of kelp) {
-        if (!near(kp.z, 16) || penZ < kp.z - 9 || camZ < GATES[0] - 3) continue;
-        const dz = kp.z - camZ, k = passed(kp.z), Q = [];
-        for (let t = 0; t <= 1.001; t += 0.08) Q.push(V([kp.x + Math.sin(t * 5 + kp.ph + (reduce ? 0 : T * 1.1)) * 0.08 * t, BED - kp.h * t, kp.z]));
-        ctx.strokeStyle = tint(PASTEL.sea.kelp, k, 0.6 * fogA(dz) * land); ctx.lineWidth = clamp(2.2 * AHEAD / dz, 0.6, 4); polyline(Q, Q.length); ctx.stroke();
-      }
-      for (const bb of bubbles) {
-        if (!near(bb.z, 12) || penZ < bb.z - 6 || camZ < GATES[0] - 3) continue;
-        const rise = reduce ? bb.off : (bb.off + T * 0.08) % 1, y = DEEP + 0.8 - rise * (DEEP + 0.8 - SURF - 0.1);
-        const q = V([bb.x + Math.sin(T + bb.off * 9) * 0.03, y, bb.z]); if (!q) continue;
-        ctx.strokeStyle = tint(PASTEL.sea.bubble, passed(bb.z), 0.6 * fogA(q[2]) * land); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], bb.r * F3 / q[2], 0, Math.PI * 2); ctx.stroke();
+      // sea: sand and rocks on the bed, kelp, fish, bubbles and specks rising, the surface overhead catching the light
+      if (inSea) {
+        const t = reduce ? 0 : T, kS = passed(G1, 0.5);
+        const yBed = (dz) => H * 0.46 + (BED - camY) * F3 / dz, yf = yBed(14);
+        if (yf < H) { const g = ctx.createLinearGradient(0, yf, 0, H); g.addColorStop(0, mixC(SEA.sand, kS, 0)); g.addColorStop(1, mixC(SEA.sand, kS, 0.8 * land)); ctx.fillStyle = g; ctx.fillRect(0, yf, W, H - yf); }
+        ctx.lineWidth = 1;
+        for (let z = Math.ceil((camZ + 0.6) / 0.7) * 0.7; z < Math.min(camZ + 14, G2); z += 0.7) {
+          if (z < G1) continue; const Q = []; for (let x = -8; x <= 8.001; x += 0.4) Q.push(V([x, BED - 0.03 * Math.sin(x * 2.6 + z * 3.1), z]));
+          ctx.strokeStyle = mixC(SEA.ripple, kS, 0.4 * fogA(z - camZ) * land); polyline(Q, Q.length); ctx.stroke();
+        }
+        for (const rk of rocks) {
+          if (!near(rk.z, 16)) continue; const q = V([rk.x, BED, rk.z]); if (!q) continue;
+          const rx = rk.r * F3 / q[2], a = fogA(q[2]) * land, k = passed(rk.z);
+          ctx.fillStyle = mixC(ROCK[rk.c], k, 0.9 * a); ctx.beginPath(); ctx.ellipse(q[0], q[1], rx, rx * 0.6, 0, Math.PI, 0); ctx.fill();
+          if (rk.coral) { ctx.strokeStyle = mixC(CORAL, k, 0.9 * a); ctx.lineWidth = clamp(1.8 * AHEAD / q[2], 0.6, 4); for (let j = -1; j <= 1; j++) { const b0 = V([rk.x + j * rk.r * 0.35, BED - rk.r * 0.5, rk.z]), b1 = V([rk.x + j * rk.r * 0.6, BED - rk.r * 1.25, rk.z]), b2 = V([rk.x + j * rk.r * 0.2, BED - rk.r * 1.05, rk.z]); if (!b0 || !b1 || !b2) continue; ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(b1[0], b1[1]); ctx.moveTo((b0[0] + b1[0]) / 2, (b0[1] + b1[1]) / 2); ctx.lineTo(b2[0], b2[1]); ctx.stroke(); } }
+        }
+        for (const kp of kelp) {
+          if (!near(kp.z, 16) || penZ < kp.z - 9) continue;
+          const dz = kp.z - camZ, k = passed(kp.z), a = fogA(dz) * land, Q = [], sway = (tt) => Math.sin(tt * 5 + kp.ph + t * 1.1) * 0.12 * tt;
+          for (let tt = 0; tt <= 1.001; tt += 0.08) Q.push(V([kp.x + sway(tt), BED - kp.h * tt, kp.z]));
+          ctx.strokeStyle = mixC(KELP, k, 0.85 * a); ctx.lineWidth = clamp(3.4 * AHEAD / dz, 0.8, 6); polyline(Q, Q.length); ctx.stroke();
+          ctx.fillStyle = mixC(KELP, k, 0.75 * a);
+          for (let j = 1; j <= 5; j++) { const tt = j / 6, q = V([kp.x + sway(tt), BED - kp.h * tt, kp.z]); if (!q) continue; const L = 0.17 * F3 / dz, side = j % 2 ? 1 : -1; ctx.beginPath(); ctx.ellipse(q[0] + side * L * 0.55, q[1] - L * 0.2, L * 0.6, L * 0.2, side * -0.6, 0, Math.PI * 2); ctx.fill(); }
+        }
+        for (const f of fish) {
+          if (!near(f.z, 14) || penZ < f.z - 9) continue;
+          const x = ((f.x0 + f.dir * t * 0.22 + 7) % 14 + 14) % 14 - 7, q = V([x, f.y + Math.sin(t * 1.3 + f.ph) * 0.04, f.z]); if (!q) continue;
+          const L = f.sz * F3 / q[2], a = fogA(q[2]) * land, d = f.dir, wig = Math.sin(t * 9 + f.ph) * 0.25;
+          ctx.fillStyle = mixC(FISH[f.c], passed(f.z), 0.9 * a);
+          ctx.beginPath(); ctx.ellipse(q[0], q[1], L, L * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(q[0] - d * L * 0.8, q[1]); ctx.lineTo(q[0] - d * L * 1.55, q[1] - L * (0.45 + wig * 0.3)); ctx.lineTo(q[0] - d * L * 1.55, q[1] + L * (0.45 - wig * 0.3)); ctx.closePath(); ctx.fill();
+        }
+        for (const bb of bubbles) {
+          if (!near(bb.z, 12) || penZ < bb.z - 6) continue;
+          const rise = reduce ? bb.off : (bb.off + T * 0.08) % 1, y = DEEP + 0.8 - rise * (DEEP + 0.8 - SURF - 0.1);
+          const q = V([bb.x + Math.sin(T + bb.off * 9) * 0.03, y, bb.z]); if (!q) continue;
+          const r = bb.r * F3 / q[2], a = fogA(q[2]) * land;
+          ctx.fillStyle = `rgba(255,255,255,${0.3 * a})`; ctx.strokeStyle = `rgba(255,255,255,${0.85 * a})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+        ctx.fillStyle = `rgba(255,255,255,${0.6 * land})`;
+        for (const sn of snow) {
+          if (!near(sn.z, 10)) continue; const span = BED - SURF, q = V([sn.x + Math.sin(t * 0.4 + sn.ph) * 0.05, SURF + (((sn.y + t * 0.03) % span) + span) % span, sn.z]); if (!q) continue;
+          const r = clamp(1.6 * AHEAD / q[2], 0.6, 2.6); ctx.globalAlpha = fogA(q[2]); ctx.fillRect(q[0], q[1], r, r);
+        }
+        ctx.globalAlpha = 1;
+        for (let i = surf.length - 1; i >= 0; i--) {
+          const sv = surf[i]; if (!near(sv.z, 12)) continue;
+          const dz = sv.z - camZ, reveal = clamp((penZ - (sv.z - 8)) / 2); if (reveal <= 0) continue;
+          const Q = []; for (let x = -8; x <= 8.001; x += 0.25) Q.push(V([x, SURF + 0.05 * Math.sin(x * 2.1 + sv.ph + t * 0.9), sv.z]));
+          ctx.strokeStyle = `rgba(255,255,255,${0.75 * fogA(dz) * land})`; ctx.lineWidth = clamp(2 * AHEAD / dz, 0.5, 3); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+        }
       }
       // space: stars all around; the stars of the constellation are where the line turns
       for (const st of stars) {
-        if (!near(st.z, 20) || penZ < st.z - 12) continue;
+        if (!inSpace || !near(st.z, 20) || penZ < st.z - 12) continue;
         const q = V([st.x, st.y, st.z]); if (!q) continue;
         const k = passed(st.z - 2), a = land * fogA(q[2]) * clamp((penZ - (st.z - 12)) / 2) * (reduce ? 0.7 : 0.6 + 0.3 * Math.sin(T * 1.4 + st.s * 30));
         const r = clamp(2.2 * AHEAD / q[2], 0.7, 3.2), col = k > 0.05 ? tint(PASTEL.space.star[st.c], k, a) : `rgba(200,204,222,${0.6 * a})`;
@@ -601,7 +657,7 @@
         else { ctx.fillStyle = col; ctx.fillRect(q[0] - r / 2, q[1] - r / 2, r, r); }
       }
       for (let i = 0; i < STARS.length; i++) {
-        const sp = STARS[i]; if (sp[2] > TAIL || !near(sp[2]) || penZ < sp[2] - 10) continue;
+        const sp = STARS[i]; if (!inSpace || sp[2] > TAIL || !near(sp[2]) || penZ < sp[2] - 10) continue;
         const q = V(sp); if (!q) continue;
         const k = passed(sp[2], 0), lit = penZ >= sp[2], a = land * fogA(q[2]), R = clamp(0.07 * F3 / q[2], 3, 14) * (lit ? 1.3 : 1);
         const col = lit ? tint(PASTEL.space.star[i % 3], Math.max(0.6, k), a) : `rgba(200,204,222,${0.45 * a})`;
@@ -610,33 +666,43 @@
         ctx.closePath(); ctx.fill();
         if (lit) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3); gl.addColorStop(0, tint(PASTEL.space.star[i % 3], 1, 0.35 * a)); gl.addColorStop(1, tint(PASTEL.space.star[i % 3], 1, 0)); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3, q[1] - R * 3, R * 6, R * 6); }
       }
+      let gateIn = null;
       // gates: a phone's screen standing on the line, the next world's name above it; passing through starts it
       for (let gi = 0; gi < GATES.length; gi++) {
-        const G = GATES[gi], dz = G - camZ; if (dz < 0.25 || dz > FAR3) continue;
+        const G = GATES[gi], dz = G - camZ; if (dz < 0.18 || dz > FAR3) continue;
         if (gi > 0 && camZ < GATES[gi - 1]) continue;
-        const c = pathAt(G), q = V([c[0], c[1] - 0.3, G]); if (!q) continue;
-        const s3 = F3 / dz, w = 0.95 * s3, h = 2.05 * s3, a = land * clamp((dz - 0.25) / 0.7) * clamp((FAR3 - dz) / 8);
+        const c = pathAt(G), q = V(c); if (!q) continue;
+        const s3 = F3 / dz, w = 0.95 * s3, h = 2.05 * s3, a = land * clamp((FAR3 - dz) / 8);
         ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = clamp(2.2 * AHEAD / dz, 1, 4.5);
         ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(q[0] - w / 2, q[1] - h / 2, w, h, 0.17 * s3); else ctx.rect(q[0] - w / 2, q[1] - h / 2, w, h); ctx.stroke();
         ctx.lineWidth = clamp(1 * AHEAD / dz, 0.5, 2); ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(q[0] - w / 2 + 0.06 * s3, q[1] - h / 2 + 0.06 * s3, w - 0.12 * s3, h - 0.12 * s3, 0.11 * s3); ctx.stroke();
-        previewWorld(gi, q[0], q[1], w - 0.12 * s3, h - 0.12 * s3, 0.11 * s3, a);
+        previewWorld(gi, q[0], q[1], w - 0.12 * s3, h - 0.12 * s3, 0.11 * s3, a, clamp((dz - 0.6) / 1.4));
+        if (!gateIn) gateIn = { G, gi, x0: q[0] - w / 2 + 0.06 * s3, y0: q[1] - h / 2 + 0.06 * s3, w: w - 0.12 * s3, h: h - 0.12 * s3, r: 0.11 * s3, a };
       }
       ctx.textAlign = 'start';
-      // the fishing line's float, where the line enters the water
-      { const z = GATES[0] + 0.9, p = V([pathAt(z)[0], SURF, z]); if (p && penZ > z) { const s3 = F3 / p[2], r = 0.07 * s3, a = land * fogA(p[2]); ctx.fillStyle = tint([246, 170, 186], passed(z), a); ctx.beginPath(); ctx.arc(p[0], p[1], r, Math.PI, 0); ctx.fill(); ctx.fillStyle = `rgba(254,254,254,${a})`; ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, Math.PI); ctx.fill(); ctx.strokeStyle = `rgba(${INK},${a})`; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, Math.PI * 2); ctx.stroke(); } }
       // the line: thick close by, a hair far away, swelling where something is written on it
       let run = [], wPrev = -1, aPrev = -1;
-      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${lineRGB},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
-      for (let z = Math.max(PEN.tale[0], camZ + 0.15); z <= penZ + 1e-6; z += 0.03) {
-        const p = V(pathAt(Math.min(z, penZ))); if (!p) continue;
+      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.lineCap = aPrev < 1 ? 'butt' : 'round'; ctx.strokeStyle = `rgba(${lineRGB},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
+      // in front of the gate the line runs into its screen; beyond it, it is seen only through the screen
+      const zCut = gateIn ? Math.min(penZ, gateIn.G) : penZ;
+      for (let z = Math.max(PEN.tale[0], camZ + 0.15); z <= zCut + 1e-6; z += 0.03) {
+        const p = V(pathAt(Math.min(z, zCut))); if (!p) continue;
         let sw = 1; for (const az of swellZ) sw += 0.8 * Math.exp(-Math.pow((z - az) / 0.35, 2));
         const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * 20) / 20;
         if (wd !== wPrev || al !== aPrev) { const lastP = run[run.length - 1]; flush(); run = lastP ? [lastP] : []; wPrev = wd; aPrev = al; }
         run.push(p);
       }
-      flush();
+      flush(); ctx.lineCap = 'round';
+      let tipRGB = lineRGB;
+      if (gateIn && penZ > gateIn.G) {
+        const g = gateIn; tipRGB = g.gi === 1 ? '244,244,252' : INK;
+        ctx.save(); ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(g.x0, g.y0, g.w, g.h, g.r); else ctx.rect(g.x0, g.y0, g.w, g.h); ctx.clip();
+        ctx.strokeStyle = `rgba(${tipRGB},${g.a})`; ctx.beginPath(); let on = false;
+        for (let z = g.G; z <= penZ + 1e-6; z += 0.03) { const p = V(pathAt(Math.min(z, penZ))); if (!p) continue; ctx.lineWidth = clamp(2.3 * AHEAD / p[2], 0.5, 5); if (on) ctx.lineTo(p[0], p[1]); else { ctx.moveTo(p[0], p[1]); on = true; } }
+        ctx.lineWidth = clamp(2.3 * AHEAD / (g.G + 1 - camZ), 0.8, 4); ctx.stroke();
+        drawTip(tipRGB, A); ctx.restore();
+      } else drawTip(tipRGB, A);
       drawLead(A);
-      const tip = V(pathAt(penZ)); if (tip && penZ > PEN.tale[0] + 0.05) { ctx.fillStyle = `rgba(${lineRGB},${A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], clamp(4 * AHEAD / tip[2], 2, 6), 0, Math.PI * 2); ctx.fill(); }
     }
     function buildRecordWash() {
       recBuilt = true;
@@ -734,7 +800,7 @@
     // one helix of the staff, stroked in short runs so the width can follow the depth
     function staffLine(l, z0, z1, camZ, roll, alpha, width) {
       let run = [], wPrev = -1, aPrev = -1;
-      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.strokeStyle = `rgba(${lineRGB},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n = 1; n < run.length; n++) ctx.lineTo(run[n][0], run[n][1]); ctx.stroke(); } };
+      const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.lineCap = aPrev < 1 ? 'butt' : 'round'; ctx.strokeStyle = `rgba(${lineRGB},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n = 1; n < run.length; n++) ctx.lineTo(run[n][0], run[n][1]); ctx.stroke(); } };
       for (let z = z0; z <= z1; z += 0.04) {
         const p = proj((z / DZ) * TURN, z, camZ, roll, lineRad(l, z)); if (!p) continue;
         // still one line before it splits: as thick as the pen line it continues
@@ -742,7 +808,7 @@
         if (wd !== wPrev || al !== aPrev) { const last = run[run.length - 1]; flush(); run = last ? [last] : []; wPrev = wd; aPrev = al; }
         run.push(p);
       }
-      flush();
+      flush(); ctx.lineCap = 'round';
     }
     function drawCurrent(lr) {
       if (!cur || cur.camZ == null) return;
@@ -870,8 +936,9 @@
       // follow the pen sideways and up and down, from a little above, so the line ahead and the land stay in view
       const pc = pathAt(penZ - 1.2);
       camX = lerp(pc[0] * 0.35, 0, ck); camY = lerp(pc[1] * 0.7 - 0.45, 0, ck);
+      { const gk = gateK(camZ); if (gk > 0) { const gc = pathAt(camZ < GATES[0] + 3 ? GATES[0] : GATES[1]); camX = lerp(camX, gc[0], gk); camY = lerp(camY, gc[1], gk); } }
       placeAnchors();
-      spaceDark = ease(clamp((camZ - (GATES[1] - 1.2)) / 2.5)) * (1 - ease(clamp((penZ - 47.8) / 1.1)));
+      spaceDark = clamp((camZ - (GATES[1] - GX)) / 0.1) * (1 - ease(clamp((penZ - 47.8) / 1.1)));
       { const m = (c0, c1) => Math.round(lerp(c0, c1, spaceDark)); lineRGB = `${m(20, 244)},${m(28, 244)},${m(48, 252)}`; }
       const caseWork = CASE && bySlug[CASE];
       if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
@@ -910,7 +977,7 @@
     function resize() {
       DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight;
       cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); placeSnaps(); recShown = -1;
+      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1;
     }
     addEventListener('resize', resize);
     phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));

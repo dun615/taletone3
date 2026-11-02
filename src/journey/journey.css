@@ -471,10 +471,7 @@ img{max-width:100%}
 .jy-stage-mode [data-anchor] .jy-typing{display:none!important}
 .jy-stage-mode [data-anchor] .jy-tx{opacity:1!important;animation:none!important}
 .jy-stage-mode [data-anchor].older .jy-bub::before{opacity:0}
-/* resting points for the scroll, one per message */
-.jy-stage-mode{scroll-snap-type:y proximity}
 .jy-stage-mode .jy-track{position:relative}
-.jy-snap{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;pointer-events:none}
 .jy-stage-mode [data-anchor].on{pointer-events:auto}
 .jy-stage-mode .jy-case-mark[data-anchor]{display:block!important;max-width:min(300px,24vw)!important}
 /* the case notes keep ink text on their paper, even on the night sky */
