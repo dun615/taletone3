@@ -95,19 +95,29 @@ img{max-width:100%}
 .jy-face{position:absolute;inset:0;border-radius:30px}
 .jy-back{display:none}
 .jy-back svg{display:block;width:100%;height:100%}
-.jy-caselogo{position:absolute;left:50%;top:39%;width:43%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 .6px #797c85) drop-shadow(0 0 .6px #797c85)}
+.jy-caselogo{position:absolute;left:50%;top:50%;width:43%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 .6px #797c85) drop-shadow(0 0 .6px #797c85)}
 .jy-front{padding:8px;background:var(--tt-case);box-shadow:inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas)}
 .jy-screen{display:block;position:relative;width:100%;height:100%;border-radius:22px;background:var(--tt-ink);overflow:hidden}
 .jy-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:44px 10px 0;color:var(--tt-on-ink);line-height:1.4}
 .jy-clock{font-weight:100;font-size:50px;line-height:1;letter-spacing:-.01em}
 .jy-date{font-size:11px;color:var(--tt-on-ink-muted);margin-top:10px}
-.jy-noti{margin-top:auto;margin-bottom:48px;width:100%;display:flex;gap:9px;padding:10px;border-radius:16px;background:rgba(223,226,244,.14);text-align:left}
+.jy-noti{margin-top:22px;margin-bottom:0;width:100%;display:flex;flex-wrap:wrap;gap:9px;padding:10px;border-radius:16px;background:rgba(223,226,244,.14);text-align:left}
 .jy-nt{flex:1;min-width:0}
 .jy-nh{display:flex;align-items:center;gap:6px;font-size:10px}
 .jy-nh b{font-family:var(--tt-display);letter-spacing:.08em}
 .jy-nh em{margin-left:auto;font-style:normal;color:var(--tt-on-ink-muted)}
 .jy-nh .jy-signal i{width:2px;height:9px}
 .jy-nb{display:block;font-size:12px;margin-top:3px;line-height:1.45}
+.jy-nb strong{display:block;font-size:13px;font-weight:700}
+/* the invitation's icon: an envelope sealed with a star, on the charm's iridescent colours */
+.jy-ni{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff)}
+/* its action: enter (the whole phone is the button; this shows what it does) */
+/* (in a row of its own, in the middle) */
+.jy-na-row{flex-basis:100%;display:flex;justify-content:center}
+.jy-na{display:inline-grid;place-items:center;min-width:96px;height:30px;margin-top:2px;padding:0 18px;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-size:12px;font-weight:700;letter-spacing:.04em;box-shadow:0 0 0 0 rgba(236,230,255,.6);animation:jy-invite 2.4s ease-out infinite}
+@keyframes jy-invite{0%{box-shadow:0 0 0 0 rgba(236,230,255,.55)}70%,100%{box-shadow:0 0 0 9px rgba(236,230,255,0)}}
+@media (prefers-reduced-motion:reduce){.jy-na{animation:none}}
+.jy-phone:hover .jy-na{background:#fff}
 .jy-charm{position:absolute;left:calc(100% - 34px);top:calc(100% - 22px);width:56px;display:flex;flex-direction:column;align-items:center;pointer-events:none;transform-origin:50% 0;animation:jy-sway 4.2s ease-in-out infinite}
 .jy-charm svg{display:block}
 .jy-dia{width:38px;height:38px;margin-top:-1px;transform:rotate(45deg);display:grid;place-items:center;border-radius:4px;background:linear-gradient(135deg,#fdfdff,#e3e6f3);border:2px solid var(--tt-silver);box-shadow:inset 0 0 0 2px var(--tt-canvas),inset 0 0 0 3px #c9ccd6}
@@ -286,7 +296,7 @@ img{max-width:100%}
 .jy-stage-mode .jy-front{transform:rotateY(180deg)}
 .jy-stage-mode .jy-lock{padding-top:52px}
 .jy-stage-mode .jy-clock{font-size:58px}
-.jy-stage-mode .jy-noti{margin-bottom:58px}
+.jy-stage-mode .jy-noti{margin-top:26px}
 .jy-stage-mode .jy-lead{position:absolute;left:52%;top:50%;transform:translateY(-50%);width:min(500px,38vw);margin:0;padding:0;text-align:left;align-items:flex-start}
 
 /* messages rise into place */

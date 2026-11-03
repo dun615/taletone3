@@ -497,7 +497,7 @@
     const track = $('#jy-track');
     track.style.setProperty('--track', (TOTAL * 100 + 100) + 'vh');
     const sections = $$('.jy-ch');
-    const phone = $('#jy-phone'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
+    const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
     const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
     const markImg = $('.jy-mark img');
     const recordEl = $('#jy-record'), spiral = $('#jy-spiral'), readout = $('#jy-readout');
@@ -1625,7 +1625,9 @@
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
       const ps = NARROW ? Math.min(1, (H * 0.47) / 416, (W - 40) / 234) : 1;
       phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * Math.pow(cover / ps, ease((ip - 0.3) / 0.7))})`;
-      card.style.transform = `rotateY(${180 * ease(ip / 0.28)}deg)`;
+      { const turn = 180 * ease(ip / 0.28); card.style.transform = `rotateY(${turn}deg)`;
+        // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
+        if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
       phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
       phone.tabIndex = ip > 0.3 ? -1 : 0;
       screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';

@@ -2237,7 +2237,7 @@
   "journey": {
     "notifyFrom": "TALETONE",
     "notifyNow": "지금",
-    "notify": "한 올씩 엮어 낸 이야기들, 함께 들으러 가요.",
+    "notify": "이야기 세계 속으로",
     "enterLabel": "화면에 접속하기",
     "chapterLabels": [
       "Prologue",
@@ -2250,8 +2250,8 @@
     "nowPlaying": "지금 재생 중",
     "landscape": "우리가 걸어온 풍경은,\n한 곡의 노래였습니다.",
     "letter": "이 노래들도 처음에는,\n누군가가 건넨 한 줄의 이야기였습니다.",
-    "found": "그렇게 한 땀 한 땀 엮어 낸\n이야기의 소리들을 들으러 갈까요?",
-    "turnHint": "소용돌이를 따라 한 곡씩, 그 안에 담긴 이야기를 들어 보세요.",
+    "found": "그렇게 한 땀 한 땀 엮어 낸\n이야기의 소리들을 만나러 갈까요?",
+    "turnHint": "오선보를 따라 한 곡씩, 그 안에 담긴 이야기를 만나 보세요.",
     "empty": "그리고 이 음반에는,\n아직 비워 둔 한 자리가 있습니다.",
     "contactTitle": "그 자리에 담을 이야기를,\n함께 써 내려가 볼까요?",
     "more": "더 보기",
@@ -2342,13 +2342,13 @@
     "translations": {
       "en": {
         "notifyNow": "now",
-        "notify": "Stories woven thread by thread. Come and listen with us.",
+        "notify": "Into the world of stories",
         "enterLabel": "Enter the screen",
         "nowPlaying": "Now playing",
         "landscape": "The landscape we walked through\nwas a single song.",
         "letter": "Every one of these songs\nbegan as a single line someone shared.",
-        "found": "Stories woven stitch by stitch:\nshall we go and hear them?",
-        "turnHint": "Follow the swirl one song at a time, and hear the story in each.",
+        "found": "Shall we go and meet the sounds\nof stories woven stitch by stitch?",
+        "turnHint": "Follow the staff one song at a time, and meet the story in each.",
         "empty": "And on this record,\none place is still left open.",
         "contactTitle": "Shall we write the story\nthat belongs there, together?",
         "more": "Show more",
@@ -2447,7 +2447,7 @@
         "profileOpen": "View profile",
         "service": "Music for games, virtual artists and animation",
         "listenNow": "Listen now",
-        "scrollHint": "Follow the story down",
+        "scrollHint": "Scroll down",
         "playerLabel": "Now playing",
         "featuredLabel": "Featured",
         "rooms": {
@@ -2463,17 +2463,19 @@
             "title": "Case",
             "sub": "A real project"
           }
-        }
+        },
+        "notifyTitle": "Invitation",
+        "enterAction": "Enter"
       },
       "jp": {
         "notifyNow": "今",
-        "notify": "一本ずつ紡いだ物語たち、一緒に聴きに行きましょう。",
+        "notify": "物語の世界へ",
         "enterLabel": "画面に入る",
         "nowPlaying": "再生中",
         "landscape": "歩いてきた風景は、\n一曲の歌でした。",
         "letter": "この歌たちも最初は、\n誰かが届けてくれた一行の物語でした。",
-        "found": "そうして一針ずつ紡いだ\n物語の音を、聴きに行きましょうか？",
-        "turnHint": "渦をたどって一曲ずつ、込められた物語を聴いてみてください。",
+        "found": "そうして一針ずつ紡いだ\n物語の音に、会いに行きましょうか？",
+        "turnHint": "五線譜をたどって一曲ずつ、込められた物語に出会ってみてください。",
         "empty": "そしてこのレコードには、\nまだ空けてある場所がひとつあります。",
         "contactTitle": "そこに込める物語を、\n一緒に綴ってみませんか？",
         "more": "もっと見る",
@@ -2572,7 +2574,7 @@
         "profileOpen": "プロフィールを見る",
         "service": "ゲーム・バーチャル・アニメーションの音楽制作",
         "listenNow": "音楽を聴く",
-        "scrollHint": "物語をたどって、下へ",
+        "scrollHint": "下へスクロールしてください",
         "playerLabel": "再生中の曲",
         "featuredLabel": "代表作",
         "rooms": {
@@ -2588,7 +2590,9 @@
             "title": "事例",
             "sub": "実際のプロジェクト"
           }
-        }
+        },
+        "notifyTitle": "招待状",
+        "enterAction": "アクセス"
       }
     },
     "albumTracks": "수록곡",
@@ -2602,7 +2606,7 @@
     "profileOpen": "프로필 보기",
     "service": "게임 · 버추얼 · 애니메이션 음악 제작",
     "listenNow": "음악 듣기",
-    "scrollHint": "이야기를 따라, 아래로 내려가 보세요",
+    "scrollHint": "아래로 스크롤해 보세요",
     "playerLabel": "재생 중인 곡",
     "featuredLabel": "대표작",
     "rooms": {
@@ -2618,6 +2622,8 @@
         "title": "사례",
         "sub": "실제 프로젝트"
       }
-    }
+    },
+    "notifyTitle": "초대장",
+    "enterAction": "접속"
   }
 }
