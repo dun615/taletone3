@@ -641,9 +641,19 @@
     }, { passive: true });
 
     // clock on the lock screen
-    { const d = new Date(), loc = { kr: 'ko-KR', en: 'en-US', jp: 'ja-JP' }[LANG];
-      $('#jy-clock').textContent = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
-      try { $('#jy-date').textContent = d.toLocaleDateString(loc, { month: 'long', day: 'numeric', weekday: 'long' }); } catch (_) {} }
+    // The visitor's own time, as their device shows it: its time zone and its 12- or 24-hour clock (a lock screen
+    // leaves out AM/PM); the date line in the page's language. It keeps time while the page is open.
+    { const loc = { kr: 'ko-KR', en: 'en-US', jp: 'ja-JP' }[LANG], clockEl = $('#jy-clock'), dateEl = $('#jy-date');
+      let fmt = null; try { fmt = new Intl.DateTimeFormat(navigator.languages && navigator.languages.length ? navigator.languages : undefined, { hour: 'numeric', minute: '2-digit' }); } catch (_) {}
+      let shown = '';
+      const tick = () => {
+        const d = new Date();
+        let time = `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+        if (fmt && fmt.formatToParts) { try { time = fmt.formatToParts(d).filter((x) => x.type !== 'dayPeriod').map((x) => x.value).join('').trim(); } catch (_) {} }
+        if (time === shown) return; shown = time; clockEl.textContent = time;
+        try { dateEl.textContent = d.toLocaleDateString(loc, { month: 'long', day: 'numeric', weekday: 'long' }); } catch (_) {}
+      };
+      tick(); setInterval(tick, 5000); }
 
     /* ---- one world in depth. The pen draws a single line forward through it and the camera follows the pen,
        a few steps behind. Hills, poles, the wire, grass and clouds stand along the way; every message is written
@@ -746,7 +756,7 @@
     }
     const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-    let puffs = [], mounts = [], birds = [], shafts = [], fish = [], mantas = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], bubbles = [], stars = [], nebulae = [], milky = [], bodies = [];
+    let puffs = [], mounts = [], birds = [], shafts = [], kelps = [], whale = null, fish = [], mantas = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], bubbles = [], stars = [], nebulae = [], milky = [], bodies = [];
     let spaceDark = 0, lineRGB = INK;
     const dots = [];
     function buildWorld() {
@@ -804,6 +814,10 @@
       mantas = [0.27, 0.4].map((k) => { const c = around(k, 0, 0.4); return { c, R: 2 + rnd() * 1, ph: rnd() * 6.3, dir: rnd() < 0.5 ? -1 : 1, s: 1.2 + rnd() * 0.4 }; });
       jellies = []; for (let i = 0; i < Math.round(30 * dens) + 8; i++) jellies.push({ p: around(0.42 + rnd() * 0.48, 0.6, 4), r: 0.1 + rnd() * 0.16, c: (rnd() * 3) | 0, ph: rnd() * 6 });
       snow = []; for (let i = 0; i < Math.round(420 * dens); i++) snow.push({ p: around(0.1 + rnd() * 0.9, 0.2, 5), ph: rnd() });
+      // a kelp forest in the shallows: long stalks standing up out of the deep around the line, swaying, with blades
+      kelps = []; for (let i = 0; i < Math.round(12 * (0.6 + 0.4 * dens)); i++) { const [x, , z] = around(0, 1.6, 6.5); kelps.push({ x, z, y1: 26 + rnd() * 34, ph: rnd() * 6.3, c: (rnd() * 2) | 0, gap: 2 + rnd() * 0.8 }); }
+      // a whale far below, crossing slowly under the line
+      whale = { c: around(0.34, 2.2, 2.6), L: 10, h: rnd() * 6.3 };
       glows = []; for (let i = 0; i < Math.round(260 * dens); i++) glows.push({ p: around(0.5 + rnd() * 0.5, 0.3, 5), c: (rnd() * 3) | 0, s: rnd() });
       nebulae = [[G2 + 6, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 10, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 15, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 19, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y: y + YS, r, c }));
       milky = [];
@@ -876,7 +890,7 @@
       ctx.beginPath(); ctx.arc(0, 0, Math.max(1.6, r * 0.22), 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     // fish in pastel colours
-    const FISHC = ['248,168,156', '252,210,128', '140,190,238'];
+    const FISHC = ['248,168,156', '252,210,128', '140,190,238'], KELPC = ['104,170,138', '148,186,116'];
     const TREE = [136, 190, 146], FLOWER = [[248, 186, 204], [252, 226, 150], [255, 255, 255]];
     const JELLY = ['246,190,222', '204,192,250', '172,230,240'], GLOW = ['150,236,240', '246,180,226', '240,236,170'];
     // the sky at the zenith and the water at the top of the dive share one colour: that is the change of world
@@ -1065,6 +1079,55 @@
         gr.addColorStop(0, `rgba(255,255,255,${(0.32 + 0.1 * Math.sin(t * 0.7 + sh.ph)) * lit})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]); for (let n = 1; n < 4; n++) ctx.lineTo(q[n][0], q[n][1]); ctx.closePath(); ctx.fill();
       }
+      // in the shallows, the sunlight through the waves makes a net of light that wavers, layer under layer (the
+      // two nearest layers a little way ahead, two families of wavy lines crossing; each layer one path, one stroke)
+      const net = inSea * clamp(1 - dk / 0.16);
+      if (net > 0) {
+        ctx.lineWidth = 1; let drawn = 0;
+        for (let li = 1; li <= 7 && drawn < 2; li++) {
+          const y = li * 6, d = y - camY; if (d < 6 || d > 20) continue;
+          const al = net * 0.4 * clamp((d - 6) / 3) * clamp((20 - d) / 6); if (al < 0.01) continue;
+          drawn++;
+          const zc = ZS + y / DIVE, cx = xAt(zc);
+          ctx.strokeStyle = `rgba(255,255,255,${al})`; ctx.beginPath();
+          for (let f = 0; f < 2; f++) {
+            const an = f * 1.15 + li * 0.4, dx = Math.cos(an), dz = Math.sin(an);
+            for (let i = -5; i <= 5; i++) {
+              let pen = false;
+              for (let a = -6.4; a <= 6.41; a += 0.8) {
+                const o = i * 1.1 + 0.3 * Math.sin(a * 1.3 + t * 0.9 + i * 1.7 + f * 2.1), px = a * dx - o * dz, pz = a * dz + o * dx;
+                const q = px * px + pz * pz < 40 ? V([cx + px, y, zc + pz]) : null;
+                if (!q) { pen = false; continue; } if (pen) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); pen = true; }
+              }
+            }
+          }
+          ctx.stroke();
+        }
+      }
+      // a kelp forest: long stalks out of the deep, swaying, blades along them, all leading down to the middle
+      // (each stalk one ribbon, its blades one path)
+      for (const k of kelps) {
+        const y0 = Math.max(-1, camY + 0.45), y1 = Math.min(k.y1, camY + FAR3); if (y0 >= y1) continue;
+        const col = KELPC[k.c], at = (y) => [k.x + Math.sin(y * 0.18 + t * 0.8 + k.ph) * 0.3, y, k.z + Math.cos(y * 0.15 + t * 0.7 + k.ph) * 0.2];
+        const P = []; for (let y = y0; y <= y1; y += 0.8) { const q = V(at(y)); if (q) P.push(q); }
+        if (P.length < 2) continue;
+        const Lft = [], Rgt = [];
+        for (let i = 0; i < P.length; i++) {
+          const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)], nx = -(b[1] - a[1]), ny = b[0] - a[0], n = Math.hypot(nx, ny) || 1, w = clamp((0.07 * F3) / P[i][2], 0.7, 14) / 2;
+          Lft.push([P[i][0] + (nx / n) * w, P[i][1] + (ny / n) * w]); Rgt.push([P[i][0] - (nx / n) * w, P[i][1] - (ny / n) * w]);
+        }
+        const fa = fogA(P[P.length - 1][2]) * 0.35 + 0.65 * fogA(P[0][2]);
+        ctx.fillStyle = `rgba(${col},${0.85 * inSea * fa})`; ctx.beginPath(); ctx.moveTo(Lft[0][0], Lft[0][1]);
+        for (const q of Lft) ctx.lineTo(q[0], q[1]); for (let i = Rgt.length - 1; i >= 0; i--) ctx.lineTo(Rgt[i][0], Rgt[i][1]); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = `rgba(${col},${0.7 * inSea * fa})`; ctx.beginPath();
+        for (let y = Math.ceil(y0 / k.gap) * k.gap, n = 0; y < y1; y += k.gap, n++) {
+          const b = at(y), q = V(b); if (!q) continue; const r = Math.hypot(b[0] - camX, b[2] - camZ) || 1, side = n % 2 ? 1 : -1, ox = ((b[0] - camX) / r) * 0.5 + side * ((b[2] - camZ) / r) * 0.25, oz = ((b[2] - camZ) / r) * 0.5 - side * ((b[0] - camX) / r) * 0.25;
+          const tp = V([b[0] + ox, y + 0.35, b[2] + oz]); if (!tp) continue;
+          const mx = (q[0] + tp[0]) / 2, my = (q[1] + tp[1]) / 2, nx = -(tp[1] - q[1]) * 0.28, ny = (tp[0] - q[0]) * 0.28;
+          ctx.moveTo(q[0], q[1]); ctx.quadraticCurveTo(mx + nx, my + ny, tp[0], tp[1]); ctx.quadraticCurveTo(mx - nx, my - ny, q[0], q[1]);
+        }
+        ctx.fill();
+      }
       // specks drifting in the water, and in the dark, plankton glowing
       ctx.fillStyle = 'rgb(255,255,255)';
       for (const sn of snow) {
@@ -1086,6 +1149,22 @@
         for (let n = 0; n < 8; n++) { const an = (n / 8) * Math.PI * 2 + j.ph, e0 = V([p[0] + Math.cos(an) * j.r * 0.7, yb, p[2] + Math.sin(an) * j.r * 0.7]), e1 = V([p[0] + Math.cos(an) * j.r * 0.5 + Math.sin(t * 2 + n) * 0.03, yb + j.r * 5, p[2] + Math.sin(an) * j.r * 0.5]); if (!e0 || !e1) continue; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke(); }
         ctx.fillStyle = `rgba(${c},${0.8 * a})`; ctx.beginPath(); ctx.arc(q[0], q[1], R * pl, 0, Math.PI * 2); ctx.fill();
         ctx.strokeStyle = `rgba(255,255,255,${0.5 * a})`; ctx.lineWidth = Math.max(1, R * 0.08); ctx.beginPath(); ctx.arc(q[0], q[1], R * pl * 0.55, 0, Math.PI * 2); ctx.stroke();
+      }
+      // a whale crossing slowly far below, seen from above
+      if (whale && ahead(whale.c[1])) {
+        const an = whale.h + t * 0.04, R = 6, wx = whale.c[0] + Math.cos(an) * R, wz = whale.c[2] + Math.sin(an) * R, hx = -Math.sin(an), hz = Math.cos(an), L = whale.L, wy = whale.c[1];
+        const P = (u, v) => V([wx + hx * u * L - hz * v * L, wy, wz + hz * u * L + hx * v * L]);
+        const body = [[0.5, 0], [0.46, 0.06], [0.32, 0.1], [0.12, 0.115], [-0.1, 0.095], [-0.3, 0.055], [-0.44, 0.022], [-0.47, 0.018]];
+        const flap = reduce ? 0 : Math.sin(t * 0.9) * 0.04, out = [...body.map(([u, v]) => P(u, v)), P(-0.56, 0.14 + flap), P(-0.52, 0), P(-0.56, -0.14 + flap), ...body.slice().reverse().map(([u, v]) => P(u, -v))];
+        const fins = [[P(0.2, 0.11), P(-0.02, 0.36 + flap), P(0.1, 0.115)], [P(0.2, -0.11), P(-0.02, -0.36 - flap), P(0.1, -0.115)]];
+        const q = V([wx, wy, wz]);
+        if (q && out.every(Boolean)) {
+          const a = fogA(q[2]) * inSea * 0.9;
+          ctx.fillStyle = `rgba(58,84,132,${a})`; ctx.beginPath(); ctx.moveTo(out[0][0], out[0][1]); for (const o of out.slice(1)) ctx.lineTo(o[0], o[1]); ctx.closePath(); ctx.fill();
+          for (const fn of fins) if (fn.every(Boolean)) { ctx.beginPath(); ctx.moveTo(fn[0][0], fn[0][1]); ctx.quadraticCurveTo(fn[1][0], fn[1][1], fn[2][0], fn[2][1]); ctx.closePath(); ctx.fill(); }
+          ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`;
+          for (const [u, v] of [[0.3, 0.03], [0.18, -0.05], [0.05, 0.04], [-0.1, -0.02], [-0.22, 0.03]]) { const sp = P(u, v); if (sp) { ctx.beginPath(); ctx.arc(sp[0], sp[1], Math.max(1, (0.12 * F3) / q[2]), 0, Math.PI * 2); ctx.fill(); } }
+        }
       }
       // rays gliding round the line, seen from above
       for (const m of mantas) {
@@ -1113,6 +1192,13 @@
         const r = (b.r * F3) / q[2], a = fogA(q[2]) * inSea; if (r > W * 0.4) continue;
         ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`; ctx.strokeStyle = `rgba(255,255,255,${0.85 * a})`; ctx.lineWidth = Math.max(1, r * 0.08); ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = `rgba(255,255,255,${0.7 * a})`; ctx.beginPath(); ctx.arc(q[0] - r * 0.35, q[1] - r * 0.35, r * 0.22, 0, Math.PI * 2); ctx.fill();
+      }
+      // a thin stream of bubbles going up from the hook
+      const tip = seaPath(penZ);
+      for (let i = 0; i < 16; i++) {
+        const ph = reduce ? i / 16 : (t * 0.45 + i / 16) % 1, q = V([tip[0] + Math.sin(i * 2.3 + t * 2) * 0.05 * ph, tip[1] - ph * 3.6, tip[2] + Math.cos(i * 1.7 + t * 2) * 0.05 * ph]); if (!q) continue;
+        const r = clamp(((0.012 + 0.022 * ph) * F3) / q[2], 1, 9), a = inSea * (1 - ph) * 0.9;
+        ctx.strokeStyle = `rgba(255,255,255,${a})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, Math.PI * 2); ctx.stroke();
       }
     }
     function spaceElements(A, inR) {
@@ -1186,16 +1272,26 @@
       // the next world
       ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
       inside();
-      // the island at the top of the screen, while the phone is still a phone
-      ctx.fillStyle = `rgba(${INK},${A * (1 - clamp((p - 0.8) / 0.12))})`; rr(-0.14 * s3, -h / 2 + m + 0.04 * s3, 0.28 * s3, 0.07 * s3, 0.035 * s3); ctx.fill();
       ctx.restore();
     }
     function drawWorld(A) {
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       if (penZ < ZS) {
-        // the land, then straight up into the sky
+        // the land, then straight up into the sky; at the top a phone comes down the line and the visitor is drawn into
+        // it. Through it is the sea, looked straight down into, which looks just like the sky looked straight up into:
+        // only once through does it turn out to be water
         backdrop(0, A); elements(0, A);
-        drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A);
+        const p = clamp((penZ - (ZS - 1.2)) / 1.2);
+        if (p <= 0) { drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
+        const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001);
+        phoneIn(p, V(pathAt(zP)) || [W / 2, H * 0.5], false, A, () => {
+          const c0 = getCam(); setCam(rig(penZ, 1));
+          backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, INK, A, seaPath); drawTip(INK, A, seaPath, true);
+          setCam(c0);
+        });
+        drawLine(-1e9, Math.min(penZ, zP), lineRGB, A);
+        if (penZ <= zP) drawTip(lineRGB, A);
+        drawLead(A);
         return;
       }
       if (penZ < S0) {
