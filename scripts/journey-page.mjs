@@ -67,9 +67,9 @@ const caseBack = () => {
 
 const lp = (work, cls = 'jy-lp') => `<span class="${cls}" aria-hidden="true"><img class="jy-vinyl" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-groove"></span><img class="jy-art" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-hole"></span></span>`;
 
-const grain = `<svg class="jy-grain" aria-hidden="true" focusable="false"><filter id="jy-pg" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" stitchTiles="stitch" result="a"/><feColorMatrix in="a" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.32 0 0 0 -0.13" result="A"/><feTurbulence type="fractalNoise" baseFrequency="0.035 0.22" numOctaves="2" seed="3" result="b"/><feColorMatrix in="b" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.18 0 0 0 -0.08" result="B"/><feMerge><feMergeNode in="B"/><feMergeNode in="A"/></feMerge></filter><rect width="100%" height="100%" filter="url(#jy-pg)"/></svg>`;
+const grain = `<svg class="jy-grain" aria-hidden="true" focusable="false"><filter id="jy-grainf" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" stitchTiles="stitch" result="a"/><feColorMatrix in="a" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.32 0 0 0 -0.13" result="A"/><feTurbulence type="fractalNoise" baseFrequency="0.035 0.22" numOctaves="2" seed="3" result="b"/><feColorMatrix in="b" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.18 0 0 0 -0.08" result="B"/><feMerge><feMergeNode in="B"/><feMergeNode in="A"/></feMerge></filter><rect width="100%" height="100%" filter="url(#jy-grainf)"/></svg>`;
 
-export function renderJourney({ lang, route, seoPage, site, worksData, assets, base }) {
+export function renderJourney({ lang, route, seoPage, site, worksData, assets, base, head = '' }) {
   const c = journeyCopy(site, lang.key);
   const works = journeyWorks(worksData, lang.key);
   const extras = journeyExtras(site, worksData, lang.key);
@@ -107,7 +107,7 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
 <title>${esc(pageTitle)}</title>
 <meta name="description" content="${esc(description)}">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
+${head || '<meta name="robots" content="noindex, nofollow">'}
 <meta name="color-scheme" content="light only">
 <meta name="theme-color" content="#fefefe">
 <link rel="icon" href="/assets/icons/favicon-32.png" sizes="32x32" type="image/png">

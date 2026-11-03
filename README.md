@@ -24,7 +24,7 @@ Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projec
 - Works and audio gain: assets/data/works-data.json
 - Discography/player: assets/js/works.js
 - Site accessibility: assets/js/site-ux.js
-- Preview (/preview/, noindex): the new journey site from scripts/journey-page.mjs, src/journey/journey.css and src/journey/journey.js, on the same data. Live pages are unaffected.
+- The site: the journey from scripts/journey-page.mjs, src/journey/journey.css and src/journey/journey.js, on the same data, at the five chapter routes in three languages. /preview/ redirects to it.
 
 Node 24+. Run npm run build, npm run check, or npm test. Generated files are ignored by Git. Build/check need no dependencies; npm install is only needed for optional sharp image tooling. Set CHROME_PATH to run node .github/scripts/validate-runtime-performance.mjs locally. Both deployment and validation run browser checks.
 

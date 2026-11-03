@@ -304,26 +304,49 @@ ${urls.join('\n')}
 `;
 }
 
-// ---- Preview: the new journey site (taletone.net/preview/, not indexed) ----
-// The live chapters above stay as they are until the journey replaces them. The journey has its own sources
-// (src/journey/*, scripts/journey-page.mjs) and reads the same data files; see scripts/journey-page.mjs.
+// ---- The site: the journey (a phone, a line, the record of every story) at the five chapter routes ----
+// Its sources are src/journey/* and scripts/journey-page.mjs; it reads the same data files. The earlier chapters'
+// app (src/page.html, src/app/*) is no longer published as pages; /preview/ now redirects to the live routes.
 const journeyCss = await read('src/journey/journey.css');
 const journeyJs = await read('src/journey/journey.js');
 const lineSeedJpUrl = `https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700&display=swap&text=${encodeURIComponent(await japaneseCharacters(root))}`;
 const journeyDataFor = (lang) => journeyData(site, works, lang.key);
-const previewOutputs = [
-  ...seo.pages.flatMap((page) => languages.map((lang) => [`preview/${fileFor(lang, page.path)}`, renderJourney({
-    lang, route: page.path, seoPage: localized(page, lang.key), site, worksData: works, base: '/preview',
-    assets: {
-      css: `/preview/assets/journey/journey.css?v=${version(journeyCss)}`,
-      js: `/preview/assets/journey/journey.js?v=${version(journeyJs)}`,
-      data: `/preview/assets/journey/data-${lang.key}.js?v=${version(journeyDataFor(lang))}`,
-      lineSeedJp: lineSeedJpUrl.replace(/&/g, '&amp;'),
-    },
+// what search engines and link previews read: canonical, alternates, social cards, structured data, analytics
+const liveHead = (page, lang) => {
+  const copy = pageCopy(page, lang), url = urlFor(lang, page.path), og = 'https://taletone.net/assets/social/og-image.png?v=20260710-og3';
+  return [
+    '<meta name="robots" content="index, follow">',
+    '<meta name="referrer" content="strict-origin-when-cross-origin">',
+    '<meta name="naver-site-verification" content="23ea8d36f5a701c952745fc9f07f3be5398091d9">',
+    '<meta name="msvalidate.01" content="DEFAC52B48D954826EA12E5564081FD6">',
+    `<link rel="canonical" href="${url}">`,
+    ...languages.map((l) => `<link rel="alternate" hreflang="${l.html}" href="${urlFor(l, page.path)}">`),
+    `<link rel="alternate" hreflang="x-default" href="${urlFor(languages[0], page.path)}">`,
+    '<meta property="og:type" content="website">', '<meta property="og:site_name" content="TALETONE MUSIC">',
+    `<meta property="og:title" content="${esc(copy.title)}">`, `<meta property="og:description" content="${esc(copy.description)}">`,
+    `<meta property="og:url" content="${url}">`, `<meta property="og:image" content="${og}">`, `<meta property="og:image:alt" content="${esc(copy.title)}">`,
+    '<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">',
+    `<meta property="og:locale" content="${lang.locale}">`, ...languages.filter((l) => l !== lang).map((l) => `<meta property="og:locale:alternate" content="${l.locale}">`),
+    '<meta name="twitter:card" content="summary_large_image">', `<meta name="twitter:title" content="${esc(copy.title)}">`,
+    `<meta name="twitter:description" content="${esc(copy.description)}">`, `<meta name="twitter:image" content="${og}">`,
+    '<link rel="manifest" href="/site.webmanifest">',
+    `<script type="application/ld+json">${jsonLd(page, lang)}</script>`,
+    analyticsTag,
+  ].filter(Boolean).join('\n');
+};
+const journeyAssets = (lang) => ({
+  css: `/assets/journey/journey.css?v=${version(journeyCss)}`,
+  js: `/assets/journey/journey.js?v=${version(journeyJs)}`,
+  data: `/assets/journey/data-${lang.key}.js?v=${version(journeyDataFor(lang))}`,
+  lineSeedJp: lineSeedJpUrl.replace(/&/g, '&amp;'),
+});
+const journeyOutputs = [
+  ...seo.pages.flatMap((page) => languages.map((lang) => [fileFor(lang, page.path), renderJourney({
+    lang, route: page.path, seoPage: localized(page, lang.key), site, worksData: works, base: '', assets: journeyAssets(lang), head: liveHead(page, lang),
   })])),
-  ['preview/assets/journey/journey.css', journeyCss],
-  ['preview/assets/journey/journey.js', journeyJs],
-  ...languages.map((lang) => [`preview/assets/journey/data-${lang.key}.js`, journeyDataFor(lang)]),
+  ['assets/journey/journey.css', journeyCss],
+  ['assets/journey/journey.js', journeyJs],
+  ...languages.map((lang) => [`assets/journey/data-${lang.key}.js`, journeyDataFor(lang)]),
 ];
 
 // Retired News and RSS have no replacement. Remove prior generated artifacts so Pages serves 404.
@@ -345,17 +368,22 @@ const redirectPage = (target, lang) => `<!DOCTYPE html>
 <meta http-equiv="refresh" content="0; url=${target}">
 <script>location.replace(${JSON.stringify(target)} + location.search + location.hash);</script>
 </head><body><a href="${target}">Continue to TALETONE MUSIC</a></body></html>`;
-const legacyOutputs = ['', '/preview'].flatMap(preview => languages.flatMap(lang => {
-  const prefix=preview+lang.prefix;
+const legacyOutputs = languages.flatMap(lang => {
+  const prefix=lang.prefix;
   const pairs=[['/members/','/about/'],['/story-types/','/approach/'],['/projects/','/approach/'],['/works/','/discography/']];
   return pairs.map(([from,to])=>[(prefix+from+'index.html').slice(1),redirectPage(prefix+to,lang)]);
-}));
+});
+// the preview became the site: its addresses (and their old aliases) lead to the same chapter of the live one
+const previewRedirects = languages.flatMap((lang) => [
+  ...seo.pages.map((page) => [`preview/${fileFor(lang, page.path)}`, redirectPage(lang.prefix + page.path, lang)]),
+  ...[['/members/', '/about/'], ['/story-types/', '/approach/'], ['/projects/', '/approach/'], ['/works/', '/discography/']].map(([from, to]) => [`preview${lang.prefix}${from}index.html`, redirectPage(lang.prefix + to, lang)]),
+]);
 const outputs = [
   ...legacyOutputs,
-  ...seo.pages.flatMap((page) => languages.map((lang) => [fileFor(lang, page.path), renderPage(page, lang)])),
+  ...journeyOutputs,
+  ...previewRedirects,
   ['assets/app/app.js', appBundle],
   ['assets/css/works.css', sharedCss],
-  ...previewOutputs,
   ['assets/data/site-content.js', siteScript],
   ['assets/data/seo-content.js', seoScript],
   ['sitemap.xml', sitemap()],
