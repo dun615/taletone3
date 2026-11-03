@@ -45,10 +45,11 @@
         "edit"
       ],
       "field": "artist",
-      "journey": {
-        "branch": "artist",
-        "order": 2
-      }
+      "vinyl": [
+        "147 192 249",
+        "148 154 247",
+        "174 183 244"
+      ]
     },
     {
       "id": "work-soraniwa",
@@ -94,10 +95,11 @@
       ],
       "field": "artist",
       "pinned": 1,
-      "journey": {
-        "branch": "artist",
-        "order": 1
-      }
+      "vinyl": [
+        "22 111 203",
+        "124 161 200",
+        "181 212 232"
+      ]
     },
     {
       "id": "work-run-galaxy",
@@ -143,11 +145,11 @@
         "edit"
       ],
       "field": "game",
-      "pinned": 2,
-      "journey": {
-        "branch": "game",
-        "order": 1
-      }
+      "vinyl": [
+        "237 200 181",
+        "157 167 208",
+        "153 74 86"
+      ]
     },
     {
       "id": "work-taletones",
@@ -192,7 +194,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "54 87 177",
+        "165 172 219",
+        "197 182 236"
+      ]
     },
     {
       "id": "work-stellive",
@@ -238,10 +245,11 @@
         "edit"
       ],
       "field": "artist",
-      "journey": {
-        "branch": "artist",
-        "order": 4
-      }
+      "vinyl": [
+        "199 119 64",
+        "176 44 38",
+        "70 145 70"
+      ]
     },
     {
       "id": "work-daisy-in-eternity",
@@ -282,7 +290,12 @@
       "roles": [
         "arrange"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "150 196 204",
+        "81 158 169",
+        "98 179 152"
+      ]
     },
     {
       "id": "work-zzz",
@@ -328,10 +341,11 @@
         "master"
       ],
       "field": "game",
-      "journey": {
-        "branch": "anim",
-        "order": 1
-      }
+      "vinyl": [
+        "118 211 248",
+        "214 165 163",
+        "195 130 181"
+      ]
     },
     {
       "id": "work-parable",
@@ -377,10 +391,11 @@
         "edit"
       ],
       "field": "artist",
-      "journey": {
-        "branch": "artist",
-        "order": 3
-      }
+      "vinyl": [
+        "249 140 199",
+        "224 39 95",
+        "115 49 165"
+      ]
     },
     {
       "id": "work-bubble-sweet",
@@ -425,7 +440,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "38 174 244",
+        "134 204 234",
+        "59 130 155"
+      ]
     },
     {
       "id": "work-ocd",
@@ -470,7 +490,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "249 199 169",
+        "210 196 160",
+        "131 179 97"
+      ]
     },
     {
       "id": "work-mq82acph-nd1j",
@@ -631,7 +656,12 @@
           "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
         }
       },
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "136 153 203",
+        "159 125 193",
+        "159 125 193"
+      ]
     },
     {
       "id": "work-can-you-stay",
@@ -677,7 +707,12 @@
         "edit",
         "mix"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "214 192 171",
+        "240 209 178",
+        "91 69 197"
+      ]
     },
     {
       "id": "work-watercolor",
@@ -725,7 +760,12 @@
         "edit",
         "mix"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "242 152 116",
+        "240 233 178",
+        "209 196 136"
+      ]
     },
     {
       "id": "work-client-a",
@@ -769,7 +809,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "239 163 206",
+        "211 171 240",
+        "198 193 225"
+      ]
     },
     {
       "id": "work-client-b",
@@ -942,7 +987,12 @@
           "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
         }
       },
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "171 219 247",
+        "166 194 212",
+        "98 152 179"
+      ]
     },
     {
       "id": "work-mq82ashm-1ju7",
@@ -989,10 +1039,11 @@
         "mix"
       ],
       "field": "game",
-      "journey": {
-        "branch": "game",
-        "order": 3
-      }
+      "vinyl": [
+        "185 224 233",
+        "221 184 214",
+        "157 139 199"
+      ]
     },
     {
       "id": "work-mix-archive-01",
@@ -1093,7 +1144,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "246 147 116",
+        "204 123 54",
+        "204 123 54"
+      ]
     },
     {
       "id": "work-master-archive",
@@ -1139,7 +1195,12 @@
         "edit",
         "mix"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "168 213 250",
+        "111 163 247",
+        "41 76 188"
+      ]
     },
     {
       "id": "work-mix-archive-02",
@@ -1244,7 +1305,13 @@
         "edit",
         "mix"
       ],
-      "field": "original"
+      "field": "original",
+      "pinned": 3,
+      "vinyl": [
+        "180 227 238",
+        "184 221 204",
+        "211 225 193"
+      ]
     },
     {
       "id": "work-arrange-work",
@@ -1291,7 +1358,12 @@
         "edit",
         "mix"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "221 70 38",
+        "231 200 177",
+        "169 46 46"
+      ]
     },
     {
       "id": "work-selected-demo",
@@ -1338,7 +1410,12 @@
         "edit",
         "mix"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "36 81 191",
+        "140 185 215",
+        "33 11 203"
+      ]
     },
     {
       "id": "work-archive-21",
@@ -1386,7 +1463,12 @@
         "mix",
         "master"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "198 173 245",
+        "172 193 246",
+        "124 155 244"
+      ]
     },
     {
       "id": "work-tt-project-connect-season-1-12",
@@ -1785,7 +1867,12 @@
           "description": ""
         }
       },
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "87 59 155",
+        "99 89 175",
+        "215 173 201"
+      ]
     },
     {
       "id": "work-tt-last-origin-miss-orca-17",
@@ -1959,7 +2046,12 @@
           "description": ""
         }
       },
-      "field": "game"
+      "field": "game",
+      "vinyl": [
+        "197 96 119",
+        "81 70 145",
+        "125 15 199"
+      ]
     },
     {
       "id": "work-flight-again",
@@ -2002,7 +2094,12 @@
         "arrange",
         "edit"
       ],
-      "field": "game"
+      "field": "game",
+      "vinyl": [
+        "197 96 119",
+        "81 70 145",
+        "125 15 199"
+      ]
     },
     {
       "id": "work-tt-last-origin-cafe-amor-22",
@@ -2169,7 +2266,12 @@
           "description": ""
         }
       },
-      "field": "game"
+      "field": "game",
+      "vinyl": [
+        "189 215 229",
+        "43 105 171",
+        "76 117 158"
+      ]
     },
     {
       "id": "work-tt-pocotone-sixtar-gate-25",
@@ -2274,7 +2376,12 @@
           "description": ""
         }
       },
-      "field": "game"
+      "field": "game",
+      "vinyl": [
+        "250 226 168",
+        "187 168 233",
+        "227 181 209"
+      ]
     },
     {
       "id": "work-tt-with-me-26",
@@ -2320,7 +2427,12 @@
         "edit",
         "mix"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "145 86 70",
+        "185 152 109",
+        "228 209 190"
+      ]
     },
     {
       "id": "work-tt-paradise-27",
@@ -2365,7 +2477,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "239 193 179",
+        "189 117 125",
+        "225 192 225"
+      ]
     },
     {
       "id": "work-tt-shining-day-28",
@@ -2409,7 +2526,12 @@
         "arrange",
         "edit"
       ],
-      "field": "artist"
+      "field": "artist",
+      "vinyl": [
+        "239 179 188",
+        "196 122 163",
+        "193 193 225"
+      ]
     },
     {
       "id": "work-tt-always-with-you-32",
@@ -2558,11 +2680,12 @@
         }
       ],
       "field": "game",
-      "pinned": 3,
-      "journey": {
-        "branch": "game",
-        "order": 2
-      }
+      "pinned": 2,
+      "vinyl": [
+        "239 179 197",
+        "70 91 145",
+        "169 82 103"
+      ]
     },
     {
       "id": "work-tt-unmyeong-35",
@@ -2664,7 +2787,12 @@
         "mix",
         "master"
       ],
-      "field": "game"
+      "field": "game",
+      "vinyl": [
+        "242 202 176",
+        "183 128 105",
+        "145 70 96"
+      ]
     },
     {
       "id": "work-tt-run-into-galaxy-36",
@@ -2710,7 +2838,12 @@
         "edit",
         "mix"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "225 193 193",
+        "243 168 238",
+        "129 209 235"
+      ]
     },
     {
       "id": "work-tt-we-are-sia-37",
@@ -2757,7 +2890,12 @@
         "mix",
         "master"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "223 12 20",
+        "227 212 192",
+        "210 169 162"
+      ]
     },
     {
       "id": "work-tt-sejong-arts-anthem-38",
@@ -2805,7 +2943,12 @@
         "mix",
         "master"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "225 214 193",
+        "145 178 202",
+        "212 225 193"
+      ]
     },
     {
       "id": "work-tt-growing-39",
@@ -2852,7 +2995,12 @@
         "mix",
         "master"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "169 194 249",
+        "183 175 243",
+        "149 142 200"
+      ]
     },
     {
       "id": "work-tt-tomorrow-40",
@@ -2899,7 +3047,12 @@
         "mix",
         "master"
       ],
-      "field": "original"
+      "field": "original",
+      "vinyl": [
+        "68 168 245",
+        "168 244 250",
+        "225 193 193"
+      ]
     }
   ],
   "clientLogos": [

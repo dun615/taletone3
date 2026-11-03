@@ -19,6 +19,7 @@ node_modules/
 /sitemap.xml
 /rss.xml
 /assets/app/app.js
+/assets/journey/
 /assets/data/site-content.js
 /assets/data/seo-content.js
 /en/

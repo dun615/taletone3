@@ -137,7 +137,8 @@ test("legacy URLs redirect directly and preserve queries and fragments", async (
     ];
     for (const [oldPath, newPath] of pairs) {
       const html = await read(prefix + oldPath + "index.html");
-      const target = "/" + prefix + newPath;
+      // (the preview became the site: its old aliases lead to the live chapter)
+      const target = "/" + prefix.replace(/^preview\/?/, "") + newPath;
       assert.ok(html.includes('content="0; url=' + target + '"'));
       assert.ok(html.includes('href="https://taletone.net' + target + '"'));
       let destination = "";

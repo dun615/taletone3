@@ -1,670 +1,100 @@
-import { access, readFile, readdir } from 'node:fs/promises';
+// Static checks of the built site: the journey at the five chapter routes in three languages, the redirects, the
+// sitemap and robots, and the data every page and the record depend on. Run after `node scripts/build.mjs`.
+import { access, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const root = process.cwd();
-const routes = [
-  ['home', 'index.html', '/', 'TALETONE MUSIC'],
-  ['approach', 'approach/index.html', '/approach/', 'Approach'],
-  ['members', 'about/index.html', '/about/', 'About'],
-  ['works', 'discography/index.html', '/discography/', 'Discography'],
-  ['contact', 'contact/index.html', '/contact/', 'Contact'],
-];
 const errors = [];
 const assert = (condition, message) => { if (!condition) errors.push(message); };
 const text = (file) => readFile(path.join(root, file), 'utf8');
 const exists = async (file) => { try { await access(path.join(root, file)); return true; } catch { return false; } };
-const attr = (html, pattern) => html.match(pattern)?.[1] || '';
-const cleanText = (html) => html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const hash = (s) => createHash('sha256').update(s).digest('hex').slice(0, 12);
 const cleanRef = (value) => value.trim().replace(/&amp;/gi, '&').split(/[?#]/)[0].replace(/^\/+/, '');
-const ignoredRef = (value) => !value || /^(?:data:|blob:|mailto:|tel:|javascript:|#)/i.test(value) || value.includes('{' + '{') || value.includes('&#');
-const duplicateIds = (html) => {
-  const seen = new Set();
-  const duplicates = new Set();
-  for (const match of html.matchAll(/\sid=["']([^"']+)["']/gi)) {
-    if (seen.has(match[1])) duplicates.add(match[1]);
-    seen.add(match[1]);
-  }
-  return [...duplicates];
-};
-const walkFiles = async (directory = root, prefix = '') => {
-  const found = [];
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.name === '.git') continue;
-    const relative = path.posix.join(prefix, entry.name);
-    const absolute = path.join(directory, entry.name);
-    if (entry.isDirectory()) found.push(...await walkFiles(absolute, relative));
-    else found.push(relative);
-  }
-  return found;
-};
-const rawEditorMarkers = [
-  '{' + '{', 'SEO' + ' EDITOR', 'COPY' + ' JSON', 'SEO' + '_MESSAGE',
-  'seo' + 'EditMode', 'members' + 'EditMode', '<sc-' + 'if', '<sc-' + 'for',
-  'onclick="' + '{' + '{', 'value="' + '{' + '{',
-];
-// works and responsive keys are content hashes set by the build (see scripts/build.mjs)
-const contentKey = async (...files) => createHash('sha256').update((await Promise.all(files.map((f) => readFile(path.join(root, f), 'utf8')))).join('')).digest('hex').slice(0, 12);
-// Behaviour that a running browser can show (WORKS shop, popup, filters, audio, bridge lock/hold/handoff,
-// revisits) is checked by validate-runtime-performance.mjs; this file keeps output policy and guards against
-// retired code returning.
-const expectedCacheKeys = {
-  'assets/js/image-slot.js': await contentKey('assets/js/image-slot.js'),
-  'assets/css/works.css': await contentKey('assets/css/works.css'),
-  'assets/js/works.js': await contentKey('assets/js/works.js', 'assets/data/works-data.json'),
-  'assets/css/responsive.css': await contentKey('assets/css/responsive.css'),
-};
-const expectedSiteContentCacheKey = attr(
-  await text('index.html'),
-  /assets\/data\/site-content\.js\?v=([^"']+)/i,
-);
-assert(/^[A-Za-z0-9._-]+$/.test(expectedSiteContentCacheKey), 'index.html: invalid site-content cache key');
-const routeDocumentBudgetBytes = 40_000;
-// 102 KB at revision 2; the type scale, chapter review, brand palette and shared close button bring it to ~112 KB.
-// 118 KB: inline-style attribute selectors became tt-s-* classes on the template elements (+~0.7 KB)
-const decodedTemplateBudgetBytes = 118_000;
-// Bridge control now lives here instead of a second controller in support.js.
-const decodedScriptBudgetBytes = 164_500; // raised from 150 KB for the Discography's light and sound response, then for the layered sea (scene.js)
-// Noto Sans JP is requested with only the Japanese characters the site uses (text=), from the page head
-const expectedFontStylesheet = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400..800&amp;display=swap&amp;text=';
-const expectedFontAssets = {
-  'assets/fonts/hanken-grotesk-latin-normal-v12.woff2': ['E9201EDDF1D41D0B62253295D869CE3CF65768F7102B797F02C7F8C876B4A9D5', 34_704],
-  'assets/fonts/quicksand-latin-normal-v37.woff2': ['2ADD7D60B1CD2AB84C9967E23D5EC08EB3FC9635C46855B17D59404DEC6B410E', 28_244],
-};
+const duplicateIds = (html) => { const seen = new Set(), dup = new Set(); for (const m of html.matchAll(/\sid="([^"]+)"/g)) { if (seen.has(m[1])) dup.add(m[1]); seen.add(m[1]); } return [...dup]; };
 
+const BASE = 'https://taletone.net';
+const languages = [{ key: 'kr', prefix: '', html: 'ko' }, { key: 'en', prefix: 'en/', html: 'en' }, { key: 'jp', prefix: 'ja/', html: 'ja' }];
+const routes = ['', 'approach/', 'about/', 'discography/', 'contact/'];
+const CHAPTERS = ['pro', 'tale', 'tone', 'case', 'music', 'done', 'record', 'epi'];
 
-const required = [
-  ...routes.map(([, file]) => file), 'projects/index.html', '404.html', 'robots.txt',
-  'sitemap.xml', 'site.webmanifest', 'CNAME', 'support.js',
-  'assets/data/site-content.json', 'assets/data/site-content.js',
-  'assets/data/seo-content.json', 'assets/data/seo-content.js',
-  'assets/data/works-data.json', 'assets/vendor/react-18.3.1.min.js',
-  'assets/vendor/react-dom-18.3.1.min.js',
-  ...Object.keys(expectedFontAssets), 'assets/fonts/LICENSES.txt',
-  '.github/scripts/validate-runtime-performance.mjs', '.github/workflows/site-validation.yml',
-];
-for (const file of required) assert(await exists(file), `missing required file: ${file}`);
-for (const [file, [expectedHash, expectedBytes]] of Object.entries(expectedFontAssets)) {
-  if (!await exists(file)) continue;
-  const bytes = await readFile(path.join(root, file));
-  assert(bytes.length === expectedBytes, `${file}: unexpected font byte size`);
-  assert(createHash('sha256').update(bytes).digest('hex').toUpperCase() === expectedHash, `${file}: font asset hash mismatch`);
-}
-const runtimePerformanceValidator = await text('.github/scripts/validate-runtime-performance.mjs');
-const validationWorkflow = await text('.github/workflows/site-validation.yml');
-for (const requiredGuard of [
-  'maxTransferBytes', 'maxWarmFirstPartyTransferBytes', 'maxFirstPartyRequests', 'maxGoogleFontRequests', 'maxFcpMs', 'maxLcpMs', 'maxCls', 'maxLongTasks',
-  'audioRequests === 0', 'worksDataRequests === 0', 'recalcStyleCount <= 60',
-  'runFunctionalMatrix', 'runInteractionSmoke', 'network.audioRequests === 1',
-  'network.worksDataRequests === 0',
-  "dataset.ttMediaPlayback === 'paused'", 'history-dialog', 'language-switch',
-  'unexpectedThirdPartyUrls.length === 0',
-]) {
-  assert(runtimePerformanceValidator.includes(requiredGuard), `runtime performance validator is missing guard: ${requiredGuard}`);
-}
-assert(validationWorkflow.includes('uses: actions/setup-node@v5') && validationWorkflow.includes('node-version: 24') && validationWorkflow.includes('node .github/scripts/validate-runtime-performance.mjs'), 'site-validation workflow does not use the Node 24 action/runtime performance budgets');
+// generated files are current
+try { execFileSync(process.execPath, ['scripts/build.mjs', '--check'], { cwd: root, stdio: 'pipe' }); }
+catch (e) { assert(false, `generated files are out of date: ${String(e.stderr || e.stdout || e.message).trim()}`); }
 
-// Route pages share one generated bundle that inserts the dc-runtime template/script blocks.
-const appBundleSource = await text('assets/app/app.js');
-const appBundle = JSON.parse(appBundleSource.match(/\}\)\((\{[\s\S]*\})\);\s*$/)?.[1] || '{}');
-const appBundleVersion = createHash('sha256').update(appBundleSource).digest('hex').slice(0, 12);
-assert(typeof appBundle.template === 'string' && typeof appBundle.script === 'string', 'assets/app/app.js: app payload missing');
-const payloadHashes = [];
-const scriptPayloadHashes = [];
-const fallbackHashes = new Map();
-let decodedApp = '';
-let decodedScriptApp = '';
-for (const [key, file, route, expectedTitle] of routes) {
+const site = JSON.parse(await text('assets/data/site-content.json'));
+const works = JSON.parse(await text('assets/data/works-data.json')).works;
+const assetsCss = await text('assets/journey/journey.css'), assetsJs = await text('assets/journey/journey.js');
+
+// ---- the pages ----
+for (const lang of languages) for (const route of routes) {
+  const file = `${lang.prefix}${route}index.html`, url = `${BASE}/${lang.prefix}${route}`;
+  if (!(await exists(file))) { assert(false, `${file}: missing`); continue; }
   const html = await text(file);
-  assert(Buffer.byteLength(html) <= routeDocumentBudgetBytes, `${file}: route document exceeds ${routeDocumentBudgetBytes} byte budget`);
-  const title = attr(html, /<title>([\s\S]*?)<\/title>/i);
-  const description = attr(html, /<meta\s+name="description"\s+content="([^"]+)"/i);
-  const canonical = attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i);
-  assert(title.includes(expectedTitle), `${file}: unexpected title`);
-  assert(description.length >= 18, `${file}: description is too short`);
-  assert(canonical === `https://taletone.net${route}`, `${file}: canonical mismatch`);
-  for (const lang of ['ko', 'en', 'ja', 'x-default']) {
-    assert(new RegExp(`<link\\s+rel="alternate"\\s+hreflang="${lang}"`, 'i').test(html), `${file}: missing hreflang ${lang}`);
+  assert(new RegExp(`<html lang="${lang.html}"[ >]`).test(html), `${file}: html lang is not ${lang.html}`);
+  assert(/<title>[^<]{8,}<\/title>/.test(html), `${file}: title missing`);
+  assert(/<meta name="description" content="[^"]{20,}">/.test(html), `${file}: description missing`);
+  assert(html.includes('<meta name="robots" content="index, follow">') && !html.includes('noindex'), `${file}: must be indexable`);
+  assert(html.includes(`<link rel="canonical" href="${url}">`), `${file}: canonical is not ${url}`);
+  for (const l of languages) assert(html.includes(`<link rel="alternate" hreflang="${l.html}" href="${BASE}/${l.prefix}${route}">`), `${file}: hreflang ${l.html} missing`);
+  assert(html.includes(`hreflang="x-default" href="${BASE}/${route}"`), `${file}: x-default missing`);
+  for (const p of ['og:title', 'og:description', 'og:url', 'og:image']) assert(html.includes(`property="${p}"`), `${file}: ${p} missing`);
+  const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  try { JSON.parse(ld ? ld[1] : ''); } catch { assert(false, `${file}: structured data is not valid JSON`); }
+  for (const ch of CHAPTERS) assert(html.includes(`data-ch="${ch}"`), `${file}: chapter ${ch} missing`);
+  assert((html.match(/class="jy-sw(?: pin)?"/g) || []).length === works.length, `${file}: the record must list every work`);
+  assert(duplicateIds(html).length === 0, `${file}: duplicate ids ${duplicateIds(html).join(', ')}`);
+  assert(html.includes(`journey.css?v=${hash(assetsCss)}`) && html.includes(`journey.js?v=${hash(assetsJs)}`), `${file}: journey asset versions are not their content hashes`);
+  assert(html.length < 160_000, `${file}: document ${html.length} bytes > 160000`);
+  // every local file the page refers to exists
+  for (const m of html.matchAll(/\s(?:src|href|poster|data-src|data-paper|data-ink)="(\/[^"]*)"/g)) {
+    const ref = cleanRef(m[1]); if (!ref || ref.endsWith('/')) continue;
+    assert(await exists(ref), `${file}: missing ${m[1]}`);
   }
-  for (const meta of ['og:title', 'og:description', 'og:image']) {
-    assert(new RegExp(`<meta\\s+property="${meta}"\\s+content="[^"]+"`, 'i').test(html), `${file}: missing ${meta}`);
-  }
-  for (const meta of ['twitter:title', 'twitter:description', 'twitter:image']) {
-    assert(new RegExp(`<meta\\s+name="${meta}"\\s+content="[^"]+"`, 'i').test(html), `${file}: missing ${meta}`);
-  }
-  assert(/<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin">/i.test(html), `${file}: missing referrer policy`);
-  assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
-  assert(html.includes(`assets/data/site-content.js?v=${expectedSiteContentCacheKey}`), `${file}: stale site-content cache key`);
-  assert(!html.includes('assets/data/track-record.js'), `${file}: standalone track-record request returned`);
-  assert(!html.includes('assets/icons/favicon.svg'), `${file}: PNG-wrapped SVG favicon returned`);
-  assert(html.includes(`<meta name="tt-noto-jp" content="${expectedFontStylesheet}`), `${file}: Noto Sans JP subset (text=) address is missing`);
-  assert(html.includes('<link id="tt-noto-jp"') === /<html lang="ja"/.test(html), `${file}: Noto Sans JP must load up front on the Japanese pages only`);
-  assert(html.includes('<link rel="preload" href="assets/fonts/hanken-grotesk-latin-normal-v12.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Hanken Grotesk preload is missing`);
-  assert(html.includes('<link rel="preload" href="assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>'), `${file}: Quicksand preload is missing`);
-
-  const ld = attr(html, /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/i);
-  try { JSON.parse(ld); } catch { errors.push(`${file}: invalid JSON-LD`); }
-
-  const usesAppBundle = html.includes(`<script src="assets/app/app.js?v=${appBundleVersion}"></script>`);
-  assert(usesAppBundle, `${file}: shared app bundle reference missing or stale`);
-  const payload = usesAppBundle ? Buffer.from(appBundle.template).toString('base64') : '';
-  assert(payload.length > 1000, `${file}: encoded app template missing`);
-  if (payload) {
-    const decoded = Buffer.from(payload, 'base64').toString('utf8');
-    assert(Buffer.byteLength(decoded) <= decodedTemplateBudgetBytes, `${file}: decoded template exceeds ${decodedTemplateBudgetBytes} byte budget`);
-    decodedApp ||= decoded;
-    payloadHashes.push(createHash('sha256').update(decoded).digest('hex'));
-    for (const [asset, cacheKey] of Object.entries(expectedCacheKeys)) {
-      assert(decoded.includes(`${asset}?v=${cacheKey}`), `${file}: stale cache key for ${asset}`);
-    }
-    assert(!decoded.includes('family=Noto+Sans+JP'), `${file}: the full Noto Sans JP stylesheet returned to the template`);
-    assert(!decoded.includes('family=Quicksand') && !decoded.includes('family=Hanken+Grotesk'), `${file}: remote Latin font request returned`);
-    assert(!decoded.includes('Noto+Sans+JP:wght@400;500;600;700;800') && !decoded.includes('Noto+Sans+KR:wght@400;500;600;700;800'), `${file}: duplicate per-weight CJK font CSS returned`);
-    assert((decoded.match(/hanken-grotesk-latin-normal-v12\.woff2/g) || []).length === 5, `${file}: local Hanken Grotesk normal weights changed`);
-    assert(!decoded.includes('hanken-grotesk-latin-italic-v12.woff2'), `${file}: unused Hanken Grotesk italic face returned`);
-    assert((decoded.match(/quicksand-latin-normal-v37\.woff2/g) || []).length === 4, `${file}: local Quicksand weights changed`);
-    assert(decoded.includes(":root{--tt-noto-primary:'Nanum Gothic';--tt-noto-secondary:'Noto Sans JP';") && decoded.includes(":root:lang(ja){--tt-noto-primary:'Noto Sans JP';--tt-noto-secondary:'Nanum Gothic'}"), `${file}: language-aware CJK font order is missing`);
-    const decodedFontDeclarations = [...decoded.matchAll(/font-family\s*:\s*([^;}\r\n]+)/gi)].map((match) => match[1]);
-    assert(!decodedFontDeclarations.some((value) => /Noto Sans (?:KR|JP)/.test(value)), `${file}: literal CJK family order remains in a template font declaration`);
-    assert(decoded.includes("font-family:'Quicksand',var(--tt-noto-primary),var(--tt-noto-secondary),sans-serif"), `${file}: Japanese language button does not preserve Quicksand before the CJK fallbacks`);
-    assert(!decoded.includes('id="intro"') && !decoded.includes('id="deep-book-svg"') && !decoded.includes('data-intro-v2'), `${file}: retired intro DOM, SVG book or preview gate returned`);
-    assert(decoded.includes('<div class="tt-book2" aria-hidden="true">') && decoded.includes('class="tb-cover-front"') && decoded.includes('class="tb-veil"'), `${file}: the Book (cover, pages, water veil) is missing`);
-    assert(!decoded.includes('id="c-translation"') && !decoded.includes('id="tale-line"') && !decoded.includes('class="nav-chapter"'), `${file}: retired TRANSLATE chapter or menu chapter words returned`);
-    assert(decoded.includes(':root{--fs-xs:11px;--fs-s:13px;--fs-m:15px;--fs-l:18px;--fs-xl:24px;--fs-2xl:34px;--fs-3xl:48px;--fs-4xl:96px}'), `${file}: site type scale is missing`);
-    assert(decoded.includes('html:lang(ko) #content#content :is(p,h1,h2,h3,h4,div,span,li,a,button){word-break:keep-all!important'), `${file}: Korean keep-all override is missing`);
-    assert(!decoded.includes('<img src="{{ member.photo }}"'), `${file}: hidden member cards can load before MEMBERS is active`);
-    assert(decoded.includes('class="tt-home-tagline"') && decoded.includes('{{ HOME.tagline }}'), `${file}: localized HOME tagline lockup is missing`);
-    for (const binding of ['HOME.tagline', 'MEMBERS_META.subtitle', 'MEMBERS_META.description', 'CONTACT.subtitle', 'CONTACT.caption']) {
-      assert(decoded.includes(`<sc-if value="{{ ${binding} }}">`), `${file}: empty chapter copy is not conditionally removed: ${binding}`);
-    }
-    assert(!decoded.includes('HOME.subtitleLine') && !decoded.includes('HOME.descriptionLine'), `${file}: obsolete multi-line HOME copy binding returned`);
-    assert(!decoded.includes('id="tt-works-data"'), `${file}: stale embedded WORKS fallback returned`);
-    for (const deadTemplateSymbol of ['notMembersEditMode', '{{ accent }}', '.tt-prologue-copy', '.tt-orb-link', '.tt-orb-ring', '.tt-sigil', '.tt-page-stage']) {
-      assert(!decoded.includes(deadTemplateSymbol), `${file}: dead template symbol returned: ${deadTemplateSymbol}`);
-    }
-    for (const deadKeyframe of ['bob', 'haloSpin', 'haloSpinR', 'eq', 'floaty']) {
-      assert(!decoded.includes(`@keyframes ${deadKeyframe}`), `${file}: dead keyframe returned: ${deadKeyframe}`);
-    }
-    assert((decoded.match(/data-story-bridge-wrap="" style="height:100vh;/g) || []).length === 4, `${file}: story bridges do not reserve their final height`);
-    assert(!decoded.includes('data-story-bridge-wrap="" style="height:64vh;'), `${file}: delayed generic story bridge height returned`);
-    assert(!decoded.includes('scroll-snap-type') && !decoded.includes('scroll-snap-stop'), `${file}: native bridge snapping can jump after a content re-render`);
-    assert(!decoded.includes('.tt-bridge-continue'), `${file}: obsolete bridge continuation cue CSS returned`);
-    assert(!decoded.includes('Lightweight first-home-only intro'), `${file}: lightweight replacement intro still present`);
-  }
-
-  const scriptPayload = usesAppBundle ? Buffer.from(appBundle.script).toString('base64') : '';
-  assert(scriptPayload.length > 1000, `${file}: encoded app script missing`);
-  if (scriptPayload) {
-    const decodedScript = Buffer.from(scriptPayload, 'base64').toString('utf8');
-    assert(Buffer.byteLength(decodedScript) <= decodedScriptBudgetBytes, `${file}: decoded app script exceeds ${decodedScriptBudgetBytes} byte budget`);
-    decodedScriptApp ||= decodedScript;
-    scriptPayloadHashes.push(createHash('sha256').update(decodedScript).digest('hex'));
-    assert(decodedScript.includes('initIntroV2(){') && decodedScript.includes('    this.initIntroV2();'), `${file}: the dive intro is not the site intro`);
-    assert(decodedScript.includes("forceIntro=new URLSearchParams(location.search).get('intro')==='1'"), `${file}: forced intro replay query is missing`);
-    assert(decodedScript.includes("sessionStorage.setItem('tt_intro_home_v5','1')"), `${file}: restored intro session key is stale`);
-    assert(decodedScript.includes('if(!isHomeRoute || (seen&&!forceIntro) || reduce){'), `${file}: intro is not limited to one home visit without reduced motion`);
-    assert(decodedScript.includes('function clipAbove(') && decodedScript.includes('function clipBelow(') && decodedScript.includes('function drawBubbles('), `${file}: continuous surface crossing is missing`);
-    assert(!decodedScript.includes("c.fillStyle='rgba(255,255,255,'+(0.6*hit)") && !decodedScript.includes('updateIntro('), `${file}: white flash or old intro driver returned`);
-    assert(!decodedScript.includes('this.iScene.style.opacity=(1-sceneExit)'), `${file}: whole-scene opacity crossfade returned`);
-    assert(!decodedScript.includes('assembly.finalOpacity*ae'), `${file}: HOME opacity crossfade returned`);
-    assert(decodedScript.includes("this._visualViewport.addEventListener('resize',this.onResize"), `${file}: visual viewport resize handling is missing`);
-    assert(decodedScript.includes('mobile?1.35:2'), `${file}: mobile canvas DPR cap is missing`);
-    assert(decodedScript.includes("this.scroller.addEventListener('scroll',this._mobileScrollHandler"), `${file}: mobile scroll busy path is missing`);
-    const drawBody = (decodedScript.match(/\n  draw\(n, pal, fastMobile\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    const drawRailBody = (decodedScript.match(/\n  drawRail\(n, pal, time\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    assert(decodedScript.includes('refreshLayoutGeometry(layoutHeight){') && decodedScript.includes('el._motionBounds={top:rect.top-rootTop+scrollTop,height:rect.height};'), `${file}: shared layout geometry cache is missing`);
-    assert(decodedScript.includes('this._railCenters.push(section.offsetTop+section.clientHeight*0.5);'), `${file}: rail centers are not cached with layout geometry`);
-    assert(decodedScript.includes('docY:bookRect.top+scrollTop+bookRect.height*0.68-currentFloatY') && decodedScript.includes('bookGeometry.docY+bookFloatY'), `${file}: deep-book float compensation is missing`);
-    assert(decodedScript.includes('fl._floatY=Number(floatY);'), `${file}: live deep-book float offset is not retained`);
-    assert(decodedScript.includes('var geometryDirty=this._layoutGeometryDirty||this._layoutGeometryHeight!==layoutHeight;') && decodedScript.includes('if(geometryDirty) this.refreshLayoutGeometry(layoutHeight);'), `${file}: layout geometry is not invalidated by height changes`);
-    assert(decodedScript.includes('if(!this.introDone){\n      if(this._layoutGeometryDirty&&this.scroller) this.refreshLayoutGeometry(this.scroller.scrollHeight);'), `${file}: intro does not initialize shared layout geometry before style writes`);
-    assert(decodedScript.includes('self._layoutGeometryDirty=true; self._sceneDirty=true; self.introDone=true;'), `${file}: intro completion does not invalidate layout geometry and the scroll-derived scene`);
-    assert(decodedScript.includes('isNearViewport(el, margin, bounds, scrollTop, viewportHeight){'), `${file}: viewport helper does not accept cached loop geometry`);
-    assert(decodedScript.includes('var vh=viewportHeight==null?(window.innerHeight||800):viewportHeight') && decodedScript.includes('scrollTop==null?(this.scroller?this.scroller.scrollTop:window.scrollY):scrollTop'), `${file}: viewport helper no longer falls back safely outside the main loop`);
-    assert((decodedScript.match(/this\.isNearViewport\([^,\n]+,motionMargin,[^\n]+\._motionBounds,sc,vhR\)/g) || []).length === 5, `${file}: decorative motion still rereads viewport geometry between style writes`);
-    assert(decodedScript.includes('this._layoutGeometryDirty = true;') && decodedScript.includes('this._layoutGeometryDirty=true;'), `${file}: shared layout geometry lifecycle invalidation is missing`);
-    assert(!drawRailBody.includes('.offsetTop') && !drawRailBody.includes('.clientHeight'), `${file}: rail layout is still measured every frame`);
-    assert(!drawBody.includes("document.getElementById('deep-book-svg')") && !drawBody.includes('getBoundingClientRect()') && !drawBody.includes('refreshLayoutGeometry'), `${file}: draw still performs layout measurement`);
-    assert(!decodedScript.includes('refreshMotionBounds') && !decodedScript.includes('_motionBoundsDirty') && !decodedScript.includes('_motionBoundsHeight'), `${file}: obsolete motion-only cache state remains`);
-    assert((decodedScript.match(/new MutationObserver/g) || []).length === 0, `${file}: broad component mutation observer returned`);
-    assert(decodedScript.includes('loadMemberImages(){') && decodedScript.includes("document.body.getAttribute('data-active-chapter')!=='members'"), `${file}: member image loading is not scoped to the active MEMBERS chapter`);
-    assert(decodedScript.includes("querySelectorAll('img[data-member-src]')") && decodedScript.includes("image.removeAttribute('data-member-src')"), `${file}: member image loading is not one-shot`);
-    assert(decodedScript.includes("this._chapterTarget&&this._chapterTarget!=='c-members'") && decodedScript.includes('this._chapterTarget=id;') && decodedScript.includes("activeSection.id===this._chapterTarget) this._chapterTarget=''"), `${file}: pass-through navigation can activate hidden member images`);
-    assert(!decodedScript.includes('tt-mobile-bridge-line-inner'), `${file}: unused mobile bridge inner class returned`);
-    assert(!decodedScript.includes('fastMobile ? 0.38 : 0.72'), `${file}: unreachable fast-mobile motion margin returned`);
-    assert(decodedScript.includes("var bl=(1-exit)*4; re.style.filter = bl>0.25 ? 'blur('+bl.toFixed(1)+'px)' : 'none';"), `${file}: relaxed scroll-exit blur condition is missing`);
-    assert(!decodedScript.includes('var bl=(1-exit)*5;'), `${file}: aggressive scroll-exit blur returned`);
-    assert(decodedScript.includes('this.raf=0;\n    if(document.hidden) return;'), `${file}: hidden documents can keep the main animation loop alive`);
-    const visibilityHandlerSource = decodedScript.match(/this\._visibilityHandler=\(\)=>\{[\s\S]*?\n    \};/)?.[0] || '';
-    assert(/if\(document\.hidden\)\{\s*cancelAnimationFrame\(this\.raf\);\s*this\.raf=0;\s*if\(this\._bridgeRun\) this\._bridgeRun\.hiddenAt=performance\.now\(\);\s*return;/.test(visibilityHandlerSource), `${file}: hidden animation loop cancellation/bridge pause order changed`);
-    assert((visibilityHandlerSource.match(/requestAnimationFrame\(this\.loop\)/g) || []).length === 1 && visibilityHandlerSource.includes('if(!this.raf){'), `${file}: visible animation loop does not resume exactly once`);
-    assert(decodedScript.includes("document.addEventListener('visibilitychange',this._visibilityHandler)") && decodedScript.includes("document.removeEventListener('visibilitychange',this._visibilityHandler)"), `${file}: animation visibility lifecycle is incomplete`);
-    const synchronousLangIndex = decodedScript.indexOf("document.documentElement.lang=this.lang==='kr'?'ko':(this.lang==='jp'?'ja':'en');");
-    const deferredLangIndex = decodedScript.indexOf('this._langInitTimer=setTimeout');
-    assert(synchronousLangIndex >= 0 && deferredLangIndex > synchronousLangIndex, `${file}: document language is not set before deferred content localization`);
-    assert(decodedScript.includes('var sceneDirty=this._sceneDirty||geometryDirty||this._lastSceneScroll!==sc||this._lastSceneHeight!==layoutHeight;'), `${file}: scroll-derived scene work is not dirty-gated`);
-    assert(!decodedScript.includes('updateTranslation') && !decodedScript.includes('c-translation') && !decodedScript.includes('index===-1'), `${file}: retired TRANSLATE bridge code returned`);
-    assert(decodedScript.includes('(atRest ? 50 : (this.isMobileMotion() ? 34 : 1000/60))') && decodedScript.includes('this._lastLoopFrame += minFrameMs;'), `${file}: high-refresh displays can run the main canvas above 60 fps`);
-    assert(decodedScript.includes('var motionFrameDue=sceneDirty||!this._lastMotionFrame||frameNow-this._lastMotionFrame>=(this.isMobileMotion()?67:34);'), `${file}: decorative DOM motion is not cadence-limited`);
-    assert(/if\(fastMobile\)\{[\s\S]*?this\._sceneDirty=true;\s*this\.raf=requestAnimationFrame\(this\.loop\);\s*return;/.test(decodedScript), `${file}: fast mobile scrolling can leave the final scene state stale`);
-    assert(decodedScript.includes('this.draw(this._sceneDepth==null?0:this._sceneDepth,pal,true);') && decodedScript.includes('this.draw(n,pal,true);'), `${file}: fast mobile scrolling does not redraw the live canvas progress rail`);
-    assert(decodedScript.includes("el.style.setProperty('--tt-motion-play-state',idle?'paused':'running');"), `${file}: offscreen decorative CSS animations are not paused`);
-    assert(!decodedScript.includes('--tt-bridge-play-state'), `${file}: removed bridge CSS clock state returned`);
-    const updateBridgesBody = (decodedScript.match(/\n  updateBridges\(vhR\)\{([\s\S]*?)\n  \}/) || [])[1] || '';
-    assert(decodedScript.includes('current>previous&&this._bridgeOffsets') && decodedScript.includes('this._trackBridgeDir(current);') && decodedScript.includes('this.startBridge(bi);'), `${file}: large scroll gestures can skip an unvisited bridge`);
-    for (const obsolete of ['_bridgeGate', '_continueCue', 'tt-bridge-continue', 'Scroll to continue', 'スクロールして次の章へ', '계속 스크롤해 다음 장으로', 'outer._shaken']) assert(!decodedScript.includes(obsolete), `${file}: obsolete bridge behavior returned: ${obsolete}`);
-    assert(decodedScript.includes('bypassBridges(targetId){') && decodedScript.includes('this.bypassBridges(page.sectionId);') && decodedScript.includes('this.bypassBridges(id);'), `${file}: direct navigation does not bypass bridge settlement consistently`);
-    assert(updateBridgesBody.includes('elapsed>=DUR+run.hold') && decodedScript.includes("run.phase='advancing'") && decodedScript.includes('now-(run.lastInputAt||run.advanceAt)>=350) this.releaseBridge();'), `${file}: bridge handoff does not drain the active scroll gesture before release`);
-    const bypassSource=(decodedScript.match(/\n  bypassBridges\(targetId\)\{([\s\S]*?)\n  \}/)||[])[1]||'';
-    assert(!/delete\s+(?:seen|this\._bridgeSeen)|this\._bridgeSeen\[[^\]]+\]\s*=/.test(bypassSource), `${file}: chapter navigation rewrites completed bridge history`);
-    for (const motif of ["type==='prologue'", "type==='gather'", "type==='bloom'", "type==='rise'", "type==='page'"]) assert(decodedScript.includes(motif), `${file}: bridge motif missing: ${motif}`);
-    for (const retired of ['tt-shock-ring', 'tt-ripple-ring', 'tt-bloom-ray', 'tt-staff-line', 'tt-listen-']) assert(!decodedScript.includes(retired), `${file}: retired bridge motif returned: ${retired}`);
-    assert(decodedScript.includes('performance.now()-(this._bridgeNavAt||0)>1500'), `${file}: menu jumps can leave later bridges locked`);
-    for(const obsolete of ['_transPlaying','_transDone','_transCool','_transAdv','_transT0']) assert(!decodedScript.includes(obsolete), `${file}: obsolete TRANSLATE state returned: ${obsolete}`);
-    assert(!decodedScript.includes('nextSectionAfterBridge') && !decodedScript.includes('bg._advanced') && !decodedScript.includes('bg._done'), `${file}: removed timed bridge handoff state returned`);
-    assert(!decodedScript.includes('A+HOLD') && !decodedScript.includes("scrollToManaged(cN.offsetTop-1"), `${file}: obsolete scroll-managed bridge handoff returned`);
-    assert(!decodedScript.includes("outer.style.minHeight='100vh'") && !decodedScript.includes("outer.style.height='100vh'"), `${file}: runtime bridge geometry writes can reintroduce layout shift`);
-  }
-
-  const fallback = attr(html, /<noscript>([\s\S]*?)<\/noscript>/i);
-  const fallbackText = cleanText(fallback);
-  assert(fallbackText.length > 80, `${file}: fallback content is too short`);
-  assert(fallbackText.includes('우리의 이야기가 음악이 되는 곳'), `${file}: fallback HOME tagline is missing`);
-  fallbackHashes.set(key, createHash('sha256').update(fallbackText).digest('hex'));
+  // internal chapter links stay within the language
+  for (const m of html.matchAll(/<a href="(\/[^"]*)" data-go="[a-z]+"/g)) assert(m[1].startsWith(`/${lang.prefix}`), `${file}: chapter link ${m[1]} leaves the language`);
 }
-assert(new Set(payloadHashes).size === 1, 'route app templates are not synchronized');
-assert(new Set(scriptPayloadHashes).size === 1, 'route app scripts are not synchronized');
-assert(new Set(fallbackHashes.values()).size === routes.length, 'route fallback content is not unique');
-assert(duplicateIds(decodedApp).length === 0, `decoded app template has duplicate IDs: ${duplicateIds(decodedApp).join(', ')}`);
-assert(/id="content"\s+role="main"/i.test(decodedApp), 'decoded app template: main landmark missing');
-// the dive plays behind Home (the name reads from the first frame) and settles in 1.7 s
-assert(decodedScriptApp.includes('var T={cross0:350, cross1:800, reveal:1000, settled:1700};'), 'dive intro timeline changed');
-assert((decodedApp.match(/\.tt-book-light-stage\{position:absolute/g) || []).length === 1, 'duplicate deep-book CSS returned');
-assert((decodedApp.match(/animation-play-state:var\(--tt-motion-play-state,running\)/g) || []).length >= 6, 'deep-book CSS animations are not fully tied to viewport lifecycle');
-assert(!decodedApp.includes('WORK DETAIL MODAL') && !decodedApp.includes('{{ wOpen }}'), 'removed legacy WORK detail modal returned');
-for (const symbol of [
-  'drawBridgeMotifs', 'drawBook(', 'updateYouWave', 'bridgePhraseForIndexOld', 'playStory',
-  'worksView', '_arcPoll', '_worksInitTimer', 'applyWorksEdit', '_navPeekTimer', 'this.io',
-  '_siteFallbacks', '_saveMembers', '_loadMembers', '_savePartners', '_loadPartners',
-  'imageHydrator', 'hydrateDeferredImages', '_partnerSlotTimer', 'seoEditMode',
-  'SEO_EDITOR_PAGES', 'membersEditMode', 'partnersEditMode', 'TALETONE_TRACK_RECORD',
-  "localStorage.getItem('tt-seo-v1')", '_saveSeoLocal',
-]) {
-  assert(!decodedScriptApp.includes(symbol), `removed embedded legacy code returned: ${symbol}`);
-}
-assert(decodedScriptApp.includes("window.dispatchEvent(new Event('TALETONE_UI_UPDATED'))"), 'component updates do not explicitly refresh global UI state');
+for (const lang of languages) assert(await exists(`assets/journey/data-${lang.key}.js`), `assets/journey/data-${lang.key}.js missing`);
 
-const publicHtmlFiles = [...new Set([...routes.map(([, file]) => file), 'projects/index.html', '404.html'])];
-for (const file of publicHtmlFiles) {
-  const html = await text(file);
-  assert(/^<!doctype html>/i.test(html.trimStart()), `${file}: missing HTML doctype`);
-  assert((html.match(/<html\b/gi) || []).length === 1, `${file}: invalid html root count`);
-  assert((html.match(/<head\b/gi) || []).length === 1 && (html.match(/<body\b/gi) || []).length === 1, `${file}: missing head or body`);
-  assert(duplicateIds(html).length === 0, `${file}: duplicate IDs: ${duplicateIds(html).join(', ')}`);
-  assert(!rawEditorMarkers.some((marker) => html.includes(marker)), `${file}: raw editor/template markup exposed`);
+// ---- the old addresses lead to the live chapters ----
+for (const lang of languages) {
+  for (const route of routes) {
+    const file = `preview/${lang.prefix}${route}index.html`;
+    const html = (await exists(file)) ? await text(file) : '';
+    assert(html.includes('noindex') && html.includes(`url=/${lang.prefix}${route}"`), `${file}: must redirect to /${lang.prefix}${route}`);
+  }
+  for (const [from, to] of [['members/', 'about/'], ['story-types/', 'approach/'], ['projects/', 'approach/'], ['works/', 'discography/']]) {
+    const html = (await exists(`${lang.prefix}${from}index.html`)) ? await text(`${lang.prefix}${from}index.html`) : '';
+    assert(html.includes(`url=/${lang.prefix}${to}"`), `${lang.prefix}${from}: must redirect to /${lang.prefix}${to}`);
+  }
 }
 
-const inventory = await walkFiles();
-const caseMap = new Map(inventory.map((file) => [file.toLowerCase(), file]));
-const referencedPaths = [];
-const inspectReference = (value, source, basePath = '/') => {
-  const ref = value.trim();
-  if (ignoredRef(ref)) return;
-  if (/^http:\/\//i.test(ref)) errors.push(`${source}: mixed-content reference: ${ref}`);
-  let url;
-  try { url = new URL(ref, `https://taletone.net${basePath}`); } catch { errors.push(`${source}: invalid URL reference: ${ref}`); return; }
-  if (url.origin !== 'https://taletone.net') return;
-  let local = cleanRef(url.pathname).replace(/\/+$/, '');
-  if (url.pathname.endsWith('/')) local = local ? `${local}/index.html` : 'index.html';
-  else if (!local) local = 'index.html';
-  referencedPaths.push([local, source, ref]);
-};
-const inspectHtmlReferences = (html, source, basePath) => {
-  for (const match of html.matchAll(/\s(?:href|src|poster|action)=["']([^"']+)["']/gi)) inspectReference(match[1], source, basePath);
-  for (const match of html.matchAll(/\ssrcset=["']([^"']+)["']/gi)) {
-    for (const candidate of match[1].split(',')) inspectReference(candidate.trim().split(/\s+/)[0], source, basePath);
-  }
-  for (const match of html.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)) inspectReference(match[1], source, basePath);
-};
-for (const [, file] of routes) inspectHtmlReferences(await text(file), file, '/');
-inspectHtmlReferences(await text('projects/index.html'), 'projects/index.html', '/');
-inspectHtmlReferences(await text('404.html'), '404.html', '/');
-// Works detail pages are retired: nothing under discography/<slug>/ or works/<slug>/ is generated
-const detailPageFiles = inventory.filter((file) => /^(?:preview\/)?(?:(?:en|ja)\/)?(?:discography|works)\/[a-z0-9-]+\/index\.html$/.test(file));
-assert(detailPageFiles.length === 0, `retired Works detail pages were generated: ${detailPageFiles.slice(0, 3).join(', ')}`);
-inspectHtmlReferences(decodedApp, 'decoded app template', '/');
-for (const cssFile of inventory.filter((file) => file.endsWith('.css'))) {
-  const css = await text(cssFile);
-  for (const match of css.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)) inspectReference(match[1], cssFile, `/${cssFile}`);
-}
-for (const [local, source, ref] of referencedPaths) {
-  const actual = caseMap.get(local.toLowerCase());
-  assert(Boolean(actual), `${source}: missing local reference ${ref}`);
-  if (actual) assert(actual === local, `${source}: path case mismatch ${ref} (actual: ${actual})`);
-}
-
-const appIds = new Set([...decodedApp.matchAll(/\sid=["']([^"']+)["']/gi)].map((match) => match[1]));
-for (const match of decodedApp.matchAll(/\shref=["']#([^"']+)["']/gi)) assert(appIds.has(match[1]), `decoded app template: dead anchor #${match[1]}`);
-
-const robots = await text('robots.txt');
+// ---- sitemap and robots ----
 const sitemap = await text('sitemap.xml');
-assert(/Sitemap:\s*https:\/\/taletone\.net\/sitemap\.xml/i.test(robots), 'robots.txt: sitemap declaration missing');
-for (const [, , route] of routes) assert(sitemap.includes(`<loc>https://taletone.net${route}</loc>`), `sitemap.xml: missing ${route}`);
+const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+assert(locs.length === 15, `sitemap.xml lists ${locs.length} pages, expected 15`);
+for (const lang of languages) for (const route of routes) assert(locs.includes(`${BASE}/${lang.prefix}${route}`), `sitemap.xml: missing ${BASE}/${lang.prefix}${route}`);
+const robots = await text('robots.txt');
+assert(robots.includes(`Sitemap: ${BASE}/sitemap.xml`), 'robots.txt: no sitemap');
+for (const line of robots.split('\n')) if (/^Disallow:\s*\/(?:en|ja|about|approach|discography|contact)?\/?\s*$/.test(line)) assert(false, `robots.txt blocks a live route: ${line}`);
 
-assert(!sitemap.includes('/news/'), 'retired News must not appear in sitemap');
-for(const prefix of ['', 'en/', 'ja/']) {
-  assert(!await exists(prefix+'news/index.html'), 'retired News route was generated');
-  assert(!await exists(prefix+'rss.xml'), 'retired RSS was generated');
-  assert(!(await text(prefix+'index.html')).includes('application/rss+xml'), 'retired RSS discovery link returned');
+// ---- data ----
+const slugs = new Set();
+for (const w of works) {
+  assert(/^[a-z0-9-]+$/.test(w.slug || ''), `work without a lowercase slug: ${w.id}`);
+  assert(!slugs.has(w.slug), `duplicate slug ${w.slug}`); slugs.add(w.slug);
+  for (const p of [w.thumb, w.image, w.audio, ...(w.versions || []).map((v) => v.audio), ...(w.tracks || []).flatMap((t) => [t.audio, t.thumb])]) if (p && !/^https?:/.test(p)) assert(await exists(p), `${w.slug}: missing ${p}`);
+  assert(Array.isArray(w.vinyl) && w.vinyl.length === 3 && w.vinyl.every((c) => /^\d{1,3} \d{1,3} \d{1,3}$/.test(c)), `${w.slug}: vinyl needs three colours`);
 }
-
-// Localized routes: same app, own URL, language-specific head and fallback content.
-for (const [prefix, htmlLang] of [['', 'ko'], ['/en', 'en'], ['/ja', 'ja']]) {
-  for (const [, file, route] of routes) {
-    const localFile = `${prefix.slice(1)}${prefix ? '/' : ''}${file}`;
-    const url = `https://taletone.net${prefix}${route}`;
-    if (!(await exists(localFile))) { errors.push(`${localFile}: localized route missing`); continue; }
-    const html = await text(localFile);
-    assert(Buffer.byteLength(html) <= routeDocumentBudgetBytes, `${localFile}: route document exceeds ${routeDocumentBudgetBytes} byte budget`);
-    assert(new RegExp(`<html lang="${htmlLang}">`).test(html), `${localFile}: html lang is not ${htmlLang}`);
-    assert(attr(html, /<link\s+rel="canonical"\s+href="([^"]+)"/i) === url, `${localFile}: canonical is not self-referencing`);
-    for (const [lang, langPrefix] of [['ko', ''], ['en', '/en'], ['ja', '/ja'], ['x-default', '']]) {
-      assert(html.includes(`<link rel="alternate" hreflang="${lang}" href="https://taletone.net${langPrefix}${route}">`), `${localFile}: hreflang ${lang} does not point at its language URL`);
-    }
-    assert(sitemap.includes(`<loc>${url}</loc>`), `sitemap.xml: missing ${prefix}${route}`);
-    assert(cleanText(attr(html, /<noscript>([\s\S]*?)<\/noscript>/i)).length > 200, `${localFile}: fallback content is too short`);
-  }
-}
-const manifest = JSON.parse(await text('site.webmanifest'));
-for (const icon of manifest.icons || []) assert(await exists(cleanRef(icon.src || '')), `site.webmanifest: missing icon ${icon.src}`);
-
-const readJson = async (file) => JSON.parse(await text(file));
-const siteJson = await readJson('assets/data/site-content.json');
-const seoJson = await readJson('assets/data/seo-content.json');
-const worksJson = await readJson('assets/data/works-data.json');
-const parseAssignedJson = (source, name) => {
-  const start = source.indexOf('{');
-  const end = source.lastIndexOf('}');
-  assert(source.includes(name), `${name} assignment missing`);
-  return JSON.parse(source.slice(start, end + 1));
-};
-const siteJs = parseAssignedJson(await text('assets/data/site-content.js'), 'window.TALETONE_CONTENT');
-const seoSource = await text('assets/data/seo-content.js');
-const seoJs = parseAssignedJson(seoSource, 'window.TALETONE_SEO_CONTENT');
-// the build adds the newest work, home's featured song (home.listen) and How We Work's case work; everything else must match the JSON
-const { latestWork: builtLatestWork, listenWork: builtListenWork, caseWork: builtCaseWork, ...siteJsContent } = siteJs;
-assert(!siteJson.home?.listen?.slug || builtListenWork?.slug === siteJson.home.listen.slug, 'site-content.js listenWork does not match home.listen');
-assert(JSON.stringify(siteJson) === JSON.stringify(siteJsContent), 'site-content JSON/JS drift');
-const newestWork = [...(await readJson('assets/data/works-data.json')).works].sort((a, b) => String(b.date).localeCompare(String(a.date)))[0];
-assert(builtLatestWork && newestWork && builtLatestWork.slug === newestWork.slug, 'site-content.js latestWork is not the newest work');
-assert(JSON.stringify(seoJson) === JSON.stringify(seoJs), 'seo-content JSON/JS drift');
-assert(seoSource.includes('window.TALETONE_SEO = window.TALETONE_SEO_CONTENT'), 'SEO runtime alias missing');
-const localCopy=(value,lang)=>({...value,...value?.translations?.[lang]});
-const siteLanguages = ['kr', 'en', 'jp'];
-const expectedHomeTaglines = {
-  kr: '우리의 이야기가 음악이 되는 곳',
-  en: 'Where our story becomes music.',
-  jp: '私たちの物語が、音楽になる場所。',
-};
-assert(siteJson.home?.tagline === expectedHomeTaglines.kr, 'HOME canonical tagline changed');
-for (const language of siteLanguages) {
-  assert(localCopy(siteJson.home,language).tagline === expectedHomeTaglines[language], `HOME ${language} tagline changed`);
-}
-const clearedChapterCopy = {
-  membersMeta: ['description'],
-  worksMeta: ['subtitle', 'description'],
-};
-for (const [section, fields] of Object.entries(clearedChapterCopy)) {
-  for (const field of fields) {
-    assert(siteJson[section]?.[field] === '', `${section}.${field} must remain empty until edited`);
-    for (const language of siteLanguages) {
-      assert(localCopy(siteJson[section],language)[field] === '', `${section}.${field} ${language} must remain empty until edited`);
-    }
-  }
-}
-const expectedContactCopy = {
-  kr: {
-    subtitle: '캐릭터의 첫 노래부터 게임 속 한 장면까지.',
-    caption: '이 페이지에는 어떤 발자취를 남겨볼까요?',
-  },
-  en: {
-    subtitle: 'From a character’s first song to a scene in a game.',
-    caption: 'What mark shall we leave on this page?',
-  },
-  jp: {
-    subtitle: 'キャラクターの初めての歌から、ゲームのひと場面まで。',
-    caption: 'このページに、どんな足跡を残しましょうか。',
-  },
-};
-assert(siteJson.contact?.subtitle === expectedContactCopy.kr.subtitle, 'CONTACT canonical subtitle changed');
-assert(siteJson.contact?.caption === expectedContactCopy.kr.caption, 'CONTACT canonical caption changed');
-for (const language of siteLanguages) {
-  assert(localCopy(siteJson.contact,language).subtitle === expectedContactCopy[language].subtitle, `CONTACT ${language} subtitle changed`);
-  assert(localCopy(siteJson.contact,language).caption === expectedContactCopy[language].caption, `CONTACT ${language} caption changed`);
-}
-for (const language of siteLanguages) {
-  assert(String(localCopy(siteJson.projects,language).subtitle || '').trim(), `Story Types ${language} subtitle was cleared`);
-}
-for (const obsoleteField of ['subtitleLine1', 'subtitleLine2', 'descriptionLine1', 'descriptionLine2']) {
-  assert(!Object.hasOwn(siteJson.home || {}, obsoleteField), `HOME obsolete field returned: ${obsoleteField}`);
-  for (const language of siteLanguages) {
-    assert(!Object.hasOwn(siteJson.home?.translations?.[language] || {}, obsoleteField), `HOME ${language} obsolete field returned: ${obsoleteField}`);
-  }
-}
-assert(!Object.hasOwn(siteJson, 'translation'), 'retired TRANSLATE content returned');
-for (const key of ['home', 'projects', 'contact', 'membersMeta', 'worksMeta', 'partnersMeta', 'footerMeta', 'uiLabels', 'chapterLabels']) {
-  assert(siteJson[key] && typeof siteJson[key] === 'object' && !Array.isArray(siteJson[key]), `site-content missing canonical object: ${key}`);
-}
-for (const [key, minimum] of Object.entries({ members: 1, partners: 1, bridges: 4, trackRecord: 2 })) {
-  assert(Array.isArray(siteJson[key]) && siteJson[key].length >= minimum, `site-content missing canonical list: ${key}`);
-}
-const firstBridge = siteJson.bridges.find((bridge) => bridge.id === 'home-projects');
-assert(firstBridge?.eyebrow === 'Chapter 1 · Tale' && firstBridge?.translations?.jp?.text === '水面の下へ一歩、\n物語を探す旅が始まります。', 'chapter 1 bridge copy or Japanese line break changed');
-for (const [index, item] of (siteJson.trackRecord || []).entries()) {
-  assert(item && item.value && item.label && item.note, `trackRecord ${index + 1}: required fields missing`);
-  for (const language of ['en', 'jp']) assert(item.translations?.[language], `trackRecord ${index + 1}: ${language} translation missing`);
-}
-// site-content.json has no typography block any more (nothing read it); fonts come from the template's CSS variables
-assert(!('typography' in siteJson), 'site-content.json typography returned: nothing reads it');
-
-assert(Array.isArray(worksJson.works) && worksJson.works.length > 0, 'works data is empty');
-assert(new Set(worksJson.works.map((work) => work.id)).size === worksJson.works.length, 'duplicate works IDs');
-const normalizedWorksSource = JSON.stringify(worksJson).replace(/\\/g, '/');
-const normalizedDecodedApp = decodedApp.replace(/\\/g, '/');
-const removedDuplicateWorkImage = 'assets/works/images/asset-mq6aimxx-2c2o-.jpg-a9bb3c69bc18.jpg';
-const canonicalDuplicateWorkImage = 'assets/works/images/asset-mq7l26qf-jqvi-.jpg-a9bb3c69bc18.webp';
-assert(!(await exists(removedDuplicateWorkImage)), 'removed byte-identical WORKS image returned');
-assert(!normalizedWorksSource.includes(removedDuplicateWorkImage) && !normalizedDecodedApp.includes(removedDuplicateWorkImage), 'removed byte-identical WORKS image is still referenced');
-assert(normalizedWorksSource.split(canonicalDuplicateWorkImage).length - 1 === 2, 'canonical WORKS image has unexpected works-data reference count');
-assert(!normalizedDecodedApp.includes(canonicalDuplicateWorkImage), 'external WORKS data leaked back into the encoded template');
-const optimizedWorkImages = [
-  { path: 'assets/works/images/bubblesweet-work-1024.webp', legacy: 'assets/works/images/bubblesweet.png', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
-  { path: 'assets/works/images/early-spring-cover-1024-f814379f3b3a-opt1.webp', legacy: 'assets/works/images/asset-mq832pb9-dgmx-early.jpg-f814379f3b3a.jpg', width: 1024, height: 1024, refs: 5, templateRefs: 0 },
-  { path: 'assets/works/images/kanism-jp-cover-1024-78517c40b71d-v1.webp', legacy: 'assets/works/images/asset-mq83ztj3-ncy4-.jpg-78517c40b71d.jpg', width: 1024, height: 1024, refs: 1, templateRefs: 0 },
-];
-for (const image of optimizedWorkImages) {
-  assert(normalizedWorksSource.split(image.path).length - 1 === image.refs, `${image.path}: unexpected works-data reference count`);
-  assert(!normalizedWorksSource.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced`);
-  assert(normalizedDecodedApp.split(image.path).length - 1 === image.templateRefs, `${image.path}: unexpected encoded-template reference count`);
-  assert(!normalizedDecodedApp.includes(image.legacy), `${image.legacy}: oversized legacy image is still referenced by the encoded template`);
-  assert(!(await exists(image.legacy)), `${image.legacy}: removed oversized source image returned`);
-  const bytes = await readFile(path.join(root, image.path));
-  assert(bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 16) === 'WEBPVP8 ', `${image.path}: expected lossy WebP`);
-  assert((bytes.readUInt16LE(26) & 0x3fff) === image.width && (bytes.readUInt16LE(28) & 0x3fff) === image.height, `${image.path}: unexpected dimensions`);
-  assert(bytes.byteLength <= 300_000, `${image.path}: exceeds 300 KB budget (${bytes.byteLength} bytes)`);
-}
-const removedLogoMockSource = 'assets/pictures/logomock.png';
-assert(!(await exists(removedLogoMockSource)), `${removedLogoMockSource}: removed oversized source image returned`);
-for (const removedAsset of [
-  'assets/data/track-record.js',
-  'assets/icons/favicon.svg',
-  'assets/icons/favicon-48.png',
-  'assets/fonts/hanken-grotesk-latin-italic-v12.woff2',
-  'assets/bundle/946dad72-7af1-419c-a0eb-24bca34317f8.png',
-]) {
-  assert(!(await exists(removedAsset)), `removed unused asset returned: ${removedAsset}`);
-}
-const assetRefs = new Set();
-const collectAssets = (value) => {
-  if (Array.isArray(value)) return value.forEach(collectAssets);
-  if (!value || typeof value !== 'object') return;
-  for (const child of Object.values(value)) {
-    if (typeof child === 'string' && /^assets[\\/]/i.test(child)) assetRefs.add(child.replace(/\\/g, '/').split(/[?#]/)[0]);
-    else collectAssets(child);
-  }
-};
-[siteJson, worksJson].forEach(collectAssets);
-for (const match of normalizedDecodedApp.matchAll(/["'](assets\/works\/images\/[^"']+)["']/gi)) {
-  assetRefs.add(match[1].split(/[?#]/)[0]);
-}
-const referencedWorkImageHashes = new Map();
-for (const file of assetRefs) {
-  assert(await exists(file), `missing referenced asset: ${file}`);
-  if (/\.mp3$/i.test(file)) {
-    const bytes = await readFile(path.join(root, file));
-    assert(bytes.byteLength <= 3_200_000, `${file}: referenced MP3 exceeds the current 3.2 MB quality-preserving budget (${bytes.byteLength} bytes)`);
-  }
-  if (/^assets\/works\/images\//i.test(file)) {
-    const bytes = await readFile(path.join(root, file));
-    assert(bytes.byteLength <= 300_000, `${file}: referenced WORKS image exceeds 300 KB budget (${bytes.byteLength} bytes)`);
-    const hash = createHash('sha256').update(bytes).digest('hex');
-    const matches = referencedWorkImageHashes.get(hash) || [];
-    matches.push(file);
-    referencedWorkImageHashes.set(hash, matches);
-  }
-}
-for (const matches of referencedWorkImageHashes.values()) {
-  assert(matches.length === 1, `byte-identical referenced WORKS images: ${matches.join(', ')}`);
-}
-
-const support = await text('support.js');
-assert(support.includes('assets/vendor/react-18.3.1.min.js'), 'React is not self-hosted');
-assert(support.includes('assets/vendor/react-dom-18.3.1.min.js'), 'ReactDOM is not self-hosted');
-assert(support.includes('window.parent !== window'), 'public duplicate document fetch guard missing');
-for (const obsolete of ['applyBridgeSnap', 'scrollSnapType', '_bridgeAutoTimer', '_bridgeAutoAdvanced', 'Logic.prototype.bypassBridges = function', 'Logic.prototype.updateBridges = function']) assert(!support.includes(obsolete), `conflicting support bridge controller returned: ${obsolete}`);
-assert(!/\.replace\(\s*['"]<\/style>/.test(support) && !support.includes('assets/css/works.css?v='), 'support.js rewrites the template again (stylesheets belong in src/app/template.html)');
-assert(!support.includes('Logic.prototype.drawRail'), 'site behaviour patched into support.js again (it belongs in component.js)');
-assert((await text('index.html')).includes(`./support.js?v=${await contentKey('support.js')}`), 'support.js cache key is not its content hash');
-assert(Buffer.byteLength(await text('assets/css/responsive.css')) <= 18_000, 'compact stylesheet exceeds its 18 KB budget');
-const sri = {
-  'assets/vendor/react-18.3.1.min.js': 'DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z',
-  'assets/vendor/react-dom-18.3.1.min.js': 'gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1',
-};
-for (const [file, expected] of Object.entries(sri)) {
-  const bytes = await readFile(path.join(root, file));
-  assert(createHash('sha384').update(bytes).digest('base64') === expected, `${file}: integrity mismatch`);
-}
-
-const worksCss = await text('assets/css/works.css');
-const worksJs = await text('assets/js/works.js');
-assert(!/(?:font-family|font)\s*:[^;}]*'Noto Sans (?:KR|JP)'/i.test(worksCss), 'WORKS CSS contains a fixed CJK font order');
-assert(worksCss.includes('.tt-rack-grid {list-style:none;') && worksCss.includes('.tt-deck-table {') && worksCss.includes('.tt-crate-deck {position:sticky;'), 'WORKS rack, turntable or sticky deck is missing');
-for (const work of JSON.parse(await text('assets/data/works-data.json')).works) {
-  assert(work.thumb && /-w320\.webp$/.test(work.thumb), `WORKS ${work.slug}: rack thumbnail (thumb) is missing`);
-  if (work.thumb) { try { await access(path.join(root, work.thumb)); } catch { errors.push(`WORKS ${work.slug}: ${work.thumb} does not exist`); } }
-}
-for (const retired of ['updateShowcaseDom', 'galleryModal', 'layeredPlayback', 'desktopSlots', 'tt-gh-card']) assert(!worksJs.includes(retired), `retired WORKS carousel code returned: ${retired}`);
-const homeTaglineRule = worksCss.match(/\.tt-home-tagline \{[\s\S]*?\n\}/)?.[0] || '';
-// (its size comes from the template's #content#content rule, which always won over works.css)
-const liveTemplate = await text('src/app/template.html');
-assert(/display:\s*inline-flex;/.test(homeTaglineRule) && liveTemplate.includes('#content#content .tt-home-tagline{font-size:var(--fs-xl)}'), 'HOME tagline is no longer visually grouped with the title');
-assert(/\.tt-home-tagline::before,[\s\S]*?\.tt-home-tagline::after \{[\s\S]*?radial-gradient/.test(worksCss), 'HOME tagline line-and-dot ornament is missing');
-// raised from 140 KB / 110 KB for the Discography's sea of records, console and coloured vinyl (2026-10-30)
-assert(Buffer.byteLength(worksCss) <= 165_000, 'WORKS CSS exceeds 165 KB source budget');
-assert(Buffer.byteLength(worksJs) <= 120_000, 'WORKS JavaScript exceeds 120 KB source budget');
-assert(!worksJs.includes('embeddedData') && !worksJs.includes("location.protocol === 'file:'") && !worksJs.includes('tt-works-data'), 'broken embedded WORKS fallback returned');
-// the external editor is retired: nothing may push data, language or a selection into the page by message
-for (const editorSymbol of ['function setEditorData(', 'function selectEditorWork(', 'TALETONE_WORKS_SET_DATA', 'TALETONE_SITE_SET_DATA', 'TALETONE_WORKS_SELECT']) {
-  assert(!worksJs.includes(editorSymbol), `retired editor bridge returned to WORKS: ${editorSymbol}`);
-}
-for (const deadSymbol of ['var rendering =', 'function bindModalCloseHandlers()', 'bindModalCloseHandlers();', 'function onMouseDown(', 'function onMouseMove(', "classList.add('tt-site-dialog')"]) {
-  assert(!worksJs.includes(deadSymbol), `removed WORKS JavaScript returned: ${deadSymbol}`);
-}
-const worksBindingIndex = worksJs.indexOf('function bindWorksInteractions()');
-const worksClickListenerIndex = worksJs.indexOf("document.addEventListener('click', onClick, true);");
-assert(worksBindingIndex >= 0 && worksClickListenerIndex > worksBindingIndex, 'WORKS listeners returned to unconditional startup');
-for (const symbol of [
-  'onWheel', 'onMouseUp', 'cardPreview', 'function segments()',
-  'state.start', 'dragState.lastX', 'videoBlock', 'scheduleRouteLandingCorrections',
-  'patchContactControls', 'fallbackCopyText', 'globalUxState.observer',
-]) {
-  assert(!worksJs.includes(symbol), `removed WORKS dead code returned: ${symbol}`);
-}
-const removedImagePreloadSymbols = [
-  '_allImagePreloadStarted',
-  'collectWorkImageUrls',
-  'preloadAllWorkImages',
-  'scheduleAllWorkImagePreload',
-  'preloadGalleryOpeningImages',
-  '_imgCache',
-  '_neighbourPreloadTimer',
-  'cacheImage',
-  'preloadCurrentWork',
-  'preloadNearbyImages',
-];
-for (const symbol of removedImagePreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager image preload returned: ${symbol}`);
-const worksChapterGateSource = worksJs.match(/function isWorksChapterActive\(\) \{[\s\S]*?\n  \}/)?.[0] || '';
-assert(worksChapterGateSource.includes("if (activeChapter) return activeChapter === 'works';"), 'WORKS explicit chapter gate is missing');
-assert(worksChapterGateSource.includes("return /^(?:\\/(?:en|ja))?\\/discography(?:\\/index\\.html)?\\/?$/i.test(location.pathname) || location.hash === '#c-works';"), 'WORKS direct-route fallback is missing');
-assert(!worksChapterGateSource.includes('return !activeChapter'), 'blank HOME chapter can trigger hidden WORKS cover requests');
-for (const symbol of ['renderTimer', 'scheduleRender']) assert(!worksJs.includes(symbol), `WORKS idle host polling returned: ${symbol}`);
-assert(!worksJs.includes("if (mounted && (!app || !app.querySelector('.tt-gh-shell')))"), 'WORKS idle host polling returned');
-assert(!/if\s*\(detail\.chapter\)\s*render\(\)/.test(worksJs), 'WORKS unconditional chapter-change render returned');
-assert(/if\s*\(chapter\s*!==\s*'works'\)\s*\{\s*pauseAll\(\);\s*return;\s*\}/.test(worksJs), 'WORKS audio keeps playing outside the chapter');
-const removedAudioPreloadSymbols = [
-  'allLayeredAudioWarmStarted',
-  'warmAudioEntries',
-  'collectLayeredAudioEntries',
-  'preloadAllLayeredAudio',
-  'scheduleLayeredAudioPreload',
-];
-for (const symbol of removedAudioPreloadSymbols) assert(!worksJs.includes(symbol), `WORKS eager audio preload returned: ${symbol}`);
-// site-wide dialog handling lives in site-ux.js; it asks the Works module to pause through its API
-const siteUxJs = await text('assets/js/site-ux.js');
-assert(siteUxJs.includes("if (!dialog.classList.contains('tt-shelf-modal') && window.TALETONE_WORKS_API) window.TALETONE_WORKS_API.pauseAll();\n    globalUxState.dialog = dialog;"), 'site detail dialogs (other than the WORKS popup) do not pause WORKS audio');
-assert(!worksJs.includes('globalUxState'), 'site-wide UX code returned to works.js (it belongs in site-ux.js)');
-const bridgeLineRule = worksCss.match(/\.tt-gh-bridge-line \{[\s\S]*?\n\}/)?.[0] || '';
-const bridgeCopyRule = worksCss.match(/\.tt-gh-bridge-copy \{[\s\S]*?\n\}/)?.[0] || '';
-assert(!/animation(?:-name)?\s*:/.test(bridgeLineRule) && !/animation(?:-name)?\s*:/.test(bridgeCopyRule), 'WORKS bridge visuals still run independent CSS loops');
-assert(!worksCss.includes('@keyframes tt-bridge-line') && !worksCss.includes('@keyframes tt-bridge-copy'), 'removed WORKS bridge keyframes returned');
-assert(!worksCss.includes('--tt-bridge-play-state') && !worksCss.includes('body.tt-mobile-scroll-active .tt-gh-bridge-line') && !worksCss.includes('body.tt-mobile-scroll-active .tt-gh-bridge-copy'), 'removed WORKS bridge CSS clock state returned');
-for (const deadSelector of ['.tt-gh-preview', '.tt-gh-info-cover', '.tt-gh-card-date', '.tt-gh-info-meta', '.tt-gh-chip', '.tt-gh-side', '.tt-gh-row', '.tt-gh-select', '.tt-gh-info-video', '.tt-gh-segments', '.tt-bridge-visual--orbs']) {
-  assert(!worksCss.includes(deadSelector) && !worksJs.includes(deadSelector), `removed WORKS selector returned: ${deadSelector}`);
-}
-assert((worksCss.match(/\.tt-mobile-bridge-line\[data-indent=/g) || []).length === 4, 'duplicate mobile bridge indent rules returned');
-assert((worksCss.match(/#lang-switcher\.tt-lang-switcher button:focus,\s*#lang-switcher\.tt-lang-switcher button:focus-visible,\s*#lang-switcher\.tt-lang-switcher button:active\s*\{\s*border: 0 !important;\s*outline: 0 !important;\s*box-shadow: none !important;\s*border-radius: 999px !important;\s*\}/g) || []).length === 1, 'duplicate mobile language focus rule returned');
-assert((worksCss.match(/body\[data-active-chapter="projects"\] #progress,\s*body\[data-active-chapter="members"\] #progress,\s*body\[data-active-chapter="contact"\] #progress\s*\{\s*left: 16px(?: !important)?;\s*top: auto(?: !important)?;\s*bottom: max\(16px, env\(safe-area-inset-bottom\)\)(?: !important)?;\s*transform: none(?: !important)?;\s*transform-origin: left bottom(?: !important)?;\s*\}/g) || []).length === 1, 'duplicate mobile progress rule returned');
-// The phone sky and water canvas follow the visible viewport: the template's own rules (they come after
-// works.css in the cascade, so they are the ones that apply) size them to 100dvh with a 100vh floor.
-assert(/#sky\{[^}]*height:100dvh;min-height:100vh/.test(liveTemplate), 'mobile sky does not cover the expanded viewport');
-assert(/#fx,canvas#fx[^}]*height:100dvh!important;min-height:100vh!important/.test(liveTemplate), 'mobile canvas does not cover the viewport height');
-assert(/#lang-switcher\.tt-lang-switcher\s*>\s*div\s*\{[\s\S]*?backdrop-filter:\s*none\s*!important;/i.test(worksCss), 'mobile language switcher blur is still enabled');
-assert(!worksCss.includes('ttIntroOverlayHandoff'), 'obsolete CSS-only intro handoff is still present');
-
-const redirect = await text('projects/index.html');
-assert(/noindex/i.test(redirect) && /\/approach\//.test(redirect), 'legacy projects redirect is invalid');
-const notFound = await text('404.html');
-assert(/noindex/i.test(notFound) && /href="\/discography\/"/.test(notFound), '404 page is not index-safe or navigable');
-
-// Portfolio limits from the agency years are gone (the user's call, 2026-10): any credited work may be named.
-// Still kept: no personal phone numbers.
-const forbidden = [
-  ['010', '-'].join(''),
-];
-const memberPortfolioOnly = [];
-const publicText = [JSON.stringify(siteJson), JSON.stringify(seoJson), JSON.stringify(worksJson)].join('\n');
-for (const term of forbidden) assert(!publicText.toLowerCase().includes(term.toLowerCase()), `forbidden public term found: ${term}`);
-const { members: memberPortfolio, ...siteWithoutMembers } = siteJson;
-const nonMemberPublicText = [JSON.stringify(siteWithoutMembers), JSON.stringify(seoJson), JSON.stringify(worksJson)].join('\n');
-for (const term of memberPortfolioOnly) {
-  assert(!nonMemberPublicText.toLowerCase().includes(term.toLowerCase()), `member portfolio term found outside members: ${term}`);
-}
+const pinned = works.filter((w) => w.pinned).map((w) => w.pinned).sort();
+assert(pinned.join() === '1,2,3', `the featured works must be pinned 1, 2, 3 (found ${pinned.join()})`);
+for (const lang of ['en', 'jp']) for (const key of ['notify', 'notifyTitle', 'enterAction', 'found', 'letter', 'empty', 'contactTitle', 'askNext', 'goOn', 'featuredLabel', 'rooms']) assert(site.journey.translations[lang][key], `journey.${key} missing in ${lang}`);
+for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.png', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
 
 if (errors.length) {
-  console.error(`Site validation failed (${errors.length})`);
-  for (const error of errors) console.error(`- ${error}`);
-  // on GitHub Actions each failure also becomes an annotation, readable from the public checks API
-  if (process.env.GITHUB_ACTIONS) for (const error of errors) console.log(`::error title=Site check::${String(error).replace(/\r?\n/g, ' ')}`);
+  console.error(`Site validation failed:\n- ${errors.join('\n- ')}`);
+  if (process.env.GITHUB_ACTIONS) for (const e of errors) console.log(`::error title=Site check::${String(e).replace(/\r?\n/g, ' ')}`);
   process.exit(1);
 }
-console.log(`Site validation passed: ${routes.length} routes, ${assetRefs.size} referenced assets, ${worksJson.works.length} works.`);
+console.log(`Site validation passed: ${languages.length * routes.length} pages, their redirects, the sitemap and ${works.length} works.`);
