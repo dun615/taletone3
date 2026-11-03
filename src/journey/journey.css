@@ -285,6 +285,8 @@ img{max-width:100%}
 .jy-stage-mode .jy-voice{display:contents}
 .jy-stage-mode .jy-say{position:absolute;left:max(48px,6vw);bottom:14%;max-width:min(540px,58vw);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .7s var(--tt-spring);pointer-events:none}
 .jy-stage-mode .jy-say.on{opacity:1;transform:none}
+/* the letter and the empty seat are one thread: when the second arrives in the same place, the first moves up over it */
+.jy-stage-mode #jy-letter.on.up{opacity:.72;transform:translateY(var(--up,0px))}
 
 
 
@@ -358,7 +360,6 @@ img{max-width:100%}
 /* the Epilogue */
 .jy-stage-mode .jy-contact{position:absolute;left:max(24px,10vw);top:50%;transform:translateY(-50%);width:min(460px,calc(100% - 48px));max-height:calc(100% - 120px);overflow:auto;padding:4px;opacity:0;pointer-events:none;transition:opacity .5s}
 .jy-stage-mode .jy-contact.on{opacity:1;pointer-events:auto}
-.jy-stage-mode .jy-ch[data-ch="epi"] .jy-say{bottom:auto;top:42%}
 .jy-stage-mode .jy-banner{display:flex;position:absolute;left:50%;top:22px;z-index:6;width:min(420px,calc(100% - 48px));transform:translate(-50%,-180%);opacity:0;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:20px;background:var(--tt-case);color:var(--tt-ink);box-shadow:inset 0 0 0 1px rgba(159,161,166,.7),0 10px 30px rgba(0,0,0,.25);transition:transform .7s var(--tt-spring),opacity .3s;line-height:1.5}
 .jy-stage-mode .jy-banner.on{transform:translate(-50%,0);opacity:1}
 .jy-banner b{display:block;font-size:13px}.jy-banner p{margin:2px 0 0;font-size:15px}
@@ -493,7 +494,6 @@ img{max-width:100%}
 .jy-narrow.jy-stage-mode .jy-phone{top:34%}
 .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(520px,calc(100vw - 32px))!important;font-size:16px}
 .jy-narrow.jy-stage-mode .jy-say{left:16px;right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:min(520px,calc(100vw - 32px));z-index:30}
-.jy-narrow.jy-stage-mode .jy-ch[data-ch="epi"] .jy-say{top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
 .jy-narrow.jy-stage-mode .jy-hint{left:16px;bottom:max(64px,8%)}
 .jy-narrow.jy-stage-mode .jy-fchip{flex:none;height:32px;padding:0 12px;font-size:13px}
 .jy-narrow.jy-stage-mode .jy-frow-sub .jy-fchip{height:30px}

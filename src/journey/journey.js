@@ -1407,18 +1407,33 @@
       const pr = ease((le - (NARROW ? 0.16 : 0.33)) / 0.2); if (pr <= 0) return;
       const tg = [$('#jy-f-project'), $('#jy-fopen')].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
       const fr = frame.getBoundingClientRect(), r = tg.getBoundingClientRect(), field = tg.id === 'jy-f-project';
-      const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + r.width / 2, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
-      // (on a phone, where the form opens from a button, it comes down onto the button and waits there)
-      const c1 = field ? [lerp(P0[0], P2[0], 0.25), P0[1] + H * 0.26] : [P0[0], lerp(P0[1], P2[1], 0.5)], c2 = field ? [P2[0] + Math.min(170, W * 0.12), P2[1] + 36] : [P2[0], P2[1] - 70];
-      const pts = [];
-      for (let i = 0; i <= 60; i++) { const t = i / 60, a = (1 - t) ** 3, b = 3 * (1 - t) ** 2 * t, c = 3 * (1 - t) * t * t, d = t ** 3; pts.push([a * P0[0] + b * c1[0] + c * c2[0] + d * P2[0], a * P0[1] + b * c1[1] + c * c2[1] + d * P2[1]]); }
-      if (field) for (let i = 1; i <= 30; i++) pts.push([lerp(P2[0], P3[0], i / 30), P2[1]]);
+      const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + 22, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
+      const pts = []; let cut = 0;
+      if (field) {
+        // a curve out from under the phone to the end of the field's line, then along it to where writing starts
+        const c1 = [lerp(P0[0], P2[0], 0.25), P0[1] + H * 0.26], c2 = [P2[0] + Math.min(170, W * 0.12), P2[1] + 36];
+        for (let i = 0; i <= 60; i++) { const t = i / 60, a = (1 - t) ** 3, b = 3 * (1 - t) ** 2 * t, c = 3 * (1 - t) * t * t, d = t ** 3; pts.push([a * P0[0] + b * c1[0] + c * c2[0] + d * P2[0], a * P0[1] + b * c1[1] + c * c2[1] + d * P2[1]]); }
+        for (let i = 1; i <= 30; i++) pts.push([lerp(P2[0], P3[0], i / 30), P2[1]]);
+      } else {
+        // on a phone, where the form opens from a button: out sideways to the margin while the phone is still there
+        // (that stretch goes as the words come), down the margin clear of the words, and onto the button
+        const X = 12;
+        for (let i = 0; i <= 24; i++) pts.push([lerp(P0[0], X, i / 24), P0[1]]);
+        cut = pts.length - 1;
+        for (let i = 1; i <= 30; i++) pts.push([X, lerp(P0[1], P2[1] - 26, i / 30)]);
+        for (let i = 1; i <= 12; i++) { const t = i / 12; pts.push([lerp(X, P2[0], t * t), lerp(P2[1] - 26, P2[1], 1 - (1 - t) * (1 - t))]); }
+      }
       const L = [0]; for (let i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-      const end = L[L.length - 1] * pr;
-      ctx.strokeStyle = `rgba(244,244,252,${0.9 * A})`; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+      const end = L[L.length - 1] * pr, headA = field ? 1 : 1 - ease((le - 0.3) / 0.07);
+      ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       let tip = pts[0];
-      for (let i = 1; i < pts.length; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); tip = pts[i]; continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); tip = [lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)]; ctx.lineTo(tip[0], tip[1]); break; }
-      ctx.stroke();
+      const run = (i0, i1, a) => {
+        if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(244,244,252,${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
+        for (let i = i0 + 1; i <= i1; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
+        ctx.stroke();
+      };
+      run(0, cut || pts.length - 1, cut ? headA : 1); if (cut) run(cut, pts.length - 1, 1);
+      for (let i = 1; i < pts.length; i++) { if (L[i] <= end) { tip = pts[i]; continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); tip = [lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)]; break; }
       // the pen tip; once there, it blinks like a caret, until the visitor starts writing
       const writing = form.contains(document.activeElement);
       const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
@@ -1526,20 +1541,23 @@
       const ink = le > 0 || spaceDark > 0.5;
       stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
       markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
-      on($('#jy-letter'), ld > 0.1 && ld < 0.92);
+      // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
+      const letterEl = $('#jy-letter'), emptyEl = $('#jy-empty'), both = le > 0.05 && le < 0.3;
+      on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
+      letterEl.classList.toggle('up', both); if (both) letterEl.style.setProperty('--up', `${-(emptyEl.offsetHeight + 10)}px`);
       if (lr > 0.8 && !recBuilt) buildRecordWash();
       // the phone (416px with its charm below) keeps inside short screens
-      const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.6) / 486) : Math.min(1, (H - 110) / 486);
+      // (on a phone smaller and higher, so the letter and the empty seat fit under it)
+      const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.48) / 486) : Math.min(1, (H - 110) / 486);
       if (ld > 0 && le <= 0) {
         const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
-        frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 43, ease(ld / 0.7)) + '%' : '50%';
+        frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 40, ease(ld / 0.7)) + '%' : '50%';
         const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
       } else if (le > 0) {
-        frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 486), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = '50%';
+        frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 486), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = NARROW ? '40%' : '50%';
         frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
       } else frame.style.opacity = '0';
       // Epilogue
-      on($('#jy-empty'), le > 0.05 && le < 0.3);
       on($('#jy-contact'), le > 0.32);
 
       // ---- canvas ----
