@@ -841,14 +841,14 @@
     // only on where the pen is, and the arrival itself is a short timed animation, so a quick scroll loses nothing.
     const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
     let leadOf = null;
-    // The words of the about, the philosophy and the case are said in a chat room: a messenger window (on a phone a
-    // panel across the bottom, as tall as its thread) named for the chapter, the messages arriving at its bottom and
-    // the older ones going up and out of it; its input leads to the inquiry.
-    const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), roomF = $('#jy-room-f'), ROOMS = ['tale', 'tone', 'case'];
+    // The words of the about, the philosophy and the case are said in a chat room: a light frame, as tall as its
+    // thread, named for the chapter, the messages arriving at its bottom and the older ones going up and out of it.
+    // It keeps out of the scene's way: no fill, only its outline and the name.
+    const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
     let roomOf = -1;
     function roomBox() {
-      if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8 - (asking ? 78 : 0), head: 54, foot: 58 };
-      const w = Math.min(500, W * 0.4); return { x: Math.min(W * 0.56, W - w - 28), w, top: H * 0.11, bottom: H * 0.9, head: 68, foot: 70 };
+      if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8 - (asking ? 78 : 0), head: 58, foot: 4 };
+      const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
     }
     function placeAnchors() {
       const RB = roomBox(), slotX = RB.x + 18, bottom = RB.bottom - RB.foot - 12, ceil = RB.top + RB.head + 10;
@@ -876,10 +876,10 @@
       }
       // the room around the thread
       const show = latest >= 0 && !gone && g >= 0 && g < 3;
-      roomEl.classList.toggle('on', show); roomF.tabIndex = show ? 0 : -1;
+      roomEl.classList.toggle('on', show);
       if (!show) return;
       if (g !== roomOf) { roomOf = g; const r = (COPY.rooms || {})[ROOMS[g]] || {}; roomT.textContent = r.title || ''; roomS.textContent = g === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
-      const top = NARROW ? Math.max(RB.top, topY - 12 - RB.head) : RB.top;
+      const top = Math.max(RB.top, topY - 12 - RB.head);
       roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${RB.bottom - top}px`;
     }
     function drawLead(A) {

@@ -2463,8 +2463,7 @@
             "title": "Case",
             "sub": "A real project"
           }
-        },
-        "roomInput": "Leave a message"
+        }
       },
       "jp": {
         "notifyNow": "今",
@@ -2589,8 +2588,7 @@
             "title": "事例",
             "sub": "実際のプロジェクト"
           }
-        },
-        "roomInput": "メッセージを残す"
+        }
       }
     },
     "albumTracks": "수록곡",
@@ -2620,7 +2618,6 @@
         "title": "사례",
         "sub": "실제 프로젝트"
       }
-    },
-    "roomInput": "메시지를 남겨 주세요"
+    }
   }
 }
