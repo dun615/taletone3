@@ -562,19 +562,31 @@
       [4.30, 5.42, 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
       [6.15, 7.70, 2400, 1],   // along the stars to the record: found
       [7.74, 8.20, 1500],   // the line splits in five and draws the staff: the first song
-      [11.50, 12.45, 2300, 1], // past the last song, the record goes into the phone: the letter
-      [12.50, 12.88, 1100, 1], // the empty seat
-      [12.92, 13.25, 1000], // the inquiry
+      // past the last song, all the way into the inquiry in one go, resting a moment on each of the words between:
+      // the staff becomes the record's groove and the record goes into the phone (the letter), the empty seat, and the
+      // line out to the form. Steps: [where, ms to get there, ms to rest there]
+      [11.50, 13.25, 0, 1, [[12.45, 2300, 900], [12.88, 1400, 900], [13.25, 1200, 0]]],
     ];
     let auto = null, hold = null, lastU = 0, inputAt = 0, asking = null;
     const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
     const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
-    function runAuto(from, to, ms) { auto = { from, to, t0: performance.now(), d: reduce ? 0 : ms }; cue(false); }
+    // rest: further steps of the same scene, each [where, ms, ms to rest there]; a step's start can lie in the future
+    // (the rest after the step before), where it simply stays put
+    function runAuto(from, to, ms, rest = [], pause = 0) { auto = { from, to, t0: performance.now(), d: reduce ? 0 : ms, rest, pause }; cue(false); }
+    // play a scene from u on: straight to its end, or through those of its steps still ahead
+    function playScene([a, b, ms, , steps], u) {
+      if (!steps) { runAuto(u, b, (ms * (b - u)) / (b - a)); return; }
+      const ahead = steps.filter((st) => st[0] > u + 0.003), prev = steps[steps.indexOf(ahead[0]) - 1], from0 = prev ? prev[0] : a;
+      if (!ahead.length) return;
+      const [to, ms0, rest0] = ahead[0];
+      runAuto(u, to, (ms0 * (to - u)) / (to - from0), ahead.slice(1), rest0);
+    }
     function autoStep(now) {
       if (auto) {
         const k = auto.d ? clamp((now - auto.t0) / auto.d) : 1;
         scrollTo({ top: topFor(lerp(auto.from, auto.to, easeIO(k))), behavior: 'instant' });
-        if (k >= 1) { hold = { u: auto.to, t0: now }; lastU = auto.to; auto = null; }
+        if (k >= 1 && auto.rest.length) { const [to, ms, pause] = auto.rest[0]; lastU = auto.to; auto = { from: auto.to, to, t0: now + (reduce ? 0 : auto.pause), d: reduce ? 0 : ms, rest: auto.rest.slice(1), pause }; }
+        else if (k >= 1) { hold = { u: auto.to, t0: now }; lastU = auto.to; auto = null; }
       } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { hold = null; cue(true); }
     }
     const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
@@ -582,7 +594,7 @@
     const askEl = $('#jy-ask');
     function ask(seg) { asking = { seg, t0: performance.now() }; scrollTo({ top: topFor(seg[0]), behavior: 'instant' }); lastU = seg[0]; askEl.classList.add('on'); html.classList.add('jy-asking'); $('#jy-ask-go').tabIndex = 0; cue(false); }
     function unask() { if (!asking) return; asking = null; askEl.classList.remove('on'); html.classList.remove('jy-asking'); $('#jy-ask-go').tabIndex = -1; }
-    function goOn() { const s = asking && asking.seg; if (!s) return; unask(); runAuto(s[0], s[1], s[2]); }
+    function goOn() { const s = asking && asking.seg; if (!s) return; unask(); playScene(s, s[0]); }
     $('#jy-ask-go').addEventListener('click', goOn);
     addEventListener('wheel', (e) => {
       if (asking) {
@@ -621,8 +633,9 @@
       if (performance.now() < navUntil || frozenU != null) { lastU = u; return; }
       cue(false);
       // only going on plays a scene (from wherever in it the visitor is); going back is plain scrolling
-      if (u > lastU) for (const [a, b, ms, gate] of AUTO) {
-        if (u > a && u < b) { if (gate && lastU <= a + 0.003) ask([a, b, ms]); else runAuto(u, b, (ms * (b - u)) / (b - a)); break; }
+      if (u > lastU) for (const sc of AUTO) {
+        const [a, b, , gate] = sc;
+        if (u > a && u < b) { if (gate && lastU <= a + 0.003) ask(sc); else playScene(sc, u); break; }
       }
       lastU = u;
     }, { passive: true });
