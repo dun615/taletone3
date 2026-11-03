@@ -511,6 +511,17 @@
     const PER_U = 100;
     track.style.setProperty('--track', (TOTAL * PER_U + 100) + 'vh');
     const sections = $$('.jy-ch');
+    // the lock screen's film: loaded once the page has loaded (it is not what the first paint waits for), silent, looping,
+    // paused while the phone is gone or the tab hidden; with reduced motion only its first frame shows
+    const lockVid = $('#jy-lockvid'), lockShade = $('.jy-lockshade');
+    let lockVidOn = false;
+    function lockVidPlay(on) {
+      if (!lockVid || reduce || on === lockVidOn) return; lockVidOn = on;
+      if (on) { if (!lockVid.getAttribute('src')) lockVid.src = lockVid.dataset.src; const p = lockVid.play(); if (p) p.catch(() => {}); } else lockVid.pause();
+    }
+    // (started by the frame loop once the page has loaded, and only while the phone is there: a visitor who lands deep in
+    // the story never loads it)
+    document.addEventListener('visibilitychange', () => { if (document.hidden) lockVidPlay(false); });
     const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
     const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
     const markImg = $('.jy-mark img');
@@ -1674,6 +1685,8 @@
       screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';
       lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
       lock.style.opacity = String(1 - ease((ip - 0.55) / 0.25));
+      // (the film fades as the screen turns to paper, and rests once the phone is gone)
+      if (lockVid) { lockVid.style.opacity = lockShade.style.opacity = String(1 - ease((ip - 0.68) / 0.16)); if (document.readyState === 'complete' && !document.hidden) lockVidPlay(ip < 0.98); }
       // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
       const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
       penZ = penAt(u);
