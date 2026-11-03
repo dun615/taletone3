@@ -495,7 +495,9 @@
     if (!STAGE) return { paintRecord() {}, reset() {}, syncInert() {}, go() {} };
     const stageEl = $('#jy-stage'), cv = $('#jy-cv'), ctx = cv.getContext('2d');
     const track = $('#jy-track');
-    track.style.setProperty('--track', (TOTAL * 100 + 100) + 'vh');
+    // two screens of scrolling for each unit of the story, so there is time to take in each message before the next
+    const PER_U = 200;
+    track.style.setProperty('--track', (TOTAL * PER_U + 100) + 'vh');
     const sections = $$('.jy-ch');
     const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
     const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
