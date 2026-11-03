@@ -2237,7 +2237,7 @@
   "journey": {
     "notifyFrom": "TALETONE",
     "notifyNow": "지금",
-    "notify": "모든 이야기가 담긴 음반을, 찾으러 가요.",
+    "notify": "한 올씩 엮어 낸 이야기들, 함께 들으러 가요.",
     "enterLabel": "화면에 접속하기",
     "chapterLabels": [
       "Prologue",
@@ -2249,17 +2249,17 @@
     ],
     "nowPlaying": "지금 재생 중",
     "landscape": "우리가 걸어온 풍경은,\n한 곡의 노래였습니다.",
-    "letter": "이 노래들도 처음에는,\n누군가의 메시지였습니다.",
-    "found": "모든 이야기가 담긴 음반을,\n마침내 찾았습니다.",
-    "turnHint": "소용돌이를 따라, 이야기 속으로 들어가 보세요.",
-    "empty": "그리고 한 자리는, 아직 비어 있습니다.",
-    "contactTitle": "다음 페이지는,\n함께 써 내려갑니다.",
+    "letter": "이 노래들도 처음에는,\n누군가가 건넨 한 줄의 이야기였습니다.",
+    "found": "그렇게 한 땀 한 땀 엮어 낸\n이야기의 소리들을 들으러 갈까요?",
+    "turnHint": "소용돌이를 따라 한 곡씩, 그 안에 담긴 이야기를 들어 보세요.",
+    "empty": "그리고 이 음반에는,\n아직 비워 둔 한 자리가 있습니다.",
+    "contactTitle": "그 자리에 담을 이야기를,\n함께 써 내려가 볼까요?",
     "more": "더 보기",
     "send": "메시지 보내기",
     "needProject": "프로젝트를 한 줄로 소개해 주세요.",
     "needEmail": "연락받을 이메일을 확인해 주세요.",
     "sending": "보내는 중이에요.",
-    "received": "메시지를 받았어요. 이야기를 읽고, 곧 답장 드릴게요.",
+    "received": "이야기의 첫 단서를 잘 받았어요. 꼼꼼히 읽고, 곧 답장 드릴게요.",
     "failed": "보내지 못해서, 메일 앱으로 이어서 보낼게요.",
     "rewind": "처음부터 다시 듣기",
     "listen": "듣기",
@@ -2303,7 +2303,7 @@
     "covers": "공식 버전 · 커버",
     "volume": "볼륨",
     "versionLabel": "버전",
-    "askNext": "다음 장소로 넘어갈까요?",
+    "askNext": "다음 이야기로 넘어가 볼까요?",
     "goOn": "넘어가기",
     "cardRoles": {
       "Rec": "레코딩",
@@ -2342,21 +2342,21 @@
     "translations": {
       "en": {
         "notifyNow": "now",
-        "notify": "Let's go find the record that holds every story.",
+        "notify": "Stories woven thread by thread. Come and listen with us.",
         "enterLabel": "Enter the screen",
         "nowPlaying": "Now playing",
         "landscape": "The landscape we walked through\nwas a single song.",
-        "letter": "Each of these songs\nbegan as someone’s message.",
-        "found": "At last, we found the record\nthat holds every story.",
-        "turnHint": "Follow the swirl into the stories.",
-        "empty": "And one groove is still empty.",
-        "contactTitle": "The next page,\nwe write together.",
+        "letter": "Every one of these songs\nbegan as a single line someone shared.",
+        "found": "Stories woven stitch by stitch:\nshall we go and hear them?",
+        "turnHint": "Follow the swirl one song at a time, and hear the story in each.",
+        "empty": "And on this record,\none place is still left open.",
+        "contactTitle": "Shall we write the story\nthat belongs there, together?",
         "more": "Show more",
         "send": "Send message",
         "needProject": "Please describe your project in one line.",
         "needEmail": "Please check your reply email.",
         "sending": "Sending.",
-        "received": "Message received. We’ll read your story and reply soon.",
+        "received": "We’ve received the first thread of your story. We’ll read it closely and reply soon.",
         "failed": "It didn’t send, so we’ll continue in your mail app.",
         "rewind": "Listen again from the start",
         "listen": "Listen",
@@ -2400,7 +2400,7 @@
         "covers": "Official versions & covers",
         "volume": "Volume",
         "versionLabel": "Version",
-        "askNext": "Shall we move on to the next place?",
+        "askNext": "Shall we turn to the next story?",
         "goOn": "Go on",
         "cardRoles": {
           "Rec": "Recording",
@@ -2447,17 +2447,17 @@
         "profileOpen": "View profile",
         "service": "Music for games, virtual artists and animation",
         "listenNow": "Listen now",
-        "scrollHint": "Scroll to enter",
+        "scrollHint": "Follow the story down",
         "playerLabel": "Now playing",
         "featuredLabel": "Featured",
         "rooms": {
           "tale": {
             "title": "About",
-            "sub": "TALETONE MUSIC"
+            "sub": "The one who travels with you"
           },
           "tone": {
             "title": "Philosophy",
-            "sub": "From story to music"
+            "sub": "How a story takes on its colour"
           },
           "case": {
             "title": "Case",
@@ -2467,21 +2467,21 @@
       },
       "jp": {
         "notifyNow": "今",
-        "notify": "すべての物語が詰まったレコードを、探しに行きましょう。",
+        "notify": "一本ずつ紡いだ物語たち、一緒に聴きに行きましょう。",
         "enterLabel": "画面に入る",
         "nowPlaying": "再生中",
         "landscape": "歩いてきた風景は、\n一曲の歌でした。",
-        "letter": "この歌たちも最初は、\n誰かのメッセージでした。",
-        "found": "すべての物語が詰まったレコードを、\nついに見つけました。",
-        "turnHint": "渦をたどって、物語の中へ入ってみてください。",
-        "empty": "そして一つの溝は、まだ空いています。",
-        "contactTitle": "次のページは、\n一緒に綴っていきます。",
+        "letter": "この歌たちも最初は、\n誰かが届けてくれた一行の物語でした。",
+        "found": "そうして一針ずつ紡いだ\n物語の音を、聴きに行きましょうか？",
+        "turnHint": "渦をたどって一曲ずつ、込められた物語を聴いてみてください。",
+        "empty": "そしてこのレコードには、\nまだ空けてある場所がひとつあります。",
+        "contactTitle": "そこに込める物語を、\n一緒に綴ってみませんか？",
         "more": "もっと見る",
         "send": "メッセージを送る",
         "needProject": "プロジェクトを一行で教えてください。",
         "needEmail": "返信先のメールアドレスをご確認ください。",
         "sending": "送信しています。",
-        "received": "メッセージを受け取りました。物語を読んで、すぐにお返事しますね。",
+        "received": "物語の最初の手がかり、確かに受け取りました。じっくり読んで、すぐにお返事しますね。",
         "failed": "送信できなかったため、メールアプリで続けてお送りします。",
         "rewind": "最初からもう一度聴く",
         "listen": "聴く",
@@ -2525,7 +2525,7 @@
         "covers": "公式バージョン・カバー",
         "volume": "音量",
         "versionLabel": "バージョン",
-        "askNext": "次の場所へ進みましょうか？",
+        "askNext": "次の物語へ進みましょうか？",
         "goOn": "進む",
         "cardRoles": {
           "Rec": "レコーディング",
@@ -2572,17 +2572,17 @@
         "profileOpen": "プロフィールを見る",
         "service": "ゲーム・バーチャル・アニメーションの音楽制作",
         "listenNow": "音楽を聴く",
-        "scrollHint": "スクロールして入る",
+        "scrollHint": "物語をたどって、下へ",
         "playerLabel": "再生中の曲",
         "featuredLabel": "代表作",
         "rooms": {
           "tale": {
             "title": "紹介",
-            "sub": "TALETONE MUSIC"
+            "sub": "旅を共にする人"
           },
           "tone": {
             "title": "哲学",
-            "sub": "物語から音楽へ"
+            "sub": "物語に色をまとわせる方法"
           },
           "case": {
             "title": "事例",
@@ -2602,17 +2602,17 @@
     "profileOpen": "프로필 보기",
     "service": "게임 · 버추얼 · 애니메이션 음악 제작",
     "listenNow": "음악 듣기",
-    "scrollHint": "아래로 내려가 보세요",
+    "scrollHint": "이야기를 따라, 아래로 내려가 보세요",
     "playerLabel": "재생 중인 곡",
     "featuredLabel": "대표작",
     "rooms": {
       "tale": {
         "title": "소개",
-        "sub": "TALETONE MUSIC"
+        "sub": "우리의 여행을 함께할 사람"
       },
       "tone": {
         "title": "철학",
-        "sub": "이야기에서 음악까지"
+        "sub": "이야기에 빛깔을 입히는 방식"
       },
       "case": {
         "title": "사례",

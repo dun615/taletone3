@@ -1645,7 +1645,7 @@
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
-      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.004 && lr < 0.93);
+      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > (NARROW ? 0.06 : 0.004) && lr < 0.93); // (on a phone it shares the bottom with the words on arriving, so it waits for them)
       on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
       if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
       else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }

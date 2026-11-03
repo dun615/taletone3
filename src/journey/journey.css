@@ -22,6 +22,9 @@
   color-scheme:light;
 }
 :lang(ja){--tt-sans:"LINE Seed JP","LINE Seed KR",system-ui,-apple-system,"Hiragino Sans",sans-serif}
+/* Japanese has no spaces: keep-all would hold whole sentences together and break them anywhere once they overflow.
+   Break at phrases where the browser can, never before 、 or 。 */
+html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:break-word}
 
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
