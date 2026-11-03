@@ -565,7 +565,7 @@
       // past the last song, all the way into the inquiry in one go, resting a moment on each of the words between:
       // the staff becomes the record's groove and the record goes into the phone (the letter), the empty seat, and the
       // line out to the form. Steps: [where, ms to get there, ms to rest there]
-      [11.50, 13.25, 0, 1, [[12.45, 2300, 900], [12.88, 1400, 900], [13.25, 1200, 0]]],
+      [11.50, 13.25, 0, 1, [[12.45, 2300, 150], [12.88, 1000, 900], [13.25, 1200, 0]]],
     ];
     let auto = null, hold = null, lastU = 0, inputAt = 0, asking = null;
     const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
