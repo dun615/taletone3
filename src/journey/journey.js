@@ -671,11 +671,15 @@
     // up into the sky (from CL0, CLH high at ZS); the camera rides the line and ends up looking straight up. Then the
     // trick: looking straight up into a clear sky and straight down into clear water look the same (the line runs
     // into the middle of the screen, everything passes outwards), so at ZS the world is quietly swapped for the sea,
-    // the camera now looking down. The end of the line is a fishing line going straight down into the deep (DIVE deep
-    // per unit, DD in all), and what passes is no longer clouds but bubbles, fish, rays and jellyfish, darker and
-    // darker, until a phone comes up out of the dark at S0 and through it is space.
-    const S0 = PEN.case[0], ZS = 12, CL0 = 8.8, CLH = 40, CLX = 2.6, DIVE = 24, DD = DIVE * (S0 - ZS), YS = 7.25, YB = 7;
-    const WIRE = [2.8, 9], POLE = 3, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
+    // the camera now looking down. The end of the line is a fishing line going straight down into the deep (DD in
+    // all), and what passes is no longer clouds but bubbles, fish, rays and jellyfish, darker and darker, until a phone
+    // comes up out of the dark at S0 and through it is space.
+    // Each world has one kind of thing each of its messages is set on, where the line is when the message comes:
+    // a pole on the land (the line rests on its top), a jellyfish of light in the sea (the line threads through it and
+    // it lights up), a star in space (the line turns at it and it lights up).
+    const SET = { land: [3.6, 5.4, 7.2, 9.0], sea: [14.6, 16.5, 19.5, 22.5], space: [31, 32.6, 34.2, 35.8] };
+    const S0 = PEN.case[0], ZS = 12, CL0 = 9, CLH = 40, CLX = 2.6, DD = 232, YS = 7.25, YB = 7;
+    const WIRE = [SET.land[0], SET.land[3]], POLE = 1.8, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
     const tint = (c, k, a) => `rgba(${Math.round(lerp(150, c[0], k))},${Math.round(lerp(152, c[1], k))},${Math.round(lerp(160, c[2], k))},${a})`;
@@ -688,7 +692,15 @@
     // which world a point of the line is in (0 the land, 1 the sea, 2 space), and how high the line runs there without
     // its small waves: climbing on the land, straight down in the sea (straight up out of it before ZS), level in space
     const worldOf = (z) => (z < ZS ? 0 : z < S0 ? 1 : 2);
-    const baseOf = (z, w) => (w === 0 ? -CLH * Math.pow(climbK(z), CLX) : w === 1 ? DIVE * (z - ZS) : YB);
+    // the dive slows down at each jellyfish, so the depth (and the colour of the water) holds while its message is
+    // read, and goes on between them: depth = DD * dive(z), dive rising from 0 at ZS to 1 at S0
+    const DIVE_T = (() => { const n = 600, t = [0]; let s = 0; for (let i = 1; i <= n; i++) { const z = ZS + ((i - 0.5) / n) * (S0 - ZS); let slow = 0; for (const sz of SET.sea) slow = Math.max(slow, Math.exp(-Math.pow((z - sz - 0.5) / 0.9, 2))); s += 1 - 0.82 * slow; t.push(s); } return t.map((v) => v / s); })();
+    const dive = (z) => { const f = clamp((z - ZS) / (S0 - ZS)) * (DIVE_T.length - 1), i = Math.min(DIVE_T.length - 2, Math.floor(f)); return lerp(DIVE_T[i], DIVE_T[i + 1], f - i); };
+    const SL0 = (DD * DIVE_T[1] * (DIVE_T.length - 1)) / (S0 - ZS), SL1 = (DD * (1 - DIVE_T[DIVE_T.length - 2]) * (DIVE_T.length - 1)) / (S0 - ZS);
+    const seaY = (z) => (z < ZS ? SL0 * (z - ZS) : z > S0 ? DD + SL1 * (z - S0) : DD * dive(z));
+    // where along the dive the line is y deep
+    const zOfDepth = (y) => { if (y <= 0) return ZS + y / SL0; if (y >= DD) return S0 + (y - DD) / SL1; let lo = ZS, hi = S0; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (seaY(m) < y) lo = m; else hi = m; } return (lo + hi) / 2; };
+    const baseOf = (z, w) => (w === 0 ? -CLH * Math.pow(climbK(z), CLX) : w === 1 ? seaY(z) : YB);
     const xAt = (z) => -0.35 + 0.5 * Math.sin(z * 0.33) + 0.15 * Math.sin(z * 0.91 + 1.2);
     // how deep the camera is in the sea: 0 at the top, 1 at the bottom where space opens
     const depthK = () => clamp(camY / DD);
@@ -701,7 +713,8 @@
       return [(tail.T[0] - tail.tg[0] * tail.L * (1 - s) - W / 2) * d, (tail.T[1] - tail.tg[1] * tail.L * (1 - s) - H * HZ) * d + YS];
     }
     // the constellation: stars at fixed points, the line runs straight from one to the next
-    const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const out = []; for (let z = S0 + 1.2; z < 50; z += 1.5 + r() * 0.5) out.push([-0.4 + (r() - 0.5) * 1.6, YS - 0.55 + (r() - 0.5) * 1.1, z]); return out; })();
+    // (the stars of the case's messages at SET.space; others before and after)
+    const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const zs = [S0 + 1.2, S0 + 2.85, ...SET.space]; for (let z = SET.space[3] + 1.7; z < 50; z += 1.5 + r() * 0.5) zs.push(z); return zs.map((z) => [-0.4 + (r() - 0.5) * 1.6, YS - 0.55 + (r() - 0.5) * 1.1, z]); })();
     function constAt(z) {
       if (z <= STARS[0][2]) return STARS[0];
       for (let i = 1; i < STARS.length; i++) if (z <= STARS[i][2]) { const a = STARS[i - 1], b = STARS[i], f = (z - a[2]) / (b[2] - a[2]); return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), z]; }
@@ -711,7 +724,7 @@
       let x = xAt(z), y = 0.35 + 0.16 * Math.sin(z * 0.47);
       if (w === 0) {
         const ww = wireW(z);
-        if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.32 * 4 * f * (1 - f), ww); }
+        if (ww > 0) { let f = ((z - WIRE[0]) / POLE) % 1; if (f < 0) f += 1; y = lerp(y, -0.55 + 0.2 * 4 * f * (1 - f), ww); }
         // off the last pole and up into the sky
         if (z > CL0) y = -0.55 + baseOf(z, 0);
       } else if (w === 1) {
@@ -807,12 +820,12 @@
       }
       // the sea, by depth along the fishing line (k: 0 the top, 1 the bottom): light from above and bubbles near the
       // top, fish circling the line and rays gliding round it further down, jellyfish and glowing plankton in the dark
-      const around = (k, r0, r1) => { const y = k * DD, z = ZS + y / DIVE, a = rnd() * Math.PI * 2, r = r0 + rnd() * (r1 - r0); return [xAt(z) + Math.cos(a) * r, y, z + Math.sin(a) * r]; };
+      const around = (k, r0, r1) => { const y = k * DD, z = zOfDepth(y), a = rnd() * Math.PI * 2, r = r0 + rnd() * (r1 - r0); return [xAt(z) + Math.cos(a) * r, y, z + Math.sin(a) * r]; };
       shafts = []; for (let i = 0; i < 26; i++) { const [x, , z] = around(0, 0.7, 6.5); shafts.push({ x, z, w: 0.07 + rnd() * 0.2, ph: rnd() * 6 }); }
       bubbles = []; for (let i = 0; i < Math.round(340 * dens); i++) { const k = 0.02 + Math.pow(rnd(), 1.3) * 0.43; bubbles.push({ p: around(k, 0.25, 4), r: 0.025 + rnd() * 0.06, off: rnd(), v: 0.4 + rnd() * 0.6 }); }
       fish = []; for (let s2 = 0; s2 < 8; s2++) { const c = around(0.1 + s2 * 0.05 + rnd() * 0.03, 0, 0.4), R = 0.9 + rnd() * 1.4, dir = rnd() < 0.5 ? -1 : 1, col = (rnd() * 3) | 0, n = 18 + ((rnd() * 12) | 0), ph0 = rnd() * 6.3; for (let j = 0; j < n; j++) fish.push({ c, R: R + (rnd() - 0.5) * 0.5, y: c[1] + (rnd() - 0.5) * 1.2, ph: ph0 + rnd() * 2.4, dir, col, sz: 0.1 + rnd() * 0.06, w: 0.4 + rnd() * 0.06 }); }
       mantas = [0.27, 0.4].map((k) => { const c = around(k, 0, 0.4); return { c, R: 2 + rnd() * 1, ph: rnd() * 6.3, dir: rnd() < 0.5 ? -1 : 1, s: 1.2 + rnd() * 0.4 }; });
-      jellies = []; for (let i = 0; i < Math.round(30 * dens) + 8; i++) jellies.push({ p: around(0.42 + rnd() * 0.48, 0.6, 4), r: 0.1 + rnd() * 0.16, c: (rnd() * 3) | 0, ph: rnd() * 6 });
+      jellies = []; for (let i = 0; i < Math.round(30 * dens) + 8; i++) jellies.push({ p: around(0.42 + rnd() * 0.48, 0.9, 4), r: 0.07 + rnd() * 0.1, c: (rnd() * 3) | 0, ph: rnd() * 6 });
       snow = []; for (let i = 0; i < Math.round(420 * dens); i++) snow.push({ p: around(0.1 + rnd() * 0.9, 0.2, 5), ph: rnd() });
       // a kelp forest in the shallows: long stalks standing up out of the deep around the line, swaying, with blades
       kelps = []; for (let i = 0; i < Math.round(12 * (0.6 + 0.4 * dens)); i++) { const [x, , z] = around(0, 1.6, 6.5); kelps.push({ x, z, y1: 26 + rnd() * 34, ph: rnd() * 6.3, c: (rnd() * 2) | 0, gap: 2 + rnd() * 0.8 }); }
@@ -829,9 +842,9 @@
 
     // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
     const ANCHORS = [
-      ['#jy-hello', 3.6, 1], ['#jy-pcard', 5.4, -1], ['#jy-types', 7.2, 1], ['#jy-clients', 9.0, -1],
-      ['#jy-creed', 14.6, 1], ['#jy-step-0', 16.5, 0], ['#jy-step-1', 19.5, 0], ['#jy-step-2', 22.5, 0],
-      ['#jy-case-req', 31, 1], ['#jy-case-m0', 32.6, 0.5], ['#jy-case-m1', 34.2, -0.5], ['#jy-case-ans', 35.8, -1],
+      ['#jy-hello', SET.land[0], 1], ['#jy-pcard', SET.land[1], -1], ['#jy-types', SET.land[2], 1], ['#jy-clients', SET.land[3], -1],
+      ['#jy-creed', SET.sea[0], 1], ['#jy-step-0', SET.sea[1], 0], ['#jy-step-1', SET.sea[2], 0], ['#jy-step-2', SET.sea[3], 0],
+      ['#jy-case-req', SET.space[0], 1], ['#jy-case-m0', SET.space[1], 0.5], ['#jy-case-m1', SET.space[2], -0.5], ['#jy-case-ans', SET.space[3], -1],
     ].map(([sel, z, side]) => ({ el: $(sel), z, side, w: 0, h: 0 })).filter((a) => a.el);
     ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
     const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
@@ -905,7 +918,7 @@
       ctx.beginPath(); ctx.arc(0, 0, Math.max(1.6, r * 0.22), 0, Math.PI * 2); ctx.fill(); ctx.restore();
     }
     // fish in pastel colours
-    const FISHC = ['248,168,156', '252,210,128', '140,190,238'], KELPC = ['104,170,138', '148,186,116'];
+    const SETC = ['252,226,160', '246,190,222', '204,192,250', '172,230,240'], FISHC = ['248,168,156', '252,210,128', '140,190,238'], KELPC = ['104,170,138', '148,186,116'];
     const TREE = [136, 190, 146], FLOWER = [[248, 186, 204], [252, 226, 150], [255, 255, 255]];
     const JELLY = ['246,190,222', '204,192,250', '172,230,240'], GLOW = ['150,236,240', '246,180,226', '240,236,170'];
     // the sky at the zenith and the water at the top of the dive share one colour: that is the change of world
@@ -1026,7 +1039,7 @@
           }
         }
         // the other wires, crossarm to crossarm, sagging between the poles, drawn as far as the pen has gone
-        const wireAt = (i, s, f) => { const t0 = pathAt(poles[i]), t1 = pathAt(poles[i + 1]); return [lerp(t0[0], t1[0], f) + s, lerp(t0[1], t1[1], f) + 0.07 + 0.24 * 4 * f * (1 - f), lerp(poles[i], poles[i + 1], f)]; };
+        const wireAt = (i, s, f) => { const t0 = pathAt(poles[i]), t1 = pathAt(poles[i + 1]); return [lerp(t0[0], t1[0], f) + s, lerp(t0[1], t1[1], f) + 0.07 + 0.16 * 4 * f * (1 - f), lerp(poles[i], poles[i + 1], f)]; };
         for (let i = 0; i + 1 < poles.length; i++) {
           if (penZ < poles[i]) continue;
           const fMax = clamp((penZ - poles[i]) / (poles[i + 1] - poles[i])), k = passed(poles[i]);
@@ -1103,7 +1116,7 @@
           const y = li * 6, d = y - camY; if (d < 6 || d > 20) continue;
           const al = net * 0.4 * clamp((d - 6) / 3) * clamp((20 - d) / 6); if (al < 0.01) continue;
           drawn++;
-          const zc = ZS + y / DIVE, cx = xAt(zc);
+          const zc = zOfDepth(y), cx = xAt(zc);
           ctx.strokeStyle = `rgba(255,255,255,${al})`; ctx.beginPath();
           for (let f = 0; f < 2; f++) {
             const an = f * 1.15 + li * 0.4, dx = Math.cos(an), dz = Math.sin(an);
@@ -1208,6 +1221,22 @@
         ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`; ctx.strokeStyle = `rgba(255,255,255,${0.85 * a})`; ctx.lineWidth = Math.max(1, r * 0.08); ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = `rgba(255,255,255,${0.7 * a})`; ctx.beginPath(); ctx.arc(q[0] - r * 0.35, q[1] - r * 0.35, r * 0.22, 0, Math.PI * 2); ctx.fill();
       }
+      // the jellyfish of light each message of the sea is set on: the line threads through the middle of its bell; pale
+      // until the hook reaches it, then it lights up in its own colour and stays lit, glowing more in the dark
+      SET.sea.forEach((sz, i) => {
+        const c = seaPath(sz), q = V(c); if (!q || !ahead(c[1])) return;
+        const lit = ease(clamp((penZ - sz) / 0.35)), R = (0.32 * F3) / q[2], col = SETC[i], pl = 1 + (reduce ? 0 : 0.05 * Math.sin(t * 1.8 + i));
+        if (R > W * 1.5) return;
+        const a = inSea * fogA(q[2]) * clamp((q[2] - 0.6) / 1.2);
+        if (lit > 0) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3.2); gl.addColorStop(0, `rgba(${col},${(0.35 + 0.35 * dk) * lit * a})`); gl.addColorStop(1, `rgba(${col},0)`); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3.2, q[1] - R * 3.2, R * 6.4, R * 6.4); }
+        // tentacles hanging down, which seen from above run in towards the middle
+        ctx.strokeStyle = lit > 0 ? `rgba(${col},${(0.4 + 0.4 * lit) * a})` : `rgba(255,255,255,${0.45 * a})`; ctx.lineWidth = clamp(R * 0.05, 0.8, 2.5);
+        for (let n = 0; n < 12; n++) { const an = (n / 12) * Math.PI * 2 + i, e0 = V([c[0] + Math.cos(an) * 0.25, c[1], c[2] + Math.sin(an) * 0.25]), e1 = V([c[0] + Math.cos(an) * 0.13 + Math.sin(t * 1.6 + n) * 0.03, c[1] + 2.4, c[2] + Math.sin(an) * 0.13]); if (!e0 || !e1) continue; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke(); }
+        // the bell: a soft disc, a rim, and an inner ring around the line
+        ctx.fillStyle = lit > 0 ? `rgba(${col},${(0.3 + 0.35 * lit) * a})` : `rgba(255,255,255,${0.16 * a})`; ctx.beginPath(); ctx.arc(q[0], q[1], R * pl, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = lit > 0 ? `rgba(255,255,255,${(0.5 + 0.4 * lit) * a})` : `rgba(255,255,255,${0.6 * a})`; ctx.lineWidth = clamp(R * 0.06, 1, 3); ctx.stroke();
+        ctx.beginPath(); ctx.arc(q[0], q[1], R * 0.45 * pl, 0, Math.PI * 2); ctx.stroke();
+      });
       // a thin stream of bubbles going up from the hook
       const tip = seaPath(penZ);
       for (let i = 0; i < 16; i++) {
