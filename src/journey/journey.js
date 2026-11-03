@@ -1507,7 +1507,9 @@
         const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-trk'; b.disabled = !t.audio; b.tabIndex = -1;
         b.setAttribute('aria-label', `${String(j + 1).padStart(2, '0')} ${t.title}`); b.setAttribute('aria-pressed', 'false');
         b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
-        b.querySelector('img').src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
+        b.querySelector('img').src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
+        // (each track on its own vinyl, from its own art)
+        if (t.vinyl && t.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => b.style.setProperty(k, t.vinyl[n])); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
         b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
         box.appendChild(b);
       });
