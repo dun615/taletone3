@@ -21,8 +21,18 @@
   const esc = (t) => String(t).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
   const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
   const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-  const CH = { pro: [0, 1], tale: [1, 2.4], tone: [2.4, 4.8], case: [4.8, 6.2], music: [6.2, 7.8], record: [7.8, 11.8], done: [11.8, 12.7], epi: [12.7, 13.7] };
-  const TOTAL = 13.7;
+  const CH = { pro: [0, 1], tale: [1, 3.7], tone: [3.7, 7.3], case: [7.3, 9.6], music: [9.6, 11.2], record: [11.2, 15.2], done: [15.2, 16.1], epi: [16.1, 17.1] };
+  const TOTAL = 17.1;
+  /* The things of each world the line passes, in its depth z: eight poles on the land, eight jellyfish of light in the
+     sea, eight stars in space. Every other one (the 1st, 3rd, 5th, 7th) carries a message (SET); the ones between let
+     the scene go on a while, so the words come at a pace that can be read without the line slowing down. */
+  const OBJ = { land: Array.from({ length: 8 }, (_, k) => 3.6 + 1.8 * k) };
+  const CL0 = OBJ.land[7], ZS = CL0 + 3; // the line lifts off the last pole; where the sky becomes the sea
+  OBJ.sea = Array.from({ length: 8 }, (_, k) => ZS + 2.6 + 2.6 * k);
+  const S0 = ZS + 22.5; // where the deep opens onto space
+  OBJ.space = Array.from({ length: 8 }, (_, k) => S0 + 4.5 + 1.6 * k);
+  const SET = { land: OBJ.land.filter((_, i) => i % 2 === 0), sea: OBJ.sea.filter((_, i) => i % 2 === 0), space: OBJ.space.filter((_, i) => i % 2 === 0) };
+  const PEN = { tale: [2, CL0 + 1], tone: [CL0 + 1, S0], case: [S0, S0 + 17], music: [S0 + 17, S0 + 29] };
   const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
@@ -40,6 +50,8 @@
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
   const lerp = (a, b, k) => a + (b - a) * k;
   const local = (u, c) => (u - CH[c][0]) / (CH[c][1] - CH[c][0]);
+  // the scroll position where the pen is at z (the tale holds the pen still over its first 8%)
+  const uOfPen = (z) => { for (const k of ['tale', 'tone', 'case', 'music']) { const [a, b] = PEN[k]; if (z <= b || k === 'music') { let l = Math.min(1, Math.max(0, (z - a) / (b - a))); if (k === 'tale') l = 0.08 + 0.92 * l; return CH[k][0] + l * (CH[k][1] - CH[k][0]); } } return 0; };
   const on = (el, v) => el && el.classList.toggle('on', !!v);
 
   if (STAGE) html.classList.add('jy-stage-mode');
@@ -495,8 +507,8 @@
     if (!STAGE) return { paintRecord() {}, reset() {}, syncInert() {}, go() {} };
     const stageEl = $('#jy-stage'), cv = $('#jy-cv'), ctx = cv.getContext('2d');
     const track = $('#jy-track');
-    // two screens of scrolling for each unit of the story, so there is time to take in each message before the next
-    const PER_U = 200;
+    // a screen of scrolling for each unit of the story
+    const PER_U = 100;
     track.style.setProperty('--track', (TOTAL * PER_U + 100) + 'vh');
     const sections = $$('.jy-ch');
     const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
@@ -559,15 +571,15 @@
        one more scroll down (a new one, not the rest of the last), the button or the down key goes on; up goes back. */
     const AUTO = [
       [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
-      [0.33, 1.37, 2300],   // into the phone, onto the land: the first hello
-      [2.30, 3.36, 4600, 1],   // straight up into the sky, and somewhere it became straight down into the sea
-      [4.30, 5.42, 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
-      [6.15, 7.70, 2400, 1],   // along the stars to the record: found
-      [7.74, 8.20, 1500],   // the line splits in five and draws the staff: the first song
+      [0.33, uOfPen(SET.land[0] + 0.01), 2300],   // into the phone, onto the land: the first hello
+      [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 4600, 1],   // straight up into the sky, and somewhere it became straight down into the sea
+      [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
+      [uOfPen(SET.space[3] + 0.8), uOfPen(PEN.music[1] - 0.75), 2400, 1],   // along the stars to the record: found
+      [CH.music[1] - 0.06, CH.record[0] + 0.4, 1500],   // the line splits in five and draws the staff: the first song
       // past the last song, all the way into the inquiry in one go, resting a moment on each of the words between:
       // the staff becomes the record's groove and the record goes into the phone (the letter), the empty seat, and the
       // line out to the form. Steps: [where, ms to get there, ms to rest there]
-      [11.50, 13.25, 0, 1, [[12.45, 2300, 150], [12.88, 1000, 900], [13.25, 1200, 0]]],
+      [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 1, [[CH.done[0] + 0.65, 2300, 150], [CH.epi[0] + 0.18, 1000, 900], [CH.epi[0] + 0.55, 1200, 0]]],
     ];
     let auto = null, hold = null, lastU = 0, inputAt = 0, asking = null;
     const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
@@ -668,7 +680,6 @@
     // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
     // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
     // passed slowly takes on a pastel colour.
-    const PEN = { tale: [2, 10], tone: [10, 26.5], case: [26.5, 37], music: [37, 49] };
     // the land ends where the line lifts off the last pole and swings up, steeper and steeper, until it runs straight
     // up into the sky (from CL0, CLH high at ZS); the camera rides the line and ends up looking straight up. Then the
     // trick: looking straight up into a clear sky and straight down into clear water look the same (the line runs
@@ -679,9 +690,8 @@
     // Each world has one kind of thing each of its messages is set on, where the line is when the message comes:
     // a pole on the land (the line rests on its top), a jellyfish of light in the sea (the line threads through it and
     // it lights up), a star in space (the line turns at it and it lights up).
-    const SET = { land: [3.6, 5.4, 7.2, 9.0], sea: [14.6, 16.5, 19.5, 22.5], space: [31, 32.6, 34.2, 35.8] };
-    const S0 = PEN.case[0], ZS = 12, CL0 = 9, CLH = 40, CLX = 2.6, DD = 232, YS = 7.25, YB = 7;
-    const WIRE = [SET.land[0], SET.land[3]], POLE = 1.8, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = 46.5;
+    const CLH = 40, CLX = 2.6, DD = 232, YS = 7.25, YB = 7;
+    const WIRE = [OBJ.land[0], OBJ.land[7]], POLE = 1.8, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = PEN.music[1] - 2.5;
     const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
       space: { sky: [226, 220, 245], star: [[252, 232, 170], [246, 196, 222], [196, 214, 250]] } };
     const tint = (c, k, a) => `rgba(${Math.round(lerp(150, c[0], k))},${Math.round(lerp(152, c[1], k))},${Math.round(lerp(160, c[2], k))},${a})`;
@@ -716,7 +726,7 @@
     }
     // the constellation: stars at fixed points, the line runs straight from one to the next
     // (the stars of the case's messages at SET.space; others before and after)
-    const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const zs = [S0 + 1.2, S0 + 2.85, ...SET.space]; for (let z = SET.space[3] + 1.7; z < 50; z += 1.5 + r() * 0.5) zs.push(z); return zs.map((z) => [-0.4 + (r() - 0.5) * 1.6, YS - 0.55 + (r() - 0.5) * 1.1, z]); })();
+    const STARS = (() => { let sd = 5; const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647); const zs = [S0 + 1.2, S0 + 2.85, ...OBJ.space]; for (let z = OBJ.space[7] + 1.7; z < PEN.music[1] + 1; z += 1.5 + r() * 0.5) zs.push(z); return zs.map((z) => [-0.4 + (r() - 0.5) * 1.6, YS - 0.55 + (r() - 0.5) * 1.1, z]); })();
     function constAt(z) {
       if (z <= STARS[0][2]) return STARS[0];
       for (let i = 1; i < STARS.length; i++) if (z <= STARS[i][2]) { const a = STARS[i - 1], b = STARS[i], f = (z - a[2]) / (b[2] - a[2]); return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), z]; }
@@ -780,7 +790,7 @@
       let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
       const G2 = S0;
       // far ranges: triangular peaks, snow where they are highest
-      mounts = [[23, 3.4, [184, 198, 232]], [17, 2.4, [168, 206, 200]]].map(([z, hMax, c]) => {
+      mounts = [[CL0 + 14, 3.4, [184, 198, 232]], [CL0 + 8, 2.4, [168, 206, 200]]].map(([z, hMax, c]) => {
         const pk = []; for (let x = -30; x < 30;) { const h = hMax * (0.45 + rnd() * 0.55), w2 = 2.2 + rnd() * 2.6; pk.push([x + w2 * 0.5, h, w2]); x += w2 * (0.5 + rnd() * 0.35); }
         const pts = []; for (let x = -31; x <= 31.001; x += 0.3) { let h = 0; for (const [px, ph, pw] of pk) h = Math.max(h, ph * Math.max(0, 1 - Math.abs(x - px) / (pw * 0.5))); pts.push([x, GROUND - h, z]); }
         const peaks = pk.filter((p) => p[1] > hMax * 0.8).map(([px, ph, pw]) => [[px, GROUND - ph, z], [px - pw * 0.1, GROUND - ph * 0.8, z], [px + pw * 0.1, GROUND - ph * 0.8, z]]);
@@ -795,7 +805,7 @@
       }
       ridges.sort((a, b) => b.z - a.z);
       grass = [];
-      for (let z = 1.2; z < 9.6; z += 0.08 + rnd() * 0.1) {
+      for (let z = 1.2; z < CL0 + 0.6; z += 0.08 + rnd() * 0.1) {
         const x = pathAt(z)[0] + (rnd() - 0.5) * 5, blades = [];
         for (let j = 0; j < 5; j++) blades.push({ dx: (j - 2) * 0.012, h: (j === 2 ? 0.12 : 0.06) + rnd() * 0.06, lean: (j - 2) * 0.02 + (rnd() - 0.5) * 0.02 });
         grass.push({ x, z, blades, flower: rnd() < 0.3 ? 1 + ((rnd() * 3) | 0) : 0 });
@@ -812,7 +822,7 @@
         for (let j = 1; j <= 10; j++) pts.push([X + (0.5 - j / 10) * wd, Y + Math.sin((j / 10) * Math.PI) * 0.03, z]);
         clouds.push({ z, pts, ci: clouds.length });
       };
-      for (let z = 3; z < 9; z += 3 + rnd() * 3) cloudAt(z, (rnd() - 0.5) * 7, -2.1 + rnd() * 0.6, 0.9 + rnd() * 0.9);
+      for (let z = 3; z < CL0; z += 3 + rnd() * 3) cloudAt(z, (rnd() - 0.5) * 7, -2.1 + rnd() * 0.6, 0.9 + rnd() * 0.9);
       puffs = [];
       for (let i = 0; i < 34; i++) {
         const y = -2.4 - i * 0.85 - rnd() * 0.5, c = Math.pow(-y / CLH, 1 / CLX); if (y < -29) break;
@@ -834,12 +844,12 @@
       // a whale far below, crossing slowly under the line
       whale = { c: around(0.34, 2.2, 2.6), L: 10, h: rnd() * 6.3 };
       glows = []; for (let i = 0; i < Math.round(260 * dens); i++) glows.push({ p: around(0.5 + rnd() * 0.5, 0.3, 5), c: (rnd() * 3) | 0, s: rnd() });
-      nebulae = [[G2 + 6, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 10, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 15, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 19, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y: y + YS, r, c }));
+      nebulae = [[G2 + 8, -2.2, -1.2, 2.6, [246, 196, 222]], [G2 + 13, 2.4, -0.4, 3.0, [200, 190, 246]], [G2 + 19.5, -1.0, 0.9, 3.4, [180, 226, 236]], [G2 + 25, 2.0, -1.6, 2.8, [252, 224, 200]]].map(([z, x, y, r, c]) => ({ z, x, y: y + YS, r, c }));
       milky = [];
-      for (let i = 0; i < Math.round(520 * dens); i++) { const t = rnd(), sp = (rnd() + rnd() + rnd() - 1.5) * 0.9; milky.push({ x: -9 + t * 18, y: YS - 3.2 + t * 2.6 + sp, z: G2 + 22 + rnd() * 6, s: rnd() }); }
-      bodies = [{ kind: 'ring', z: G2 + 7.5, x: 2.3, y: YS + -1.5, r: 0.55, c: [214, 200, 246], c2: [246, 206, 226] }, { kind: 'moon', z: G2 + 12, x: -2.6, y: YS + -1.9, r: 0.42, c: [252, 238, 196] }, { kind: 'ring', z: G2 + 16.5, x: -2.0, y: YS + 0.9, r: 0.32, c: [186, 226, 236], c2: [252, 232, 170] }];
+      for (let i = 0; i < Math.round(520 * dens); i++) { const t = rnd(), sp = (rnd() + rnd() + rnd() - 1.5) * 0.9; milky.push({ x: -9 + t * 18, y: YS - 3.2 + t * 2.6 + sp, z: PEN.music[1] - 0.5 + rnd() * 6, s: rnd() }); }
+      bodies = [{ kind: 'ring', z: G2 + 10, x: 2.3, y: YS + -1.5, r: 0.55, c: [214, 200, 246], c2: [246, 206, 226] }, { kind: 'moon', z: G2 + 15.5, x: -2.6, y: YS + -1.9, r: 0.42, c: [252, 238, 196] }, { kind: 'ring', z: G2 + 21.5, x: -2.0, y: YS + 0.9, r: 0.32, c: [186, 226, 236], c2: [252, 232, 170] }];
       stars = [];
-      for (let i = 0; i < Math.round(300 * dens); i++) stars.push({ x: (rnd() - 0.5) * 12, y: YS - 3.4 + rnd() * 5.2, z: G2 - 1 + rnd() * 26, s: rnd(), sparkle: rnd() < 0.14, c: (rnd() * 3) | 0 });
+      for (let i = 0; i < Math.round(300 * dens); i++) stars.push({ x: (rnd() - 0.5) * 12, y: YS - 3.4 + rnd() * 5.2, z: G2 - 1 + rnd() * 33, s: rnd(), sparkle: rnd() < 0.14, c: (rnd() * 3) | 0 });
     }
 
     // messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
@@ -871,7 +881,7 @@
 
       let latest = -1;
       ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
-      const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 4.5 || (g === 0 && penZ > CL0 + 0.75));
+      const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 6 || (g === 0 && penZ > CL0 + 0.75));
       let y = bottom;
       leadOf = null;
       for (let i = ANCHORS.length - 1; i >= 0; i--) {
@@ -968,7 +978,7 @@
     }
     const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < far; };
     // the three worlds, each drawn whole from the same camera: 0 land, 1 sea, 2 space
-    const spaceFade = () => 1 - ease(clamp((penZ - 48.2) / 0.7));
+    const spaceFade = () => 1 - ease(clamp((penZ - (PEN.music[1] - 0.8)) / 0.7));
     function backdrop(w, A) {
       if (w === 0) {
         const k = passed(2, 0) * A;
@@ -1225,9 +1235,9 @@
       }
       // the jellyfish of light each message of the sea is set on: the line threads through the middle of its bell; pale
       // until the hook reaches it, then it lights up in its own colour and stays lit, glowing more in the dark
-      SET.sea.forEach((sz, i) => {
+      OBJ.sea.forEach((sz, i) => {
         const c = seaPath(sz), q = V(c); if (!q || !ahead(c[1])) return;
-        const lit = ease(clamp((penZ - sz) / 0.35)), R = (0.32 * F3) / q[2], col = SETC[i], pl = 1 + (reduce ? 0 : 0.05 * Math.sin(t * 1.8 + i));
+        const lit = ease(clamp((penZ - sz) / 0.35)), R = (0.32 * F3) / q[2], col = SETC[i % 4], pl = 1 + (reduce ? 0 : 0.05 * Math.sin(t * 1.8 + i));
         if (R > W * 1.5) return;
         const a = inSea * fogA(q[2]) * clamp((q[2] - 0.6) / 1.2);
         if (lit > 0) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3.2); gl.addColorStop(0, `rgba(${col},${(0.35 + 0.35 * dk) * lit * a})`); gl.addColorStop(1, `rgba(${col},0)`); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3.2, q[1] - R * 3.2, R * 6.4, R * 6.4); }
@@ -1731,7 +1741,7 @@
     function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
     const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
     // each chapter opens where its first words are
-    const target = { pro: 0, tale: 1.37, tone: 3.36, record: recordU(0), epi: 13.25 };
+    const target = { pro: 0, tale: uOfPen(SET.land[0] + 0.01), tone: uOfPen(SET.sea[0] + 0.1), record: recordU(0), epi: CH.epi[0] + 0.55 };
     // a jump to the next chapter glides; across two or more it goes at once, without drawing everything between
     const RAIL = ['pro', 'tale', 'tone', 'record', 'epi'];
     function goStage(where, smooth = true) {

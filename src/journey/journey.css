@@ -273,7 +273,7 @@ img{max-width:100%}
 
 /* ---------- the stage (wide screens, with JS) ---------- */
 .jy-stage-mode body{overscroll-behavior:none}
-.jy-stage-mode .jy-track{display:block;height:var(--track,2840vh)}
+.jy-stage-mode .jy-track{display:block;height:var(--track,1810vh)}
 .jy-stage-mode .jy-grain{position:absolute}
 .jy-stage-mode .jy{position:static}
 .jy-stage-mode .jy-stage{position:fixed;inset:0;overflow:hidden;overflow:clip;background:var(--tt-canvas);transition:background .6s}
