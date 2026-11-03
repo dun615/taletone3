@@ -123,21 +123,21 @@ ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com
   <a class="jy-mark" href="${href('/')}" aria-label="${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"></a>
   <button class="jy-mchap" type="button" id="jy-mchap" aria-controls="jy-menu" aria-label="${esc(c.chapters)}">${esc(c.rail.pro)}</button>
   <span class="jy-mprog" aria-hidden="true"><i id="jy-mprog"></i></span>
-  <button class="jy-menu-btn" type="button" aria-expanded="false" aria-controls="jy-menu"><span class="jy-menu-lines" aria-hidden="true"><i></i><i></i></span><span class="jy-sr">${esc(c.menu)}</span></button>
-  <nav class="jy-menu" id="jy-menu" aria-label="${esc(c.menu)}">
+  <nav class="jy-langtog" aria-label="${esc(c.languages)}">${langLinks}</nav>
+  <nav class="jy-menu" id="jy-menu" aria-label="${esc(c.chapters || c.menu)}">
     <ul>
 ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}">${esc(c.rail[k])}</a></li>`).join('\n')}
       <li><a href="${href('/about/')}" data-go="profile">${esc(c.profile)}</a></li>
     </ul>
-    <p class="jy-langs" aria-label="${esc(c.languages)}">${langLinks}</p>
   </nav>
 </header>
-<nav class="jy-rail" aria-label="${esc(c.chapters || c.menu)}"><ol>${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `<li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}"><span>${esc(c.rail[k])}</span><i aria-hidden="true"></i></a></li>`).join('')}</ol></nav>
+<nav class="jy-rail" aria-label="${esc(c.chapters || c.menu)}"><ol>${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `<li><a href="${href({ pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' }[k])}" data-go="${k}"><span>${esc(c.rail[k])}</span><i aria-hidden="true"></i></a></li>`).join('') + `<li class="jy-rail-pf"><a href="${href('/about/')}" data-go="profile"><span>${esc(c.profile)}</span><i aria-hidden="true"></i></a></li>`}</ol></nav>
 <div class="jy-track" id="jy-track" aria-hidden="true"></div>
 <main class="jy" id="journey">
 <div class="jy-stage" id="jy-stage">
 ${grain}
 <canvas class="jy-cv" id="jy-cv" aria-hidden="true"></canvas>
+<div class="jy-room" id="jy-room"><div class="jy-room-h" aria-hidden="true"><span class="jy-room-av"><img src="${markInk}" alt=""></span><span class="jy-room-n"><b id="jy-room-t"></b><small id="jy-room-s"></small></span><i class="jy-room-on"></i></div><a class="jy-room-f" id="jy-room-f" href="${href('/contact/')}" data-go="epi" tabindex="-1"><span>${esc(c.roomInput)}</span><i aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12V2M2.5 6.5L7 2l4.5 4.5"/></svg></i></a></div>
 
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>

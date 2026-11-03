@@ -2449,7 +2449,22 @@
         "listenNow": "Listen now",
         "scrollHint": "Scroll to enter",
         "playerLabel": "Now playing",
-        "featuredLabel": "Featured"
+        "featuredLabel": "Featured",
+        "rooms": {
+          "tale": {
+            "title": "About",
+            "sub": "TALETONE MUSIC"
+          },
+          "tone": {
+            "title": "Philosophy",
+            "sub": "From story to music"
+          },
+          "case": {
+            "title": "Case",
+            "sub": "A real project"
+          }
+        },
+        "roomInput": "Leave a message"
       },
       "jp": {
         "notifyNow": "今",
@@ -2560,7 +2575,22 @@
         "listenNow": "音楽を聴く",
         "scrollHint": "スクロールして入る",
         "playerLabel": "再生中の曲",
-        "featuredLabel": "代表作"
+        "featuredLabel": "代表作",
+        "rooms": {
+          "tale": {
+            "title": "紹介",
+            "sub": "TALETONE MUSIC"
+          },
+          "tone": {
+            "title": "哲学",
+            "sub": "物語から音楽へ"
+          },
+          "case": {
+            "title": "事例",
+            "sub": "実際のプロジェクト"
+          }
+        },
+        "roomInput": "メッセージを残す"
       }
     },
     "albumTracks": "수록곡",
@@ -2576,6 +2606,21 @@
     "listenNow": "음악 듣기",
     "scrollHint": "아래로 내려가 보세요",
     "playerLabel": "재생 중인 곡",
-    "featuredLabel": "대표작"
+    "featuredLabel": "대표작",
+    "rooms": {
+      "tale": {
+        "title": "소개",
+        "sub": "TALETONE MUSIC"
+      },
+      "tone": {
+        "title": "철학",
+        "sub": "이야기에서 음악까지"
+      },
+      "case": {
+        "title": "사례",
+        "sub": "실제 프로젝트"
+      }
+    },
+    "roomInput": "메시지를 남겨 주세요"
   }
 }

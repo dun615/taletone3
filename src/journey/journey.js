@@ -325,12 +325,11 @@
   $('#jy-p-close').addEventListener('click', closeProfile);
   profile.addEventListener('click', (e) => { if (STAGE && e.target === profile) closeProfile(); });
 
-  /* ---------------- menu ---------------- */
-  const menuBtn = $('.jy-menu-btn'), menu = $('#jy-menu');
-  function setMenu(open) { menuBtn.setAttribute('aria-expanded', String(open)); menu.classList.toggle('open', open); }
-  menuBtn.addEventListener('click', () => setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'));
-  document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !menuBtn.contains(e.target)) setMenu(false); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); menuBtn.focus(); } });
+  /* ---------------- the chapter list: the rail on wide screens; on phones it opens from the chapter chip ---------------- */
+  const chipBtn = $('#jy-mchap'), menu = $('#jy-menu');
+  function setMenu(open) { if (chipBtn) chipBtn.setAttribute('aria-expanded', String(open)); menu.classList.toggle('open', open); }
+  document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !(chipBtn && chipBtn.contains(e.target))) setMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); if (chipBtn) chipBtn.focus(); } });
   $$('[data-go]').forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault(); setMenu(false);
     try { history.replaceState(null, '', a.getAttribute('href')); } catch (_) {}
@@ -515,7 +514,8 @@
     // ---- on a phone: a chapter chip and a progress line instead of the rail, sheets instead of panels ----
     const mchap = $('#jy-mchap'), mprog = $('#jy-mprog'), fbtn = $('#jy-fbtn'), filtersEl = $('#jy-filters'), scrim = $('#jy-scrim');
     const contactEl = $('#jy-contact'), fopen = $('#jy-fopen');
-    mchap.addEventListener('click', (e) => { e.stopPropagation(); setMenu(true); });
+    mchap.setAttribute('aria-expanded', 'false');
+    mchap.addEventListener('click', (e) => { e.stopPropagation(); setMenu(!menu.classList.contains('open')); });
     let sheet = null, heldY = 0, holds = 0;
     function holdStory(on) {
       if (on) { if (holds++ === 0) { heldY = scrollY; frozenU = U(); html.classList.add('jy-held'); } return; }
@@ -841,15 +841,23 @@
     // only on where the pen is, and the arrival itself is a short timed animation, so a quick scroll loses nothing.
     const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
     let leadOf = null;
+    // The words of the about, the philosophy and the case are said in a chat room: a messenger window (on a phone a
+    // panel across the bottom, as tall as its thread) named for the chapter, the messages arriving at its bottom and
+    // the older ones going up and out of it; its input leads to the inquiry.
+    const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), roomF = $('#jy-room-f'), ROOMS = ['tale', 'tone', 'case'];
+    let roomOf = -1;
+    function roomBox() {
+      if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8 - (asking ? 78 : 0), head: 54, foot: 58 };
+      const w = Math.min(500, W * 0.4); return { x: Math.min(W * 0.56, W - w - 28), w, top: H * 0.11, bottom: H * 0.9, head: 68, foot: 70 };
+    }
     function placeAnchors() {
-      const slotX = NARROW ? 16 : W * 0.58, bottom = NARROW ? H - 24 - (asking ? 78 : 0) : H * 0.64, ceil = NARROW ? H * 0.34 : 0;
+      const RB = roomBox(), slotX = RB.x + 18, bottom = RB.bottom - RB.foot - 12, ceil = RB.top + RB.head + 10;
+      let topY = bottom;
 
       let latest = -1;
       ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
       const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 4.5 || (g === 0 && penZ > CL0 + 0.75));
-      // a tall thread sits lower so its first message stays on screen
-      const stack = ANCHORS.reduce((t, a, i) => t + (!gone && i <= latest && groupOf(a.z) === g ? (a.h || a.el.offsetHeight) + 10 : 0), 0);
-      let y = NARROW ? bottom : Math.min(H - 28, Math.max(bottom, stack + 84));
+      let y = bottom;
       leadOf = null;
       for (let i = ANCHORS.length - 1; i >= 0; i--) {
         const a = ANCHORS[i], shown = !gone && i <= latest && groupOf(a.z) === g;
@@ -858,14 +866,21 @@
         a.el.classList.toggle('older', shown && i !== latest);
         // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
         if (!shown) { a.el.style.setProperty('--aa', '0'); a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', (bottom - a.h + 18).toFixed(1) + 'px'); a.el.style.setProperty('--as', '1'); continue; }
-        // (on a narrow screen the older ones give way once the thread would climb into the scene)
-        if (NARROW && i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); a.el.style.setProperty('--aa', '0'); continue; }
-        y -= a.h;
+        // (the older ones go up and out of the room once the thread would climb past its top)
+        if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); a.el.style.setProperty('--aa', '0'); continue; }
+        y -= a.h; topY = y;
         a.el.style.setProperty('--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
         a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', '1');
         if (i === latest) leadOf = { a, A: 1, x: slotX, y: y + Math.min(a.h / 2, 40) };
         y -= 10;
       }
+      // the room around the thread
+      const show = latest >= 0 && !gone && g >= 0 && g < 3;
+      roomEl.classList.toggle('on', show); roomF.tabIndex = show ? 0 : -1;
+      if (!show) return;
+      if (g !== roomOf) { roomOf = g; const r = (COPY.rooms || {})[ROOMS[g]] || {}; roomT.textContent = r.title || ''; roomS.textContent = g === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
+      const top = NARROW ? Math.max(RB.top, topY - 12 - RB.head) : RB.top;
+      roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${RB.bottom - top}px`;
     }
     function drawLead(A) {
       if (!leadOf) return;
