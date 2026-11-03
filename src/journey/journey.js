@@ -1218,8 +1218,12 @@
        at the same place, so the swirl turns around the visitor.
        The staff is the pen line itself: it arrives as one line and splits in five. An album in focus lets its tracks out on an earphone cord. */
     const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066, HEAD = -1.6;
-    // the five lines open out of one over the first stretch of the staff
-    const splitAt = (z) => ease((z - HEAD) / 1.1), lineRad = (l, z) => 1 + (l * 2 - 4) * GAP * 0.5 * splitAt(z);
+    // past the last song the camera rises back out of the staff to CEND, where the whole of it, its five lines joined
+    // into one again, is seen face on: one spiral from the first song at the rim to the last at the label, the groove
+    // of a record (the same as at the start, when the dive went into that groove)
+    const CEND = -7.6;
+    // the five lines open out of one over the first stretch of the staff (and close into one again at the end)
+    const splitAt = (z) => ease((z - HEAD) / 1.1), lineRad = (l, z) => 1 + (l * 2 - 4) * GAP * 0.5 * splitAt(z) * (1 - ((cur && cur.merge) || 0));
     // depth shrinks the swirl gently (a power below 1), so the far turns open out instead of knotting at the centre
     const OPEN = 0.55, shrink = (dz) => Math.pow(VIEW / dz, OPEN);
     const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: lines and spaces, bottom to top
@@ -1229,7 +1233,7 @@
     function buildCurrent() {
       const Rf = NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * 0.26, H * 0.37), size = NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
       const cy0 = NARROW ? H * 0.31 : H * 0.5;
-      cur = { cx: NARROW ? W / 2 : W * 0.36, cy: cy0, cy0, F: Rf * VIEW, size, Rf };
+      cur = { cx: NARROW ? W / 2 : W * 0.36, cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1 };
       // where the staff begins on screen when the record opens: the world's line comes in there along the way the
       // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
       { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
@@ -1272,19 +1276,21 @@
       const y = H * 0.905, x0 = fx - 70, sp = Math.min(78, (x0 - 72) / Math.max(1, n)); return Array.from({ length: n }, (_, j) => [x0 - (j + 0.5) * sp, y + Math.sin(j * 1.35 + 0.6) * 16]); };
     function placeCurrent(lr) {
       const k = recK, focusZ = k * DZ;
-      const dive = ease((lr - 0.02) / 0.1), out = ease((lr - 0.92) / 0.08);
-      // diving: from above the groove (a flat spiral) down into it; leaving: past the last note into the label
-      const camZ = lerp(-VIEW - 2.2, focusZ - VIEW, dive) + out * 3.5;
-      cur.cx = lerp(W / 2, NARROW ? W / 2 : W * 0.36, dive); cur.cy = cur.cy0;
+      const dive = ease((lr - 0.02) / 0.1), out = ease((lr - 0.91) / 0.09);
+      // diving: from above the groove (a flat spiral) down into it; leaving: back up out of it, to see it whole
+      const camIn = lerp(-VIEW - 2.2, focusZ - VIEW, dive), camZ = lerp(camIn, CEND, out);
+      cur.cx = lerp(lerp(W / 2, NARROW ? W / 2 : W * 0.36, dive), W / 2, out); cur.cy = lerp(cur.cy0, H * 0.5, out);
+      // (seen whole, it is as big as the record it becomes)
+      cur.Rf = lerp(cur.Rf0, (Math.min(W, H) * 0.34) / shrink(HEAD - CEND), out); cur.merge = out; cur.far = lerp(FAR, 40, out); cur.fade = 1 - ease(out / 0.5);
       const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);
       cur.camZ = camZ; cur.roll = roll;
       // the pen draws the staff forward from its head; works appear once their part of the staff is drawn
-      cur.zMax = HEAD + (camZ + FAR - HEAD) * ease(lr / 0.15);
+      cur.zMax = HEAD + (camIn + FAR - HEAD) * ease(lr / 0.15);
       const list = recordEl.classList.contains('list');
-      spiral.style.opacity = list ? '1' : String(ease((lr - 0.02) / 0.06) * (1 - out));
+      spiral.style.opacity = list ? '1' : String(ease((lr - 0.02) / 0.06) * cur.fade);
       if (!list) items.forEach((li, i) => {
         const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
-        if (!p || p[2] > FAR) { li.style.visibility = 'hidden'; return; }
+        if (!p || p[2] > cur.far) { li.style.visibility = 'hidden'; return; }
         // a note fades as soon as it has passed the focus, so it never covers the words on the right
         const sc2 = Math.pow(VIEW / p[2], 0.8), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
         li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
@@ -1311,23 +1317,25 @@
       for (let z = z0; z <= z1; z += 0.04) {
         const p = proj((z / DZ) * TURN, z, camZ, roll, lineRad(l, z)); if (!p) continue;
         // still one line before it splits: as thick as the pen line it continues
-        const wd = Math.round(clamp(width * VIEW / p[2] * (1 + 1.4 * (1 - splitAt(z))), 0.4, 3.2) * 4) / 4, al = Math.round(0.85 * alpha * behind(p[2]) * clamp((FAR - p[2]) / 6) * 20) / 20;
+        const wd = Math.round(clamp(width * VIEW / p[2] * (1 + 1.4 * Math.max(1 - splitAt(z), cur.merge)), lerp(0.4, 1.5, cur.merge), 3.2) * 4) / 4, al = Math.round(0.85 * alpha * behind(p[2]) * clamp((cur.far - p[2]) / 6) * 20) / 20;
         if (wd !== wPrev || al !== aPrev) { const last = run[run.length - 1]; flush(); run = last ? [last] : []; wPrev = wd; aPrev = al; }
         run.push(p);
       }
       flush(); ctx.lineCap = 'round';
     }
-    function drawCurrent(lr) {
+    function drawCurrent(lr, lineA = 1) {
       if (!cur || cur.camZ == null) return;
-      const { camZ, roll, zMax } = cur, alpha = 1 - ease((lr - 0.94) / 0.06);
-      if (alpha <= 0) return;
+      const { camZ, roll, zMax } = cur, FAR = cur.far, alpha = cur.fade;
+      if (lineA <= 0) return;
       // the colour of the note in focus, faint, around the swirl
       const w = recShown >= 0 && bySlug[items[recShown].dataset.slug], c = w && colorOf[w.slug];
       if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha * ease(lr / 0.12)})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
       // the staff: five ink lines swirling in, thick close by, a hair far away
       const z0 = Math.max(HEAD, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR, zMax);
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      for (let l = 0; l < 5; l++) staffLine(l, z0, z1, camZ, roll, alpha, 1.3);
+      // (once the five have closed into one, only the middle one is drawn)
+      for (let l = 0; l < 5; l++) if (cur.merge < 0.97 || l === 2) staffLine(l, z0, z1, camZ, roll, lineA, 1.3);
+      if (alpha <= 0) return;
       // while it is still being drawn, the five pen tips at the front
       if (z1 >= z0 && zMax < camZ + FAR - 0.05) {
         ctx.fillStyle = `rgba(${lineRGB},${alpha})`;
@@ -1368,6 +1376,40 @@
           ctx.stroke();
         }
       }
+    }
+    // Done: the groove, now where the record is, gives way to the record itself as it goes into the phone (sc: how
+    // much the record has shrunk, cx/cy: its centre)
+    let grooveSpin = 0;
+    function drawGroove(ld, sc, cx, cy) {
+      if (!cur) return;
+      cur.cx = cx; cur.cy = cy; cur.Rf = ((Math.min(W, H) * 0.34) / shrink(HEAD - CEND)) * sc;
+      cur.camZ = CEND; cur.merge = 1; cur.far = 40; cur.fade = 0; cur.zMax = 1e9;
+      cur.roll = FOCUS - ((CEND + VIEW) / DZ) * TURN + grooveSpin;
+      drawCurrent(1, 1 - ease((ld - 0.06) / 0.22));
+    }
+    // Epilogue: the line comes back out from under the record in the phone and runs to the inquiry, lies along the
+    // first line to write on, and waits at its start, blinking, for the visitor to write the next line
+    function drawTrail(le, A) {
+      // (on a phone the phone leaves before the form shows, so the line sets out sooner, while it is still there)
+      const pr = ease((le - (NARROW ? 0.16 : 0.33)) / 0.2); if (pr <= 0) return;
+      const tg = [$('#jy-f-project'), $('#jy-fopen')].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
+      const fr = frame.getBoundingClientRect(), r = tg.getBoundingClientRect(), field = tg.id === 'jy-f-project';
+      const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + r.width / 2, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
+      // (on a phone, where the form opens from a button, it comes down onto the button and waits there)
+      const c1 = field ? [lerp(P0[0], P2[0], 0.25), P0[1] + H * 0.26] : [P0[0], lerp(P0[1], P2[1], 0.5)], c2 = field ? [P2[0] + Math.min(170, W * 0.12), P2[1] + 36] : [P2[0], P2[1] - 70];
+      const pts = [];
+      for (let i = 0; i <= 60; i++) { const t = i / 60, a = (1 - t) ** 3, b = 3 * (1 - t) ** 2 * t, c = 3 * (1 - t) * t * t, d = t ** 3; pts.push([a * P0[0] + b * c1[0] + c * c2[0] + d * P2[0], a * P0[1] + b * c1[1] + c * c2[1] + d * P2[1]]); }
+      if (field) for (let i = 1; i <= 30; i++) pts.push([lerp(P2[0], P3[0], i / 30), P2[1]]);
+      const L = [0]; for (let i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      const end = L[L.length - 1] * pr;
+      ctx.strokeStyle = `rgba(244,244,252,${0.9 * A})`; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+      let tip = pts[0];
+      for (let i = 1; i < pts.length; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); tip = pts[i]; continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); tip = [lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)]; ctx.lineTo(tip[0], tip[1]); break; }
+      ctx.stroke();
+      // the pen tip; once there, it blinks like a caret, until the visitor starts writing
+      const writing = form.contains(document.activeElement);
+      const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
+      if (al > 0) { ctx.fillStyle = `rgba(244,244,252,${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
     }
     function showReadout(i) {
       const w = bySlug[items[i].dataset.slug];
@@ -1490,6 +1532,9 @@
       // ---- canvas ----
       ctx.clearRect(0, 0, W, H);
       if (inRecord) drawCurrent(lr);
+      else if (ld > 0 && ld < 0.4) { const fr = frame.getBoundingClientRect(); drawGroove(ld, fr.width / 234 / ((2 * RR) / 192), fr.left + fr.width / 2, fr.top + fr.height / 2); }
+      grooveSpin = ld > 0 && ld < 1 ? grooveSpin + dt * 0.9 : 0;
+      if (le > 0.15) drawTrail(le, 1);
       const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
       if (worldA > 0) drawWorld(worldA);
     }
