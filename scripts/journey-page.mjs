@@ -28,7 +28,7 @@ export function journeyWorks(worksData, lang) {
   return worksData.works.map((w) => {
     const u = unit(w);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || (ytId(tu.yt) ? `https://i.ytimg.com/vi/${ytId(tu.yt)}/mqdefault.jpg` : ''), credits: tu.credits, yt: tu.yt }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb || (ytId(tu.yt) ? `https://i.ytimg.com/vi/${ytId(tu.yt)}/mqdefault.jpg` : ''), credits: tu.credits, yt: tu.yt, vinyl: t.vinyl || [] }; });
     const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
     return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers, vinyl: w.vinyl || [] };

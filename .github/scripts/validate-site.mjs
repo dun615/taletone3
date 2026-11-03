@@ -84,7 +84,7 @@ const slugs = new Set();
 for (const w of works) {
   assert(/^[a-z0-9-]+$/.test(w.slug || ''), `work without a lowercase slug: ${w.id}`);
   assert(!slugs.has(w.slug), `duplicate slug ${w.slug}`); slugs.add(w.slug);
-  for (const p of [w.thumb, w.image, w.audio, ...(w.versions || []).map((v) => v.audio), ...(w.tracks || []).flatMap((t) => [t.audio, t.thumb])]) if (p && !/^https?:/.test(p)) assert(await exists(p), `${w.slug}: missing ${p}`);
+  for (const p of [w.thumb, w.image, w.audio, ...(w.versions || []).map((v) => v.audio), ...(w.tracks || []).flatMap((t) => [t.audio, t.thumb, t.image])]) if (p && !/^https?:/.test(p)) assert(await exists(p), `${w.slug}: missing ${p}`);
   assert(Array.isArray(w.vinyl) && w.vinyl.length === 3 && w.vinyl.every((c) => /^\d{1,3} \d{1,3} \d{1,3}$/.test(c)), `${w.slug}: vinyl needs three colours`);
 }
 const pinned = works.filter((w) => w.pinned).map((w) => w.pinned).sort();
