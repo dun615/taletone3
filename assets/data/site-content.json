@@ -2465,7 +2465,11 @@
           }
         },
         "notifyTitle": "Invitation",
-        "enterAction": "Enter"
+        "enterAction": "Enter",
+        "phoneNotes": [
+          "Connecting you deeper",
+          "Connecting you to a real project"
+        ]
       },
       "jp": {
         "notifyNow": "今",
@@ -2592,7 +2596,11 @@
           }
         },
         "notifyTitle": "招待状",
-        "enterAction": "アクセス"
+        "enterAction": "アクセス",
+        "phoneNotes": [
+          "もっと深くへ、おつなぎします",
+          "実際のプロジェクトへ、おつなぎします"
+        ]
       }
     },
     "albumTracks": "수록곡",
@@ -2624,6 +2632,10 @@
       }
     },
     "notifyTitle": "초대장",
-    "enterAction": "접속"
+    "enterAction": "접속",
+    "phoneNotes": [
+      "더 깊은 곳으로 연결합니다",
+      "실제 프로젝트로 연결합니다"
+    ]
   }
 }

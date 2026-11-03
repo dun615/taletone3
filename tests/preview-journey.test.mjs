@@ -2,25 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-test('the live site keeps its approved journey with the book before contact', async () => {
+test('every page says whose site it is: the name in the top bar and on the first screen', async () => {
   const site = JSON.parse(await readFile('assets/data/site-content.json', 'utf8'));
-  for (const lang of ['kr', 'en', 'jp']) {
-    assert.equal(site.projects.translations[lang].proof.rows.length, 3);
-    assert.ok(site.home.translations[lang].journeyIntro);
-    assert.ok(site.contact.translations[lang].arrivalLabel);
-  }
   assert.equal(site.home.tagline, '우리의 이야기가 음악이 되는 곳');
-  assert.ok(!JSON.stringify([site.home,site.projects,site.contact,site.bridges]).includes('당신'));
-  const template = await readFile('src/app/template.html', 'utf8');
-  const start = template.indexOf('<section id="c-contact"');
-  const book = template.indexOf('class="tt-book2"', start);
-  const title = template.indexOf('tt-contact-title', start);
-  assert.ok(book > start && title > book);
-  assert.equal((template.match(/class="tt-book2"/g) || []).length, 1);
-  assert.equal((template.match(/id="email-link"/g) || []).length, 1);
-  assert.ok((await readFile('assets/app/app.js', 'utf8')).includes('tt-arrival-copy'));
-  assert.ok((await readFile('assets/css/works.css', 'utf8')).includes('.tt-process'));
-  for (const prefix of ['', 'en/', 'ja/']) assert.ok((await readFile(prefix+'index.html','utf8')).includes('content="index, follow"'));
+  for (const prefix of ['', 'en/', 'ja/']) {
+    const html = await readFile(prefix + 'index.html', 'utf8');
+    assert.ok(/class="jy-wm"[^>]*>TALETONE <b>MUSIC<\/b>/.test(html), `${prefix}: the top bar names TALETONE MUSIC`);
+    assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('<h1>'), `${prefix}: the name comes before the first words`);
+    assert.ok(html.includes('content="index, follow"'));
+  }
+  for (const lang of ['en', 'jp']) assert.equal((site.journey.translations[lang].phoneNotes || []).length, 2, `journey.phoneNotes in ${lang}`);
 });
 
 // The journey (a phone, a line, the record of every story) is the site; /preview/ leads to it.

@@ -40,6 +40,8 @@ for (const lang of languages) for (const route of routes) {
   for (const l of languages) assert(html.includes(`<link rel="alternate" hreflang="${l.html}" href="${BASE}/${l.prefix}${route}">`), `${file}: hreflang ${l.html} missing`);
   assert(html.includes(`hreflang="x-default" href="${BASE}/${route}"`), `${file}: x-default missing`);
   for (const p of ['og:title', 'og:description', 'og:url', 'og:image']) assert(html.includes(`property="${p}"`), `${file}: ${p} missing`);
+  const og = (html.match(/property="og:image" content="https:\/\/taletone\.net\/([^"?]+)/) || [])[1];
+  assert(og && await exists(og), `${file}: og:image ${og} missing`);
   const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   try { JSON.parse(ld ? ld[1] : ''); } catch { assert(false, `${file}: structured data is not valid JSON`); }
   for (const ch of CHAPTERS) assert(html.includes(`data-ch="${ch}"`), `${file}: chapter ${ch} missing`);
@@ -90,7 +92,7 @@ for (const w of works) {
 const pinned = works.filter((w) => w.pinned).map((w) => w.pinned).sort();
 assert(pinned.join() === '1,2,3', `the featured works must be pinned 1, 2, 3 (found ${pinned.join()})`);
 for (const lang of ['en', 'jp']) for (const key of ['notify', 'notifyTitle', 'enterAction', 'found', 'letter', 'empty', 'contactTitle', 'askNext', 'goOn', 'featuredLabel', 'rooms']) assert(site.journey.translations[lang][key], `journey.${key} missing in ${lang}`);
-for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.png', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
+for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.jpg', 'assets/social/og-image-en.jpg', 'assets/social/og-image-ja.jpg', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
 
 if (errors.length) {
   console.error(`Site validation failed:\n- ${errors.join('\n- ')}`);

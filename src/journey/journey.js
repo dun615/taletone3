@@ -33,6 +33,8 @@
   OBJ.space = Array.from({ length: 8 }, (_, k) => S0 + 4.5 + 1.6 * k);
   const SET = { land: OBJ.land.filter((_, i) => i % 2 === 0), sea: OBJ.sea.filter((_, i) => i % 2 === 0), space: OBJ.space.filter((_, i) => i % 2 === 0) };
   const PEN = { tale: [2, CL0 + 1], tone: [CL0 + 1, S0], case: [S0, S0 + 17], music: [S0 + 17, S0 + 29] };
+  // the phone between worlds (see phoneIn): how much of the line each passage takes, where it rests, where it has woken
+  const PH = { land: 2.0, sea: 2.4 }, PH_HOLD = 0.45, PH_WAKE = 0.62;
   const FLOW_DOTS = { wide: 260, narrow: 120 };    // Record: specks drifting along the current
   const INK = '20,28,48';
   const $ = (s, r = document) => r.querySelector(s);
@@ -205,7 +207,12 @@
     $('#jy-s-cr').hidden = !text; creditsInto($('#jy-s-credits'), text);
     $('#jy-s-crh').textContent = COPY.credits + (album ? ` · ${pad2(i + 1)} ${t.title}` : '');
     const vid = (t && t.yt) || w.yt;
-    const vb = $('#jy-s-vbtn'); vb.hidden = !vid; vb.dataset.yt = vid || '';
+    // with a video, the detail shows the video, ready to play in place; without one, the cover
+    const film = $('#jy-s-film');
+    if (film.dataset.yt !== (vid || '') && !film.classList.contains('playing')) {
+      film.dataset.yt = vid || ''; film.hidden = !vid; $('.jy-s-cover', story).hidden = !!vid;
+      if (vid) { const im = $('#jy-s-filmi'); im.onerror = () => { im.onerror = null; im.src = ASSET + (w.image || w.thumb); }; im.src = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`; im.alt = ''; $('#jy-s-filmb').setAttribute('aria-label', `${COPY.video} · ${(t && t.title) || w.title}`); }
+    }
     const yt = $('#jy-s-yt'); yt.href = vid ? ytWatch(vid) : (w.youtube || '#'); yt.parentNode.hidden = !(vid || w.youtube);
   }
   function openStory(slug, from) {
@@ -216,6 +223,7 @@
     ['jy-s-bg', 'jy-s-v'].forEach((id) => { $('#' + id).src = ASSET + w.thumb; });
     const art = $('#jy-s-a'); art.src = ASSET + (w.image || w.thumb); art.alt = w.title; art.style.objectFit = w.fit || 'cover'; art.style.objectPosition = w.pos || '50% 50%';
     $('#jy-s-video').hidden = true; $('#jy-s-video').textContent = '';
+    { const film = $('#jy-s-film'), f = $('.jy-embed', film); if (f) unEmbed(f); film.dataset.yt = '-'; }
     $('#jy-s-fmt').textContent = [w.format, (w.date || '').slice(0, 4)].filter(Boolean).join(' · ');
     $('#jy-s-title').textContent = w.title;
     $('#jy-s-meta').textContent = w.artist || '';
@@ -254,7 +262,7 @@
     $('#jy-s-close').focus();
     syncStory();
   }
-  $('#jy-s-vbtn').addEventListener('click', (e) => { const st = $('#jy-s-video'); st.hidden = false; st.textContent = ''; embed(st, e.currentTarget.dataset.yt, storyWork && storyWork.title); });
+  $('#jy-s-filmb').addEventListener('click', () => { const film = $('#jy-s-film'); embed(film, film.dataset.yt, storyWork && storyWork.title); });
   listeners.add(() => { if (storyWork && !story.hidden) storyTrackView(storyWork); });
   function closeStory() {
     if (story.hidden) return;
@@ -514,9 +522,12 @@
     // the lock screen's film: loaded once the page has loaded (it is not what the first paint waits for), silent, looping,
     // paused while the phone is gone or the tab hidden; with reduced motion only its first frame shows
     const lockVid = $('#jy-lockvid'), lockShade = $('.jy-lockshade');
+    // on a metered or slow connection (data saver, 2G/3G) the lock screen keeps its still instead of the film
+    const SAVE_DATA = (() => { try { const c = navigator.connection; return !!c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || '')); } catch (_) { return false; } })();
     let lockVidOn = false;
     function lockVidPlay(on) {
       if (!lockVid || reduce || on === lockVidOn) return; lockVidOn = on;
+      if (on && SAVE_DATA) return;
       if (on) { if (!lockVid.getAttribute('src')) lockVid.src = lockVid.dataset.src; const p = lockVid.play(); if (p) p.catch(() => {}); } else lockVid.pause();
     }
     // (started by the frame loop once the page has loaded, and only while the phone is there: a visitor who lands deep in
@@ -601,7 +612,7 @@
     const recordEl = $('#jy-record'), spiral = $('#jy-spiral'), readout = $('#jy-readout');
     const items = $$('.jy-sw', spiral);
     const N = items.length;
-    let W = 0, H = 0, DPR = 1, T = 0, last = 0;
+    let W = 0, H = 0, DPR = 1, T = 0, last = 0, passing = false;
     // NARROW: a phone or an upright screen. The scene keeps to the upper part (horizon HZ higher), the words to the
     // bottom, the record sits in the middle above its card.
     let NARROW = false, HZ = 0.46;
@@ -659,8 +670,11 @@
       // entering: the film breaks up and goes out and the room goes dark; points gather into the land in the screen; it
       // lights up and the visitor is drawn in: the first hello (beats: the dark, the land formed, inside, the hello)
       ENTER,
-      [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 4600, 1],   // straight up into the sky, and somewhere it became straight down into the sea
-      [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
+      // straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor
+      // in, and somewhere it became straight down into the sea
+      [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 0, 1, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2600, 250], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200, 0], [uOfPen(SET.sea[0] + 0.1), 2400, 0]]],
+      // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
+      [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 0, 1, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2000, 250], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200, 0], [uOfPen(SET.space[0] + 0.15), 2200, 0]]],
       [uOfPen(SET.space[3] + 0.8), uOfPen(PEN.music[1] - 0.75), 2400, 1],   // along the stars to the record: found
       [CH.music[1] - 0.06, CH.record[0] + 0.4, 1500],   // the line splits in five and draws the staff: the first song
       // past the last song, all the way into the inquiry in one go, resting a moment on each of the words between:
@@ -723,6 +737,12 @@
       if (!asking || e.target.closest('input,textarea,select')) return;
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); if (performance.now() - asking.t0 > 300) goOn(); }
       else if (['ArrowUp', 'PageUp', 'Home'].includes(e.key)) unask();
+    });
+    // presenting (a shared screen, a meeting): the number keys 1 to 5 go straight to the chapters
+    addEventListener('keydown', (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.target.closest('input,textarea,select,[contenteditable]') || !story.hidden) return;
+      const n = '12345'.indexOf(e.key); if (n < 0) return;
+      const a = $$('.jy-rail a[data-go]')[n]; if (a) { e.preventDefault(); unask(); a.click(); }
     });
     addEventListener('keydown', (e) => { if ((auto || hold) && [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key) && !e.target.closest('input,textarea,select')) e.preventDefault(); });
     addEventListener('scrollend', () => { if (navUntil && !auto) { navUntil = 0; lastU = U(); } });
@@ -959,6 +979,8 @@
     const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
     let roomOf = -1;
     function roomBox() {
+      // a tablet held upright: the room in the middle, at a reading width
+      if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24 - (asking ? 86 : 0), head: 64, foot: 6 }; }
       if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8 - (asking ? 78 : 0), head: 58, foot: 4 };
       const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
     }
@@ -1365,11 +1387,33 @@
         if (lit) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3); gl.addColorStop(0, tint(PASTEL.space.star[i % 3], 1, 0.35 * a)); gl.addColorStop(1, tint(PASTEL.space.star[i % 3], 1, 0)); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3, q[1] - R * 3, R * 6, R * 6); }
       }
     }
-    // a phone at each change of world: it comes flying along the line from far ahead, turning to face the visitor,
-    // faster and faster, and the visitor is drawn into its screen. Through the screen the next world is really there
-    // (inside draws it), so when the screen fills the view it simply is the next scene. p runs 0 to 1; an is where on
-    // the screen the phone starts, on the line.
-    const phoneDepth = (p) => 14 * (1 - p) * (1 - p) + 0.15;
+    /* A phone at each change of world, and the visitor goes into it. Three beats over p (0 to 1):
+         0 - .45  it comes flying along the line from far ahead, turning to face the visitor, and stops in the middle;
+                  the line runs into its charging port
+       .45 - .62  its screen wakes: the visitor's own time and a notification, the next world lighting up behind them
+       .62 - 1    it pulls: the world around is drawn in towards it, light streams into the screen, and the screen
+                  grows until it is the whole view. Through the screen the next world is really there (inside draws
+                  it), so when it fills the view it simply is the next scene. */
+    // the phone's scale (its screen is 1.9556 of it tall) through the passage
+    function phoneScale(p) {
+      const hold = (H * (NARROW ? 0.56 : 0.66)) / 1.9556;
+      if (p <= PH_HOLD) return lerp(hold * 0.22, hold, Math.pow(ease(p / PH_HOLD), 1.4));
+      if (p <= PH_WAKE) return hold * (1 + 0.06 * (p - PH_HOLD) / (PH_WAKE - PH_HOLD));
+      const end = 1.12 * Math.max(W / 0.98, H / 1.83), q = (p - PH_WAKE) / (1 - PH_WAKE);
+      return hold * 1.06 * Math.pow(end / (hold * 1.06), Math.pow(q, 1.7));
+    }
+    const phoneDepth = (p) => F3 / phoneScale(p);
+    // how hard the phone pulls at the world around it
+    const phonePull = (p) => ease((p - PH_WAKE + 0.06) / (1 - PH_WAKE + 0.02));
+    // the world outside, drawn in towards the phone at the middle of the view
+    function pulled(p, dark, draw) {
+      const k = phonePull(p);
+      if (k <= 0 || reduce) { draw(); return; }
+      ctx.save(); ctx.translate(W / 2, H * 0.5); ctx.scale(1 + 0.55 * k * k, 1 + 0.55 * k * k); ctx.rotate(0.07 * k * k * (dark ? -1 : 1)); ctx.translate(-W / 2, -H * 0.5);
+      draw(); ctx.restore();
+      const D = Math.hypot(W, H), g = ctx.createRadialGradient(W / 2, H * 0.5, D * 0.12, W / 2, H * 0.5, D * 0.62);
+      g.addColorStop(0, 'rgba(10,14,30,0)'); g.addColorStop(1, `rgba(10,14,30,${0.55 * k})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
     // where along the path P (between lo and hi) the line is d deep in front of the camera
     function atDepth(P, d, lo, hi) {
       const dep = (z) => { const q = P(z); return (q[2] - camZ) * cP - (q[1] - camY) * sP; };
@@ -1377,11 +1421,13 @@
       for (let i = 0; i < 22; i++) { const m = (lo + hi) / 2; if (dep(m) < d) lo = m; else hi = m; }
       return (lo + hi) / 2;
     }
-    function phoneIn(p, an, dark, A, inside) {
-      const dzP = phoneDepth(p), s3 = F3 / dzP, show = ease(p / 0.12);
-      // it flies in along the line, the line through the middle of its screen, and ends square in the middle
-      const k = ease((p - 0.68) / 0.3), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
-      const roll = (1 - ease(p / 0.75)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / 0.72)) * 1.05 * (dark ? 1 : -1), t = reduce ? 0 : T;
+    function phoneIn(p, an, dark, A, inside, note) {
+      const s3 = phoneScale(p), show = ease(p / 0.1), t = reduce ? 0 : T;
+      // it flies in along the line and comes to rest square in the middle
+      const k = ease((p - 0.16) / (PH_HOLD - 0.16)), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
+      const roll = (1 - ease(p / PH_HOLD)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / (PH_HOLD - 0.04))) * 1.05 * (dark ? 1 : -1);
+      // waking (0 to 1), pulling (0 to 1)
+      const wake = ease((p - PH_HOLD + 0.03) / (PH_WAKE - PH_HOLD)), pull = phonePull(p);
       // a 9:16 phone
       const w = 1.1 * s3, h = 1.9556 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
       // the phone's own plane (u across, v down), turned by yaw about its upright axis and seen in perspective, so a
@@ -1394,27 +1440,66 @@
           for (let i = 0; i <= 6; i++) { const a = a0 + (i / 6) * (Math.PI / 2), q = P(ax + Math.cos(a) * r, ay + Math.sin(a) * r); if (first) { ctx.moveTo(q[0], q[1]); first = false; } else ctx.lineTo(q[0], q[1]); }
         ctx.closePath();
       };
-      // being drawn in: streaks of light running into the screen
-      const st = clamp((p - 0.45) / 0.4) * (1 - clamp((p - 0.93) / 0.07));
+      // the line runs into its charging port
+      if (k > 0) {
+        const port = P(0, h / 2 - 0.004 * s3);
+        ctx.strokeStyle = dark ? `rgba(220,226,255,${0.9 * A * show})` : `rgba(${INK},${0.9 * A * show})`; ctx.lineWidth = Math.max(1.6, 0.016 * s3); ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.bezierCurveTo(an[0], lerp(an[1], H + 40, 0.5), port[0], port[1] + 0.35 * h, port[0], port[1]); ctx.stroke();
+      }
+      // light streaming into the screen, ever faster as it pulls
+      const st = Math.max(0.35 * wake, pull) * (1 - clamp((p - 0.95) / 0.05));
       if (st > 0 && !reduce) {
-        ctx.lineWidth = 1.5;
-        for (let i = 0; i < 22; i++) {
-          const ang = i * 2.39996, ph = (t * 1.3 + i * 0.37) % 1, r0 = lerp(0.62, 0.2, ph) * D, r1 = r0 + 0.1 * D;
-          ctx.strokeStyle = dark ? `rgba(220,226,255,${0.32 * st * (1 - ph)})` : `rgba(255,255,255,${0.7 * st * (1 - ph)})`;
+        const n = NARROW ? 26 : 40, speed = 1 + 2.4 * pull;
+        for (let i = 0; i < n; i++) {
+          const ang = i * 2.39996, ph = (t * 0.9 * speed + i * 0.37) % 1, r0 = lerp(0.75, 0.12, ph * ph) * D, r1 = r0 + (0.05 + 0.2 * pull) * D * (1 - ph);
+          ctx.lineWidth = 1 + 2 * pull * (1 - ph);
+          ctx.strokeStyle = dark ? `rgba(220,226,255,${0.5 * st * (1 - ph)})` : `rgba(255,255,255,${0.85 * st * (1 - ph)})`;
           ctx.beginPath(); ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0); ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1); ctx.stroke();
         }
       }
       ctx.save();
       ctx.globalAlpha = show;
-      if (dark) { const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.9); gl.addColorStop(0, `rgba(200,206,255,${0.28 * A})`); gl.addColorStop(1, 'rgba(200,206,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h, cy - h, h * 2, h * 2); }
+      // the screen's light falls around it
+      const glowA = (dark ? 0.32 : 0.5) * A * Math.max(dark ? 0.6 * show : 0, wake);
+      if (glowA > 0) { const gl = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.3, cx, cy, Math.max(w, h) * 1.1); gl.addColorStop(0, dark ? `rgba(200,206,255,${glowA})` : `rgba(255,255,255,${glowA})`); gl.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h * 1.2, cy - h * 1.2, h * 2.4, h * 2.4); }
       // the body, a side button, a rim catching the light
       ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.16 * s3); ctx.fill();
-      ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${0.28 * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
+      ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${(0.28 + 0.4 * wake) * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
       ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
       rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.1 * s3); ctx.clip();
-      // the next world
+      // the next world, dim behind the glass until the screen wakes
       ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
       inside();
+      const off = 1 - Math.max(0.25, wake);
+      if (off > 0) { ctx.fillStyle = `rgba(8,10,20,${0.85 * off * A})`; ctx.fillRect(0, 0, W, H); }
+      // the lock screen over it: the visitor's own time, and a notification from TALETONE; they rush past as it pulls
+      const ui = wake * (1 - ease(pull / 0.45));
+      if (ui > 0.01 && Math.abs(yaw) < 0.2) {
+        const sc = s3 * (1 + 1.2 * pull), fam = '"LINE Seed KR","LINE Seed JP",system-ui,sans-serif', ink = dark ? '244,244,252' : '255,255,255';
+        const O = P(0, 0), ox = O[0], oy = O[1];
+        ctx.globalAlpha = show * ui; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = `rgba(${ink},0.96)`; ctx.font = `700 ${(0.3 * sc).toFixed(1)}px ${fam}`;
+        ctx.fillText(($('#jy-clock') || {}).textContent || '', ox, oy - 0.52 * sc);
+        ctx.font = `400 ${(0.06 * sc).toFixed(1)}px ${fam}`; ctx.fillStyle = `rgba(${ink},0.8)`;
+        ctx.fillText(($('#jy-date') || {}).textContent || '', ox, oy - 0.43 * sc);
+        // the notification rises into place
+        const nw = 0.92 * sc, nh = 0.2 * sc, nx = ox - nw / 2, ny = oy - 0.2 * sc + (1 - ease((wake - 0.25) / 0.6)) * 0.12 * sc;
+        ctx.globalAlpha = show * ui * ease((wake - 0.25) / 0.5);
+        ctx.fillStyle = 'rgba(255,255,255,0.86)'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(nx, ny, nw, nh, 0.05 * sc) : ctx.rect(nx, ny, nw, nh); ctx.fill();
+        ctx.fillStyle = `rgb(${INK})`; ctx.beginPath(); ctx.arc(nx + 0.08 * sc, ny + nh / 2, 0.042 * sc, 0, Math.PI * 2); ctx.fill();
+        ctx.textAlign = 'left'; ctx.fillStyle = `rgba(${INK},0.62)`; ctx.font = `700 ${(0.038 * sc).toFixed(1)}px ${fam}`;
+        ctx.fillText(COPY.notifyFrom || 'TALETONE', nx + 0.145 * sc, ny + 0.078 * sc);
+        ctx.textAlign = 'right'; ctx.fillText(COPY.notifyNow || '', nx + nw - 0.04 * sc, ny + 0.078 * sc);
+        ctx.textAlign = 'left'; ctx.fillStyle = `rgb(${INK})`; ctx.font = `700 ${(0.05 * sc).toFixed(1)}px ${fam}`;
+        ctx.fillText(note || '', nx + 0.145 * sc, ny + 0.145 * sc, nw - 0.19 * sc);
+        ctx.globalAlpha = show;
+      }
+      // a sheen running across the glass as it is entered
+      if (pull > 0 && pull < 1 && !reduce) {
+        const gx = lerp(-0.8, 1.8, pull) * W, g = ctx.createLinearGradient(gx - W * 0.25, 0, gx + W * 0.25, H * 0.4);
+        g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.5, `rgba(255,255,255,${0.32 * (1 - pull)})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      }
       ctx.restore();
     }
     function drawWorld(A) {
@@ -1423,33 +1508,29 @@
         // the land, then straight up into the sky; at the top a phone comes down the line and the visitor is drawn into
         // it. Through it is the sea, looked straight down into, which looks just like the sky looked straight up into:
         // only once through does it turn out to be water
-        backdrop(0, A); elements(0, A);
-        const p = clamp((penZ - (ZS - 1.2)) / 1.2);
-        if (p <= 0) { drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
-        const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001);
-        phoneIn(p, V(pathAt(zP)) || [W / 2, H * 0.5], false, A, () => {
+        const p = clamp((penZ - (ZS - PH.land)) / PH.land);
+        if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
+        const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001), an = V(pathAt(zP)) || [W / 2, H * 0.5];
+        pulled(p, false, () => { backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zP), lineRGB, A); if (penZ <= zP) drawTip(lineRGB, A); });
+        phoneIn(p, an, false, A, () => {
           const c0 = getCam(); setCam(rig(penZ, 1));
           backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, INK, A, seaPath); drawTip(INK, A, seaPath, true);
           setCam(c0);
-        });
-        drawLine(-1e9, Math.min(penZ, zP), lineRGB, A);
-        if (penZ <= zP) drawTip(lineRGB, A);
+        }, (COPY.phoneNotes || [])[0]);
         drawLead(A);
         return;
       }
       if (penZ < S0) {
         // straight down into the deep; at the bottom a phone comes up the line, and through it is space
-        backdrop(1, A); elements(1, A);
-        const p = clamp((penZ - (S0 - 1.6)) / 1.6);
-        if (p <= 0) { drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); drawLead(A); return; }
-        const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2);
-        phoneIn(p, V(seaPath(zP)) || [W / 2, H * 0.5], true, A, () => {
+        const p = clamp((penZ - (S0 - PH.sea)) / PH.sea);
+        if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); drawLead(A); return; }
+        const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = V(seaPath(zP)) || [W / 2, H * 0.5];
+        pulled(p, true, () => { backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zP), lineRGB, A, seaPath); if (penZ <= zP) drawTip(lineRGB, A, seaPath, true); });
+        phoneIn(p, an, true, A, () => {
           const c0 = getCam(); setCam(rig(penZ, 2));
           backdrop(2, A); elements(2, A); drawLine(S0 - 4, penZ, '244,244,252', A, spacePath); drawTip('244,244,252', A, spacePath);
           setCam(c0);
-        });
-        drawLine(ZS - 4, Math.min(penZ, zP), lineRGB, A, seaPath);
-        if (penZ <= zP) drawTip(lineRGB, A, seaPath, true);
+        }, (COPY.phoneNotes || [])[1]);
         drawLead(A);
         return;
       }
@@ -1507,7 +1588,8 @@
         const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-trk'; b.disabled = !t.audio; b.tabIndex = -1;
         b.setAttribute('aria-label', `${String(j + 1).padStart(2, '0')} ${t.title}`); b.setAttribute('aria-pressed', 'false');
         b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
-        b.querySelector('img').src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
+        // (the art loads when the album opens, not with the page)
+        b.querySelector('img').dataset.src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
         // (each track on its own vinyl, from its own art)
         if (t.vinyl && t.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => b.style.setProperty(k, t.vinyl[n])); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
         b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
@@ -1560,6 +1642,7 @@
         box.classList.toggle('on', show);
         $$('.jy-trk', box).forEach((b) => { b.tabIndex = show ? 0 : -1; });
         if (!show) return;
+        $$('img[data-src]', box).forEach((im) => { im.src = im.dataset.src; delete im.dataset.src; });
         const btns = $$('.jy-trk', box), fp = proj(near * TURN, near * DZ, camZ, roll, radiusOf(pitchOf(near))), pts2 = cord(btns.length, fp ? fp[0] : W * 0.5);
         btns.forEach((b, n) => { b.style.transform = `translate(${pts2[n][0]}px,${pts2[n][1]}px)`; b.style.transitionDelay = (n * 30) + 'ms'; });
       });
@@ -1737,7 +1820,7 @@
 
     /* ---- the frame loop ---- */
     let npShown = -1;
-    function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; setOffer(w); return; $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`; $('#jy-npt').textContent = w.title; $('#jy-npa').textContent = w.artist; }
+    function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; setOffer(w); }
     function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
     function syncInert() {
       if (story && !story.hidden) return;
@@ -1751,10 +1834,11 @@
       const u = U();
       const ch = chapterOf(u);
       mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
-      if (ch !== chapter) { chapter = ch; syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
+      if (ch !== chapter) { chapter = ch; html.classList.toggle('jy-at-pro', ch === 'pro'); syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
       // Prologue: fall into the phone
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
-      const ps = NARROW ? Math.min(1, (H * 0.47) / 416, (W - 40) / 234) : 1;
+      // the phone grows with the screen: a tablet held upright shows it large, a big monitor too
+      const ps = NARROW ? Math.min(1.45, (H * 0.47) / 416, (W - 40) / 234) : clamp((H * 0.5) / 416, 0.85, 1.3);
       phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
       // (glowing as the land lights up in it)
       { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
@@ -1773,6 +1857,9 @@
       penZ = penAt(u);
       // the camera rides the line behind the pen, turning up and down with it (see rig)
       { const cam = rig(penZ, worldOf(penZ)); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }
+      // while a phone between worlds is on screen, the conversation steps aside for it
+      { const pp = Math.max(clamp((penZ - (ZS - PH.land * 0.8)) / 0.3) * (penZ < ZS + 0.6 ? 1 : 0), clamp((penZ - (S0 - PH.sea * 0.8)) / 0.3) * (penZ < S0 + 0.8 ? 1 : 0));
+        if ((pp > 0.5) !== passing) { passing = pp > 0.5; html.classList.toggle('jy-passing', passing); } }
       placeAnchors();
       // how dark the scene is: the deep sea, then the night sky, until the record
       spaceDark = Math.max(spaceIn(), penZ >= ZS ? clamp((depthK() - 0.4) / 0.3) : 0) * spaceFade();
