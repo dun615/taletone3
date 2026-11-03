@@ -134,8 +134,7 @@
         "arrange",
         "edit"
       ],
-      "field": "game",
-      "pinned": 2
+      "field": "game"
     },
     {
       "id": "work-taletones",
@@ -1216,7 +1215,8 @@
         "edit",
         "mix"
       ],
-      "field": "original"
+      "field": "original",
+      "pinned": 3
     },
     {
       "id": "work-arrange-work",
@@ -2530,7 +2530,7 @@
         }
       ],
       "field": "game",
-      "pinned": 3
+      "pinned": 2
     },
     {
       "id": "work-tt-unmyeong-35",

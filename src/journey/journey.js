@@ -1401,7 +1401,7 @@
         const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
         if (!p || p[2] > cur.far) { li.style.visibility = 'hidden'; return; }
         // a note fades as soon as it has passed the focus, so it never covers the words on the right
-        const sc2 = Math.pow(VIEW / p[2], 0.8), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
+        const sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
         li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
         li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
         li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
@@ -1540,6 +1540,7 @@
       items.forEach((li, j) => li.classList.toggle('cur', j === i));
       $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
       $('#jy-ro-c').textContent = w.tracks && w.tracks.length > 1 ? ` · ${w.tracks.length}${LANG === 'en' ? ' ' : ''}${COPY.songs}` : '';
+      { const pin = $('#jy-ro-pin'); pin.hidden = !w.pinned; if (w.pinned) pin.textContent = `✦ ${COPY.featuredLabel} ${String(w.pinned).padStart(2, '0')}`; }
       $('#jy-ro-t').textContent = w.title; $('#jy-ro-a').textContent = w.artist;
       $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
       $('#jy-ro-r').textContent = roleLine(w.roles);
@@ -1629,7 +1630,7 @@
       // Record: the dive into the current
       const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
       const inRecord = lr > 0 && lr < 1;
-      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.1 && lr < 0.93);
+      on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > 0.004 && lr < 0.93);
       on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
       if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
       else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }

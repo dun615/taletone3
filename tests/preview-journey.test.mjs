@@ -34,7 +34,12 @@ test('the preview is the new journey: not indexed, every chapter and every work 
     const html = await readFile(`preview/${prefix}${route}index.html`, 'utf8');
     assert.ok(html.includes('content="noindex, nofollow"'), `${prefix}${route}: preview must not be indexed`);
     for (const ch of ['pro', 'tale', 'tone', 'case', 'music', 'done', 'record', 'epi']) assert.ok(html.includes(`data-ch="${ch}"`), `${prefix}${route}: chapter ${ch} missing`);
-    assert.equal((html.match(/class="jy-sw"/g) || []).length, works.length, `${prefix}${route}: the record must list every work`);
+    assert.equal((html.match(/class="jy-sw(?: pin)?"/g) || []).length, works.length, `${prefix}${route}: the record must list every work`);
+    // the featured works (pinned 1, 2, 3) open the record, in their order, marked as featured
+    const first = [...html.matchAll(/<li class="jy-sw( pin)?"[^>]*data-slug="([^"]+)"/g)].slice(0, 4).map((m) => [m[2], !!m[1]]);
+    const pinned = works.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned).map((w) => w.slug);
+    assert.deepEqual(first.slice(0, pinned.length), pinned.map((s) => [s, true]), `${prefix}${route}: the featured works must come first, in order`);
+    assert.equal(first[pinned.length] && first[pinned.length][1], false, `${prefix}${route}: only the featured works are marked`);
     // the intro comes first, then the philosophy, then a real project; the chapter rail is always there
     assert.ok(html.indexOf('id="jy-creed"') < html.indexOf('id="jy-case-req"') && html.includes('data-open="love-dopamine"'), 'the Love Dopamine case follows the philosophy');
     assert.ok(html.indexOf('id="jy-hello"') < html.indexOf('id="jy-creed"') && html.indexOf('id="jy-creed"') < html.indexOf('id="discography"'));
