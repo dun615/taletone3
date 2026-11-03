@@ -522,6 +522,79 @@
     // (started by the frame loop once the page has loaded, and only while the phone is there: a visitor who lands deep in
     // the story never loads it)
     document.addEventListener('visibilitychange', () => { if (document.hidden) lockVidPlay(false); });
+    // ---- entering (see ENTER) ----
+    const frontFace = $('#jy-phone .jy-front'), blackout = $('#jy-blackout'), pshot = $('#jy-pshot'), pcloud = $('#jy-pcloud'), pctx = pcloud.getContext('2d'), topBar = $('.jy-top'), railEl = $('.jy-rail');
+    let cloud = null;
+    // The land as it will be met, drawn once into the world canvas from the first camera (with the land a little way along
+    // so there is something to see) and cut to the screen's shape: a picture for the screen, and points sampled from it.
+    function buildCloud() {
+      const r = screen.getBoundingClientRect(), sw = screen.offsetWidth || 218, sh = screen.offsetHeight || 400, ar = sw / sh;
+      const keep = { z: penZ, cam: getCam(), lead: leadOf }; leadOf = null;
+      penZ = SET.land[1] + 0.4; setCam(rig(PEN.tale[0], 0));
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H); drawWorld(1);
+      const cw = Math.min(W, H * ar), ch = cw / ar, cx = (W - cw) / 2, cy = (H - ch) / 2;
+      const pw = Math.round(cw * DPR), ph = Math.round(ch * DPR);
+      pshot.width = pw; pshot.height = ph; const sctx = pshot.getContext('2d');
+      sctx.fillStyle = '#fefefe'; sctx.fillRect(0, 0, pw, ph); sctx.drawImage(cv, Math.round(cx * DPR), Math.round(cy * DPR), pw, ph, 0, 0, pw, ph);
+      // (sampled from the picture as seen on paper: points go where it changes, the outlines of hills, poles and trees)
+      const img = sctx.getImageData(0, 0, pw, ph).data, lum = (o) => img[o] * 0.3 + img[o + 1] * 0.59 + img[o + 2] * 0.11, st = Math.max(2, Math.round(DPR * 1.5));
+      ctx.clearRect(0, 0, W, H); penZ = keep.z; setCam(keep.cam); leadOf = keep.lead;
+      const S = 1.6; pcloud.width = Math.round(sw * S * (DPR > 1 ? 1.5 : 1)); pcloud.height = Math.round(sh * S * (DPR > 1 ? 1.5 : 1));
+      const n = NARROW ? 1900 : 2600, pts = [], PAL = [[214, 233, 246], [200, 214, 236], [190, 222, 199], [214, 230, 186]];
+      for (let tries = 0; pts.length < n && tries < n * 60; tries++) {
+        const x = (Math.random() * (pw - st)) | 0, y = (Math.random() * (ph - st)) | 0, o = (y * pw + x) * 4;
+        const edge = Math.abs(lum(o) - lum(o + st * 4)) + Math.abs(lum(o) - lum(o + st * pw * 4)); if (edge < 14 && Math.random() > 0.005) continue;
+        const v = y / ph, base = v < 0.38 ? PAL[0] : v < 0.52 ? PAL[1] : PAL[2 + ((x + y) & 1)], c = [0, 1, 2].map((k) => Math.round(lerp(img[o + k], base[k], 0.45) * 1.15));
+        pts.push({ u: x / pw, v, c: `${Math.min(255, c[0])},${Math.min(255, c[1])},${Math.min(255, c[2])}`, s: 0.8 + Math.random() * 1.1 });
+      }
+      // (and a dust of light across the sky, so the whole screen fills)
+      for (let k = 0; k < n * 0.14; k++) pts.push({ u: Math.random(), v: Math.random() * 0.55, c: '236,242,252', s: 0.5 + Math.random() * 0.6, dust: 1 });
+      // each comes from outside the screen or out of its depth, at its own moment
+      for (const p of pts) { const a = Math.random() * Math.PI * 2, far = Math.random() < 0.55; p.sx = far ? 0.5 + Math.cos(a) * (0.9 + Math.random() * 0.8) : 0.5 + (p.u - 0.5) * 0.08; p.sy = far ? 0.5 + Math.sin(a) * (0.9 + Math.random() * 0.8) : 0.5 + (p.v - 0.5) * 0.08; p.d = Math.random() * 0.45; p.tw = Math.random() * 6.3; }
+      cloud = { pts };
+    }
+    function drawEnter(ip) {
+      const g = clamp((ip - 0.33) / 0.1), form = clamp((ip - 0.45) / 0.25), lit = ease((ip - 0.68) / 0.1), wash = ease((ip - 0.84) / 0.12);
+      const blk = ease((ip - 0.35) / 0.08) * (1 - ease((ip - 0.86) / 0.12));
+      blackout.style.opacity = String(blk);
+      topBar.style.opacity = railEl.style.opacity = blk > 0.01 ? String(1 - 0.92 * blk) : '';
+      // the film breaks up: it shakes, its colours tear, it collapses to a bright line and goes out
+      if (lockVid) {
+        if (g > 0 && g < 1 && !reduce) {
+          const sy = g < 0.7 ? 1 : Math.max(0.006, 1 - ease((g - 0.7) / 0.2)), sx = g < 0.9 ? 1 : Math.max(0.01, 1 - ease((g - 0.9) / 0.1)), jx = (Math.random() - 0.5) * 16 * (1 - g * 0.6);
+          lockVid.style.transform = `translateX(${jx.toFixed(1)}px) scale(${sx},${sy})`;
+          lockVid.style.filter = `contrast(${(1 + g * 0.8).toFixed(2)}) saturate(${(1 + g).toFixed(2)}) brightness(${(1 + 2.5 * ease((g - 0.6) / 0.35)).toFixed(2)}) hue-rotate(${((Math.random() - 0.5) * 50) | 0}deg)`;
+        } else { lockVid.style.transform = ''; lockVid.style.filter = ''; }
+        lockVid.style.opacity = g >= 1 ? '0' : '1'; lockShade.style.opacity = String(1 - ease(g / 0.7));
+      }
+      lock.style.opacity = String(g > 0 && g < 0.4 && !reduce ? (Math.random() < 0.35 ? 0.15 : 1) * (1 - g / 0.4) : g >= 0.4 ? 0 : 1);
+      // the points, then the picture lighting up under them, then washing out white as the visitor goes in
+      const wantCloud = ip > 0.33 && ip < 0.98;
+      if (wantCloud && !cloud) buildCloud();
+      pshot.style.opacity = String(lit * (1 - ease((wash - 0.25) / 0.6)));
+      pshot.style.filter = wash > 0 ? `brightness(${(1 + 1.4 * wash).toFixed(2)}) saturate(${(1 - 0.6 * wash).toFixed(2)})` : lit > 0 ? `brightness(${(1 + 0.18 * lit).toFixed(2)})` : '';
+      const tear = g > 0 && g < 1 && !reduce, showPts = cloud && form > 0 && lit < 1;
+      pcloud.style.opacity = tear || showPts ? '1' : '0';
+      if (!tear && !showPts) return;
+      const cw = pcloud.width, ch = pcloud.height, t = reduce ? 0 : T;
+      pctx.setTransform(1, 0, 0, 1, 0, 0); pctx.clearRect(0, 0, cw, ch);
+      if (tear) {
+        // static: torn bars and snow over the film
+        for (let k = 0; k < 9; k++) { const y = Math.random() * ch, hh = 1 + Math.random() * ch * 0.03; pctx.fillStyle = ['rgba(255,255,255,', 'rgba(110,232,240,', 'rgba(246,120,190,'][k % 3] + (0.15 + 0.5 * Math.random()) + ')'; pctx.fillRect(0, y, cw, hh); }
+        pctx.fillStyle = 'rgba(255,255,255,.55)'; for (let k = 0; k < 500; k++) pctx.fillRect(Math.random() * cw, Math.random() * ch, 1.5, 1.5);
+      }
+      if (showPts) {
+        pctx.globalCompositeOperation = 'lighter';
+        const fade = 1 - lit, sc = cw / 300;
+        for (const p of cloud.pts) {
+          const k = reduce ? 1 : ease(clamp((form - p.d) / 0.55)); if (k <= 0) continue;
+          const x = lerp(p.sx, p.u, k) * cw, y = lerp(p.sy, p.v, k) * ch, a = (0.35 + 0.65 * k) * fade * (p.dust ? 0.5 + 0.5 * Math.sin(t * 3 + p.tw) : 1);
+          const r = p.s * sc * 1.25 * (k < 1 ? 1.5 - 0.5 * k : 1);
+          pctx.fillStyle = `rgba(${p.c},${a.toFixed(3)})`; pctx.fillRect(x - r / 2, y - r / 2, r, r);
+        }
+        pctx.globalCompositeOperation = 'source-over';
+      }
+    }
     const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
     const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
     const markImg = $('.jy-mark img');
@@ -580,9 +653,12 @@
        [from, to, ms, ask] in story units; each 'to' is where the next words have just arrived. Where a scene leaves
        one place for the next (ask), the story first stops after the chapter's last words and asks whether to go on:
        one more scroll down (a new one, not the rest of the last), the button or the down key goes on; up goes back. */
+    const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500, 250], [0.7, 2000, 350], [1, 1500, 0], [uOfPen(SET.land[0] + 0.01), 1100, 0]]];
     const AUTO = [
       [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
-      [0.33, uOfPen(SET.land[0] + 0.01), 2300],   // into the phone, onto the land: the first hello
+      // entering: the film breaks up and goes out and the room goes dark; points gather into the land in the screen; it
+      // lights up and the visitor is drawn in: the first hello (beats: the dark, the land formed, inside, the hello)
+      ENTER,
       [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 4600, 1],   // straight up into the sky, and somewhere it became straight down into the sea
       [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 2800, 1],   // down into the dark, a phone flies in, out into space: the request of a real project
       [uOfPen(SET.space[3] + 0.8), uOfPen(PEN.music[1] - 0.75), 2400, 1],   // along the stars to the record: found
@@ -1676,17 +1752,19 @@
       // Prologue: fall into the phone
       const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
       const ps = NARROW ? Math.min(1, (H * 0.47) / 416, (W - 40) / 234) : 1;
-      phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * Math.pow(cover / ps, ease((ip - 0.3) / 0.7))})`;
+      phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
+      // (glowing as the land lights up in it)
+      { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
       { const turn = 180 * ease(ip / 0.28); card.style.transform = `rotateY(${turn}deg)`;
         // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
         if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
       phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
       phone.tabIndex = ip > 0.3 ? -1 : 0;
-      screen.style.background = ip > 0.8 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(28, 254, ease((ip - 0.8) / 0.2)))},${Math.round(lerp(48, 254, ease((ip - 0.8) / 0.2)))})` : '';
+      screen.style.background = ip > 0.86 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(28, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(48, 254, ease((ip - 0.86) / 0.1)))})` : '';
       lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
-      lock.style.opacity = String(1 - ease((ip - 0.55) / 0.25));
       // (the film fades as the screen turns to paper, and rests once the phone is gone)
-      if (lockVid) { lockVid.style.opacity = lockShade.style.opacity = String(1 - ease((ip - 0.68) / 0.16)); if (document.readyState === 'complete' && !document.hidden) lockVidPlay(ip < 0.98); }
+      if (lockVid && document.readyState === 'complete' && !document.hidden) lockVidPlay(ip < 0.43);
+      drawEnter(ip);
       // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
       const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
       penZ = penAt(u);
@@ -1742,10 +1820,11 @@
       html.classList.toggle('jy-narrow', NARROW);
       DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
       cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1;
+      buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1; cloud = null;
     }
     addEventListener('resize', resize);
-    phone.addEventListener('click', () => goU(CH.tale[0] + 0.5));
+    // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
+    phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700, 150], ...ENTER[4]]], u); else playScene(ENTER, u); });
 
     // sample every cover once the record is near, so its wash can mix them
     let sampledAll = false;

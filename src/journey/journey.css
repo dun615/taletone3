@@ -105,6 +105,11 @@ img{max-width:100%}
 .jy-lockvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;background:var(--tt-ink)}
 .jy-lockshade{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(20,28,48,.62) 0%,rgba(20,28,48,.3) 34%,rgba(20,28,48,.22) 62%,rgba(20,28,48,.55) 100%)}
 .jy-clock,.jy-date{text-shadow:0 1px 12px rgba(20,28,48,.45)}
+/* entering: the film breaks up and goes out, the room goes dark, points gather into the land, it lights up */
+.jy-pshot,.jy-pcloud{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0}
+.jy-pshot{background:var(--tt-canvas)}
+.jy-blackout{display:none}
+.jy-stage-mode .jy-blackout{display:block;position:absolute;inset:0;background:#05070d;opacity:0;pointer-events:none}
 .jy-noti{margin-top:22px;margin-bottom:0;width:100%;display:flex;flex-wrap:wrap;gap:9px;padding:10px;border-radius:16px;background:rgba(20,28,48,.42);-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);text-align:left}
 .jy-nt{flex:1;min-width:0}
 .jy-nh{display:flex;align-items:center;gap:6px;font-size:10px}
