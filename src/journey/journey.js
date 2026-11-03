@@ -1507,10 +1507,11 @@
         const b = document.createElement('button'); b.type = 'button'; b.className = 'jy-trk'; b.disabled = !t.audio; b.tabIndex = -1;
         b.setAttribute('aria-label', `${String(j + 1).padStart(2, '0')} ${t.title}`); b.setAttribute('aria-pressed', 'false');
         b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
-        b.querySelector('img').src = ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
+        b.querySelector('img').src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
         b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
         box.appendChild(b);
       });
+      if (w.vinyl && w.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => box.style.setProperty(k, w.vinyl[n]));
       trackLayer.appendChild(box); trackEls[i] = box;
     });
     listeners.add(() => Object.entries(trackEls).forEach(([i, box]) => { const w = bySlug[items[i].dataset.slug]; $$('.jy-trk', box).forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j)))); }));

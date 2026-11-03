@@ -28,10 +28,10 @@ export function journeyWorks(worksData, lang) {
   return worksData.works.map((w) => {
     const u = unit(w);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || '', credits: tu.credits, yt: tu.yt }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: t.thumb || (ytId(tu.yt) ? `https://i.ytimg.com/vi/${ytId(tu.yt)}/mqdefault.jpg` : ''), credits: tu.credits, yt: tu.yt }; });
     const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
-    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers };
+    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers, vinyl: w.vinyl || [] };
     // the featured works (pinned 1, 2, 3) open the record in their order; the rest follow, newest first
   }).sort((a, b) => (a.pinned || 1e3) - (b.pinned || 1e3) || b.date.localeCompare(a.date));
 }
@@ -204,7 +204,7 @@ ${c.caseStudy ? (() => {
   <div class="jy-record" id="jy-record">
     <div class="jy-tracks" id="jy-tracks"></div>
     <ol class="jy-spiral" id="jy-spiral" aria-label="${esc(c.discography)}">
-${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
+${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}"${w.vinyl.length ? ` style="--v1:${w.vinyl[0]};--v2:${w.vinyl[1]};--v3:${w.vinyl[2]}"` : ''} data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
     </ol>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">
