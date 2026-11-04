@@ -47,7 +47,7 @@ img{max-width:100%}
 /* ---------- shared pieces ---------- */
 /* TALETONE's face in a conversation: the mark cut out of the light (as the profile and the app icon) */
 .jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-light-deep);display:grid;place-items:center}
-.jy-av img{width:50%;display:block}
+.jy-av svg{width:50%;height:auto;display:block}
 .jy-signal{display:inline-flex;gap:4px}
 .jy-signal i{display:block;width:3px;height:16px;border-radius:999px;background:var(--tt-magenta)}
 .jy-signal i+i{background:var(--tt-cyan)}
