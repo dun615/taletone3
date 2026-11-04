@@ -11,8 +11,8 @@ import { plain, merge, journeyWorks, journeyCopy, journeyExtras } from './journe
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
-const markInk = '/assets/logo/mark-ink.svg';
-const markPaper = '/assets/logo/mark-paper.svg';
+const markInk = '/assets/logo/logo-ink.svg';
+const markPaper = '/assets/logo/logo-paper.svg';
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px"><img src="${markInk}" alt=""></span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
 const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
