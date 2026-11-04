@@ -1,12 +1,13 @@
 // ---- entering (see ENTER) ----
 const frontFace = $('#jy-phone .jy-front'), blackout = $('#jy-blackout'), pshot = $('#jy-pshot'), pcloud = $('#jy-pcloud'), pctx = pcloud.getContext('2d'), topBar = $('.jy-top'), railEl = $('.jy-rail');
 let cloud = null;
-// The land as it will be met, drawn once into the world canvas from the first camera (with the land a little way along
-// so there is something to see) and cut to the screen's shape: a picture for the screen, and points sampled from it.
+// The land as it will be met, drawn once into the world canvas exactly as the stage shows it when the visitor comes
+// through (the pen and the camera at the land's start), and cut to the screen's shape: a picture for the screen, and
+// points sampled from it. (Drawn from further along, it showed poles and trees that then vanished and came back.)
 function buildCloud() {
   const r = screen.getBoundingClientRect(), sw = screen.offsetWidth || 218, sh = screen.offsetHeight || 400, ar = sw / sh;
   const keep = { z: penZ, cam: getCam(), lead: leadOf }; leadOf = null;
-  penZ = SET.land[1] + 0.4; setCam(rig(PEN.tale[0], 0));
+  penZ = PEN.tale[0]; setCam(rig(PEN.tale[0], 0));
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H); drawWorld(1);
   const cw = Math.min(W, H * ar), ch = cw / ar, cx = (W - cw) / 2, cy = (H - ch) / 2;
   const pw = Math.round(cw * DPR), ph = Math.round(ch * DPR);
