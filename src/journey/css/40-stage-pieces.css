@@ -22,11 +22,11 @@
 .jy-narrow.jy-stage-mode .jy-brand{display:none}
 .jy-stage-mode.jy-at-pro:not(.jy-narrow) .jy-wm{opacity:0}
 .jy-stage-mode .jy-phone{position:absolute;left:50%;top:44%;width:234px;height:416px;margin:-208px 0 0 -117px;transform-origin:50% 50%;cursor:pointer;perspective:1400px;margin-top:-208px}
-/* the phone in 2.5D (47-stage-phone-tilt.js): the back's corners follow the case art; a band of light (--lx, --ly)
-   and a holographic sheen through the stars (assets/phone/case-stars.svg); thin navy layers between the faces give it
-   depth, the faces sit at its two sides (30-stage) */
+/* the phone in 2.5D (47-stage-phone-tilt.js): a band of light (--lx, --ly) and a holographic sheen through the stars
+   (assets/phone/case-stars.svg); thin layers of silver between the faces give it depth and catch the light as it
+   tilts; every layer keeps the face's corner (30px), so none shows past it; the faces sit at its two sides (30-stage) */
 .jy-edge{display:none}
-.jy-stage-mode .jy-edge{display:block;position:absolute;inset:0;border-radius:20px;background:#2b3a5e;transform:translateZ(var(--z))}
+.jy-stage-mode .jy-edge{display:block;position:absolute;inset:0;border-radius:30px;background:linear-gradient(120deg,#f6f7fa,#b4b8c1 22%,#f2f3f6 46%,#9ea2ac 70%,#e6e8ed) var(--lx,50%) var(--ly,50%)/240% 240%;transform:translateZ(var(--z))}
 .jy-sheen,.jy-holo{position:absolute;inset:0;pointer-events:none}
 .jy-sheen{background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.5) 48%,rgba(236,230,255,.28) 53%,rgba(255,255,255,0) 62%) var(--lx,50%) var(--ly,50%)/260% 260% no-repeat}
 .jy-holo{background:linear-gradient(125deg,#ffd3ee,#d5ddff,#c5f6f1,#fff3c4,#f6d4ff,#ffd3ee) var(--lx,50%) var(--ly,50%)/320% 320%;-webkit-mask:url(/assets/phone/case-stars.svg) 0 0/100% 100%;mask:url(/assets/phone/case-stars.svg) 0 0/100% 100%;mix-blend-mode:multiply;opacity:.9}
