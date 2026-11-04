@@ -19,14 +19,12 @@ function frameLoop(now) {
   const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
   // the phone grows with the screen: a tablet held upright shows it large, a big monitor too
   const ps = NARROW ? Math.min(1.45, (H * 0.47) / 416, (W - 40) / 234) : clamp((H * 0.5) / 416, 0.85, 1.3);
-  const phScale = ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3));
-  phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${phScale})`;
+  phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
   // (glowing as the land lights up in it)
   { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
-  { const turn = 180 * ease(ip / 0.28); card.style.transform = `rotateY(${turn}deg)`;
+  { const turn = 180 * ease(ip / 0.28), tl = phoneTilt(ip); card.style.transform = `rotateY(${(turn + tl.y).toFixed(2)}deg) rotateX(${tl.x.toFixed(2)}deg)`;
     // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
-    if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`;
-    phone3d(turn, ip, phScale); }
+    if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
   phone.tabIndex = ip > 0.3 ? -1 : 0;
   screen.style.background = ip > 0.86 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(28, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(48, 254, ease((ip - 0.86) / 0.1)))})` : '';
