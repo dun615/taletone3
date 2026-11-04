@@ -10,7 +10,7 @@ const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500], [0.7, 2000
 // jellyfish, its star), the record found, the first song
 const STOPS = [...SET.land.map((z) => uOfPen(z + 0.01)), ...SET.sea.map((z) => uOfPen(z + 0.1)), ...SET.space.map((z) => uOfPen(z + 0.15)), uOfPen(PEN.music[1] - 0.75), CH.record[0] + 0.4];
 // the legs between them: along the line to the next message, in one motion
-const LEGS = STOPS.slice(0, -1).map((a, i) => [a, STOPS[i + 1], 2000]);
+const LEGS = STOPS.slice(0, -1).map((a, i) => [a, STOPS[i + 1], 1000]);
 // straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor in,
 // and somewhere it became straight down into the sea
 LEGS[3] = [STOPS[3], STOPS[4], 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2900], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [STOPS[4], 2400]]];

@@ -36,8 +36,10 @@ function drawLine(z0, z1, rgb, A, P = pathAt) {
   let run = [], wPrev = -1, aPrev = -1;
   const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.lineCap = aPrev < 1 ? 'butt' : 'round'; ctx.strokeStyle = `rgba(${rgb},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
   const wOf = P === seaPath ? () => 1 : P === spacePath ? () => 2 : worldOf;
-  for (let z = Math.max(PEN.tale[0], camZ - 3, z0); z <= z1 + 1e-6; z += 0.03 / Math.max(1, Math.abs(baseOf(z + 0.01, wOf(z)) - baseOf(z, wOf(z))) * 50)) {
-    const p = V(P(Math.min(z, z1))); if (!p) continue;
+  // (it ends exactly at z1, so whatever goes on from its end meets it)
+  for (let z = Math.max(PEN.tale[0], camZ - 3, z0), end = false; !end; z += 0.03 / Math.max(1, Math.abs(baseOf(z + 0.01, wOf(z)) - baseOf(z, wOf(z))) * 50)) {
+    if (z >= z1) { z = z1; end = true; }
+    const p = V(P(z)); if (!p) continue;
     let sw = 1; for (const az of swellZ) sw += 0.8 * Math.exp(-Math.pow((z - az) / 0.35, 2));
     const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * 20) / 20;
     if (wd !== wPrev || al !== aPrev) { const lastP = run[run.length - 1]; flush(); run = lastP ? [lastP] : []; wPrev = wd; aPrev = al; }
