@@ -69,6 +69,18 @@ function drawLead(A) {
   ctx.beginPath(); ctx.arc(leadOf.x - 8, leadOf.y, 2.5, 0, Math.PI * 2); ctx.fill();
 }
 function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
+// where along the whole page the line has come, written beside its tip on the left (the messages are on the right)
+function drawCoord(u, rgb, A) {
+  const P = penZ < ZS ? pathAt : penZ < S0 ? seaPath : spacePath, tip = V(P(penZ)); if (!tip || A < 0.05) return;
+  const x = tip[0] - 16, y = tip[1], pct = `${Math.round((clamp(u / TOTAL)) * 100)}%`;
+  // (in the line's own colour, edged in its opposite so it reads on every world: the land, the blue sea, the night)
+  const lum = rgb.split(',').reduce((t, v, i) => t + Number(v) * [0.3, 0.59, 0.11][i], 0), halo = lum < 140 ? '254,254,254' : '20,28,48';
+  ctx.font = '700 13px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = `rgba(${rgb},${(0.85 * A).toFixed(3)})`; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(tip[0] - 6, y); ctx.lineTo(x + 3, y); ctx.stroke();
+  ctx.strokeStyle = `rgba(${halo},${(0.7 * A).toFixed(3)})`; ctx.lineWidth = 3.5; ctx.strokeText(pct, x, y + 0.5);
+  ctx.fillStyle = `rgba(${rgb},${A.toFixed(3)})`; ctx.fillText(pct, x, y + 0.5);
+}
 function drawTip(rgb, A, P = pathAt, hook = false) {
   const tip = V(P(penZ)); if (!tip || penZ <= PEN.tale[0] + 0.05) return;
   ctx.fillStyle = `rgba(${rgb},${A})`;

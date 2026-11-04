@@ -88,6 +88,8 @@ function frameLoop(now) {
   if (le > 0.15) drawTrail(le, 1);
   const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
   if (worldA > 0) drawWorld(worldA);
+  // (the line's place in the whole page, while it is drawing a world and no phone is passing)
+  if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
 }
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;

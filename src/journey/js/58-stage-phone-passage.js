@@ -1,6 +1,6 @@
 /* A phone at each change of world, and the visitor goes into it. Three beats over p (0 to 1):
      0 - .45  it comes flying along the line from far ahead, turning to face the visitor, and stops in the middle;
-              the line runs into its charging port
+              the line runs on into it, through to the middle of its screen
    .45 - .62  its screen wakes: the visitor's own time and a notification over the next world, which the screen has
               shown from the first (no dark screen, so the story runs straight on into it)
    .62 - 1    it pulls: the world around is drawn in towards it, light streams into the screen, and the screen
@@ -52,11 +52,12 @@ function phoneIn(p, an, dark, A, inside, note) {
       for (let i = 0; i <= 6; i++) { const a = a0 + (i / 6) * (Math.PI / 2), q = P(ax + Math.cos(a) * r, ay + Math.sin(a) * r); if (first) { ctx.moveTo(q[0], q[1]); first = false; } else ctx.lineTo(q[0], q[1]); }
     ctx.closePath();
   };
-  // the line runs into its charging port
+  // the line runs on, straight into the phone: under its body to the middle of its screen, where the next world's line
+  // goes on (so it passes through the phone, instead of looping round outside it)
   if (k > 0) {
-    const port = P(0, h / 2 - 0.004 * s3);
+    const mid = P(0, 0);
     ctx.strokeStyle = dark ? `rgba(220,226,255,${0.9 * A * show})` : `rgba(${INK},${0.9 * A * show})`; ctx.lineWidth = Math.max(1.6, 0.016 * s3); ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.bezierCurveTo(an[0], lerp(an[1], H + 40, 0.5), port[0], port[1] + 0.35 * h, port[0], port[1]); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.lineTo(mid[0], mid[1]); ctx.stroke();
   }
   // light streaming into the screen, ever faster as it pulls
   const st = Math.max(0.35 * wake, pull) * (1 - clamp((p - 0.95) / 0.05));
