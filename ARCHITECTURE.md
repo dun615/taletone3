@@ -71,7 +71,8 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
 | `54-stage-conversation` | The messages along the line (`ANCHORS`) and the chat room around them. |
-| `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line. |
+| `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
+| `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
 | `58-stage-phone-passage` | The phone between worlds (approach, wake, pull: `PH`, `phoneIn`) and `drawWorld`. |
 | `60-stage-record` | The record: the staff as a 3D current with every work, album tracks on a cord, the card. |
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
