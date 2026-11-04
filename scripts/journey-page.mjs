@@ -14,16 +14,16 @@ const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
 const markInk = '/assets/logo/logo-ink.svg';
 const markPaper = '/assets/logo/logo-paper.svg';
-// The mark's shape, once in the page (MARK_DEFS), drawn wherever it sits in the brand's light: cut out of it in paper
-// (the avatars, the chat room) or filled with it (beside the name). No extra request for either.
+// The mark's shape, once in the page (MARK_DEFS), drawn wherever it sits in the brand's light: in ink on the pale
+// light (the avatars, the chat room; its colour from CSS) or filled with the light (beside the name). No extra request.
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
 const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
-// the light as five soft lights over a lilac ground (as --tt-light-deep in 00-base.css)
+// the brand's light as five soft lights over a lilac ground (as on the app icons and the link previews)
 const LIGHTS = [[26, 22, '#9479ee', 55], [18, 70, '#4fb6d2', 50], [80, 28, '#eeac57', 46], [78, 78, '#e077b6', 52], [50, 96, '#7590ec', 46]];
 const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/>${LIGHTS.map(([x, y, c, r], i) => `<radialGradient id="tt-l${i}" cx="${x}%" cy="${y}%" r="${r * 1.414}%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('')}</defs></svg>`;
-const markCut = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="#fefefe"/></svg>`;
+const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
 const markLit = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="#a99fec"/>${LIGHTS.map((_, i) => `<use href="#tt-mark" fill="url(#tt-l${i})"/>`).join('')}</svg>`;
-const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markCut()}</span>`;
+const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
 const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
 const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="24" height="58" viewBox="0 0 24 58"><circle cx="12" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><circle cx="12" cy="44" r="9" fill="none" stroke="#797c85" stroke-width="2.4"/><circle cx="12" cy="44" r="9" fill="none" stroke="#e5e6e8" stroke-width=".8"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
@@ -101,7 +101,7 @@ ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href
 <div class="jy-stage" id="jy-stage">
 ${grain}
 <canvas class="jy-cv" id="jy-cv" aria-hidden="true"></canvas>
-<div class="jy-room" id="jy-room"><div class="jy-room-h" aria-hidden="true"><span class="jy-room-av">${markCut()}</span><span class="jy-room-n"><b id="jy-room-t"></b><small id="jy-room-s"></small></span><i class="jy-room-on"></i></div></div>
+<div class="jy-room" id="jy-room"><div class="jy-room-h" aria-hidden="true"><span class="jy-room-av">${markInkSvg()}</span><span class="jy-room-n"><b id="jy-room-t"></b><small id="jy-room-s"></small></span><i class="jy-room-on"></i></div></div>
 
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>

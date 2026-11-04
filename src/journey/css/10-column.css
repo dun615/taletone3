@@ -32,7 +32,7 @@
 .jy-nb{display:block;font-size:12px;margin-top:3px;line-height:1.45}
 .jy-nb strong{display:block;font-size:13px;font-weight:700}
 /* the invitation's icon: an envelope sealed with a star, on the charm's iridescent colours */
-.jy-ni{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff)}
+.jy-ni{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:var(--tt-light-pale)}
 /* its action: enter (the whole phone is the button; this shows what it does) */
 /* (in a row of its own, in the middle) */
 .jy-na-row{flex-basis:100%;display:flex;justify-content:center}
