@@ -14,7 +14,6 @@
 .jy-stage.ink .jy-room-n small{color:var(--tt-on-ink-muted)}
 .jy-stage.ink .jy-stage.ink .jy-narrow .jy-room-h{height:44px;top:7px;left:7px;right:7px}
 .jy-narrow .jy-room-av{width:32px;height:32px}
-.jy-narrow .jy-narrow.jy-stage-mode .jy-room{border-radius:22px}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-room{transition:opacity .2s}}
 
 /* a phone between worlds has the stage: the conversation steps aside while it passes */

@@ -13,15 +13,15 @@
 .jy-front{padding:8px;background:var(--tt-case);box-shadow:inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas)}
 .jy-screen{display:block;position:relative;width:100%;height:100%;border-radius:22px;background:var(--tt-ink);overflow:hidden}
 .jy-lock{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;padding:44px 10px 0;color:var(--tt-on-ink);line-height:1.4}
-.jy-clock{font-weight:100;font-size:50px;line-height:1;letter-spacing:-.01em}
-.jy-date{font-size:11px;color:var(--tt-on-ink-muted);margin-top:10px}
+
 /* the lock screen plays the songs' scenes behind the clock, toned down under a veil so the words stay clear */
 .jy-lockvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;background:var(--tt-ink)}
 .jy-lockshade{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(20,28,48,.62) 0%,rgba(20,28,48,.3) 34%,rgba(20,28,48,.22) 62%,rgba(20,28,48,.55) 100%)}
-.jy-clock,.jy-date{text-shadow:0 1px 12px rgba(20,28,48,.45)}
+.jy-date{font-size:11px;color:var(--tt-on-ink-muted);margin-top:10px;text-shadow:0 1px 12px rgba(20,28,48,.45)}
+.jy-clock{font-weight:100;font-size:50px;line-height:1;letter-spacing:-.01em;text-shadow:0 1px 12px rgba(20,28,48,.45)}
 /* entering: the film breaks up and goes out, the room goes dark, points gather into the land, it lights up */
-.jy-pshot,.jy-pcloud{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0}
-.jy-pshot{background:var(--tt-canvas)}
+.jy-pcloud{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0}
+.jy-pshot{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0;background:var(--tt-canvas)}
 .jy-blackout{display:none}
 .jy-stage-mode .jy-blackout{display:block;position:absolute;inset:0;background:#05070d;opacity:0;pointer-events:none}
 .jy-noti{margin-top:22px;margin-bottom:0;width:100%;display:flex;flex-wrap:wrap;gap:9px;padding:10px;border-radius:16px;background:rgba(20,28,48,.42);-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);text-align:left}
@@ -47,7 +47,7 @@
 .jy-cd{width:24px;height:24px;border-radius:50%;transform:rotate(-45deg);position:relative;overflow:hidden;background:conic-gradient(#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);box-shadow:inset 0 0 0 1px rgba(121,124,133,.5)}
 .jy-cd::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,rgba(255,255,255,0) 0 1.5px,rgba(255,255,255,.35) 1.5px 2px)}
 .jy-cd::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgba(121,124,133,.6)}
-.jy-lead{margin:72px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center}
+
 .jy-voice{display:flex;flex-direction:column;gap:12px}
 .jy-hint{margin:0;font-size:15px;color:var(--tt-ink-muted)}
 .jy-filters{display:flex;flex-direction:column;gap:8px}
@@ -86,11 +86,11 @@
 .jy-form{display:flex;flex-direction:column;gap:16px}
 .jy-field{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0;min-width:0}
 .jy-field label,.jy-field legend{font-size:13px;color:var(--tt-on-ink-muted);padding:0}
-.jy-field input,.jy-field textarea{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0}
+.jy-field input{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0}
 .jy-field input::placeholder,.jy-field textarea::placeholder{color:#7d8293}
 .jy-field input:focus,.jy-field textarea:focus{outline:none;border-bottom:2px solid var(--tt-cyan);padding-bottom:7px}
 .jy-field input[aria-invalid="true"]{border-bottom:2px solid var(--tt-error-on-ink);padding-bottom:7px}
-.jy-field textarea{resize:vertical;min-height:56px}
+.jy-field textarea{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0;resize:vertical;min-height:56px}
 .jy-more{border-top:1px solid #2c3550;padding-top:8px}
 .jy-more summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-weight:700;color:var(--tt-on-ink-muted);list-style:none}
 .jy-more summary::-webkit-details-marker{display:none}

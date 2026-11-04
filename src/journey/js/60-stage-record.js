@@ -167,7 +167,7 @@ function drawCurrent(lr, lineA = 1) {
   ctx.globalAlpha = 1;
   // the album's earphone cord: out of the album and along its tracks
   if (albumOpen >= 0 && trackEls[albumOpen]) {
-    const p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pitchOf(albumOpen))), n = $$('.jy-trk', trackEls[albumOpen]).length;
+    const p = proj(albumOpen * TURN, albumOpen * DZ, camZ, roll, radiusOf(pitchOf(albumOpen))), n = trackEls[albumOpen].childElementCount;
     if (p) {
       const pts2 = cord(n, p[0]);
       let prev = [p[0], p[1] + (cur.size / 2) * Math.pow(VIEW / p[2], 0.8)];
@@ -192,7 +192,7 @@ function drawGroove(ld, sc, cx, cy) {
 function drawTrail(le, A) {
   // (on a phone the phone leaves before the form shows, so the line sets out sooner, while it is still there)
   const pr = ease((le - (NARROW ? 0.16 : 0.33)) / 0.2); if (pr <= 0) return;
-  const tg = [$('#jy-f-project'), $('#jy-fopen')].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
+  const tg = [formProject, fopen].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
   const fr = frame.getBoundingClientRect(), r = tg.getBoundingClientRect(), field = tg.id === 'jy-f-project';
   const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + 22, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
   const pts = []; let cut = 0;

@@ -1,12 +1,11 @@
 /* ---------- the stage (wide screens, with JS) ---------- */
 .jy-stage-mode body{overscroll-behavior:none}
-.jy-stage-mode .jy-track{display:block;height:var(--track,1810vh)}
-.jy-stage-mode .jy-grain{position:absolute}
+
 .jy-stage-mode .jy{position:static}
 .jy-stage-mode .jy-stage{position:fixed;inset:0;overflow:hidden;overflow:clip;background:var(--tt-canvas);transition:background .6s}
 .jy-stage-mode .jy-stage.ink{background:var(--tt-ink);color:var(--tt-on-ink)}
 .jy-stage-mode .jy-stage.ink .jy-grain{opacity:0}
-.jy-stage-mode .jy-grain{transition:opacity .6s;will-change:opacity}
+.jy-stage-mode .jy-grain{position:absolute;transition:opacity .6s;will-change:opacity}
 .jy-stage-mode .jy-cv{display:block;position:absolute;inset:0;width:100%;height:100%}
 .jy-stage-mode .jy-ch{position:absolute;inset:0;max-width:none;margin:0;padding:0;display:block;pointer-events:none;background:none}
 .jy-stage-mode .jy-ch[data-ch="epi"]{color:var(--tt-on-ink)}
@@ -16,7 +15,7 @@
 .jy-stage-mode.jy-ink :focus-visible{outline-color:var(--tt-cyan)}
 
 /* phone */
-.jy-stage-mode .jy-phone{position:absolute;left:50%;top:44%;width:234px;height:416px;margin:-208px 0 0 -117px;transform-origin:50% 50%;cursor:pointer;perspective:1400px}
+
 .jy-stage-mode .jy-card{transform-style:preserve-3d}
 .jy-stage-mode .jy-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .jy-stage-mode .jy-back{display:block}
@@ -33,11 +32,8 @@
 /* the letter and the empty seat are one thread: when the second arrives in the same place, the first moves up over it */
 .jy-stage-mode #jy-letter.on.up{opacity:.72;transform:translateY(var(--up,0px))}
 
-
-
-.jy-npd{width:32px;height:32px;border-radius:50%;background:center/cover;animation:jy-spin 6s linear infinite;position:relative}
 .jy-npd::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--tt-ink)}
-.jy-npt b{display:block;font-size:13px}.jy-npt span{display:block;font-size:11px;color:var(--tt-on-ink-muted)}
+
 .jy-eq{display:flex;gap:3px;align-items:flex-end;height:16px;margin-left:6px}
 .jy-eq i{width:3px;height:16px;border-radius:2px;transform-origin:50% 100%;background:var(--tt-magenta);animation:jy-eq .8s ease-in-out infinite alternate}
 .jy-eq i+i{background:var(--tt-cyan);animation-delay:.35s}
@@ -59,7 +55,7 @@
 /* the record of every story */
 .jy-stage-mode .jy-hint{position:absolute;left:max(48px,6vw);bottom:calc(14% - 40px);opacity:0;transition:opacity .5s}
 .jy-stage-mode .jy-hint.on{opacity:1}
-.jy-stage-mode .jy-filters{position:absolute;z-index:1200;left:50%;top:22px;transform:translate(-50%,-10px);padding:6px 10px 8px;border:1px solid var(--tt-canvas-shade);border-radius:22px;background:rgba(254,254,254,.9);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s var(--tt-spring)}
+
 .jy-stage-mode .jy-filters.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .jy-stage-mode .jy-record{position:absolute;inset:0;pointer-events:none}
 .jy-stage-mode .jy-record.on .jy-sw{pointer-events:auto}
@@ -134,9 +130,9 @@
 .jy-pc-tag{display:block;margin-top:12px;font-weight:100;font-size:24px;line-height:1.4}
 .jy-pc-btn{margin-top:14px;height:40px;font-size:14px}
 .jy-step-l{display:block;margin-bottom:4px;font-family:var(--tt-display);font-size:11px;font-weight:700;letter-spacing:.24em;color:var(--tt-ink-muted)}
-.jy-stage-mode .jy-chat.jy-voice{display:flex;position:absolute;left:max(48px,6vw);bottom:12%;width:min(520px,44vw);justify-content:flex-end}
+
 .jy-stage-mode .jy-chat .jy-say{position:static;max-width:100%;display:none}
-.jy-stage-mode .jy-chat.jy-voice{pointer-events:none}
+
 .jy-stage-mode .jy-chat .jy-say.on{display:flex;pointer-events:auto;animation:jy-arrive .7s var(--tt-spring)}
 @keyframes jy-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 

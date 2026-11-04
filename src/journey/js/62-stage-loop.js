@@ -1,6 +1,7 @@
 // The frame loop (what each frame draws for the scroll position), resizing, and the stage's interface.
 /* ---- the frame loop ---- */
-function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
+const CHAPTERS = Object.keys(CH);
+function chapterOf(u) { for (const k of CHAPTERS) if (u < CH[k][1]) return k; return 'epi'; }
 function syncInert() {
   if (story && !story.hidden) return;
   if (profile.classList.contains('open')) return;
@@ -48,8 +49,8 @@ function frameLoop(now) {
   // Record: the dive into the current
   const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
   const inRecord = lr > 0 && lr < 1;
-  on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > (NARROW ? 0.06 : 0.004) && lr < 0.93); // (on a phone it shares the bottom with the words on arriving, so it waits for them)
-  on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
+  on(recordEl, inRecord); on(filtersEl, lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on(tabsEl, lr > 0.1 && lr < 0.93); on(readout, lr > (NARROW ? 0.06 : 0.004) && lr < 0.93); // (on a phone it shares the bottom with the words on arriving, so it waits for them)
+  on(foundEl, (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on(hintEl, lr > 0.05 && lr < 0.18);
   if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
   else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
   // Done: out of the current, the phone is seen from outside, the record in it
@@ -57,7 +58,7 @@ function frameLoop(now) {
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
   markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
-  const letterEl = $('#jy-letter'), emptyEl = $('#jy-empty'), both = le > 0.05 && le < 0.3;
+  const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
   letterEl.classList.toggle('up', both); if (both) letterEl.style.setProperty('--up', `${-(emptyEl.offsetHeight + 10)}px`);
   if (lr > 0.8 && !recBuilt) buildRecordWash();
@@ -73,7 +74,7 @@ function frameLoop(now) {
     frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
   } else frame.style.opacity = '0';
   // Epilogue
-  on($('#jy-contact'), le > 0.32);
+  on(contactEl, le > 0.32);
 
   // ---- canvas ----
   ctx.clearRect(0, 0, W, H);

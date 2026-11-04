@@ -90,9 +90,9 @@ function phoneIn(p, an, dark, A, inside, note) {
     const O = P(0, 0), ox = O[0], oy = O[1];
     ctx.globalAlpha = show * ui; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = `rgba(${ink},0.96)`; ctx.font = `700 ${(0.3 * sc).toFixed(1)}px ${fam}`;
-    ctx.fillText(($('#jy-clock') || {}).textContent || '', ox, oy - 0.52 * sc);
+    ctx.fillText(clockEl.textContent, ox, oy - 0.52 * sc);
     ctx.font = `400 ${(0.06 * sc).toFixed(1)}px ${fam}`; ctx.fillStyle = `rgba(${ink},0.8)`;
-    ctx.fillText(($('#jy-date') || {}).textContent || '', ox, oy - 0.43 * sc);
+    ctx.fillText(dateEl.textContent, ox, oy - 0.43 * sc);
     // the notification rises into place
     const nw = 0.92 * sc, nh = 0.2 * sc, nx = ox - nw / 2, ny = oy - 0.2 * sc + (1 - ease((wake - 0.25) / 0.6)) * 0.12 * sc;
     ctx.globalAlpha = show * ui * ease((wake - 0.25) / 0.5);

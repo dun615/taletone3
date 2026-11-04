@@ -16,7 +16,7 @@ function setSheet(which, opener) {
   filtersEl.classList.toggle('open', which === 'filters'); fbtn.setAttribute('aria-expanded', String(which === 'filters'));
   contactEl.classList.toggle('open', which === 'form'); fopen.setAttribute('aria-expanded', String(which === 'form'));
   scrim.hidden = which !== 'filters';
-  if (which === 'form') { holdStory(true); setTimeout(() => $('#jy-f-project').focus({ preventScroll: true }), 60); }
+  if (which === 'form') { holdStory(true); setTimeout(() => formProject.focus({ preventScroll: true }), 60); }
   if (which === 'filters') setTimeout(() => $('.jy-fchip[aria-pressed="true"]', filtersEl)?.focus({ preventScroll: true }), 60);
   if (!which && opener) opener.focus({ preventScroll: true });
 }

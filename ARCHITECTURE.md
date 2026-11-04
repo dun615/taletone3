@@ -84,7 +84,7 @@ pole, jellyfish or star: `SET`), so the words arrive at a pace that can be read.
 Joined in order, so a later part wins where two overlap: `00-base` (fonts, tokens, header), `10-column` (the
 readable column without script), `20-panels` (profile, detail), `30-stage`, `40-stage-pieces` (first screen,
 player, trail, case), `50-stage-narrow` (phones and upright screens), `60-record-tabs` (shelf, history, detail
-credits), `70-chat-room`, `80-brand-and-tablet`.
+credits), `70-chat-room`, `80-tablet` (an upright tablet, shown to a room).
 
 ## Common changes
 

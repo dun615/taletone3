@@ -4,6 +4,7 @@ const story = $('#jy-story'), storyBox = $('.jy-box', story), playBtn = $('#jy-p
 let storyWork = null, storyReturn = null, untrapStory = null;
 function roleLine(roles) { const t = (roles || []).map((r) => COPY.roles[r]).filter(Boolean).join(' · '); return t ? 'TALETONE · ' + t : ''; }
 // ---- videos: a YouTube card or stage turns into the player in place (or opens YouTube where embedding is not allowed) ----
+// (a preview that cannot frame YouTube, such as the claude.ai artifact, sets window.TT_NO_EMBED: videos open in a tab)
 const EMBED = !window.TT_NO_EMBED;
 const ytWatch = (id) => `https://www.youtube.com/watch?v=${id}`;
 function embed(box, id, title) {

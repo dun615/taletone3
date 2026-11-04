@@ -70,9 +70,10 @@ img{max-width:100%}
 .jy-top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none}
 .jy-top>*{pointer-events:auto}
 .jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
-.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap}
-.jy-wm b{font-weight:700;opacity:.55}
 .jy-mark img{width:24px;display:block}
+/* the name beside the mark */
+.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap;transition:opacity .4s}
+.jy-wm b{font-weight:700;opacity:.55}
 .jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s .5s}
 .jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s}
 .jy-menu ul{list-style:none;margin:0;padding:0}
