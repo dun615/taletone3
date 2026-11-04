@@ -114,8 +114,9 @@ ${head || '<meta name="robots" content="noindex, nofollow">'}
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/line-seed-kr-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/line-seed-kr-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>
 ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${assets.lineSeedJp}">\n` : ''}<link rel="stylesheet" href="${assets.css}">
-<script>document.documentElement.classList.add('jy-js')</script>
+<script>(function(h,w,v){h.classList.add('jy-js','jy-stage-mode');if(w<761||v>w*1.05)h.classList.add('jy-narrow')})(document.documentElement,innerWidth,innerHeight)</script>
 </head>
 <body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}" data-assets="/">
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
