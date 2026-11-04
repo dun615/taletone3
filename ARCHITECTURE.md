@@ -78,8 +78,8 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
 | `90-start` | Where the visitor came in (route, `?work=`). |
 
-The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–3.7, tone 3.7–7.3, case 7.3–9.6,
-music 9.6–11.2, record 11.2–15.2, done 15.2–16.1, epi 16.1–17.1`. Inside tale to music the camera follows a pen
+The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–4.5, tone 4.5–8.1, case 8.1–12.1,
+music 12.1–13.7, record 13.7–17.7, done 17.7–18.6, epi 18.6–19.6`. Inside tale to music the camera follows a pen
 along the line at depth `z`; `uOfPen(z)` converts. Each message is written at a thing in its world (every other
 pole, jellyfish or star: `SET`), so the words arrive at a pace that can be read.
 

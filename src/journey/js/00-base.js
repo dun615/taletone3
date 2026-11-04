@@ -20,8 +20,9 @@ const COPY = DATA.copy, WORKS = DATA.works, EXTRAS = DATA.extras || [];
 const esc = (t) => String(t).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
 const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-const CH = { pro: [0, 1], tale: [1, 3.7], tone: [3.7, 7.3], case: [7.3, 9.6], music: [9.6, 11.2], record: [11.2, 15.2], done: [15.2, 16.1], epi: [16.1, 17.1] };
-const TOTAL = 17.1;
+// (the land, the sea and space each give a message the same scroll: about three quarters of a screen, the sea's pace)
+const CH = { pro: [0, 1], tale: [1, 4.5], tone: [4.5, 8.1], case: [8.1, 12.1], music: [12.1, 13.7], record: [13.7, 17.7], done: [17.7, 18.6], epi: [18.6, 19.6] };
+const TOTAL = 19.6;
 /* The things of each world the line passes, in its depth z: eight poles on the land, eight jellyfish of light in the
    sea, eight stars in space. Every other one (the 1st, 3rd, 5th, 7th) carries a message (SET); the ones between let
    the scene go on a while, so the words come at a pace that can be read without the line slowing down. */

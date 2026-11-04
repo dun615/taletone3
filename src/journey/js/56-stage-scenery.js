@@ -77,7 +77,7 @@ function backdrop(w, A) {
     for (const b of bodies) {
       const q = V([b.x, b.y, b.z]); if (!q || q[2] < 0.6 || q[2] > FAR3) continue;
       const R = b.r * F3 / q[2], k = passed(b.z - 4), a0 = d * fogA(q[2]) * clamp(1 - (R - H * 0.1) / (H * 0.1)), fm = formAt((b.z - penZ) / 1.4), a = a0 * fm.fill;
-      dotsOn(ringPts(q[0], q[1], R, 22), fm.scatter, a0 * fm.dots, '214,214,240', b.z * 10); lineOn(ringPts(q[0], q[1], R, 40), fm.line * (1 - fm.fill), `rgba(226,224,250,${0.7 * a0})`, 1.2, true);
+      dotsOn(ringPts(q[0], q[1], R, 22), fm.scatter, a0 * fm.dots, '214,214,240', b.z * 10); lineOn(ringPts(q[0], q[1], R, 40), fm.line * (1 - fm.fill), `rgba(226,224,250,${0.7 * a0})`, 1.2, true, fm.fill);
       if (a <= 0.01) continue;
       ctx.fillStyle = tint(b.c, k, 0.95 * a); ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill();
       if (b.kind === 'moon') { ctx.fillStyle = `rgba(22,25,50,${a})`; ctx.beginPath(); ctx.arc(q[0] + R * 0.42, q[1] - R * 0.18, R * 0.92, 0, Math.PI * 2); ctx.fill(); }
@@ -99,7 +99,7 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       // (far off, so they form over the whole walk: points at first, the ridgeline drawn by its middle, filled near the end)
       const fm = formAt(lerp(6, -1.2, clamp((penZ - 2) / (CL0 - 4)))), kc = kL * fm.fill;
       dotsOn(Q, fm.scatter, a * fm.dots * 0.8, '150,160,190', mt.z);
-      lineOn(Q, fm.line, tint(mt.c, 0.5, 0.55 * a), 1.2);
+      lineOn(Q, fm.line, tint(mt.c, 0.5, 0.55 * a), 1.2, false, fm.fill);
       if (fm.fill <= 0.01) continue;
       const g = ctx.createLinearGradient(0, top ? top[1] : 0, 0, bot ? bot[1] : H); g.addColorStop(0, tint(mt.c, kc, 0.75 * a * fm.fill)); g.addColorStop(1, tint(mt.c, kc, 0.12 * a * fm.fill));
       polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
@@ -111,7 +111,7 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       const dz = cl.z - camZ, fm = formAt((cl.z - penZ) / 1.6), k = passed(cl.z - 3), fa = fogA(dz) * A, Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
       dotsOn(Q, fm.scatter, fa * fm.dots * 0.7, '170,176,200', cl.ci + 50);
       if (fm.fill > 0.01) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, k, 0.8 * fm.fill * fa); ctx.fill(); }
-      lineOn(Q, fm.line, tint(PASTEL.land.cloud, k * 0.4, 0.5 * fa), clamp(1.2 * AHEAD / dz, 0.5, 1.8));
+      lineOn(Q, fm.line, tint(PASTEL.land.cloud, k * 0.4, 0.5 * fa), clamp(1.2 * AHEAD / dz, 0.5, 1.8), false, fm.fill);
     }
     // the hills, hazier with distance, with round trees on their ridges
     for (const r of ridges) {
@@ -120,7 +120,7 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       const Q = r.pts.map(V), k = passed(r.z - 4), haze = clamp(dz / 14) * 0.6, c = PASTEL.land.hill[r.k % 3].map((v, i) => lerp(v, PASTEL.land.sky[i], haze)), a = fogA(dz) * A;
       dotsOn(Q, fm.scatter, a * fm.dots * 0.75, '130,150,140', r.k + 100);
       if (fm.fill > 0.01 && Q[0] && Q[Q.length - 1]) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, Math.max(k, fm.fill), 0.62 * fm.fill * a); ctx.fill(); }
-      lineOn(Q, fm.line, tint([110, 140, 120], k, 0.5 * a), clamp(1.4 * AHEAD / dz, 0.5, 2));
+      lineOn(Q, fm.line, tint([110, 140, 120], k, 0.5 * a), clamp(1.4 * AHEAD / dz, 0.5, 2), false, fm.fill);
       if (fm.line < 0.6) continue;
       const leaf = TREE.map((v, i) => lerp(v, PASTEL.land.sky[i], haze * 0.8)), wood = [170, 140, 120];
       for (const tr of r.trees) {
@@ -239,7 +239,7 @@ function seaElements(A) {
     if (P.length < 2) continue;
     // (whole down to a little below the hook, a drawn stalk further down, points beyond)
     const nFill = Py.filter((y) => formY(y).fill > 0.5).length, nLine = Py.filter((y) => formY(y).line > 0.3).length;
-    { const fa0 = fogA(P[0][2]) * inSea; dotsOn(P.slice(nLine), 0.35, 0.8 * fa0, KELPC[k.c], k.ph * 100); if (nLine > nFill) lineOn(P.slice(Math.max(0, nFill - 1), nLine), 1, `rgba(${KELPC[k.c]},${0.6 * fa0})`, 1.2); }
+    { const fa0 = fogA(P[0][2]) * inSea; dotsOn(P.slice(nLine), 0.35, 0.8 * fa0, KELPC[k.c], k.ph * 100); if (nLine > nFill) lineOn(P.slice(Math.max(0, nFill - 1), nLine), 1, `rgba(${KELPC[k.c]},${0.6 * fa0})`, 1.2, false, 0); }
     if (nFill < 2) continue;
     P.length = nFill; const yEnd = Py[nFill - 1];
     const Lft = [], Rgt = [];
@@ -277,7 +277,7 @@ function seaElements(A) {
     const R = (j.r * F3) / q[2], a0 = fogA(q[2]) * inSea, c = JELLY[j.c], pl = 1 + 0.08 * Math.sin(t * 2 + j.ph); if (R > W) continue;
     // (points round where its bell will be, then its rim, then the jellyfish itself)
     const fm = formY(yb), a = a0 * fm.fill;
-    dotsOn(ringPts(q[0], q[1], R, 10), fm.scatter, a0 * fm.dots, c, j.ph * 50); lineOn(ringPts(q[0], q[1], R, 24), fm.line * (1 - fm.fill), `rgba(${c},${0.6 * a0})`, 1, true);
+    dotsOn(ringPts(q[0], q[1], R, 10), fm.scatter, a0 * fm.dots, c, j.ph * 50); lineOn(ringPts(q[0], q[1], R, 24), fm.line * (1 - fm.fill), `rgba(${c},${0.6 * a0})`, 1, true, fm.fill);
     if (a <= 0.01) continue;
     if (dk > 0.4) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3); gl.addColorStop(0, `rgba(${c},${0.45 * clamp((dk - 0.4) / 0.3) * a})`); gl.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3, q[1] - R * 3, R * 6, R * 6); }
     ctx.strokeStyle = `rgba(${c},${0.55 * a})`; ctx.lineWidth = clamp(R * 0.07, 0.6, 2);
@@ -295,7 +295,7 @@ function seaElements(A) {
     const q = V([wx, wy, wz]);
     if (q && out.every(Boolean)) {
       const fm = formY(wy), a0 = fogA(q[2]) * inSea * 0.9, a = a0 * fm.fill;
-      dotsOn(out, fm.scatter, a0 * fm.dots, '58,84,132', 7); lineOn(out, fm.line * (1 - fm.fill), `rgba(58,84,132,${0.6 * a0})`, 1.2, true);
+      dotsOn(out, fm.scatter, a0 * fm.dots, '58,84,132', 7); lineOn(out, fm.line * (1 - fm.fill), `rgba(58,84,132,${0.6 * a0})`, 1.2, true, fm.fill);
       ctx.fillStyle = `rgba(58,84,132,${a})`; ctx.beginPath(); ctx.moveTo(out[0][0], out[0][1]); for (const o of out.slice(1)) ctx.lineTo(o[0], o[1]); ctx.closePath(); ctx.fill();
       for (const fn of fins) if (fn.every(Boolean)) { ctx.beginPath(); ctx.moveTo(fn[0][0], fn[0][1]); ctx.quadraticCurveTo(fn[1][0], fn[1][1], fn[2][0], fn[2][1]); ctx.closePath(); ctx.fill(); }
       ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`;
@@ -308,7 +308,7 @@ function seaElements(A) {
     const flap = 1 + (reduce ? 0 : 0.14 * Math.sin(t * 1.6 + m.ph)), s = m.s, P = (f, sd) => V([cx + hx * f * s + -hz * sd * s * flap, m.c[1] + Math.abs(sd) * 0.08, cz + hz * f * s + hx * sd * s * flap]);
     const nose = P(0.5, 0), lw = P(-0.05, 0.75), rw = P(-0.05, -0.75), back = P(-0.42, 0), tail = P(-1.2, 0), q = V([cx, m.c[1], cz]); if (!nose || !lw || !rw || !back || !tail || !q) continue;
     const fm = formY(m.c[1]), a0 = fogA(q[2]) * inSea, a = a0 * fm.fill, edge = [nose, lw, back, rw, nose];
-    dotsOn(edge, fm.scatter, a0 * fm.dots, '74,96,140', m.ph * 30); lineOn(edge, fm.line * (1 - fm.fill), `rgba(74,96,140,${0.6 * a0})`, 1.2, true);
+    dotsOn(edge, fm.scatter, a0 * fm.dots, '74,96,140', m.ph * 30); lineOn(edge, fm.line * (1 - fm.fill), `rgba(74,96,140,${0.6 * a0})`, 1.2, true, fm.fill);
     if (a <= 0.01) continue;
     ctx.fillStyle = `rgba(74,96,140,${0.85 * a})`; ctx.beginPath(); ctx.moveTo(nose[0], nose[1]); ctx.quadraticCurveTo((nose[0] + lw[0]) / 2 + (lw[0] - back[0]) * 0.15, (nose[1] + lw[1]) / 2 + (lw[1] - back[1]) * 0.15, lw[0], lw[1]); ctx.quadraticCurveTo((lw[0] + back[0]) / 2, (lw[1] + back[1]) / 2, back[0], back[1]); ctx.quadraticCurveTo((rw[0] + back[0]) / 2, (rw[1] + back[1]) / 2, rw[0], rw[1]); ctx.quadraticCurveTo((nose[0] + rw[0]) / 2 + (rw[0] - back[0]) * 0.15, (nose[1] + rw[1]) / 2 + (rw[1] - back[1]) * 0.15, nose[0], nose[1]); ctx.fill();
     ctx.strokeStyle = `rgba(74,96,140,${0.85 * a})`; ctx.lineWidth = Math.max(1, (0.03 * F3) / q[2]); ctx.beginPath(); ctx.moveTo(back[0], back[1]); ctx.lineTo(tail[0], tail[1]); ctx.stroke();
