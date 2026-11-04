@@ -1667,6 +1667,7 @@
         "service": "Music for games, virtual artists and animation",
         "listenNow": "Listen now",
         "tapHint": "Tap the phone",
+        "nextLabel": "Next message",
         "playerLabel": "Now playing",
         "featuredLabel": "Featured",
         "rooms": {
@@ -1790,6 +1791,7 @@
         "service": "ゲーム・バーチャル・アニメーションの音楽制作",
         "listenNow": "音楽を聴く",
         "tapHint": "スマホをタップしてみてください",
+        "nextLabel": "次のメッセージへ",
         "playerLabel": "再生中の曲",
         "featuredLabel": "代表作",
         "rooms": {
@@ -1826,6 +1828,7 @@
     "service": "게임 · 버추얼 · 애니메이션 음악 제작",
     "listenNow": "음악 듣기",
     "tapHint": "휴대폰을 클릭해보세요",
+    "nextLabel": "다음 메시지 보기",
     "playerLabel": "재생 중인 곡",
     "featuredLabel": "대표작",
     "rooms": {

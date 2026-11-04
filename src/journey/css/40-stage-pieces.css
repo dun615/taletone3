@@ -19,6 +19,24 @@
 .jy-waves i:last-child{right:0;border-left-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
 @keyframes jy-wave{0%{opacity:0;scale:.6}6%{opacity:.8}26%{opacity:0;scale:1.25}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone,.jy-waves i,.jy-taphint i::after{animation:none}}
+/* the next message's place (49-stage-next): a chat bubble typing, with a notification dot and a pulse, asking for a
+   click; it comes a moment after the message it follows, so that one is read first */
+.jy-next{display:none}
+.jy-stage-mode .jy-next{display:block;position:absolute;left:0;top:0;z-index:35;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;border-radius:50%;background:none;color:var(--tt-ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s,scale .3s var(--tt-spring)}
+.jy-stage-mode .jy-next.on{opacity:1;pointer-events:auto;transition:opacity .5s .8s,scale .3s var(--tt-spring)}
+.jy-next:hover{scale:1.12}
+.jy-next:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.jy-next-r{position:absolute;inset:6px;border-radius:50%;border:1.5px solid currentColor;animation:jy-tap 1.8s ease-out infinite}
+.jy-next-b{position:absolute;left:8px;top:11px;display:flex;align-items:center;justify-content:center;gap:3px;width:32px;height:24px;border-radius:12px 12px 12px 4px;background:var(--tt-canvas);box-shadow:0 0 0 1.5px currentColor,0 4px 14px rgba(20,28,48,.2)}
+.jy-next-b i{width:4px;height:4px;border-radius:50%;background:currentColor;animation:jy-type 1.2s infinite}
+.jy-next-b i:nth-child(2){animation-delay:.15s}
+.jy-next-b i:nth-child(3){animation-delay:.3s}
+@keyframes jy-type{0%,60%,100%{opacity:.3;translate:0 0}30%{opacity:1;translate:0 -2px}}
+.jy-next-n{position:absolute;right:5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--tt-magenta);box-shadow:0 0 0 2px var(--tt-canvas)}
+.jy-ink .jy-next{color:var(--tt-on-ink)}
+.jy-ink .jy-next-b{background:rgba(20,28,48,.72)}
+.jy-ink .jy-next-n{box-shadow:0 0 0 2px rgba(20,28,48,.9)}
+@media (prefers-reduced-motion:reduce){.jy-next-r,.jy-next-b i{animation:none}}
 /* the lock screen's enter, asked for again when someone tries to scroll past it */
 .jy-nudge .jy-na{animation:jy-nudge .6s var(--tt-spring)}
 @keyframes jy-nudge{30%{transform:scale(1.18)}60%{transform:scale(.96)}}

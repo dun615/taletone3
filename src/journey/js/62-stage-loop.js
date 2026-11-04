@@ -92,6 +92,7 @@ function frameLoop(now) {
   if (worldA > 0) drawWorld(worldA);
   // (the line's place in the whole page, while it is drawing a world and no phone is passing)
   if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
+  placeNext(u);
 }
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
