@@ -96,7 +96,7 @@ function resize() {
 }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
-phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700, 150], ...ENTER[4]]], u); else playScene(ENTER, u); });
+phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700], ...ENTER[4]]], u); else playScene(ENTER, u); });
 
 // sample every cover once the record is near, so its wash can mix them
 let sampledAll = false;
