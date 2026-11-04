@@ -40,6 +40,8 @@ builds them; locally, `npm run build`.
 | `src/journey/js/` | The page's script, in parts (below). |
 | `src/journey/css/` | The page's styles, in parts (below). |
 | `assets/works/` | Covers (`*-1024.webp`, small `*-w320.webp`) and sounds (`*.mp3`). |
+| `assets/phone/case-back.svg`, `case-stars.svg` | The back of the home phone: the designer's draft drawn as vectors (measured from it), 9:16, with the company's Outline mark (2px line); its stars alone, for the holographic sheen. |
+| `assets/logo/logo-ink.svg`, `logo-paper.svg` | The company mark, Filled (the default form), in ink and in paper colour. In a conversation (the avatars, the chat room) it is ink on the pale light of the invitation's icon (`--tt-light-pale`); as an app icon or profile it is cut out of the brand's light; beside the name and on the link previews it is filled with that light; the top bar keeps the plain ink/paper mark. |
 | `assets/fonts/`, `assets/logo/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (LINE Seed KR, Quicksand), logo marks, app icons, link previews, the lock screen's film. |
 | `.github/scripts/validate-site.mjs` | Static checks of the built site (every page's tags, links, files, redirects, the works' rules). |
 | `.github/scripts/validate-runtime-performance.mjs` | Headless Chrome: every route × language × three screens, the whole story scrolled, a record played, the inquiry; load budgets. |
@@ -64,6 +66,7 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `30-inquiry` | The form: checks, sending (Web3Forms), the reply. |
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
+| `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
 | `48-stage-scenes` | How the story moves: scenes that play by themselves (`AUTO`, with steps), the questions between places, input. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |

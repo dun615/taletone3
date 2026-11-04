@@ -18,8 +18,8 @@
 
 .jy-stage-mode .jy-card{transform-style:preserve-3d}
 .jy-stage-mode .jy-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.jy-stage-mode .jy-back{display:block}
-.jy-stage-mode .jy-front{transform:rotateY(180deg)}
+.jy-stage-mode .jy-back{display:block;border-radius:20px;overflow:hidden;transform:translateZ(5px)}
+.jy-stage-mode .jy-front{transform:rotateY(180deg) translateZ(5px)}
 .jy-stage-mode .jy-lock{padding-top:52px}
 .jy-stage-mode .jy-clock{font-size:58px}
 .jy-stage-mode .jy-noti{margin-top:26px}

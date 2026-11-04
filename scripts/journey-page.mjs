@@ -6,25 +6,27 @@
 // them by scroll. The data it shows comes ready from scripts/journey-data.mjs; nothing here is hard-coded per
 // language.
 
+import { readFileSync } from 'node:fs';
 import { plain, merge, journeyWorks, journeyCopy, journeyExtras } from './journey-data.mjs';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
-const markInk = '/assets/logo/mark-ink.svg';
-const markPaper = '/assets/logo/mark-paper.svg';
-const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px"><img src="${markInk}" alt=""></span>`;
+const markInk = '/assets/logo/logo-ink.svg';
+const markPaper = '/assets/logo/logo-paper.svg';
+// The mark's shape, once in the page (MARK_DEFS), drawn wherever it sits in the brand's light: in ink on the pale
+// light (the avatars, the chat room; its colour from CSS) or filled with the light (beside the name). No extra request.
+const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
+const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
+// the brand's light as five soft lights over a lilac ground (as on the app icons and the link previews)
+const LIGHTS = [[26, 22, '#9479ee', 55], [18, 70, '#4fb6d2', 50], [80, 28, '#eeac57', 46], [78, 78, '#e077b6', 52], [50, 96, '#7590ec', 46]];
+const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/>${LIGHTS.map(([x, y, c, r], i) => `<radialGradient id="tt-l${i}" cx="${x}%" cy="${y}%" r="${r * 1.414}%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('')}</defs></svg>`;
+const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
+const markLit = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="#a99fec"/>${LIGHTS.map((_, i) => `<use href="#tt-mark" fill="url(#tt-l${i})"/>`).join('')}</svg>`;
+const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
 const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
-const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="20" height="44" viewBox="0 0 20 44"><circle cx="10" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="10" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="10" cy="36" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
-
-// The back of the phone: a case drawn in silver lines, a camera, stars, a little keyboard.
-const caseBack = () => {
-  const star = (x, y, r) => `<path d="M${x - r} ${y} Q${x - r * .18} ${y - r * .18} ${x} ${y - r} Q${x + r * .18} ${y - r * .18} ${x + r} ${y} Q${x + r * .18} ${y + r * .18} ${x} ${y + r} Q${x - r * .18} ${y + r * .18} ${x - r} ${y}Z" fill="#fefefe" stroke="#9fa1a6" stroke-width="1.4" stroke-linejoin="round"/>`;
-  const keys = Array.from({ length: 8 }, (_, i) => `<rect x="${26 + i * 22.75}" y="312" width="22.75" height="52" fill="#fefefe" stroke="#9fa1a6" stroke-width="1.2"/>`).join('')
-    + [1, 2, 4, 5, 6].map((k) => `<rect x="${26 + k * 22.75 - 5.75}" y="312" width="11.5" height="31" rx="1.5" fill="#141c30"/>`).join('');
-  return `<svg viewBox="0 0 234 416" aria-hidden="true"><rect x="1" y="1" width="232" height="414" rx="29" fill="#dfe2f4" stroke="#9fa1a6" stroke-width="1.5"/><rect x="5" y="5" width="224" height="406" rx="25" fill="none" stroke="#fefefe" stroke-width="1.5"/><rect x="18" y="18" width="48" height="66" rx="13" fill="#eceef8" stroke="#9fa1a6" stroke-width="1.4"/><circle cx="42" cy="40" r="11" fill="#b0b2b8" stroke="#797c85" stroke-width="1.4"/><circle cx="42" cy="40" r="5" fill="#797c85"/><circle cx="39" cy="37" r="2" fill="#fefefe"/><circle cx="42" cy="66" r="6" fill="#b0b2b8" stroke="#797c85" stroke-width="1.2"/><circle cx="58" cy="28" r="2.4" fill="#fefefe" stroke="#9fa1a6"/>${star(178, 70, 26)}${star(206, 38, 8)}${star(42, 212, 15)}${star(196, 292, 6)}<circle cx="128" cy="292" r="4" fill="#fefefe" stroke="#9fa1a6"/><g>${keys}</g><rect x="26" y="312" width="182" height="52" fill="none" stroke="#797c85" stroke-width="1.4"/></svg>`;
-};
+const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="24" height="58" viewBox="0 0 24 58"><circle cx="12" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><circle cx="12" cy="44" r="9" fill="none" stroke="#797c85" stroke-width="2.4"/><circle cx="12" cy="44" r="9" fill="none" stroke="#e5e6e8" stroke-width=".8"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
 
 const lp = (work, cls = 'jy-lp') => `<span class="${cls}" aria-hidden="true"><img class="jy-vinyl" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-groove"></span><img class="jy-art" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-hole"></span></span>`;
 
@@ -79,6 +81,7 @@ ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com
 <script>(function(h,w,v){h.classList.add('jy-js','jy-stage-mode');if(w<761||v>w*1.05)h.classList.add('jy-narrow')})(document.documentElement,innerWidth,innerHeight)</script>
 </head>
 <body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}" data-assets="/">
+${MARK_DEFS}
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
 <header class="jy-top">
   <a class="jy-mark" href="${href('/')}" aria-label="TALETONE MUSIC · ${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"><span class="jy-wm" aria-hidden="true">TALETONE <b>MUSIC</b></span></a>
@@ -98,14 +101,14 @@ ${['pro', 'tale', 'tone', 'record', 'epi'].map((k) => `      <li><a href="${href
 <div class="jy-stage" id="jy-stage">
 ${grain}
 <canvas class="jy-cv" id="jy-cv" aria-hidden="true"></canvas>
-<div class="jy-room" id="jy-room"><div class="jy-room-h" aria-hidden="true"><span class="jy-room-av"><img src="${markInk}" alt=""></span><span class="jy-room-n"><b id="jy-room-t"></b><small id="jy-room-s"></small></span><i class="jy-room-on"></i></div></div>
+<div class="jy-room" id="jy-room"><div class="jy-room-h" aria-hidden="true"><span class="jy-room-av">${markInkSvg()}</span><span class="jy-room-n"><b id="jy-room-t"></b><small id="jy-room-s"></small></span><i class="jy-room-on"></i></div></div>
 
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
   <div class="jy-blackout" id="jy-blackout" aria-hidden="true"></div>
-  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card"><span class="jy-face jy-back">${caseBack()}<img class="jy-caselogo" src="${markPaper}" alt=""></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
+  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="/assets/phone/case-back.svg" alt="" decoding="async"><span class="jy-holo" aria-hidden="true"></span><span class="jy-sheen" aria-hidden="true"></span></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
   <div class="jy-lead" id="jy-lead">
-    <p class="jy-brand"><img src="${markInk}" alt="" width="30" height="30"><span>TALETONE <b>MUSIC</b></span></p>
+    <p class="jy-brand">${markLit()}<span>TALETONE <b>MUSIC</b></span></p>
     <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
     <p class="jy-service">${esc(c.service)}</p>
     <p class="jy-cta"><a class="jy-btn jy-btn-ink" href="${href('/discography/')}" data-go="record">${esc(c.listenNow)}</a><a class="jy-btn" href="${href('/contact/')}" data-go="epi">${esc(merge(site.home, lang.key).contactCtaLabel)}</a></p>
