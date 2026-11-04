@@ -36,8 +36,10 @@ function drawLine(z0, z1, rgb, A, P = pathAt) {
   let run = [], wPrev = -1, aPrev = -1;
   const flush = () => { if (run.length > 1) { ctx.lineWidth = wPrev; ctx.lineCap = aPrev < 1 ? 'butt' : 'round'; ctx.strokeStyle = `rgba(${rgb},${aPrev})`; ctx.beginPath(); ctx.moveTo(run[0][0], run[0][1]); for (let n2 = 1; n2 < run.length; n2++) ctx.lineTo(run[n2][0], run[n2][1]); ctx.stroke(); } };
   const wOf = P === seaPath ? () => 1 : P === spacePath ? () => 2 : worldOf;
-  for (let z = Math.max(PEN.tale[0], camZ - 3, z0); z <= z1 + 1e-6; z += 0.03 / Math.max(1, Math.abs(baseOf(z + 0.01, wOf(z)) - baseOf(z, wOf(z))) * 50)) {
-    const p = V(P(Math.min(z, z1))); if (!p) continue;
+  // (it ends exactly at z1, so whatever goes on from its end meets it)
+  for (let z = Math.max(PEN.tale[0], camZ - 3, z0), end = false; !end; z += 0.03 / Math.max(1, Math.abs(baseOf(z + 0.01, wOf(z)) - baseOf(z, wOf(z))) * 50)) {
+    if (z >= z1) { z = z1; end = true; }
+    const p = V(P(z)); if (!p) continue;
     let sw = 1; for (const az of swellZ) sw += 0.8 * Math.exp(-Math.pow((z - az) / 0.35, 2));
     const wd = Math.round(clamp(2.3 * AHEAD / p[2], 0.5, 5) * sw * 4) / 4, al = Math.round(A * fogA(p[2]) * 20) / 20;
     if (wd !== wPrev || al !== aPrev) { const lastP = run[run.length - 1]; flush(); run = lastP ? [lastP] : []; wPrev = wd; aPrev = al; }
@@ -50,7 +52,8 @@ const near = (z, far = FAR3) => { const dz = z - camZ; return dz > 0.3 && dz < f
 const spaceFade = () => 1 - ease(clamp((penZ - (PEN.music[1] - 0.8)) / 0.7));
 function backdrop(w, A) {
   if (w === 0) {
-    const k = passed(2, 0) * A;
+    // (paper at first; the sky's colour spreads in over the first stretch of the walk, as the land takes shape)
+    const k = ease(clamp((penZ - 2.4) / 6)) * A;
     skyFill((e) => (e < 0.3 ? [mixA(HAZE, PASTEL.land.sky, clamp(e / 0.3)), e < 0 ? 0.5 * clamp(1 + e / 0.25) : lerp(0.5, 0.85, e / 0.3)] : [mixA(PASTEL.land.sky, ZEN, ease((e - 0.3) / 0.9)), lerp(0.85, 1, ease((e - 0.3) / 0.9))]), k);
     // deeper blue at the zenith, exactly as the water at the top of the dive is deeper straight below
     well(waterAt(0.12), 0.85 * k * clamp((camP - 0.6) / 0.6), false);
@@ -66,14 +69,18 @@ function backdrop(w, A) {
   const d = A * spaceFade(); if (d <= 0) return; nightBackdrop(d);
     for (const nb of nebulae) {
       const q = V([nb.x, nb.y, nb.z]); if (!q || q[2] > FAR3 + 8) continue;
-      const R = nb.r * F3 / q[2], k = 0.25 + 0.75 * passed(nb.z - 6), gr = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R);
+      // (a nebula gathers out of a drift of points before its light spreads)
+      const fm = formAt((nb.z - penZ) / 2), R = nb.r * F3 / q[2], k = (0.25 + 0.75 * passed(nb.z - 6)) * fm.fill, gr = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R);
+      dotsOn(ringPts(q[0], q[1], R * 0.45, 30), Math.max(0.25, fm.scatter), d * fm.dots, nb.c, nb.z * 3);
       gr.addColorStop(0, `rgba(${nb.c},${0.32 * k * d})`); gr.addColorStop(0.5, `rgba(${nb.c},${0.12 * k * d})`); gr.addColorStop(1, `rgba(${nb.c},0)`);
       ctx.fillStyle = gr; ctx.fillRect(q[0] - R, q[1] - R, 2 * R, 2 * R);
     }
     for (const m of milky) { const q = V([m.x, m.y, m.z]); if (!q) continue; ctx.fillStyle = `rgba(230,232,250,${(0.25 + 0.5 * m.s) * d * (reduce ? 0.8 : 0.75 + 0.25 * Math.sin(T * 2 + m.s * 40))})`; ctx.fillRect(q[0], q[1], 1.2, 1.2); }
     for (const b of bodies) {
       const q = V([b.x, b.y, b.z]); if (!q || q[2] < 0.6 || q[2] > FAR3) continue;
-      const R = b.r * F3 / q[2], k = passed(b.z - 4), a = d * fogA(q[2]) * clamp((penZ - (b.z - 12)) / 2) * clamp(1 - (R - H * 0.1) / (H * 0.1));
+      const R = b.r * F3 / q[2], k = passed(b.z - 4), a0 = d * fogA(q[2]) * clamp(1 - (R - H * 0.1) / (H * 0.1)), fm = formAt((b.z - penZ) / 1.4), a = a0 * fm.fill;
+      dotsOn(ringPts(q[0], q[1], R, 22), fm.scatter, a0 * fm.dots, '214,214,240', b.z * 10); lineOn(ringPts(q[0], q[1], R, 40), fm.line * (1 - fm.fill), `rgba(226,224,250,${0.7 * a0})`, 1.2, true, fm.fill);
+      if (a <= 0.01) continue;
       ctx.fillStyle = tint(b.c, k, 0.95 * a); ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2); ctx.fill();
       if (b.kind === 'moon') { ctx.fillStyle = `rgba(22,25,50,${a})`; ctx.beginPath(); ctx.arc(q[0] + R * 0.42, q[1] - R * 0.18, R * 0.92, 0, Math.PI * 2); ctx.fill(); }
       else { ctx.save(); ctx.translate(q[0], q[1]); ctx.rotate(-0.38); ctx.strokeStyle = tint(b.c2, k, 0.9 * a); ctx.lineWidth = Math.max(1.5, R * 0.12); ctx.beginPath(); ctx.ellipse(0, 0, R * 1.9, R * 0.5, 0, Math.PI * 1.02, Math.PI * 1.98, true); ctx.stroke(); ctx.restore(); }
@@ -90,33 +97,42 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
     for (const mt of mounts) {
       if (!near(mt.z, 40)) continue;
       const dz = mt.z - camZ, Q = mt.pts.map(V), first = Q[0], last = Q[Q.length - 1]; if (!first || !last) continue;
-      const a = A * clamp((40 - dz) / 10) * clamp((penZ - 1) / 2), top = V([0, GROUND - mt.hMax, mt.z]), bot = V([0, GROUND, mt.z]);
-      const g = ctx.createLinearGradient(0, top ? top[1] : 0, 0, bot ? bot[1] : H); g.addColorStop(0, tint(mt.c, kL, 0.75 * a)); g.addColorStop(1, tint(mt.c, kL, 0.12 * a));
+      const a = A * clamp((40 - dz) / 10), top = V([0, GROUND - mt.hMax, mt.z]), bot = V([0, GROUND, mt.z]);
+      // (far off, so they form over the whole walk: points at first, the ridgeline drawn by its middle, filled near the end)
+      const fm = formAt(lerp(6, -1.2, clamp((penZ - 2) / (CL0 - 4)))), kc = kL * fm.fill;
+      dotsOn(Q, fm.scatter, a * fm.dots * 0.8, '150,160,190', mt.z);
+      lineOn(Q, fm.line, tint(mt.c, 0.5, 0.55 * a), 1.2, false, fm.fill);
+      if (fm.fill <= 0.01) continue;
+      const g = ctx.createLinearGradient(0, top ? top[1] : 0, 0, bot ? bot[1] : H); g.addColorStop(0, tint(mt.c, kc, 0.75 * a * fm.fill)); g.addColorStop(1, tint(mt.c, kc, 0.12 * a * fm.fill));
       polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = g; ctx.fill();
-      ctx.fillStyle = `rgba(255,255,255,${0.85 * a * (0.3 + 0.7 * kL)})`;
+      ctx.fillStyle = `rgba(255,255,255,${0.85 * a * fm.fill * (0.3 + 0.7 * kL)})`;
       for (const pk of mt.peaks) { const p0 = V(pk[0]), p1 = V(pk[1]), p2 = V(pk[2]); if (!p0 || !p1 || !p2) continue; ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.lineTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.closePath(); ctx.fill(); }
     }
     for (const cl of clouds) {
-      if (!near(cl.z) || penZ < cl.z - 10) continue;
-      const dz = cl.z - camZ, reveal = clamp((penZ - (cl.z - 10)) / 2), k = passed(cl.z - 3), Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
-      if (k > 0 && reveal >= 1) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, 1, 0.8 * k * fogA(dz) * A); ctx.fill(); }
-      ctx.strokeStyle = tint(PASTEL.land.cloud, k * 0.4, 0.5 * fogA(dz) * A); ctx.lineWidth = clamp(1.2 * AHEAD / dz, 0.5, 1.8); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
+      if (!near(cl.z)) continue;
+      const dz = cl.z - camZ, fm = formAt((cl.z - penZ) / 1.6), k = passed(cl.z - 3), fa = fogA(dz) * A, Q = cl.pts.map((p) => V([p[0] + (reduce ? 0 : Math.sin(T * 0.08 + cl.ci) * 0.15), p[1], p[2]]));
+      dotsOn(Q, fm.scatter, fa * fm.dots * 0.7, '170,176,200', cl.ci + 50);
+      if (fm.fill > 0.01) { polyline(Q, Q.length); ctx.closePath(); ctx.fillStyle = tint(PASTEL.land.cloud, k, 0.8 * fm.fill * fa); ctx.fill(); }
+      lineOn(Q, fm.line, tint(PASTEL.land.cloud, k * 0.4, 0.5 * fa), clamp(1.2 * AHEAD / dz, 0.5, 1.8), false, fm.fill);
     }
     // the hills, hazier with distance, with round trees on their ridges
     for (const r of ridges) {
       if (!near(r.z)) continue;
-      const dz = r.z - camZ, reveal = clamp((penZ - (r.z - 7)) / 2.5); if (reveal <= 0) continue;
+      const dz = r.z - camZ, fm = formAt((r.z - penZ) / 1.4);
       const Q = r.pts.map(V), k = passed(r.z - 4), haze = clamp(dz / 14) * 0.6, c = PASTEL.land.hill[r.k % 3].map((v, i) => lerp(v, PASTEL.land.sky[i], haze)), a = fogA(dz) * A;
-      if (k > 0 && reveal >= 1 && Q[0] && Q[Q.length - 1]) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, 1, 0.62 * k * a); ctx.fill(); }
-      ctx.strokeStyle = tint([110, 140, 120], k, 0.5 * a); ctx.lineWidth = clamp(1.4 * AHEAD / dz, 0.5, 2); polyline(Q, Math.max(2, Math.round(reveal * Q.length))); ctx.stroke();
-      if (reveal < 1) continue;
+      dotsOn(Q, fm.scatter, a * fm.dots * 0.75, '130,150,140', r.k + 100);
+      if (fm.fill > 0.01 && Q[0] && Q[Q.length - 1]) { const first = Q[0], lastQ = Q[Q.length - 1]; polyline(Q, Q.length); ctx.lineTo(lastQ[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = tint(c, Math.max(k, fm.fill), 0.62 * fm.fill * a); ctx.fill(); }
+      lineOn(Q, fm.line, tint([110, 140, 120], k, 0.5 * a), clamp(1.4 * AHEAD / dz, 0.5, 2), false, fm.fill);
+      if (fm.line < 0.6) continue;
       const leaf = TREE.map((v, i) => lerp(v, PASTEL.land.sky[i], haze * 0.8)), wood = [170, 140, 120];
       for (const tr of r.trees) {
         const [x, y] = r.pts[tr.i], b0 = V([x, y + 0.02, r.z]), b1 = V([x, y - 0.12 * tr.s, r.z]), cc = V([x, y - 0.2 * tr.s, r.z]); if (!b0 || !b1 || !cc) continue;
         const R = 0.1 * tr.s * F3 / dz;
         ctx.strokeStyle = tint(wood, k, 0.8 * a); ctx.lineWidth = Math.max(1, R * 0.28); ctx.beginPath(); ctx.moveTo(b0[0], b0[1]); ctx.lineTo(b1[0], b1[1]); ctx.stroke();
-        ctx.fillStyle = tint(leaf, k, 0.9 * a); ctx.beginPath(); ctx.arc(cc[0], cc[1], R, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = `rgba(255,255,255,${0.22 * a * k})`; ctx.beginPath(); ctx.arc(cc[0] - R * 0.3, cc[1] - R * 0.3, R * 0.45, 0, Math.PI * 2); ctx.fill();
+        // (a ring first, then the round crown filling in)
+        if (fm.fill < 0.99) lineOn(ringPts(cc[0], cc[1], R), 1, tint(leaf, k, 0.7 * a * (1 - fm.fill)), Math.max(1, R * 0.12), true);
+        ctx.fillStyle = tint(leaf, k, 0.9 * a * fm.fill); ctx.beginPath(); ctx.arc(cc[0], cc[1], R, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(255,255,255,${0.22 * a * k * fm.fill})`; ctx.beginPath(); ctx.arc(cc[0] - R * 0.3, cc[1] - R * 0.3, R * 0.45, 0, Math.PI * 2); ctx.fill();
       }
     }
     // the other wires, crossarm to crossarm, sagging between the poles, drawn as far as the pen has gone
@@ -131,7 +147,8 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       }
     }
     for (const z of poles) {
-      if (penZ < z || !near(z)) continue; const dz = z - camZ;
+      if (!near(z)) continue; const dz = z - camZ;
+      if (penZ < z) { const top = pathAt(z), fm = formAt((z - penZ) / 1.2), col = []; for (let n = 0; n <= 10; n++) col.push(V([top[0], lerp(top[1], GROUND + 0.05, n / 10), z])); dotsOn(col, fm.scatter, 0.8 * fogA(dz) * A * fm.dots, '150,140,130', z * 10); continue; }
       const top = pathAt(z), a = V(top), b = V([top[0], GROUND + 0.05, z]), ca = V([top[0] - 0.26, top[1] + 0.1, z]), cb = V([top[0] + 0.26, top[1] + 0.1, z]);
       if (!a || !b) continue;
       const k = passed(z), al = 0.85 * fogA(dz) * A;
@@ -179,6 +196,8 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
 function seaElements(A) {
   const t = reduce ? 0 : T, dk = depthK(), inSea = ease((penZ - ZS) / 0.6) * A, ahead = (y) => y > camY - 1 && y < camY + FAR3;
   if (inSea <= 0) return;
+  // (how far below the hook a thing is, in the measure formAt takes: things form as the hook sinks to them)
+  const hookY = seaPath(penZ)[1], formY = (y) => formAt((y - hookY) / 2.2);
   // light from above, running down past the camera and meeting far below
   const lit = inSea * clamp(1 - dk / 0.32);
   if (lit > 0) for (const sh of shafts) {
@@ -218,8 +237,13 @@ function seaElements(A) {
   for (const k of kelps) {
     const y0 = Math.max(-1, camY + 0.45), y1 = Math.min(k.y1, camY + FAR3); if (y0 >= y1) continue;
     const col = KELPC[k.c], at = (y) => [k.x + Math.sin(y * 0.18 + t * 0.8 + k.ph) * 0.3, y, k.z + Math.cos(y * 0.15 + t * 0.7 + k.ph) * 0.2];
-    const P = []; for (let y = y0; y <= y1; y += 0.8) { const q = V(at(y)); if (q) P.push(q); }
+    const P = [], Py = []; for (let y = y0; y <= y1; y += 0.8) { const q = V(at(y)); if (q) { P.push(q); Py.push(y); } }
     if (P.length < 2) continue;
+    // (whole down to a little below the hook, a drawn stalk further down, points beyond)
+    const nFill = Py.filter((y) => formY(y).fill > 0.5).length, nLine = Py.filter((y) => formY(y).line > 0.3).length;
+    { const fa0 = fogA(P[0][2]) * inSea; dotsOn(P.slice(nLine), 0.35, 0.8 * fa0, KELPC[k.c], k.ph * 100); if (nLine > nFill) lineOn(P.slice(Math.max(0, nFill - 1), nLine), 1, `rgba(${KELPC[k.c]},${0.6 * fa0})`, 1.2, false, 0); }
+    if (nFill < 2) continue;
+    P.length = nFill; const yEnd = Py[nFill - 1];
     const Lft = [], Rgt = [];
     for (let i = 0; i < P.length; i++) {
       const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)], nx = -(b[1] - a[1]), ny = b[0] - a[0], n = Math.hypot(nx, ny) || 1, w = clamp((0.07 * F3) / P[i][2], 0.7, 14) / 2;
@@ -229,7 +253,7 @@ function seaElements(A) {
     ctx.fillStyle = `rgba(${col},${0.85 * inSea * fa})`; ctx.beginPath(); ctx.moveTo(Lft[0][0], Lft[0][1]);
     for (const q of Lft) ctx.lineTo(q[0], q[1]); for (let i = Rgt.length - 1; i >= 0; i--) ctx.lineTo(Rgt[i][0], Rgt[i][1]); ctx.closePath(); ctx.fill();
     ctx.fillStyle = `rgba(${col},${0.7 * inSea * fa})`; ctx.beginPath();
-    for (let y = Math.ceil(y0 / k.gap) * k.gap, n = 0; y < y1; y += k.gap, n++) {
+    for (let y = Math.ceil(y0 / k.gap) * k.gap, n = 0; y < yEnd; y += k.gap, n++) {
       const b = at(y), q = V(b); if (!q) continue; const r = Math.hypot(b[0] - camX, b[2] - camZ) || 1, side = n % 2 ? 1 : -1, ox = ((b[0] - camX) / r) * 0.5 + side * ((b[2] - camZ) / r) * 0.25, oz = ((b[2] - camZ) / r) * 0.5 - side * ((b[0] - camX) / r) * 0.25;
       const tp = V([b[0] + ox, y + 0.35, b[2] + oz]); if (!tp) continue;
       const mx = (q[0] + tp[0]) / 2, my = (q[1] + tp[1]) / 2, nx = -(tp[1] - q[1]) * 0.28, ny = (tp[0] - q[0]) * 0.28;
@@ -252,7 +276,11 @@ function seaElements(A) {
   // jellyfish from above: a round bell, its tentacles hanging down (towards the middle), glowing in the dark
   for (const j of jellies) {
     const p = j.p; if (!ahead(p[1])) continue; const yb = p[1] + Math.sin(t * 0.9 + j.ph) * 0.08, q = V([p[0], yb, p[2]]); if (!q) continue;
-    const R = (j.r * F3) / q[2], a = fogA(q[2]) * inSea, c = JELLY[j.c], pl = 1 + 0.08 * Math.sin(t * 2 + j.ph); if (R > W) continue;
+    const R = (j.r * F3) / q[2], a0 = fogA(q[2]) * inSea, c = JELLY[j.c], pl = 1 + 0.08 * Math.sin(t * 2 + j.ph); if (R > W) continue;
+    // (points round where its bell will be, then its rim, then the jellyfish itself)
+    const fm = formY(yb), a = a0 * fm.fill;
+    dotsOn(ringPts(q[0], q[1], R, 10), fm.scatter, a0 * fm.dots, c, j.ph * 50); lineOn(ringPts(q[0], q[1], R, 24), fm.line * (1 - fm.fill), `rgba(${c},${0.6 * a0})`, 1, true, fm.fill);
+    if (a <= 0.01) continue;
     if (dk > 0.4) { const gl = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], R * 3); gl.addColorStop(0, `rgba(${c},${0.45 * clamp((dk - 0.4) / 0.3) * a})`); gl.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = gl; ctx.fillRect(q[0] - R * 3, q[1] - R * 3, R * 6, R * 6); }
     ctx.strokeStyle = `rgba(${c},${0.55 * a})`; ctx.lineWidth = clamp(R * 0.07, 0.6, 2);
     for (let n = 0; n < 8; n++) { const an = (n / 8) * Math.PI * 2 + j.ph, e0 = V([p[0] + Math.cos(an) * j.r * 0.7, yb, p[2] + Math.sin(an) * j.r * 0.7]), e1 = V([p[0] + Math.cos(an) * j.r * 0.5 + Math.sin(t * 2 + n) * 0.03, yb + j.r * 5, p[2] + Math.sin(an) * j.r * 0.5]); if (!e0 || !e1) continue; ctx.beginPath(); ctx.moveTo(e0[0], e0[1]); ctx.lineTo(e1[0], e1[1]); ctx.stroke(); }
@@ -268,7 +296,8 @@ function seaElements(A) {
     const fins = [[P(0.2, 0.11), P(-0.02, 0.36 + flap), P(0.1, 0.115)], [P(0.2, -0.11), P(-0.02, -0.36 - flap), P(0.1, -0.115)]];
     const q = V([wx, wy, wz]);
     if (q && out.every(Boolean)) {
-      const a = fogA(q[2]) * inSea * 0.9;
+      const fm = formY(wy), a0 = fogA(q[2]) * inSea * 0.9, a = a0 * fm.fill;
+      dotsOn(out, fm.scatter, a0 * fm.dots, '58,84,132', 7); lineOn(out, fm.line * (1 - fm.fill), `rgba(58,84,132,${0.6 * a0})`, 1.2, true, fm.fill);
       ctx.fillStyle = `rgba(58,84,132,${a})`; ctx.beginPath(); ctx.moveTo(out[0][0], out[0][1]); for (const o of out.slice(1)) ctx.lineTo(o[0], o[1]); ctx.closePath(); ctx.fill();
       for (const fn of fins) if (fn.every(Boolean)) { ctx.beginPath(); ctx.moveTo(fn[0][0], fn[0][1]); ctx.quadraticCurveTo(fn[1][0], fn[1][1], fn[2][0], fn[2][1]); ctx.closePath(); ctx.fill(); }
       ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`;
@@ -280,7 +309,9 @@ function seaElements(A) {
     if (!ahead(m.c[1])) continue; const an = m.ph + m.dir * t * 0.12, cx = m.c[0] + Math.cos(an) * m.R, cz = m.c[2] + Math.sin(an) * m.R, hx = -Math.sin(an) * m.dir, hz = Math.cos(an) * m.dir;
     const flap = 1 + (reduce ? 0 : 0.14 * Math.sin(t * 1.6 + m.ph)), s = m.s, P = (f, sd) => V([cx + hx * f * s + -hz * sd * s * flap, m.c[1] + Math.abs(sd) * 0.08, cz + hz * f * s + hx * sd * s * flap]);
     const nose = P(0.5, 0), lw = P(-0.05, 0.75), rw = P(-0.05, -0.75), back = P(-0.42, 0), tail = P(-1.2, 0), q = V([cx, m.c[1], cz]); if (!nose || !lw || !rw || !back || !tail || !q) continue;
-    const a = fogA(q[2]) * inSea;
+    const fm = formY(m.c[1]), a0 = fogA(q[2]) * inSea, a = a0 * fm.fill, edge = [nose, lw, back, rw, nose];
+    dotsOn(edge, fm.scatter, a0 * fm.dots, '74,96,140', m.ph * 30); lineOn(edge, fm.line * (1 - fm.fill), `rgba(74,96,140,${0.6 * a0})`, 1.2, true, fm.fill);
+    if (a <= 0.01) continue;
     ctx.fillStyle = `rgba(74,96,140,${0.85 * a})`; ctx.beginPath(); ctx.moveTo(nose[0], nose[1]); ctx.quadraticCurveTo((nose[0] + lw[0]) / 2 + (lw[0] - back[0]) * 0.15, (nose[1] + lw[1]) / 2 + (lw[1] - back[1]) * 0.15, lw[0], lw[1]); ctx.quadraticCurveTo((lw[0] + back[0]) / 2, (lw[1] + back[1]) / 2, back[0], back[1]); ctx.quadraticCurveTo((rw[0] + back[0]) / 2, (rw[1] + back[1]) / 2, rw[0], rw[1]); ctx.quadraticCurveTo((nose[0] + rw[0]) / 2 + (rw[0] - back[0]) * 0.15, (nose[1] + rw[1]) / 2 + (rw[1] - back[1]) * 0.15, nose[0], nose[1]); ctx.fill();
     ctx.strokeStyle = `rgba(74,96,140,${0.85 * a})`; ctx.lineWidth = Math.max(1, (0.03 * F3) / q[2]); ctx.beginPath(); ctx.moveTo(back[0], back[1]); ctx.lineTo(tail[0], tail[1]); ctx.stroke();
     ctx.fillStyle = `rgba(255,255,255,${0.25 * a})`; ctx.beginPath(); ctx.arc((nose[0] + back[0]) / 2, (nose[1] + back[1]) / 2, (0.08 * s * F3) / q[2], 0, Math.PI * 2); ctx.fill();
@@ -289,7 +320,8 @@ function seaElements(A) {
   for (const f of fish) {
     if (!ahead(f.y)) continue; const an = f.ph + f.dir * t * f.w, x = f.c[0] + Math.cos(an) * f.R, z = f.c[2] + Math.sin(an) * f.R, hx = -Math.sin(an) * f.dir, hz = Math.cos(an) * f.dir;
     const h = V([x + hx * f.sz, f.y, z + hz * f.sz]), tl = V([x - hx * f.sz, f.y, z - hz * f.sz]); if (!h || !tl) continue;
-    const L = Math.hypot(h[0] - tl[0], h[1] - tl[1]) / 2, a = fogA(h[2]) * inSea * (1 - 0.5 * dk); if (L < 0.4 || L > W) continue;
+    const fm = formY(f.y), L = Math.hypot(h[0] - tl[0], h[1] - tl[1]) / 2, a0 = fogA(h[2]) * inSea * (1 - 0.5 * dk), a = a0 * fm.fill; if (L < 0.4 || L > W) continue;
+    if (fm.fill < 0.05) { ctx.fillStyle = `rgba(${FISHC[f.col]},${0.7 * a0 * fm.dots})`; ctx.fillRect((h[0] + tl[0]) / 2 - 1, (h[1] + tl[1]) / 2 - 1, 2, 2); continue; }
     const ang = Math.atan2(h[1] - tl[1], h[0] - tl[0]), mx = (h[0] + tl[0]) / 2, my = (h[1] + tl[1]) / 2, wig = reduce ? 0 : Math.sin(t * 9 + f.ph * 7) * 0.3;
     ctx.save(); ctx.translate(mx, my); ctx.rotate(ang); ctx.fillStyle = `rgba(${FISHC[f.col]},${0.9 * a})`;
     ctx.beginPath(); ctx.ellipse(0, 0, L, L * 0.36, 0, 0, Math.PI * 2); ctx.fill();

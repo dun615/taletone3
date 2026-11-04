@@ -4,7 +4,7 @@ let offer = null; // a song the Music chapter offers before anything has played
 const shownWork = () => (nowSlug ? bySlug[nowSlug] : offer);
 function syncPlayer() {
   const w = shownWork();
-  np.hidden = !w;
+  np.hidden = !w; html.classList.toggle('jy-np-on', !!w); // (the bar takes the name's place beside the mark)
   if (!w) return;
   const p = !audio.paused && nowSlug === w.slug;
   $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`;

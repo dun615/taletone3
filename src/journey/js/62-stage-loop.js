@@ -9,9 +9,9 @@ function syncInert() {
 }
 function frameLoop(now) {
   requestAnimationFrame(frameLoop);
-  autoStep(now);
+  sceneU = null; autoStep(now);
   const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
-  const u = U();
+  const u = sceneU != null ? sceneU : U();
   const ch = chapterOf(u);
   mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
   if (ch !== chapter) { chapter = ch; html.classList.toggle('jy-at-pro', ch === 'pro'); syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
@@ -26,6 +26,8 @@ function frameLoop(now) {
     // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
     if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
+  // (it rings until it has been turned over)
+  { const ringing = ip < 0.02; if (ringing !== html.classList.contains('jy-ringing')) html.classList.toggle('jy-ringing', ringing); }
   // once turned over, the back and its silver sides are out of sight: drop them before the phone grows to fill the view
   { const turned = ip >= 0.3; if (turned !== phone.classList.contains('jy-turned')) phone.classList.toggle('jy-turned', turned); }
   phone.tabIndex = ip > 0.3 ? -1 : 0;
@@ -58,7 +60,7 @@ function frameLoop(now) {
   // Done: out of the current, the phone is seen from outside, the record in it
   const ink = le > 0 || spaceDark > 0.5;
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
-  markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
+  { const src = ink ? markImg.dataset.paper : markImg.dataset.ink; if (markImg.dataset.on !== src) { markImg.dataset.on = src; markImg.src = src; } }
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
   const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
@@ -72,7 +74,9 @@ function frameLoop(now) {
     frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 40, ease(ld / 0.7)) + '%' : '50%';
     const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
   } else if (le > 0) {
-    frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 486), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = NARROW ? '40%' : '50%';
+    frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; // (beside the inquiry, in the middle of the room it leaves, and no bigger than that room: a 4:3 screen has little)
+    const cR = Math.max(180, W * 0.13) + Math.min(460, W - 48), fit = Math.min(1.25, (H - 70) / 486, (W - cR - 48) / 250);
+    frame.style.transform = `scale(${NARROW ? FS : lerp(Math.min(FS, fit), fit, ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : `${Math.max(W * 0.72, (cR + W) / 2).toFixed(0)}px`; frame.style.top = NARROW ? '40%' : '50%';
     frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
   } else frame.style.opacity = '0';
   // Epilogue
@@ -86,6 +90,9 @@ function frameLoop(now) {
   if (le > 0.15) drawTrail(le, 1);
   const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
   if (worldA > 0) drawWorld(worldA);
+  // (the line's place in the whole page, while it is drawing a world and no phone is passing)
+  if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
+  placeNext(u);
 }
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
@@ -96,11 +103,15 @@ function resize() {
 }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
-phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700], ...ENTER[4]]], u); else playScene(ENTER, u); });
+phone.addEventListener('click', (e) => {
+  const u = U(); if (u > ENTER[1] - 0.01) return;
+  if (u < AUTO[0][1] - 0.02) { playScene(AUTO[0], Math.max(u, AUTO[0][0] + 0.001)); return; }
+  if (e.target.closest('.jy-na-row') || e.detail === 0) { entered = true; playScene(ENTER, u); } else nudgeEnter();
+});
 
 // sample every cover once the record is near, so its wash can mix them
 let sampledAll = false;
-addEventListener('scroll', () => { if (!sampledAll && U() > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
+addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU : U()) > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
 
 function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;

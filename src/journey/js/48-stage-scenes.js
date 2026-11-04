@@ -1,28 +1,44 @@
-/* ---- the story's two kinds of motion ----
-   Reading belongs to the visitor: the scroll moves the words, at the visitor's pace. A change of scene belongs
-   to the story: one scroll down at its edge and it plays through at its own pace, all the way to its end, without
-   stopping on the way to ask for anything (going back up is plain scrolling); it stops where the next words are,
-   swallows the rest of that flick, and a small cue says it is the visitor's turn.
+/* ---- how the story moves ----
+   Up to the discography the story stops on every message (STOPS) and waits there for as long as the visitor reads:
+   it goes on only when asked, by a click on the next message's place (marked like a notification, 49-stage-next) or
+   a scroll down. Then one leg plays at the story's own pace, all the way to the next message without stopping on the
+   way (going back up is plain scrolling); it swallows the rest of that flick. Past the record a scroll moves the
+   words at the visitor's pace again, and the scene into the inquiry plays the same way.
    [from, to, ms, , steps] in story units; each 'to' is where the next words have just arrived. */
 const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500], [0.7, 2000], [1, 1500], [uOfPen(SET.land[0] + 0.01), 1100]]];
+// where the story waits, from the first hello to the first song: each message just arrived (on its pole, its
+// jellyfish, its star), the record found, the first song
+const STOPS = [...SET.land.map((z) => uOfPen(z + 0.01)), ...SET.sea.map((z) => uOfPen(z + 0.1)), ...SET.space.map((z) => uOfPen(z + 0.15)), uOfPen(PEN.music[1] - 0.75), CH.record[0] + 0.4];
+// the legs between them: along the line to the next message, in one motion
+const LEGS = STOPS.slice(0, -1).map((a, i) => [a, STOPS[i + 1], 1000]);
+// straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor in,
+// and somewhere it became straight down into the sea
+LEGS[3] = [STOPS[3], STOPS[4], 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2900], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [STOPS[4], 2400]]];
+// down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
+LEGS[7] = [STOPS[7], STOPS[8], 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2400], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200], [STOPS[8], 2200]]];
+LEGS[11] = [STOPS[11], STOPS[12], 2600];   // along the stars to the record: found
+LEGS[12] = [STOPS[12], STOPS[13], 1700];   // the line splits in five and draws the staff: the first song
+// (the stretch that goes on by clicks)
+const clicky = (u) => u >= STOPS[0] - 0.01 && u < STOPS[STOPS.length - 1] - 0.01;
 const AUTO = [
   [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
   // entering: the film breaks up and goes out and the room goes dark; points gather into the land in the screen; it
   // lights up and the visitor is drawn in: the first hello (beats: the dark, the land formed, inside, the hello)
   ENTER,
-  // straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor
-  // in, and somewhere it became straight down into the sea
-  [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2600], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [uOfPen(SET.sea[0] + 0.1), 2400]]],
-  // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
-  [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2000], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200], [uOfPen(SET.space[0] + 0.15), 2200]]],
-  [uOfPen(SET.space[3] + 0.8), uOfPen(PEN.music[1] - 0.75), 2400],   // along the stars to the record: found
-  [CH.music[1] - 0.06, CH.record[0] + 0.4, 1500],   // the line splits in five and draws the staff: the first song
+  ...LEGS,
   // past the last song, all the way into the inquiry in one go, slowing (never stopping) on each of the words between:
   // the staff becomes the record's groove and the record goes into the phone (the letter), the empty seat, and the
   // line out to the form. Steps: [where, ms to get there]
   [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
 ];
 let auto = null, hold = null, lastU = 0, inputAt = 0;
+// (while a scene plays, the frame draws the exact place the scene is at: reading the scroll back would round it to a
+// whole pixel and make the browser settle its layout mid-frame)
+let sceneU = null;
+// the first screen: the visitor goes in by pressing the lock screen's enter, not by scrolling; until then the story
+// stays at the lock screen (scrolling there only turns the phone over and nudges the button)
+let entered = false;
+const nudgeEnter = () => { phone.classList.remove('jy-nudge'); void phone.offsetWidth; phone.classList.add('jy-nudge'); };
 const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
 /* A scene is one unbroken motion: its steps are waypoints [u, ms to get there] of a single curve through them
    (monotone cubic, so it never turns back), at rest only at its start and its end. Between the steps it slows where a
@@ -56,9 +72,9 @@ function playScene([a, b, ms, , steps], u) {
 function autoStep(now) {
   if (auto) {
     const t = now - auto.t0;
-    scrollTo({ top: topFor(sceneAt(auto, t)), behavior: 'instant' });
+    sceneU = sceneAt(auto, t); scrollTo({ top: topFor(sceneU), behavior: 'instant' });
     if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
-  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { hold = null; cue(true); }
+  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(!clicky(hold.u)); hold = null; }
 }
 const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
 addEventListener('wheel', swallow, { passive: false });
@@ -75,11 +91,17 @@ addEventListener('scroll', () => {
   if (auto) return;
   const u = U();
   if (hold) { if (Math.abs(u - hold.u) > 0.002) scrollTo({ top: topFor(hold.u), behavior: 'instant' }); return; }
-  if (performance.now() < navUntil || frozenU != null) { lastU = u; return; }
+  if (performance.now() < navUntil || frozenU != null) { lastU = u; if (u >= ENTER[1] - 0.01) entered = true; return; }
+  if (u >= ENTER[1] - 0.01) entered = true;
+  if (!entered && u > AUTO[0][1] + 0.004) {
+    if (lastU < AUTO[0][1] - 0.02) playScene(AUTO[0], Math.max(lastU, AUTO[0][0] + 0.001)); else { scrollTo({ top: topFor(AUTO[0][1]), behavior: 'instant' }); lastU = AUTO[0][1]; nudgeEnter(); }
+    return;
+  }
   cue(false);
   // only going on plays a scene (from wherever in it the visitor is); going back is plain scrolling
   if (u > lastU) for (const sc of AUTO) {
     const [a, b] = sc;
+    if (sc === ENTER && !entered) continue;
     if (u > a && u < b) { playScene(sc, u); break; }
   }
   lastU = u;

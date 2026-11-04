@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "motiscope": {
+      "source": {
+        "source": "github",
+        "repo": "KumarSashank/motiscope"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "motiscope@motiscope": true
+  }
+}

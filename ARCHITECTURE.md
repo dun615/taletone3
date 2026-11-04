@@ -67,18 +67,20 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
 | `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
-| `48-stage-scenes` | How the story moves: scenes that play by themselves to their end (`AUTO`, with steps; nothing stops one midway to ask for input), input. |
+| `48-stage-scenes` | How the story moves: up to the discography it waits on every message (`STOPS`) and goes on one leg at a time (`LEGS`) when asked; scenes play by themselves to their end (`AUTO`, with steps; nothing stops one midway to ask for input), input. |
+| `49-stage-next` | The next message's place, marked like a notification while the story waits: a click on it plays the next leg. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
 | `54-stage-conversation` | The messages along the line (`ANCHORS`) and the chat room around them. |
-| `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line. |
+| `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
+| `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
 | `58-stage-phone-passage` | The phone between worlds (approach, wake, pull: `PH`, `phoneIn`) and `drawWorld`. |
 | `60-stage-record` | The record: the staff as a 3D current with every work, album tracks on a cord, the card. |
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
 | `90-start` | Where the visitor came in (route, `?work=`). |
 
-The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–3.7, tone 3.7–7.3, case 7.3–9.6,
-music 9.6–11.2, record 11.2–15.2, done 15.2–16.1, epi 16.1–17.1`. Inside tale to music the camera follows a pen
+The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–4.5, tone 4.5–8.1, case 8.1–12.1,
+music 12.1–13.7, record 13.7–17.7, done 17.7–18.6, epi 18.6–19.6`. Inside tale to music the camera follows a pen
 along the line at depth `z`; `uOfPen(z)` converts. Each message is written at a thing in its world (every other
 pole, jellyfish or star: `SET`), so the words arrive at a pace that can be read.
 

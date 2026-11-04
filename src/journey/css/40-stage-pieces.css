@@ -4,11 +4,44 @@
 .jy-service{margin:0;font-size:16px;color:var(--tt-ink-muted)}
 .jy-cta{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 0}
 .jy-cta .jy-btn{text-decoration:none}
-.jy-scrollhint{display:none;margin:22px 0 0;align-items:center;gap:12px;font-size:13px;color:var(--tt-ink-muted)}
-.jy-scrollhint i{position:relative;display:block;width:1.5px;height:34px;background:var(--tt-canvas-shade);overflow:hidden}
-.jy-scrollhint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--tt-ink);animation:jy-drip 1.8s cubic-bezier(.34,1.4,.5,1) infinite}
-@keyframes jy-drip{to{top:100%}}
-.jy-stage-mode .jy-scrollhint{display:flex}
+/* the first screen: the phone rings (a buzz, a little hop) until it is tapped; the hint asks for the tap */
+.jy-taphint{display:none;margin:22px 0 0;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--tt-ink)}
+.jy-taphint i{position:relative;display:block;width:10px;height:10px;border-radius:50%;background:var(--tt-ink)}
+.jy-taphint i::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--tt-ink);animation:jy-tap 1.6s ease-out infinite}
+@keyframes jy-tap{from{transform:scale(.4);opacity:1}to{transform:scale(1.5);opacity:0}}
+.jy-stage-mode.jy-ringing .jy-phone{animation:jy-ring 2.4s infinite}
+@keyframes jy-ring{0%,30%,62%,100%{rotate:0deg;translate:0 0}3%{rotate:-4deg}6%{rotate:4deg}9%{rotate:-4deg}12%{rotate:4deg}15%{rotate:-3deg}18%{rotate:3deg}21%{rotate:-2deg}24%{rotate:2deg}
+  40%{translate:0 -12px;rotate:-3deg}48%{translate:0 0;rotate:0deg}53%{translate:0 -5px;rotate:2deg}58%{translate:0 0;rotate:0deg}}
+.jy-waves{display:none}
+.jy-stage-mode.jy-ringing .jy-waves{display:block;position:absolute;inset:-26px -34px;pointer-events:none}
+.jy-waves i{position:absolute;top:18%;width:22px;height:46px;border:2.5px solid var(--tt-ink-muted);border-radius:50%;opacity:0;animation:jy-wave 2.4s infinite}
+.jy-waves i:first-child{left:0;border-right-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+.jy-waves i:last-child{right:0;border-left-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+@keyframes jy-wave{0%{opacity:0;scale:.6}6%{opacity:.8}26%{opacity:0;scale:1.25}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone,.jy-waves i,.jy-taphint i::after{animation:none}}
+/* the next message's place (49-stage-next): a chat bubble typing, with a notification dot and a pulse, asking for a
+   click; it comes a moment after the message it follows, so that one is read first */
+.jy-next{display:none}
+.jy-stage-mode .jy-next{display:block;position:absolute;left:0;top:0;z-index:35;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;border-radius:50%;background:none;color:var(--tt-ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s,scale .16s var(--tt-ease-out)}
+/* (it comes up from a little smaller, on the brand's spring, once the message has been read a moment) */
+.jy-stage-mode .jy-next.on{opacity:1;pointer-events:auto;animation:jy-next-in .5s var(--tt-spring) .8s both}
+@keyframes jy-next-in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+.jy-next:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.jy-next-r{position:absolute;inset:6px;border-radius:50%;border:1.5px solid currentColor;animation:jy-tap 1.8s ease-out infinite}
+.jy-next-b{position:absolute;left:8px;top:11px;display:flex;align-items:center;justify-content:center;gap:3px;width:32px;height:24px;border-radius:12px 12px 12px 4px;background:var(--tt-canvas);box-shadow:0 0 0 1.5px currentColor,0 4px 14px rgba(20,28,48,.2)}
+.jy-next-b i{width:4px;height:4px;border-radius:50%;background:currentColor;animation:jy-type 1.2s infinite}
+.jy-next-b i:nth-child(2){animation-delay:.15s}
+.jy-next-b i:nth-child(3){animation-delay:.3s}
+@keyframes jy-type{0%,60%,100%{opacity:.3;translate:0 0}30%{opacity:1;translate:0 -2px}}
+.jy-next-n{position:absolute;right:5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--tt-magenta);box-shadow:0 0 0 2px var(--tt-canvas)}
+.jy-ink .jy-next{color:var(--tt-on-ink)}
+.jy-ink .jy-next-b{background:rgba(20,28,48,.72)}
+.jy-ink .jy-next-n{box-shadow:0 0 0 2px rgba(20,28,48,.9)}
+@media (prefers-reduced-motion:reduce){.jy-next-r,.jy-next-b i{animation:none}}
+/* the lock screen's enter, asked for again when someone tries to scroll past it */
+.jy-nudge .jy-na{animation:jy-nudge .6s var(--tt-spring)}
+@keyframes jy-nudge{30%{transform:scale(1.18)}60%{transform:scale(.96)}}
+.jy-stage-mode .jy-taphint{display:flex}
 /* the name on the first screen, over the words: whose site this is, at a glance */
 .jy-brand{display:flex;align-items:center;gap:12px;height:32px;line-height:32px;white-space:nowrap;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
 .jy-brand svg{flex:none;width:28px;height:30px} /* the mark filled with the light, beside the name */
@@ -34,6 +67,7 @@
 
 /* the player: fixed beside the mark on wide screens, at the bottom on phones */
 .jy-np{position:fixed;z-index:58;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 7px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);line-height:1.3;max-width:calc(100vw - 32px)}
+.jy-stage-mode.jy-np-on .jy-wm{visibility:hidden}
 .jy-stage-mode .jy-np{left:calc(max(16px,env(safe-area-inset-left,0px)) + 56px);top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;transform:none;animation:jy-arrive .6s var(--tt-spring)}
 .jy-np-play{position:relative;flex:none;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:none;color:var(--tt-on-ink);cursor:pointer;display:grid;place-items:center}
 .jy-np-play svg{position:relative;z-index:1;filter:drop-shadow(0 0 2px rgba(20,28,48,.9))}
@@ -95,6 +129,8 @@
 .jy-stage-mode .jy-case-marks{display:block;padding:0;position:absolute;inset:0}
 .jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .3s ease,transform .55s var(--tt-spring)!important;animation:none!important;pointer-events:none;will-change:transform,opacity}
 .jy-stage-mode [data-anchor]:not(.on){transition:opacity .2s ease!important}
+/* (with reduced motion the messages fade in their places instead of gliding up the thread) */
+@media (prefers-reduced-motion:reduce){.jy-stage-mode [data-anchor]{transition:opacity .2s ease!important}}
 .jy-stage-mode [data-anchor].older .jy-bub::before{opacity:0}
 .jy-stage-mode .jy-track{display:block;height:var(--track,1810vh);position:relative}
 .jy-stage-mode [data-anchor].on{pointer-events:auto}

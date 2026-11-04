@@ -20,7 +20,11 @@
   --tt-error:#9a3540; --tt-error-on-ink:#f0a3aa;
   --tt-sans:"LINE Seed KR","LINE Seed JP",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
   --tt-display:Quicksand,"LINE Seed KR","LINE Seed JP",system-ui,sans-serif;
+  /* motion: the brand's spring (the story's own pieces arriving: messages, cards, the record), and two crisp curves
+     for the controls (a press, a hover, a menu) and for sheets sliding in, which should answer at once, not bounce */
   --tt-spring:cubic-bezier(.34,1.4,.5,1);
+  --tt-ease-out:cubic-bezier(.23,1,.32,1);
+  --tt-ease-drawer:cubic-bezier(.32,.72,0,1);
   --tt-r-screen:6px; --tt-r-device:28px;
   /* the brand's light, pale: the invitation's icon (.jy-ni) and TALETONE's face in a conversation */
   --tt-light-pale:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);
@@ -40,8 +44,8 @@ a{color:inherit}
 img{max-width:100%}
 :focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
 .jy-chl{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
-.jy-skip{position:fixed;left:16px;top:-60px;z-index:90;padding:10px 16px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);text-decoration:none;transition:top .3s var(--tt-spring)}
-.jy-skip:focus{top:16px}
+.jy-skip{position:fixed;left:16px;top:16px;z-index:90;padding:10px 16px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);text-decoration:none;transform:translateY(-80px);transition:transform .25s var(--tt-ease-out)}
+.jy-skip:focus{transform:none}
 
 /* ---------- shared pieces ---------- */
 /* TALETONE's face in a conversation: the ink mark on the pale light, as the invitation's icon */
@@ -60,12 +64,10 @@ img{max-width:100%}
 .jy-groove{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 5px,rgba(20,28,48,.07) 5px 6px)}
 .jy-art{position:absolute;inset:19%;width:62%;height:62%;object-fit:cover;border-radius:50%}
 .jy-hole{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--tt-canvas)}
-.jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink-line);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .5s var(--tt-spring),background .2s,color .2s}
-.jy-btn:hover{transform:translateY(-2px)}
+.jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink-line);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .16s var(--tt-ease-out),background .2s,color .2s}
 .jy-btn-ink{background:var(--tt-ink);color:var(--tt-on-ink);border-color:var(--tt-ink)}
 .jy-btn-quiet{border-color:var(--tt-canvas-shade)}
-.jy-round{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--tt-ink-line);border-radius:50%;background:var(--tt-canvas);cursor:pointer;transition:transform .5s var(--tt-spring)}
-.jy-round:hover{transform:scale(1.08)}
+.jy-round{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--tt-ink-line);border-radius:50%;background:var(--tt-canvas);cursor:pointer;transition:transform .16s var(--tt-ease-out)}
 .jy-x{position:absolute;right:18px;top:18px;z-index:2;width:44px;height:44px;border:0;border-radius:999px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--tt-ink)}
 .jy-x:hover{background:var(--tt-canvas-shade)}
 
@@ -77,8 +79,8 @@ img{max-width:100%}
 /* the name beside the mark */
 .jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap;transition:opacity .4s}
 .jy-wm b{font-weight:700;opacity:.55}
-.jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s .5s}
-.jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s}
+.jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s .2s}
+.jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s}
 .jy-menu ul{list-style:none;margin:0;padding:0}
 /* the languages, in the header */
 .jy-langtog{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(254,254,254,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.28)}
@@ -91,3 +93,20 @@ img{max-width:100%}
 .jy-ink .jy-langtog a[aria-current]{background:var(--tt-on-ink);color:var(--tt-ink)}
 .jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:700;color:var(--tt-ink)} /* (its own ink: the page's colour turns light in the dark worlds, the menu stays paper) */
 .jy-menu li a:hover{background:var(--tt-canvas-hair)}
+
+/* the controls: they lift or grow under a real pointer only (on a touch screen a tap leaves a hover stuck), and every
+   one gives a little under a press, at once (160ms, a crisp ease-out) */
+@media (hover:hover) and (pointer:fine){
+  .jy-btn:hover,.jy-send:hover{transform:translateY(-2px)}
+  .jy-round:hover{transform:scale(1.08)}
+  .jy-play:hover{transform:scale(1.06)}
+  .jy-stage-mode .jy-sw-btn:hover{background:none;transform:scale(1.06)}
+  .jy-s-filmb:hover img{transform:scale(1.03)}
+  .jy-s-filmb:hover .jy-s-play{transform:scale(1.08);background:rgba(20,28,48,.92)}
+  .jy-wc-v:hover img{transform:scale(1.04)}
+  .jy-next.on:hover{scale:1.12}
+}
+.jy-btn:active,.jy-send:active{transform:scale(.97)}
+.jy-round:active,.jy-play:active{transform:scale(.95)}
+.jy-stage-mode .jy-sw-btn:active{transform:scale(.96)}
+.jy-next.on:active{scale:.94}

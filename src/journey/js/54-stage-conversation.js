@@ -19,12 +19,15 @@ const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), 
 let roomOf = -1;
 function roomBox() {
   // a tablet held upright: the room in the middle, at a reading width
-  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24, head: 64, foot: 6 }; }
+  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.5, bottom: H - 72, head: 64, foot: 6 }; }
   // a phone: the room keeps to the lower half, so the scene stays in view above it, and leaves the bottom edge to
   // the cue and the player
   if (NARROW) return { x: 8, w: W - 16, top: H * 0.5, bottom: H - 64, head: 58, foot: 4 };
   const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
 }
+// (a style is written only when it changes: twelve messages, four values each, every frame, would otherwise make the
+// browser look at them all again each frame)
+const setVar = (a, k, v) => { const c = a.css || (a.css = {}); if (c[k] !== v) { c[k] = v; a.el.style.setProperty(k, v); } };
 function placeAnchors() {
   const RB = roomBox(), slotX = RB.x + 18, bottom = RB.bottom - RB.foot - 12, ceil = RB.top + RB.head + 10;
   let topY = bottom;
@@ -40,12 +43,12 @@ function placeAnchors() {
     a.el.classList.toggle('on', shown);
     a.el.classList.toggle('older', shown && i !== latest);
     // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
-    if (!shown) { a.el.style.setProperty('--aa', '0'); a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', (bottom - a.h + 18).toFixed(1) + 'px'); a.el.style.setProperty('--as', '1'); continue; }
+    if (!shown) { setVar(a, '--aa', '0'); setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', (bottom - a.h + 18).toFixed(1) + 'px'); setVar(a, '--as', '1'); continue; }
     // (the older ones go up and out of the room once the thread would climb past its top)
-    if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); a.el.style.setProperty('--aa', '0'); continue; }
+    if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); setVar(a, '--aa', '0'); continue; }
     y -= a.h; topY = y;
-    a.el.style.setProperty('--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
-    a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', '1');
+    setVar(a, '--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
+    setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', y.toFixed(1) + 'px'); setVar(a, '--as', '1');
     if (i === latest) leadOf = { a, A: 1, x: slotX, y: y + Math.min(a.h / 2, 40) };
     y -= 10;
   }
@@ -69,6 +72,18 @@ function drawLead(A) {
   ctx.beginPath(); ctx.arc(leadOf.x - 8, leadOf.y, 2.5, 0, Math.PI * 2); ctx.fill();
 }
 function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
+// where along the whole page the line has come, written beside its tip on the left (the messages are on the right)
+function drawCoord(u, rgb, A) {
+  const P = penZ < ZS ? pathAt : penZ < S0 ? seaPath : spacePath, tip = V(P(penZ)); if (!tip || A < 0.05) return;
+  const x = tip[0] - 16, y = tip[1], pct = `${Math.round((clamp(u / TOTAL)) * 100)}%`;
+  // (in the line's own colour, edged in its opposite so it reads on every world: the land, the blue sea, the night)
+  const lum = rgb.split(',').reduce((t, v, i) => t + Number(v) * [0.3, 0.59, 0.11][i], 0), halo = lum < 140 ? '254,254,254' : '20,28,48';
+  ctx.font = '700 13px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = `rgba(${rgb},${(0.85 * A).toFixed(3)})`; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(tip[0] - 6, y); ctx.lineTo(x + 3, y); ctx.stroke();
+  ctx.strokeStyle = `rgba(${halo},${(0.7 * A).toFixed(3)})`; ctx.lineWidth = 3.5; ctx.strokeText(pct, x, y + 0.5);
+  ctx.fillStyle = `rgba(${rgb},${A.toFixed(3)})`; ctx.fillText(pct, x, y + 0.5);
+}
 function drawTip(rgb, A, P = pathAt, hook = false) {
   const tip = V(P(penZ)); if (!tip || penZ <= PEN.tale[0] + 0.05) return;
   ctx.fillStyle = `rgba(${rgb},${A})`;
