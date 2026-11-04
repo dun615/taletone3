@@ -1535,8 +1535,6 @@
     "covers": "공식 버전 · 커버",
     "volume": "볼륨",
     "versionLabel": "버전",
-    "askNext": "다음 이야기로 넘어가 볼까요?",
-    "goOn": "넘어가기",
     "cardRoles": {
       "Rec": "레코딩",
       "Edit": "편집",
@@ -1626,8 +1624,6 @@
         "covers": "Official versions & covers",
         "volume": "Volume",
         "versionLabel": "Version",
-        "askNext": "Shall we turn to the next story?",
-        "goOn": "Go on",
         "cardRoles": {
           "Rec": "Recording",
           "Edit": "Editing",
@@ -1751,8 +1747,6 @@
         "covers": "公式バージョン・カバー",
         "volume": "音量",
         "versionLabel": "バージョン",
-        "askNext": "次の物語へ進みましょうか？",
-        "goOn": "進む",
         "cardRoles": {
           "Rec": "レコーディング",
           "Edit": "エディット",

@@ -19,8 +19,8 @@ const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), 
 let roomOf = -1;
 function roomBox() {
   // a tablet held upright: the room in the middle, at a reading width
-  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24 - (asking ? 86 : 0), head: 64, foot: 6 }; }
-  if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8 - (asking ? 78 : 0), head: 58, foot: 4 };
+  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24, head: 64, foot: 6 }; }
+  if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8, head: 58, foot: 4 };
   const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
 }
 function placeAnchors() {
