@@ -710,7 +710,7 @@ html.jy-held .jy-rail{visibility:hidden}
 .jy-stage-mode.jy-passing .jy-room,.jy-stage-mode.jy-passing [data-anchor]{opacity:0!important;transition:opacity .35s ease!important}
 
 /* the name on the first screen, over the words: whose site this is, at a glance */
-.jy-brand{display:flex;align-items:center;gap:12px;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
+.jy-brand{display:flex;align-items:center;gap:12px;height:32px;line-height:32px;white-space:nowrap;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
 .jy-brand img{width:30px;height:30px}
 .jy-brand b{font-weight:700;color:var(--tt-ink-muted)}
 /* on a phone the top bar is narrow: the name stays there on the first screen; after it, the chapter takes its place */
