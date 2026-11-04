@@ -29,8 +29,14 @@ addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet) setSheet(n
 
 // while the inquiry sheet is open the story holds still, whatever the browser does to the scroll as fields take focus
 let frozenU = null;
-const U = () => { if (frozenU != null) return frozenU; const m = document.documentElement.scrollHeight - innerHeight; return m > 0 ? (scrollY / m) * TOTAL : 0; };
-const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
+// (the scroll's range, read again only when the page or the window changes size: reading it every frame would make the
+// browser settle styles and layout in the middle of one)
+let scrollMax = -1;
+const rangeNow = () => (scrollMax >= 0 ? scrollMax : (scrollMax = document.documentElement.scrollHeight - innerHeight));
+if (window.ResizeObserver) new ResizeObserver(() => { scrollMax = -1; }).observe(document.documentElement);
+addEventListener('resize', () => { scrollMax = -1; });
+const U = () => { if (frozenU != null) return frozenU; const m = rangeNow(); return m > 0 ? (scrollY / m) * TOTAL : 0; };
+const topFor = (u) => (u / TOTAL) * rangeNow();
 // a jump (rail, menu, the record's arrows) passes through scene changes without playing them
 let navUntil = 0;
 const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; if (u >= 1) entered = true; scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };

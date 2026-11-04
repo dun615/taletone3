@@ -40,7 +40,7 @@ html.jy-held .jy-top{visibility:hidden}
 /* the record: one filter button, its choices in a sheet from the bottom */
 
 .jy-narrow.jy-stage-mode .jy-fbtn.on{opacity:1;transform:none;pointer-events:auto}
-.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;border:0;background:var(--tt-canvas);box-shadow:0 -10px 40px rgba(20,28,48,.16);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-spring)}
+.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;border:0;background:var(--tt-canvas);box-shadow:0 -10px 40px rgba(20,28,48,.16);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-ease-drawer)}
 .jy-narrow.jy-stage-mode .jy-filters.open{transform:none;pointer-events:auto}
 .jy-narrow.jy-stage-mode .jy-fhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 4px;font-size:16px}
 .jy-narrow.jy-stage-mode .jy-fhead .jy-x{position:static}

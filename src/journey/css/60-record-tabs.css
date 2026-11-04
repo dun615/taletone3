@@ -22,8 +22,7 @@
 .jy-cards{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 18px}
 .jy-wc-m{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--tt-ink)}
 .jy-wc-v{position:absolute;inset:0;display:block}
-.jy-wc-v img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--tt-spring)}
-.jy-wc-v:hover img{transform:scale(1.04)}
+.jy-wc-v img{width:100%;height:100%;object-fit:cover;transition:transform .3s var(--tt-ease-out)}
 .jy-wc-play{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(254,254,254,.92);box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .jy-wc-play::after{content:"";position:absolute;left:18px;top:14px;border:9px solid transparent;border-left:14px solid var(--tt-ink);border-right:0}
 .jy-wc-fb{display:none}

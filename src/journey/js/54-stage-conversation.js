@@ -25,6 +25,9 @@ function roomBox() {
   if (NARROW) return { x: 8, w: W - 16, top: H * 0.5, bottom: H - 64, head: 58, foot: 4 };
   const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
 }
+// (a style is written only when it changes: twelve messages, four values each, every frame, would otherwise make the
+// browser look at them all again each frame)
+const setVar = (a, k, v) => { const c = a.css || (a.css = {}); if (c[k] !== v) { c[k] = v; a.el.style.setProperty(k, v); } };
 function placeAnchors() {
   const RB = roomBox(), slotX = RB.x + 18, bottom = RB.bottom - RB.foot - 12, ceil = RB.top + RB.head + 10;
   let topY = bottom;
@@ -40,12 +43,12 @@ function placeAnchors() {
     a.el.classList.toggle('on', shown);
     a.el.classList.toggle('older', shown && i !== latest);
     // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
-    if (!shown) { a.el.style.setProperty('--aa', '0'); a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', (bottom - a.h + 18).toFixed(1) + 'px'); a.el.style.setProperty('--as', '1'); continue; }
+    if (!shown) { setVar(a, '--aa', '0'); setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', (bottom - a.h + 18).toFixed(1) + 'px'); setVar(a, '--as', '1'); continue; }
     // (the older ones go up and out of the room once the thread would climb past its top)
-    if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); a.el.style.setProperty('--aa', '0'); continue; }
+    if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); setVar(a, '--aa', '0'); continue; }
     y -= a.h; topY = y;
-    a.el.style.setProperty('--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
-    a.el.style.setProperty('--ax', slotX.toFixed(1) + 'px'); a.el.style.setProperty('--ay', y.toFixed(1) + 'px'); a.el.style.setProperty('--as', '1');
+    setVar(a, '--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
+    setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', y.toFixed(1) + 'px'); setVar(a, '--as', '1');
     if (i === latest) leadOf = { a, A: 1, x: slotX, y: y + Math.min(a.h / 2, 40) };
     y -= 10;
   }

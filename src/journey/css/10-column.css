@@ -102,8 +102,7 @@
 .jy-chip span{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--tt-on-ink-muted);border-radius:999px;font-size:14px}
 .jy-chip input:checked+span{background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink);font-weight:700}
 .jy-chip input:focus-visible+span{outline:2px solid var(--tt-cyan);outline-offset:3px}
-.jy-send{align-self:flex-start;margin-top:6px;height:52px;padding:0 28px;border:0;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-weight:700;cursor:pointer;transition:transform .5s var(--tt-spring)}
-.jy-send:hover{transform:translateY(-2px)}
+.jy-send{align-self:flex-start;margin-top:6px;height:52px;padding:0 28px;border:0;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
 .jy-note{margin:0;min-height:1.6em;font-size:14px;color:var(--tt-on-ink-muted)}
 .jy-note.err{color:var(--tt-error-on-ink)}
 .jy-mail{margin:0;font-size:14px}

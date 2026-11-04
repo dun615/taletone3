@@ -9,9 +9,9 @@ function syncInert() {
 }
 function frameLoop(now) {
   requestAnimationFrame(frameLoop);
-  autoStep(now);
+  sceneU = null; autoStep(now);
   const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
-  const u = U();
+  const u = sceneU != null ? sceneU : U();
   const ch = chapterOf(u);
   mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
   if (ch !== chapter) { chapter = ch; html.classList.toggle('jy-at-pro', ch === 'pro'); syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
@@ -60,7 +60,7 @@ function frameLoop(now) {
   // Done: out of the current, the phone is seen from outside, the record in it
   const ink = le > 0 || spaceDark > 0.5;
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
-  markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
+  { const src = ink ? markImg.dataset.paper : markImg.dataset.ink; if (markImg.dataset.on !== src) { markImg.dataset.on = src; markImg.src = src; } }
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
   const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
@@ -111,7 +111,7 @@ phone.addEventListener('click', (e) => {
 
 // sample every cover once the record is near, so its wash can mix them
 let sampledAll = false;
-addEventListener('scroll', () => { if (!sampledAll && U() > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
+addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU : U()) > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
 
 function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;

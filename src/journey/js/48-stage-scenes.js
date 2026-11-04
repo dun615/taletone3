@@ -32,6 +32,9 @@ const AUTO = [
   [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
 ];
 let auto = null, hold = null, lastU = 0, inputAt = 0;
+// (while a scene plays, the frame draws the exact place the scene is at: reading the scroll back would round it to a
+// whole pixel and make the browser settle its layout mid-frame)
+let sceneU = null;
 // the first screen: the visitor goes in by pressing the lock screen's enter, not by scrolling; until then the story
 // stays at the lock screen (scrolling there only turns the phone over and nudges the button)
 let entered = false;
@@ -69,7 +72,7 @@ function playScene([a, b, ms, , steps], u) {
 function autoStep(now) {
   if (auto) {
     const t = now - auto.t0;
-    scrollTo({ top: topFor(sceneAt(auto, t)), behavior: 'instant' });
+    sceneU = sceneAt(auto, t); scrollTo({ top: topFor(sceneU), behavior: 'instant' });
     if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
   } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(!clicky(hold.u)); hold = null; }
 }
