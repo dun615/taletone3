@@ -45,7 +45,6 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const description = plain(seoPage.description);
   const labels = c.chapterLabels;
   const field = (f) => (c.fields && c.fields[f]) || f;
-  const roleText = (roles) => roles.map((r) => c.roles[r]).filter(Boolean).join(' · ');
   const year = (w) => (w.date || '').slice(0, 4);
   const formOpts = (c.form.songOptions || []).map((o) => `<label class="jy-chip"><input type="checkbox" name="song" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('');
   const field2 = (id, label, input) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}</div>`;

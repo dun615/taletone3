@@ -125,7 +125,8 @@ if (!window.TT_JOURNEY) return;
 ${(await Promise.all(journeyParts.map(async (f) => `// ==== src/journey/js/${f} ====\n${await read(`src/journey/js/${f}`)}`))).join('\n')}})();
 `;
 const lineSeedJpUrl = `https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@100;400;700&display=swap&text=${encodeURIComponent(await japaneseCharacters(root))}`;
-const journeyDataFor = (lang) => journeyData(site, works, lang.key);
+const scriptCopyKeys = [...new Set([...journeyJs.matchAll(/\bCOPY\.(\w+)/g)].map((m) => m[1]))].sort();
+const journeyDataFor = (lang) => journeyData(site, works, lang.key, scriptCopyKeys);
 // what search engines and link previews read: canonical, alternates, social cards, structured data, analytics
 const liveHead = (page, lang) => {
   const copy = pageCopy(page, lang), url = urlFor(lang, page.path), og = `${baseUrl}/assets/social/og-image${{ kr: '', en: '-en', jp: '-ja' }[lang.key]}.jpg?v=20261103-journey`;

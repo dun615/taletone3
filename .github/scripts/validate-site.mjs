@@ -88,7 +88,9 @@ for (const line of robots.split('\n')) if (/^Disallow:\s*\/(?:en|ja|about|approa
 const model = checkWorks(works, (p) => existsSync(path.join(root, p)));
 for (const e of model.errors) assert(false, e);
 for (const w of model.warnings) console.warn(`warning: ${w}`);
-for (const lang of ['en', 'jp']) for (const key of ['notify', 'notifyTitle', 'enterAction', 'found', 'letter', 'empty', 'contactTitle', 'askNext', 'goOn', 'featuredLabel', 'rooms']) assert(site.journey.translations[lang][key], `journey.${key} missing in ${lang}`);
+// every word of the story in every language (only the brand and the English chapter labels are the same in all)
+const SAME_IN_ALL = ['notifyFrom', 'chapterLabels'];
+for (const lang of ['en', 'jp']) for (const key of Object.keys(site.journey)) if (key !== 'translations' && !SAME_IN_ALL.includes(key)) assert(site.journey.translations[lang][key] !== undefined, `journey.${key} has no ${lang} translation`);
 for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.jpg', 'assets/social/og-image-en.jpg', 'assets/social/og-image-ja.jpg', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
 
 if (errors.length) {

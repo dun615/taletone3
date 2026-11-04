@@ -1,7 +1,6 @@
 {
   "works": [
     {
-      "id": "work-new-21",
       "slug": "bubble-sweet",
       "artist": "DOLONGCHA",
       "title": "Bubble Sweet",
@@ -15,8 +14,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 1,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -52,7 +49,6 @@
       ]
     },
     {
-      "id": "work-soraniwa",
       "slug": "heart-score",
       "artist": "STELLIVE Universe",
       "title": "마음악보",
@@ -66,8 +62,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 2,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -102,7 +96,6 @@
       ]
     },
     {
-      "id": "work-run-galaxy",
       "slug": "drawing-summer",
       "artist": "젠레스 존 제로",
       "title": "여름을 그리다",
@@ -116,8 +109,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 3,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -152,7 +143,6 @@
       ]
     },
     {
-      "id": "work-taletones",
       "slug": "love-novel",
       "artist": "Arune",
       "title": "Love Novel",
@@ -166,8 +156,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.59,
-      "index": 5,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -202,7 +190,6 @@
       ]
     },
     {
-      "id": "work-stellive",
       "slug": "fallen-leaves",
       "artist": "쿠로가미 사샤",
       "title": "Fallen Leaves",
@@ -216,8 +203,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 6,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -252,7 +237,6 @@
       ]
     },
     {
-      "id": "work-daisy-in-eternity",
       "slug": "daisy-in-eternity",
       "artist": "TOVE",
       "title": "Daisy In Eternity (Fairy Tale Ver.)",
@@ -266,8 +250,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 7,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -298,7 +280,6 @@
       ]
     },
     {
-      "id": "work-zzz",
       "slug": "gangchi-island-op",
       "artist": "SEION",
       "title": "강치 아일랜드(OP)",
@@ -312,8 +293,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 8,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -348,7 +327,6 @@
       ]
     },
     {
-      "id": "work-parable",
       "slug": "love-dopamine",
       "artist": "해봄",
       "title": "Love Dopamine",
@@ -362,8 +340,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 4,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -398,7 +374,6 @@
       ]
     },
     {
-      "id": "work-bubble-sweet",
       "slug": "the-run-catch",
       "artist": "DOLONGCHA",
       "title": "The Run Catch",
@@ -412,8 +387,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 9,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -448,7 +421,6 @@
       ]
     },
     {
-      "id": "work-ocd",
       "slug": "floris-waltz",
       "artist": "플로리스 로에 (V-llage)",
       "title": "Floris Waltz",
@@ -462,8 +434,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.5,
-      "index": 10,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -498,7 +468,6 @@
       ]
     },
     {
-      "id": "work-mq82acph-nd1j",
       "slug": "early-spring",
       "artist": "Dear my heroes",
       "title": "Early Spring [ALBUM]",
@@ -512,12 +481,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 11,
       "versions": [],
       "tracks": [
         {
-          "id": "work-mq82acph-nd1j-track-01",
           "title": "August",
           "date": "2025.03.06",
           "type": "Dear my heroes 1st EP 'Early Spring' 1st Track",
@@ -529,7 +495,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=fUo3rFXmvU0",
           "translations": {
@@ -552,7 +517,6 @@
           ]
         },
         {
-          "id": "work-mq82acck-jkn2",
           "title": "Early Spring",
           "date": "2025.03.06",
           "type": "Dear my heroes 1st EP 'Early Spring' 2nd Track (Title)",
@@ -564,7 +528,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=0yGPCqrUASk",
           "translations": {
@@ -587,7 +550,6 @@
           ]
         },
         {
-          "id": "work-mq82ad65-wqtc",
           "title": "Balloon",
           "date": "2025.03.06",
           "type": "Dear my heroes 1st EP 'Early Spring' 3rd Track",
@@ -599,7 +561,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=GwKXPt9Kkqc",
           "translations": {
@@ -623,7 +584,6 @@
           ]
         },
         {
-          "id": "work-mq82adqb-nkqh",
           "title": "Lullaby For",
           "date": "2025.03.06",
           "type": "Dear my heroes 1st EP 'Early Spring' 4th Track",
@@ -635,7 +595,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=hgRS_eGvyII",
           "translations": {
@@ -684,7 +643,6 @@
       ]
     },
     {
-      "id": "work-can-you-stay",
       "slug": "pompous",
       "artist": "벨디르 미스틸테인 (V-LUP)",
       "title": "Pompous",
@@ -698,8 +656,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 12,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -735,7 +691,6 @@
       ]
     },
     {
-      "id": "work-watercolor",
       "slug": "new-year-syndrome",
       "artist": "MAIMATSU",
       "title": "새해결심 작심삼일",
@@ -749,8 +704,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 13,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -788,7 +741,6 @@
       ]
     },
     {
-      "id": "work-client-a",
       "slug": "wrap-up",
       "artist": "RoA",
       "title": "Wrap Up",
@@ -802,8 +754,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.5,
-      "index": 14,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -837,7 +787,6 @@
       ]
     },
     {
-      "id": "work-client-b",
       "slug": "silverline",
       "artist": "V-llage",
       "title": "SilverLine [ALBUM]",
@@ -851,12 +800,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 15,
       "versions": [],
       "tracks": [
         {
-          "id": "work-client-b-track-01",
           "title": "SilverLine",
           "date": "2024.07.16",
           "type": "V-llage 1st Album 'SilverLine' 1st Track (Title)",
@@ -868,7 +814,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
           "translations": {
@@ -895,7 +840,6 @@
           ]
         },
         {
-          "id": "work-game-cue-01",
           "title": "RATATA",
           "date": "2024.07.16",
           "type": "V-llage 1st Album 'SilverLine' 2nd Track",
@@ -907,7 +851,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc",
           "translations": {
@@ -934,7 +877,6 @@
           ]
         },
         {
-          "id": "work-game-cue-02",
           "title": "Cloudnine",
           "date": "2024.07.16",
           "type": "V-llage 1st Album 'SilverLine' 3rd Track",
@@ -946,7 +888,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs",
           "translations": {
@@ -973,7 +914,6 @@
           ]
         },
         {
-          "id": "work-vtuber-theme",
           "title": "Over the Night Sky",
           "date": "2024.07.16",
           "type": "V-llage 1st Album 'SilverLine' 4th Track",
@@ -985,7 +925,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y",
           "translations": {
@@ -1035,7 +974,6 @@
       ]
     },
     {
-      "id": "work-mq82ashm-1ju7",
       "slug": "my-village",
       "artist": "V-llage",
       "title": "My Village",
@@ -1049,8 +987,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 16,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1086,7 +1022,6 @@
       ]
     },
     {
-      "id": "work-mix-archive-01",
       "slug": "kanism-holic",
       "artist": "티그리스 카닌",
       "title": "카니즘☆홀릭",
@@ -1100,8 +1035,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 17,
       "versions": [
         {
           "id": "work-mix-archive-01",
@@ -1192,7 +1125,6 @@
       ]
     },
     {
-      "id": "work-master-archive",
       "slug": "backstage",
       "artist": "Mafhills",
       "title": "BACKSTAGE",
@@ -1206,8 +1138,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 18,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1243,9 +1173,7 @@
       ]
     },
     {
-      "id": "work-mix-archive-02",
       "slug": "watercolour",
-      "category": "original",
       "artist": "soraniwa",
       "title": "수채화 (Watercolour)",
       "date": "2024.02.22",
@@ -1258,8 +1186,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.5,
-      "index": 19,
       "versions": [
         {
           "id": "work-mix-archive-02",
@@ -1354,9 +1280,7 @@
       ]
     },
     {
-      "id": "work-arrange-work",
       "slug": "star-to-star",
-      "category": "original",
       "artist": "Shabel Tonya",
       "title": "STAR to STAR",
       "date": "2023.06.30",
@@ -1369,8 +1293,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 20,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1406,7 +1328,6 @@
       ]
     },
     {
-      "id": "work-selected-demo",
       "slug": "night-sky",
       "artist": "침대점령",
       "title": "밤하늘",
@@ -1420,8 +1341,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
-      "index": 21,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1458,9 +1377,7 @@
       ]
     },
     {
-      "id": "work-archive-21",
       "slug": "sailing-stars",
-      "category": "original",
       "artist": "N4ML",
       "title": "Sailing StarS!",
       "date": "2019.10.06",
@@ -1473,8 +1390,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.5,
-      "index": 22,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1511,7 +1426,6 @@
       ]
     },
     {
-      "id": "work-tt-project-connect-season-1-12",
       "slug": "project-connect-season-1",
       "artist": "프로젝트 커넥트",
       "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
@@ -1525,11 +1439,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [
         {
-          "id": "work-tt-project-connect-season-1-track-1",
           "title": "Intro (Teaser)",
           "date": "2022.10.28",
           "type": "PROJECT CONNECT 'SEASON 1' 1st Track",
@@ -1541,7 +1453,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=nbTzAphMvbY",
           "translations": {
@@ -1567,7 +1478,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-2",
           "title": "CONNECT, to World!",
           "date": "2023.03.18",
           "type": "PROJECT CONNECT 'SEASON 1' 2nd Track (Title)",
@@ -1579,7 +1489,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=O4kHRkVERdQ",
           "translations": {
@@ -1606,7 +1515,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-3",
           "title": "Party Night",
           "date": "2022.11.08",
           "type": "PROJECT CONNECT 'SEASON 1' 3rd Track",
@@ -1618,7 +1526,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=DFzAGS3nLCs",
           "translations": {
@@ -1643,7 +1550,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-4",
           "title": "별 사이 우리 (Altair and Vega)",
           "date": "2022.11.11",
           "type": "PROJECT CONNECT 'SEASON 1' 4th Track",
@@ -1655,7 +1561,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=gZPk0lxvOng",
           "translations": {
@@ -1682,7 +1587,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-5",
           "title": "남겨진 자의 염원",
           "date": "2022.11.18",
           "type": "PROJECT CONNECT 'SEASON 1' 5th Track",
@@ -1694,7 +1598,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=sotEommmk78",
           "translations": {
@@ -1718,7 +1621,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-6",
           "title": "CHERRY POP",
           "date": "2022.11.15",
           "type": "PROJECT CONNECT 'SEASON 1' 6th Track",
@@ -1730,7 +1632,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=aj3qDtxndDQ",
           "translations": {
@@ -1755,7 +1656,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-7",
           "title": "맑음 FANFARE!",
           "date": "2022.11.22",
           "type": "PROJECT CONNECT 'SEASON 1' 7th Track",
@@ -1767,7 +1667,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=Zuy13RmN47Y",
           "translations": {
@@ -1793,7 +1692,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-8",
           "title": "Luvvy Luvvy",
           "date": "2022.11.25",
           "type": "PROJECT CONNECT 'SEASON 1' 8th Track",
@@ -1805,7 +1703,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=w4NC8jcnswc",
           "translations": {
@@ -1829,7 +1726,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-9",
           "title": "blank",
           "date": "2022.11.29",
           "type": "PROJECT CONNECT 'SEASON 1' 9th Track",
@@ -1841,7 +1737,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=5Z8-hE38dzU",
           "translations": {
@@ -1867,7 +1762,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-10",
           "title": "꿍차GAME",
           "date": "2022.12.02",
           "type": "PROJECT CONNECT 'SEASON 1' 10th Track",
@@ -1879,7 +1773,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=Guo69H0z1SM",
           "translations": {
@@ -1905,7 +1798,6 @@
           ]
         },
         {
-          "id": "work-tt-project-connect-season-1-track-11",
           "title": "샛길 (ED)",
           "date": "2023.04.18",
           "type": "PROJECT CONNECT 'SEASON 1' 11th Track",
@@ -1917,7 +1809,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=MybIyEksk3A",
           "translations": {
@@ -1947,7 +1838,6 @@
       "titleTrackIndex": 1,
       "youtube": "https://www.youtube.com/watch?v=O4kHRkVERdQ",
       "format": "Album",
-      "category": "artist",
       "translations": {
         "en": {
           "artist": "PROJECT CONNECT",
@@ -1970,7 +1860,6 @@
       ]
     },
     {
-      "id": "work-tt-last-origin-miss-orca-17",
       "slug": "last-origin-miss-orca",
       "artist": "라스트오리진",
       "title": "Last Origin 제1회, 3회 Miss ORCA [ALBUM]",
@@ -1984,11 +1873,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [
         {
-          "id": "work-tt-last-origin-miss-orca-track-15",
           "title": "New Page",
           "date": "2022.11.01",
           "type": "게임 '라스트오리진' 미스 오르카 1st Track",
@@ -2000,7 +1887,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=Hh2cWKGjGO8",
           "translations": {
@@ -2026,7 +1912,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-miss-orca-track-14",
           "title": "북극성",
           "date": "2022.11.01",
           "type": "게임 '라스트오리진' 미스 오르카 2nd Track",
@@ -2038,7 +1923,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=S1Nv3KTNO-s",
           "translations": {
@@ -2066,7 +1950,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-miss-orca-track-13",
           "title": "주인님 Overdose",
           "date": "2022.11.01",
           "type": "게임 '라스트오리진' 미스 오르카 3rd Track (Title)",
@@ -2078,7 +1961,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
           "translations": {
@@ -2106,7 +1988,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-miss-orca-track-18",
           "title": "들려주고픈 이야기",
           "date": "2022.11.01",
           "type": "게임 '라스트오리진' 미스 오르카 4th Track",
@@ -2118,7 +1999,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
           "translations": {
@@ -2146,7 +2026,6 @@
       "titleTrackIndex": 2,
       "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
       "format": "Album",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "Last Origin",
@@ -2169,7 +2048,6 @@
       ]
     },
     {
-      "id": "work-flight-again",
       "slug": "flight-again",
       "artist": "라스트오리진",
       "title": "FLIGHT AGAIN",
@@ -2183,7 +2061,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -2217,7 +2094,6 @@
       ]
     },
     {
-      "id": "work-tt-last-origin-cafe-amor-22",
       "slug": "last-origin-cafe-amor",
       "artist": "라스트오리진",
       "title": "Last Origin Café Amor × Horizon [ALBUM]",
@@ -2231,11 +2107,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [
         {
-          "id": "work-tt-last-origin-cafe-amor-track-18",
           "title": "GO UP!",
           "date": "2022.01.20",
           "type": "게임 '라스트오리진' Café Amor × Horizon 1st Track (Title)",
@@ -2247,7 +2121,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=Fph1MIh8JKU",
           "translations": {
@@ -2272,7 +2145,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-cafe-amor-track-19",
           "title": "Gray Clouds",
           "date": "2022.01.20",
           "type": "게임 '라스트오리진' Café Amor × Horizon 2nd Track",
@@ -2284,7 +2156,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=6cBLGWYG_Iw",
           "translations": {
@@ -2309,7 +2180,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-cafe-amor-track-20",
           "title": "사랑은 파르페처럼",
           "date": "2022.01.20",
           "type": "게임 '라스트오리진' Café Amor × Horizon 3rd Track",
@@ -2321,7 +2191,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=B4M-c_n2Fic",
           "translations": {
@@ -2345,7 +2214,6 @@
           ]
         },
         {
-          "id": "work-tt-last-origin-cafe-amor-track-21",
           "title": "어서오세요, 라스트 파라다이스!",
           "date": "2022.01.20",
           "type": "게임 '라스트오리진' Café Amor × Horizon 4th Track",
@@ -2357,7 +2225,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=_lGpNSYn53I",
           "translations": {
@@ -2386,7 +2253,6 @@
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=zkbG0DDjncY",
       "format": "Album",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "Last Origin",
@@ -2409,7 +2275,6 @@
       ]
     },
     {
-      "id": "work-tt-pocotone-sixtar-gate-25",
       "slug": "pocotone-sixtar-gate",
       "artist": "포코톤",
       "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
@@ -2423,11 +2288,9 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [
         {
-          "id": "work-tt-pocotone-sixtar-gate-track-23",
           "title": "코스믹 텔레파시",
           "date": "2023.04.01",
           "type": "리듬게임 'Sixtar Gate: STARTRAIL' POCOTONE Pack 1st Track (Title)",
@@ -2439,7 +2302,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=e395Bz8ZRq8",
           "translations": {
@@ -2465,7 +2327,6 @@
           ]
         },
         {
-          "id": "work-tt-pocotone-sixtar-gate-track-24",
           "title": "Flower Garden",
           "date": "2023.04.01",
           "type": "리듬게임 'Sixtar Gate: STARTRAIL' POCOTONE Pack 2nd Track",
@@ -2477,7 +2338,6 @@
           "fit": "cover",
           "posX": "50%",
           "posY": "50%",
-          "brightness": 0.6,
           "versions": [],
           "youtube": "https://www.youtube.com/watch?v=9_kzThVik1c",
           "translations": {
@@ -2506,7 +2366,6 @@
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=uZM1wMO8LTA",
       "format": "Album",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "POCOTONE",
@@ -2529,7 +2388,6 @@
       ]
     },
     {
-      "id": "work-tt-with-me-26",
       "slug": "with-me",
       "artist": "포코톤 (POCOTONE)",
       "title": "With Me",
@@ -2543,14 +2401,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=XK2iGkdNxQU",
       "format": "Single",
-      "category": "artist",
       "translations": {
         "en": {
           "artist": "POCOTONE",
@@ -2580,7 +2436,6 @@
       ]
     },
     {
-      "id": "work-tt-paradise-27",
       "slug": "paradise",
       "artist": "V-LUP 1기생 선발대 (Eclipse)",
       "title": "Paradise",
@@ -2594,14 +2449,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=SXToWUCLLUA",
       "format": "Single",
-      "category": "artist",
       "translations": {
         "en": {
           "artist": "V-LUP Eclipse",
@@ -2630,7 +2483,6 @@
       ]
     },
     {
-      "id": "work-tt-shining-day-28",
       "slug": "shining-day",
       "artist": "이주인 (V-LUP)",
       "title": "Shining Day!",
@@ -2644,14 +2496,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=1wAAhXVKEZg",
       "format": "Single",
-      "category": "artist",
       "translations": {
         "en": {
           "artist": "Lee Jooin (V-LUP)",
@@ -2679,7 +2529,6 @@
       ]
     },
     {
-      "id": "work-tt-always-with-you-32",
       "slug": "always-with-you",
       "artist": "에픽세븐 (EPIC SEVEN)",
       "title": "7th world: Always with you",
@@ -2693,7 +2542,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [
         {
           "id": "work-tt-always-with-you-kr-29",
@@ -2785,7 +2633,6 @@
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=Q6RjdF2y05U",
       "format": "Single",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "Epic Seven",
@@ -2833,7 +2680,6 @@
       ]
     },
     {
-      "id": "work-tt-unmyeong-35",
       "slug": "unmyeong",
       "artist": "웹툰 '이웃집 남동생이 초등학생인데 너무 잘해!'",
       "title": "운명",
@@ -2847,7 +2693,6 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [
         {
           "id": "work-tt-unmyeong-kr-33",
@@ -2911,7 +2756,6 @@
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=FNyx7iXVVsg",
       "format": "Single",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "웹툰 '이웃집 남동생이 초등학생인데 너무 잘해!'",
@@ -2940,7 +2784,6 @@
       ]
     },
     {
-      "id": "work-tt-run-into-galaxy-36",
       "slug": "run-into-galaxy",
       "artist": "GXG 게임음악 경연대회",
       "title": "Run into Galaxy",
@@ -2954,14 +2797,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=DH1ArTgpNsw",
       "format": "Single",
-      "category": "ost",
       "translations": {
         "en": {
           "artist": "GXG Game Music Competition",
@@ -2991,7 +2832,6 @@
       ]
     },
     {
-      "id": "work-tt-we-are-sia-37",
       "slug": "we-are-sia",
       "artist": "서울예술대학교 실용음악과",
       "title": "WE ARE SIA!",
@@ -3005,14 +2845,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://youtu.be/aXeQgpFzfgE?t=252",
       "format": "Single",
-      "category": "original",
       "translations": {
         "en": {
           "artist": "Seoul Institute of the Arts",
@@ -3043,7 +2881,6 @@
       ]
     },
     {
-      "id": "work-tt-sejong-arts-anthem-38",
       "slug": "sejong-arts-anthem",
       "artist": "세종예술고등학교",
       "title": "세종예술고등학교 교가",
@@ -3057,14 +2894,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "",
       "format": "Single",
-      "category": "original",
       "translations": {
         "en": {
           "artist": "Sejong Arts High School",
@@ -3096,7 +2931,6 @@
       ]
     },
     {
-      "id": "work-tt-growing-39",
       "slug": "growing",
       "artist": "N4ML",
       "title": "Growing!",
@@ -3110,14 +2944,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=rY7kp3_NbaI",
       "format": "Single",
-      "category": "original",
       "translations": {
         "en": {
           "artist": "N4ML",
@@ -3148,7 +2980,6 @@
       ]
     },
     {
-      "id": "work-tt-tomorrow-40",
       "slug": "tomorrow",
       "artist": "N4ML",
       "title": "TOMORROW!",
@@ -3162,14 +2993,12 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
-      "brightness": 0.6,
       "versions": [],
       "tracks": [],
       "kind": "single",
       "titleTrackIndex": 0,
       "youtube": "https://www.youtube.com/watch?v=J4NMMHSf5Og",
       "format": "Single",
-      "category": "original",
       "translations": {
         "en": {
           "artist": "N4ML",

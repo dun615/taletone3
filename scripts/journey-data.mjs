@@ -39,10 +39,8 @@ export function journeyCopy(site, lang) {
   const rows = ((projects.proof && projects.proof.rows) || []).map((row, i) => ({ label: plain((site.projects.proof.rows[i] || {}).label || row.label), title: plain(row.steps && row.steps[0] && row.steps[0].text), text: plain(row.result) }));
   const members = merge(site.membersMeta, lang), footer = merge(site.footerMeta, lang);
   const intro = { hello: plain(members.subtitle), typesLabel: plain(members.typesLabel), types: [projects.audienceGameTitle, projects.audienceCreatorTitle, projects.audienceAnimationTitle].map(plain), creed: plain(String(footer.tagline || '').split(' · ')[0]).replace(/, /, ',\n') };
-  const record = (site.trackRecord || [])[0];
-  const fact = record ? merge(record, lang) : null;
   const cs = (projects.proof && projects.proof.case) || null;
-  return { ...j, intro, caseStudy: cs, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
+  return { ...j, intro, caseStudy: cs, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
 }
 
 // The other work, built as the live Discography's Sound Engineering and ETC tabs: Sound Engineering lists
@@ -85,10 +83,12 @@ export function journeyExtras(site, worksData, lang) {
   ];
 }
 
-export function journeyData(site, worksData, lang) {
+// window.TT_JOURNEY for one language. The copy carries only the keys the script reads (copyKeys: the build finds
+// every COPY.<key> in src/journey/js/); the rest of the words are already in the page's HTML.
+export function journeyData(site, worksData, lang, copyKeys) {
   const c = journeyCopy(site, lang);
-  const works = journeyWorks(worksData, lang);
-  const extras = journeyExtras(site, worksData, lang);
-  const drop = ({ chapterLabels, translations, ...rest }) => rest;
-  return `window.TT_JOURNEY=${JSON.stringify({ copy: drop(c), works, extras }).replace(/</g, '\\u003c')};\n`;
+  const copy = Object.fromEntries(copyKeys.map((k) => [k, c[k]]));
+  const missing = copyKeys.filter((k) => c[k] === undefined);
+  if (missing.length) throw new Error(`src/journey/js/ reads COPY.${missing.join(', COPY.')}, which ${lang} copy does not have`);
+  return `window.TT_JOURNEY=${JSON.stringify({ copy, works: journeyWorks(worksData, lang), extras: journeyExtras(site, worksData, lang) }).replace(/</g, '\\u003c')};\n`;
 }

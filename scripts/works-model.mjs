@@ -10,11 +10,11 @@
 //   kind 'album'         tracks, each with its own image, thumb and audio (or a YouTube video); the album itself
 //                        has no audio of its own (it plays its title track, titleTrackIndex)
 
-export const WORK_KEYS = ['id', 'slug', 'artist', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio',
-  'fit', 'posX', 'posY', 'brightness', 'index', 'versions', 'tracks', 'kind', 'titleTrackIndex', 'youtube', 'format',
-  'translations', 'roles', 'field', 'vinyl', 'pinned', 'category', 'officialCovers'];
-export const TRACK_KEYS = ['id', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio', 'fit', 'posX',
-  'posY', 'brightness', 'versions', 'youtube', 'translations', 'roles', 'vinyl'];
+export const WORK_KEYS = ['slug', 'artist', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio',
+  'fit', 'posX', 'posY', 'versions', 'tracks', 'kind', 'titleTrackIndex', 'youtube', 'format',
+  'translations', 'roles', 'field', 'vinyl', 'pinned', 'officialCovers'];
+export const TRACK_KEYS = ['title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio', 'fit', 'posX',
+  'posY', 'versions', 'youtube', 'translations', 'roles', 'vinyl'];
 export const KINDS = ['single', 'multilingual', 'album'];
 
 export const ytId = (url) => {
@@ -56,7 +56,7 @@ export function checkWorks(works, exists) {
   const err = (m) => errors.push(m), warn = (m) => warnings.push(m);
   const slugs = new Set();
   for (const w of works) {
-    const name = w.slug || w.title || w.id;
+    const name = w.slug || w.title;
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(w.slug || '')) err(`${name}: slug must be lowercase letters, digits and hyphens`);
     if (slugs.has(w.slug)) err(`${name}: duplicate slug`); slugs.add(w.slug);
     for (const k of Object.keys(w)) if (!WORK_KEYS.includes(k)) err(`${name}: unknown field "${k}" (a typo, or a field to add to WORK_KEYS in scripts/works-model.mjs)`);

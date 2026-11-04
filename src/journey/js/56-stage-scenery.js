@@ -15,7 +15,6 @@ function skyFill(colAt, a) {
   for (let i = 0; i < SN; i++) { const [c, al] = colAt(elevAt(((i + 0.5) / SN) * H)), o = i * 4; sdata.data[o] = c[0]; sdata.data[o + 1] = c[1]; sdata.data[o + 2] = c[2]; sdata.data[o + 3] = 255 * clamp(al * a); }
   sctx.putImageData(sdata, 0, 0); ctx.imageSmoothingEnabled = true; ctx.drawImage(strip, 0, 0, 1, SN, 0, 0, W, H);
 }
-const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 // the water by depth: the sky's own colour at the top, then blue, navy, and the colour of the night it opens onto
 const WATER = [[0, ZEN], [0.12, [178, 216, 236]], [0.3, [122, 178, 216]], [0.5, [66, 112, 170]], [0.72, [34, 56, 110]], [1, [22, 24, 50]]];
 const waterAt = (k) => { for (let i = 1; i < WATER.length; i++) if (k <= WATER[i][0]) return mixA(WATER[i - 1][1], WATER[i][1], (k - WATER[i - 1][0]) / (WATER[i][0] - WATER[i - 1][0])); return WATER[WATER.length - 1][1]; };

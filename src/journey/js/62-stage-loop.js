@@ -1,7 +1,5 @@
 // The frame loop (what each frame draws for the scroll position), resizing, and the stage's interface.
 /* ---- the frame loop ---- */
-let npShown = -1;
-function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; setOffer(w); }
 function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
 function syncInert() {
   if (story && !story.hidden) return;
@@ -34,7 +32,7 @@ function frameLoop(now) {
   if (lockVid && document.readyState === 'complete' && !document.hidden) lockVidPlay(ip < 0.43);
   drawEnter(ip);
   // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
-  const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
+  const lc = local(u, 'case'), lm = local(u, 'music');
   penZ = penAt(u);
   // the camera rides the line behind the pen, turning up and down with it (see rig)
   { const cam = rig(penZ, worldOf(penZ)); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }

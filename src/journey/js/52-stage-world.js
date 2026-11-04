@@ -4,7 +4,6 @@
    view, and in the next chapter it splits into the five lines of the staff. ---- */
 const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
 Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
-const layerColour = (i) => { const fall = [[176, 178, 184], [163, 168, 181], [159, 161, 166]]; return (palette[i % Math.max(1, palette.length)] || { c: fall[i % 3] }).c; };
 // three worlds along one line, a gate (a phone's screen) between them: the land of the intro (mountains,
 // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
 // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
@@ -112,7 +111,6 @@ const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
 let puffs = [], mounts = [], birds = [], shafts = [], kelps = [], whale = null, fish = [], mantas = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], bubbles = [], stars = [], nebulae = [], milky = [], bodies = [];
 let spaceDark = 0, lineRGB = INK;
-const dots = [];
 function buildWorld() {
   F3 = Math.min(NARROW ? Math.max(W, H * 0.75) : W, H * 1.6) * 0.62;
   const dens = NARROW ? 0.55 : 1;
