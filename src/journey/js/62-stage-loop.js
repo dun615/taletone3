@@ -26,6 +26,8 @@ function frameLoop(now) {
     // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
     if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
+  // once turned over, the back and its silver sides are out of sight: drop them before the phone grows to fill the view
+  { const turned = ip >= 0.3; if (turned !== phone.classList.contains('jy-turned')) phone.classList.toggle('jy-turned', turned); }
   phone.tabIndex = ip > 0.3 ? -1 : 0;
   screen.style.background = ip > 0.86 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(28, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(48, 254, ease((ip - 0.86) / 0.1)))})` : '';
   lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
@@ -113,10 +115,12 @@ function goStage(where, smooth = true) {
 }
 resize();
 requestAnimationFrame(frameLoop);
-// pick a record: bring it to the front of the staff (a glide when near, at once when far) and show its card
+// pick a record: bring it to the front of the staff (a glide when near, at once when far), show its card and play it
+// (a record already playing keeps playing)
 function pick(slug) {
   const i = items.findIndex((li) => li.dataset.slug === slug); if (i < 0) return;
   goU(recordU(i), !recordEl.classList.contains('list') && Math.abs(i - recK) < 6);
+  const w = bySlug[slug]; if (sourceOf(w) && nowSlug !== w.slug) play(w);
 }
 
 // what the rest of the page may ask of the stage

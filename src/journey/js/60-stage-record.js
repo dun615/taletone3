@@ -232,9 +232,7 @@ function showReadout(i) {
   $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
   $('#jy-ro-c').textContent = w.tracks && w.tracks.length > 1 ? ` · ${w.tracks.length}${LANG === 'en' ? ' ' : ''}${COPY.songs}` : '';
   { const pin = $('#jy-ro-pin'); pin.hidden = !w.pinned; if (w.pinned) pin.textContent = `✦ ${COPY.featuredLabel} ${String(w.pinned).padStart(2, '0')}`; }
-  $('#jy-ro-t').textContent = w.title; $('#jy-ro-a').textContent = w.artist;
-  $('#jy-ro-m').textContent = [w.type, w.date].filter(Boolean).join(' · ');
-  $('#jy-ro-r').textContent = roleLine(w.roles);
+  readoutFacts(w);
   $('#jy-ro-play').hidden = !sourceOf(w);
   const rv = $('#jy-ro-vers'); rv.dataset.slug = w.slug; versionChips(rv, w);
   // on a phone an album's tracks are chips in the card (the cord would cross the swirl)
@@ -252,9 +250,17 @@ function showReadout(i) {
   sample(w);
   syncReadout();
 }
+// the card's facts: the work, or the album track that has been picked (its title, the album and its number, its roles)
+function readoutFacts(w) {
+  const j = nowSlug === w.slug && nowTrack != null && w.tracks.length > 1 ? nowTrack : null, t = j != null ? w.tracks[j] : null;
+  $('#jy-ro-t').textContent = t ? t.title : w.title; $('#jy-ro-a').textContent = w.artist;
+  $('#jy-ro-m').textContent = (t ? [`${w.title} · ${String(j + 1).padStart(2, '0')}`, w.date] : [w.type, w.date]).filter(Boolean).join(' · ');
+  $('#jy-ro-r').textContent = makingLine((t && t.roles && t.roles.length ? t.roles : w.roles));
+}
 function syncReadout() {
   if (recShown < 0) return;
   const w = bySlug[items[recShown].dataset.slug], p = isPlaying(w.slug);
+  readoutFacts(w);
   $('#jy-ro-play').textContent = p ? COPY.pause : COPY.listen;
   $('#jy-ro-play').setAttribute('aria-pressed', String(p));
   $$('#jy-ro-trk .jy-rtk').forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j))));

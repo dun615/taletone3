@@ -3,6 +3,10 @@
 const story = $('#jy-story'), storyBox = $('.jy-box', story), playBtn = $('#jy-play'), prog = $('#jy-pg'), sLp = $('#jy-s-lp');
 let storyWork = null, storyReturn = null, untrapStory = null;
 function roleLine(roles) { const t = (roles || []).map((r) => COPY.roles[r]).filter(Boolean).join(' · '); return t ? 'TALETONE · ' + t : ''; }
+// the making of the song (what the record's card says at a glance); mixing, mastering, recording and editing are in
+// the detail and on the Sound Engineering shelf
+const MAKING = ['produce', 'compose', 'arrange', 'lyrics'];
+const makingLine = (roles) => roleLine((roles || []).filter((r) => MAKING.includes(r)));
 // ---- videos: a YouTube card or stage turns into the player in place (or opens YouTube where embedding is not allowed) ----
 // (a preview that cannot frame YouTube, such as the claude.ai artifact, sets window.TT_NO_EMBED: videos open in a tab)
 const EMBED = !window.TT_NO_EMBED;
