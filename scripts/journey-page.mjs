@@ -6,6 +6,8 @@
 // them by scroll. Copy comes from assets/data/site-content.json (journey, projects, contact, members, partners,
 // trackRecord) and assets/data/works-data.json; nothing here is hard-coded per language.
 
+import { mediaOf, ytId } from './works-model.mjs';
+
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const lines = (value) => esc(value).replace(/\n/g, '<br>');
 const plain = (value) => String(value ?? '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
@@ -14,21 +16,21 @@ const merge = (base, lang) => {
   return { ...base, ...own };
 };
 
-// Each work localized, with only the fields the page and its script use.
-const ytId = (url) => { const m = String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/) || String(url || '').match(/^([\w-]{11})$/); return m ? m[1] : ''; };
+// Each work localized, with only the fields the page and its script use; where its media are found is decided in
+// scripts/works-model.mjs, the same rules the site check and `npm run audit` use.
 
 export function journeyWorks(worksData, lang) {
   const local = (item) => (lang === 'kr' ? item : merge(item, lang));
   const unit = (item) => {
     const u = local(item);
-    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), image: item.image || '', thumb: item.thumb || item.image || '', audio: item.audio || '', youtube: item.youtube || '', yt: ytId(item.youtube), date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
+    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), ...mediaOf(item), youtube: item.youtube || '', date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
   };
   const gains = (worksData.loudness && worksData.loudness.files) || {};
   const gainOf = (src) => (src && gains[src] && typeof gains[src].gain === 'number' ? gains[src].gain : 0);
   return worksData.works.map((w) => {
     const u = unit(w);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb || (ytId(tu.yt) ? `https://i.ytimg.com/vi/${ytId(tu.yt)}/mqdefault.jpg` : ''), credits: tu.credits, yt: tu.yt, vinyl: t.vinyl || [] }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb, credits: tu.credits, yt: tu.yt, vinyl: t.vinyl || [] }; });
     const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
     return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers, vinyl: w.vinyl || [] };

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs && node .github/scripts/validate-site.mjs && node --test \"tests/*.test.mjs\"",
-    "test": "node scripts/build.mjs && node --test \"tests/*.test.mjs\""
+    "test": "node scripts/build.mjs && node --test \"tests/*.test.mjs\"",
+    "audit": "node scripts/audit-works.mjs"
   },
   "devDependencies": {
     "sharp": "^0.33.5"

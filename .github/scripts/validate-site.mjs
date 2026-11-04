@@ -3,6 +3,8 @@
 import { access, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { checkWorks } from '../../scripts/works-model.mjs';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -82,15 +84,10 @@ assert(robots.includes(`Sitemap: ${BASE}/sitemap.xml`), 'robots.txt: no sitemap'
 for (const line of robots.split('\n')) if (/^Disallow:\s*\/(?:en|ja|about|approach|discography|contact)?\/?\s*$/.test(line)) assert(false, `robots.txt blocks a live route: ${line}`);
 
 // ---- data ----
-const slugs = new Set();
-for (const w of works) {
-  assert(/^[a-z0-9-]+$/.test(w.slug || ''), `work without a lowercase slug: ${w.id}`);
-  assert(!slugs.has(w.slug), `duplicate slug ${w.slug}`); slugs.add(w.slug);
-  for (const p of [w.thumb, w.image, w.audio, ...(w.versions || []).map((v) => v.audio), ...(w.tracks || []).flatMap((t) => [t.audio, t.thumb, t.image])]) if (p && !/^https?:/.test(p)) assert(await exists(p), `${w.slug}: missing ${p}`);
-  assert(Array.isArray(w.vinyl) && w.vinyl.length === 3 && w.vinyl.every((c) => /^\d{1,3} \d{1,3} \d{1,3}$/.test(c)), `${w.slug}: vinyl needs three colours`);
-}
-const pinned = works.filter((w) => w.pinned).map((w) => w.pinned).sort();
-assert(pinned.join() === '1,2,3', `the featured works must be pinned 1, 2, 3 (found ${pinned.join()})`);
+// every work by the rules in scripts/works-model.mjs (the same rules the page and `npm run audit` use)
+const model = checkWorks(works, (p) => existsSync(path.join(root, p)));
+for (const e of model.errors) assert(false, e);
+for (const w of model.warnings) console.warn(`warning: ${w}`);
 for (const lang of ['en', 'jp']) for (const key of ['notify', 'notifyTitle', 'enterAction', 'found', 'letter', 'empty', 'contactTitle', 'askNext', 'goOn', 'featuredLabel', 'rooms']) assert(site.journey.translations[lang][key], `journey.${key} missing in ${lang}`);
 for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.jpg', 'assets/social/og-image-en.jpg', 'assets/social/og-image-ja.jpg', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
 
