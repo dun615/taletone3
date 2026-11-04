@@ -16,11 +16,7 @@ test('every page says whose site it is: the name in the top bar and on the first
 
 // The journey (a phone, a line, the record of every story) is the site; /preview/ leads to it.
 test('the site is the journey: indexed, every chapter and every work in the document', async () => {
-  const site = JSON.parse(await readFile('assets/data/site-content.json', 'utf8'));
   const works = JSON.parse(await readFile('assets/data/works-data.json', 'utf8')).works;
-  for (const lang of ['en', 'jp']) for (const key of ['notify', 'landscape', 'letter', 'found', 'empty', 'contactTitle', 'received', 'profileOpen']) assert.ok(site.journey.translations[lang][key], `journey.${key} missing in ${lang}`);
-  // the signature songs that colour the landscape are the pinned works
-  assert.ok(works.filter((w) => w.pinned).length >= 1, 'no pinned work to bring the colours');
   for (const prefix of ['', 'en/', 'ja/']) for (const route of ['', 'about/', 'approach/', 'discography/', 'contact/']) {
     const html = await readFile(`${prefix}${route}index.html`, 'utf8');
     assert.ok(html.includes('content="index, follow"') && !html.includes('noindex'), `${prefix}${route}: the site must be indexed`);

@@ -1,7 +1,7 @@
 // Guards for the build tooling.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readdir, rm } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -21,3 +21,16 @@ test('the deploy stage publishes the site but no sources or notes', async () => 
     await rm(out, { recursive: true, force: true });
   }
 });
+
+// The page's script and styles are parts joined in one scope by the build (ARCHITECTURE.md): each part says what it
+// is for in its first line, and the joined script parses (two parts declaring the same name would not).
+test('the script and style parts each say what they are, and the joined script parses', async () => {
+  for (const dir of ['src/journey/js', 'src/journey/css']) {
+    for (const f of (await readdir(path.join(root, dir))).sort()) {
+      const first = (await readFile(path.join(root, dir, f), 'utf8')).split('\n')[0];
+      assert.match(first, /^(\/\/|\/\*)/, `${dir}/${f} must begin with a comment saying what it does`);
+    }
+  }
+  execFileSync(process.execPath, ['--check', path.join(root, 'assets/journey/journey.js')]);
+});
+

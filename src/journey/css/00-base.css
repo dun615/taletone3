@@ -1,0 +1,90 @@
+/* The base of the page's styles: fonts, colour tokens, shared pieces, the header. The parts in src/journey/css/ are
+   joined in file-name order by scripts/build.mjs, so a later part wins where two overlap; ARCHITECTURE.md maps them.
+   Two layouts from one document:
+   - default: a readable column (no script, search engines): chapters stacked, every message shown;
+   - html.jy-stage-mode (set in the head before the first paint): a fixed stage played by scroll; html.jy-narrow
+     adds the layout for phones and upright screens.
+   Colours: the world is ink on paper until a work brings its own colour. The signal pair (magenta and cyan)
+   only ever sits on ink, always together. */
+
+@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:100;font-display:swap;src:url(/assets/fonts/line-seed-kr-100.woff2) format("woff2")}
+@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/line-seed-kr-400.woff2) format("woff2")}
+@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/line-seed-kr-700.woff2) format("woff2")}
+@font-face{font-family:Quicksand;font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/quicksand-latin-normal-v37.woff2) format("woff2")}
+
+:root{
+  --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-case:#dfe2f4;
+  --tt-silver:#9fa1a6; --tt-silver-dark:#797c85; --tt-silver-light:#b0b2b8;
+  --tt-ink:#141c30; --tt-ink-line:#1d2435; --tt-ink-muted:#5b606c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
+  --tt-magenta:#ff97fe; --tt-cyan:#c9ffff;
+  --tt-error:#9a3540; --tt-error-on-ink:#f0a3aa;
+  --tt-sans:"LINE Seed KR","LINE Seed JP",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --tt-display:Quicksand,"LINE Seed KR","LINE Seed JP",system-ui,sans-serif;
+  --tt-spring:cubic-bezier(.34,1.4,.5,1);
+  --tt-r-screen:6px; --tt-r-device:28px;
+  color-scheme:light;
+}
+:lang(ja){--tt-sans:"LINE Seed JP","LINE Seed KR",system-ui,-apple-system,"Hiragino Sans",sans-serif}
+/* Japanese has no spaces: keep-all would hold whole sentences together and break them anywhere once they overflow.
+   Break at phrases where the browser can, never before 、 or 。 */
+html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:break-word}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--tt-canvas)}
+body{margin:0;background:var(--tt-canvas);color:var(--tt-ink);font-family:var(--tt-sans);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+button{font:inherit;color:inherit}
+a{color:inherit}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
+.jy-chl{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.jy-skip{position:fixed;left:16px;top:-60px;z-index:90;padding:10px 16px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);text-decoration:none;transition:top .3s var(--tt-spring)}
+.jy-skip:focus{top:16px}
+
+/* ---------- shared pieces ---------- */
+.jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-case);box-shadow:inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas);display:grid;place-items:center}
+.jy-av img{width:48%;display:block}
+.jy-signal{display:inline-flex;gap:4px}
+.jy-signal i{display:block;width:3px;height:16px;border-radius:999px;background:var(--tt-magenta)}
+.jy-signal i+i{background:var(--tt-cyan)}
+.jy-say{display:flex;align-items:flex-end;gap:12px;margin:0;max-width:min(540px,100%);font-size:clamp(18px,1.55vw,22px);line-height:1.5}
+.jy-bub{display:grid;margin:0;background:var(--tt-case);color:var(--tt-ink);border-radius:22px 22px 22px 6px;padding:14px 20px;box-shadow:inset 0 0 0 1px rgba(159,161,166,.7)}
+.jy-bub>*{grid-area:1/1}
+.jy-tx b{display:block;font-size:18px}
+.jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
+.jy-lp{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08)}
+.jy-vinyl{position:absolute;inset:-15%;width:130%!important;max-width:none;height:130%;object-fit:cover;filter:blur(10px) saturate(1.6);opacity:.9}
+.jy-groove{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 5px,rgba(20,28,48,.07) 5px 6px)}
+.jy-art{position:absolute;inset:19%;width:62%;height:62%;object-fit:cover;border-radius:50%}
+.jy-hole{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--tt-canvas)}
+.jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink-line);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .5s var(--tt-spring),background .2s,color .2s}
+.jy-btn:hover{transform:translateY(-2px)}
+.jy-btn-ink{background:var(--tt-ink);color:var(--tt-on-ink);border-color:var(--tt-ink)}
+.jy-btn-quiet{border-color:var(--tt-canvas-shade)}
+.jy-round{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--tt-ink-line);border-radius:50%;background:var(--tt-canvas);cursor:pointer;transition:transform .5s var(--tt-spring)}
+.jy-round:hover{transform:scale(1.08)}
+.jy-x{position:absolute;right:18px;top:18px;z-index:2;width:44px;height:44px;border:0;border-radius:999px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--tt-ink)}
+.jy-x:hover{background:var(--tt-canvas-shade)}
+
+/* header */
+.jy-top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none}
+.jy-top>*{pointer-events:auto}
+.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
+.jy-mark img{width:24px;display:block}
+/* the name beside the mark */
+.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap;transition:opacity .4s}
+.jy-wm b{font-weight:700;opacity:.55}
+.jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s .5s}
+.jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s}
+.jy-menu ul{list-style:none;margin:0;padding:0}
+/* the languages, in the header */
+.jy-langtog{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(254,254,254,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.28)}
+.jy-langtog a{display:grid;place-items:center;min-width:44px;height:36px;padding:0 10px;border-radius:999px;text-decoration:none;font-family:var(--tt-display);font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--tt-ink-muted);transition:background .25s,color .25s}
+.jy-langtog a:hover{color:var(--tt-ink)}
+.jy-langtog a[aria-current]{background:var(--tt-ink);color:var(--tt-on-ink)}
+.jy-ink .jy-langtog{background:rgba(20,28,48,.58);box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.jy-ink .jy-langtog a{color:var(--tt-on-ink-muted)}
+.jy-ink .jy-langtog a:hover{color:var(--tt-on-ink)}
+.jy-ink .jy-langtog a[aria-current]{background:var(--tt-on-ink);color:var(--tt-ink)}
+.jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:700}
+.jy-menu li a:hover{background:var(--tt-canvas-hair)}

@@ -1,54 +1,15 @@
-// Renders the TALETONE journey (the new home under /preview/) for one language and one route.
+// Renders the page (the HTML document) of the TALETONE journey for one language and one route.
 //
 // One document serves two layouts. Without JS, on phones and for search engines it reads top to bottom: each
 // chapter is a section of phone messages, the featured works, the steps, the full discography as a list, the
-// contact form and the profile. On desktop, src/journey/journey.js pins the chapters onto a fixed stage and plays
-// them by scroll. Copy comes from assets/data/site-content.json (journey, projects, contact, members, partners,
-// trackRecord) and assets/data/works-data.json; nothing here is hard-coded per language.
+// contact form and the profile. With script, src/journey/js/ pins the chapters onto a fixed stage and plays
+// them by scroll. The data it shows comes ready from scripts/journey-data.mjs; nothing here is hard-coded per
+// language.
+
+import { plain, merge, journeyWorks, journeyCopy, journeyExtras } from './journey-data.mjs';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const lines = (value) => esc(value).replace(/\n/g, '<br>');
-const plain = (value) => String(value ?? '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-const merge = (base, lang) => {
-  const own = (base && base.translations && base.translations[lang]) || {};
-  return { ...base, ...own };
-};
-
-// Each work localized, with only the fields the page and its script use.
-const ytId = (url) => { const m = String(url || '').match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/) || String(url || '').match(/^([\w-]{11})$/); return m ? m[1] : ''; };
-
-export function journeyWorks(worksData, lang) {
-  const local = (item) => (lang === 'kr' ? item : merge(item, lang));
-  const unit = (item) => {
-    const u = local(item);
-    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), image: item.image || '', thumb: item.thumb || item.image || '', audio: item.audio || '', youtube: item.youtube || '', yt: ytId(item.youtube), date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
-  };
-  const gains = (worksData.loudness && worksData.loudness.files) || {};
-  const gainOf = (src) => (src && gains[src] && typeof gains[src].gain === 'number' ? gains[src].gain : 0);
-  return worksData.works.map((w) => {
-    const u = unit(w);
-    const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb || (ytId(tu.yt) ? `https://i.ytimg.com/vi/${ytId(tu.yt)}/mqdefault.jpg` : ''), credits: tu.credits, yt: tu.yt, vinyl: t.vinyl || [] }; });
-    const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
-    const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
-    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers, vinyl: w.vinyl || [] };
-    // the featured works (pinned 1, 2, 3) open the record in their order; the rest follow, newest first
-  }).sort((a, b) => (a.pinned || 1e3) - (b.pinned || 1e3) || b.date.localeCompare(a.date));
-}
-
-export function journeyCopy(site, lang) {
-  const j = merge(site.journey, lang);
-  const projects = merge(site.projects, lang);
-  const contact = merge(site.contact, lang);
-  const form = merge(contact.form || {}, lang);
-  const rows = ((projects.proof && projects.proof.rows) || []).map((row, i) => ({ label: plain((site.projects.proof.rows[i] || {}).label || row.label), title: plain(row.steps && row.steps[0] && row.steps[0].text), text: plain(row.result) }));
-  const members = merge(site.membersMeta, lang), footer = merge(site.footerMeta, lang);
-  const intro = { hello: plain(members.subtitle), typesLabel: plain(members.typesLabel), types: [projects.audienceGameTitle, projects.audienceCreatorTitle, projects.audienceAnimationTitle].map(plain), creed: plain(String(footer.tagline || '').split(' · ')[0]).replace(/, /, ',\n') };
-  const record = (site.trackRecord || [])[0];
-  const fact = record ? merge(record, lang) : null;
-  const cs = (projects.proof && projects.proof.case) || null;
-  return { ...j, intro, caseStudy: cs, rail: j.rail || site.journey.rail, fields: j.fields || site.journey.fields, roles: j.roles || site.journey.roles, chapterLabels: site.journey.chapterLabels, notifyFrom: site.journey.notifyFrom, steps: rows, fact, form, mail: { email: contact.email, formKey: contact.formKey, mailSubject: contact.mailSubject } };
-}
 
 const markInk = '/assets/logo/mark-ink.svg';
 const markPaper = '/assets/logo/mark-paper.svg';
@@ -84,7 +45,6 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const description = plain(seoPage.description);
   const labels = c.chapterLabels;
   const field = (f) => (c.fields && c.fields[f]) || f;
-  const roleText = (roles) => roles.map((r) => c.roles[r]).filter(Boolean).join(' · ');
   const year = (w) => (w.date || '').slice(0, 4);
   const formOpts = (c.form.songOptions || []).map((o) => `<label class="jy-chip"><input type="checkbox" name="song" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('');
   const field2 = (id, label, input) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}</div>`;
@@ -306,52 +266,4 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 </body>
 </html>
 `;
-}
-
-// The other work, built as the live Discography's Sound Engineering and ETC tabs: Sound Engineering lists
-// mixWorks, plus the studio's own songs and tracks credited with recording, editing, mixing or mastering (with a
-// video or audio), plus ETC cards with those credits; duplicates go, newest video first. ETC lists bgmWorks.
-const POST = { rec: 'Rec', edit: 'Edit', mix: 'Mix', master: 'Master' };
-export function journeyExtras(site, worksData, lang) {
-  const c = journeyCopy(site, lang), cardRoles = c.cardRoles || {}, dates = site.videoDates || {};
-  const titleKey = { en: 'titleEn', jp: 'titleJp' }[lang];
-  const keysOf = (roles) => String(roles || '').split(/\s*·\s*/).map((w) => w.replace(/\s*\(.*\)$/, '')).filter(Boolean);
-  const roleText = (roles) => String(roles || '').split(/\s*·\s*/).filter(Boolean).map((word) => { const m = word.match(/^(.*?)(\s*\(.*\))?$/); return (cardRoles[m[1]] || m[1]) + (m[2] || ''); }).join(' · ');
-  const dateText = (d) => { const m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})$/); if (!m) return String(d); return lang === 'en' ? `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${m[1]}.${m[2]}.${m[3]}`; };
-  const gains = (worksData.loudness && worksData.loudness.files) || {};
-  const card = (it, extra = {}) => {
-    const yt = ytId(it.youtube), shown = String((yt && dates[yt]) || it.date || '');
-    return { title: (titleKey && it[titleKey]) || it.title, artist: it.artist || '', roles: roleText(it.roles), keys: keysOf(it.roles), yt, audio: yt ? '' : (it.audio || ''), gain: (it.audio && gains[it.audio] && gains[it.audio].gain) || 0, date: shown, dateText: dateText(shown), cover: !!it.cover, ...extra };
-  };
-  const own = [];
-  for (const w of worksData.works) {
-    const album = lang === 'kr' ? w : merge(w, lang);
-    const units = (w.kind === 'album' && (w.tracks || []).length) ? w.tracks : [w];
-    for (const u of units) {
-      const post = Object.keys(POST).filter((r) => (u.roles || []).includes(r));
-      const yt = ytId(u.youtube || (u === w ? w.youtube : ''));
-      if (!post.length || !(yt || u.audio)) continue;
-      const lu = lang === 'kr' ? u : merge(u, lang);
-      own.push({ title: plain(lu.title || u.title), artist: plain(album.artist || w.artist), roles: post.map((r) => POST[r]).join(' · '), youtube: yt, audio: yt ? '' : u.audio, date: String(u.date || w.date || '').replace(/\./g, '-'), own: true });
-    }
-  }
-  const etcPost = ((site.bgmWorks || {}).items || []).filter((it) => keysOf(it.roles).some((k) => Object.values(POST).includes(k)));
-  const group = (key, items, roles) => {
-    const g = merge(site[key] || {}, lang), seen = new Set();
-    const list = items.filter((it) => { const k = ytId(it.youtube) || it.audio; if (!k || seen.has(k)) return false; seen.add(k); return true; })
-      .map((it) => card(it, it.own ? { own: true } : {})).sort((a, b) => b.date.localeCompare(a.date));
-    return { key, label: g.label || '', note: g.note || '', coverTag: g.coverTag || '', roles, items: list };
-  };
-  return [
-    group('mixWorks', [...((site.mixWorks || {}).items || []), ...own, ...etcPost], [['Rec', c.roleRec], ['Edit', c.roleEdit], ['Mix', c.roleMix], ['Master', c.roleMaster]]),
-    group('bgmWorks', (site.bgmWorks || {}).items || [], null),
-  ];
-}
-
-export function journeyData(site, worksData, lang) {
-  const c = journeyCopy(site, lang);
-  const works = journeyWorks(worksData, lang);
-  const extras = journeyExtras(site, worksData, lang);
-  const drop = ({ chapterLabels, translations, ...rest }) => rest;
-  return `window.TT_JOURNEY=${JSON.stringify({ copy: drop(c), works, extras }).replace(/</g, '\\u003c')};\n`;
 }
