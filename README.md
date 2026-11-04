@@ -12,11 +12,12 @@ GitHub Pages static site: https://taletone.net
 | Discography | /discography/ | /en/discography/, /ja/discography/ |
 | Contact | /contact/ | /en/contact/, /ja/contact/ |
 
-Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projects/ and /works/ URLs redirect directly to the new URLs in all languages and preview. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains only the five chapters in all three languages (15 URLs). Individual work pages are retired too: they are no longer built, linked or indexed, and their old URLs return 404. Retired content is kept in archive/ and never staged for publication.
+Canonical URLs now match chapter names. Legacy /members/, /story-types/, /projects/ and /works/ URLs redirect directly to the new URLs in all languages, and so do the retired /preview/ addresses. News and RSS are retired; their old generated files are removed during build and return 404 after deployment. The sitemap contains only the five chapters in all three languages (15 URLs). Individual work pages are retired too: they are no longer built, linked or indexed, and their old URLs return 404. Retired content is kept in archive/ and never staged for publication.
 
 ## Sources and checks
 
-- The site: the journey, built by scripts/build.mjs from scripts/journey-page.mjs (the document), src/journey/journey.css and src/journey/journey.js, at the five chapter routes in three languages. /preview/ redirects to it.
+- How it is built, folder by folder and part by part: ARCHITECTURE.md.
+- The site: the journey, built by scripts/build.mjs (data from scripts/journey-data.mjs, HTML from scripts/journey-page.mjs, the script from src/journey/js/, the styles from src/journey/css/), at the five chapter routes in three languages. /preview/ redirects to it.
 - Copy: assets/data/site-content.json (the `journey` block and its translations)
 - Search titles, descriptions and route registry: assets/data/seo-content.json
 - Works, tracks, audio gain and vinyl colours: assets/data/works-data.json, by the model in scripts/works-model.mjs (fields, where media resolve, the rules). `npm run audit` shows every album track by track, any problem, and files nothing uses.

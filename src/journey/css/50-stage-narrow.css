@@ -1,0 +1,78 @@
+/* ---- the stage on a phone or an upright screen (html.jy-narrow, set by the script) ----
+   The scene keeps to the upper part, the words to the bottom; the record sits in the middle above its card. */
+.jy-narrow.jy-stage-mode .jy-lead{left:50%;top:auto;bottom:max(28px,5vh);transform:translateX(-50%);width:calc(100% - 40px);text-align:center;align-items:center}
+.jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(24px,7vw,32px)}
+.jy-narrow.jy-stage-mode .jy-phone{top:34%}
+.jy-narrow.jy-stage-mode [data-anchor]{max-width:min(520px,calc(100vw - 56px))!important;font-size:16px}
+.jy-narrow.jy-stage-mode .jy-say{left:16px;right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:min(520px,calc(100vw - 32px));z-index:30}
+.jy-narrow.jy-stage-mode .jy-hint{left:16px;bottom:max(64px,8%)}
+.jy-narrow.jy-stage-mode .jy-fchip{flex:none;height:32px;padding:0 12px;font-size:13px}
+.jy-narrow.jy-stage-mode .jy-frow-sub .jy-fchip{height:30px}
+.jy-narrow.jy-stage-mode .jy-readout{left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:520px;margin:0 auto;padding:14px 16px;transform:translateY(10px)}
+.jy-narrow.jy-stage-mode .jy-readout.on{transform:none}
+.jy-narrow.jy-stage-mode .jy-np{left:max(16px,env(safe-area-inset-left,0px));top:calc(62px + env(safe-area-inset-top,0px));max-width:calc(100vw - 150px)}
+/* the record's card stays compact, so the swirl keeps the screen: words on top, every button on one row */
+.jy-narrow.jy-stage-mode .jy-readout{flex-flow:row wrap;align-items:center;column-gap:6px;padding:12px 14px}
+.jy-narrow.jy-stage-mode .jy-readout>p,.jy-narrow.jy-stage-mode .jy-readout>h2,.jy-narrow.jy-stage-mode .jy-readout>h3{flex:1 0 100%}
+.jy-narrow.jy-stage-mode .jy-ro-t{margin-top:4px;font-size:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.jy-narrow.jy-stage-mode .jy-ro-a{margin-top:2px;font-size:14px}
+.jy-narrow.jy-stage-mode .jy-ro-m{display:none}
+.jy-narrow.jy-stage-mode .jy-ro-r{margin-top:6px;font-size:12px}
+.jy-narrow.jy-stage-mode .jy-ro-btns,.jy-narrow.jy-stage-mode .jy-ro-nav{margin-top:10px;gap:6px;flex-wrap:nowrap}
+.jy-narrow.jy-stage-mode .jy-ro-nav{margin-left:auto}
+.jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:36px;padding:0 12px;font-size:13px}
+.jy-narrow.jy-stage-mode .jy-readout .jy-round{width:36px;height:36px}
+.jy-narrow.jy-stage-mode .jy-ro-nav .jy-btn{margin-left:0}
+.jy-narrow.jy-stage-mode .jy-fcap{flex:none;white-space:nowrap}
+
+/* ---- phone-only controls: a chapter chip and a progress line in place of the rail; sheets in place of panels ---- */
+.jy-mchap,.jy-mprog,.jy-fbtn,.jy-fhead,.jy-fopen,.jy-cclose,.jy-ro-trk{display:none}
+.jy-scrim{position:fixed;inset:0;z-index:1350;background:rgba(20,28,48,.32)}
+html.jy-held,html.jy-held body{overflow:hidden!important;overscroll-behavior:none}
+html.jy-held .jy-top{visibility:hidden}
+.jy-narrow.jy-stage-mode .jy-rail{display:none}
+.jy-narrow .jy-menu{left:max(16px,env(safe-area-inset-left,0px));right:auto}
+.jy-narrow.jy-stage-mode .jy-mchap{display:inline-flex;align-items:center;height:32px;margin:0 auto 0 6px;padding:0 14px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:13px;font-weight:700;color:var(--tt-ink);cursor:pointer}
+.jy-narrow.jy-ink .jy-mchap{background:rgba(20,28,48,.6);border-color:rgba(255,255,255,.14);color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-mprog{display:block;position:fixed;left:0;right:0;top:0;height:3px;background:rgba(159,161,166,.22);pointer-events:none}
+.jy-mprog i{display:block;height:100%;background:var(--tt-ink);transform-origin:0 50%;transform:scaleX(0)}
+.jy-ink .jy-mprog i{background:var(--tt-on-ink)}
+/* the record: one filter button, its choices in a sheet from the bottom */
+.jy-narrow.jy-stage-mode .jy-fbtn{display:block;position:absolute;z-index:1200;left:auto;right:max(16px,env(safe-area-inset-right,0px));top:calc(62px + env(safe-area-inset-top,0px));max-width:calc(100% - 48px);height:36px;padding:0 16px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.94);font-size:13px;font-weight:700;color:var(--tt-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.jy-narrow.jy-stage-mode .jy-fbtn.on{opacity:1;transform:none;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;border:0;background:var(--tt-canvas);box-shadow:0 -10px 40px rgba(20,28,48,.16);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-spring)}
+.jy-narrow.jy-stage-mode .jy-filters.open{transform:none;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-fhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 4px;font-size:16px}
+.jy-narrow.jy-stage-mode .jy-fhead .jy-x{position:static}
+.jy-narrow.jy-stage-mode .jy-frow{flex-wrap:wrap;row-gap:6px}
+.jy-narrow.jy-stage-mode .jy-fchip{height:40px;font-size:14px}
+/* the card: an album's tracks as chips you can swipe through */
+.jy-narrow.jy-stage-mode .jy-ro-trk:not([hidden]){display:flex;flex:1 0 100%;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.jy-ro-trk::-webkit-scrollbar{display:none}
+.jy-rtk{flex:none;display:inline-flex;align-items:center;gap:6px;max-width:210px;height:36px;padding:0 12px 0 5px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-size:13px;cursor:pointer}
+.jy-rtk i{padding:5px 6px;border-radius:999px;background:var(--tt-case);font:700 11px/1 var(--tt-display);font-style:normal}
+.jy-rtk span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.jy-rtk[aria-pressed="true"]{background:var(--tt-ink);border-color:var(--tt-ink);color:var(--tt-on-ink)}
+.jy-rtk[aria-pressed="true"] i{background:rgba(255,255,255,.18)}
+.jy-rtk:disabled{opacity:.4;cursor:default}
+/* the list: a full-height sheet above which the card stays */
+.jy-narrow.jy-stage-mode .jy-record.list .jy-spiral{position:fixed;left:0;top:0;width:100%;height:100%;padding:calc(64px + env(safe-area-inset-top,0px)) 12px 260px;background:var(--tt-canvas);grid-template-columns:1fr;z-index:1150;overscroll-behavior:contain}
+/* the inquiry: a button, and the form in a full sheet that holds the page still while typing */
+.jy-narrow.jy-stage-mode .jy-contact{left:20px;width:min(520px,calc(100% - 40px))}
+.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-contact:not(.open) .jy-form>:not(.jy-mail){display:none}
+.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-ink);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-fopen{display:none}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-banner{z-index:1600}
+#discography:has(.jy-record.list) .jy-fbtn{display:none}
+.jy-narrow.jy-stage-mode .jy-readout{background:var(--tt-canvas)}
+
+/* after a scene has played: a small cue that the next part is the visitor's to scroll */
+.jy-cue{display:none}
+.jy-stage-mode .jy-cue{display:grid;place-items:center;position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:34px;height:34px;margin-left:-17px;border-radius:50%;color:var(--tt-ink);background:rgba(254,254,254,.7);box-shadow:0 0 0 1px rgba(159,161,166,.3);opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
+.jy-stage-mode .jy-cue.on{opacity:1;transform:none;animation:jy-cue 1.6s ease-in-out .4s infinite}
+.jy-ink .jy-cue{color:var(--tt-on-ink);background:rgba(20,28,48,.5);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+@keyframes jy-cue{50%{transform:translateY(5px)}}
+.jy-narrow.jy-stage-mode .jy-cue{left:auto;right:10px;margin:0;top:46%;bottom:auto}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-cue.on{animation:none}}

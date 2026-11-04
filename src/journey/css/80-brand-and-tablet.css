@@ -1,0 +1,38 @@
+/* the name on the first screen, over the words: whose site this is, at a glance */
+.jy-brand{display:flex;align-items:center;gap:12px;height:32px;line-height:32px;white-space:nowrap;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
+.jy-brand img{width:30px;height:30px}
+.jy-brand b{font-weight:700;color:var(--tt-ink-muted)}
+/* on a phone the top bar is narrow: the name stays there on the first screen; after it, the chapter takes its place */
+.jy-narrow.jy-stage-mode .jy-wm{display:none}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-wm{display:inline}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-mchap{display:none}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-mark{margin-right:auto}
+.jy-narrow.jy-stage-mode .jy-brand{display:none}
+.jy-stage-mode.jy-at-pro:not(.jy-narrow) .jy-wm{opacity:0}
+.jy-wm{transition:opacity .4s}
+/* a tablet held upright: the first screen's words at a size a room can read */
+@media (min-width:700px){
+  .jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(32px,4.6vw,44px)}
+  .jy-narrow.jy-stage-mode .jy-service{font-size:18px}
+  .jy-narrow.jy-stage-mode .jy-cta .jy-btn{height:52px;padding:0 26px;font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-brand{display:flex;justify-content:center;font-size:18px}
+  .jy-narrow.jy-stage-mode .jy-lead{bottom:max(40px,7vh)}
+}
+@media (min-width:761px) and (max-width:1100px) and (orientation:portrait){.jy-in{grid-template-rows:44% 1fr}.jy-s-film{width:min(86%,640px)}}
+/* the close button stays visible over a video or a cover on a one-column detail */
+.jy-story .jy-x{z-index:5;background:rgba(254,254,254,.92);box-shadow:0 2px 12px rgba(20,28,48,.18)}
+/* a tablet held upright, often shown to a room: larger words, the conversation, the record's card and the
+   inquiry at a reading width in the middle */
+@media (min-width:700px){
+  .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(560px,calc(100vw - 120px))!important;font-size:19px}
+  .jy-narrow.jy-stage-mode .jy-room-n b{font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-readout{width:min(640px,calc(100% - 48px));max-width:none;left:0;right:0;margin:0 auto;padding:18px 22px;bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  .jy-narrow.jy-stage-mode .jy-ro-t{font-size:24px}
+  .jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:46px;font-size:15px}
+  .jy-narrow.jy-stage-mode .jy-contact{left:50%;width:min(600px,calc(100% - 80px));transform:translate(-50%,-50%)}
+  .jy-narrow.jy-stage-mode .jy-ct{font-size:36px}
+  .jy-narrow.jy-stage-mode .jy-form-note{font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-fopen{height:56px;font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-fchip{height:38px;padding:0 16px;font-size:15px}
+  .jy-narrow.jy-stage-mode .jy-mchap{height:38px;font-size:15px;padding:0 18px}
+}

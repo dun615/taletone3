@@ -1,0 +1,124 @@
+// The frame loop (what each frame draws for the scroll position), resizing, and the stage's interface.
+/* ---- the frame loop ---- */
+let npShown = -1;
+function setNowPlaying(i) { const w = pinned[i]; if (!w || i === npShown) return; npShown = i; setOffer(w); }
+function chapterOf(u) { for (const k of Object.keys(CH)) if (u < CH[k][1]) return k; return 'epi'; }
+function syncInert() {
+  if (story && !story.hidden) return;
+  if (profile.classList.contains('open')) return;
+  sections.forEach((s) => { s.inert = s.dataset.ch !== chapter; });
+}
+function frameLoop(now) {
+  requestAnimationFrame(frameLoop);
+  autoStep(now);
+  const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
+  const u = U();
+  const ch = chapterOf(u);
+  mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
+  if (ch !== chapter) { chapter = ch; html.classList.toggle('jy-at-pro', ch === 'pro'); syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
+  // Prologue: fall into the phone
+  const ip = clamp(local(u, 'pro')), cover = Math.max(W / 218, H / 400) * 1.08;
+  // the phone grows with the screen: a tablet held upright shows it large, a big monitor too
+  const ps = NARROW ? Math.min(1.45, (H * 0.47) / 416, (W - 40) / 234) : clamp((H * 0.5) / 416, 0.85, 1.3);
+  phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
+  // (glowing as the land lights up in it)
+  { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
+  { const turn = 180 * ease(ip / 0.28); card.style.transform = `rotateY(${turn}deg)`;
+    // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
+    if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
+  phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
+  phone.tabIndex = ip > 0.3 ? -1 : 0;
+  screen.style.background = ip > 0.86 ? `rgb(${Math.round(lerp(20, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(28, 254, ease((ip - 0.86) / 0.1)))},${Math.round(lerp(48, 254, ease((ip - 0.86) / 0.1)))})` : '';
+  lead.style.opacity = String(1 - ease(ip * 3)); lead.style.visibility = ip > 0.34 ? 'hidden' : 'visible';
+  // (the film fades as the screen turns to paper, and rests once the phone is gone)
+  if (lockVid && document.readyState === 'complete' && !document.hidden) lockVidPlay(ip < 0.43);
+  drawEnter(ip);
+  // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
+  const lt = local(u, 'tale'), lc = local(u, 'case'), lm = local(u, 'music');
+  penZ = penAt(u);
+  // the camera rides the line behind the pen, turning up and down with it (see rig)
+  { const cam = rig(penZ, worldOf(penZ)); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }
+  // while a phone between worlds is on screen, the conversation steps aside for it
+  { const pp = Math.max(clamp((penZ - (ZS - PH.land * 0.8)) / 0.3) * (penZ < ZS + 0.6 ? 1 : 0), clamp((penZ - (S0 - PH.sea * 0.8)) / 0.3) * (penZ < S0 + 0.8 ? 1 : 0));
+    if ((pp > 0.5) !== passing) { passing = pp > 0.5; html.classList.toggle('jy-passing', passing); } }
+  placeAnchors();
+  // how dark the scene is: the deep sea, then the night sky, until the record
+  spaceDark = Math.max(spaceIn(), penZ >= ZS ? clamp((depthK() - 0.4) / 0.3) : 0) * spaceFade();
+  { const m = (c0, c1) => Math.round(lerp(c0, c1, spaceDark)); lineRGB = `${m(20, 244)},${m(28, 244)},${m(48, 252)}`; }
+  const caseWork = CASE && bySlug[CASE];
+  if (caseWork) { if (lc > 0.04 && lc < 1) { setOffer(caseWork); caseOffer = true; } else if (caseOffer) { caseOffer = false; setOffer(null); } }
+  // Record: the dive into the current
+  const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
+  const inRecord = lr > 0 && lr < 1;
+  on(recordEl, inRecord); on($('#jy-filters'), lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on($('#jy-tabs'), lr > 0.1 && lr < 0.93); on(readout, lr > (NARROW ? 0.06 : 0.004) && lr < 0.93); // (on a phone it shares the bottom with the words on arriving, so it waits for them)
+  on($('#jy-found'), (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on($('#jy-hint'), lr > 0.05 && lr < 0.18);
+  if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
+  else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
+  // Done: out of the current, the phone is seen from outside, the record in it
+  const ink = le > 0 || spaceDark > 0.5;
+  stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
+  markImg.src = ink ? markImg.dataset.paper : markImg.dataset.ink;
+  // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
+  const letterEl = $('#jy-letter'), emptyEl = $('#jy-empty'), both = le > 0.05 && le < 0.3;
+  on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
+  letterEl.classList.toggle('up', both); if (both) letterEl.style.setProperty('--up', `${-(emptyEl.offsetHeight + 10)}px`);
+  if (lr > 0.8 && !recBuilt) buildRecordWash();
+  // the phone (416px with its charm below) keeps inside short screens
+  // (on a phone smaller and higher, so the letter and the empty seat fit under it)
+  const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.48) / 486) : Math.min(1, (H - 110) / 486);
+  if (ld > 0 && le <= 0) {
+    const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
+    frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 40, ease(ld / 0.7)) + '%' : '50%';
+    const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
+  } else if (le > 0) {
+    frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; frame.style.transform = `scale(${NARROW ? FS : lerp(FS, Math.min(1.25, (H - 70) / 486), ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : '72%'; frame.style.top = NARROW ? '40%' : '50%';
+    frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
+  } else frame.style.opacity = '0';
+  // Epilogue
+  on($('#jy-contact'), le > 0.32);
+
+  // ---- canvas ----
+  ctx.clearRect(0, 0, W, H);
+  if (inRecord) drawCurrent(lr);
+  else if (ld > 0 && ld < 0.4) { const fr = frame.getBoundingClientRect(); drawGroove(ld, fr.width / 234 / ((2 * RR) / 192), fr.left + fr.width / 2, fr.top + fr.height / 2); }
+  grooveSpin = ld > 0 && ld < 1 ? grooveSpin + dt * 0.9 : 0;
+  if (le > 0.15) drawTrail(le, 1);
+  const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
+  if (worldA > 0) drawWorld(worldA);
+}
+function resize() {
+  W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
+  html.classList.toggle('jy-narrow', NARROW);
+  DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
+  cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1; cloud = null;
+}
+addEventListener('resize', resize);
+// the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
+phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700, 150], ...ENTER[4]]], u); else playScene(ENTER, u); });
+
+// sample every cover once the record is near, so its wash can mix them
+let sampledAll = false;
+addEventListener('scroll', () => { if (!sampledAll && U() > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
+
+function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
+const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
+// each chapter opens where its first words are
+const target = { pro: 0, tale: uOfPen(SET.land[0] + 0.01), tone: uOfPen(SET.sea[0] + 0.1), record: recordU(0), epi: CH.epi[0] + 0.55 };
+// a jump to the next chapter glides; across two or more it goes at once, without drawing everything between
+const RAIL = ['pro', 'tale', 'tone', 'record', 'epi'];
+function goStage(where, smooth = true) {
+  const to = target[where] != null ? target[where] : 0;
+  const far = Math.abs(RAIL.indexOf(railOf[chapterOf(U())]) - RAIL.indexOf(railOf[chapterOf(to)])) >= 2;
+  goU(to, smooth && !far);
+}
+resize();
+requestAnimationFrame(frameLoop);
+// pick a record: bring it to the front of the staff (a glide when near, at once when far) and show its card
+function pick(slug) {
+  const i = items.findIndex((li) => li.dataset.slug === slug); if (i < 0) return;
+  goU(recordU(i), !recordEl.classList.contains('list') && Math.abs(i - recK) < 6);
+}
+
+// what the rest of the page may ask of the stage
+const stage = { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };

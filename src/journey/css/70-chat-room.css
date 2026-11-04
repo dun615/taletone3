@@ -1,0 +1,21 @@
+/* ---- the chat room around the words of the about, the philosophy and the case ---- */
+.jy-room{display:none}
+.jy-stage-mode .jy-room{display:block;position:absolute;left:0;top:0;width:0;height:0;border-radius:28px;background:transparent;box-shadow:inset 0 0 0 1px rgba(159,161,166,.32);opacity:0;pointer-events:none;transition:opacity .45s,box-shadow .6s,height .5s var(--tt-spring),transform .5s var(--tt-spring)}
+.jy-stage-mode .jy-room.on{opacity:1}
+.jy-room-h{position:absolute;left:8px;right:8px;top:8px;display:flex;align-items:center;gap:10px;height:50px;padding:0 14px 0 8px;border-radius:999px;background:rgba(254,254,254,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.jy-room-av{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#fefefe;box-shadow:0 0 0 1px rgba(159,161,166,.35);flex:none}
+.jy-room-av img{width:22px;height:22px}
+.jy-room-n{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.jy-room-n b{font-size:16px}
+.jy-room-n small{font-size:12px;color:var(--tt-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jy-room-on{margin-left:auto;width:8px;height:8px;border-radius:50%;background:#5fc28e;box-shadow:0 0 0 3px rgba(95,194,142,.18)}
+.jy-stage-mode .jy-room:not(.on) .jy-stage.ink .jy-room{box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.jy-stage.ink .jy-room-h{background:rgba(20,28,48,.5);color:var(--tt-on-ink)}
+.jy-stage.ink .jy-room-n small{color:var(--tt-on-ink-muted)}
+.jy-stage.ink .jy-stage.ink .jy-narrow .jy-room-h{height:44px;top:7px;left:7px;right:7px}
+.jy-narrow .jy-room-av{width:32px;height:32px}
+.jy-narrow .jy-narrow.jy-stage-mode .jy-room{border-radius:22px}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-room{transition:opacity .2s}}
+
+/* a phone between worlds has the stage: the conversation steps aside while it passes */
+.jy-stage-mode.jy-passing .jy-room,.jy-stage-mode.jy-passing [data-anchor]{opacity:0!important;transition:opacity .35s ease!important}

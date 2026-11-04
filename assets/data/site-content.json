@@ -1,5 +1,4 @@
 {
-  "version": "public-site-pass-20260709",
   "members": [
     {
       "name": "TALETONE",
@@ -918,92 +917,6 @@
         "title": "TALETONE MUSIC",
         "tagline": "物語は色になり、その色は音楽になる · A tale becomes a tone.",
         "copyright": "© 2026 TALETONE MUSIC"
-      }
-    }
-  },
-  "chapterLabels": {
-    "prologue": {
-      "label": "Prologue",
-      "note": "수면에서 아래로",
-      "copy": "",
-      "hint": "수면 아래, 아직 쓰이지 않은 책이 기다립니다."
-    },
-    "tale": {
-      "label": "Chapter 1 · Tale",
-      "note": "우리의 여행을 함께할 사람"
-    },
-    "tone": {
-      "label": "Chapter 2 · Tone",
-      "note": "이야기에 빛깔을 입히는 방식"
-    },
-    "music": {
-      "label": "Chapter 3 · Music",
-      "note": "깊은 바다에서 태어난 노래들"
-    },
-    "resurface": {
-      "label": "Echo",
-      "note": "세상으로 번지는 울림"
-    },
-    "epilogue": {
-      "label": "Epilogue",
-      "note": "다음 페이지는 함께 써 내려갑니다."
-    },
-    "translations": {
-      "en": {
-        "prologue": {
-          "label": "Prologue",
-          "note": "From surface to below",
-          "copy": "",
-          "hint": "Below the surface, an unwritten book is waiting."
-        },
-        "tale": {
-          "label": "Chapter 1 · Tale",
-          "note": "Our companion on this journey"
-        },
-        "tone": {
-          "label": "Chapter 2 · Tone",
-          "note": "How a story gets its color"
-        },
-        "music": {
-          "label": "Chapter 3 · Music",
-          "note": "Songs born in the deep"
-        },
-        "resurface": {
-          "label": "Echo",
-          "note": "Echoes reaching the world"
-        },
-        "epilogue": {
-          "label": "Epilogue",
-          "note": "Let's write the next page together."
-        }
-      },
-      "jp": {
-        "prologue": {
-          "label": "Prologue",
-          "note": "水面からその下へ",
-          "copy": "",
-          "hint": "水面の下で、まだ書かれていない本が待っています。"
-        },
-        "tale": {
-          "label": "Chapter 1 · Tale",
-          "note": "私たちの旅をともにする人"
-        },
-        "tone": {
-          "label": "Chapter 2 · Tone",
-          "note": "物語に色をのせる方法"
-        },
-        "music": {
-          "label": "Chapter 3 · Music",
-          "note": "深い海で生まれた歌"
-        },
-        "resurface": {
-          "label": "Echo",
-          "note": "世界へ広がる響き"
-        },
-        "epilogue": {
-          "label": "Epilogue",
-          "note": "次のページは、一緒に綴っていきます。"
-        }
       }
     }
   },
