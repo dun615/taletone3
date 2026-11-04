@@ -40,6 +40,7 @@ builds them; locally, `npm run build`.
 | `src/journey/js/` | The page's script, in parts (below). |
 | `src/journey/css/` | The page's styles, in parts (below). |
 | `assets/works/` | Covers (`*-1024.webp`, small `*-w320.webp`) and sounds (`*.mp3`). |
+| `assets/phone/case-back.svg` | The back of the home phone: the designer's draft drawn as vectors (logo traced, the rest measured), 9:16. |
 | `assets/fonts/`, `assets/logo/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (LINE Seed KR, Quicksand), logo marks, app icons, link previews, the lock screen's film. |
 | `.github/scripts/validate-site.mjs` | Static checks of the built site (every page's tags, links, files, redirects, the works' rules). |
 | `.github/scripts/validate-runtime-performance.mjs` | Headless Chrome: every route × language × three screens, the whole story scrolled, a record played, the inquiry; load budgets. |

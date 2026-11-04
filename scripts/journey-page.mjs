@@ -18,37 +18,6 @@ const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}"
 const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
 const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="24" height="58" viewBox="0 0 24 58"><circle cx="12" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><circle cx="12" cy="44" r="9" fill="none" stroke="#797c85" stroke-width="2.4"/><circle cx="12" cy="44" r="9" fill="none" stroke="#e5e6e8" stroke-width=".8"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
 
-// The back of the phone (the designer's draft): a periwinkle case in a navy line, a camera with two little lights and
-// a flash, eight-pointed sparkles, a keyboard (seven white keys, the five black keys of a real octave) along the
-// bottom, and the mark drawn hollow (assets/logo/mark-case.svg, laid over the middle by CSS).
-const caseBack = () => {
-  const LINE = '#2e3a5f', GREY = '#6e737b', CASE = '#e8ebfb';
-  // an eight-pointed sparkle: long rays up, down and across, short ones on the diagonals
-  const sparkle = (x, y, R, waist = 0.1, sw = 1.3) => {
-    const pts = [];
-    for (let k = 0; k < 16; k++) {
-      const a = (k * Math.PI) / 8 - Math.PI / 2, r = k % 2 ? R * waist : (k / 2) % 2 ? R * 0.42 : R;
-      pts.push(`${(x + Math.cos(a) * r).toFixed(1)} ${(y + Math.sin(a) * r).toFixed(1)}`);
-    }
-    return `<path d="M${pts.join(' L')}Z" fill="#fefefe" stroke="${GREY}" stroke-width="${sw}" stroke-linejoin="round"/>`;
-  };
-  const W = 234 / 7, TOP = 340;
-  const keys = [1, 2, 3, 4, 5, 6].map((k) => `<line x1="${(k * W).toFixed(1)}" y1="${TOP}" x2="${(k * W).toFixed(1)}" y2="416" stroke="${GREY}" stroke-width="1" stroke-dasharray="1.6 2.4"/>`).join('')
-    + [1, 2, 4, 5, 6].map((k) => `<rect x="${(k * W - 10).toFixed(1)}" y="${TOP}" width="20" height="46" rx="2.5" fill="${GREY}" stroke="${LINE}" stroke-width=".8"/>`).join('');
-  return `<svg viewBox="0 0 234 416" aria-hidden="true"><defs><clipPath id="jy-case-clip"><rect x="2" y="2" width="230" height="412" rx="30"/></clipPath></defs>`
-    + `<rect x="2" y="2" width="230" height="412" rx="30" fill="${CASE}"/>`
-    + `<g clip-path="url(#jy-case-clip)"><line x1="0" y1="${TOP}" x2="234" y2="${TOP}" stroke="${GREY}" stroke-width="1" stroke-dasharray="1.6 2.4"/>${keys}</g>`
-    + sparkle(68, 336, 17, 0.2, 1.1) + sparkle(176, 366, 15, 0.2, 1.1)
-    + `<rect x="2" y="2" width="230" height="412" rx="30" fill="none" stroke="${LINE}" stroke-width="3"/>`
-    + `<rect x="20" y="20" width="50" height="76" rx="14" fill="#c8cde6" stroke="${LINE}" stroke-width="2.2"/>`
-    + `<circle cx="45" cy="45" r="17" fill="#1d2538" stroke="${LINE}" stroke-width="2"/>`
-    + `<circle cx="40" cy="45" r="4.2" fill="#a9d8d3"/><circle cx="41.6" cy="45" r="3" fill="#1d2538"/>`
-    + `<circle cx="50" cy="45" r="4.2" fill="#a9d8d3"/><circle cx="51.6" cy="45" r="3" fill="#1d2538"/>`
-    + `<circle cx="45" cy="78" r="6" fill="#fff4b3" stroke="${LINE}" stroke-width="1.8"/>`
-    + sparkle(182, 90, 34) + sparkle(30, 182, 20)
-    + `</svg>`;
-};
-
 const lp = (work, cls = 'jy-lp') => `<span class="${cls}" aria-hidden="true"><img class="jy-vinyl" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-groove"></span><img class="jy-art" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-hole"></span></span>`;
 
 const grain = `<svg class="jy-grain" aria-hidden="true" focusable="false"><filter id="jy-grainf" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" stitchTiles="stitch" result="a"/><feColorMatrix in="a" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.32 0 0 0 -0.13" result="A"/><feTurbulence type="fractalNoise" baseFrequency="0.035 0.22" numOctaves="2" seed="3" result="b"/><feColorMatrix in="b" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.18 0 0 0 -0.08" result="B"/><feMerge><feMergeNode in="B"/><feMergeNode in="A"/></feMerge></filter><rect width="100%" height="100%" filter="url(#jy-grainf)"/></svg>`;
@@ -126,7 +95,7 @@ ${grain}
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
   <div class="jy-blackout" id="jy-blackout" aria-hidden="true"></div>
-  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card"><span class="jy-face jy-back">${caseBack()}<img class="jy-caselogo" src="/assets/logo/mark-case.svg" alt=""></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
+  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card"><span class="jy-face jy-back"><img class="jy-caseback" src="/assets/phone/case-back.svg" alt="" decoding="async"></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
   <div class="jy-lead" id="jy-lead">
     <p class="jy-brand"><img src="${markInk}" alt="" width="30" height="30"><span>TALETONE <b>MUSIC</b></span></p>
     <h1>${esc(merge(site.home, lang.key).tagline)}</h1>

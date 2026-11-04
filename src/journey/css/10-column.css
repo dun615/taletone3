@@ -8,8 +8,7 @@
 .jy-card{position:absolute;inset:0}
 .jy-face{position:absolute;inset:0;border-radius:30px}
 .jy-back{display:none}
-.jy-back svg{display:block;width:100%;height:100%}
-.jy-caselogo{position:absolute;left:58%;top:53%;width:68%;transform:translate(-50%,-50%)}
+.jy-caseback{display:block;width:100%;height:100%}
 .jy-front{padding:8px;background:var(--tt-case);box-shadow:inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas)}
 .jy-screen{display:block;position:relative;width:100%;height:100%;border-radius:22px;background:var(--tt-ink);overflow:hidden}
 .jy-lock{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;padding:44px 10px 0;color:var(--tt-on-ink);line-height:1.4}
