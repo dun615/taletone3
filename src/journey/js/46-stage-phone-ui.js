@@ -33,4 +33,4 @@ const U = () => { if (frozenU != null) return frozenU; const m = document.docume
 const topFor = (u) => (u / TOTAL) * (document.documentElement.scrollHeight - innerHeight);
 // a jump (rail, menu, the record's arrows) passes through scene changes without playing them
 let navUntil = 0;
-const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; if (asking) unask(); scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };
+const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };
