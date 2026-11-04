@@ -23,6 +23,10 @@ const AUTO = [
   [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
 ];
 let auto = null, hold = null, lastU = 0, inputAt = 0;
+// the first screen: the visitor goes in by pressing the lock screen's enter, not by scrolling; until then the story
+// stays at the lock screen (scrolling there only turns the phone over and nudges the button)
+let entered = false;
+const nudgeEnter = () => { phone.classList.remove('jy-nudge'); void phone.offsetWidth; phone.classList.add('jy-nudge'); };
 const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
 /* A scene is one unbroken motion: its steps are waypoints [u, ms to get there] of a single curve through them
    (monotone cubic, so it never turns back), at rest only at its start and its end. Between the steps it slows where a
@@ -75,11 +79,17 @@ addEventListener('scroll', () => {
   if (auto) return;
   const u = U();
   if (hold) { if (Math.abs(u - hold.u) > 0.002) scrollTo({ top: topFor(hold.u), behavior: 'instant' }); return; }
-  if (performance.now() < navUntil || frozenU != null) { lastU = u; return; }
+  if (performance.now() < navUntil || frozenU != null) { lastU = u; if (u >= ENTER[1] - 0.01) entered = true; return; }
+  if (u >= ENTER[1] - 0.01) entered = true;
+  if (!entered && u > AUTO[0][1] + 0.004) {
+    if (lastU < AUTO[0][1] - 0.02) playScene(AUTO[0], Math.max(lastU, AUTO[0][0] + 0.001)); else { scrollTo({ top: topFor(AUTO[0][1]), behavior: 'instant' }); lastU = AUTO[0][1]; nudgeEnter(); }
+    return;
+  }
   cue(false);
   // only going on plays a scene (from wherever in it the visitor is); going back is plain scrolling
   if (u > lastU) for (const sc of AUTO) {
     const [a, b] = sc;
+    if (sc === ENTER && !entered) continue;
     if (u > a && u < b) { playScene(sc, u); break; }
   }
   lastU = u;

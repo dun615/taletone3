@@ -26,6 +26,8 @@ function frameLoop(now) {
     // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
     if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
+  // (it rings until it has been turned over)
+  { const ringing = ip < 0.02; if (ringing !== html.classList.contains('jy-ringing')) html.classList.toggle('jy-ringing', ringing); }
   // once turned over, the back and its silver sides are out of sight: drop them before the phone grows to fill the view
   { const turned = ip >= 0.3; if (turned !== phone.classList.contains('jy-turned')) phone.classList.toggle('jy-turned', turned); }
   phone.tabIndex = ip > 0.3 ? -1 : 0;
@@ -100,7 +102,11 @@ function resize() {
 }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
-phone.addEventListener('click', () => { const u = U(); if (u > ENTER[1] - 0.01) return; if (u < 0.3) playScene([0, ENTER[1], 0, 0, [[0.33, 700], ...ENTER[4]]], u); else playScene(ENTER, u); });
+phone.addEventListener('click', (e) => {
+  const u = U(); if (u > ENTER[1] - 0.01) return;
+  if (u < AUTO[0][1] - 0.02) { playScene(AUTO[0], Math.max(u, AUTO[0][0] + 0.001)); return; }
+  if (e.target.closest('.jy-na-row') || e.detail === 0) { entered = true; playScene(ENTER, u); } else nudgeEnter();
+});
 
 // sample every cover once the record is near, so its wash can mix them
 let sampledAll = false;

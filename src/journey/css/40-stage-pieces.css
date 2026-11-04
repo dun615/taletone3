@@ -4,11 +4,25 @@
 .jy-service{margin:0;font-size:16px;color:var(--tt-ink-muted)}
 .jy-cta{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 0}
 .jy-cta .jy-btn{text-decoration:none}
-.jy-scrollhint{display:none;margin:22px 0 0;align-items:center;gap:12px;font-size:13px;color:var(--tt-ink-muted)}
-.jy-scrollhint i{position:relative;display:block;width:1.5px;height:34px;background:var(--tt-canvas-shade);overflow:hidden}
-.jy-scrollhint i::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:var(--tt-ink);animation:jy-drip 1.8s cubic-bezier(.34,1.4,.5,1) infinite}
-@keyframes jy-drip{to{top:100%}}
-.jy-stage-mode .jy-scrollhint{display:flex}
+/* the first screen: the phone rings (a buzz, a little hop) until it is tapped; the hint asks for the tap */
+.jy-taphint{display:none;margin:22px 0 0;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--tt-ink)}
+.jy-taphint i{position:relative;display:block;width:10px;height:10px;border-radius:50%;background:var(--tt-ink)}
+.jy-taphint i::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--tt-ink);animation:jy-tap 1.6s ease-out infinite}
+@keyframes jy-tap{from{transform:scale(.4);opacity:1}to{transform:scale(1.5);opacity:0}}
+.jy-stage-mode.jy-ringing .jy-phone{animation:jy-ring 2.4s infinite}
+@keyframes jy-ring{0%,30%,62%,100%{rotate:0deg;translate:0 0}3%{rotate:-4deg}6%{rotate:4deg}9%{rotate:-4deg}12%{rotate:4deg}15%{rotate:-3deg}18%{rotate:3deg}21%{rotate:-2deg}24%{rotate:2deg}
+  40%{translate:0 -12px;rotate:-3deg}48%{translate:0 0;rotate:0deg}53%{translate:0 -5px;rotate:2deg}58%{translate:0 0;rotate:0deg}}
+.jy-waves{display:none}
+.jy-stage-mode.jy-ringing .jy-waves{display:block;position:absolute;inset:-26px -34px;pointer-events:none}
+.jy-waves i{position:absolute;top:18%;width:22px;height:46px;border:2.5px solid var(--tt-ink-muted);border-radius:50%;opacity:0;animation:jy-wave 2.4s infinite}
+.jy-waves i:first-child{left:0;border-right-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+.jy-waves i:last-child{right:0;border-left-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
+@keyframes jy-wave{0%{opacity:0;scale:.6}6%{opacity:.8}26%{opacity:0;scale:1.25}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone,.jy-waves i,.jy-taphint i::after{animation:none}}
+/* the lock screen's enter, asked for again when someone tries to scroll past it */
+.jy-nudge .jy-na{animation:jy-nudge .6s var(--tt-spring)}
+@keyframes jy-nudge{30%{transform:scale(1.18)}60%{transform:scale(.96)}}
+.jy-stage-mode .jy-taphint{display:flex}
 /* the name on the first screen, over the words: whose site this is, at a glance */
 .jy-brand{display:flex;align-items:center;gap:12px;height:32px;line-height:32px;white-space:nowrap;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
 .jy-brand svg{flex:none;width:28px;height:30px} /* the mark filled with the light, beside the name */
