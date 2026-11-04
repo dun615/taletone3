@@ -34,7 +34,7 @@ button{font:inherit;color:inherit}
 a{color:inherit}
 img{max-width:100%}
 :focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
-.jy-sr,.jy-chl{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.jy-chl{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .jy-skip{position:fixed;left:16px;top:-60px;z-index:90;padding:10px 16px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);text-decoration:none;transition:top .3s var(--tt-spring)}
 .jy-skip:focus{top:16px}
 
@@ -49,7 +49,6 @@ img{max-width:100%}
 .jy-bub>*{grid-area:1/1}
 .jy-tx b{display:block;font-size:18px}
 .jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
-.jy-fact-v{display:inline!important;font-family:var(--tt-display);font-size:22px!important;margin-right:4px}
 .jy-lp{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08)}
 .jy-vinyl{position:absolute;inset:-15%;width:130%!important;max-width:none;height:130%;object-fit:cover;filter:blur(10px) saturate(1.6);opacity:.9}
 .jy-groove{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 5px,rgba(20,28,48,.07) 5px 6px)}
@@ -67,7 +66,9 @@ img{max-width:100%}
 /* header */
 .jy-top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none}
 .jy-top>*{pointer-events:auto}
-.jy-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:50%}
+.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
+.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap}
+.jy-wm b{font-weight:700;opacity:.55}
 .jy-mark img{width:24px;display:block}
 .jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s .5s}
 .jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .25s,transform .5s var(--tt-spring),visibility 0s}
@@ -235,7 +236,18 @@ img{max-width:100%}
 .jy-s-cover .jy-s-lp{position:absolute;inset:4%;width:92%;transform:translateX(26%);transition:transform .7s var(--tt-spring)}
 .jy-s-video{position:absolute;inset:0;z-index:3;background:#000}
 .jy-s-video .jy-embed{position:absolute;inset:0;width:100%;height:100%;border:0}
-.jy-s-vbtn{position:absolute;z-index:2;left:50%;bottom:22px;transform:translateX(-50%);gap:8px;background:rgba(20,28,48,.82);color:var(--tt-on-ink);border-color:transparent}
+/* a work with a video: the detail shows it as a 16:9 screen that plays in place */
+.jy-s-film{position:relative;z-index:2;width:min(90%,620px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 22px 60px rgba(20,28,48,.32)}
+.jy-s-film .jy-embed{position:absolute;inset:0;width:100%;height:100%;border:0}
+.jy-s-filmb{position:absolute;inset:0;padding:0;border:0;background:#000;cursor:pointer;color:#fff}
+.jy-s-filmb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--tt-spring),opacity .3s}
+.jy-s-filmb:hover img,.jy-s-filmb:focus-visible img{transform:scale(1.03)}
+.jy-s-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;display:grid;place-items:center;border-radius:50%;background:rgba(20,28,48,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 0 0 1px rgba(255,255,255,.22);transition:transform .5s var(--tt-spring),background .2s}
+.jy-s-play svg{margin-left:4px}
+.jy-s-filmb:hover .jy-s-play,.jy-s-filmb:focus-visible .jy-s-play{transform:scale(1.08);background:rgba(20,28,48,.92)}
+.jy-s-filml{position:absolute;left:14px;bottom:12px;padding:4px 10px;border-radius:999px;background:rgba(20,28,48,.7);font-size:12px;font-weight:700;letter-spacing:.04em}
+.jy-s-filmb:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+@media (max-width:760px){.jy-s-film{width:calc(100% - 24px);border-radius:10px;align-self:end;margin-bottom:12px}.jy-s-play{width:56px;height:56px;margin:-28px 0 0 -28px}}
 .jy-s-fmt{margin:0 0 8px;font-family:var(--tt-display);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tt-ink-muted)}
 .jy-s-facts{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0 0;font-size:13px}
 .jy-s-facts dt{color:var(--tt-ink-muted)}.jy-s-facts dd{margin:0}
@@ -274,7 +286,7 @@ img{max-width:100%}
 @keyframes jy-spin{to{transform:rotate(360deg)}}
 @keyframes jy-eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 
-@media (max-width:760px){
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .jy-in{grid-template-columns:1fr;grid-template-rows:38% 1fr}
   .jy-info{padding:24px 22px 22px}
   .jy-box{height:100%}
@@ -693,3 +705,45 @@ html.jy-held .jy-rail{visibility:hidden}
 .jy-narrow .jy-room-av{width:32px;height:32px}
 .jy-narrow .jy-narrow.jy-stage-mode .jy-room{border-radius:22px}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-room{transition:opacity .2s}}
+
+/* a phone between worlds has the stage: the conversation steps aside while it passes */
+.jy-stage-mode.jy-passing .jy-room,.jy-stage-mode.jy-passing [data-anchor]{opacity:0!important;transition:opacity .35s ease!important}
+
+/* the name on the first screen, over the words: whose site this is, at a glance */
+.jy-brand{display:flex;align-items:center;gap:12px;margin:0 0 4px;font-family:var(--tt-display);font-weight:700;font-size:clamp(15px,1.3vw,19px);letter-spacing:.26em;color:var(--tt-ink)}
+.jy-brand img{width:30px;height:30px}
+.jy-brand b{font-weight:700;color:var(--tt-ink-muted)}
+/* on a phone the top bar is narrow: the name stays there on the first screen; after it, the chapter takes its place */
+.jy-narrow.jy-stage-mode .jy-wm{display:none}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-wm{display:inline}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-mchap{display:none}
+.jy-narrow.jy-stage-mode.jy-at-pro .jy-mark{margin-right:auto}
+.jy-narrow.jy-stage-mode .jy-brand{display:none}
+.jy-stage-mode.jy-at-pro:not(.jy-narrow) .jy-wm{opacity:0}
+.jy-wm{transition:opacity .4s}
+/* a tablet held upright: the first screen's words at a size a room can read */
+@media (min-width:700px){
+  .jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(32px,4.6vw,44px)}
+  .jy-narrow.jy-stage-mode .jy-service{font-size:18px}
+  .jy-narrow.jy-stage-mode .jy-cta .jy-btn{height:52px;padding:0 26px;font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-brand{display:flex;justify-content:center;font-size:18px}
+  .jy-narrow.jy-stage-mode .jy-lead{bottom:max(40px,7vh)}
+}
+@media (min-width:761px) and (max-width:1100px) and (orientation:portrait){.jy-in{grid-template-rows:44% 1fr}.jy-s-film{width:min(86%,640px)}}
+/* the close button stays visible over a video or a cover on a one-column detail */
+.jy-story .jy-x{z-index:5;background:rgba(254,254,254,.92);box-shadow:0 2px 12px rgba(20,28,48,.18)}
+/* a tablet held upright, often shown to a room: larger words, the conversation, the record's card and the
+   inquiry at a reading width in the middle */
+@media (min-width:700px){
+  .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(560px,calc(100vw - 120px))!important;font-size:19px}
+  .jy-narrow.jy-stage-mode .jy-room-n b{font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-readout{width:min(640px,calc(100% - 48px));max-width:none;left:0;right:0;margin:0 auto;padding:18px 22px;bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  .jy-narrow.jy-stage-mode .jy-ro-t{font-size:24px}
+  .jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:46px;font-size:15px}
+  .jy-narrow.jy-stage-mode .jy-contact{left:50%;width:min(600px,calc(100% - 80px));transform:translate(-50%,-50%)}
+  .jy-narrow.jy-stage-mode .jy-ct{font-size:36px}
+  .jy-narrow.jy-stage-mode .jy-form-note{font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-fopen{height:56px;font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-fchip{height:38px;padding:0 16px;font-size:15px}
+  .jy-narrow.jy-stage-mode .jy-mchap{height:38px;font-size:15px;padding:0 18px}
+}

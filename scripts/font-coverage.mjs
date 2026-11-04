@@ -1,30 +1,15 @@
-// The characters the site can show, for the Google Fonts `text=` requests that serve Nanum Gothic (Korean) and
-// Noto Sans JP (Japanese pages) as one small file per weight instead of dozens of slices.
+// The Japanese characters the site can show, for the Google Fonts `text=` request that serves LINE Seed JP on the
+// Japanese pages as one small file per weight instead of dozens of slices.
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-// Everything that can put Korean text on a page.
+// Everything that can put text on a page.
 const SOURCES = [
-  'src/app/template.html', 'src/app/component.js', 'src/app/parts/content.js', 'src/app/parts/intro.js', 'src/app/parts/scene.js', 'src/app/parts/bridges.js', 'src/app/parts/routing.js', 'src/page.html',
   'assets/data/site-content.json', 'assets/data/seo-content.json', 'assets/data/works-data.json',
-  'assets/js/works.js', 'assets/js/site-ux.js', 'assets/js/image-slot.js', 'scripts/build.mjs',
-  'src/journey/journey.js', 'scripts/journey-page.mjs',
+  'scripts/build.mjs', 'scripts/journey-page.mjs', 'src/journey/journey.js',
 ];
 
-// ASCII is drawn by the Latin fonts; kana/kanji by Noto Sans JP.
-const skip = (cp) => cp < 0x80 || (cp >= 0x3040 && cp <= 0x30ff) || (cp >= 0x3400 && cp <= 0x9fff) || (cp >= 0xff65 && cp <= 0xff9f) || (cp >= 0xf900 && cp <= 0xfaff);
-
-export async function nanumCharacters(root, sources = SOURCES) {
-  const chars = new Set();
-  for (const file of sources) {
-    for (const ch of await readFile(path.join(root, file), 'utf8')) {
-      if (!skip(ch.codePointAt(0))) chars.add(ch);
-    }
-  }
-  return [...chars].sort((a, b) => a.codePointAt(0) - b.codePointAt(0)).join('');
-}
-
-// Kana, kanji, CJK punctuation and full-width forms: what Noto Sans JP draws on the Japanese pages.
+// Kana, kanji, CJK punctuation and full-width forms.
 const japanese = (cp) => (cp >= 0x3000 && cp <= 0x30ff) || (cp >= 0x3400 && cp <= 0x9fff) || (cp >= 0xf900 && cp <= 0xfaff) || (cp >= 0xff00 && cp <= 0xffef);
 
 export async function japaneseCharacters(root, sources = SOURCES) {

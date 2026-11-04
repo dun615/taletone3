@@ -1,6 +1,5 @@
-Hanken Grotesk
-Copyright 2021 The Hanken Grotesk Project Authors
-(https://github.com/marcologous/hanken-grotesk)
+LINE Seed KR (subsets made by scripts/subset-line-seed.py)
+by LINE Corporation (https://seed.line.me)
 
 Quicksand
 Copyright 2011 The Quicksand Project Authors

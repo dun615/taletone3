@@ -18,10 +18,7 @@ node_modules/
 /index.html
 /sitemap.xml
 /rss.xml
-/assets/app/app.js
 /assets/journey/
-/assets/data/site-content.js
-/assets/data/seo-content.js
 /en/
 /ja/
 /preview/
@@ -31,7 +28,6 @@ node_modules/
 /news/
 /contact/
 
-/assets/css/works.css
 
 /about/
 /approach/

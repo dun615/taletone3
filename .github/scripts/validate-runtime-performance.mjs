@@ -100,7 +100,17 @@ async function findChrome() {
   throw new Error('Chrome/Chromium was not found. Set CHROME_PATH.');
 }
 
+// A cold runner can take a while to start Chrome: wait up to 30 s, and start it again up to three times.
 async function launchChrome(chromePath) {
+  let last;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try { return await launchChromeOnce(chromePath); }
+    catch (error) { last = error; console.warn(`Chrome start ${attempt}/3 failed: ${error.message}`); }
+  }
+  throw last;
+}
+
+async function launchChromeOnce(chromePath) {
   const profile = await mkdtemp(path.join(os.tmpdir(), 'taletone-runtime-'));
   const args = [
     '--headless=new', '--mute-audio', '--disable-gpu', '--disable-extensions', '--disable-background-networking',
@@ -114,7 +124,7 @@ async function launchChrome(chromePath) {
   child.stderr?.on('data', (chunk) => { stderr = `${stderr}${chunk}`.slice(-8_000); });
   const portFile = path.join(profile, 'DevToolsActivePort');
   let port = 0;
-  for (let attempt = 0; attempt < 200; attempt += 1) {
+  for (let attempt = 0; attempt < 600; attempt += 1) {
     if (child.exitCode != null) throw new Error(`Chrome exited early (${child.exitCode}): ${stderr}`);
     try {
       const contents = await readFile(portFile, 'utf8');
@@ -123,7 +133,7 @@ async function launchChrome(chromePath) {
     } catch { /* Chrome has not written the port yet. */ }
     await sleep(50);
   }
-  if (!port) throw new Error(`Chrome debugging port did not become ready: ${stderr}`);
+  if (!port) { child.kill('SIGKILL'); throw new Error(`Chrome debugging port did not become ready: ${stderr}`); }
   return {
     child, profile, port,
     async close() {
