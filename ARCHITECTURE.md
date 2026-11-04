@@ -66,6 +66,7 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `30-inquiry` | The form: checks, sending (Web3Forms), the reply. |
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
+| `47-stage-phone-3d` | The phone as a 3D object (WebGL) under the card: depth, round sides, the raised camera, its back painted from `assets/phone/case-back.svg`, a light that slides across it as it tilts, holographic glowing stars; without WebGL the flat back stays. |
 | `48-stage-scenes` | How the story moves: scenes that play by themselves (`AUTO`, with steps), the questions between places, input. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
