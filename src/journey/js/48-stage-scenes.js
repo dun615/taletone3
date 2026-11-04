@@ -4,7 +4,7 @@
    stopping on the way to ask for anything (going back up is plain scrolling); it stops where the next words are,
    swallows the rest of that flick, and a small cue says it is the visitor's turn.
    [from, to, ms, , steps] in story units; each 'to' is where the next words have just arrived. */
-const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500, 250], [0.7, 2000, 350], [1, 1500, 0], [uOfPen(SET.land[0] + 0.01), 1100, 0]]];
+const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500], [0.7, 2000], [1, 1500], [uOfPen(SET.land[0] + 0.01), 1100]]];
 const AUTO = [
   [0.02, 0.30, 900],    // the phone turns over: a message on its lock screen
   // entering: the film breaks up and goes out and the room goes dark; points gather into the land in the screen; it
@@ -12,36 +12,52 @@ const AUTO = [
   ENTER,
   // straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor
   // in, and somewhere it became straight down into the sea
-  [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2600, 250], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200, 0], [uOfPen(SET.sea[0] + 0.1), 2400, 0]]],
+  [uOfPen(SET.land[3] + 0.4), uOfPen(SET.sea[0] + 0.1), 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2600], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [uOfPen(SET.sea[0] + 0.1), 2400]]],
   // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
-  [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2000, 250], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200, 0], [uOfPen(SET.space[0] + 0.15), 2200, 0]]],
+  [uOfPen(SET.sea[3] + 0.56), uOfPen(SET.space[0] + 0.15), 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2000], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200], [uOfPen(SET.space[0] + 0.15), 2200]]],
   [uOfPen(SET.space[3] + 0.8), uOfPen(PEN.music[1] - 0.75), 2400],   // along the stars to the record: found
   [CH.music[1] - 0.06, CH.record[0] + 0.4, 1500],   // the line splits in five and draws the staff: the first song
-  // past the last song, all the way into the inquiry in one go, resting a moment on each of the words between:
+  // past the last song, all the way into the inquiry in one go, slowing (never stopping) on each of the words between:
   // the staff becomes the record's groove and the record goes into the phone (the letter), the empty seat, and the
-  // line out to the form. Steps: [where, ms to get there, ms to rest there]
-  [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300, 150], [CH.epi[0] + 0.18, 1000, 900], [CH.epi[0] + 0.55, 1200, 0]]],
+  // line out to the form. Steps: [where, ms to get there]
+  [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
 ];
 let auto = null, hold = null, lastU = 0, inputAt = 0;
-const easeIO = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const cueEl = $('#jy-cue'), cue = (v) => cueEl && cueEl.classList.toggle('on', v);
-// rest: further steps of the same scene, each [where, ms, ms to rest there]; a step's start can lie in the future
-// (the rest after the step before), where it simply stays put
-function runAuto(from, to, ms, rest = [], pause = 0) { auto = { from, to, t0: performance.now(), d: reduce ? 0 : ms, rest, pause }; cue(false); }
-// play a scene from u on: straight to its end, or through those of its steps still ahead
+/* A scene is one unbroken motion: its steps are waypoints [u, ms to get there] of a single curve through them
+   (monotone cubic, so it never turns back), at rest only at its start and its end. Between the steps it slows where a
+   step asks for time (a phone waking) and speeds up where it does not, but it never stops on the way. */
+function runPath(pts) { // pts: [[ms from the start, u], ...], the first [0, where it is now]
+  const n = pts.length - 1, h = [], d = [];
+  for (let k = 0; k < n; k++) { h.push(Math.max(1, pts[k + 1][0] - pts[k][0])); d.push((pts[k + 1][1] - pts[k][1]) / h[k]); }
+  const m = pts.map((_, k) => {
+    if (k === 0 || k === n) return 0;
+    const a = d[k - 1], b = d[k]; if (a * b <= 0) return 0;
+    const w1 = 2 * h[k] + h[k - 1], w2 = h[k] + 2 * h[k - 1];
+    return (w1 + w2) / (w1 / a + w2 / b);
+  });
+  auto = { pts, h, m, t0: performance.now(), end: reduce ? 0 : pts[n][0] }; cue(false);
+}
+function sceneAt(a, t) {
+  if (t >= a.end) return a.pts[a.pts.length - 1][1];
+  let k = 0; while (k < a.h.length - 1 && t > a.pts[k + 1][0]) k++;
+  const s = clamp((t - a.pts[k][0]) / a.h[k]), s2 = s * s, s3 = s2 * s, y0 = a.pts[k][1], y1 = a.pts[k + 1][1], hk = a.h[k];
+  return (2 * s3 - 3 * s2 + 1) * y0 + (s3 - 2 * s2 + s) * hk * a.m[k] + (-2 * s3 + 3 * s2) * y1 + (s3 - s2) * hk * a.m[k + 1];
+}
+// play a scene from u on: straight to its end, or through those of its steps still ahead, as one motion
 function playScene([a, b, ms, , steps], u) {
-  if (!steps) { runAuto(u, b, (ms * (b - u)) / (b - a)); return; }
+  if (!steps) { runPath([[0, u], [(ms * (b - u)) / (b - a), b]]); return; }
   const ahead = steps.filter((st) => st[0] > u + 0.003), prev = steps[steps.indexOf(ahead[0]) - 1], from0 = prev ? prev[0] : a;
   if (!ahead.length) return;
-  const [to, ms0, rest0] = ahead[0];
-  runAuto(u, to, (ms0 * (to - u)) / (to - from0), ahead.slice(1), rest0);
+  const pts = [[0, u]]; let t = 0;
+  ahead.forEach(([to, msk], i) => { t += i === 0 ? (msk * (to - u)) / (to - from0) : msk; pts.push([t, to]); });
+  runPath(pts);
 }
 function autoStep(now) {
   if (auto) {
-    const k = auto.d ? clamp((now - auto.t0) / auto.d) : 1;
-    scrollTo({ top: topFor(lerp(auto.from, auto.to, easeIO(k))), behavior: 'instant' });
-    if (k >= 1 && auto.rest.length) { const [to, ms, pause] = auto.rest[0]; lastU = auto.to; auto = { from: auto.to, to, t0: now + (reduce ? 0 : auto.pause), d: reduce ? 0 : ms, rest: auto.rest.slice(1), pause }; }
-    else if (k >= 1) { hold = { u: auto.to, t0: now }; lastU = auto.to; auto = null; }
+    const t = now - auto.t0;
+    scrollTo({ top: topFor(sceneAt(auto, t)), behavior: 'instant' });
+    if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
   } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { hold = null; cue(true); }
 }
 const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };

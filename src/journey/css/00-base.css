@@ -89,5 +89,5 @@ img{max-width:100%}
 .jy-ink .jy-langtog a{color:var(--tt-on-ink-muted)}
 .jy-ink .jy-langtog a:hover{color:var(--tt-on-ink)}
 .jy-ink .jy-langtog a[aria-current]{background:var(--tt-on-ink);color:var(--tt-ink)}
-.jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:700}
+.jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:700;color:var(--tt-ink)} /* (its own ink: the page's colour turns light in the dark worlds, the menu stays paper) */
 .jy-menu li a:hover{background:var(--tt-canvas-hair)}

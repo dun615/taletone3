@@ -20,7 +20,9 @@ let roomOf = -1;
 function roomBox() {
   // a tablet held upright: the room in the middle, at a reading width
   if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24, head: 64, foot: 6 }; }
-  if (NARROW) return { x: 8, w: W - 16, top: H * 0.3, bottom: H - 8, head: 58, foot: 4 };
+  // a phone: the room keeps to the lower half, so the scene stays in view above it, and leaves the bottom edge to
+  // the cue and the player
+  if (NARROW) return { x: 8, w: W - 16, top: H * 0.5, bottom: H - 64, head: 58, foot: 4 };
   const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
 }
 function placeAnchors() {
@@ -52,7 +54,9 @@ function placeAnchors() {
   roomEl.classList.toggle('on', show);
   if (!show) return;
   if (g !== roomOf) { roomOf = g; const r = (COPY.rooms || {})[ROOMS[g]] || {}; roomT.textContent = r.title || ''; roomS.textContent = g === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
-  const top = Math.max(RB.top, topY - 12 - RB.head);
+  // (it hugs its thread; a message taller than the room's share of the screen, as the profile card, takes the room up
+  // with it, short of the top bar, rather than covering the room's name)
+  const top = Math.max(NARROW ? 64 : 0, topY - 12 - RB.head);
   roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${RB.bottom - top}px`;
 }
 function drawLead(A) {
