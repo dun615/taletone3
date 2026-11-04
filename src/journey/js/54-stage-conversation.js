@@ -19,7 +19,7 @@ const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), 
 let roomOf = -1;
 function roomBox() {
   // a tablet held upright: the room in the middle, at a reading width
-  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.36, bottom: H - 24, head: 64, foot: 6 }; }
+  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.5, bottom: H - 72, head: 64, foot: 6 }; }
   // a phone: the room keeps to the lower half, so the scene stays in view above it, and leaves the bottom edge to
   // the cue and the player
   if (NARROW) return { x: 8, w: W - 16, top: H * 0.5, bottom: H - 64, head: 58, foot: 4 };
