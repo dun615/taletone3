@@ -129,7 +129,7 @@ const scriptCopyKeys = [...new Set([...journeyJs.matchAll(/\bCOPY\.(\w+)/g)].map
 const journeyDataFor = (lang) => journeyData(site, works, lang.key, scriptCopyKeys);
 // what search engines and link previews read: canonical, alternates, social cards, structured data, analytics
 const liveHead = (page, lang) => {
-  const copy = pageCopy(page, lang), url = urlFor(lang, page.path), og = `${baseUrl}/assets/social/og-image${{ kr: '', en: '-en', jp: '-ja' }[lang.key]}.jpg?v=20261104-mark`;
+  const copy = pageCopy(page, lang), url = urlFor(lang, page.path), og = `${baseUrl}/assets/social/og-image${{ kr: '', en: '-en', jp: '-ja' }[lang.key]}.jpg?v=20261104-phone`;
   return [
     '<meta name="robots" content="index, follow">',
     '<meta name="referrer" content="strict-origin-when-cross-origin">',
