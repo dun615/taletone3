@@ -1,7 +1,8 @@
 /* A phone at each change of world, and the visitor goes into it. Three beats over p (0 to 1):
      0 - .45  it comes flying along the line from far ahead, turning to face the visitor, and stops in the middle;
               the line runs into its charging port
-   .45 - .62  its screen wakes: the visitor's own time and a notification, the next world lighting up behind them
+   .45 - .62  its screen wakes: the visitor's own time and a notification over the next world, which the screen has
+              shown from the first (no dark screen, so the story runs straight on into it)
    .62 - 1    it pulls: the world around is drawn in towards it, light streams into the screen, and the screen
               grows until it is the whole view. Through the screen the next world is really there (inside draws
               it), so when it fills the view it simply is the next scene. */
@@ -78,15 +79,13 @@ function phoneIn(p, an, dark, A, inside, note) {
   ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${(0.28 + 0.4 * wake) * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
   ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
   rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.1 * s3); ctx.clip();
-  // the next world, dim behind the glass until the screen wakes
+  // the next world, through the glass from the first
   ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
   inside();
-  const off = 1 - Math.max(0.25, wake);
-  if (off > 0) { ctx.fillStyle = `rgba(8,10,20,${0.85 * off * A})`; ctx.fillRect(0, 0, W, H); }
   // the lock screen over it: the visitor's own time, and a notification from TALETONE; they rush past as it pulls
   const ui = wake * (1 - ease(pull / 0.45));
   if (ui > 0.01 && Math.abs(yaw) < 0.2) {
-    const sc = s3 * (1 + 1.2 * pull), fam = '"LINE Seed KR","LINE Seed JP",system-ui,sans-serif', ink = dark ? '244,244,252' : '255,255,255';
+    const sc = s3 * (1 + 1.2 * pull), fam = '"LINE Seed KR","LINE Seed JP",system-ui,sans-serif', ink = dark ? '244,244,252' : INK; // (over the bright sea the time is in ink)
     const O = P(0, 0), ox = O[0], oy = O[1];
     ctx.globalAlpha = show * ui; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = `rgba(${ink},0.96)`; ctx.font = `700 ${(0.3 * sc).toFixed(1)}px ${fam}`;
