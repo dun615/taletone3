@@ -25,10 +25,15 @@ const pitchOf = (i) => Math.round(4 + 3 * Math.sin(i * 0.83 + 0.4)); // 0..8: li
 const radiusOf = (p) => 1 + (p - 4) * GAP * 0.5;
 const trackLayer = $('#jy-tracks');
 let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -1;
+// (where the record sits across a wide screen: further left where the screen is not so wide, as a tablet held on its
+// side, so the card on the right does not cover the record in front)
+const recX = () => (W < 1360 ? 0.3 : 0.36);
 function buildCurrent() {
-  const Rf = NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * 0.26, H * 0.37), size = NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
-  const cy0 = NARROW ? H * 0.31 : H * 0.5;
-  cur = { cx: NARROW ? W / 2 : W * 0.36, cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1 };
+  // (a tablet held upright gets a record as big as its width allows, above its card)
+  const TAB = NARROW && W >= 700;
+  const Rf = TAB ? Math.min(W * 0.4, H * 0.26) : NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * (W < 1360 ? 0.22 : 0.26), H * 0.37), size = TAB ? clamp(W * 0.17, 90, 150) : NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
+  const cy0 = TAB ? H * 0.34 : NARROW ? H * 0.31 : H * 0.5;
+  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1 };
   // where the staff begins on screen when the record opens: the world's line comes in there along the way the
   // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
   { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
@@ -78,7 +83,7 @@ function placeCurrent(lr) {
   const dive = ease((lr - 0.02) / 0.1), out = ease((lr - 0.91) / 0.09);
   // diving: from above the groove (a flat spiral) down into it; leaving: back up out of it, to see it whole
   const camIn = lerp(-VIEW - 2.2, focusZ - VIEW, dive), camZ = lerp(camIn, CEND, out);
-  cur.cx = lerp(lerp(W / 2, NARROW ? W / 2 : W * 0.36, dive), W / 2, out); cur.cy = lerp(cur.cy0, H * 0.5, out);
+  cur.cx = lerp(lerp(W / 2, NARROW ? W / 2 : W * recX(), dive), W / 2, out); cur.cy = lerp(cur.cy0, H * 0.5, out);
   // (seen whole, it is as big as the record it becomes)
   cur.Rf = lerp(cur.Rf0, (Math.min(W, H) * 0.34) / shrink(HEAD - CEND), out); cur.merge = out; cur.far = lerp(FAR, 40, out); cur.fade = 1 - ease(out / 0.5);
   const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);

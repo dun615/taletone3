@@ -5,7 +5,8 @@
 .jy-narrow.jy-stage-mode .jy-phone{top:34%}
 .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(520px,calc(100vw - 56px))!important;font-size:16px}
 .jy-narrow.jy-stage-mode .jy-say{left:16px;right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:min(520px,calc(100vw - 32px));z-index:30}
-.jy-narrow.jy-stage-mode .jy-hint{left:16px;bottom:max(64px,8%)}
+/* (on a narrow screen the record's card sits where the hint would be, so the hint is left out) */
+.jy-narrow.jy-stage-mode .jy-hint{display:none}
 
 .jy-narrow.jy-stage-mode .jy-frow-sub .jy-fchip{height:30px}
 

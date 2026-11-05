@@ -9,8 +9,16 @@
   .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(560px,calc(100vw - 120px))!important;font-size:19px}
   .jy-narrow.jy-stage-mode .jy-room-n b{font-size:17px}
   .jy-narrow.jy-stage-mode .jy-readout{width:min(640px,calc(100% - 48px));max-width:none;left:0;right:0;margin:0 auto;padding:18px 22px;bottom:calc(24px + env(safe-area-inset-bottom,0px))}
-  .jy-narrow.jy-stage-mode .jy-ro-t{font-size:24px}
-  .jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:46px;font-size:15px}
+  .jy-narrow.jy-stage-mode .jy-readout{width:min(720px,calc(100% - 48px));padding:22px 26px}
+  .jy-narrow.jy-stage-mode .jy-ro-n{font-size:14px}
+  .jy-narrow.jy-stage-mode .jy-ro-t{font-size:32px}
+  .jy-narrow.jy-stage-mode .jy-ro-a{font-size:19px}
+  .jy-narrow.jy-stage-mode .jy-ro-r{font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:52px;padding:0 24px;font-size:17px}
+  .jy-narrow.jy-stage-mode .jy-readout .jy-round{width:52px;height:52px}
+  .jy-narrow.jy-stage-mode .jy-tab{height:42px;padding:0 18px;font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-fbtn{height:44px;padding:0 20px;font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-towork{height:46px;padding:0 18px 0 20px;font-size:16px}
   .jy-narrow.jy-stage-mode .jy-contact{left:50%;width:min(600px,calc(100% - 80px));transform:translate(-50%,-50%)}
   .jy-narrow.jy-stage-mode .jy-ct{font-size:36px}
   .jy-narrow.jy-stage-mode .jy-form-note{font-size:17px}
