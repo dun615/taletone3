@@ -6,7 +6,7 @@ let cloud = null;
 // points sampled from it. (Drawn from further along, it showed poles and trees that then vanished and came back.)
 function buildCloud() {
   const r = screen.getBoundingClientRect(), sw = screen.offsetWidth || 218, sh = screen.offsetHeight || 400, ar = sw / sh;
-  const keep = { z: penZ, cam: getCam(), lead: leadOf }; leadOf = null;
+  const keep = { z: penZ, cam: getCam() };
   penZ = PEN.tale[0]; setCam(rig(PEN.tale[0], 0));
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H); drawWorld(1);
   const cw = Math.min(W, H * ar), ch = cw / ar, cx = (W - cw) / 2, cy = (H - ch) / 2;
@@ -15,7 +15,7 @@ function buildCloud() {
   sctx.fillStyle = '#fefefe'; sctx.fillRect(0, 0, pw, ph); sctx.drawImage(cv, Math.round(cx * DPR), Math.round(cy * DPR), pw, ph, 0, 0, pw, ph);
   // (sampled from the picture as seen on paper: points go where it changes, the outlines of hills, poles and trees)
   const img = sctx.getImageData(0, 0, pw, ph).data, lum = (o) => img[o] * 0.3 + img[o + 1] * 0.59 + img[o + 2] * 0.11, st = Math.max(2, Math.round(DPR * 1.5));
-  ctx.clearRect(0, 0, W, H); penZ = keep.z; setCam(keep.cam); leadOf = keep.lead;
+  ctx.clearRect(0, 0, W, H); penZ = keep.z; setCam(keep.cam);
   const S = 1.6; pcloud.width = Math.round(sw * S * (DPR > 1 ? 1.5 : 1)); pcloud.height = Math.round(sh * S * (DPR > 1 ? 1.5 : 1));
   const n = NARROW ? 1900 : 2600, pts = [], PAL = [[214, 233, 246], [200, 214, 236], [190, 222, 199], [214, 230, 186]];
   for (let tries = 0; pts.length < n && tries < n * 60; tries++) {
