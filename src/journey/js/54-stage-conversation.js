@@ -1,4 +1,5 @@
 // The messages along the line: where each sits on the line, and how they are said, like slides, two at a time
+// (each: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)])
 const ANCHORS = [
   ['#jy-hello', SET.land[0], 1], ['#jy-pcard', SET.land[1], -1], ['#jy-types', SET.land[2], 1], ['#jy-clients', SET.land[3], -1],
   ['#jy-creed', SET.sea[0], 1], ['#jy-step-0', SET.sea[1], 0], ['#jy-step-1', SET.sea[2], 0], ['#jy-step-2', SET.sea[3], 0],
