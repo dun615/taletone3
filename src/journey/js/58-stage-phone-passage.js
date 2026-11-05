@@ -152,25 +152,23 @@ function drawWorld(A) {
     // it. Through it is the sea, looked straight down into, which looks just like the sky looked straight up into:
     // only once through does it turn out to be water
     const p = clamp((penZ - (ZS - PH.land)) / PH.land);
-    if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); drawLead(A); return; }
+    if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); return; }
     const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001), an = V(pathAt(zP)) || [W / 2, H * 0.5], landAt = (z) => V(pathAt(z));
     const zE = phoneEntry(p, an, landAt, Math.min(penZ, zP));
     pulled(p, false, () => { backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zE), lineRGB, A); if (penZ <= zE) drawTip(lineRGB, A); });
     phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep), (COPY.phoneNotes || [])[0], landAt, zE);
-    drawLead(A);
     return;
   }
   if (penZ < S0) {
     // straight down into the deep; at the bottom a phone comes up the line, and through it is space
     const p = clamp((penZ - (S0 - PH.sea)) / PH.sea);
-    if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); drawLead(A); return; }
+    if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); return; }
     const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = V(seaPath(zP)) || [W / 2, H * 0.5], seaAt = (z) => V(seaPath(z));
     const zE = phoneEntry(p, an, seaAt, Math.min(penZ, zP));
     pulled(p, true, () => { backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zE), lineRGB, A, seaPath); if (penZ <= zE) drawTip(lineRGB, A, seaPath, true); });
     phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep), (COPY.phoneNotes || [])[1], seaAt, zE);
-    drawLead(A);
     return;
   }
   backdrop(2, A); elements(2, A);
-  drawLine(-1e9, penZ, lineRGB, A, spacePath); drawTip(lineRGB, A, spacePath); drawLead(A);
+  drawLine(-1e9, penZ, lineRGB, A, spacePath); drawTip(lineRGB, A, spacePath);
 }

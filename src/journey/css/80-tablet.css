@@ -3,7 +3,7 @@
 @media (min-width:700px){
   .jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(32px,4.6vw,44px)}
   .jy-narrow.jy-stage-mode .jy-service{font-size:18px}
-  .jy-narrow.jy-stage-mode .jy-cta .jy-btn{height:52px;padding:0 26px;font-size:16px}
+  .jy-narrow.jy-stage-mode .jy-taphint{height:54px;padding:0 26px 0 22px;font-size:17px}
   .jy-narrow.jy-stage-mode .jy-brand{display:flex;justify-content:center;font-size:18px}
   .jy-narrow.jy-stage-mode .jy-lead{bottom:max(40px,7vh)}
   .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(560px,calc(100vw - 120px))!important;font-size:19px}
