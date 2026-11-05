@@ -36,7 +36,7 @@ function lineOn(Q, line, strokeStyle, width, closed = false, fill = 1) {
   const n = Math.max(2, Math.round(line * Q.length)), ink = 1 - fill;
   ctx.strokeStyle = strokeStyle; ctx.lineWidth = width; polyline(Q, n); if (closed && n >= Q.length) ctx.closePath(); ctx.stroke();
   if (ink <= 0.02) return;
-  ctx.strokeStyle = `rgba(${lineRGB},${(0.55 * ink).toFixed(3)})`; ctx.lineWidth = width + 0.8; polyline(Q, n); if (closed && n >= Q.length) ctx.closePath(); ctx.stroke();
+  ctx.strokeStyle = `rgba(${lineRGB},${(0.3 * ink).toFixed(3)})`; ctx.lineWidth = width + 0.4; polyline(Q, n); if (closed && n >= Q.length) ctx.closePath(); ctx.stroke();
   if (line < 1) { const tip = Q[n - 1]; if (tip) { ctx.fillStyle = `rgba(${lineRGB},${(0.8 * ink).toFixed(3)})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 2.2, 0, Math.PI * 2); ctx.fill(); } }
 }
 // points round a circle (for the round things: trees, bells, planets)

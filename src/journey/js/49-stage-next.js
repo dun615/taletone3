@@ -1,5 +1,6 @@
-// The next message's place, marked like a notification once the visitor has the current one (STOPS): a click on it
-// plays the story on to that message (one leg, one motion), so each message stays for as long as it is read.
+// The story's two controls while it waits for clicks: the next message's place, marked like a notification once the
+// visitor has the current ones (STOPS), where a click plays the story on (one leg, one motion), so each message stays
+// for as long as it is read; and a way past all of it, straight to the discography.
 const nextEl = $('#jy-next');
 let nextShown = false;
 // the leg that starts where the visitor is (at a stop, or scrolled back a little before the next one)
@@ -16,10 +17,19 @@ function placeNext(u) {
   const m = 34, top = NARROW ? 84 : 76, bot = NARROW ? roomBox().top - 30 : H - 70, rr = roomEl.classList.contains('on') ? roomEl.getBoundingClientRect() : null;
   const inView = (q) => q && q[0] > m && q[0] < W - m && q[1] > top && q[1] < bot && !(rr && q[0] > rr.left - 30 && q[0] < rr.right + 30 && q[1] > rr.top - 30 && q[1] < rr.bottom + 30);
   // (a leg that passes into the next world points where it goes first: up the line to the phone coming down it)
-  const L = LEGS[i], zN = penAt(L[4] ? L[4][0][0] : L[1]);
+  const L = LEGS[i], nextA = ANCHORS.find((a) => a.z > penZ + 0.05);
+  const zN = Math.min(penAt(L[4] ? L[4][0][0] : L[1]), nextA ? nextA.z : Infinity);
   let p = null;
   for (let z = zN; z > penZ + 0.2; z -= 0.1) { const q = V(pathAt(z)); if (inView(q)) { p = q; break; } }
   // (none of it in view: just ahead of the tip)
   if (!p) { const q = V(pathAt(penZ + 0.2)) || [W * 0.35, H * 0.4]; p = [clamp(q[0], m, W - m), clamp(q[1], top, bot)]; }
   nextEl.style.translate = `${p[0].toFixed(1)}px ${p[1].toFixed(1)}px`;
+}
+// (the way past: on screen for the whole stretch that goes on by clicks)
+const toWork = $('#jy-towork');
+let toWorkOn = false;
+toWork.addEventListener('click', () => goStage('record'));
+function placeToWork(u) {
+  const show = clicky(u) && frozenU == null && story.hidden && !html.classList.contains('jy-held');
+  if (show !== toWorkOn) { toWorkOn = show; toWork.classList.toggle('on', show); toWork.tabIndex = show ? 0 : -1; toWork.setAttribute('aria-hidden', String(!show)); }
 }

@@ -67,8 +67,8 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
 | `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
-| `48-stage-scenes` | How the story moves: up to the discography it waits on every message (`STOPS`) and goes on one leg at a time (`LEGS`) when asked; scenes play by themselves to their end (`AUTO`, with steps; nothing stops one midway to ask for input), input. |
-| `49-stage-next` | The next message's place, marked like a notification while the story waits: a click on it plays the next leg. |
+| `48-stage-scenes` | How the story moves: up to the discography it waits after every second message (`STOPS`) and goes on one leg at a time (`LEGS`) when asked; scenes play by themselves to their end (`AUTO`, with steps; nothing stops one midway to ask for input), input. |
+| `49-stage-next` | The story's controls while it waits for clicks: the next message's place, marked like a notification (a click plays the next leg), and a way straight to the discography. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
 | `54-stage-conversation` | The messages along the line (`ANCHORS`) and the chat room around them. |

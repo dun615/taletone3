@@ -1,23 +1,25 @@
 /* ---- how the story moves ----
-   Up to the discography the story stops on every message (STOPS) and waits there for as long as the visitor reads:
+   Up to the discography the story stops after every second message (STOPS) and waits there for as long as the visitor reads:
    it goes on only when asked, by a click on the next message's place (marked like a notification, 49-stage-next) or
    a scroll down. Then one leg plays at the story's own pace, all the way to the next message without stopping on the
    way (going back up is plain scrolling); it swallows the rest of that flick. Past the record a scroll moves the
    words at the visitor's pace again, and the scene into the inquiry plays the same way.
    [from, to, ms, , steps] in story units; each 'to' is where the next words have just arrived. */
-const ENTER = [0.33, uOfPen(SET.land[0] + 0.01), 0, 0, [[0.45, 1500], [0.7, 2000], [1, 1500], [uOfPen(SET.land[0] + 0.01), 1100]]];
-// where the story waits, from the first hello to the first song: each message just arrived (on its pole, its
-// jellyfish, its star), the record found, the first song
-const STOPS = [...SET.land.map((z) => uOfPen(z + 0.01)), ...SET.sea.map((z) => uOfPen(z + 0.1)), ...SET.space.map((z) => uOfPen(z + 0.15)), uOfPen(PEN.music[1] - 0.75), CH.record[0] + 0.4];
-// the legs between them: along the line to the next message, in one motion
-const LEGS = STOPS.slice(0, -1).map((a, i) => [a, STOPS[i + 1], 1000]);
+// (it ends at the second message: the hello arrives on the way, the profile card where it stops)
+const ENTER = [0.33, uOfPen(SET.land[1] + 0.01), 0, 0, [[0.45, 1500], [0.7, 2000], [1, 1500], [uOfPen(SET.land[0] + 0.01), 1100], [uOfPen(SET.land[1] + 0.01), 1500]]];
+// where the story waits, from the first words to the first song: messages come two at a time (the first on the way,
+// the second where it stops, on its pole, its jellyfish, its star), then the record found, then the first song
+const atLand = (i) => uOfPen(SET.land[i] + 0.01), atSea = (i) => uOfPen(SET.sea[i] + 0.1), atSpace = (i) => uOfPen(SET.space[i] + 0.15);
+const STOPS = [atLand(1), atLand(3), atSea(1), atSea(3), atSpace(1), atSpace(3), uOfPen(PEN.music[1] - 0.75), CH.record[0] + 0.4];
+// the legs between them: along the line past one message to the next, in one motion
+const LEGS = STOPS.slice(0, -1).map((a, i) => [a, STOPS[i + 1], 1800]);
 // straight up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor in,
 // and somewhere it became straight down into the sea
-LEGS[3] = [STOPS[3], STOPS[4], 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2900], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [STOPS[4], 2400]]];
+LEGS[1] = [STOPS[1], STOPS[2], 0, 0, [[uOfPen(ZS - PH.land * (1 - PH_HOLD)), 2900], [uOfPen(ZS - PH.land * (1 - PH_WAKE)), 1200], [atSea(0), 2400], [STOPS[2], 1400]]];
 // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
-LEGS[7] = [STOPS[7], STOPS[8], 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2400], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200], [STOPS[8], 2200]]];
-LEGS[11] = [STOPS[11], STOPS[12], 2600];   // along the stars to the record: found
-LEGS[12] = [STOPS[12], STOPS[13], 1700];   // the line splits in five and draws the staff: the first song
+LEGS[3] = [STOPS[3], STOPS[4], 0, 0, [[uOfPen(S0 - PH.sea * (1 - PH_HOLD)), 2400], [uOfPen(S0 - PH.sea * (1 - PH_WAKE)), 1200], [atSpace(0), 2200], [STOPS[4], 1300]]];
+LEGS[5] = [STOPS[5], STOPS[6], 2600];   // along the stars to the record: found
+LEGS[6] = [STOPS[6], STOPS[7], 1700];   // the line splits in five and draws the staff: the first song
 // (the stretch that goes on by clicks)
 const clicky = (u) => u >= STOPS[0] - 0.01 && u < STOPS[STOPS.length - 1] - 0.01;
 const AUTO = [

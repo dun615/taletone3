@@ -92,7 +92,7 @@ function frameLoop(now) {
   if (worldA > 0) drawWorld(worldA);
   // (the line's place in the whole page, while it is drawing a world and no phone is passing)
   if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
-  placeNext(u);
+  placeNext(u); placeToWork(u);
 }
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
@@ -103,6 +103,7 @@ function resize() {
 }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
+$('#jy-taphint').addEventListener('click', () => { if (U() < AUTO[0][1] - 0.02) playScene(AUTO[0], Math.max(U(), AUTO[0][0] + 0.001)); });
 phone.addEventListener('click', (e) => {
   const u = U(); if (u > ENTER[1] - 0.01) return;
   if (u < AUTO[0][1] - 0.02) { playScene(AUTO[0], Math.max(u, AUTO[0][0] + 0.001)); return; }
@@ -116,7 +117,7 @@ addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU :
 function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
 // each chapter opens where its first words are
-const target = { pro: 0, tale: uOfPen(SET.land[0] + 0.01), tone: uOfPen(SET.sea[0] + 0.1), record: recordU(0), epi: CH.epi[0] + 0.55 };
+const target = { pro: 0, tale: STOPS[0], tone: STOPS[2], record: recordU(0), epi: CH.epi[0] + 0.55 };
 // a jump to the next chapter glides; across two or more it goes at once, without drawing everything between
 const RAIL = ['pro', 'tale', 'tone', 'record', 'epi'];
 function goStage(where, smooth = true) {

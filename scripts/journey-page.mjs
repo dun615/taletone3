@@ -114,8 +114,8 @@ ${grain}
     <p class="jy-brand">${markLit()}<span>TALETONE <b>MUSIC</b></span></p>
     <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
     <p class="jy-service">${esc(c.service)}</p>
-    <p class="jy-cta"><a class="jy-btn jy-btn-ink" href="${href('/discography/')}" data-go="record">${esc(c.listenNow)}</a><a class="jy-btn" href="${href('/contact/')}" data-go="epi">${esc(merge(site.home, lang.key).contactCtaLabel)}</a></p>
-    <p class="jy-taphint" aria-hidden="true"><i></i><span>${esc(c.tapHint)}</span></p>
+    <button class="jy-taphint" id="jy-taphint" type="button"><i aria-hidden="true"></i><span>${esc(c.tapHint)}</span></button>
+    <p class="jy-cta"><a class="jy-cta-link" href="${href('/discography/')}" data-go="record">${esc(c.listenNow)}</a><a class="jy-cta-link" href="${href('/contact/')}" data-go="epi">${esc(merge(site.home, lang.key).contactCtaLabel)}</a></p>
   </div>
 </section>
 
@@ -230,6 +230,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 <div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span><input type="range" class="jy-vol" id="jy-vol" min="0" max="100" value="100" aria-label="${esc(c.volume)}"></div>
 <div class="jy-scrim" id="jy-scrim" hidden></div>
 <button class="jy-next" id="jy-next" type="button" aria-label="${esc(c.nextLabel)}" aria-hidden="true" tabindex="-1"><span class="jy-next-r" aria-hidden="true"></span><span class="jy-next-b" aria-hidden="true"><i></i><i></i><i></i></span><span class="jy-next-n" aria-hidden="true"></span></button>
+<button class="jy-towork" id="jy-towork" type="button" aria-hidden="true" tabindex="-1"><span>${esc(c.skipToWorks)}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button>
 <div class="jy-cue" id="jy-cue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></div>
 <div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
 </div>
