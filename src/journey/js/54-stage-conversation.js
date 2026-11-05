@@ -11,7 +11,6 @@ ANCHORS.sort((a, b) => a.z - b.z);
 // reading spot and the older ones above it, quieter; a new chapter starts a new thread. What shows depends
 // only on where the pen is, and the arrival itself is a short timed animation, so a quick scroll loses nothing.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
-let leadOf = null;
 // The words of the about, the philosophy and the case are said in a chat room: a light frame, as tall as its
 // thread, named for the chapter, the messages arriving at its bottom and the older ones going up and out of it.
 // It keeps out of the scene's way: no fill, only its outline and the name.
@@ -36,7 +35,6 @@ function placeAnchors() {
   ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
   const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 6 || (g === 0 && penZ > CL0 + 0.75));
   let y = bottom;
-  leadOf = null;
   for (let i = ANCHORS.length - 1; i >= 0; i--) {
     const a = ANCHORS[i], shown = !gone && i <= latest && groupOf(a.z) === g;
     if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; }
@@ -49,7 +47,6 @@ function placeAnchors() {
     y -= a.h; topY = y;
     setVar(a, '--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
     setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', y.toFixed(1) + 'px'); setVar(a, '--as', '1');
-    if (i === latest) leadOf = { a, A: 1, x: slotX, y: y + Math.min(a.h / 2, 40) };
     y -= 10;
   }
   // the room around the thread
@@ -62,23 +59,14 @@ function placeAnchors() {
   const top = Math.max(NARROW ? 64 : 0, topY - 12 - RB.head);
   roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${RB.bottom - top}px`;
 }
-function drawLead(A) {
-  if (!leadOf) return;
-  const p = V(pathAt(leadOf.a.z)); if (!p) return;
-  const al = A * leadOf.A;
-  ctx.save(); ctx.strokeStyle = `rgba(${lineRGB},${0.55 * al})`; ctx.lineWidth = 1; ctx.setLineDash([3, 4]);
-  ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(leadOf.x - 8, leadOf.y); ctx.stroke(); ctx.restore();
-  ctx.fillStyle = `rgba(${lineRGB},${al})`; ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(leadOf.x - 8, leadOf.y, 2.5, 0, Math.PI * 2); ctx.fill();
-}
 function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
 // where along the whole page the line has come, written beside its tip on the left (the messages are on the right)
-function drawCoord(u, rgb, A) {
-  const P = penZ < ZS ? pathAt : penZ < S0 ? seaPath : spacePath, tip = V(P(penZ)); if (!tip || A < 0.05) return;
+function drawCoord(u, rgb, A0) {
+  const P = penZ < ZS ? pathAt : penZ < S0 ? seaPath : spacePath, tip = V(P(penZ)), A = 0.5 * A0; if (!tip || A < 0.05) return; // (quiet: a reference, not a sight)
   const x = tip[0] - 16, y = tip[1], pct = `${Math.round((clamp(u / TOTAL)) * 100)}%`;
   // (in the line's own colour, edged in its opposite so it reads on every world: the land, the blue sea, the night)
   const lum = rgb.split(',').reduce((t, v, i) => t + Number(v) * [0.3, 0.59, 0.11][i], 0), halo = lum < 140 ? '254,254,254' : '20,28,48';
-  ctx.font = '700 13px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.font = '700 11px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
   ctx.strokeStyle = `rgba(${rgb},${(0.85 * A).toFixed(3)})`; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(tip[0] - 6, y); ctx.lineTo(x + 3, y); ctx.stroke();
   ctx.strokeStyle = `rgba(${halo},${(0.7 * A).toFixed(3)})`; ctx.lineWidth = 3.5; ctx.strokeText(pct, x, y + 0.5);

@@ -4,21 +4,17 @@
 .jy-service{margin:0;font-size:16px;color:var(--tt-ink-muted)}
 .jy-cta{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 0}
 .jy-cta .jy-btn{text-decoration:none}
-/* the first screen: the phone rings (a buzz, a little hop) until it is tapped; the hint asks for the tap */
+/* the first screen: the phone rings (a buzz, a little hop) until it is tapped, the only thing that moves there; the
+   hint asks for the tap */
 .jy-taphint{display:none;margin:22px 0 0;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--tt-ink)}
 .jy-taphint i{position:relative;display:block;width:10px;height:10px;border-radius:50%;background:var(--tt-ink)}
-.jy-taphint i::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--tt-ink);animation:jy-tap 1.6s ease-out infinite}
 @keyframes jy-tap{from{transform:scale(.4);opacity:1}to{transform:scale(1.5);opacity:0}}
 .jy-stage-mode.jy-ringing .jy-phone{animation:jy-ring 2.4s infinite}
 @keyframes jy-ring{0%,30%,62%,100%{rotate:0deg;translate:0 0}3%{rotate:-4deg}6%{rotate:4deg}9%{rotate:-4deg}12%{rotate:4deg}15%{rotate:-3deg}18%{rotate:3deg}21%{rotate:-2deg}24%{rotate:2deg}
   40%{translate:0 -12px;rotate:-3deg}48%{translate:0 0;rotate:0deg}53%{translate:0 -5px;rotate:2deg}58%{translate:0 0;rotate:0deg}}
-.jy-waves{display:none}
-.jy-stage-mode.jy-ringing .jy-waves{display:block;position:absolute;inset:-26px -34px;pointer-events:none}
-.jy-waves i{position:absolute;top:18%;width:22px;height:46px;border:2.5px solid var(--tt-ink-muted);border-radius:50%;opacity:0;animation:jy-wave 2.4s infinite}
-.jy-waves i:first-child{left:0;border-right-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
-.jy-waves i:last-child{right:0;border-left-color:transparent;border-top-color:transparent;border-bottom-color:transparent}
-@keyframes jy-wave{0%{opacity:0;scale:.6}6%{opacity:.8}26%{opacity:0;scale:1.25}100%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone,.jy-waves i,.jy-taphint i::after{animation:none}}
+/* (while it rings nothing else on the first screen moves: the charm hangs still, the enter waits on the far side) */
+.jy-at-pro .jy-phone .jy-charm,.jy-ringing .jy-na{animation:none}
+@media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone{animation:none}}
 /* the next message's place (49-stage-next): a chat bubble typing, with a notification dot and a pulse, asking for a
    click; it comes a moment after the message it follows, so that one is read first */
 .jy-next{display:none}

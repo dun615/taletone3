@@ -74,7 +74,7 @@ function autoStep(now) {
     const t = now - auto.t0;
     sceneU = sceneAt(auto, t); scrollTo({ top: topFor(sceneU), behavior: 'instant' });
     if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
-  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(!clicky(hold.u)); hold = null; }
+  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(hold.u >= STOPS[STOPS.length - 1] - 0.01); hold = null; } // (before the record the next message's mark asks instead; at the lock screen the enter does)
 }
 const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
 addEventListener('wheel', swallow, { passive: false });

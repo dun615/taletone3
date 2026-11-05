@@ -140,6 +140,9 @@
 /* chapters, always in reach: business visitors jump straight to the music */
 .jy-rail{display:none}
 .jy-stage-mode .jy-rail{display:block;position:fixed;z-index:55;left:max(20px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%)}
+/* (it steps back while the story plays; the pointer or the keyboard brings it forward) */
+.jy-stage-mode:not(.jy-at-pro) .jy-rail{opacity:.38;transition:opacity .25s var(--tt-ease-out)}
+.jy-stage-mode .jy-rail:hover,.jy-stage-mode .jy-rail:focus-within{opacity:1}
 .jy-rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .jy-rail a{display:flex;flex-direction:row-reverse;align-items:center;justify-content:flex-end;gap:10px;min-height:36px;padding:0 12px 0 4px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;color:var(--tt-ink-muted);transition:color .25s}
 .jy-rail-pf{margin-top:4px;padding-top:4px;border-top:1px solid rgba(159,161,166,.3)}
