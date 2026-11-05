@@ -71,7 +71,7 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `49-stage-next` | The story's controls while it waits for clicks: the next message's place, marked like a notification (a click plays the next leg), and a way straight to the discography. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
-| `54-stage-conversation` | The messages along the line (`ANCHORS`) and the chat room around them. |
+| `54-stage-conversation` | The messages along the line (`ANCHORS`), said like slides two at a time (`SLIDES`), under the chapter's name (the room). |
 | `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
 | `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
 | `58-stage-phone-passage` | The phone between worlds (approach, wake, pull: `PH`, `phoneIn`) and `drawWorld`. |

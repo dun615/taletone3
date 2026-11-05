@@ -1,4 +1,5 @@
-// messages written along the line: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)]
+// The messages along the line: where each sits on the line, and how they are said, like slides, two at a time
+// (each: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)])
 const ANCHORS = [
   ['#jy-hello', SET.land[0], 1], ['#jy-pcard', SET.land[1], -1], ['#jy-types', SET.land[2], 1], ['#jy-clients', SET.land[3], -1],
   ['#jy-creed', SET.sea[0], 1], ['#jy-step-0', SET.sea[1], 0], ['#jy-step-1', SET.sea[2], 0], ['#jy-step-2', SET.sea[3], 0],
@@ -7,57 +8,54 @@ const ANCHORS = [
 ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
 const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
 ANCHORS.sort((a, b) => a.z - b.z);
-// the messages of one chapter make one thread: each stays once written, the newest at the bottom of the
-// reading spot and the older ones above it, quieter; a new chapter starts a new thread. What shows depends
-// only on where the pen is, and the arrival itself is a short timed animation, so a quick scroll loses nothing.
+// The messages are said like slides: the two of one stop (STOPS), large, one under the other in the reading spot, the
+// first as it is passed and the second where the story stops; the next stop's two take their place. Each chapter's
+// slides sit under its name (the room's head). What shows depends only on where the pen is.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
-// The words of the about, the philosophy and the case are said in a chat room: a light frame, as tall as its
-// thread, named for the chapter, the messages arriving at its bottom and the older ones going up and out of it.
-// It keeps out of the scene's way: no fill, only its outline and the name.
+const slideOf = (i) => Math.floor(i / 2);
+const SLIDES = []; ANCHORS.forEach((a, i) => { (SLIDES[slideOf(i)] = SLIDES[slideOf(i)] || []).push(i); });
+// how much larger than their own size the messages are shown (less where the reading spot is small)
+const slideScale = () => (NARROW && W < 700 ? 1 : 1.3);
 const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
 let roomOf = -1;
 function roomBox() {
-  // a tablet held upright: the room in the middle, at a reading width
-  if (NARROW && W >= 700) { const w = Math.min(640, W - 64); return { x: (W - w) / 2, w, top: H * 0.5, bottom: H - 72, head: 64, foot: 6 }; }
-  // a phone: the room keeps to the lower half, so the scene stays in view above it, and leaves the bottom edge to
-  // the cue and the player
-  if (NARROW) return { x: 8, w: W - 16, top: H * 0.5, bottom: H - 64, head: 58, foot: 4 };
-  const w = Math.min(460, W * 0.36); return { x: Math.min(W * 0.57, W - w - 28), w, top: H * 0.11, bottom: H * 0.86, head: 66, foot: 6 };
+  // a tablet held upright: the lower part, at a reading width in the middle
+  if (NARROW && W >= 700) { const w = Math.min(760, W - 64); return { x: (W - w) / 2, w, top: H * 0.42, bottom: H - 72, head: 64, foot: 6 }; }
+  // a phone: the lower part, so the scene stays in view above it, leaving the bottom edge to the way to the works
+  if (NARROW) return { x: 8, w: W - 16, top: H * 0.4, bottom: H - 60, head: 58, foot: 4 };
+  const w = Math.min(640, W * 0.42); return { x: Math.min(W * 0.54, W - w - 32), w, top: H * 0.12, bottom: H * 0.9, head: 66, foot: 6 };
 }
 // (a style is written only when it changes: twelve messages, four values each, every frame, would otherwise make the
 // browser look at them all again each frame)
 const setVar = (a, k, v) => { const c = a.css || (a.css = {}); if (c[k] !== v) { c[k] = v; a.el.style.setProperty(k, v); } };
 function placeAnchors() {
-  const RB = roomBox(), slotX = RB.x + 18, bottom = RB.bottom - RB.foot - 12, ceil = RB.top + RB.head + 10;
-  let topY = bottom;
-
+  const RB = roomBox(), x0 = RB.x + 18, top0 = RB.top + RB.head + 14, avail = RB.bottom - RB.foot - 12 - top0, gap = 14;
   let latest = -1;
   ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
   const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 6 || (g === 0 && penZ > CL0 + 0.75));
-  let y = bottom;
-  for (let i = ANCHORS.length - 1; i >= 0; i--) {
-    const a = ANCHORS[i], shown = !gone && i <= latest && groupOf(a.z) === g;
-    if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; }
-    a.el.classList.toggle('on', shown);
-    a.el.classList.toggle('older', shown && i !== latest);
-    // a hidden message waits just under the spot it will take, so it rises a short way when it arrives
-    if (!shown) { setVar(a, '--aa', '0'); setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', (bottom - a.h + 18).toFixed(1) + 'px'); setVar(a, '--as', '1'); continue; }
-    // (the older ones go up and out of the room once the thread would climb past its top)
-    if (i !== latest && y - a.h < ceil) { a.el.classList.remove('on'); setVar(a, '--aa', '0'); continue; }
-    y -= a.h; topY = y;
-    setVar(a, '--aa', i === latest ? '1' : spaceDark > 0.5 ? '0.88' : '0.62');
-    setVar(a, '--ax', slotX.toFixed(1) + 'px'); setVar(a, '--ay', y.toFixed(1) + 'px'); setVar(a, '--as', '1');
-    y -= 10;
-  }
-  // the room around the thread
-  const show = latest >= 0 && !gone && g >= 0 && g < 3;
+  const cur = latest >= 0 && !gone ? slideOf(latest) : -1;
+  let end = top0;
+  // every slide is laid out where it will be (so a slide only fades in and rises a little, never travels)
+  SLIDES.forEach((ids, k) => {
+    for (const i of ids) { const a = ANCHORS[i]; if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; } }
+    const hs = ids.reduce((t, i) => t + ANCHORS[i].h, 0) + gap * (ids.length - 1), ws = Math.max(...ids.map((i) => ANCHORS[i].w));
+    const sc = clamp(Math.min(slideScale(), avail / hs, (RB.w - 36) / ws), 0.75, 1.5);
+    let y = top0;
+    for (const i of ids) {
+      const a = ANCHORS[i], shown = k === cur && i <= latest;
+      a.el.classList.toggle('on', shown);
+      setVar(a, '--as', sc.toFixed(3)); setVar(a, '--ax', x0.toFixed(1) + 'px'); setVar(a, '--ay', (y + (shown ? 0 : 12)).toFixed(1) + 'px'); setVar(a, '--aa', shown ? '1' : '0');
+      y += a.h * sc + gap;
+      if (shown) end = y - gap;
+    }
+  });
+  // the room: the chapter's name over its slides
+  const show = cur >= 0 && g >= 0 && g < 3;
   roomEl.classList.toggle('on', show);
   if (!show) return;
   if (g !== roomOf) { roomOf = g; const r = (COPY.rooms || {})[ROOMS[g]] || {}; roomT.textContent = r.title || ''; roomS.textContent = g === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
-  // (it hugs its thread; a message taller than the room's share of the screen, as the profile card, takes the room up
-  // with it, short of the top bar, rather than covering the room's name)
-  const top = Math.max(NARROW ? 64 : 0, topY - 12 - RB.head);
-  roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${RB.bottom - top}px`;
+  const top = top0 - 14 - RB.head;
+  roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${end + 14 - top}px`;
 }
 function polyline(pts, n) { ctx.beginPath(); let started = false; for (let i = 0; i < n; i++) { const q = pts[i]; if (!q) { started = false; continue; } if (started) ctx.lineTo(q[0], q[1]); else { ctx.moveTo(q[0], q[1]); started = true; } } }
 // where along the whole page the line has come, written beside its tip on the left (the messages are on the right)

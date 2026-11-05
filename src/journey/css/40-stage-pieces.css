@@ -135,11 +135,14 @@
 .jy-stage-mode .jy-trail.jy-voice{display:block!important;position:absolute!important;inset:0!important;width:auto!important;transform:none!important;pointer-events:none}
 .jy-stage-mode .jy-chat.jy-voice{left:max(48px,6vw);bottom:12%;justify-content:flex-end;display:block!important;position:absolute!important;inset:0!important;width:auto!important;transform:none!important;pointer-events:none}
 .jy-stage-mode .jy-case-marks{display:block;padding:0;position:absolute;inset:0}
-.jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .3s ease,transform .55s var(--tt-spring)!important;animation:none!important;pointer-events:none;will-change:transform,opacity}
+.jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .35s var(--tt-ease-out),transform .45s var(--tt-ease-out)!important;animation:none!important;pointer-events:none;will-change:opacity}
 .jy-stage-mode [data-anchor]:not(.on){transition:opacity .2s ease!important}
 /* (with reduced motion the messages fade in their places instead of gliding up the thread) */
 @media (prefers-reduced-motion:reduce){.jy-stage-mode [data-anchor]{transition:opacity .2s ease!important}}
-.jy-stage-mode [data-anchor].older .jy-bub::before{opacity:0}
+/* (said like slides: no faces beside them, no bubble tails or hanging strings, the same rounded card for all) */
+.jy-stage-mode [data-anchor]>.jy-av{display:none}
+.jy-stage-mode [data-anchor] .jy-bub{border-radius:18px}
+.jy-stage-mode [data-anchor] .jy-bub::before{display:none}
 .jy-stage-mode .jy-track{display:block;height:var(--track,1810vh);position:relative}
 .jy-stage-mode [data-anchor].on{pointer-events:auto}
 
