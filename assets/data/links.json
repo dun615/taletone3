@@ -2,10 +2,10 @@
   "name": "노사무엘 (TALETONE)",
   "role": "Music Producer",
   "links": [
-    { "label": "Instagram", "url": "https://www.instagram.com/taleton4ml" },
-    { "label": "X", "url": "https://x.com/taleton4ml" },
-    { "label": "YouTube", "url": "https://www.youtube.com/@taleton4ml" },
-    { "label": "Homepage", "url": "https://taletone.net" },
-    { "label": "KakaoTalk 오픈채팅", "url": "https://open.kakao.com/o/sas294Vi" }
+    { "label": "Instagram", "url": "https://www.instagram.com/taleton4ml", "icon": "instagram" },
+    { "label": "X", "url": "https://x.com/taleton4ml", "icon": "x" },
+    { "label": "YouTube", "url": "https://www.youtube.com/@taleton4ml", "icon": "youtube" },
+    { "label": "Homepage", "url": "https://taletone.net", "icon": "home" },
+    { "label": "KakaoTalk 오픈채팅", "url": "https://open.kakao.com/o/sas294Vi", "icon": "chat", "primary": true }
   ]
 }

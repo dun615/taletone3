@@ -33,7 +33,7 @@ builds them; locally, `npm run build`.
 | `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video, vinyl colours. |
 | `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `trackRecord`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
 | `assets/data/seo-content.json` | The five chapter routes, their titles and descriptions, the site name, analytics. |
-| `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`), in order. Add a button here. |
+| `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`, `icon`, `primary` for the one edged in the brand's light), in order. Add a button here. |
 | `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
 | `scripts/journey-data.mjs` | Data → what the page shows, per language. |
 | `scripts/journey-page.mjs` | That data → the HTML document. |
