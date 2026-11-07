@@ -1668,6 +1668,7 @@
         "listenNow": "Listen now",
         "tapHint": "Tap the phone",
         "skipToWorks": "Skip to the discography",
+        "goOnAsk": "Shall we go on?",
         "playerLabel": "Now playing",
         "featuredLabel": "Featured",
         "rooms": {
@@ -1792,6 +1793,7 @@
         "listenNow": "音楽を聴く",
         "tapHint": "スマホをタップしてみてください",
         "skipToWorks": "ディスコグラフィーへスキップ",
+        "goOnAsk": "次へ進みますか？",
         "playerLabel": "再生中の曲",
         "featuredLabel": "代表作",
         "rooms": {
@@ -1829,6 +1831,7 @@
     "listenNow": "음악 듣기",
     "tapHint": "휴대폰을 클릭해보세요",
     "skipToWorks": "디스코그래피 바로 보기",
+    "goOnAsk": "다음으로 갈까요?",
     "playerLabel": "재생 중인 곡",
     "featuredLabel": "대표작",
     "rooms": {

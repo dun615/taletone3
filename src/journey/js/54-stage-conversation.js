@@ -10,7 +10,8 @@ const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).m
 ANCHORS.sort((a, b) => a.z - b.z);
 // A chapter's words are all on screen at once, one under the other in the reading spot under the chapter's name (the
 // room's head), to be read at the visitor's own pace. When they do not all fit, scrolling moves them up through the
-// spot (the chapter's words then take as much scroll as that: readLen). They give way as the way on begins.
+// spot (the chapter's words then take as much scroll as that: readLen). Under them: shall we go on? and its button.
+// They give way as the way on begins.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
 // how much larger than their own size the words are shown (less where the reading spot is small)
 const wordScale = () => (NARROW && W < 700 ? 1 : 1.15);
@@ -36,9 +37,11 @@ function placeAnchors(u) {
     for (const i of ids) { const a = ANCHORS[i]; if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; } }
     // (as large as fits: on a wide screen a chapter's words all fit, smaller if need be; a phone keeps them readable
     // and lets them scroll)
-    const h1 = ids.reduce((t, i) => t + ANCHORS[i].h, 0) + gap * (ids.length - 1), fitH = NARROW && W < 700 ? Infinity : avail / h1;
+    // (the question and its button, at their own size, come after them and must fit too)
+    const h1 = ids.reduce((t, i) => t + ANCHORS[i].h, 0) + gap * (ids.length - 1), fitH = NARROW && W < 700 ? Infinity : (avail - gap - goOnHeight() - 8) / h1;
     const sc = clamp(Math.min(wordScale(), (RB.w - 36) / Math.max(...ids.map((i) => ANCHORS[i].w)), fitH), 0.8, 1.5);
-    const hs = ids.reduce((t, i) => t + ANCHORS[i].h * sc, 0) + gap * (ids.length - 1), over = Math.max(0, hs - avail), k = STORY[g];
+    // (the question and the button come after the words, as part of them)
+    const hs = ids.reduce((t, i) => t + ANCHORS[i].h * sc, 0) + gap * ids.length + goOnHeight(), over = Math.max(0, hs - avail), k = STORY[g];
     readLen[k] = clamp(READ0 + 0.03 + over / Math.max(1, perU), READ0 + 0.03, READ_MAX);
     // (scrolled through the spot as far as the reading has come)
     const off = g !== cur ? 0 : zn.part === 'read' ? clamp(((u - CH[k][0] - READ0) / Math.max(1e-6, readLen[k] - READ0 - 0.03)) * over, 0, over) : over;
@@ -52,7 +55,9 @@ function placeAnchors(u) {
       y += h + gap;
       if (shown) end = Math.min(bot, y - gap);
     }
+    if (g === cur) { const gh = goOnHeight(); placeGoOn(k, x0 + 4, y + 4, y + gh <= bot + 8); if (y + gh <= bot + 8) end = y + gh; }
   });
+  if (cur < 0) placeGoOn(null, 0, 0, false);
   // the room: the chapter's name over its words
   const show = cur >= 0;
   roomEl.classList.toggle('on', show);

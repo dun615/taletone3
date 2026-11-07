@@ -1,11 +1,9 @@
-/* A phone at each change of world, and the visitor goes into it. Three beats over p (0 to 1):
-     0 - .45  it comes flying along the line from far ahead, turning to face the visitor, and stops in the middle;
-              the line runs on into it, over its bezel and through the glass to its very middle, where the next world's line goes on
-   .45 - .62  its screen wakes: the visitor's own time and a notification over the next world, which the screen has
-              shown from the first (no dark screen, so the story runs straight on into it)
-   .62 - 1    it pulls: the world around is drawn in towards it, light streams into the screen, and the screen
-              grows until it is the whole view. Through the screen the next world is really there (inside draws
-              it), so when it fills the view it simply is the next scene. */
+/* A phone at each change of world, and the visitor goes into it. Two beats over p (0 to 1):
+     0 - .45  it comes along the line from far ahead, turning to face the visitor, and stops in the middle; the line
+              runs on into it, over its bezel and through the glass to its very middle, where the next world's line goes on
+   .45 - 1    its screen grows until it is the whole view. Through the screen the next world is really there (inside
+              draws it), so when it fills the view it simply is the next scene.
+   (Nothing else happens meanwhile: the world outside stays as it is, so each beat has room.) */
 // the phone's scale (its screen is 1.9556 of it tall) through the passage
 function phoneScale(p) {
   const hold = (H * (NARROW ? 0.56 : 0.66)) / 1.9556;
@@ -15,17 +13,8 @@ function phoneScale(p) {
   return hold * 1.06 * Math.pow(end / (hold * 1.06), Math.pow(q, 1.7));
 }
 const phoneDepth = (p) => F3 / phoneScale(p);
-// how hard the phone pulls at the world around it
+// how far the visitor has gone into the phone's screen
 const phonePull = (p) => ease((p - PH_WAKE + 0.06) / (1 - PH_WAKE + 0.02));
-// the world outside, drawn in towards the phone at the middle of the view
-function pulled(p, dark, draw) {
-  const k = phonePull(p);
-  if (k <= 0 || reduce) { draw(); return; }
-  ctx.save(); ctx.translate(W / 2, H * 0.5); ctx.scale(1 + 0.55 * k * k, 1 + 0.55 * k * k); ctx.rotate(0.07 * k * k * (dark ? -1 : 1)); ctx.translate(-W / 2, -H * 0.5);
-  draw(); ctx.restore();
-  const D = Math.hypot(W, H), g = ctx.createRadialGradient(W / 2, H * 0.5, D * 0.12, W / 2, H * 0.5, D * 0.62);
-  g.addColorStop(0, 'rgba(10,14,30,0)'); g.addColorStop(1, `rgba(10,14,30,${0.55 * k})`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-}
 // where along the path P (between lo and hi) the line is d deep in front of the camera
 function atDepth(P, d, lo, hi) {
   const dep = (z) => { const q = P(z); return (q[2] - camZ) * cP - (q[1] - camY) * sP; };
@@ -58,15 +47,15 @@ function phoneEntry(p, an, lineAt, zP) {
   for (let i = 0; i < 18; i++) { const m = (lo + hi) / 2; if (under(m)) hi = m; else lo = m; }
   return lineAt(lo) ? lo : hi;
 }
-function phoneIn(p, an, dark, A, inside, note, lineAt, zE) {
-  const s3 = phoneScale(p), show = ease(p / 0.1), t = reduce ? 0 : T;
-  // it flies in along the line and comes to rest square in the middle
+function phoneIn(p, an, dark, A, inside, lineAt, zE) {
+  const s3 = phoneScale(p), show = ease(p / 0.1);
+  // it comes in along the line and comes to rest square in the middle
   const k = ease((p - 0.16) / (PH_HOLD - 0.16)), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
   const roll = (1 - ease(p / PH_HOLD)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / (PH_HOLD - 0.04))) * 1.05 * (dark ? 1 : -1);
-  // waking (0 to 1), pulling (0 to 1)
+  // its screen's light (0 to 1), and how far the visitor has gone into it (0 to 1)
   const wake = ease((p - PH_HOLD + 0.03) / (PH_WAKE - PH_HOLD)), pull = phonePull(p);
   // a 9:16 phone
-  const w = 1.1 * s3, h = 1.9556 * s3, m = 0.06 * s3, D = Math.hypot(W, H);
+  const w = 1.1 * s3, h = 1.9556 * s3, m = 0.06 * s3;
   // the phone's own plane (u across, v down), turned by yaw about its upright axis and seen in perspective, so a
   // turned phone narrows to its far edge instead of just getting thinner; then rolled
   const cyw = Math.cos(yaw), syw = Math.sin(yaw), cr = Math.cos(roll), sr = Math.sin(roll), fp = h * 1.6;
@@ -77,17 +66,6 @@ function phoneIn(p, an, dark, A, inside, note, lineAt, zE) {
       for (let i = 0; i <= 6; i++) { const a = a0 + (i / 6) * (Math.PI / 2), q = P(ax + Math.cos(a) * r, ay + Math.sin(a) * r); if (first) { ctx.moveTo(q[0], q[1]); first = false; } else ctx.lineTo(q[0], q[1]); }
     ctx.closePath();
   };
-  // light streaming into the screen, ever faster as it pulls
-  const st = Math.max(0.35 * wake, pull) * (1 - clamp((p - 0.95) / 0.05));
-  if (st > 0 && !reduce) {
-    const n = NARROW ? 26 : 40, speed = 1 + 2.4 * pull;
-    for (let i = 0; i < n; i++) {
-      const ang = i * 2.39996, ph = (t * 0.9 * speed + i * 0.37) % 1, r0 = lerp(0.75, 0.12, ph * ph) * D, r1 = r0 + (0.05 + 0.2 * pull) * D * (1 - ph);
-      ctx.lineWidth = 1 + 2 * pull * (1 - ph);
-      ctx.strokeStyle = dark ? `rgba(220,226,255,${0.5 * st * (1 - ph)})` : `rgba(255,255,255,${0.85 * st * (1 - ph)})`;
-      ctx.beginPath(); ctx.moveTo(cx + Math.cos(ang) * r0, cy + Math.sin(ang) * r0); ctx.lineTo(cx + Math.cos(ang) * r1, cy + Math.sin(ang) * r1); ctx.stroke();
-    }
-  }
   ctx.save();
   ctx.globalAlpha = show;
   // the screen's light falls around it
@@ -103,43 +81,13 @@ function phoneIn(p, an, dark, A, inside, note, lineAt, zE) {
   ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);
   const mid = P(0, 0), keep = 1 - ease(pull);
   inside(ease(pull / 0.7), mid, keep);
-  // the lock screen over it: the visitor's own time, and a notification from TALETONE; they rush past as it pulls
-  const ui = wake * (1 - ease(pull / 0.45));
-  if (ui > 0.01 && Math.abs(yaw) < 0.2) {
-    const sc = s3 * (1 + 1.2 * pull), fam = '"LINE Seed KR","LINE Seed JP",system-ui,sans-serif', ink = dark ? '244,244,252' : INK; // (over the bright sea the time is in ink)
-    const O = P(0, 0), ox = O[0], oy = O[1];
-    ctx.globalAlpha = show * ui; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = `rgba(${ink},0.96)`; ctx.font = `700 ${(0.3 * sc).toFixed(1)}px ${fam}`;
-    ctx.fillText(clockEl.textContent, ox, oy - 0.52 * sc);
-    ctx.font = `400 ${(0.06 * sc).toFixed(1)}px ${fam}`; ctx.fillStyle = `rgba(${ink},0.8)`;
-    ctx.fillText(dateEl.textContent, ox, oy - 0.43 * sc);
-    // the notification rises into place
-    const nw = 0.92 * sc, nh = 0.2 * sc, nx = ox - nw / 2, ny = oy - 0.2 * sc + (1 - ease((wake - 0.25) / 0.6)) * 0.12 * sc;
-    ctx.globalAlpha = show * ui * ease((wake - 0.25) / 0.5);
-    ctx.fillStyle = 'rgba(255,255,255,0.86)'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(nx, ny, nw, nh, 0.05 * sc) : ctx.rect(nx, ny, nw, nh); ctx.fill();
-    ctx.fillStyle = `rgb(${INK})`; ctx.beginPath(); ctx.arc(nx + 0.08 * sc, ny + nh / 2, 0.042 * sc, 0, Math.PI * 2); ctx.fill();
-    ctx.textAlign = 'left'; ctx.fillStyle = `rgba(${INK},0.62)`; ctx.font = `700 ${(0.038 * sc).toFixed(1)}px ${fam}`;
-    ctx.fillText(COPY.notifyFrom || 'TALETONE', nx + 0.145 * sc, ny + 0.078 * sc);
-    ctx.textAlign = 'right'; ctx.fillText(COPY.notifyNow || '', nx + nw - 0.04 * sc, ny + 0.078 * sc);
-    ctx.textAlign = 'left'; ctx.fillStyle = `rgb(${INK})`; ctx.font = `700 ${(0.05 * sc).toFixed(1)}px ${fam}`;
-    ctx.fillText(note || '', nx + 0.145 * sc, ny + 0.145 * sc, nw - 0.19 * sc);
-    ctx.globalAlpha = show;
-  }
-  // a sheen running across the glass as it is entered
-  if (pull > 0 && pull < 1 && !reduce) {
-    const gx = lerp(-0.8, 1.8, pull) * W, g = ctx.createLinearGradient(gx - W * 0.25, 0, gx + W * 0.25, H * 0.4);
-    g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.5, `rgba(255,255,255,${0.32 * (1 - pull)})`); g.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  }
   ctx.restore();
   // the line runs on into the phone: over its bezel and through the glass to its very middle, where the line of the next
   // world goes on (its tip is there), so it is one line passing through the middle of the phone
   const out = 1 - ease(pull / 0.7);
   if (show > 0 && out > 0) {
-    const kp = phonePull(p), sc = reduce ? 1 : 1 + 0.55 * kp * kp, ro = reduce ? 0 : 0.07 * kp * kp * (dark ? -1 : 1);
     // (from where the line comes out from behind the phone's edge)
-    const st0 = (lineAt && lineAt(zE)) || an;
-    const dx = (st0[0] - W / 2) * sc, dy = (st0[1] - H * 0.5) * sc, ax = W / 2 + dx * Math.cos(ro) - dy * Math.sin(ro), ay = H * 0.5 + dx * Math.sin(ro) + dy * Math.cos(ro);
+    const st0 = (lineAt && lineAt(zE)) || an, ax = st0[0], ay = st0[1];
     ctx.strokeStyle = dark ? `rgba(244,244,252,${(A * show * out).toFixed(3)})` : `rgba(${INK},${(A * show * out).toFixed(3)})`;
     ctx.lineWidth = clamp((2.3 * AHEAD) / (an[2] || AHEAD), 1.4, 4); ctx.lineCap = 'round';
     ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(mid[0], mid[1]); ctx.stroke();
@@ -155,8 +103,8 @@ function drawWorld(A) {
     if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); return; }
     const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001), an = V(pathAt(zP)) || [W / 2, H * 0.5], landAt = (z) => V(pathAt(z));
     const zE = phoneEntry(p, an, landAt, Math.min(penZ, zP));
-    pulled(p, false, () => { backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zE), lineRGB, A); if (penZ <= zE) drawTip(lineRGB, A); });
-    phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep), (COPY.phoneNotes || [])[0], landAt, zE);
+    backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zE), lineRGB, A); if (penZ <= zE) drawTip(lineRGB, A);
+    phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep), landAt, zE);
     return;
   }
   if (penZ < S0) {
@@ -165,8 +113,8 @@ function drawWorld(A) {
     if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); return; }
     const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = V(seaPath(zP)) || [W / 2, H * 0.5], seaAt = (z) => V(seaPath(z));
     const zE = phoneEntry(p, an, seaAt, Math.min(penZ, zP));
-    pulled(p, true, () => { backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zE), lineRGB, A, seaPath); if (penZ <= zE) drawTip(lineRGB, A, seaPath, true); });
-    phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep), (COPY.phoneNotes || [])[1], seaAt, zE);
+    backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zE), lineRGB, A, seaPath); if (penZ <= zE) drawTip(lineRGB, A, seaPath, true);
+    phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep), seaAt, zE);
     return;
   }
   backdrop(2, A); elements(2, A);

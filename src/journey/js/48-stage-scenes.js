@@ -1,9 +1,10 @@
 /* ---- how the story moves ----
    Each chapter of the story (the about, the philosophy, the case) is one screen: all its words at once, read at the
    visitor's own pace (a scroll moves them only when they do not all fit), over its world, which runs by itself
-   (51-stage-loops). Scrolling on past the words plays the way into the next world at the story's own pace, all the
-   way, without stopping on the way to ask for anything (going back up is plain scrolling); it swallows the rest of
-   that flick. So do the other scenes: the phone turning over, entering, the record found, the first song, the inquiry.
+   (51-stage-loops). At the words' end a scroll stops, and a question and a button ask whether to go on
+   (49-stage-ways-on); the button plays the way into the next world at the story's own pace, all the way (going back
+   up is plain scrolling). The other scenes play when scrolled into, the same way, swallowing the rest of that flick:
+   the phone turning over, entering, the first song, the inquiry.
    [from, to, ms, , steps] in story units; steps are [where, ms to get there]. */
 const FLIP = [0.02, 0.30, 900];   // the phone turns over: a message on its lock screen
 // entering: the film breaks up and goes out and the room goes dark; points gather into the land in the screen; it
@@ -11,17 +12,10 @@ const FLIP = [0.02, 0.30, 900];   // the phone turns over: a message on its lock
 const ENTER = [0.33, CH.tale[0] + READ0, 0, 0, [[0.45, 1500], [0.7, 2000], [1, 1500], [CH.tale[0] + READ0, 700]]];
 // the record found, at the end of the stars
 const FOUND = uOfPen(PEN.music[1] - 0.75);
-// the scenes as they are now (each chapter's way on starts where its words end, which depends on the screen)
+// the scenes a scroll plays (each chapter's way on is played by its button instead: wayScene)
 function scenes() {
   return [
     FLIP, ENTER,
-    // up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor in, and
-    // somewhere it became straight down into the sea
-    [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uOnWay('tale', WAY.tale.from), 800], [uOnWay('tale', ZS - PH.land * (1 - PH_HOLD)), 1300], [uOnWay('tale', ZS - PH.land * (1 - PH_WAKE)), 800], [CH.tone[0] + READ0, 1800]]],
-    // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
-    [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uOnWay('tone', WAY.tone.from), 800], [uOnWay('tone', S0 - PH.sea * (1 - PH_HOLD)), 1300], [uOnWay('tone', S0 - PH.sea * (1 - PH_WAKE)), 800], [CH.case[0] + READ0, 1700]]],
-    // along the stars to the record: found
-    [readEnd('case'), FOUND, 0, 0, [[CH.music[0], 1100], [FOUND, 1800]]],
     // the line splits in five and draws the staff: the first song
     [FOUND, CH.record[0] + 0.4, 1700],
     // past the last song, all the way into the inquiry in one go, slowing (never stopping) on each of the words
@@ -29,6 +23,14 @@ function scenes() {
     // and the line out to the form
     [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
   ];
+}
+// a chapter's way on, in three calm beats: the world dissolves to the sky (or the deep) where a phone is; the phone
+// comes along the line and stops in the middle; the line passes into its middle and its screen grows into the next
+// world. The case's: along the stars to the record (found), and the staff's first song.
+function wayScene(k) {
+  if (k === 'tale') return [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uOnWay('tale', WAY.tale.from), 1400], [uOnWay('tale', ZS - PH.land * (1 - PH_HOLD)), 1900], [CH.tone[0] + READ0, 2700]]];
+  if (k === 'tone') return [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uOnWay('tone', WAY.tone.from), 1400], [uOnWay('tone', S0 - PH.sea * (1 - PH_HOLD)), 1900], [CH.case[0] + READ0, 2600]]];
+  return [readEnd('case'), CH.record[0] + 0.4, 0, 0, [[CH.music[0], 1400], [FOUND, 2200], [CH.record[0] + 0.4, 1800]]];
 }
 let auto = null, hold = null, lastU = 0, inputAt = 0;
 // (while a scene plays, the frame draws the exact place the scene is at: reading the scroll back would round it to a
@@ -73,7 +75,7 @@ function autoStep(now) {
     const t = now - auto.t0;
     sceneU = sceneAt(auto, t); scrollTo({ top: topFor(sceneU), behavior: 'instant' });
     if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
-  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(hold.u > CH.tale[0]); hold = null; } // (at the lock screen the enter asks instead)
+  } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(hold.u >= CH.music[0]); hold = null; } // (at the lock screen the enter asks instead, under a chapter's words its button)
 }
 const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };
 addEventListener('wheel', swallow, { passive: false });
@@ -96,6 +98,9 @@ addEventListener('scroll', () => {
     if (lastU < FLIP[1] - 0.02) playScene(FLIP, Math.max(lastU, FLIP[0] + 0.001)); else { scrollTo({ top: topFor(FLIP[1]), behavior: 'instant' }); lastU = FLIP[1]; nudgeEnter(); }
     return;
   }
+  // (at a chapter's words' end a scroll goes no further: going on is the button's; going back from the next chapter is
+  // plain scrolling)
+  { const zn = zoneOf(u); if (zn && zn.part === 'pass' && lastU <= readEnd(zn.k) + 0.02) { const r = readEnd(zn.k); scrollTo({ top: topFor(r), behavior: 'instant' }); lastU = r; nudgeGoOn(); return; } }
   cue(false);
   // only going on plays a scene (from wherever in it the visitor is); going back is plain scrolling
   if (u > lastU) for (const sc of scenes()) {

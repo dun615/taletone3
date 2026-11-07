@@ -67,15 +67,15 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
 | `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
-| `48-stage-scenes` | How the story moves: scenes that play by themselves to their end (`scenes()`, with steps; nothing stops one midway): the phone turning over, entering, each chapter's way on into the next world, the record, the inquiry; input. |
-| `49-stage-to-works` | A way past the story, straight to the discography, while its chapters are read. |
+| `48-stage-scenes` | How the story moves: scenes that play by themselves to their end (`scenes()` when scrolled into, `wayScene(k)` from a chapter's button; with steps, nothing stops one midway); a scroll stops at a chapter's words' end; input. |
+| `49-stage-ways-on` | The story's ways on: under each chapter's words a question and a button (the way into the next world), and a way past the story straight to the discography. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
 | `51-stage-loops` | The worlds as backgrounds that run by themselves: each chapter's round (`LOOPS`), the ways between them (`WAY`), and where the pen is for a scroll position (`penFor`, `zoneOf`). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
 | `54-stage-conversation` | The words of the about, the philosophy and the case (`ANCHORS`): a chapter's all at once under its name (the room), moved through the reading spot by scrolling when they do not all fit (`readLen`). |
 | `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
 | `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
-| `58-stage-phone-passage` | The phone between worlds (approach, wake, pull: `PH`, `phoneIn`) and `drawWorld`. |
+| `58-stage-phone-passage` | The phone between worlds in two beats (it comes along the line and stops; its screen grows into the next world: `PH`, `phoneIn`) and `drawWorld`. |
 | `60-stage-record` | The record: the staff as a 3D current with every work, album tracks on a cord, the card. |
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
 | `90-start` | Where the visitor came in (route, `?work=`). |

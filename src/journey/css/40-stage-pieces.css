@@ -19,7 +19,20 @@
 /* (while it rings nothing else on the first screen moves: the charm hangs still, the enter waits on the far side) */
 .jy-at-pro .jy-phone .jy-charm,.jy-ringing .jy-na{animation:none}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone{animation:none}}
-/* while the story's chapters are read, a way past them straight to the discography (49-stage-to-works) */
+/* under a chapter's words: shall we go on? and the way on, as a button (49-stage-ways-on) */
+.jy-goon{display:none}
+.jy-stage-mode .jy-goon{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;position:absolute;left:0;top:0;z-index:31;opacity:0;pointer-events:none;transition:opacity .35s var(--tt-ease-out)}
+.jy-stage-mode .jy-goon.on{opacity:1;pointer-events:auto}
+.jy-goon p{margin:0;font-size:16px;font-weight:700;color:var(--tt-ink)}
+.jy-goon button{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px 0 22px;border:0;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
+.jy-goon button:active{transform:scale(.97)}
+.jy-goon button:focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
+.jy-goon.jy-nudge button{animation:jy-nudge .6s var(--tt-spring)}
+.jy-ink .jy-goon p{color:var(--tt-on-ink)}
+.jy-ink .jy-goon button{background:var(--tt-on-ink);color:var(--tt-ink)}
+.jy-ink .jy-goon button:focus-visible{outline-color:var(--tt-on-ink)}
+@media (prefers-reduced-motion:reduce){.jy-goon.jy-nudge button{animation:none}}
+/* while the story's chapters are read, a way past them straight to the discography (49-stage-ways-on) */
 .jy-towork{display:none}
 .jy-stage-mode .jy-towork{display:inline-flex;align-items:center;gap:8px;position:fixed;z-index:56;left:max(20px,env(safe-area-inset-left,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));height:38px;padding:0 14px 0 16px;border:1px solid rgba(159,161,166,.4);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--tt-ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s var(--tt-ease-out),transform .16s var(--tt-ease-out)}
 .jy-stage-mode .jy-towork.on{opacity:1;pointer-events:auto}

@@ -1,8 +1,8 @@
 // The worlds as backgrounds that run by themselves. While a chapter's words are read, its world (the land, the sea,
 // space) goes along its own stretch of the line at its own pace, round and round: near the end of a round its start
-// already shows through and takes over, so it never jumps. Scrolling on past the words plays the way on: a quick run
-// to where the phone shows, then through the phone into the next world, where the next round starts; the case's way
-// runs on along the stars to the record. Scrolling back is plain scrolling.
+// already shows through and takes over, so it never jumps. The way on (its button): the world dissolves to where the
+// phone shows, then the pen goes on through the phone into the next world, where the next round starts; the case's
+// way runs on along the stars to the record. Scrolling back is plain scrolling.
 const STORY = ['tale', 'tone', 'case'];
 // each world's round: [where it starts, where it ends] along the line, and how fast the pen goes (z a second)
 // (each starts a little way into its world, so the start that shows through at a round's end is still that world)
@@ -25,7 +25,7 @@ function zoneOf(u) {
   }
   return null;
 }
-// the pen on a way on: a quick run from where the round was to where the phone shows, then through it at an even pace
+// the pen on a way on: (after the dissolve, below) from where the phone shows, through it, at an even pace
 function wayZ(k, s, from) {
   const w = WAY[k];
   if (w.from == null) return lerp(from, w.to, ease(s));
@@ -52,5 +52,7 @@ function penFor(u) {
     return roundAt(zn.k, T);
   }
   if (prev !== key) { const [a, b] = LOOPS[zn.k]; wayFrom[zn.k] = prev === zn.k + 'read' ? roundAt(zn.k, T).z : (a + b) / 2; }
+  // (first the round dissolves into the place where the phone shows: that place drawn first, the round fading over it)
+  if (WAY[zn.k].from != null && zn.s < RUSH) return { z: wayFrom[zn.k], z2: WAY[zn.k].from, f: ease(zn.s / RUSH) };
   return { z: wayZ(zn.k, zn.s, wayFrom[zn.k]) };
 }
