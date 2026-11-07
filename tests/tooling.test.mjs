@@ -42,7 +42,7 @@ test('the link page is built from links.json, staged, and not indexed', async ()
   assert.match(html, /<meta name="robots" content="noindex">/);
   assert.match(html, /<meta name="viewport"/);
   assert.ok(html.includes(`<title>${data.name}</title>`), 'title is the name');
-  const hrefs = [...html.matchAll(/<a href="([^"]+)">/g)].map((m) => m[1]);
+  const hrefs = [...html.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1]);
   assert.deepEqual(hrefs, data.links.map((l) => l.url), 'one button per link, in order');
   const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8');
   assert.ok(!sitemap.includes('/link'), 'the link page is not in the sitemap');
