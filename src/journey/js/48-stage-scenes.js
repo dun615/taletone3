@@ -28,8 +28,8 @@ function scenes() {
 // middle; the line goes into its middle and its screen, the next world, grows to fill the view. The case's: along
 // the stars to the record (found), and the staff's first song.
 function wayScene(k) {
-  if (k === 'tale') return [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uAtS('tale', PH_HOLD), 2600], [CH.tone[0] + READ0, 3000]]];
-  if (k === 'tone') return [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uAtS('tone', PH_HOLD), 2600], [CH.case[0] + READ0, 3000]]];
+  if (k === 'tale') return [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uAtS('tale', PH_HOLD), 1500], [CH.tone[0] + READ0, 1700]]];
+  if (k === 'tone') return [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uAtS('tone', PH_HOLD), 1500], [CH.case[0] + READ0, 1700]]];
   return [readEnd('case'), CH.record[0] + 0.4, 0, 0, [[CH.music[0], 1400], [FOUND, 2200], [CH.record[0] + 0.4, 1800]]];
 }
 let auto = null, hold = null, lastU = 0, inputAt = 0;

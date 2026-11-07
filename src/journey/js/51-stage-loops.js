@@ -7,9 +7,9 @@
 const STORY = ['tale', 'tone', 'case'];
 // each world's round: [where it starts, where it ends] along the line, and how fast the pen goes (z a second)
 // (each starts a little way into its world, so the start that shows through at a round's end is still that world)
-const LOOPS = { tale: [PEN.tale[0] + 0.05, PEN.tale[0] + 10.4], tone: [ZS + 2.8, S0 - 9], case: [S0 + 2.6, S0 + 15.5] };
+const LOOPS = { tale: [PEN.tale[0] + 0.05, PEN.tale[0] + 11], tone: [ZS + 3.4, S0 - 6], case: [S0 + 3.4, S0 + 15.5] };
 // (ROUND_D: how far before its end a round's start begins to show through: a dissolve of some three seconds)
-const LOOP_V = 0.6, ROUND_D = 2;
+const LOOP_V = 0.9, ROUND_D = 2.7;
 // each chapter's way on: where it leads (the next round's start, seen through the phone's screen; the case's: the
 // music), and how far its world may run meanwhile (if the visitor lingers half way, it waits there)
 const WAY = { tale: { to: LOOPS.tone[0], stop: CL0 - 0.2 }, tone: { to: LOOPS.case[0], stop: S0 - 1.5 }, case: { to: PEN.music[0] } };
