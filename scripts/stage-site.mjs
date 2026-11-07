@@ -16,7 +16,7 @@ const sha = process.argv[3] || '';
 const PUBLIC = new Set([
   'assets', 'CNAME', '404.html', 'favicon.ico', 'site.webmanifest',
   'robots.txt', 'sitemap.xml', 'index.html', 'en', 'ja', 'members', 'about', 'discography', 'story-types',
-  'works', 'approach', 'contact', 'projects', 'preview',
+  'works', 'approach', 'contact', 'projects', 'preview', 'link',
 ]);
 const skip = (name) => !PUBLIC.has(name) || name === path.basename(out);
 
