@@ -5,9 +5,10 @@
 // runs on along the stars to the record. Scrolling back is plain scrolling.
 const STORY = ['tale', 'tone', 'case'];
 // each world's round: [where it starts, where it ends] along the line, and how fast the pen goes (z a second)
-const LOOPS = { tale: [PEN.tale[0] + 0.05, PEN.tale[0] + 7.55], tone: [ZS + 0.8, ZS + 8.8], case: [S0 + 0.6, S0 + 8.6] };
-// (ROUND_D: how far before its end a round's start begins to show through: a slow dissolve of some four seconds)
-const LOOP_V = 0.28, ROUND_D = 1.2;
+// (each starts a little way into its world, so the start that shows through at a round's end is still that world)
+const LOOPS = { tale: [PEN.tale[0] + 0.05, PEN.tale[0] + 13], tone: [ZS + 2.8, S0 - 4.5], case: [S0 + 2.6, S0 + 15.5] };
+// (ROUND_D: how far before its end a round's start begins to show through: a dissolve of some three seconds)
+const LOOP_V = 0.6, ROUND_D = 2;
 // each chapter's way on: from where the phone shows (from) to the next round's start (to); the case's runs to the music
 const WAY = { tale: { from: ZS - PH.land, to: LOOPS.tone[0] }, tone: { from: S0 - PH.sea, to: LOOPS.case[0] }, case: { from: null, to: PEN.music[0] } };
 const RUSH = 0.25, READ_MAX = 1.2;

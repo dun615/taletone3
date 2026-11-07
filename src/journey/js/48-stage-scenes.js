@@ -17,11 +17,11 @@ function scenes() {
     FLIP, ENTER,
     // up into the sky, where a phone comes down the line and stops; its screen wakes; it pulls the visitor in, and
     // somewhere it became straight down into the sea
-    [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uOnWay('tale', WAY.tale.from), 1300], [uOnWay('tale', ZS - PH.land * (1 - PH_HOLD)), 2000], [uOnWay('tale', ZS - PH.land * (1 - PH_WAKE)), 1200], [CH.tone[0] + READ0, 2400]]],
+    [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uOnWay('tale', WAY.tale.from), 800], [uOnWay('tale', ZS - PH.land * (1 - PH_HOLD)), 1300], [uOnWay('tale', ZS - PH.land * (1 - PH_WAKE)), 800], [CH.tone[0] + READ0, 1800]]],
     // down into the dark, a phone comes up the line and wakes, and pulls the visitor out into space: a real project
-    [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uOnWay('tone', WAY.tone.from), 1300], [uOnWay('tone', S0 - PH.sea * (1 - PH_HOLD)), 2000], [uOnWay('tone', S0 - PH.sea * (1 - PH_WAKE)), 1200], [CH.case[0] + READ0, 2200]]],
+    [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uOnWay('tone', WAY.tone.from), 800], [uOnWay('tone', S0 - PH.sea * (1 - PH_HOLD)), 1300], [uOnWay('tone', S0 - PH.sea * (1 - PH_WAKE)), 800], [CH.case[0] + READ0, 1700]]],
     // along the stars to the record: found
-    [readEnd('case'), FOUND, 0, 0, [[CH.music[0], 1600], [FOUND, 2400]]],
+    [readEnd('case'), FOUND, 0, 0, [[CH.music[0], 1100], [FOUND, 1800]]],
     // the line splits in five and draws the staff: the first song
     [FOUND, CH.record[0] + 0.4, 1700],
     // past the last song, all the way into the inquiry in one go, slowing (never stopping) on each of the words

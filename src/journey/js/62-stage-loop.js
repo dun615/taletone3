@@ -90,9 +90,10 @@ function frameLoop(now) {
   if (le > 0.15) drawTrail(le, 1);
   const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
   if (worldA > 0) {
-    drawWorld(worldA);
-    // (the end of a world's round, its start showing through and taking over)
-    if (pf.z2 != null && pf.f > 0.01) { const z0 = penZ, c0 = getCam(); penZ = pf.z2; setCam(rig(penZ, worldOf(penZ))); drawWorld(worldA * pf.f); penZ = z0; setCam(c0); }
+    // (the end of a world's round: its start is drawn first, and the end fades out over it, so even a start that is
+    // still mostly blank paper takes over smoothly)
+    if (pf.z2 != null && pf.f > 0.01) { const z0 = penZ, c0 = getCam(); penZ = pf.z2; setCam(rig(penZ, worldOf(penZ))); drawWorld(worldA); penZ = z0; setCam(c0); }
+    drawWorld(worldA * (pf.z2 != null ? 1 - (pf.f || 0) : 1));
   }
   // (the line's place in the whole page, while it is drawing a world and no phone is passing)
   if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);

@@ -32,11 +32,10 @@ const climbK = (z) => clamp((z - CL0) / (ZS - CL0));
 // which world a point of the line is in (0 the land, 1 the sea, 2 space), and how high the line runs there without
 // its small waves: climbing on the land, straight down in the sea (straight up out of it before ZS), level in space
 const worldOf = (z) => (z < ZS ? 0 : z < S0 ? 1 : 2);
-// the dive slows down at each jellyfish, so the depth (and the colour of the water) holds while its message is
-// read, and goes on between them: depth = DD * dive(z), dive rising from 0 at ZS to 1 at S0
-const DIVE_T = (() => { const n = 600, t = [0]; let s = 0; for (let i = 1; i <= n; i++) { const z = ZS + ((i - 0.5) / n) * (S0 - ZS); let slow = 0; for (const sz of SET.sea) slow = Math.max(slow, Math.exp(-Math.pow((z - sz - 0.5) / 0.9, 2))); s += 1 - 0.82 * slow; t.push(s); } return t.map((v) => v / s); })();
-const dive = (z) => { const f = clamp((z - ZS) / (S0 - ZS)) * (DIVE_T.length - 1), i = Math.min(DIVE_T.length - 2, Math.floor(f)); return lerp(DIVE_T[i], DIVE_T[i + 1], f - i); };
-const SL0 = (DD * DIVE_T[1] * (DIVE_T.length - 1)) / (S0 - ZS), SL1 = (DD * (1 - DIVE_T[DIVE_T.length - 2]) * (DIVE_T.length - 1)) / (S0 - ZS);
+// the dive goes down at an even pace (the sea runs by itself behind its words: nothing to slow down for),
+// depth = DD * dive(z), dive rising from 0 at ZS to 1 at S0
+const dive = (z) => clamp((z - ZS) / (S0 - ZS));
+const SL0 = DD / (S0 - ZS), SL1 = SL0;
 const seaY = (z) => (z < ZS ? SL0 * (z - ZS) : z > S0 ? DD + SL1 * (z - S0) : DD * dive(z));
 // where along the dive the line is y deep
 const zOfDepth = (y) => { if (y <= 0) return ZS + y / SL0; if (y >= DD) return S0 + (y - DD) / SL1; let lo = ZS, hi = S0; for (let i = 0; i < 30; i++) { const m = (lo + hi) / 2; if (seaY(m) < y) lo = m; else hi = m; } return (lo + hi) / 2; };
