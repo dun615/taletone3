@@ -34,3 +34,23 @@ test('the script and style parts each say what they are, and the joined script p
   execFileSync(process.execPath, ['--check', path.join(root, 'assets/journey/journey.js')]);
 });
 
+
+// The business card's QR page: built from its one list, staged, and kept out of search.
+test('the link page is built from links.json, staged, and not indexed', async () => {
+  const data = JSON.parse(await readFile(path.join(root, 'assets/data/links.json'), 'utf8'));
+  const html = await readFile(path.join(root, 'link/index.html'), 'utf8');
+  assert.match(html, /<meta name="robots" content="noindex">/);
+  assert.match(html, /<meta name="viewport"/);
+  assert.ok(html.includes(`<title>${data.name}</title>`), 'title is the name');
+  const hrefs = [...html.matchAll(/<a href="([^"]+)">/g)].map((m) => m[1]);
+  assert.deepEqual(hrefs, data.links.map((l) => l.url), 'one button per link, in order');
+  const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8');
+  assert.ok(!sitemap.includes('/link'), 'the link page is not in the sitemap');
+  const out = await mkdtemp(path.join(os.tmpdir(), 'tt-stage-'));
+  try {
+    execFileSync(process.execPath, [path.join(root, 'scripts/stage-site.mjs'), out, 'test'], { cwd: root });
+    assert.ok((await readdir(path.join(out, 'link'))).includes('index.html'), 'the link page is staged');
+  } finally {
+    await rm(out, { recursive: true, force: true });
+  }
+});

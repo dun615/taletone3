@@ -14,6 +14,7 @@ assets/data/site-content.json ────────────────�
                                                           │      (each language: works, copy, other work)      assets/journey/data-{kr,en,jp}.js
                                                           └─► scripts/journey-page.mjs ─► the HTML of each page
 assets/data/seo-content.json ─► scripts/build.mjs ─► titles, canonical, hreflang, social cards, sitemap.xml, redirects
+assets/data/links.json ─► scripts/link-page.mjs ─► link/index.html    the business card's QR page (/link)
 src/journey/js/*.js  ─► (joined in file-name order) ─► assets/journey/journey.js    the stage, played by scroll
 src/journey/css/*.css ─► (joined in file-name order) ─► assets/journey/journey.css
 ```
@@ -22,7 +23,7 @@ In the browser a page is its HTML (every chapter, every work, readable without s
 `journey.js`. A tiny script in the head sets `jy-stage-mode` (and `jy-narrow` on phones and upright screens)
 before the first paint; `journey.js` then plays the chapters on a fixed canvas as the visitor scrolls.
 
-Generated files (the route pages, `assets/journey/`, `sitemap.xml`, `preview/`) are not in Git. The deploy
+Generated files (the route pages, `assets/journey/`, `sitemap.xml`, `preview/`, `link/`) are not in Git. The deploy
 builds them; locally, `npm run build`.
 
 ## Where things are
@@ -32,9 +33,11 @@ builds them; locally, `npm run build`.
 | `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video, vinyl colours. |
 | `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `trackRecord`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
 | `assets/data/seo-content.json` | The five chapter routes, their titles and descriptions, the site name, analytics. |
+| `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`), in order. Add a button here. |
 | `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
 | `scripts/journey-data.mjs` | Data → what the page shows, per language. |
 | `scripts/journey-page.mjs` | That data → the HTML document. |
+| `scripts/link-page.mjs` | `links.json` → `/link/` (its own dark page, apart from the journey; `noindex`, not in the sitemap). |
 | `scripts/build.mjs` | Runs all of the above and writes every generated file; `--check` fails if one is stale. |
 | `scripts/audit-works.mjs` | `npm run audit`: each album track by track, problems, unused files. |
 | `src/journey/js/` | The page's script, in parts (below). |

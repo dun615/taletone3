@@ -3,6 +3,7 @@
 //                                                                 and JP (/ja/), and assets/journey/*
 //   assets/data/seo-content.json                                -> sitemap.xml
 //   the retired addresses (/preview/, /members/, ...)           -> redirect pages
+//   scripts/link-page.mjs + assets/data/links.json              -> link/index.html (the business card's QR page)
 //
 //   node scripts/build.mjs          rewrite generated files
 //   node scripts/build.mjs --check  fail if any generated file is out of date
@@ -16,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { japaneseCharacters } from './font-coverage.mjs';
 import { renderJourney } from './journey-page.mjs';
 import { journeyData } from './journey-data.mjs';
+import { renderLinkPage } from './link-page.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -199,6 +201,8 @@ const outputs = [
   ...journeyOutputs,
   ...previewRedirects,
   ['sitemap.xml', sitemap()],
+  // the business card's QR page (not in the sitemap, not indexed)
+  ['link/index.html', renderLinkPage(JSON.parse(await readFile(path.join(root, 'assets/data/links.json'), 'utf8')))],
 ];
 
 if (listOnly) { console.log(outputs.map(([relative]) => relative).join('\n')); process.exit(0); }
