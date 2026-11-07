@@ -101,7 +101,8 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       // (far off, so they form over the whole walk: points at first, the ridgeline drawn by its middle, filled near the end)
       const fm = formAt(lerp(6, -1.2, clamp((penZ - 2) / (CL0 - 4)))), kc = kL * fm.fill;
       dotsOn(Q, fm.scatter, a * fm.dots * 0.8, '150,160,190', mt.z);
-      lineOn(Q, fm.line, tint(mt.c, 0.5, 0.55 * a), 1.2, false, fm.fill);
+      // (far off and large: a quiet outline, without the pen's ink running along it)
+      lineOn(Q, fm.line, tint(mt.c, 0.5, 0.3 * a), 1, false, 1);
       if (fm.fill <= 0.01) continue;
       const g = ctx.createLinearGradient(0, top ? top[1] : 0, 0, bot ? bot[1] : H); g.addColorStop(0, tint(mt.c, kc, 0.75 * a * fm.fill)); g.addColorStop(1, tint(mt.c, kc, 0.12 * a * fm.fill));
       polyline(Q, Q.length); ctx.lineTo(last[0], H * 2); ctx.lineTo(first[0], H * 2); ctx.closePath(); ctx.fillStyle = g; ctx.fill();

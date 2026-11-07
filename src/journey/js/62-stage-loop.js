@@ -38,13 +38,13 @@ function frameLoop(now) {
   drawEnter(ip);
   // Tale to Music: the pen moves forward through the world; the camera follows a few steps behind
   const lc = local(u, 'case'), lm = local(u, 'music');
-  penZ = penAt(u);
+  const pf = penFor(u); penZ = pf.z;
   // the camera rides the line behind the pen, turning up and down with it (see rig)
   { const cam = rig(penZ, worldOf(penZ)); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }
   // while a phone between worlds is on screen, the conversation steps aside for it
   { const pp = Math.max(clamp((penZ - (ZS - PH.land * 0.8)) / 0.3) * (penZ < ZS + 0.6 ? 1 : 0), clamp((penZ - (S0 - PH.sea * 0.8)) / 0.3) * (penZ < S0 + 0.8 ? 1 : 0));
     if ((pp > 0.5) !== passing) { passing = pp > 0.5; html.classList.toggle('jy-passing', passing); } }
-  placeAnchors();
+  placeAnchors(u);
   // how dark the scene is: the deep sea, then the night sky, until the record
   spaceDark = Math.max(spaceIn(), penZ >= ZS ? clamp((depthK() - 0.4) / 0.3) : 0) * spaceFade();
   { const m = (c0, c1) => Math.round(lerp(c0, c1, spaceDark)); lineRGB = `${m(20, 244)},${m(28, 244)},${m(48, 252)}`; }
@@ -89,10 +89,14 @@ function frameLoop(now) {
   grooveSpin = ld > 0 && ld < 1 ? grooveSpin + dt * 0.9 : 0;
   if (le > 0.15) drawTrail(le, 1);
   const worldA = (ip > 0.8 ? ease((ip - 0.8) / 0.2) : 0) * (1 - ease(lr / 0.06));
-  if (worldA > 0) drawWorld(worldA);
+  if (worldA > 0) {
+    drawWorld(worldA);
+    // (the end of a world's round, its start showing through and taking over)
+    if (pf.z2 != null && pf.f > 0.01) { const z0 = penZ, c0 = getCam(); penZ = pf.z2; setCam(rig(penZ, worldOf(penZ))); drawWorld(worldA * pf.f); penZ = z0; setCam(c0); }
+  }
   // (the line's place in the whole page, while it is drawing a world and no phone is passing)
   if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
-  placeNext(u); placeToWork(u);
+  placeToWork(u);
 }
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
@@ -103,10 +107,10 @@ function resize() {
 }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
-$('#jy-taphint').addEventListener('click', () => { if (U() < AUTO[0][1] - 0.02) playScene(AUTO[0], Math.max(U(), AUTO[0][0] + 0.001)); });
+$('#jy-taphint').addEventListener('click', () => { if (U() < FLIP[1] - 0.02) playScene(FLIP, Math.max(U(), FLIP[0] + 0.001)); });
 phone.addEventListener('click', (e) => {
   const u = U(); if (u > ENTER[1] - 0.01) return;
-  if (u < AUTO[0][1] - 0.02) { playScene(AUTO[0], Math.max(u, AUTO[0][0] + 0.001)); return; }
+  if (u < FLIP[1] - 0.02) { playScene(FLIP, Math.max(u, FLIP[0] + 0.001)); return; }
   if (e.target.closest('.jy-na-row') || e.detail === 0) { entered = true; playScene(ENTER, u); } else nudgeEnter();
 });
 
@@ -117,7 +121,7 @@ addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU :
 function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
 // each chapter opens where its first words are
-const target = { pro: 0, tale: STOPS[0], tone: STOPS[2], record: recordU(0), epi: CH.epi[0] + 0.55 };
+const target = { pro: 0, tale: CH.tale[0] + READ0, tone: CH.tone[0] + READ0, record: recordU(0), epi: CH.epi[0] + 0.55 };
 // a jump to the next chapter glides; across two or more it goes at once, without drawing everything between
 const RAIL = ['pro', 'tale', 'tone', 'record', 'epi'];
 function goStage(where, smooth = true) {

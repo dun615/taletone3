@@ -75,5 +75,6 @@ html.jy-held .jy-top{visibility:hidden}
 .jy-stage-mode .jy-cue.on{opacity:1;transform:none;animation:jy-cue 1.6s ease-in-out .4s infinite}
 .jy-ink .jy-cue{color:var(--tt-on-ink);background:rgba(20,28,48,.5);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
 @keyframes jy-cue{50%{transform:translateY(5px)}}
-.jy-narrow.jy-stage-mode .jy-cue{left:auto;right:10px;margin:0;top:46%;bottom:auto}
+/* (on a narrow screen the words fill the lower part: the cue keeps to the bottom right corner, clear of them) */
+.jy-narrow.jy-stage-mode .jy-cue{left:auto;right:max(12px,env(safe-area-inset-right,0px));margin:0;top:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-cue.on{animation:none}}

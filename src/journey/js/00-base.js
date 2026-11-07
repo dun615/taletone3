@@ -5,24 +5,28 @@
 // The story, by scroll position u (0 to TOTAL; CH below):
 //   pro     the back of a phone turns over to its lock screen and an invitation; "enter" breaks the film up, the room
 //           goes dark, points gather into the land and the visitor is drawn in (ENTER)
-//   tale    the land: a line runs past poles; TALETONE introduces itself in a chat room (who, a profile card)
-//   tone    the line rises into the sky; a phone comes down it and pulls the visitor through into the sea, straight
-//           down past jellyfish of light while the philosophy arrives
-//   case    a phone comes up the line and pulls the visitor out into space: a real project as a conversation
-//   music   along the stars to the record: found
+//   tale    the about, all on one screen over the land, which runs by itself (a line past poles, round and round);
+//           scrolling on past it: the line rises into the sky, a phone comes down it and pulls the visitor into the sea
+//   tone    the philosophy over the sea (straight down past jellyfish of light, round and round); scrolling on: a phone
+//           comes up the line and pulls the visitor out into space
+//   case    a real project over space (star to star, round and round); scrolling on: along the stars to the record
+//   music   the record: found
 //   record  the staff swirls into a 3D current with every work on it; an album lets its tracks out on a cord
 //   done    the record goes into the phone (the letter)
 //   epi     the only dark place: one seat is still empty; the visitor writes it (the inquiry)
-// The messages sit on things in each world (OBJ): every other pole, jellyfish or star carries one (SET).
+// Each chapter's words and its world are apart: the words are read at the visitor's pace, the world runs at its own
+// (51-stage-loops).
 
 const DATA = window.TT_JOURNEY;
 const COPY = DATA.copy, WORKS = DATA.works, EXTRAS = DATA.extras || [];
 const esc = (t) => String(t).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const DOTS = { wide: 900, narrow: 420 };          // Tale: the dot field
 const TURN_POINTS = { wide: 2600, narrow: 1500 }; // Music: points that become the groove
-// (the land, the sea and space each give a message the same scroll: about three quarters of a screen, the sea's pace)
-const CH = { pro: [0, 1], tale: [1, 4.5], tone: [4.5, 8.1], case: [8.1, 12.1], music: [12.1, 13.7], record: [13.7, 17.7], done: [17.7, 18.6], epi: [18.6, 19.6] };
-const TOTAL = 19.6;
+// (each story chapter: its words, then its way on into the next world)
+const CH = { pro: [0, 1], tale: [1, 3.6], tone: [3.6, 6.2], case: [6.2, 8.8], music: [8.8, 10.4], record: [10.4, 14.4], done: [14.4, 15.3], epi: [15.3, 16.3] };
+const TOTAL = 16.3;
+// (where a story chapter's words are read from: just past its start, where the scenes into it stop)
+const READ0 = 0.02;
 /* The things of each world the line passes, in its depth z: eight poles on the land, eight jellyfish of light in the
    sea, eight stars in space. Every other one (the 1st, 3rd, 5th, 7th) carries a message (SET); the ones between let
    the scene go on a while, so the words come at a pace that can be read without the line slowing down. */

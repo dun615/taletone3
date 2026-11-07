@@ -104,9 +104,7 @@ img{max-width:100%}
   .jy-s-filmb:hover img{transform:scale(1.03)}
   .jy-s-filmb:hover .jy-s-play{transform:scale(1.08);background:rgba(20,28,48,.92)}
   .jy-wc-v:hover img{transform:scale(1.04)}
-  .jy-next.on:hover{scale:1.12}
 }
 .jy-btn:active,.jy-send:active{transform:scale(.97)}
 .jy-round:active,.jy-play:active{transform:scale(.95)}
 .jy-stage-mode .jy-sw-btn:active{transform:scale(.96)}
-.jy-next.on:active{scale:.94}
