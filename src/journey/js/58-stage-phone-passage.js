@@ -22,15 +22,16 @@ function atDepth(P, d, lo, hi) {
   for (let i = 0; i < 22; i++) { const m = (lo + hi) / 2; if (dep(m) < d) lo = m; else hi = m; }
   return (lo + hi) / 2;
 }
-// the next world through the phone's glass: its line's tip put on aim (the phone's centre) by keep (1 placed, 0 in its
-// own place), its line trailing behind the tip only by trail; returns where its tip is drawn
-function nextWorld(w, P, z0, rgb, hook, A, trail, aim, keep) {
-  const c0 = getCam(); setCam(rig(penZ, w));
+// the next world through the phone's glass, at zIn (where its round starts): its line's tip put on aim (the phone's
+// centre) by keep (1 placed, 0 in its own place), its line trailing behind the tip only by trail; returns where its
+// tip is drawn
+function nextWorld(w, P, z0, rgb, hook, A, trail, aim, keep, zIn) {
+  const c0 = getCam(), pz = penZ; penZ = zIn; setCam(rig(penZ, w));
   const tip = V(P(penZ)), dx = tip && aim ? (aim[0] - tip[0]) * keep : 0, dy = tip && aim ? (aim[1] - tip[1]) * keep : 0;
   backdrop(w, A);
   ctx.save(); ctx.translate(dx, dy);
   elements(w, A); if (trail > 0) drawLine(z0, penZ, rgb, A * trail, P); drawTip(rgb, A, P, hook);
-  ctx.restore(); setCam(c0);
+  ctx.restore(); setCam(c0); penZ = pz;
   return tip ? [tip[0] + dx, tip[1] + dy] : null;
 }
 // where the phone is on the screen (its middle) and how far from it its edge reaches, as phoneIn draws it
@@ -96,25 +97,24 @@ function phoneIn(p, an, dark, A, inside, lineAt, zE) {
 function drawWorld(A) {
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   if (penZ < ZS) {
-    // the land, then straight up into the sky; at the top a phone comes down the line and the visitor is drawn into
-    // it. Through it is the sea, looked straight down into, which looks just like the sky looked straight up into:
-    // only once through does it turn out to be water
-    const p = clamp((penZ - (ZS - PH.land)) / PH.land);
+    // the land; on the way on a phone comes along the line to it, and through the phone is the sea, looked straight
+    // down into
+    const p = passK === 'tale' ? passP : 0;
     if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); return; }
-    const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, ZS - 0.001), an = V(pathAt(zP)) || [W / 2, H * 0.5], landAt = (z) => V(pathAt(z));
+    const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, CL0), an = V(pathAt(zP)) || [W / 2, H * 0.5], landAt = (z) => V(pathAt(z));
     const zE = phoneEntry(p, an, landAt, Math.min(penZ, zP));
     backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zE), lineRGB, A); if (penZ <= zE) drawTip(lineRGB, A);
-    phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep), landAt, zE);
+    phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep, WAY.tale.to), landAt, zE);
     return;
   }
   if (penZ < S0) {
-    // straight down into the deep; at the bottom a phone comes up the line, and through it is space
-    const p = clamp((penZ - (S0 - PH.sea)) / PH.sea);
+    // straight down into the deep; on the way on a phone comes up the line, and through it is space
+    const p = passK === 'tone' ? passP : 0;
     if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); return; }
     const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = V(seaPath(zP)) || [W / 2, H * 0.5], seaAt = (z) => V(seaPath(z));
     const zE = phoneEntry(p, an, seaAt, Math.min(penZ, zP));
     backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zE), lineRGB, A, seaPath); if (penZ <= zE) drawTip(lineRGB, A, seaPath, true);
-    phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep), seaAt, zE);
+    phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep, WAY.tone.to), seaAt, zE);
     return;
   }
   backdrop(2, A); elements(2, A);

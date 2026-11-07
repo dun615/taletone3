@@ -42,7 +42,7 @@ function frameLoop(now) {
   // the camera rides the line behind the pen, turning up and down with it (see rig)
   { const cam = rig(penZ, worldOf(penZ)); if (ip < 1) cam.z = lerp(-2.6, cam.z, ease(ip)); setCam(cam); }
   // while a phone between worlds is on screen, the conversation steps aside for it
-  { const pp = Math.max(clamp((penZ - (ZS - PH.land * 0.8)) / 0.3) * (penZ < ZS + 0.6 ? 1 : 0), clamp((penZ - (S0 - PH.sea * 0.8)) / 0.3) * (penZ < S0 + 0.8 ? 1 : 0));
+  { const pp = passP > 0.08 ? 1 : 0;
     if ((pp > 0.5) !== passing) { passing = pp > 0.5; html.classList.toggle('jy-passing', passing); } }
   placeAnchors(u);
   // how dark the scene is: the deep sea, then the night sky, until the record

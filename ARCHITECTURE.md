@@ -75,7 +75,7 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `54-stage-conversation` | The words of the about, the philosophy and the case (`ANCHORS`): a chapter's all at once under its name (the room), moved through the reading spot by scrolling when they do not all fit (`readLen`). |
 | `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
 | `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
-| `58-stage-phone-passage` | The phone between worlds in two beats (it comes along the line and stops; its screen grows into the next world: `PH`, `phoneIn`) and `drawWorld`. |
+| `58-stage-phone-passage` | The phone between worlds, on a way on, while the world keeps running: it comes along the line and stops; its screen (the next world's start) grows to fill the view (`passP`, `phoneIn`, `nextWorld`); and `drawWorld`. |
 | `60-stage-record` | The record: the staff as a 3D current with every work, album tracks on a cord, the card. |
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
 | `90-start` | Where the visitor came in (route, `?work=`). |

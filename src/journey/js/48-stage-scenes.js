@@ -24,12 +24,12 @@ function scenes() {
     [CH.done[0] - 0.3, CH.epi[0] + 0.55, 0, 0, [[CH.done[0] + 0.65, 2300], [CH.epi[0] + 0.18, 1000], [CH.epi[0] + 0.55, 1900]]],
   ];
 }
-// a chapter's way on, in three calm beats: the world dissolves to the sky (or the deep) where a phone is; the phone
-// comes along the line and stops in the middle; the line passes into its middle and its screen grows into the next
-// world. The case's: along the stars to the record (found), and the staff's first song.
+// a chapter's way on, in two calm beats while its world keeps running: a phone comes along the line and stops in the
+// middle; the line goes into its middle and its screen, the next world, grows to fill the view. The case's: along
+// the stars to the record (found), and the staff's first song.
 function wayScene(k) {
-  if (k === 'tale') return [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uOnWay('tale', WAY.tale.from), 1400], [uOnWay('tale', ZS - PH.land * (1 - PH_HOLD)), 1900], [CH.tone[0] + READ0, 2700]]];
-  if (k === 'tone') return [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uOnWay('tone', WAY.tone.from), 1400], [uOnWay('tone', S0 - PH.sea * (1 - PH_HOLD)), 1900], [CH.case[0] + READ0, 2600]]];
+  if (k === 'tale') return [readEnd('tale'), CH.tone[0] + READ0, 0, 0, [[uAtS('tale', PH_HOLD), 2600], [CH.tone[0] + READ0, 3000]]];
+  if (k === 'tone') return [readEnd('tone'), CH.case[0] + READ0, 0, 0, [[uAtS('tone', PH_HOLD), 2600], [CH.case[0] + READ0, 3000]]];
   return [readEnd('case'), CH.record[0] + 0.4, 0, 0, [[CH.music[0], 1400], [FOUND, 2200], [CH.record[0] + 0.4, 1800]]];
 }
 let auto = null, hold = null, lastU = 0, inputAt = 0;
