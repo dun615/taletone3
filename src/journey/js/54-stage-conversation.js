@@ -1,5 +1,5 @@
-// The messages along the line: where each sits on the line, and how they are said, like slides, two at a time
-// (each: [selector, z on the line, side (1 right, -1 left, 0 hanging, 0.5 a note on the line)])
+// The words of the about, the philosophy and the case: a chapter's all at once in the reading spot
+// (each: [selector, z of the thing in its world it belongs to (which chapter it is in), side (kept for the line's swell)])
 const ANCHORS = [
   ['#jy-hello', SET.land[0], 1], ['#jy-pcard', SET.land[1], -1], ['#jy-types', SET.land[2], 1], ['#jy-clients', SET.land[3], -1],
   ['#jy-creed', SET.sea[0], 1], ['#jy-step-0', SET.sea[1], 0], ['#jy-step-1', SET.sea[2], 0], ['#jy-step-2', SET.sea[3], 0],
@@ -8,52 +8,61 @@ const ANCHORS = [
 ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
 const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
 ANCHORS.sort((a, b) => a.z - b.z);
-// The messages are said like slides: the two of one stop (STOPS), large, one under the other in the reading spot, the
-// first as it is passed and the second where the story stops; the next stop's two take their place. Each chapter's
-// slides sit under its name (the room's head). What shows depends only on where the pen is.
+// A chapter's words are all on screen at once, one under the other in the reading spot under the chapter's name (the
+// room's head), to be read at the visitor's own pace. When they do not all fit, scrolling moves them up through the
+// spot (the chapter's words then take as much scroll as that: readLen). Under them: shall we go on? and its button.
+// They give way as the way on begins.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
-const slideOf = (i) => Math.floor(i / 2);
-const SLIDES = []; ANCHORS.forEach((a, i) => { (SLIDES[slideOf(i)] = SLIDES[slideOf(i)] || []).push(i); });
-// how much larger than their own size the messages are shown (less where the reading spot is small)
-const slideScale = () => (NARROW && W < 700 ? 1 : 1.3);
+// how much larger than their own size the words are shown (less where the reading spot is small)
+const wordScale = () => (NARROW && W < 700 ? 1 : 1.15);
 const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
 let roomOf = -1;
 function roomBox() {
   // a tablet held upright: the lower part, at a reading width in the middle
-  if (NARROW && W >= 700) { const w = Math.min(760, W - 64); return { x: (W - w) / 2, w, top: H * 0.42, bottom: H - 72, head: 64, foot: 6 }; }
-  // a phone: the lower part, so the scene stays in view above it, leaving the bottom edge to the way to the works
-  if (NARROW) return { x: 8, w: W - 16, top: H * 0.4, bottom: H - 60, head: 58, foot: 4 };
-  const w = Math.min(640, W * 0.42); return { x: Math.min(W * 0.54, W - w - 32), w, top: H * 0.12, bottom: H * 0.9, head: 66, foot: 6 };
+  if (NARROW && W >= 700) { const w = Math.min(760, W - 64); return { x: (W - w) / 2, w, top: H * 0.3, bottom: H - 72, head: 64, foot: 6 }; }
+  // a phone: the lower part, so the world stays in view above it, leaving the bottom edge to the way to the works
+  if (NARROW) return { x: 8, w: W - 16, top: H * 0.32, bottom: H - 60, head: 58, foot: 4 };
+  const w = Math.min(620, W * 0.42); return { x: Math.min(W * 0.54, W - w - 32), w, top: H * 0.1, bottom: H * 0.9, head: 66, foot: 6 };
 }
-// (a style is written only when it changes: twelve messages, four values each, every frame, would otherwise make the
+// (a style is written only when it changes: twelve messages, several values each, every frame, would otherwise make the
 // browser look at them all again each frame)
 const setVar = (a, k, v) => { const c = a.css || (a.css = {}); if (c[k] !== v) { c[k] = v; a.el.style.setProperty(k, v); } };
-function placeAnchors() {
-  const RB = roomBox(), x0 = RB.x + 18, top0 = RB.top + RB.head + 14, avail = RB.bottom - RB.foot - 12 - top0, gap = 14;
-  let latest = -1;
-  ANCHORS.forEach((a, i) => { if (penZ >= a.z) latest = i; });
-  const g = latest >= 0 ? groupOf(ANCHORS[latest].z) : -1, gone = latest >= 0 && (penZ > ANCHORS[latest].z + 6 || (g === 0 && penZ > CL0 + 0.75));
-  const cur = latest >= 0 && !gone ? slideOf(latest) : -1;
+const GROUPS = [0, 1, 2].map((g) => ANCHORS.map((_, i) => i).filter((i) => groupOf(ANCHORS[i].z) === g));
+function placeAnchors(u) {
+  const RB = roomBox(), x0 = RB.x + 18, top0 = RB.top + RB.head + 14, bot = RB.bottom - RB.foot - 12, avail = bot - top0, gap = 14, perU = rangeNow() / TOTAL;
+  const zn = zoneOf(u), cur = zn && !passing && (zn.part === 'read' || zn.s < 0.04) ? STORY.indexOf(zn.k) : -1;
   let end = top0;
-  // every slide is laid out where it will be (so a slide only fades in and rises a little, never travels)
-  SLIDES.forEach((ids, k) => {
+  GROUPS.forEach((ids, g) => {
+    if (!ids.length) return;
     for (const i of ids) { const a = ANCHORS[i]; if (!a.w) { a.w = a.el.offsetWidth; a.h = a.el.offsetHeight; } }
-    const hs = ids.reduce((t, i) => t + ANCHORS[i].h, 0) + gap * (ids.length - 1), ws = Math.max(...ids.map((i) => ANCHORS[i].w));
-    const sc = clamp(Math.min(slideScale(), avail / hs, (RB.w - 36) / ws), 0.75, 1.5);
-    let y = top0;
+    // (as large as fits: on a wide screen a chapter's words all fit, smaller if need be; a phone keeps them readable
+    // and lets them scroll)
+    // (the question and its button, at their own size, come after them and must fit too)
+    const h1 = ids.reduce((t, i) => t + ANCHORS[i].h, 0) + gap * (ids.length - 1), fitH = NARROW && W < 700 ? Infinity : (avail - gap - goOnHeight() - 8) / h1;
+    const sc = clamp(Math.min(wordScale(), (RB.w - 36) / Math.max(...ids.map((i) => ANCHORS[i].w)), fitH), 0.8, 1.5);
+    // (the question and the button come after the words, as part of them)
+    const hs = ids.reduce((t, i) => t + ANCHORS[i].h * sc, 0) + gap * ids.length + goOnHeight(), over = Math.max(0, hs - avail), k = STORY[g];
+    readLen[k] = clamp(READ0 + 0.03 + over / Math.max(1, perU), READ0 + 0.03, READ_MAX);
+    // (scrolled through the spot as far as the reading has come)
+    const off = g !== cur ? 0 : zn.part === 'read' ? clamp(((u - CH[k][0] - READ0) / Math.max(1e-6, readLen[k] - READ0 - 0.03)) * over, 0, over) : over;
+    let y = top0 - off;
     for (const i of ids) {
-      const a = ANCHORS[i], shown = k === cur && i <= latest;
+      const a = ANCHORS[i], shown = g === cur, h = a.h * sc;
       a.el.classList.toggle('on', shown);
-      setVar(a, '--as', sc.toFixed(3)); setVar(a, '--ax', x0.toFixed(1) + 'px'); setVar(a, '--ay', (y + (shown ? 0 : 12)).toFixed(1) + 'px'); setVar(a, '--aa', shown ? '1' : '0');
-      y += a.h * sc + gap;
-      if (shown) end = y - gap;
+      setVar(a, '--as', sc.toFixed(3)); setVar(a, '--ax', x0.toFixed(1) + 'px'); setVar(a, '--ay', (y + (shown ? 0 : 14)).toFixed(1) + 'px'); setVar(a, '--aa', shown ? '1' : '0');
+      // (cut at the edges of the reading spot, so words moving through it do not run over the chapter's name)
+      setVar(a, '--ct', (Math.max(0, top0 - 6 - y) / sc).toFixed(1) + 'px'); setVar(a, '--cb', (Math.max(0, y + h - bot - 6) / sc).toFixed(1) + 'px');
+      y += h + gap;
+      if (shown) end = Math.min(bot, y - gap);
     }
+    if (g === cur) { const gh = goOnHeight(); placeGoOn(k, x0 + 4, y + 4, y + gh <= bot + 8); if (y + gh <= bot + 8) end = y + gh; }
   });
-  // the room: the chapter's name over its slides
-  const show = cur >= 0 && g >= 0 && g < 3;
+  if (cur < 0) placeGoOn(null, 0, 0, false);
+  // the room: the chapter's name over its words
+  const show = cur >= 0;
   roomEl.classList.toggle('on', show);
   if (!show) return;
-  if (g !== roomOf) { roomOf = g; const r = (COPY.rooms || {})[ROOMS[g]] || {}; roomT.textContent = r.title || ''; roomS.textContent = g === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
+  if (cur !== roomOf) { roomOf = cur; const r = (COPY.rooms || {})[ROOMS[cur]] || {}; roomT.textContent = r.title || ''; roomS.textContent = cur === 2 && CASE && bySlug[CASE] ? bySlug[CASE].title : r.sub || ''; }
   const top = top0 - 14 - RB.head;
   roomEl.style.transform = `translate(${RB.x}px,${top}px)`; roomEl.style.width = `${RB.w}px`; roomEl.style.height = `${end + 14 - top}px`;
 }

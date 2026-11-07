@@ -19,26 +19,20 @@
 /* (while it rings nothing else on the first screen moves: the charm hangs still, the enter waits on the far side) */
 .jy-at-pro .jy-phone .jy-charm,.jy-ringing .jy-na{animation:none}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode.jy-ringing .jy-phone{animation:none}}
-/* the next message's place (49-stage-next): a chat bubble typing, with a notification dot and a pulse, asking for a
-   click; it comes a moment after the message it follows, so that one is read first */
-.jy-next{display:none}
-.jy-stage-mode .jy-next{display:block;position:absolute;left:0;top:0;z-index:35;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;border-radius:50%;background:none;color:var(--tt-ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s,scale .16s var(--tt-ease-out)}
-/* (it comes up from a little smaller, on the brand's spring, once the message has been read a moment) */
-.jy-stage-mode .jy-next.on{opacity:1;pointer-events:auto;animation:jy-next-in .5s var(--tt-spring) .8s both}
-@keyframes jy-next-in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
-.jy-next:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-.jy-next-r{position:absolute;inset:6px;border-radius:50%;border:1.5px solid currentColor;animation:jy-tap 1.8s ease-out infinite}
-.jy-next-b{position:absolute;left:8px;top:11px;display:flex;align-items:center;justify-content:center;gap:3px;width:32px;height:24px;border-radius:12px 12px 12px 4px;background:var(--tt-canvas);box-shadow:0 0 0 1.5px currentColor,0 4px 14px rgba(20,28,48,.2)}
-.jy-next-b i{width:4px;height:4px;border-radius:50%;background:currentColor;animation:jy-type 1.2s infinite}
-.jy-next-b i:nth-child(2){animation-delay:.15s}
-.jy-next-b i:nth-child(3){animation-delay:.3s}
-@keyframes jy-type{0%,60%,100%{opacity:.3;translate:0 0}30%{opacity:1;translate:0 -2px}}
-.jy-next-n{position:absolute;right:5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--tt-magenta);box-shadow:0 0 0 2px var(--tt-canvas)}
-.jy-ink .jy-next{color:var(--tt-on-ink)}
-.jy-ink .jy-next-b{background:rgba(20,28,48,.72)}
-.jy-ink .jy-next-n{box-shadow:0 0 0 2px rgba(20,28,48,.9)}
-@media (prefers-reduced-motion:reduce){.jy-next-r,.jy-next-b i{animation:none}}
-/* while the story waits for clicks, a way past it straight to the discography (49-stage-next) */
+/* under a chapter's words: shall we go on? and the way on, as a button (49-stage-ways-on) */
+.jy-goon{display:none}
+.jy-stage-mode .jy-goon{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;position:absolute;left:0;top:0;z-index:31;opacity:0;pointer-events:none;transition:opacity .35s var(--tt-ease-out)}
+.jy-stage-mode .jy-goon.on{opacity:1;pointer-events:auto}
+.jy-goon p{margin:0;font-size:16px;font-weight:700;color:var(--tt-ink)}
+.jy-goon button{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px 0 22px;border:0;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
+.jy-goon button:active{transform:scale(.97)}
+.jy-goon button:focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
+.jy-goon.jy-nudge button{animation:jy-nudge .6s var(--tt-spring)}
+.jy-ink .jy-goon p{color:var(--tt-on-ink)}
+.jy-ink .jy-goon button{background:var(--tt-on-ink);color:var(--tt-ink)}
+.jy-ink .jy-goon button:focus-visible{outline-color:var(--tt-on-ink)}
+@media (prefers-reduced-motion:reduce){.jy-goon.jy-nudge button{animation:none}}
+/* while the story's chapters are read, a way past them straight to the discography (49-stage-ways-on) */
 .jy-towork{display:none}
 .jy-stage-mode .jy-towork{display:inline-flex;align-items:center;gap:8px;position:fixed;z-index:56;left:max(20px,env(safe-area-inset-left,0px));bottom:calc(22px + env(safe-area-inset-bottom,0px));height:38px;padding:0 14px 0 16px;border:1px solid rgba(159,161,166,.4);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--tt-ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s var(--tt-ease-out),transform .16s var(--tt-ease-out)}
 .jy-stage-mode .jy-towork.on{opacity:1;pointer-events:auto}
@@ -135,7 +129,7 @@
 .jy-stage-mode .jy-trail.jy-voice{display:block!important;position:absolute!important;inset:0!important;width:auto!important;transform:none!important;pointer-events:none}
 .jy-stage-mode .jy-chat.jy-voice{left:max(48px,6vw);bottom:12%;justify-content:flex-end;display:block!important;position:absolute!important;inset:0!important;width:auto!important;transform:none!important;pointer-events:none}
 .jy-stage-mode .jy-case-marks{display:block;padding:0;position:absolute;inset:0}
-.jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .35s var(--tt-ease-out),transform .45s var(--tt-ease-out)!important;animation:none!important;pointer-events:none;will-change:opacity}
+.jy-stage-mode [data-anchor]{position:absolute!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;display:flex!important;margin:0!important;width:max-content;max-width:min(400px,30vw)!important;transform:translate(var(--ax,-9999px),var(--ay,0)) scale(var(--as,1))!important;transform-origin:0 0!important;clip-path:inset(var(--ct,0px) -60px var(--cb,0px) -60px);opacity:var(--aa,0)!important;visibility:visible!important;transition:opacity .35s var(--tt-ease-out),transform .45s var(--tt-ease-out)!important;animation:none!important;pointer-events:none;will-change:opacity}
 .jy-stage-mode [data-anchor]:not(.on){transition:opacity .2s ease!important}
 /* (with reduced motion the messages fade in their places instead of gliding up the thread) */
 @media (prefers-reduced-motion:reduce){.jy-stage-mode [data-anchor]{transition:opacity .2s ease!important}}

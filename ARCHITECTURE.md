@@ -67,22 +67,25 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
 | `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
-| `48-stage-scenes` | How the story moves: up to the discography it waits after every second message (`STOPS`) and goes on one leg at a time (`LEGS`) when asked; scenes play by themselves to their end (`AUTO`, with steps; nothing stops one midway to ask for input), input. |
-| `49-stage-next` | The story's controls while it waits for clicks: the next message's place, marked like a notification (a click plays the next leg), and a way straight to the discography. |
+| `48-stage-scenes` | How the story moves: scenes that play by themselves to their end (`scenes()` when scrolled into, `wayScene(k)` from a chapter's button; with steps, nothing stops one midway); a scroll stops at a chapter's words' end; input. |
+| `49-stage-ways-on` | The story's ways on: under each chapter's words a question and a button (the way into the next world), and a way past the story straight to the discography. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
+| `51-stage-loops` | The worlds as backgrounds that run by themselves: each chapter's round (`LOOPS`), the ways between them (`WAY`), and where the pen is for a scroll position (`penFor`, `zoneOf`). |
 | `52-stage-world` | The world in depth: the line's path, the camera (`rig`), building the world. |
-| `54-stage-conversation` | The messages along the line (`ANCHORS`), said like slides two at a time (`SLIDES`), under the chapter's name (the room). |
+| `54-stage-conversation` | The words of the about, the philosophy and the case (`ANCHORS`): a chapter's all at once under its name (the room), moved through the reading spot by scrolling when they do not all fit (`readLen`). |
 | `55-stage-forming` | How a thing comes into being as the line comes (`formAt`): scattered points ahead, gathering into its outline, the outline drawn, then filled and coloured as the pen reaches it. |
 | `56-stage-scenery` | Drawing the land and sky, the sea, space, and the line; each thing through `formAt`, the sky's colour spreading in over the first stretch. |
-| `58-stage-phone-passage` | The phone between worlds (approach, wake, pull: `PH`, `phoneIn`) and `drawWorld`. |
+| `58-stage-phone-passage` | The phone between worlds, on a way on, while the world keeps running: it comes along the line and stops; its screen (the next world's start) grows to fill the view (`passP`, `phoneIn`, `nextWorld`); and `drawWorld`. |
 | `60-stage-record` | The record: the staff as a 3D current with every work, album tracks on a cord, the card. |
 | `62-stage-loop` | The frame loop: what each frame draws for the scroll position; resize; `stage`, the stage's interface. |
 | `90-start` | Where the visitor came in (route, `?work=`). |
 
-The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–4.5, tone 4.5–8.1, case 8.1–12.1,
-music 12.1–13.7, record 13.7–17.7, done 17.7–18.6, epi 18.6–19.6`. Inside tale to music the camera follows a pen
-along the line at depth `z`; `uOfPen(z)` converts. Each message is written at a thing in its world (every other
-pole, jellyfish or star: `SET`), so the words arrive at a pace that can be read.
+The timeline is in scroll units `u` (`CH` in `00-base`): `pro 0–1, tale 1–3.6, tone 3.6–6.2, case 6.2–8.8,
+music 8.8–10.4, record 10.4–14.4, done 14.4–15.3, epi 15.3–16.3`. Each story chapter (tale, tone, case) is its
+words (as long as they need to scroll through the reading spot) and then its way on into the next world. The world
+behind the words runs by itself (`51-stage-loops`): the camera follows a pen along the line at depth `z`, round and
+round a stretch of each world; on a way on the pen goes from where its round was, through a phone, into the next
+world. In the music chapter the pen follows the scroll again (`penAt`, `uOfPen`).
 
 ## The styles, part by part (`src/journey/css/`)
 
