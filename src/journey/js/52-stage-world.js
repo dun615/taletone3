@@ -1,23 +1,18 @@
 /* ---- one world in depth. The pen draws a single line forward through it and the camera follows the pen,
-   a few steps behind. Hills, poles, the wire, grass and clouds stand along the way; every message is written
-   at a point of the line and recedes as the visitor passes it. At the end the same line coils around the
-   view, and in the next chapter it splits into the five lines of the staff. ---- */
+   a few steps behind. Hills, poles, the wire, grass and clouds stand along the way. At the end the same line
+   coils around the view, and in the next chapter it splits into the five lines of the staff. ---- */
 const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
 Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
 // three worlds along one line, a gate (a phone's screen) between them: the land of the intro (mountains,
 // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
 // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
 // passed slowly takes on a pastel colour.
-// the land ends where the line lifts off the last pole and swings up, steeper and steeper, until it runs straight
-// up into the sky (from CL0, CLH high at ZS); the camera rides the line and ends up looking straight up. Then the
-// trick: looking straight up into a clear sky and straight down into clear water look the same (the line runs
-// into the middle of the screen, everything passes outwards), so at ZS the world is quietly swapped for the sea,
-// the camera now looking down. The end of the line is a fishing line going straight down into the deep (DD in
-// all), and what passes is no longer clouds but bubbles, fish, rays and jellyfish, darker and darker, until a phone
-// comes up out of the dark at S0 and through it is space.
-// Each world has one kind of thing each of its messages is set on, where the line is when the message comes:
-// a pole on the land (the line rests on its top), a jellyfish of light in the sea (the line threads through it and
-// it lights up), a star in space (the line turns at it and it lights up).
+// the land ends where the line lifts off the last pole and swings up into the sky (from CL0, CLH high at ZS); the
+// land's round stops short of it, so it is only seen ahead. In the sea the line is a fishing line going straight
+// down into the deep (DD in all), past bubbles, fish, rays and jellyfish, darker and darker; space opens at S0.
+// The worlds are reached through a phone (58-stage-phone-passage), never by riding the line from one into the next.
+// Each world has one kind of thing along its line: poles on the land (the line rests on their tops), jellyfish of
+// light in the sea (the line threads through them and they light up), stars in space (the line turns at them).
 const CLH = 40, CLX = 2.6, DD = 232, YS = 7.25, YB = 7;
 const WIRE = [OBJ.land[0], OBJ.land[7]], POLE = 1.8, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = PEN.music[1] - 2.5;
 const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },

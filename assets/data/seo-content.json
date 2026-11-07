@@ -16,7 +16,6 @@
       "path": "/",
       "title": "TALETONE MUSIC (테일톤 뮤직) — 스토리 기반 IP 음악 프로듀서",
       "description": "TALETONE MUSIC(테일톤 뮤직)은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송을 기획·제작하는 스토리 기반 음악 프로듀서입니다.",
-      "sectionId": "c-home",
       "translations": {
         "en": {
           "title": "TALETONE MUSIC — Story-Based IP Music Producer",
@@ -34,7 +33,6 @@
       "path": "/about/",
       "title": "About | TALETONE MUSIC — 소개",
       "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤 뮤직)과 함께하는 파트너를 소개합니다.",
-      "sectionId": "c-members",
       "translations": {
         "en": {
           "title": "About | TALETONE MUSIC",
@@ -52,7 +50,6 @@
       "path": "/approach/",
       "title": "Approach | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
       "description": "이야기(TALE)에서 톤(TONE)을 찾고 음악(MUSIC)으로 완성하는 TALETONE MUSIC의 제작 방식입니다. 해봄 「Love Dopamine」 사례와 함께 곡의 기획 의도와 제작 과정을 소개합니다.",
-      "sectionId": "c-projects",
       "translations": {
         "en": {
           "title": "Approach | TALETONE MUSIC — Starting from the Story",
@@ -70,7 +67,6 @@
       "path": "/discography/",
       "title": "Discography | TALETONE MUSIC — 디스코그래피",
       "description": "TALETONE MUSIC(테일톤 뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
-      "sectionId": "c-works",
       "translations": {
         "en": {
           "title": "Discography | TALETONE MUSIC",
@@ -88,7 +84,6 @@
       "path": "/contact/",
       "title": "Contact | TALETONE MUSIC — 프로젝트 문의",
       "description": "TALETONE MUSIC(테일톤 뮤직) 프로젝트 문의. 아직 정리되지 않은 이야기라도 첫 질문부터 함께 설계합니다. contact@taletone.net",
-      "sectionId": "c-contact",
       "translations": {
         "en": {
           "title": "Contact | TALETONE MUSIC — Project Inquiry",

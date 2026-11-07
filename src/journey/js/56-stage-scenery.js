@@ -176,18 +176,6 @@ function elements(w, A, zLo = -1e9, zHi = 1e9) {
       ctx.stroke();
       if (g.flower) { const b = g.blades[2], f = V([g.x + b.dx + b.lean + sw, GROUND - b.h - 0.012, g.z]); if (f) { ctx.fillStyle = tint(FLOWER[g.flower - 1], k, al / 0.7); ctx.beginPath(); ctx.arc(f[0], f[1], clamp(0.024 * F3 / dz, 1.2, 5), 0, Math.PI * 2); ctx.fill(); } }
     }
-    // the clouds high up, which the camera rises through: far ones first
-    if (penZ > CL0) {
-      const seen = [];
-      for (const pf of puffs) { const q = pf.map((b) => [V(b), b[3]]); const d = Math.max(...q.map(([v]) => (v ? v[2] : 0))); if (d > 0.3 && d < 30) seen.push([d, q]); }
-      seen.sort((a, b) => b[0] - a[0]);
-      for (const [d, q] of seen) {
-        const al = A * clamp((d - 0.4) / 1.6) * clamp((30 - d) / 10) * clamp((camP - 0.25) / 0.5); if (al < 0.02) continue;
-        const blob = (sc, dx) => { ctx.beginPath(); for (const [v, r] of q) { if (!v) continue; const R = (r * F3 * sc) / v[2]; if (R > W * 2) continue; ctx.moveTo(v[0] + dx * R + R, v[1] + dx * R); ctx.arc(v[0] + dx * R, v[1] + dx * R, R, 0, Math.PI * 2); } };
-        blob(1, 0); ctx.fillStyle = rgbA(mixA(PASTEL.land.cloud, [255, 255, 255], 0.35), 0.62 * al); ctx.fill();
-        blob(0.72, -0.18); ctx.fillStyle = `rgba(255,255,255,${0.55 * al})`; ctx.fill();
-      }
-    }
     return;
   }
   if (w === 1) { seaElements(A); return; }

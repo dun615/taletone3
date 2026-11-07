@@ -11,7 +11,7 @@
 //
 // Edit the sources, never the generated output.
 import { createHash } from 'node:crypto';
-import { mkdir, readdir, readFile, writeFile, rm } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { japaneseCharacters } from './font-coverage.mjs';
@@ -167,17 +167,6 @@ const journeyOutputs = [
   ...languages.map((lang) => [`assets/journey/data-${lang.key}.js`, journeyDataFor(lang)]),
 ];
 
-// Retired News and RSS have no replacement. Remove prior generated artifacts so Pages serves 404.
-if (!check && !listOnly) {
-  for (const prefix of ['', 'en/', 'ja/', 'preview/', 'preview/en/', 'preview/ja/']) {
-    // the Works detail pages are retired too (not indexed, not linked)
-    for (const relative of [prefix+'news', prefix+'rss.xml', ...works.works.flatMap(work=>[prefix+'discography/'+work.slug, prefix+'works/'+work.slug])]) {
-      const target=path.resolve(root,relative);
-      if(!target.startsWith(root+path.sep)) throw new Error('Invalid retired route path');
-      await rm(target,{recursive:true,force:true});
-    }
-  }
-}
 // GitHub Pages serves static files: preserve legacy links with immediate HTML redirects.
 // These aliases never appear in the sitemap or internal navigation.
 const redirectPage = (target, lang) => `<!DOCTYPE html>

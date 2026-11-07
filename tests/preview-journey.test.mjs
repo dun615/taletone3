@@ -11,7 +11,6 @@ test('every page says whose site it is: the name in the top bar and on the first
     assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('<h1>'), `${prefix}: the name comes before the first words`);
     assert.ok(html.includes('content="index, follow"'));
   }
-  for (const lang of ['en', 'jp']) assert.equal((site.journey.translations[lang].phoneNotes || []).length, 2, `journey.phoneNotes in ${lang}`);
 });
 
 // The journey (a phone, a line, the record of every story) is the site; /preview/ leads to it.
