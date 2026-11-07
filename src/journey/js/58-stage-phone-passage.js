@@ -48,6 +48,11 @@ function phoneEntry(p, an, lineAt, zP) {
   for (let i = 0; i < 18; i++) { const m = (lo + hi) / 2; if (under(m)) hi = m; else lo = m; }
   return lineAt(lo) ? lo : hi;
 }
+// where the phone is as it comes in: on the line, but on the land without the wire's sag between the poles (so it does
+// not bob up and down on its way), and followed smoothly from frame to frame
+const evenLand = (z) => { const q = pathAt(z); return [q[0], lerp(q[1], -0.55 + 0.4 / 3, wireW(z)), z]; };
+let phoneAt = null;
+const steadied = (an) => { if (!phoneAt) phoneAt = an.slice(); else { phoneAt[0] = lerp(phoneAt[0], an[0], 0.2); phoneAt[1] = lerp(phoneAt[1], an[1], 0.2); phoneAt[2] = an[2]; } return phoneAt; };
 function phoneIn(p, an, dark, A, inside, lineAt, zE) {
   const s3 = phoneScale(p), show = ease(p / 0.1);
   // it comes in along the line and comes to rest square in the middle
@@ -100,8 +105,8 @@ function drawWorld(A) {
     // the land; on the way on a phone comes along the line to it, and through the phone is the sea, looked straight
     // down into
     const p = passK === 'tale' ? passP : 0;
-    if (p <= 0) { backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); return; }
-    const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, CL0), an = V(pathAt(zP)) || [W / 2, H * 0.5], landAt = (z) => V(pathAt(z));
+    if (p <= 0) { phoneAt = null; backdrop(0, A); elements(0, A); drawLine(-1e9, penZ, lineRGB, A); drawTip(lineRGB, A); return; }
+    const zP = atDepth(pathAt, phoneDepth(p), penZ - 6, CL0), an = steadied(V(evenLand(zP)) || [W / 2, H * 0.5, AHEAD]), landAt = (z) => V(pathAt(z));
     const zE = phoneEntry(p, an, landAt, Math.min(penZ, zP));
     backdrop(0, A); elements(0, A); drawLine(-1e9, Math.min(penZ, zE), lineRGB, A); if (penZ <= zE) drawTip(lineRGB, A);
     phoneIn(p, an, false, A, (trail, aim, keep) => nextWorld(1, seaPath, ZS - 4, INK, true, A, trail, aim, keep, WAY.tale.to), landAt, zE);
@@ -110,8 +115,8 @@ function drawWorld(A) {
   if (penZ < S0) {
     // straight down into the deep; on the way on a phone comes up the line, and through it is space
     const p = passK === 'tone' ? passP : 0;
-    if (p <= 0) { backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); return; }
-    const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = V(seaPath(zP)) || [W / 2, H * 0.5], seaAt = (z) => V(seaPath(z));
+    if (p <= 0) { phoneAt = null; backdrop(1, A); elements(1, A); drawLine(ZS - 4, penZ, lineRGB, A, seaPath); drawTip(lineRGB, A, seaPath, true); return; }
+    const zP = atDepth(seaPath, phoneDepth(p), penZ - 2, S0 + 2), an = steadied(V(seaPath(zP)) || [W / 2, H * 0.5, AHEAD]), seaAt = (z) => V(seaPath(z));
     const zE = phoneEntry(p, an, seaAt, Math.min(penZ, zP));
     backdrop(1, A); elements(1, A); drawLine(ZS - 4, Math.min(penZ, zE), lineRGB, A, seaPath); if (penZ <= zE) drawTip(lineRGB, A, seaPath, true);
     phoneIn(p, an, true, A, (trail, aim, keep) => nextWorld(2, spacePath, S0 - 4, '244,244,252', false, A, trail, aim, keep, WAY.tone.to), seaAt, zE);
