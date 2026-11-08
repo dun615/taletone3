@@ -8,7 +8,6 @@
 .jy-stage-mode .jy-grain{position:absolute;transition:opacity .6s;will-change:opacity}
 .jy-stage-mode .jy-cv{display:block;position:absolute;inset:0;width:100%;height:100%}
 .jy-stage-mode .jy-ch{position:absolute;inset:0;max-width:none;margin:0;padding:0;display:block;pointer-events:none;background:none}
-.jy-stage-mode .jy-ch[data-ch="epi"]{color:var(--tt-on-ink)}
 .jy-stage-mode .jy-ch>*{pointer-events:auto}
 .jy-stage-mode .jy-top{color:var(--tt-ink);transition:color .6s}
 .jy-stage-mode.jy-ink .jy-top{color:var(--tt-on-ink)}
@@ -123,7 +122,6 @@
 }
 
 /* the intro and the philosophy arrive as a chat: messages stack up, the newest at the bottom */
-.jy-chat{display:flex;flex-direction:column;gap:12px}
 .jy-pcard{gap:0}
 .jy-pc-head{display:flex;align-items:center;gap:12px}
 .jy-pc-head b{display:block;font-family:var(--tt-display);font-size:18px;letter-spacing:.16em}
@@ -132,9 +130,7 @@
 .jy-pc-btn{margin-top:14px;height:40px;font-size:14px}
 .jy-step-l{display:block;margin-bottom:4px;font-family:var(--tt-display);font-size:11px;font-weight:700;letter-spacing:.24em;color:var(--tt-ink-muted)}
 
-.jy-stage-mode .jy-chat .jy-say{position:static;max-width:100%;display:none}
 
-.jy-stage-mode .jy-chat .jy-say.on{display:flex;pointer-events:auto;animation:jy-arrive .7s var(--tt-spring)}
 @keyframes jy-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* chapters, always in reach: business visitors jump straight to the music */
@@ -146,7 +142,6 @@
 .jy-rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .jy-rail a{display:flex;flex-direction:row-reverse;align-items:center;justify-content:flex-end;gap:10px;min-height:36px;padding:0 12px 0 4px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;color:var(--tt-ink-muted);transition:color .25s}
 .jy-rail-pf{margin-top:4px;padding-top:4px;border-top:1px solid rgba(159,161,166,.3)}
-.jy-rail-pf a i{border-radius:2px}
 .jy-rail a i{display:block;width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;transition:transform .5s var(--tt-spring),background .25s}
 .jy-rail a:hover,.jy-rail a[aria-current]{color:var(--tt-ink)}
 .jy-rail a[aria-current] i{background:currentColor;transform:scale(1.25)}
@@ -155,4 +150,3 @@
 /* a quiet backing, so the chapters stay readable over any sky, sea or night */
 .jy-stage-mode .jy-rail ol{padding:6px 2px;border-radius:22px;background:rgba(254,254,254,.74);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.22);transition:background .3s,box-shadow .3s}
 .jy-ink .jy-rail ol{background:rgba(20,28,48,.58);box-shadow:0 0 0 1px rgba(255,255,255,.08)}
-@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-chat .jy-say.on{animation:none}}

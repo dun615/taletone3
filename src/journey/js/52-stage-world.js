@@ -1,23 +1,18 @@
 /* ---- one world in depth. The pen draws a single line forward through it and the camera follows the pen,
-   a few steps behind. Hills, poles, the wire, grass and clouds stand along the way; every message is written
-   at a point of the line and recedes as the visitor passes it. At the end the same line coils around the
-   view, and in the next chapter it splits into the five lines of the staff. ---- */
+   a few steps behind. Hills, poles, the wire, grass and clouds stand along the way. At the end the same line
+   coils around the view, and in the next chapter it splits into the five lines of the staff. ---- */
 const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
 Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
 // three worlds along one line, a gate (a phone's screen) between them: the land of the intro (mountains,
 // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
 // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has
 // passed slowly takes on a pastel colour.
-// the land ends where the line lifts off the last pole and swings up, steeper and steeper, until it runs straight
-// up into the sky (from CL0, CLH high at ZS); the camera rides the line and ends up looking straight up. Then the
-// trick: looking straight up into a clear sky and straight down into clear water look the same (the line runs
-// into the middle of the screen, everything passes outwards), so at ZS the world is quietly swapped for the sea,
-// the camera now looking down. The end of the line is a fishing line going straight down into the deep (DD in
-// all), and what passes is no longer clouds but bubbles, fish, rays and jellyfish, darker and darker, until a phone
-// comes up out of the dark at S0 and through it is space.
-// Each world has one kind of thing each of its messages is set on, where the line is when the message comes:
-// a pole on the land (the line rests on its top), a jellyfish of light in the sea (the line threads through it and
-// it lights up), a star in space (the line turns at it and it lights up).
+// the land ends where the line lifts off the last pole and swings up into the sky (from CL0, CLH high at ZS); the
+// land's round stops short of it, so it is only seen ahead. In the sea the line is a fishing line going straight
+// down into the deep (DD in all), past bubbles, fish, rays and jellyfish, darker and darker; space opens at S0.
+// The worlds are reached through a phone (58-stage-phone-passage), never by riding the line from one into the next.
+// Each world has one kind of thing along its line: poles on the land (the line rests on their tops), jellyfish of
+// light in the sea (the line threads through them and they light up), stars in space (the line turns at them).
 const CLH = 40, CLX = 2.6, DD = 232, YS = 7.25, YB = 7;
 const WIRE = [OBJ.land[0], OBJ.land[7]], POLE = 1.8, GROUND = 1.35, AHEAD = 4.2, FAR3 = 26, TAIL = PEN.music[1] - 2.5;
 const PASTEL = { land: { sky: [214, 233, 246], hill: [[190, 222, 199], [214, 230, 186], [200, 214, 236]], grass: [140, 190, 150], pole: [196, 170, 150], cloud: [250, 226, 236] },
@@ -108,7 +103,7 @@ function rig(pz, w) {
 }
 const fogA = (dz) => clamp((FAR3 - dz) / 8) * clamp((dz - 0.15) / 0.5);
 
-let puffs = [], mounts = [], birds = [], shafts = [], kelps = [], whale = null, fish = [], mantas = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], bubbles = [], stars = [], nebulae = [], milky = [], bodies = [];
+let mounts = [], birds = [], shafts = [], kelps = [], whale = null, fish = [], mantas = [], snow = [], jellies = [], glows = [], ridges = [], clouds = [], grass = [], poles = [], bubbles = [], stars = [], nebulae = [], milky = [], bodies = [];
 let spaceDark = 0, lineRGB = INK;
 function buildWorld() {
   F3 = Math.min(NARROW ? Math.max(W, H * 0.75) : W, H * 1.6) * 0.62;
@@ -141,7 +136,7 @@ function buildWorld() {
   birds = [];
   for (let i = 0; i + 1 < poles.length; i++) for (const s of [-0.2, 0.2]) { const n = (rnd() * 3) | 0; for (let j = 0; j < n; j++) birds.push({ i, s, f: 0.2 + rnd() * 0.6, dir: rnd() < 0.5 ? -1 : 1, ph: rnd() * 6 }); }
   clouds = [];
-  // low clouds over the land, and high ones the camera rises past at the end
+  // low clouds over the land
   const cloudAt = (z, X, Y, wd) => {
     const pts = [], bx = [[-0.36, 0.13], [-0.18, 0.22], [0.04, 0.3], [0.25, 0.22], [0.4, 0.12]];
     for (let j = 0; j <= 40; j++) { const x = -0.5 + j / 40; let top = 0; for (const [b2, r] of bx) { const d = x - b2; if (Math.abs(d) < r) top = Math.max(top, Math.sqrt(r * r - d * d)); } pts.push([X + x * wd, Y - top * wd * 1.05, z]); }
@@ -149,13 +144,8 @@ function buildWorld() {
     clouds.push({ z, pts, ci: clouds.length });
   };
   for (let z = 3; z < CL0; z += 3 + rnd() * 3) cloudAt(z, (rnd() - 0.5) * 7, -2.1 + rnd() * 0.6, 0.9 + rnd() * 0.9);
-  puffs = [];
-  for (let i = 0; i < 34; i++) {
-    const y = -2.4 - i * 0.85 - rnd() * 0.5, c = Math.pow(-y / CLH, 1 / CLX); if (y < -29) break;
-    const z = CL0 + c * (ZS - CL0), an = rnd() * Math.PI * 2, rad = 1.1 + rnd() * 2.6, X = xAt(z) + Math.cos(an) * rad, Z = z + Math.sin(an) * rad * 0.8, blobs = [];
-    for (let j = 0, n = 4 + ((rnd() * 4) | 0); j < n; j++) blobs.push([X + (rnd() - 0.5) * 1.4, y + (rnd() - 0.5) * 0.4, Z + (rnd() - 0.5) * 0.9, 0.3 + rnd() * 0.45]);
-    puffs.push(blobs);
-  }
+  // (the sea has its own seed, the value the land's layout leaves: the land can change without moving the sea)
+  seed = 1142786988;
   // the sea, by depth along the fishing line (k: 0 the top, 1 the bottom): light from above and bubbles near the
   // top, fish circling the line and rays gliding round it further down, jellyfish and glowing plankton in the dark
   const around = (k, r0, r1) => { const y = k * DD, z = zOfDepth(y), a = rnd() * Math.PI * 2, r = r0 + rnd() * (r1 - r0); return [xAt(z) + Math.cos(a) * r, y, z + Math.sin(a) * r]; };

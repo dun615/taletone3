@@ -57,7 +57,7 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   // belongs to the entry above, '[text](url)' links it, '#tags' lines are dropped
   const creditLines = String(member.creditsText || '').split('\n').filter((line) => line.trim() && !/^\s*#/.test(line)).map((line) => {
     const t = line.trim(), link = t.match(/^\[(.+)\]\((https?:[^)]+)\)$/);
-    if (link) return `<li class="jy-cr-link"><a href="${esc(link[2])}" target="_blank" rel="noopener">${esc(link[1])} ↗</a></li>`;
+    if (link) return `<li><a href="${esc(link[2])}" target="_blank" rel="noopener">${esc(link[1])} ↗</a></li>`;
     if (t.startsWith('|')) return `<li class="jy-cr-year">${esc(t.replace(/^\|\s*/, ''))}</li>`;
     const [work, roles] = t.replace(/^\*\s*/, '').split(/\s+—\s+/);
     return `<li${/^\s/.test(line) ? ' class="jy-cr-sub"' : ''}><b>${esc(work)}</b>${roles ? `<span>${esc(roles)}</span>` : ''}</li>`;
@@ -66,7 +66,7 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
     .map(([key, p, short, name]) => `<a href="${base}${p}${route}" hreflang="${key === 'kr' ? 'ko' : key === 'jp' ? 'ja' : 'en'}" lang="${key === 'kr' ? 'ko' : key === 'jp' ? 'ja' : 'en'}"${key === lang.key ? ' aria-current="true"' : ''} aria-label="${esc(name)}">${short}</a>`).join('');
 
   return `<!DOCTYPE html>
-<html lang="${html}" class="jy-doc">
+<html lang="${html}">
 <head>
 <meta charset="utf-8">
 <title>${esc(pageTitle)}</title>
@@ -123,7 +123,7 @@ ${grain}
   <h2 class="jy-chl" id="jy-h-tale">${esc(c.rail.tale)}</h2>
   <div class="jy-chat jy-voice" aria-live="polite">
     ${bubble('jy-hello', lines(c.intro.hello))}
-    <div class="jy-say jy-card-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
+    <div class="jy-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
     ${bubble('jy-types', `<b>${esc(c.intro.typesLabel)}</b><small>${c.intro.types.map(esc).join('<br>')}</small>`)}
     ${logos.length ? bubble('jy-clients', `<b>${esc(c.clients)}</b><span class="jy-logo-row">${logos.map((l) => `<img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy">`).join('')}</span>`) : ''}
   </div>
@@ -145,7 +145,7 @@ ${c.caseStudy ? (() => {
     const cs = c.caseStudy, w = works.find((x) => x.slug === cs.slug), st = Object.fromEntries(cs.steps.map((x) => [x.kind, x]));
     const face = w ? `<span class="jy-av jy-av-them"><img src="/${esc(w.thumb)}" alt=""></span>` : avatar();
     return `  <div class="jy-case jy-voice" aria-live="polite">
-    <div class="jy-say jy-them jy-case-req" id="jy-case-req">${face}<p class="jy-bub"><span class="jy-tx"><span class="jy-step-l">${esc(cs.eyebrow)} · ${esc(cs.title)}</span><span class="jy-case-who">${esc(st.request.label)}</span>${esc(st.request.text)}</span></p></div>
+    <div class="jy-say jy-case-req" id="jy-case-req">${face}<p class="jy-bub"><span class="jy-tx"><span class="jy-step-l">${esc(cs.eyebrow)} · ${esc(cs.title)}</span><span class="jy-case-who">${esc(st.request.label)}</span>${esc(st.request.text)}</span></p></div>
     <ol class="jy-case-marks">
       <li class="jy-case-mark" id="jy-case-m0"><span>${esc(st.strength.label)}</span>${esc(st.strength.text)}</li>
       <li class="jy-case-mark" id="jy-case-m1"><span>${esc(st.question.label)}</span><b>${esc(st.question.text)}</b></li>

@@ -1,7 +1,7 @@
 # How the site is built
 
-taletone.net is one story told in a phone: the visitor scrolls through a land, a sea and space to the record of
-every work, and ends at the inquiry. It is a static site: `scripts/build.mjs` turns data and sources into
+taletone.net is one story told in a phone: the visitor goes through a land, a sea and space, a chapter at a time,
+to the record of every work, and ends at the inquiry. It is a static site: `scripts/build.mjs` turns data and sources into
 plain files, and GitHub Pages serves them. There is no framework, no bundler and no runtime dependency.
 
 Read this first, then the file you need. Every source file starts with a comment saying what it is for.
@@ -31,7 +31,7 @@ builds them; locally, `npm run build`.
 | Path | What it is |
 |---|---|
 | `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video, vinyl colours. |
-| `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `trackRecord`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
+| `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
 | `assets/data/seo-content.json` | The five chapter routes, their titles and descriptions, the site name, analytics. |
 | `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`, `icon`, `primary` for the one edged in the brand's light), in order. Add a button here. |
 | `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
@@ -40,6 +40,9 @@ builds them; locally, `npm run build`.
 | `scripts/link-page.mjs` | `links.json` → `/link/` (its own dark page, apart from the journey; `noindex`, not in the sitemap). |
 | `scripts/build.mjs` | Runs all of the above and writes every generated file; `--check` fails if one is stale. |
 | `scripts/audit-works.mjs` | `npm run audit`: each album track by track, problems, unused files. |
+| `scripts/stage-site.mjs` | The deploy's stage: copies only the public entry points (its `PUBLIC` list) into the folder Pages serves. |
+| `scripts/font-coverage.mjs` | The Japanese characters the pages can show, for the one small LINE Seed JP request per weight. |
+| `scripts/measure-loudness.mjs`, `optimize-assets.mjs`, `subset-line-seed.py` | Run by hand: each record's gain (`loudness` in `works-data.json`), WebP covers (needs `npm install`), the LINE Seed KR subsets. |
 | `src/journey/js/` | The page's script, in parts (below). |
 | `src/journey/css/` | The page's styles, in parts (below). |
 | `assets/works/` | Covers (`*-1024.webp`, small `*-w320.webp`) and sounds (`*.mp3`). |
@@ -50,7 +53,6 @@ builds them; locally, `npm run build`.
 | `.github/scripts/validate-runtime-performance.mjs` | Headless Chrome: every route × language × three screens, the whole story scrolled, a record played, the inquiry; load budgets. |
 | `.github/workflows/` | `site-validation.yml` on every push; `deploy.yml` on `main`: build, check, publish. |
 | `tests/` | `npm test`: the works rules (each case a mistake that once happened), the pages, the redirects, the deploy stage. |
-| `archive/` | Retired content, never published. |
 
 ## The script, part by part (`src/journey/js/`)
 

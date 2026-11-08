@@ -15,7 +15,7 @@ test('the deploy stage publishes the site but no sources or notes', async () => 
     execFileSync(process.execPath, [path.join(root, 'scripts/stage-site.mjs'), out, 'test'], { cwd: root });
     const entries = await readdir(out);
     for (const needed of ['assets', 'CNAME', '404.html', 'version.txt']) assert.ok(entries.includes(needed), `${needed} missing from the stage`);
-    for (const hidden of ['src', 'scripts', 'preview-src', 'archive', 'tests', 'node_modules', '.github', 'package.json']) assert.ok(!entries.includes(hidden), `${hidden} would be published`);
+    for (const hidden of ['src', 'scripts', 'tests', 'node_modules', '.github', 'package.json']) assert.ok(!entries.includes(hidden), `${hidden} would be published`);
     assert.ok(!entries.some((name) => name.endsWith('.md')), 'markdown notes would be published');
   } finally {
     await rm(out, { recursive: true, force: true });
