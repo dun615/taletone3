@@ -24,6 +24,15 @@ const hashed = (file) => `/${file}?v=${createHash('sha256').update(readFileSync(
 const PHONE_BACK = hashed('assets/phone/phone-back.webp');
 // The mark's shape, once in the page (MARK_DEFS), drawn in ink on a circle of the CD light wherever TALETONE speaks (the
 // avatars, the chat room: the profile picture's form). No extra request.
+// The faces each language reads first, loaded early; the Japanese pages also declare M PLUS Rounded 1c here (the other
+// pages never ask for it). Its Medium (500) answers for bold: it has no 700 (00-base.css).
+const font = (f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`;
+const MPLUS = [['100 300', 300], ['400', 400], ['500 900', 500]].map(([range, w]) => `@font-face{font-family:"M PLUS Rounded 1c";font-style:normal;font-weight:${range};font-display:swap;src:url(/assets/fonts/mplus-rounded-${w}.woff2) format("woff2")}`).join('');
+const fontHead = (key) => ({
+  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('manjari-700')].join('\n'),
+  en: [font('manjari-400'), font('manjari-700')].join('\n'),
+  jp: [font('mplus-rounded-400'), font('mplus-rounded-500'), font('manjari-700'), `<style>${MPLUS}</style>`].join('\n'),
+})[key] + '\n';
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
 const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
 const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/></defs></svg>`;
@@ -77,10 +86,7 @@ ${head || '<meta name="robots" content="noindex, nofollow">'}
 <meta name="theme-color" content="#fefefe">
 <link rel="icon" href="${hashed('assets/icons/favicon-32.png')}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="${hashed('assets/icons/apple-touch-icon.png')}">
-<link rel="preload" href="/assets/fonts/line-seed-kr-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/line-seed-kr-700.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>
-${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${assets.lineSeedJp}">\n` : ''}<link rel="stylesheet" href="${assets.css}">
+${fontHead(lang.key)}<link rel="stylesheet" href="${assets.css}">
 <script>(function(h,w,v){h.classList.add('jy-js','jy-stage-mode');if(w<761||v>w*1.05)h.classList.add('jy-narrow')})(document.documentElement,innerWidth,innerHeight)</script>
 </head>
 <body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}" data-assets="/">

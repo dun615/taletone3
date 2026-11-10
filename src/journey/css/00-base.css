@@ -7,10 +7,17 @@
    Colours: the world is ink on paper until a work brings its own colour. The signal pair (magenta and cyan)
    only ever sits on ink, always together. */
 
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:100;font-display:swap;src:url(/assets/fonts/line-seed-kr-100.woff2) format("woff2")}
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/line-seed-kr-400.woff2) format("woff2")}
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/line-seed-kr-700.woff2) format("woff2")}
-@font-face{font-family:Quicksand;font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/quicksand-latin-normal-v37.woff2) format("woff2")}
+/* The three rounded faces (subsets by scripts/subset-fonts.py): Manjari for English, NanumSquareRound for Korean, M PLUS
+   Rounded 1c for Japanese (declared on the Japanese pages only, scripts/journey-page.mjs). Three weights only, matched
+   by stroke: thin (100: Manjari Thin, NanumSquareRound Light 300, M PLUS Light 300), regular (400) and bold (700:
+   Manjari Bold, NanumSquareRound Bold, M PLUS Medium 500). Each file is declared for the range of weights it stands
+   for, so the styles ask for 100, 400 or 700 and every face answers with its own step, never a made-up bold. */
+@font-face{font-family:Manjari;font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/manjari-100.woff2) format("woff2")}
+@font-face{font-family:Manjari;font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/manjari-400.woff2) format("woff2")}
+@font-face{font-family:Manjari;font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/manjari-700.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/nanum-square-round-300.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/nanum-square-round-400.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/nanum-square-round-700.woff2) format("woff2")}
 
 :root{
   --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-case:#dfe2f4;
@@ -18,8 +25,11 @@
   --tt-ink:#141c30; --tt-ink-line:#1d2435; --tt-ink-muted:#5b606c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
   --tt-magenta:#ff97fe; --tt-cyan:#c9ffff;
   --tt-error:#9a3540; --tt-error-on-ink:#f0a3aa;
-  --tt-sans:"LINE Seed KR","LINE Seed JP",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
-  --tt-display:Quicksand,"LINE Seed KR","LINE Seed JP",system-ui,sans-serif;
+  --tt-display:Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;
+  --tt-sans:NanumSquareRound,"M PLUS Rounded 1c",Manjari,sans-serif;
+  /* letter-spacing by language (the design system's tokens.json): headings, titles (a work's name), running text, and
+     text of 13px or less; Latin labels in capitals take --tt-track-label whatever the page's language */
+  --tt-track-head:-.02em; --tt-track-title:-.02em; --tt-track:-.01em; --tt-track-small:0; --tt-track-label:.16em;
   /* motion: the brand's spring (the story's own pieces arriving: messages, cards, the record), and two crisp curves
      for the controls (a press, a hover, a menu) and for sheets sliding in, which should answer at once, not bounce */
   --tt-spring:cubic-bezier(.34,1.4,.5,1);
@@ -34,7 +44,9 @@
   --tt-light-pale:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);
   color-scheme:light;
 }
-:lang(ja){--tt-sans:"LINE Seed JP","LINE Seed KR",system-ui,-apple-system,"Hiragino Sans",sans-serif}
+/* English pages read in Manjari; Japanese pages in M PLUS Rounded 1c, which has no 700 (its 500 answers for it) */
+:lang(en){--tt-sans:Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-track-head:.01em;--tt-track-title:.01em;--tt-track:.01em;--tt-track-small:.01em}
+:lang(ja){--tt-sans:"M PLUS Rounded 1c",NanumSquareRound,Manjari,sans-serif;--tt-track-head:0;--tt-track-title:.02em;--tt-track:.04em;--tt-track-small:.04em}
 /* Japanese has no spaces: keep-all would hold whole sentences together and break them anywhere once they overflow.
    Break at phrases where the browser can, never before 、 or 。 */
 html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:break-word}
@@ -42,7 +54,8 @@ html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;ov
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html{background:var(--tt-canvas)}
-body{margin:0;background:var(--tt-canvas);color:var(--tt-ink);font-family:var(--tt-sans);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+body{margin:0;background:var(--tt-canvas);color:var(--tt-ink);font-family:var(--tt-sans);font-size:16px;line-height:1.8;letter-spacing:var(--tt-track);font-synthesis-weight:none;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+b,strong,h1,h2,h3{font-weight:700}
 button{font:inherit;color:inherit}
 a{color:inherit}
 img{max-width:100%}
@@ -86,7 +99,7 @@ img{max-width:100%}
 .jy-menu ul{list-style:none;margin:0;padding:0}
 /* the languages, in the header */
 .jy-langtog{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(254,254,254,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.28)}
-.jy-langtog a{display:grid;place-items:center;min-width:44px;height:36px;padding:0 10px;border-radius:999px;text-decoration:none;font-family:var(--tt-display);font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--tt-ink-muted);transition:background .25s,color .25s}
+.jy-langtog a{display:grid;place-items:center;min-width:44px;height:36px;padding:0 10px;border-radius:999px;text-decoration:none;font-family:var(--tt-display);font-weight:700;font-size:12px;letter-spacing:var(--tt-track-label);color:var(--tt-ink-muted);transition:background .25s,color .25s}
 .jy-langtog a:hover{color:var(--tt-ink)}
 .jy-langtog a[aria-current]{background:var(--tt-ink);color:var(--tt-on-ink)}
 .jy-ink .jy-langtog{background:rgba(20,28,48,.58);box-shadow:0 0 0 1px rgba(255,255,255,.1)}

@@ -73,7 +73,7 @@ function drawCoord(u, rgb, A0) {
   const x = tip[0] - 16, y = tip[1], pct = `${Math.round((clamp(u / TOTAL)) * 100)}%`;
   // (in the line's own colour, edged in its opposite so it reads on every world: the land, the blue sea, the night)
   const lum = rgb.split(',').reduce((t, v, i) => t + Number(v) * [0.3, 0.59, 0.11][i], 0), halo = lum < 140 ? '254,254,254' : '20,28,48';
-  ctx.font = '700 11px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.font = '700 11px Manjari, NanumSquareRound, sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
   ctx.strokeStyle = `rgba(${rgb},${(0.85 * A).toFixed(3)})`; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(tip[0] - 6, y); ctx.lineTo(x + 3, y); ctx.stroke();
   ctx.strokeStyle = `rgba(${halo},${(0.7 * A).toFixed(3)})`; ctx.lineWidth = 3.5; ctx.strokeText(pct, x, y + 0.5);

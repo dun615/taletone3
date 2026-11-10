@@ -1,12 +1,18 @@
-LINE Seed KR (subsets made by scripts/subset-line-seed.py)
-by LINE Corporation (https://seed.line.me)
+The site's three rounded faces, subset for the site by scripts/subset-fonts.py.
 
-Quicksand
-Copyright 2011 The Quicksand Project Authors
-(https://github.com/andrew-paglinawan/QuicksandFamily), with Reserved Font Name "Quicksand".
+Manjari (manjari-*.woff2, English)
+Copyright 2018 The Manjari Project Authors (https://gitlab.com/smc/fonts/manjari)
+Licensed under the SIL Open Font License, Version 1.1 (below).
 
-The font files in this directory are licensed under the SIL Open Font
-License, Version 1.1. The license is copied below and is also available at:
+M PLUS Rounded 1c (mplus-rounded-*.woff2, Japanese pages)
+Copyright 2016 The Rounded M+ Project Authors.
+Licensed under the SIL Open Font License, Version 1.1 (below).
+
+NanumSquareRound (nanum-square-round-*.woff2, Korean)
+by NAVER Corporation, under the NAVER font licence: free to use, including commercially and on the web; the font
+itself may not be sold.
+
+The SIL Open Font License, Version 1.1, is copied below and is also available at:
 https://openfontlicense.org
 
 -----------------------------------------------------------
