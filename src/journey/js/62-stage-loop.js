@@ -67,12 +67,12 @@ function frameLoop(now) {
   if (ld > 0 && le <= 0) {
     const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
     frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 40, ease(ld / 0.7)) + '%' : '50%';
-    const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
+    const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.borderColor = chrome ? '' : 'transparent'; frameScr.style.background = chrome ? '' : 'transparent';
   } else if (le > 0) {
     frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; // (beside the inquiry, in the middle of the room it leaves, and no bigger than that room: a 4:3 screen has little)
     const cR = Math.max(180, W * 0.13) + Math.min(460, W - 48), fit = Math.min(1.25, (H - 70) / 486, (W - cR - 48) / 250);
     frame.style.transform = `scale(${NARROW ? FS : lerp(Math.min(FS, fit), fit, ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : `${Math.max(W * 0.72, (cR + W) / 2).toFixed(0)}px`; frame.style.top = NARROW ? '40%' : '50%';
-    frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
+    frame.style.background = ''; frame.style.borderColor = ''; frameScr.style.background = '';
   } else frame.style.opacity = '0';
   // Epilogue
   on(contactEl, le > 0.32);

@@ -11,7 +11,7 @@
 .jy-p-list{margin:0;padding-left:18px}
 .jy-people{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
 .jy-people li{display:flex;align-items:center;gap:12px;line-height:1.4}
-.jy-people img{width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:inset 0 0 0 1px var(--tt-canvas-shade)}
+.jy-people img{width:52px;height:52px;border-radius:50%;object-fit:cover;outline:1px solid var(--tt-canvas-shade);outline-offset:-1px}
 .jy-people b{display:block}
 .jy-people span span{font-size:13px;color:var(--tt-ink-muted);letter-spacing:var(--tt-track-small)}
 .jy-logos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:20px 36px}
@@ -25,9 +25,9 @@
 
 /* story panel (a work opened) */
 .jy-story{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(254,254,254,.74);grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr);justify-items:center}
-.jy-box{position:relative;width:min(1100px,100%);height:min(680px,100%);border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);padding:10px;background:var(--tt-canvas);transform:scale(.96);opacity:0;transition:transform .45s var(--tt-spring),opacity .25s var(--tt-ease-out);max-height:100%}
+.jy-box{position:relative;width:min(1100px,100%);height:min(680px,100%);border:1.5px solid var(--tt-ink);border-radius:0;padding:10px;background:var(--tt-canvas);transform:scale(.96);opacity:0;transition:transform .45s var(--tt-spring),opacity .25s var(--tt-ease-out);max-height:100%}
 .jy-story.open .jy-box{transform:none;opacity:1}
-.jy-in{height:100%;border-radius:var(--tt-r-screen);overflow:hidden;display:grid;grid-template-columns:1.05fr 1fr;min-height:0}
+.jy-in{height:100%;border-radius:0;overflow:hidden;display:grid;grid-template-columns:1.05fr 1fr;min-height:0}
 .jy-artside{position:relative;overflow:hidden;display:grid;place-items:center}
 /* the detail's stage: the cover as it is, its CD sliding out from behind it (turning while it plays), the video in its
    place on demand */
@@ -37,12 +37,12 @@
 .jy-s-video{position:absolute;inset:0;z-index:3;background:#000}
 .jy-s-video .jy-embed{position:absolute;inset:0;width:100%;height:100%;border:0}
 /* a work with a video: the detail shows it as a 16:9 screen that plays in place */
-.jy-s-film{position:relative;z-index:2;width:min(90%,620px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 22px 60px rgba(20,28,48,.32)}
+.jy-s-film{position:relative;z-index:2;width:min(90%,620px);aspect-ratio:16/9;border-radius:0;overflow:hidden;background:#000}
 .jy-s-film .jy-embed{position:absolute;inset:0;width:100%;height:100%;border:0}
 .jy-s-filmb{position:absolute;inset:0;padding:0;border:0;background:#000;cursor:pointer;color:#fff}
 .jy-s-filmb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s var(--tt-ease-out),opacity .3s}
 .jy-s-filmb:focus-visible img{transform:scale(1.03)}
-.jy-s-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;display:grid;place-items:center;border-radius:50%;background:rgba(20,28,48,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 0 0 1px rgba(255,255,255,.22);transition:transform .2s var(--tt-ease-out),background .2s}
+.jy-s-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;display:grid;place-items:center;border-radius:50%;background:rgba(20,28,48,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);outline:1px solid rgba(254,254,254,.22);transition:transform .2s var(--tt-ease-out),background .2s}
 .jy-s-play svg{margin-left:4px}
 .jy-s-filmb:focus-visible .jy-s-play{transform:scale(1.08);background:rgba(20,28,48,.92)}
 .jy-s-filml{position:absolute;left:14px;bottom:12px;padding:4px 10px;border-radius:999px;background:rgba(20,28,48,.7);font-size:12px;font-weight:700;letter-spacing:var(--tt-track-small)}
@@ -59,7 +59,7 @@
 .jy-s-crl p{margin:0 0 10px;display:flex;flex-direction:column}.jy-s-crl strong{color:var(--tt-ink)}
 .jy-s-covers ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .jy-cov{display:grid;gap:6px;text-decoration:none;color:inherit;font-size:12px;letter-spacing:var(--tt-track-small)}
-.jy-cov img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px;background:var(--tt-canvas-hair)}
+.jy-cov img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:0;background:var(--tt-canvas-hair)}
 .jy-cov.noimg img{visibility:hidden}
 .jy-s-lp.spin{animation:jy-spin 6s linear infinite}
 .jy-info{padding:52px 44px 32px;display:flex;flex-direction:column;min-width:0;overflow:auto}
@@ -68,7 +68,7 @@
 .jy-s-desc{margin:24px 0 0;font-size:16px;line-height:1.8;max-width:34ch}
 .jy-s-roles{margin:12px 0 0;font-size:13px;color:var(--tt-ink-muted);letter-spacing:var(--tt-track-small)}
 .jy-s-tracks{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:2px}
-.jy-s-tracks button{width:100%;display:flex;align-items:center;gap:12px;min-height:40px;padding:0 10px;border:0;border-radius:12px;background:transparent;text-align:left;cursor:pointer;font-size:14px}
+.jy-s-tracks button{width:100%;display:flex;align-items:center;gap:12px;min-height:40px;padding:0 10px;border:0;border-radius:0;background:transparent;text-align:left;cursor:pointer;font-size:14px}
 .jy-s-tracks button:hover{background:var(--tt-canvas-hair)}
 .jy-s-tracks button[aria-pressed="true"]{background:var(--tt-canvas-hair);font-weight:700}
 .jy-s-tracks i{font-style:normal;font-family:var(--tt-display);font-size:12px;color:var(--tt-ink-muted);width:22px;letter-spacing:var(--tt-track-label)}
@@ -91,4 +91,4 @@
 }
 /* a tablet held upright: the video gets more of the detail; the close button stays visible over it */
 @media (min-width:761px) and (max-width:1100px) and (orientation:portrait){.jy-in{grid-template-rows:44% 1fr}.jy-s-film{width:min(86%,640px)}}
-.jy-story .jy-x{z-index:5;background:rgba(254,254,254,.92);box-shadow:0 2px 12px rgba(20,28,48,.18)}
+.jy-story .jy-x{z-index:5;background:var(--tt-canvas);border:1px solid var(--tt-ink)}

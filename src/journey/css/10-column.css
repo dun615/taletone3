@@ -16,8 +16,8 @@
 /* the lock screen plays the songs' scenes behind the clock, toned down under a veil so the words stay clear */
 .jy-lockvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;pointer-events:none;background:var(--tt-ink)}
 .jy-lockshade{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(20,28,48,.62) 0%,rgba(20,28,48,.3) 34%,rgba(20,28,48,.22) 62%,rgba(20,28,48,.55) 100%)}
-.jy-date{font-size:11px;color:var(--tt-on-ink-muted);margin-top:10px;text-shadow:0 1px 12px rgba(20,28,48,.45);letter-spacing:var(--tt-track-small)}
-.jy-clock{font-weight:100;font-size:50px;line-height:1;letter-spacing:var(--tt-track-head);text-shadow:0 1px 12px rgba(20,28,48,.45)}
+.jy-date{font-size:11px;color:var(--tt-on-ink-muted);margin-top:10px;letter-spacing:var(--tt-track-small)}
+.jy-clock{font-weight:100;font-size:50px;line-height:1;letter-spacing:var(--tt-track-head)}
 /* entering: the film breaks up and goes out, the room goes dark, points gather into the land, it lights up */
 .jy-pcloud{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0}
 .jy-pshot{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0;background:var(--tt-canvas)}
@@ -31,13 +31,11 @@
 .jy-nb{display:block;font-size:12px;margin-top:3px;line-height:1.45;letter-spacing:var(--tt-track-small)}
 .jy-nb strong{display:block;font-size:13px;font-weight:700;letter-spacing:var(--tt-track-small)}
 /* the invitation's icon: an envelope sealed with a star, on the charm's iridescent colours */
-.jy-ni{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:var(--tt-light-pale)}
+.jy-ni{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:var(--tt-holo)}
 /* its action: enter (the whole phone is the button; this shows what it does) */
 /* (in a row of its own, in the middle) */
 .jy-na-row{flex-basis:100%;display:flex;justify-content:center}
-.jy-na{display:inline-grid;place-items:center;min-width:96px;height:30px;margin-top:2px;padding:0 18px;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-size:12px;font-weight:700;letter-spacing:var(--tt-track-small);box-shadow:0 0 0 0 rgba(236,230,255,.6);animation:jy-invite 2.4s ease-out infinite}
-@keyframes jy-invite{0%{box-shadow:0 0 0 0 rgba(236,230,255,.55)}70%,100%{box-shadow:0 0 0 9px rgba(236,230,255,0)}}
-@media (prefers-reduced-motion:reduce){.jy-na{animation:none}}
+.jy-na{display:inline-grid;place-items:center;min-width:96px;height:30px;margin-top:2px;padding:0 18px;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-size:12px;font-weight:700;letter-spacing:var(--tt-track-small)}
 .jy-phone:hover .jy-na{background:#fff}
 
 .jy-voice{display:flex;flex-direction:column;gap:12px}
@@ -45,15 +43,15 @@
 .jy-filters{display:flex;flex-direction:column;gap:8px}
 .jy-frow{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .jy-frow-sub{padding-left:22px;position:relative}
-.jy-frow-sub::before{content:"";position:absolute;left:8px;top:-8px;width:10px;height:24px;border-left:1.5px solid var(--tt-silver);border-bottom:1.5px solid var(--tt-silver);border-bottom-left-radius:6px}
+.jy-frow-sub::before{content:"";position:absolute;left:8px;top:-8px;width:10px;height:24px;border-left:1.5px solid var(--tt-hair-shadow);border-bottom:1.5px solid var(--tt-hair-shadow);border-bottom-left-radius:6px}
 .jy-fcap{margin-right:6px;font-size:13px;font-weight:700;color:var(--tt-ink-muted);letter-spacing:var(--tt-track-small)}
 .jy-fchip{height:36px;padding:0 14px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:var(--tt-canvas);font-size:14px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
-.jy-fchip:hover{border-color:var(--tt-ink-line)}
+.jy-fchip:hover{border-color:var(--tt-ink)}
 .jy-fchip[aria-pressed="true"]{background:var(--tt-ink);border-color:var(--tt-ink);color:var(--tt-on-ink);font-weight:700}
 .jy-frow-sub .jy-fchip{height:32px;font-size:13px;letter-spacing:var(--tt-track-small)}
 .jy-record{position:relative}
 .jy-spiral{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.jy-sw-btn{width:100%;display:flex;align-items:center;gap:14px;padding:6px;border:0;border-radius:16px;background:transparent;text-align:left;cursor:pointer;line-height:1.4}
+.jy-sw-btn{width:100%;display:flex;align-items:center;gap:14px;padding:6px;border:0;border-radius:0;background:transparent;text-align:left;cursor:pointer;line-height:1.4}
 .jy-sw-btn:hover{background:var(--tt-canvas-hair)}
 /* a work's CD (the design system's CD): the cover printed over the whole disc, centred and never cut but for the
    round; a hole of 12.5% of the width where the ground shows through; a clear hub to 19% (white at 55%, its rim ink
@@ -75,14 +73,14 @@
 
 /* the Epilogue is the only dark place */
 .jy-ch[data-ch="epi"]{max-width:none;background:var(--tt-ink);color:var(--tt-on-ink);padding-inline:max(16px,calc((100vw - 720px)/2))}
-.jy-ch[data-ch="epi"] :focus-visible{outline-color:var(--tt-cyan)}
+.jy-ch[data-ch="epi"] :focus-visible{outline-color:var(--tt-focus-on-ink)}
 .jy-form{display:flex;flex-direction:column;gap:16px}
 .jy-field{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0;min-width:0}
 .jy-field label,.jy-field legend{font-size:13px;color:var(--tt-on-ink-muted);padding:0;letter-spacing:var(--tt-track-small)}
 .jy-field input{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0}
 .jy-field input::placeholder,.jy-field textarea::placeholder{color:#7d8293}
-.jy-field input:focus,.jy-field textarea:focus{outline:none;border-bottom:2px solid var(--tt-cyan);padding-bottom:7px}
-.jy-field input[aria-invalid="true"]{border-bottom:2px solid var(--tt-error-on-ink);padding-bottom:7px}
+.jy-field input:focus,.jy-field textarea:focus{outline:2px solid var(--tt-focus);outline-offset:3px}
+.jy-field input[aria-invalid="true"]{border-bottom:2px solid var(--tt-status-error);padding-bottom:7px}
 .jy-field textarea{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0;resize:vertical;min-height:56px}
 .jy-more{border-top:1px solid #2c3550;padding-top:8px}
 .jy-more summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-weight:700;color:var(--tt-on-ink-muted);list-style:none}
@@ -95,10 +93,10 @@
 .jy-chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
 .jy-chip span{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--tt-on-ink-muted);border-radius:999px;font-size:14px}
 .jy-chip input:checked+span{background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink);font-weight:700}
-.jy-chip input:focus-visible+span{outline:2px solid var(--tt-cyan);outline-offset:3px}
+.jy-chip input:focus-visible+span{outline:2px solid var(--tt-focus);outline-offset:3px}
 .jy-send{align-self:flex-start;margin-top:6px;height:52px;padding:0 28px;border:0;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
 .jy-note{margin:0;min-height:1.6em;font-size:14px;color:var(--tt-on-ink-muted)}
-.jy-note.err{color:var(--tt-error-on-ink)}
+.jy-note.err{color:var(--tt-status-error)}
 .jy-mail{margin:0;font-size:14px}
 .jy-mail a{color:var(--tt-on-ink-muted);text-underline-offset:3px}
 .jy-rewind{align-self:flex-start;height:44px;padding:0 18px 0 14px;border:1px solid var(--tt-on-ink-muted);border-radius:999px;background:transparent;color:var(--tt-on-ink);display:flex;align-items:center;gap:10px;cursor:pointer}
