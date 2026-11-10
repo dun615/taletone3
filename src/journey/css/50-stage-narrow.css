@@ -15,6 +15,8 @@
 /* the record's card stays compact, so the swirl keeps the screen: words on top, every button on one row */
 
 .jy-narrow.jy-stage-mode .jy-readout>p,.jy-narrow.jy-stage-mode .jy-readout>h2,.jy-narrow.jy-stage-mode .jy-readout>h3{flex:1 0 100%}
+/* (the featured badge keeps its own width: a pill, not a bar) */
+.jy-narrow.jy-stage-mode .jy-readout>.jy-ro-pin{flex:0 0 auto}
 .jy-narrow.jy-stage-mode .jy-ro-t{margin-top:4px;font-size:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .jy-narrow.jy-stage-mode .jy-ro-a{margin-top:2px;font-size:14px}
 .jy-narrow.jy-stage-mode .jy-ro-m{display:none}
