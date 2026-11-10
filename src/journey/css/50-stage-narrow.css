@@ -79,3 +79,13 @@ html.jy-held .jy-top{visibility:hidden}
 /* (on a narrow screen the words fill the lower part: the cue keeps to the bottom right corner, clear of them) */
 .jy-narrow.jy-stage-mode .jy-cue{left:auto;right:max(12px,env(safe-area-inset-right,0px));margin:0;top:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-cue.on{animation:none}}
+
+/* a phone of any size or shape shows the same layout: its controls and words are laid out for a 390px phone and
+   scaled to its width (--pz, set with html.jy-phone by 62-stage-loop): the top bar, the tabs and the filter, the
+   work's card, the player, the way to the works, the first screen's words, the inquiry */
+html.jy-phone.jy-stage-mode .jy-top,html.jy-phone.jy-stage-mode .jy-tabs,html.jy-phone.jy-stage-mode .jy-fbtn,html.jy-phone.jy-stage-mode .jy-readout,html.jy-phone.jy-stage-mode .jy-np,html.jy-phone.jy-stage-mode .jy-towork,html.jy-phone.jy-stage-mode .jy-lead,html.jy-phone.jy-stage-mode .jy-contact{zoom:var(--pz,1)}
+/* (sizes that followed the screen's width are the 390px phone's, so the scale is not taken twice) */
+html.jy-phone.jy-stage-mode .jy-lead h1{font-size:27px}
+html.jy-phone.jy-stage-mode .jy-lead{bottom:28px}
+/* (the words of a chapter wrap as on the 390px phone; 54-stage-conversation scales them to the phone's width) */
+html.jy-phone.jy-stage-mode [data-anchor]{max-width:334px!important}

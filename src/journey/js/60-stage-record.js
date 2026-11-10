@@ -21,22 +21,32 @@ let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -
 // (where the record sits across a wide screen: further left where the screen is not so wide, as a tablet held on its
 // side, so the card on the right does not cover the record in front)
 const recX = () => (W < 1360 ? 0.3 : 0.36);
-// a CD's hub and hole read from 160px across (the design system's CD)
-const CD_READ = 165;
+// a CD's hub and hole read from 160px across (the design system's CD); on a large phone it grows with the layout
+const CD_READ = 165, cdRead = () => CD_READ * Math.max(1, PZ);
 // where on the swirl the work in focus sits (an angle, 0 to the right, clockwise): on the right on a wide screen or
 // a tablet; at the bottom on a phone, in the middle just above its card, where its CD has room to read
-const PHONE = () => NARROW && W < 700;
-const focusAngle = () => (PHONE() ? Math.PI / 2 : 0.5);
+const focusAngle = () => (PHONE ? Math.PI / 2 : 0.5);
+// the swirl above the CD in focus, once settled, rises about this many times its radius (measured)
+const RISE = 1.2;
 // (the top of the work's card on a phone, read again only when the card's words change or the screen does)
 let cardTop = null;
 const cardTopNow = () => (cardTop == null ? (cardTop = readout.getBoundingClientRect().top || H - 212) : cardTop);
 function buildCurrent() {
   // (a tablet held upright gets a record as big as its width allows, above its card)
   const TAB = NARROW && W >= 700;
-  const Rf = TAB ? Math.min(W * 0.4, H * 0.26) : NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * (W < 1360 ? 0.22 : 0.26), H * 0.37), size = TAB ? clamp(W * 0.17, 90, 150) : NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
+  let Rf = TAB ? Math.min(W * 0.4, H * 0.26) : NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * (W < 1360 ? 0.22 : 0.26), H * 0.37), size = TAB ? clamp(W * 0.17, 90, 150) : NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
   const cy0 = TAB ? H * 0.34 : NARROW ? H * 0.31 : H * 0.5;
   cardTop = null;
-  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1, focus: focusAngle() };
+  // (on a phone the swirl fills the room between the tabs and the work's card, the same on every phone: its radius
+  // from that room, the whole of it in the middle of it, the CD in focus at its bottom; see placeCurrent)
+  let phoneFit = null;
+  if (PHONE) {
+    const top = Math.max(tabsEl.getBoundingClientRect().bottom || 0, fbtn.getBoundingClientRect().bottom || 0, 70 * PZ) + 10 * PZ;
+    const room = cardTopNow() - 18 * PZ - cdRead() - top, r = clamp(room / RISE, W * 0.2, W * 0.42);
+    phoneFit = { r, lift: 18 * PZ + Math.max(0, room - r * RISE) / 2 };
+  }
+  if (phoneFit) Rf = phoneFit.r;
+  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1, focus: focusAngle(), lift: phoneFit ? phoneFit.lift : 26, cd: cdRead() };
   // where the staff begins on screen when the record opens: the world's line comes in there along the way the
   // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
   { const c0 = -VIEW - 2.2, r0 = cur.focus - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
@@ -92,10 +102,10 @@ function placeCurrent(lr) {
   cur.camZ = camZ; cur.roll = roll;
   // (on a phone the swirl is held so that the CD in focus, at its bottom, rests just above the card: where that CD
   // falls is found as it is drawn, between the two works the focus is between, so the swirl moves smoothly)
-  if (PHONE() && !recordEl.classList.contains('list')) {
+  if (PHONE && !recordEl.classList.contains('list')) {
     const below = (i) => { const q = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i))); return q ? q[1] - cur.cy : 0; };
     const i0 = clamp(Math.floor(k), 0, N - 1), i1 = Math.min(N - 1, i0 + 1), fall = lerp(below(i0), below(i1), k - i0);
-    cur.cy = lerp(clamp(cardTopNow() - (H < 620 ? 14 : 26) - CD_READ / 2 - fall, H * 0.2, H * 0.62), H * 0.5, out);
+    cur.cy = lerp(clamp(cardTopNow() - cur.lift - cur.cd / 2 - fall, H * 0.15, H * 0.62), H * 0.5, out);
   }
   // the pen draws the staff forward from its head; works appear once their part of the staff is drawn
   cur.zMax = HEAD + (camIn + FAR - HEAD) * ease(lr / 0.15);
@@ -107,7 +117,7 @@ function placeCurrent(lr) {
     // a note fades as soon as it has passed the focus, so it never covers the words on the right
     let sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1);
     // (the work in focus grows to a CD of 165px or more, where its hub and hole read)
-    sc2 = Math.max(sc2, lerp(sc2, CD_READ / cur.size, clamp(1 - Math.abs(i - k))));
+    sc2 = Math.max(sc2, lerp(sc2, cur.cd / cur.size, clamp(1 - Math.abs(i - k))));
     const a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
     li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
     li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;

@@ -14,7 +14,8 @@ ANCHORS.sort((a, b) => a.z - b.z);
 // They give way as the way on begins.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
 // how much larger than their own size the words are shown (less where the reading spot is small)
-const wordScale = () => (NARROW && W < 700 ? 1 : 1.15);
+// (on a phone the words wrap as on a 390px phone, 00-base's layout width, and are scaled to the phone's width)
+const wordScale = () => (PHONE ? PZ : 1.15);
 const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
 let roomOf = -1;
 function roomBox() {

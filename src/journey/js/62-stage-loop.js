@@ -98,6 +98,8 @@ function frameLoop(now) {
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
   html.classList.toggle('jy-narrow', NARROW);
+  PHONE = NARROW && W < 700; PZ = PHONE ? clamp(W / 390, 0.8, 1.1) : 1;
+  html.classList.toggle('jy-phone', PHONE); html.style.setProperty('--pz', PZ.toFixed(3));
   DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
   cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1; cloud = null;
