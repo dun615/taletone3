@@ -65,7 +65,7 @@
 .jy-stage-mode .jy-sw.cur .jy-sw-btn{outline:2px solid var(--tt-ink);outline-offset:3px}
 .jy-stage-mode .jy-sw[data-album] .jy-sw-btn::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px dashed var(--tt-hair-shadow);pointer-events:none}
 .jy-stage-mode .jy-sw.dim{filter:grayscale(1) contrast(.8) brightness(1.15)}
-.jy-stage-mode .jy-sw.pin .jy-pin{position:absolute;left:50%;top:-30%;transform:translateX(-50%);margin:0}
+.jy-stage-mode .jy-sw.pin .jy-pin{position:absolute;left:50%;bottom:calc(100% + 6px / var(--k,1));transform:translateX(-50%) scale(calc(1 / var(--k,1)));transform-origin:50% 100%;margin:0}
 .jy-stage-mode .jy-record.list .jy-sw.pin .jy-pin{position:static;transform:none}
 .jy-tracks{display:none}
 .jy-stage-mode .jy-tracks{display:block;position:absolute;inset:0;pointer-events:none}
