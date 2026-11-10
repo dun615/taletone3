@@ -59,7 +59,8 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const field = (f) => (c.fields && c.fields[f]) || f;
   const year = (w) => (w.date || '').slice(0, 4);
   const formOpts = (c.form.songOptions || []).map((o) => `<label class="jy-chip"><input type="checkbox" name="song" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('');
-  const field2 = (id, label, input) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}</div>`;
+  // (a required field says right under it what to fix, when it needs fixing)
+  const field2 = (id, label, input, required) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}${required ? `<p class="jy-ferr" id="${id}-err" hidden></p>` : ''}</div>`;
   // the history, as the live sheet reads it: '| 2026' opens a year, '* work — roles' an entry, an indented '* track'
   // belongs to the entry above, '[text](url)' links it, '#tags' lines are dropped
   const creditLines = String(member.creditsText || '').split('\n').filter((line) => line.trim() && !/^\s*#/.test(line)).map((line) => {
@@ -213,8 +214,8 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
     <p class="jy-form-note">${esc(c.form.mailNote)}</p>
     <button type="button" class="jy-btn jy-fopen" id="jy-fopen" aria-controls="jy-form" aria-expanded="false">${esc(c.writeUs)}</button>
     <form class="jy-form" id="jy-form" novalidate>
-      ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}">`)}
-      ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email">`)}
+      ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}" aria-describedby="jy-f-project-err">`, true)}
+      ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email" aria-describedby="jy-f-reply-err">`, true)}
       <details class="jy-more"><summary>${esc(c.more)}</summary>
         ${field2('jy-f-name', c.form.nameLabel, '<input id="jy-f-name" name="name" autocomplete="organization">')}
         <fieldset class="jy-field"><legend>${esc(c.form.songLabel)}</legend><div class="jy-chips">${formOpts}</div></fieldset>
@@ -236,7 +237,6 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 <div class="jy-goon" id="jy-goon" aria-hidden="true"><p>${esc(c.goOnAsk)}</p><button type="button" id="jy-goon-b" tabindex="-1"><span id="jy-goon-t"></span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button></div>
 <button class="jy-towork" id="jy-towork" type="button" aria-hidden="true" tabindex="-1"><span>${esc(c.skipToWorks)}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button>
 <div class="jy-cue" id="jy-cue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></div>
-<div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
 </div>
 </main>
 

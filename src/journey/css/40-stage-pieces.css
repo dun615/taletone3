@@ -80,7 +80,7 @@
 .jy-logo-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:10px}
 .jy-logo-row img{height:20px;width:auto;filter:grayscale(1) brightness(.25)}
 .jy-ro-r{margin:10px 0 0;font-size:13px;font-weight:700;letter-spacing:var(--tt-track-small)}
-.jy-form-note{margin:-6px 0 0;font-size:14px;line-height:1.7;color:var(--tt-on-ink-muted)}
+.jy-form-note{margin:-6px 0 0;font-size:14px;line-height:1.7;color:var(--tt-ink-muted)}
 
 /* the philosophy's words: their sizes (where they go: [data-anchor], below) */
 .jy-stage-mode .jy-trail .jy-say{position:absolute;left:0;top:0;right:auto;bottom:auto;align-items:flex-start;display:flex;width:max-content;max-width:min(300px,21vw);transform:translate(calc(var(--x) - 6px),calc(var(--y) + 26px));opacity:0;transition:opacity .4s;animation:none}

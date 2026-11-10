@@ -1,5 +1,5 @@
 /* ---------- the readable column (default) ---------- */
-.jy-track,.jy-cv,.jy-frame,.jy-banner{display:none}
+.jy-track,.jy-cv,.jy-frame{display:none}
 .jy-grain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .jy{position:relative;z-index:1}
 .jy-ch{position:relative;max-width:720px;margin:0 auto;padding:72px 16px;display:flex;flex-direction:column;gap:24px}
@@ -72,18 +72,20 @@
 .jy-ct{margin:0;font-size:clamp(24px,2.6vw,34px);line-height:1.35;font-weight:400;letter-spacing:var(--tt-track-head)}
 
 /* the Epilogue is the only dark place */
-.jy-ch[data-ch="epi"]{max-width:none;background:var(--tt-ink);color:var(--tt-on-ink);padding-inline:max(16px,calc((100vw - 720px)/2))}
-.jy-ch[data-ch="epi"] :focus-visible{outline-color:var(--tt-focus-on-ink)}
+/* the inquiry: on Paper, as every page is (the form is the one place with the function colours) */
+.jy-ch[data-ch="epi"]{max-width:none;padding-inline:max(16px,calc((100vw - 720px)/2))}
 .jy-form{display:flex;flex-direction:column;gap:16px}
 .jy-field{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0;min-width:0}
-.jy-field label,.jy-field legend{font-size:13px;color:var(--tt-on-ink-muted);padding:0;letter-spacing:var(--tt-track-small)}
-.jy-field input{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0}
-.jy-field input::placeholder,.jy-field textarea::placeholder{color:#7d8293}
+.jy-field label,.jy-field legend{font-size:13px;color:var(--tt-ink-muted);padding:0;letter-spacing:var(--tt-track-small)}
+/* a field is a line to write on: ink, 1px, no box */
+.jy-field input{font:inherit;font-size:16px;color:var(--tt-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-ink);padding:8px 0;border-radius:0;min-width:0}
+.jy-field input::placeholder,.jy-field textarea::placeholder{color:var(--tt-ink-muted);opacity:1}
 .jy-field input:focus,.jy-field textarea:focus{outline:2px solid var(--tt-focus);outline-offset:3px}
 .jy-field input[aria-invalid="true"]{border-bottom:2px solid var(--tt-status-error);padding-bottom:7px}
-.jy-field textarea{font:inherit;font-size:16px;color:var(--tt-on-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-on-ink-muted);padding:8px 0;border-radius:0;min-width:0;resize:vertical;min-height:56px}
-.jy-more{border-top:1px solid #2c3550;padding-top:8px}
-.jy-more summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-weight:700;color:var(--tt-on-ink-muted);list-style:none}
+.jy-ferr{margin:0;font-size:13px;line-height:1.6;color:var(--tt-status-error);letter-spacing:var(--tt-track-small)}
+.jy-field textarea{font:inherit;font-size:16px;color:var(--tt-ink);background:transparent;border:0;border-bottom:1px solid var(--tt-ink);padding:8px 0;border-radius:0;min-width:0;resize:vertical;min-height:56px}
+.jy-more{border-top:1px solid var(--tt-canvas-shade);padding-top:8px}
+.jy-more summary{display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font-weight:700;color:var(--tt-ink-muted);list-style:none}
 .jy-more summary::-webkit-details-marker{display:none}
 .jy-more summary::before{content:"+";display:grid;place-items:center;width:22px;height:22px;border:1px solid currentColor;border-radius:50%;font-weight:400;line-height:1}
 .jy-more[open] summary::before{content:"−"}
@@ -91,12 +93,15 @@
 .jy-chips{display:flex;flex-wrap:wrap;gap:6px}
 .jy-chip{position:relative;display:inline-flex;cursor:pointer}
 .jy-chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.jy-chip span{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--tt-on-ink-muted);border-radius:999px;font-size:14px}
-.jy-chip input:checked+span{background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink);font-weight:700}
+.jy-chip span{display:inline-flex;align-items:center;height:36px;padding:0 14px;border:1px solid var(--tt-ink);border-radius:999px;font-size:14px}
+.jy-chip input:checked+span{background:var(--tt-ink);color:var(--tt-canvas);border-color:var(--tt-ink);font-weight:700}
 .jy-chip input:focus-visible+span{outline:2px solid var(--tt-focus);outline-offset:3px}
-.jy-send{align-self:flex-start;margin-top:6px;height:52px;padding:0 28px;border:0;border-radius:999px;background:var(--tt-on-ink);color:var(--tt-ink);font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
-.jy-note{margin:0;min-height:1.6em;font-size:14px;color:var(--tt-on-ink-muted)}
+/* the button: an ink pill, 52px; resting (while it sends) on canvas-shade with ink-muted words */
+.jy-send{align-self:flex-start;margin-top:6px;height:52px;padding:0 28px;border:0;border-radius:999px;background:var(--tt-ink);color:var(--tt-canvas);font-weight:700;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
+.jy-send:disabled{background:var(--tt-canvas-shade);color:var(--tt-ink-muted);cursor:default;transform:none}
+.jy-note{margin:0;min-height:1.6em;font-size:14px;color:var(--tt-ink-muted)}
 .jy-note.err{color:var(--tt-status-error)}
+.jy-note.ok{color:var(--tt-status-success)}
 .jy-mail{margin:0;font-size:14px}
-.jy-mail a{color:var(--tt-on-ink-muted);text-underline-offset:3px}
-.jy-rewind{align-self:flex-start;height:44px;padding:0 18px 0 14px;border:1px solid var(--tt-on-ink-muted);border-radius:999px;background:transparent;color:var(--tt-on-ink);display:flex;align-items:center;gap:10px;cursor:pointer}
+.jy-mail a{color:var(--tt-ink-muted);text-underline-offset:3px}
+.jy-rewind{align-self:flex-start;height:44px;padding:0 18px 0 14px;border:1px solid var(--tt-ink);border-radius:999px;background:transparent;color:var(--tt-ink);display:flex;align-items:center;gap:10px;cursor:pointer}

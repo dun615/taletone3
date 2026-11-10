@@ -371,7 +371,7 @@
           "budgetLabel": "예산 (곡당·선택)",
           "scheduleLabel": "희망 일정·공개 시점 (선택)",
           "messageLabel": "하고 싶은 이야기 (선택)",
-          "mailNote": "이메일과 프로젝트 소개는 필수입니다. 예산과 일정은 미정이어도 괜찮습니다. 확인 후 남겨주신 이메일로 답장드립니다.",
+          "mailNote": "이메일과 프로젝트 소개는 꼭 적어 주세요. 예산과 일정은 정해지지 않았어도 괜찮아요. 확인 후 남겨 주신 이메일로 답장드릴게요.",
           "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
           "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
         },
@@ -405,7 +405,7 @@
           "budgetLabel": "Budget per song (optional)",
           "scheduleLabel": "Timeline / release date (optional)",
           "messageLabel": "Anything else to share (optional)",
-          "mailNote": "Email and a short project introduction are required. Budget and timing can be undecided. We will reply to the email you provide.",
+          "mailNote": "Please include your email and a line about your project. Budget and timing can be undecided. We’ll reply to the email you leave.",
           "budgetPlaceholder": "Range / to discuss / undecided",
           "schedulePlaceholder": "Release target / undecided"
         }
@@ -429,7 +429,7 @@
           "budgetLabel": "1曲のご予算（任意）",
           "scheduleLabel": "日程・公開時期（任意）",
           "messageLabel": "その他ご要望（任意）",
-          "mailNote": "メールアドレスとプロジェクト紹介は必須です。ご予算と日程は未定でも大丈夫です。ご記入のメールに返信します。",
+          "mailNote": "メールアドレスとプロジェクトの紹介は必ずご記入ください。ご予算と日程は未定でも大丈夫です。確認のうえ、ご記入のメールにお返事しますね。",
           "budgetPlaceholder": "ご予算の目安・応相談・未定",
           "schedulePlaceholder": "公開予定・未定"
         }
@@ -455,7 +455,7 @@
       "budgetLabel": "예산 (곡당·선택)",
       "scheduleLabel": "희망 일정·공개 시점 (선택)",
       "messageLabel": "하고 싶은 이야기 (선택)",
-      "mailNote": "이메일과 프로젝트 소개는 필수입니다. 예산과 일정은 미정이어도 괜찮습니다. 확인 후 남겨주신 이메일로 답장드립니다.",
+      "mailNote": "이메일과 프로젝트 소개는 꼭 적어 주세요. 예산과 일정은 정해지지 않았어도 괜찮아요. 확인 후 남겨 주신 이메일로 답장드릴게요.",
       "budgetPlaceholder": "예: 200–300만 원 / 협의 / 미정",
       "schedulePlaceholder": "예: 내년 3월 공개 / 미정"
     }
@@ -1356,9 +1356,9 @@
     "more": "더 보기",
     "send": "메시지 보내기",
     "needProject": "프로젝트를 한 줄로 소개해 주세요.",
-    "needEmail": "연락받을 이메일을 확인해 주세요.",
+    "needEmail": "이메일 주소를 다시 확인해 주세요.",
     "sending": "보내는 중이에요.",
-    "received": "이야기의 첫 단서를 잘 받았어요. 꼼꼼히 읽고, 곧 답장 드릴게요.",
+    "received": "문의가 전송됐어요. 확인 후 메일로 답장드릴게요.",
     "failed": "보내지 못해서, 메일 앱으로 이어서 보낼게요.",
     "rewind": "처음부터 다시 듣기",
     "listen": "듣기",
@@ -1445,9 +1445,9 @@
         "more": "Show more",
         "send": "Send message",
         "needProject": "Please describe your project in one line.",
-        "needEmail": "Please check your reply email.",
+        "needEmail": "Please check your email address again.",
         "sending": "Sending.",
-        "received": "We’ve received the first thread of your story. We’ll read it closely and reply soon.",
+        "received": "Your inquiry has been sent. We’ll read it and reply by email.",
         "failed": "It didn’t send, so we’ll continue in your mail app.",
         "rewind": "Listen again from the start",
         "listen": "Listen",
@@ -1566,9 +1566,9 @@
         "more": "もっと見る",
         "send": "メッセージを送る",
         "needProject": "プロジェクトを一行で教えてください。",
-        "needEmail": "返信先のメールアドレスをご確認ください。",
+        "needEmail": "メールアドレスをもう一度ご確認ください。",
         "sending": "送信しています。",
-        "received": "物語の最初の手がかり、確かに受け取りました。じっくり読んで、すぐにお返事しますね。",
+        "received": "お問い合わせを送信しました。確認のうえ、メールでお返事しますね。",
         "failed": "送信できなかったため、メールアプリで続けてお送りします。",
         "rewind": "最初からもう一度聴く",
         "listen": "聴く",

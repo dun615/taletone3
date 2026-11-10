@@ -215,7 +215,7 @@ function drawTrail(le, A) {
   ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   let tip = pts[0];
   const run = (i0, i1, a) => {
-    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(244,244,252,${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
+    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${INK},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
     for (let i = i0 + 1; i <= i1; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
     ctx.stroke();
   };
@@ -224,7 +224,7 @@ function drawTrail(le, A) {
   // the pen tip; once there, it blinks like a caret, until the visitor starts writing
   const writing = form.contains(document.activeElement);
   const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
-  if (al > 0) { ctx.fillStyle = `rgba(244,244,252,${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (al > 0) { ctx.fillStyle = `rgba(${INK},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
 }
 function showReadout(i) {
   const w = bySlug[items[i].dataset.slug];

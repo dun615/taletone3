@@ -60,12 +60,11 @@ html.jy-held .jy-top{visibility:hidden}
 .jy-narrow.jy-stage-mode .jy-record.list .jy-spiral{position:fixed;left:0;top:0;width:100%;height:100%;padding:calc(64px + env(safe-area-inset-top,0px)) 12px 260px;background:var(--tt-canvas);grid-template-columns:1fr;z-index:1150;overscroll-behavior:contain}
 /* the inquiry: a button, and the form in a full sheet that holds the page still while typing */
 .jy-narrow.jy-stage-mode .jy-contact{left:20px;width:min(520px,calc(100% - 40px))}
-.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-ink);color:var(--tt-canvas);border-color:var(--tt-ink)}
 .jy-narrow.jy-stage-mode .jy-contact:not(.open) .jy-form>:not(.jy-mail){display:none}
-.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-ink);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-canvas);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
 .jy-narrow.jy-stage-mode .jy-contact.open .jy-fopen{display:none}
-.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-on-ink)}
-.jy-narrow.jy-stage-mode .jy-banner{z-index:1600}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-ink)}
 #discography:has(.jy-record.list) .jy-fbtn{display:none}
 .jy-narrow.jy-stage-mode .jy-readout{left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:520px;margin:0 auto;transform:translateY(10px);flex-flow:row wrap;align-items:center;column-gap:6px;padding:12px 14px;background:var(--tt-canvas)}
 

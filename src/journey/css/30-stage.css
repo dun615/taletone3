@@ -98,9 +98,6 @@
 /* the Epilogue */
 .jy-stage-mode .jy-contact{position:absolute;left:max(180px,13vw);top:50%;transform:translateY(-50%);width:min(460px,calc(100% - 48px));max-height:calc(100% - 120px);overflow:auto;padding:4px;opacity:0;pointer-events:none;transition:opacity .5s}
 .jy-stage-mode .jy-contact.on{opacity:1;pointer-events:auto}
-.jy-stage-mode .jy-banner{display:flex;position:absolute;left:50%;top:22px;z-index:6;width:min(420px,calc(100% - 48px));transform:translate(-50%,-180%);opacity:0;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:0;background:var(--tt-case);color:var(--tt-ink);outline:1px solid var(--tt-ink);outline-offset:-1px;transition:transform .7s var(--tt-spring),opacity .3s;line-height:1.5}
-.jy-stage-mode .jy-banner.on{transform:translate(-50%,0);opacity:1}
-.jy-banner b{display:block;font-size:13px;letter-spacing:var(--tt-track-small)}.jy-banner p{margin:2px 0 0;font-size:15px}
 
 /* profile sheet */
 .jy-stage-mode .jy-profile{position:fixed;inset:0;z-index:70;max-width:none;margin:0;padding:16px;display:grid;justify-items:end;background:rgba(254,254,254,.6);opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .45s}
