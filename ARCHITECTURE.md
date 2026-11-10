@@ -30,10 +30,10 @@ builds them; locally, `npm run build`.
 
 | Path | What it is |
 |---|---|
-| `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video, vinyl colours. |
+| `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video (and `vinyl` colours, which the page no longer uses: kept until decided). |
 | `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
 | `assets/data/seo-content.json` | The five chapter routes, their titles and descriptions, the site name, analytics. |
-| `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`, `icon`, `primary` for the one edged in the brand's light), in order. Add a button here. |
+| `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`, `icon`, `primary` for the one in paper colour), in order. Add a button here. |
 | `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
 | `scripts/journey-data.mjs` | Data → what the page shows, per language. |
 | `scripts/journey-page.mjs` | That data → the HTML document. |
@@ -41,14 +41,14 @@ builds them; locally, `npm run build`.
 | `scripts/build.mjs` | Runs all of the above and writes every generated file; `--check` fails if one is stale. |
 | `scripts/audit-works.mjs` | `npm run audit`: each album track by track, problems, unused files. |
 | `scripts/stage-site.mjs` | The deploy's stage: copies only the public entry points (its `PUBLIC` list) into the folder Pages serves. |
-| `scripts/font-coverage.mjs` | The Japanese characters the pages can show, for the one small LINE Seed JP request per weight. |
-| `scripts/measure-loudness.mjs`, `optimize-assets.mjs`, `subset-line-seed.py` | Run by hand: each record's gain (`loudness` in `works-data.json`), WebP covers (needs `npm install`), the LINE Seed KR subsets. |
+| `scripts/font-coverage.mjs` | The Hangul and Japanese characters the pages can show: what the font subsets must hold (`tests/fonts.test.mjs`). |
+| `scripts/measure-loudness.mjs`, `optimize-assets.mjs`, `subset-fonts.py` | Run by hand: each record's gain (`loudness` in `works-data.json`), WebP images (needs `npm install`), the three faces' subsets (and their record, `scripts/font-subsets.json`). |
 | `src/journey/js/` | The page's script, in parts (below). |
 | `src/journey/css/` | The page's styles, in parts (below). |
 | `assets/works/` | Covers (`*-1024.webp`, small `*-w320.webp`) and sounds (`*.mp3`). |
-| `assets/phone/case-back.svg`, `case-stars.svg` | The back of the home phone: the designer's draft drawn as vectors (measured from it), 9:16, with the company's Outline mark (2px line); its stars alone, for the holographic sheen. |
-| `assets/logo/logo-ink.svg`, `logo-paper.svg` | The company mark, Filled (the default form), in ink and in paper colour. In a conversation (the avatars, the chat room) it is ink on the pale light of the invitation's icon (`--tt-light-pale`); as an app icon or profile it is cut out of the brand's light; beside the name and on the link previews it is filled with that light; the top bar keeps the plain ink/paper mark. |
-| `assets/fonts/`, `assets/logo/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (LINE Seed KR, Quicksand), logo marks, app icons, link previews, the lock screen's film. |
+| `assets/phone/phone-back.webp` | The back of the phone, TALETONE's face: the character designer's drawing, cut to its outline (984 × 1747 at full size: a 100px corner, a 10px `#3c4968` frame), shown as it is. The page's phone (its front, its sides, the phones on the canvas) takes the same outline (`--tt-phone-*` in `00-base.css`). |
+| `assets/logo/` | The designer's mark (`logo-ink`, `logo-paper`; `logo-holo-on-dark` for a dark ground) and the lockups: `lockup-*` (MUSIC under TALETONE, the first screen) and `lockup-line-*` (one line, the top bar), `-ink` on Paper and `-paper` on Ink. The name is never set in type. In a conversation (the avatars, the chat room) the mark is ink on a circle of the CD light, the profile picture's form. |
+| `assets/fonts/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (Manjari, NanumSquareRound, M PLUS Rounded 1c: subsets, `LICENSES.txt`), app icons, link previews, the lock screen's film. |
 | `.github/scripts/validate-site.mjs` | Static checks of the built site (every page's tags, links, files, redirects, the works' rules). |
 | `.github/scripts/validate-runtime-performance.mjs` | Headless Chrome: every route × language × three screens, the whole story scrolled, a record played, the inquiry; load budgets. |
 | `.github/workflows/` | `site-validation.yml` on every push; `deploy.yml` on `main`: build, check, publish. |
@@ -67,10 +67,10 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | `20-detail` | A work opened: video or cover, facts, credits, versions, tracks, covers. |
 | `22-player` | The player that follows what is playing. |
 | `24-profile`, `26-chapter-menu`, `28-filters` | The profile sheet, the chapter list, the discography's filters. |
-| `30-inquiry` | The form: checks, sending (Web3Forms), the reply. |
+| `30-inquiry` | The form (the design system's FormField): checks with the error under its field, sending (Web3Forms), the result in one sentence. |
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |
-| `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer, a band of light slides across the case, the stars turn holographic (`assets/phone/case-stars.svg`); layers between the faces give it depth. |
+| `47-stage-phone-tilt` | The phone's back in 2.5D: the card tilts toward the pointer (no light laid over the drawing); layers in its frame's colour between the faces give it depth. |
 | `48-stage-scenes` | How the story moves: scenes that play by themselves to their end (`scenes()` when scrolled into, `wayScene(k)` from a chapter's button; with steps, nothing stops one midway); a scroll stops at a chapter's words' end; input. |
 | `49-stage-ways-on` | The story's ways on: under each chapter's words a question and a button (the way into the next world), and a way past the story straight to the discography. |
 | `50-stage-clock` | The lock screen's clock (the visitor's own time). |
@@ -93,10 +93,16 @@ world. In the music chapter the pen follows the scroll again (`penAt`, `uOfPen`)
 
 ## The styles, part by part (`src/journey/css/`)
 
-Joined in order, so a later part wins where two overlap: `00-base` (fonts, tokens, header), `10-column` (the
-readable column without script), `20-panels` (profile, detail), `30-stage`, `40-stage-pieces` (first screen,
-player, trail, case), `50-stage-narrow` (phones and upright screens), `60-record-tabs` (shelf, history, detail
-credits), `70-chat-room`, `80-tablet` (an upright tablet, shown to a room).
+Joined in order, so a later part wins where two overlap: `00-base` (the faces, the design system's tokens, header),
+`10-column` (the readable column without script; the CD; the form), `20-panels` (profile, detail), `30-stage`,
+`40-stage-pieces` (first screen, the phone, player, case), `50-stage-narrow` (phones and upright screens),
+`60-record-tabs` (shelf, history, detail credits), `70-chat-room`, `80-tablet` (an upright tablet, shown to a room).
+
+The design system (TALETONE's, its source the design system artifact) in short: the face is the phone (its back is
+the designer's drawing); Paper is the ground, ink the words; Ink only for the moment of going in and the dark worlds;
+the CD light (`--tt-holo`) is the one accent, only inside a clear shape; a work's colours stay inside the phone's
+screen and on its CD; the CD only in the discography; no shadows; square cards, pill controls, round CDs; three
+faces in three weights.
 
 ## Common changes
 
