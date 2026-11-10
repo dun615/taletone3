@@ -73,11 +73,6 @@ img{max-width:100%}
 .jy-bub>*{grid-area:1/1}
 .jy-tx b{display:block;font-size:18px}
 .jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
-.jy-lp{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08)}
-.jy-vinyl{position:absolute;inset:-15%;width:130%!important;max-width:none;height:130%;object-fit:cover;filter:blur(10px) saturate(1.6);opacity:.9}
-.jy-groove{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 5px,rgba(20,28,48,.07) 5px 6px)}
-.jy-art{position:absolute;inset:19%;width:62%;height:62%;object-fit:cover;border-radius:50%}
-.jy-hole{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--tt-canvas)}
 .jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink-line);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .16s var(--tt-ease-out),background .2s,color .2s}
 .jy-btn-ink{background:var(--tt-ink);color:var(--tt-on-ink);border-color:var(--tt-ink)}
 .jy-btn-quiet{border-color:var(--tt-canvas-shade)}

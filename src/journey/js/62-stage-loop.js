@@ -61,7 +61,6 @@ function frameLoop(now) {
   const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
   letterEl.classList.toggle('up', both); if (both) letterEl.style.setProperty('--up', `${-(emptyEl.offsetHeight + 10)}px`);
-  if (lr > 0.8 && !recBuilt) buildRecordWash();
   // the phone (416px with its charm below) keeps inside short screens
   // (on a phone smaller and higher, so the letter and the empty seat fit under it)
   const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.48) / 486) : Math.min(1, (H - 110) / 486);
@@ -111,11 +110,6 @@ phone.addEventListener('click', (e) => {
   if (e.target.closest('.jy-na-row') || e.detail === 0) { entered = true; playScene(ENTER, u); } else nudgeEnter();
 });
 
-// sample every cover once the record is near, so its wash can mix them
-let sampledAll = false;
-addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU : U()) > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
-
-function reset() { recBuilt = false; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
 // each chapter opens where its first words are
 const target = { pro: 0, tale: CH.tale[0] + READ0, tone: CH.tone[0] + READ0, record: recordU(0), epi: CH.epi[0] + 0.55 };
@@ -137,4 +131,4 @@ function pick(slug) {
 }
 
 // what the rest of the page may ask of the stage
-const stage = { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };
+const stage = { syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };

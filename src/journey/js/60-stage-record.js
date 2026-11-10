@@ -1,11 +1,4 @@
 // The record of every story: the staff swirling into the screen with every work on it, its card, the groove.
-function buildRecordWash() {
-  recBuilt = true;
-  const held = WORKS.filter(lit).map((w) => colorOf[w.slug]).filter(Boolean).slice(0, 6).map((c) => ({ c }));
-  const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [163, 168, 181] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
-  const stops = cols.length === 1 ? [cols[0], cols[0]] : cols, g = `conic-gradient(${[...stops, stops[0]].join(',')})`;
-  $('#jy-rwash').style.background = g;
-}
 
 /* ---- the record of every story: its groove opens into a staff swirling into the screen ----
    World: five helices around the view axis (a staff); work i is a note on it at depth i*DZ, angle i*TURN and a
@@ -28,6 +21,8 @@ let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -
 // (where the record sits across a wide screen: further left where the screen is not so wide, as a tablet held on its
 // side, so the card on the right does not cover the record in front)
 const recX = () => (W < 1360 ? 0.3 : 0.36);
+// a CD's hub and hole read from 160px across (the design system's CD)
+const CD_READ = 165;
 function buildCurrent() {
   // (a tablet held upright gets a record as big as its width allows, above its card)
   const TAB = NARROW && W >= 700;
@@ -57,12 +52,11 @@ items.forEach((li, i) => {
     b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
     // (the art loads when the album opens, not with the page)
     b.querySelector('img').dataset.src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
-    // (each track on its own vinyl, from its own art)
-    if (t.vinyl && t.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => b.style.setProperty(k, t.vinyl[n])); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
+    // (each track on its own CD, from its own art)
+    b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
     b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
     box.appendChild(b);
   });
-  if (w.vinyl && w.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => box.style.setProperty(k, w.vinyl[n]));
   trackLayer.appendChild(box); trackEls[i] = box;
 });
 listeners.add(() => Object.entries(trackEls).forEach(([i, box]) => { const w = bySlug[items[i].dataset.slug]; $$('.jy-trk', box).forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j)))); }));
@@ -96,7 +90,11 @@ function placeCurrent(lr) {
     const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
     if (!p || p[2] > cur.far) { li.style.visibility = 'hidden'; return; }
     // a note fades as soon as it has passed the focus, so it never covers the words on the right
-    const sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
+    let sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1);
+    // (the work in focus grows to a CD of 165px or more, where its hub and hole read; not on a phone, where the
+    // swirl has no room for it)
+    if (!NARROW || W >= 700) sc2 = Math.max(sc2, lerp(sc2, CD_READ / cur.size, clamp(1 - Math.abs(i - k))));
+    const a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
     li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
     li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
     li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
@@ -132,9 +130,6 @@ function drawCurrent(lr, lineA = 1) {
   if (!cur || cur.camZ == null) return;
   const { camZ, roll, zMax } = cur, FAR = cur.far, alpha = cur.fade;
   if (lineA <= 0) return;
-  // the colour of the note in focus, faint, around the swirl
-  const w = recShown >= 0 && bySlug[items[recShown].dataset.slug], c = w && colorOf[w.slug];
-  if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha * ease(lr / 0.12)})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
   // the staff: five ink lines swirling in, thick close by, a hair far away
   const z0 = Math.max(HEAD, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR, zMax);
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -252,7 +247,6 @@ function showReadout(i) {
       tr.appendChild(b);
     });
   }
-  sample(w);
   syncReadout();
 }
 // the card's facts: the work, or the album track that has been picked (its title, the album and its number, its roles)
@@ -289,4 +283,3 @@ $('#jy-view').addEventListener('click', (e) => {
 });
 // keyboard: focusing a work flies the current to it
 items.forEach((li, i) => $('.jy-sw-btn', li).addEventListener('focus', () => { if (!recordEl.classList.contains('list') && chapter === 'record') goU(recordU(i)); }));
-function paintRecord() { tintVinyls(); }

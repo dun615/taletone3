@@ -35,6 +35,5 @@ form.addEventListener('submit', (e) => {
 });
 $('#jy-rewind').addEventListener('click', () => {
   rec.classList.remove('lit'); on(banner, false); $('#jy-rewind').hidden = true; say(''); form.reset(); label.textContent = '';
-  stage.reset();
   go('pro');
 });

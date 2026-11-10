@@ -41,12 +41,12 @@
 .jy-stage-mode .jy-frame{display:block;pointer-events:none;position:absolute;left:50%;top:50%;width:234px;height:416px;margin:-208px 0 0 -117px;border-radius:var(--tt-phone-r);padding:8px;background:var(--tt-phone-body);border:var(--tt-phone-line) solid var(--tt-phone-frame);transform-origin:50% 50%;opacity:0;transition:left .9s var(--tt-spring),top .9s var(--tt-spring)}
 .jy-scr{position:relative;width:100%;height:100%;border-radius:14px;background:var(--tt-canvas);display:grid;place-items:center;transition:background .6s}
 .jy-stage.ink .jy-scr{background:var(--tt-ink)}
-.jy-rec{position:relative;width:192px;height:192px;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.1);animation:jy-spin 7s linear infinite}
-.jy-rwash{position:absolute;inset:-20%;filter:blur(22px) saturate(1.2);background:conic-gradient(#b0b2b8,#e5e6e8,#b0b2b8)}
-.jy-rec .jy-groove{background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 2.5px,rgba(20,28,48,.12) 2.5px 3.5px)}
-.jy-rec-label{position:absolute;inset:31%;border-radius:50%;background:var(--tt-canvas);color:var(--tt-ink);display:grid;place-items:center;text-align:center;padding:10px;font-size:11px;line-height:1.3;font-weight:700;overflow:hidden;word-break:keep-all;letter-spacing:var(--tt-track-small)}
-.jy-core{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--tt-ink);display:grid;place-items:center;transition:width .6s var(--tt-spring),height .6s var(--tt-spring),margin .6s var(--tt-spring)}
-.jy-rec.lit .jy-core{width:34px;height:34px;margin:-17px 0 0 -17px}
+/* the screen the inquiry is written on: a sheet before its story, where the line from the form ends (an ink dot) and
+   the project's name, as the visitor writes it, appears under it */
+.jy-rec{position:relative;width:192px;min-height:192px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.jy-rec-label{max-width:100%;color:var(--tt-ink);text-align:center;font-size:15px;line-height:1.5;font-weight:700;letter-spacing:var(--tt-track-title);word-break:keep-all;overflow-wrap:anywhere}
+.jy-core{width:12px;height:12px;border-radius:50%;background:var(--tt-ink);transition:width .6s var(--tt-spring),height .6s var(--tt-spring)}
+.jy-rec.lit .jy-core{width:12px;height:12px;border-radius:50%;background:var(--tt-ink);transition:width .6s var(--tt-spring),height .6s var(--tt-spring)}
 
 /* the record of every story */
 .jy-stage-mode .jy-hint{position:absolute;left:max(48px,6vw);bottom:calc(14% - 40px);opacity:0;transition:opacity .5s}
@@ -62,24 +62,21 @@
 .jy-stage-mode .jy-sw-btn{width:100%;height:100%;padding:0;border-radius:50%;transition:transform .16s var(--tt-ease-out)}
 .jy-stage-mode .jy-sw-btn .jy-vy{width:100%;height:100%}
 .jy-stage-mode .jy-sw-t{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.jy-stage-mode .jy-sw.cur .jy-vy{box-shadow:inset 0 0 0 1px rgb(20 28 48/.08),0 0 0 3px var(--tt-canvas),0 0 0 5px var(--tt-ink)}
+.jy-stage-mode .jy-sw.cur .jy-sw-btn{outline:2px solid var(--tt-ink);outline-offset:3px}
 .jy-stage-mode .jy-sw[data-album] .jy-sw-btn::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px dashed var(--tt-silver);pointer-events:none}
 .jy-stage-mode .jy-sw.dim{filter:grayscale(1) contrast(.8) brightness(1.15)}
-.jy-stage-mode .jy-sw.pin .jy-sw-btn::before{content:"";position:absolute;inset:-11%;border-radius:50%;background:conic-gradient(#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);-webkit-mask:radial-gradient(closest-side,transparent 80%,#000 82%,#000 98%,transparent);mask:radial-gradient(closest-side,transparent 80%,#000 82%,#000 98%,transparent);filter:drop-shadow(0 0 10px rgb(236 230 255/.95)) drop-shadow(0 0 22px rgb(217 244 247/.7));animation:jy-spin 9s linear infinite;pointer-events:none}
-.jy-stage-mode .jy-sw.pin .jy-pin{position:absolute;left:50%;top:-30%;transform:translateX(-50%);margin:0;box-shadow:0 2px 10px rgb(20 28 48/.18)}
-.jy-stage-mode .jy-record.list .jy-sw.pin .jy-sw-btn::before{display:none}
-.jy-stage-mode .jy-record.list .jy-sw.pin .jy-pin{position:static;transform:none;box-shadow:none}
-@media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-sw.pin .jy-sw-btn::before{animation:none}}
+.jy-stage-mode .jy-sw.pin .jy-pin{position:absolute;left:50%;top:-30%;transform:translateX(-50%);margin:0}
+.jy-stage-mode .jy-record.list .jy-sw.pin .jy-pin{position:static;transform:none}
 .jy-tracks{display:none}
 .jy-stage-mode .jy-tracks{display:block;position:absolute;inset:0;pointer-events:none}
 .jy-trks{position:absolute;inset:0;pointer-events:none}
 .jy-trk{position:absolute;left:0;top:0;width:52px;height:52px;margin:-26px 0 0 -26px;padding:0;border:0;border-radius:50%;background:var(--tt-canvas);cursor:pointer;opacity:0;scale:.4;transition:opacity .35s,scale .6s var(--tt-spring)}
 .jy-trks.on .jy-trk{opacity:1;scale:1;pointer-events:auto}
-.jy-trk .jy-vy{width:100%;height:100%;box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 3px var(--tt-ink-line)}
+.jy-trk .jy-vy{width:100%;height:100%}
 .jy-trk i{position:absolute;left:-6px;top:-6px;padding:3px 6px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font:700 11px/1 var(--tt-display);font-style:normal;letter-spacing:var(--tt-track-label)}
 .jy-trk .jy-trk-t{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:180px;padding:3px 8px;border-radius:8px;background:var(--tt-ink);color:var(--tt-on-ink);font-size:12px;line-height:1.4;opacity:0;pointer-events:none;transition:opacity .2s;letter-spacing:var(--tt-track-small)}
 .jy-trk:hover .jy-trk-t,.jy-trk:focus-visible .jy-trk-t,.jy-trk[aria-pressed="true"] .jy-trk-t{opacity:1}
-.jy-trk[aria-pressed="true"] .jy-vy{box-shadow:0 0 0 2px var(--tt-canvas),0 0 0 4px var(--tt-ink)}
+.jy-trk[aria-pressed="true"]{outline:2px solid var(--tt-ink);outline-offset:3px}
 .jy-trk:disabled{cursor:default}
 .jy-trks.on .jy-trk:disabled{opacity:.4}
 .jy-stage-mode .jy-readout{display:flex;flex-direction:column;position:absolute;z-index:1200;right:calc(max(20px,env(safe-area-inset-right,0px)) + 132px);top:50%;width:min(380px,30vw);padding:20px 22px;border-radius:22px;background:rgba(254,254,254,.88);transform:translateY(-40%);opacity:0;pointer-events:none;transition:opacity .5s,transform .7s var(--tt-spring);line-height:1.5}

@@ -55,17 +55,19 @@
 .jy-spiral{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .jy-sw-btn{width:100%;display:flex;align-items:center;gap:14px;padding:6px;border:0;border-radius:16px;background:transparent;text-align:left;cursor:pointer;line-height:1.4}
 .jy-sw-btn:hover{background:var(--tt-canvas-hair)}
-/* a colour vinyl: the disc pressed in its cover's colour (--vinyl, set by journey.js), fine grooves, light on two
-   sides, the cover as the centre label, a hole */
-.jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:conic-gradient(from 20deg,rgb(254 254 254/0) 0 8%,rgb(254 254 254/.32) 12.5%,rgb(254 254 254/0) 17% 58%,rgb(254 254 254/.22) 62.5%,rgb(254 254 254/0) 67%),repeating-radial-gradient(circle,rgb(20 28 48/0) 0 2.4px,rgb(20 28 48/.07) 2.4px 3px),radial-gradient(circle at 30% 28%,rgb(var(--v2,var(--vinyl,176 178 184))/.85) 0 14%,rgb(var(--v2,var(--vinyl,176 178 184))/0) 40%),radial-gradient(circle at 70% 72%,rgb(var(--v3,var(--vinyl,176 178 184))/.8) 0 12%,rgb(var(--v3,var(--vinyl,176 178 184))/0) 38%),conic-gradient(from 35deg,rgb(var(--v1,var(--vinyl,176 178 184))),rgb(var(--v2,var(--vinyl,176 178 184))),rgb(var(--v3,var(--vinyl,176 178 184))),rgb(var(--v1,var(--vinyl,176 178 184))));box-shadow:inset 0 0 0 1px rgb(20 28 48/.08),inset 0 0 0 3px rgb(254 254 254/.18)}
-.jy-vy img{position:absolute;inset:19%;width:62%;height:62%;border-radius:50%;object-fit:cover}
-.jy-vy::after{content:"";position:absolute;left:50%;top:50%;width:7%;height:7%;transform:translate(-50%,-50%);border-radius:50%;background:var(--tt-canvas);box-shadow:0 0 0 1px rgb(20 28 48/.2)}
+/* a work's CD (the design system's CD): the cover printed over the whole disc, centred and never cut but for the
+   round; a hole of 12.5% of the width where the ground shows through; a clear hub to 19% (white at 55%, its rim ink
+   at 14%); the edge an ink line at 10%. No light, groove or shadow on it, and none of its colour past its edge. The
+   hub and the hole read from 160px across. */
+.jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--tt-canvas-hair);-webkit-mask:radial-gradient(circle closest-side,transparent 12.5%,#000 calc(12.5% + .5px));mask:radial-gradient(circle closest-side,transparent 12.5%,#000 calc(12.5% + .5px))}
+.jy-vy img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jy-vy::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle closest-side,transparent 12.5%,rgb(254 254 254/.55) 12.5%,rgb(254 254 254/.55) calc(19% - 1px),rgb(20 28 48/.14) calc(19% - 1px),rgb(20 28 48/.14) 19%,transparent 19%,transparent calc(100% - 1px),rgb(20 28 48/.1) calc(100% - 1px))}
 .jy-sw-t b{display:block;font-size:15px}
 .jy-sw-t span{display:block;font-size:13px;color:var(--tt-ink-muted);letter-spacing:var(--tt-track-small)}
 .jy-sw.dim{opacity:.35}
-/* the featured works: a badge, and on the record an iridescent ring like the charm's disc, turning slowly, glowing */
+/* the featured works: a badge */
 .jy-pin{display:inline-block;margin-left:auto;flex:none;padding:3px 9px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font-size:11px;font-weight:700;letter-spacing:var(--tt-track-small);white-space:nowrap}
-.jy-ro-pin{display:inline-block;align-self:flex-start;width:max-content;margin:0 0 10px;padding:4px 10px;border-radius:999px;background:linear-gradient(90deg,#ece6ff,#d9f4f7,#f8e6f4,#fff7e8);color:var(--tt-ink);font-size:12px;font-weight:700;letter-spacing:var(--tt-track-small)}
+.jy-ro-pin{display:inline-block;align-self:flex-start;width:max-content;margin:0 0 10px;padding:4px 10px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);font-size:12px;font-weight:700;letter-spacing:var(--tt-track-small)}
 .jy-sw.dim .jy-vy{filter:grayscale(1)}
 .jy-readout{display:none}
 .jy-contact{display:flex;flex-direction:column;gap:22px}

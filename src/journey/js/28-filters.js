@@ -12,7 +12,6 @@ function applyFilter() {
   $$('.jy-sw').forEach((li) => li.classList.toggle('dim', !lit(bySlug[li.dataset.slug])));
   const chosen = $$('.jy-fchip[aria-pressed="true"]').filter((b) => (b.dataset.field || b.dataset.role) !== 'all').map((b) => b.firstChild.textContent.trim());
   $('#jy-fbtn').textContent = [COPY.filter, ...chosen].join(' · ');
-  stage.paintRecord();
 }
 $$('.jy-fchip').forEach((b) => b.addEventListener('click', () => {
   if (b.dataset.field) filter.field = b.dataset.field;

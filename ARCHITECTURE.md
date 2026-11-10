@@ -63,7 +63,6 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 |---|---|
 | `00-base` | The data, the timeline (`CH`, `TOTAL`), the things in each world (`OBJ`, `SET`), the pen's path (`PEN`), helpers. |
 | `10-audio` | One sound at a time; versions by language; volume. |
-| `12-vinyl-colours` | Records take their colours from the data (or sample their cover). |
 | `14-dialogs` | Focus stays inside a dialog; Esc closes; focus returns. |
 | `20-detail` | A work opened: video or cover, facts, credits, versions, tracks, covers. |
 | `22-player` | The player that follows what is playing. |
