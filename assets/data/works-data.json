@@ -23,13 +23,11 @@
       "translations": {
         "en": {
           "artist": "DOLONGCHA",
-          "title": "Bubble Sweet",
           "type": "DOLONGCHA 2nd Single",
           "description": "A story that captures the sweet excitement of bubbles popping beneath the midsummer sun in one refreshingly cool drink."
         },
         "jp": {
           "artist": "DOLONGCHA",
-          "title": "Bubble Sweet",
           "type": "DOLONGCHA 2nd Single",
           "description": "真夏の陽射しの下、泡のように弾ける甘いときめきを、ひんやりとした一杯に閉じ込めた物語。"
         }
@@ -42,11 +40,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "147 192 249",
-        "148 154 247",
-        "174 183 244"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "heart-score",
@@ -71,13 +65,11 @@
       "translations": {
         "en": {
           "artist": "STELLIVE Universe",
-          "title": "Heart Score",
           "type": "STELLIVE 'Universe' 2nd Single",
           "description": "A story of four girls, each with her own color, coming together as a band to write a story of their own."
         },
         "jp": {
           "artist": "STELLIVE Universe",
-          "title": "Heart Score",
           "type": "STELLIVE『Universe』2nd Single",
           "description": "それぞれ異なる色を持つ4人の少女が一つのバンドとなり、自分たちだけの物語を紡いでいく物語。"
         }
@@ -89,11 +81,10 @@
       ],
       "field": "artist",
       "pinned": 1,
-      "vinyl": [
-        "22 111 203",
-        "124 161 200",
-        "181 212 232"
-      ]
+      "origin": "kr",
+      "titles": {
+        "en": "Heart Score"
+      }
     },
     {
       "slug": "drawing-summer",
@@ -118,13 +109,11 @@
       "translations": {
         "en": {
           "artist": "Zenless Zone Zero",
-          "title": "여름을 그리다",
           "type": "Zenless Zone Zero HoYoFair Album \"Random Play Anniversary\"",
           "description": "The story of the Cunning Hares setting off on a summer vacation."
         },
         "jp": {
           "artist": "ゼンレスゾーンゼロ",
-          "title": "여름을 그리다",
           "type": "ゼンレスゾーンゼロ HoYoFair Album \"Random Play Anniversary\"",
           "description": "夏のバカンスへ出かけた「邪兎屋」の物語。"
         }
@@ -136,11 +125,7 @@
         "edit"
       ],
       "field": "game",
-      "vinyl": [
-        "237 200 181",
-        "157 167 208",
-        "153 74 86"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "love-novel",
@@ -165,13 +150,11 @@
       "translations": {
         "en": {
           "artist": "Arune",
-          "title": "Love Novel",
           "type": "'Arune' 1st Single",
           "description": "A story of two people who move through sorrow and longing, then begin to love again."
         },
         "jp": {
           "artist": "Arune",
-          "title": "Love Novel",
           "type": "『Arune』1st Single",
           "description": "悲しみと恋しさを越え、もう一度愛を始める二人の物語。"
         }
@@ -183,11 +166,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "54 87 177",
-        "165 172 219",
-        "197 182 236"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "fallen-leaves",
@@ -212,13 +191,11 @@
       "translations": {
         "en": {
           "artist": "Kurogami Sasha",
-          "title": "Fallen Leaves",
           "type": "V-llage 'Kurogami Sasha' 1st Single",
           "description": "The story of a girl who begins a game of Russian roulette to put an end to 'the person she was then.'"
         },
         "jp": {
           "artist": "Kurogami Sasha",
-          "title": "Fallen Leaves",
           "type": "V-llage『Kurogami Sasha』1st Single",
           "description": "「あの頃の自分」を終わらせるため、ロシアンルーレットを始めた一人の少女の物語。"
         }
@@ -230,11 +207,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "199 119 64",
-        "176 44 38",
-        "70 145 70"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "daisy-in-eternity",
@@ -258,13 +231,11 @@
       "translations": {
         "en": {
           "artist": "TOVE",
-          "title": "Daisy In Eternity (Fairy Tale Ver.)",
           "type": "TOVE Single",
           "description": ""
         },
         "jp": {
           "artist": "TOVE",
-          "title": "Daisy In Eternity (Fairy Tale Ver.)",
           "type": "TOVE Single",
           "description": ""
         }
@@ -273,11 +244,7 @@
         "arrange"
       ],
       "field": "artist",
-      "vinyl": [
-        "150 196 204",
-        "81 158 169",
-        "98 179 152"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "gangchi-island-op",
@@ -302,13 +269,11 @@
       "translations": {
         "en": {
           "artist": "SEION",
-          "title": "강치 아일랜드(OP)",
           "type": "Animation '강치 아일랜드' 1st OP (Produced by Jang Junho)",
           "description": "A story of friends growing their dreams and friendships on 강치 아일랜드."
         },
         "jp": {
           "artist": "SEION",
-          "title": "강치 아일랜드(OP)",
           "type": "アニメーション『강치 아일랜드』1st OP（Produced by Jang Junho）",
           "description": "강치 아일랜드で夢と友情を育んでいく仲間たちの物語。"
         }
@@ -320,11 +285,7 @@
         "master"
       ],
       "field": "game",
-      "vinyl": [
-        "118 211 248",
-        "214 165 163",
-        "195 130 181"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "love-dopamine",
@@ -349,13 +310,11 @@
       "translations": {
         "en": {
           "artist": "Haebom",
-          "title": "Love Dopamine",
           "type": "'Haebom' 3rd Single",
           "description": "Haebom's story, where the desire to say 'I like you' bursts like a rush of dopamine."
         },
         "jp": {
           "artist": "HAEBOM",
-          "title": "Love Dopamine",
           "type": "HAEBOM 3rd Single",
           "description": "「好き」と伝えたい気持ちが、ドーパミンのように弾け出すHAEBOMの物語。"
         }
@@ -367,11 +326,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "249 140 199",
-        "224 39 95",
-        "115 49 165"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "the-run-catch",
@@ -396,13 +351,11 @@
       "translations": {
         "en": {
           "artist": "DOLONGCHA",
-          "title": "The Run Catch",
           "type": "DOLONGCHA 1st Single",
           "description": "The story of a girl(?) who runs straight toward the person she likes without hesitation."
         },
         "jp": {
           "artist": "DOLONGCHA",
-          "title": "The Run Catch",
           "type": "DOLONGCHA 1st Single",
           "description": "好きな人に向かって、迷わず駆け出す一人の少女（？）の物語。"
         }
@@ -414,11 +367,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "38 174 244",
-        "134 204 234",
-        "59 130 155"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "floris-waltz",
@@ -443,13 +392,11 @@
       "translations": {
         "en": {
           "artist": "Floweress Loe (V-llage)",
-          "title": "Floris Waltz",
           "type": "V-llage 'Floweress Loe' 1st Single",
           "description": "The tale of a little flower fairy, writing a story that belongs to just the two of us."
         },
         "jp": {
           "artist": "Floweress Loe (V-llage)",
-          "title": "Floris Waltz",
           "type": "V-llage『Floweress Loe』1st Single",
           "description": "ふたりだけの物語を綴っていく、小さな花の妖精のお話。"
         }
@@ -461,11 +408,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "249 199 169",
-        "210 196 160",
-        "131 179 97"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "early-spring",
@@ -509,11 +452,6 @@
             "arrange",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "136 153 203",
-            "136 153 203",
-            "136 153 203"
           ]
         },
         {
@@ -542,11 +480,6 @@
             "arrange",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "136 153 203",
-            "136 153 203",
-            "136 153 203"
           ]
         },
         {
@@ -576,11 +509,6 @@
             "rec",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "136 153 203",
-            "136 153 203",
-            "136 153 203"
           ]
         },
         {
@@ -609,11 +537,6 @@
             "rec",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "136 153 203",
-            "136 153 203",
-            "136 153 203"
           ]
         }
       ],
@@ -624,23 +547,17 @@
       "translations": {
         "en": {
           "artist": "Dear my heroes",
-          "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "A story of the hearts left behind after death and farewell, moving through grief and returning to life within the cycles of time and the seasons."
         },
         "jp": {
           "artist": "Dear my heroes",
-          "title": "Early Spring [ALBUM]",
           "type": "Dear my heroes 1st EP",
           "description": "死と別れの後に残された心が、時間と季節の巡りの中で悲しみを越え、再び生きていく物語です。"
         }
       },
       "field": "artist",
-      "vinyl": [
-        "136 153 203",
-        "159 125 193",
-        "159 125 193"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "pompous",
@@ -665,13 +582,11 @@
       "translations": {
         "en": {
           "artist": "Beldir (V-LUP)",
-          "title": "Pompous",
           "type": "V-LUP 'Beldir' 1st Single",
           "description": "A story that shouts boldly toward vanity and the desire for approval on social media."
         },
         "jp": {
           "artist": "Beldir (V-LUP)",
-          "title": "Pompous",
           "type": "V-LUP『Beldir』1st Single",
           "description": "SNSの中の虚栄と承認欲求へ、まっすぐ叫ぶ物語です。"
         }
@@ -684,11 +599,7 @@
         "mix"
       ],
       "field": "artist",
-      "vinyl": [
-        "214 192 171",
-        "240 209 178",
-        "91 69 197"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "new-year-syndrome",
@@ -714,12 +625,10 @@
         "en": {
           "artist": "MAIMATSU",
           "type": "MAIMATSU 3rd Single",
-          "description": "A story of four girls making New Year's plans that will likely fail again.",
-          "title": "NEW YEAR SYNDROME"
+          "description": "A story of four girls making New Year's plans that will likely fail again."
         },
         "jp": {
           "artist": "MAIMATSU",
-          "title": "NEW YEAR SYNDROME",
           "type": "MAIMATSU 3rd Single",
           "description": "今年もきっと守れない新年の計画を立てる、四人の少女たちの物語です。"
         }
@@ -734,11 +643,10 @@
         "mix"
       ],
       "field": "artist",
-      "vinyl": [
-        "242 152 116",
-        "240 233 178",
-        "209 196 136"
-      ]
+      "origin": "kr",
+      "titles": {
+        "en": "NEW YEAR SYNDROME"
+      }
     },
     {
       "slug": "wrap-up",
@@ -764,12 +672,10 @@
         "en": {
           "artist": "RoA",
           "type": "RoA 4th Single",
-          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward.",
-          "title": "Wrap Up"
+          "description": "A story of a girl neatly wrapping up a finished relationship and moving forward."
         },
         "jp": {
           "artist": "RoA",
-          "title": "Wrap Up",
           "type": "RoA 4th Single",
           "description": "終わった関係をきれいに整理し、前へ進む少女の物語です。"
         }
@@ -780,11 +686,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "239 163 206",
-        "211 171 240",
-        "198 193 225"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "silverline",
@@ -818,12 +720,10 @@
           "youtube": "https://www.youtube.com/watch?v=VmQu7uM5liI",
           "translations": {
             "en": {
-              "description": "A story of seven girls bringing light back to a city hidden by dark clouds.",
-              "title": "SilverLine"
+              "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
             },
             "jp": {
-              "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。",
-              "title": "SilverLine"
+              "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
             }
           },
           "roles": [
@@ -832,11 +732,6 @@
             "arrange",
             "lyrics",
             "edit"
-          ],
-          "vinyl": [
-            "171 219 247",
-            "165 193 212",
-            "97 150 179"
           ]
         },
         {
@@ -855,12 +750,10 @@
           "youtube": "https://www.youtube.com/watch?v=5F8OFj4wkRc",
           "translations": {
             "en": {
-              "description": "A story of two girls who love different kinds of music starting a band together.",
-              "title": "RATATA"
+              "description": "A story of two girls who love different kinds of music starting a band together."
             },
             "jp": {
-              "description": "異なる音楽を愛する二人の少女が、一緒にバンドを始める物語です。",
-              "title": "RATATA"
+              "description": "異なる音楽を愛する二人の少女が、一緒にバンドを始める物語です。"
             }
           },
           "roles": [
@@ -869,11 +762,6 @@
             "arrange",
             "lyrics",
             "edit"
-          ],
-          "vinyl": [
-            "192 209 226",
-            "215 174 146",
-            "155 174 207"
           ]
         },
         {
@@ -892,12 +780,10 @@
           "youtube": "https://www.youtube.com/watch?v=YDTh5dVImXs",
           "translations": {
             "en": {
-              "description": "A story of change and growth for girls who gather in an idol club, each carrying her own worries.",
-              "title": "Cloudnine"
+              "description": "A story of change and growth for girls who gather in an idol club, each carrying her own worries."
             },
             "jp": {
-              "description": "それぞれの悩みを抱えてアイドル部に集まった少女たちの、変化と成長の物語です。",
-              "title": "Cloudnine"
+              "description": "それぞれの悩みを抱えてアイドル部に集まった少女たちの、変化と成長の物語です。"
             }
           },
           "roles": [
@@ -906,11 +792,6 @@
             "arrange",
             "lyrics",
             "edit"
-          ],
-          "vinyl": [
-            "131 195 186",
-            "191 222 188",
-            "214 184 171"
           ]
         },
         {
@@ -929,22 +810,15 @@
           "youtube": "https://www.youtube.com/watch?v=BxVJKaNYS_Y",
           "translations": {
             "en": {
-              "description": "A story of two girls connected through music, drawing their dream together.",
-              "title": "Over the Night Sky"
+              "description": "A story of two girls connected through music, drawing their dream together."
             },
             "jp": {
-              "description": "音楽を通じてつながった二人の少女が、ともに夢を描いていく物語です。",
-              "title": "Over the Night Sky"
+              "description": "音楽を通じてつながった二人の少女が、ともに夢を描いていく物語です。"
             }
           },
           "roles": [
             "produce",
             "edit"
-          ],
-          "vinyl": [
-            "100 133 182",
-            "166 188 212",
-            "197 188 223"
           ]
         }
       ],
@@ -955,23 +829,17 @@
       "translations": {
         "en": {
           "artist": "V-llage",
-          "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "A story of seven girls bringing light back to a city hidden by dark clouds."
         },
         "jp": {
           "artist": "V-llage",
-          "title": "SilverLine [ALBUM]",
           "type": "SilverLine [ALBUM]",
           "description": "暗い雲に覆われた街へ、七人の少女たちが光を取り戻す物語です。"
         }
       },
       "field": "artist",
-      "vinyl": [
-        "171 219 247",
-        "166 194 212",
-        "98 152 179"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "my-village",
@@ -996,13 +864,11 @@
       "translations": {
         "en": {
           "artist": "V-llage",
-          "title": "My Village",
           "type": "Theme Song for Game 'Welcome to V-llage!'",
           "description": "A warm story created together by everyone gathered in the small village of V-llage."
         },
         "jp": {
           "artist": "V-llage",
-          "title": "My Village",
           "type": "ゲーム『Welcome to V-llage!』主題歌",
           "description": "V-llageという小さな村に集まったみんなで作っていく、あたたかな物語。"
         }
@@ -1015,11 +881,7 @@
         "mix"
       ],
       "field": "game",
-      "vinyl": [
-        "185 224 233",
-        "221 184 214",
-        "157 139 199"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "kanism-holic",
@@ -1102,14 +964,12 @@
         "en": {
           "artist": "Tygris Kanin",
           "type": "V-llage 'Tygris Kanin' 1st Single",
-          "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together.",
-          "title": "카니즘☆홀릭"
+          "description": "A story of everyone gathered at the Tigris tavern, laughing, talking, and making memories together."
         },
         "jp": {
           "artist": "ティグリス・カニン",
           "type": "V-llage『Tygris Kanin』1st Single",
-          "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。",
-          "title": "かにずむ☆ほりっく"
+          "description": "酒場『ティグリス』に集まったみんなが笑い、語り合い、思い出を作っていく物語。"
         }
       },
       "roles": [
@@ -1118,11 +978,10 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "246 147 116",
-        "204 123 54",
-        "204 123 54"
-      ]
+      "origin": "kr",
+      "titles": {
+        "jp": "かにずむ☆ほりっく"
+      }
     },
     {
       "slug": "backstage",
@@ -1147,13 +1006,11 @@
       "translations": {
         "en": {
           "artist": "Mafhills",
-          "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "A story of artists waiting with excitement to meet fans before a live show."
         },
         "jp": {
           "artist": "Mafhills",
-          "title": "BACKSTAGE",
           "type": "Mafhills 1st Single",
           "description": "ライブを前に、ファンと会えるその日だけを待つアーティストたちの高鳴る心を込めた物語です。"
         }
@@ -1166,11 +1023,7 @@
         "mix"
       ],
       "field": "artist",
-      "vinyl": [
-        "168 213 250",
-        "111 163 247",
-        "41 76 188"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "watercolour",
@@ -1252,13 +1105,11 @@
       "translations": {
         "en": {
           "artist": "soraniwa",
-          "title": "Watercolour",
           "type": "soraniwa Project 1st Single",
           "description": "A story of a girl collecting fragments of forgotten memories to find a lost friend."
         },
         "jp": {
           "artist": "soraniwa",
-          "title": "水絵",
           "type": "soraniwa Project 1st Single",
           "description": "忘れられた記憶のかけらを集め、失った友だちを探していく少女の物語です。"
         }
@@ -1273,11 +1124,11 @@
       ],
       "field": "original",
       "pinned": 3,
-      "vinyl": [
-        "180 227 238",
-        "184 221 204",
-        "211 225 193"
-      ]
+      "origin": "kr",
+      "titles": {
+        "en": "Watercolour",
+        "jp": "水絵"
+      }
     },
     {
       "slug": "star-to-star",
@@ -1302,13 +1153,11 @@
       "translations": {
         "en": {
           "artist": "Shabel Tonya",
-          "title": "STAR to STAR",
           "type": "Honkai: Star Rail '2023 Multiverse Vistas' Popularity & Excellence Award Winner",
           "description": "A story of continuing a pioneering journey against fate while connecting star to star."
         },
         "jp": {
           "artist": "Shabel Tonya",
-          "title": "STAR to STAR",
           "type": "崩壊：スターレイル『2023 Multiverse Vistas』人気賞・優秀賞受賞作",
           "description": "星と星をつなぐ旅の中で、運命に抗いながら開拓を続ける物語です。"
         }
@@ -1321,11 +1170,7 @@
         "mix"
       ],
       "field": "original",
-      "vinyl": [
-        "221 70 38",
-        "231 200 177",
-        "169 46 46"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "night-sky",
@@ -1350,13 +1195,11 @@
       "translations": {
         "en": {
           "artist": "Bed Taker",
-          "title": "Night Sky",
           "type": "Bed Taker 1st Single",
           "description": "A story of telling the night sky about pain that could not be shared with anyone."
         },
         "jp": {
           "artist": "Bed Taker",
-          "title": "Night Sky",
           "type": "Bed Taker 1st Single",
           "description": "誰にも言えなかった痛みを夜空へ打ち明ける物語です。"
         }
@@ -1370,11 +1213,10 @@
         "mix"
       ],
       "field": "artist",
-      "vinyl": [
-        "36 81 191",
-        "140 185 215",
-        "33 11 203"
-      ]
+      "origin": "kr",
+      "titles": {
+        "en": "Night Sky"
+      }
     },
     {
       "slug": "sailing-stars",
@@ -1399,13 +1241,11 @@
       "translations": {
         "en": {
           "artist": "N4ML",
-          "title": "Sailing StarS!",
           "type": "Eight utaite chorus project",
           "description": "A story of holding each other's hands and moving toward a shining tomorrow."
         },
         "jp": {
           "artist": "N4ML",
-          "title": "Sailing StarS!",
           "type": "歌い手8人合唱プロジェクト",
           "description": "互いの手を取り合い、輝く明日へ進んでいく物語です。"
         }
@@ -1419,11 +1259,7 @@
         "master"
       ],
       "field": "original",
-      "vinyl": [
-        "198 173 245",
-        "172 193 246",
-        "124 155 244"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "project-connect-season-1",
@@ -1457,11 +1293,9 @@
           "youtube": "https://www.youtube.com/watch?v=nbTzAphMvbY",
           "translations": {
             "en": {
-              "title": "Intro (Teaser)",
               "description": ""
             },
             "jp": {
-              "title": "Intro (Teaser)",
               "description": ""
             }
           },
@@ -1470,11 +1304,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "86 61 153",
-            "100 91 176",
-            "215 172 202"
           ]
         },
         {
@@ -1493,11 +1322,9 @@
           "youtube": "https://www.youtube.com/watch?v=O4kHRkVERdQ",
           "translations": {
             "en": {
-              "title": "CONNECT, to World!",
               "description": ""
             },
             "jp": {
-              "title": "CONNECT, to World!",
               "description": ""
             }
           },
@@ -1507,11 +1334,6 @@
             "arrange",
             "lyrics",
             "edit"
-          ],
-          "vinyl": [
-            "86 61 153",
-            "100 91 176",
-            "215 172 202"
           ]
         },
         {
@@ -1530,11 +1352,9 @@
           "youtube": "https://www.youtube.com/watch?v=DFzAGS3nLCs",
           "translations": {
             "en": {
-              "title": "Party Night",
               "description": ""
             },
             "jp": {
-              "title": "Party Night",
               "description": ""
             }
           },
@@ -1542,11 +1362,6 @@
             "produce",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "108 145 195",
-            "215 181 172",
-            "194 128 177"
           ]
         },
         {
@@ -1565,11 +1380,9 @@
           "youtube": "https://www.youtube.com/watch?v=gZPk0lxvOng",
           "translations": {
             "en": {
-              "title": "별 사이 우리 (Altair and Vega)",
               "description": ""
             },
             "jp": {
-              "title": "별 사이 우리 (Altair and Vega)",
               "description": ""
             }
           },
@@ -1579,11 +1392,6 @@
             "arrange",
             "lyrics",
             "edit"
-          ],
-          "vinyl": [
-            "236 175 188",
-            "195 130 147",
-            "153 73 122"
           ]
         },
         {
@@ -1602,22 +1410,15 @@
           "youtube": "https://www.youtube.com/watch?v=sotEommmk78",
           "translations": {
             "en": {
-              "title": "남겨진 자의 염원",
               "description": ""
             },
             "jp": {
-              "title": "남겨진 자의 염원",
               "description": ""
             }
           },
           "roles": [
             "produce",
             "edit"
-          ],
-          "vinyl": [
-            "121 109 219",
-            "177 194 231",
-            "215 193 225"
           ]
         },
         {
@@ -1636,11 +1437,9 @@
           "youtube": "https://www.youtube.com/watch?v=aj3qDtxndDQ",
           "translations": {
             "en": {
-              "title": "CHERRY POP",
               "description": ""
             },
             "jp": {
-              "title": "CHERRY POP",
               "description": ""
             }
           },
@@ -1648,11 +1447,6 @@
             "produce",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "241 58 70",
-            "220 168 175",
-            "170 44 59"
           ]
         },
         {
@@ -1671,11 +1465,9 @@
           "youtube": "https://www.youtube.com/watch?v=Zuy13RmN47Y",
           "translations": {
             "en": {
-              "title": "맑음 FANFARE!",
               "description": ""
             },
             "jp": {
-              "title": "맑음 FANFARE!",
               "description": ""
             }
           },
@@ -1684,11 +1476,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "234 92 53",
-            "238 201 181",
-            "155 160 207"
           ]
         },
         {
@@ -1707,22 +1494,15 @@
           "youtube": "https://www.youtube.com/watch?v=w4NC8jcnswc",
           "translations": {
             "en": {
-              "title": "Luvvy Luvvy",
               "description": ""
             },
             "jp": {
-              "title": "Luvvy Luvvy",
               "description": ""
             }
           },
           "roles": [
             "produce",
             "edit"
-          ],
-          "vinyl": [
-            "229 198 189",
-            "197 135 147",
-            "180 98 162"
           ]
         },
         {
@@ -1741,11 +1521,9 @@
           "youtube": "https://www.youtube.com/watch?v=5Z8-hE38dzU",
           "translations": {
             "en": {
-              "title": "blank",
               "description": ""
             },
             "jp": {
-              "title": "blank",
               "description": ""
             }
           },
@@ -1754,11 +1532,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "14 83 200",
-            "124 153 192",
-            "199 193 225"
           ]
         },
         {
@@ -1777,11 +1550,9 @@
           "youtube": "https://www.youtube.com/watch?v=Guo69H0z1SM",
           "translations": {
             "en": {
-              "title": "꿍차GAME",
               "description": ""
             },
             "jp": {
-              "title": "꿍차GAME",
               "description": ""
             }
           },
@@ -1790,11 +1561,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "227 172 127",
-            "244 205 174",
-            "150 160 205"
           ]
         },
         {
@@ -1813,11 +1579,9 @@
           "youtube": "https://www.youtube.com/watch?v=MybIyEksk3A",
           "translations": {
             "en": {
-              "title": "샛길 (ED)",
               "description": ""
             },
             "jp": {
-              "title": "샛길 (ED)",
               "description": ""
             }
           },
@@ -1826,11 +1590,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "242 156 121",
-            "180 78 126",
-            "180 78 126"
           ]
         }
       ],
@@ -1841,23 +1600,17 @@
       "translations": {
         "en": {
           "artist": "PROJECT CONNECT",
-          "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
           "type": "PROJECT CONNECT 'SEASON 1'",
           "description": ""
         },
         "jp": {
           "artist": "プロジェクトコネクト",
-          "title": "PROJECT CONNECT SEASON 1 [ALBUM]",
           "type": "PROJECT CONNECT『SEASON 1』",
           "description": ""
         }
       },
       "field": "artist",
-      "vinyl": [
-        "87 59 155",
-        "99 89 175",
-        "215 173 201"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "last-origin-miss-orca",
@@ -1891,11 +1644,9 @@
           "youtube": "https://www.youtube.com/watch?v=Hh2cWKGjGO8",
           "translations": {
             "en": {
-              "title": "New Page",
               "description": ""
             },
             "jp": {
-              "title": "New Page",
               "description": ""
             }
           },
@@ -1904,11 +1655,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "198 95 119",
-            "78 70 145",
-            "126 13 201"
           ]
         },
         {
@@ -1927,11 +1673,9 @@
           "youtube": "https://www.youtube.com/watch?v=S1Nv3KTNO-s",
           "translations": {
             "en": {
-              "title": "북극성",
               "description": ""
             },
             "jp": {
-              "title": "북극성",
               "description": ""
             }
           },
@@ -1942,11 +1686,6 @@
             "rec",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "198 95 119",
-            "78 70 145",
-            "126 13 201"
           ]
         },
         {
@@ -1965,11 +1704,9 @@
           "youtube": "https://www.youtube.com/watch?v=VWiC3twzVyA",
           "translations": {
             "en": {
-              "title": "주인님 Overdose",
               "description": ""
             },
             "jp": {
-              "title": "주인님 Overdose",
               "description": ""
             }
           },
@@ -1980,11 +1717,6 @@
             "rec",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "198 95 119",
-            "78 70 145",
-            "126 13 201"
           ]
         },
         {
@@ -2003,22 +1735,15 @@
           "youtube": "https://www.youtube.com/watch?v=ABCuAo3-Co8",
           "translations": {
             "en": {
-              "title": "들려주고픈 이야기",
               "description": ""
             },
             "jp": {
-              "title": "들려주고픈 이야기",
               "description": ""
             }
           },
           "roles": [
             "produce",
             "edit"
-          ],
-          "vinyl": [
-            "198 95 119",
-            "78 70 145",
-            "126 13 201"
           ]
         }
       ],
@@ -2029,23 +1754,21 @@
       "translations": {
         "en": {
           "artist": "Last Origin",
-          "title": "Last Origin 1st & 3rd Miss ORCA [ALBUM]",
           "type": "Game 'Last Origin' Miss ORCA",
           "description": ""
         },
         "jp": {
           "artist": "ラストオリジン",
-          "title": "Last Origin 第1回・第3回 Miss ORCA [ALBUM]",
           "type": "ゲーム『ラストオリジン』ミスオルカ",
           "description": ""
         }
       },
       "field": "game",
-      "vinyl": [
-        "197 96 119",
-        "81 70 145",
-        "125 15 199"
-      ]
+      "origin": "kr",
+      "titles": {
+        "en": "Last Origin 1st & 3rd Miss ORCA [ALBUM]",
+        "jp": "Last Origin 第1回・第3回 Miss ORCA [ALBUM]"
+      }
     },
     {
       "slug": "flight-again",
@@ -2070,13 +1793,11 @@
       "translations": {
         "en": {
           "artist": "Last Origin",
-          "title": "FLIGHT AGAIN",
           "type": "Game 'Last Origin' 2nd Miss ORCA",
           "description": ""
         },
         "jp": {
           "artist": "ラストオリジン",
-          "title": "FLIGHT AGAIN",
           "type": "ゲーム『ラストオリジン』第2回ミスオルカ",
           "description": ""
         }
@@ -2087,11 +1808,7 @@
         "edit"
       ],
       "field": "game",
-      "vinyl": [
-        "197 96 119",
-        "81 70 145",
-        "125 15 199"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "last-origin-cafe-amor",
@@ -2125,11 +1842,9 @@
           "youtube": "https://www.youtube.com/watch?v=Fph1MIh8JKU",
           "translations": {
             "en": {
-              "title": "GO UP!",
               "description": ""
             },
             "jp": {
-              "title": "GO UP!",
               "description": ""
             }
           },
@@ -2137,11 +1852,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "181 212 237",
-            "218 19 37",
-            "218 178 198"
           ]
         },
         {
@@ -2160,11 +1870,9 @@
           "youtube": "https://www.youtube.com/watch?v=6cBLGWYG_Iw",
           "translations": {
             "en": {
-              "title": "Gray Clouds",
               "description": ""
             },
             "jp": {
-              "title": "Gray Clouds",
               "description": ""
             }
           },
@@ -2172,11 +1880,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "181 212 237",
-            "218 19 37",
-            "218 178 198"
           ]
         },
         {
@@ -2195,22 +1898,15 @@
           "youtube": "https://www.youtube.com/watch?v=B4M-c_n2Fic",
           "translations": {
             "en": {
-              "title": "사랑은 파르페처럼",
               "description": ""
             },
             "jp": {
-              "title": "사랑은 파르페처럼",
               "description": ""
             }
           },
           "roles": [
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "181 212 237",
-            "218 19 37",
-            "218 178 198"
           ]
         },
         {
@@ -2229,11 +1925,9 @@
           "youtube": "https://www.youtube.com/watch?v=_lGpNSYn53I",
           "translations": {
             "en": {
-              "title": "어서오세요, 라스트 파라다이스!",
               "description": ""
             },
             "jp": {
-              "title": "어서오세요, 라스트 파라다이스!",
               "description": ""
             }
           },
@@ -2241,11 +1935,6 @@
             "compose",
             "arrange",
             "edit"
-          ],
-          "vinyl": [
-            "189 214 229",
-            "43 109 171",
-            "76 117 157"
           ]
         }
       ],
@@ -2256,23 +1945,17 @@
       "translations": {
         "en": {
           "artist": "Last Origin",
-          "title": "Last Origin Café Amor × Horizon [ALBUM]",
           "type": "Game 'Last Origin' Café Amor × Horizon",
           "description": ""
         },
         "jp": {
           "artist": "ラストオリジン",
-          "title": "Last Origin Café Amor × Horizon [ALBUM]",
           "type": "ゲーム『ラストオリジン』Café Amor × Horizon",
           "description": ""
         }
       },
       "field": "game",
-      "vinyl": [
-        "189 215 229",
-        "43 105 171",
-        "76 117 158"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "pocotone-sixtar-gate",
@@ -2306,11 +1989,9 @@
           "youtube": "https://www.youtube.com/watch?v=e395Bz8ZRq8",
           "translations": {
             "en": {
-              "title": "Cosmic Telepathy",
               "description": ""
             },
             "jp": {
-              "title": "コズミックテレパシー",
               "description": ""
             }
           },
@@ -2320,11 +2001,10 @@
             "edit",
             "mix"
           ],
-          "vinyl": [
-            "250 227 168",
-            "189 169 234",
-            "229 181 209"
-          ]
+          "titles": {
+            "en": "Cosmic Telepathy",
+            "jp": "コズミックテレパシー"
+          }
         },
         {
           "title": "Flower Garden",
@@ -2342,11 +2022,9 @@
           "youtube": "https://www.youtube.com/watch?v=9_kzThVik1c",
           "translations": {
             "en": {
-              "title": "Flower Garden",
               "description": ""
             },
             "jp": {
-              "title": "Flower Garden",
               "description": ""
             }
           },
@@ -2354,11 +2032,6 @@
             "compose",
             "edit",
             "mix"
-          ],
-          "vinyl": [
-            "224 191 217",
-            "250 226 168",
-            "186 192 233"
           ]
         }
       ],
@@ -2369,23 +2042,17 @@
       "translations": {
         "en": {
           "artist": "POCOTONE",
-          "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
           "type": "Rhythm game 'Sixtar Gate: STARTRAIL' POCOTONE Pack",
           "description": ""
         },
         "jp": {
           "artist": "POCOTONE",
-          "title": "POCOTONE × Sixtar Gate: STARTRAIL [ALBUM]",
           "type": "リズムゲーム『Sixtar Gate: STARTRAIL』POCOTONE Pack",
           "description": ""
         }
       },
       "field": "game",
-      "vinyl": [
-        "250 226 168",
-        "187 168 233",
-        "227 181 209"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "with-me",
@@ -2410,13 +2077,11 @@
       "translations": {
         "en": {
           "artist": "POCOTONE",
-          "title": "With Me",
           "type": "POCOTONE Single",
           "description": ""
         },
         "jp": {
           "artist": "POCOTONE",
-          "title": "With Me",
           "type": "POCOTONE Single",
           "description": ""
         }
@@ -2429,11 +2094,7 @@
         "mix"
       ],
       "field": "artist",
-      "vinyl": [
-        "145 86 70",
-        "185 152 109",
-        "228 209 190"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "paradise",
@@ -2458,13 +2119,11 @@
       "translations": {
         "en": {
           "artist": "V-LUP Eclipse",
-          "title": "Paradise",
           "type": "V-LUP 'Eclipse' Original Song",
           "description": ""
         },
         "jp": {
           "artist": "V-LUP Eclipse",
-          "title": "Paradise",
           "type": "V-LUP『Eclipse』Original Song",
           "description": ""
         }
@@ -2476,11 +2135,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "239 193 179",
-        "189 117 125",
-        "225 192 225"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "shining-day",
@@ -2505,13 +2160,11 @@
       "translations": {
         "en": {
           "artist": "Lee Jooin (V-LUP)",
-          "title": "Shining Day!",
           "type": "V-LUP 'Lee Jooin' Original Song",
           "description": ""
         },
         "jp": {
           "artist": "イ・ジュイン (V-LUP)",
-          "title": "Shining Day!",
           "type": "V-LUP『イ・ジュイン』Original Song",
           "description": ""
         }
@@ -2522,11 +2175,7 @@
         "edit"
       ],
       "field": "artist",
-      "vinyl": [
-        "239 179 188",
-        "196 122 163",
-        "193 193 225"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "always-with-you",
@@ -2636,13 +2285,11 @@
       "translations": {
         "en": {
           "artist": "Epic Seven",
-          "title": "7th world: Always with you",
           "type": "Game 'Epic Seven' OST Project #5",
           "description": "A story of the many trials overcome by being together, and of the thanks that follow."
         },
         "jp": {
           "artist": "エピックセブン",
-          "title": "7th world: Always with you",
           "type": "ゲーム『エピックセブン』OST プロジェクト #5",
           "description": "共にいたからこそ数々の試練を乗り越えられた、その感謝を伝える物語。"
         }
@@ -2673,11 +2320,7 @@
       ],
       "field": "game",
       "pinned": 2,
-      "vinyl": [
-        "239 179 197",
-        "70 91 145",
-        "169 82 103"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "unmyeong",
@@ -2759,13 +2402,11 @@
       "translations": {
         "en": {
           "artist": "웹툰 '이웃집 남동생이 초등학생인데 너무 잘해!'",
-          "title": "운명",
           "type": "Webtoon ending theme",
           "description": ""
         },
         "jp": {
           "artist": "お隣の煉くんは小学生なのにとても上手！",
-          "title": "運命",
           "type": "SNSコミック エンディング",
           "description": ""
         }
@@ -2777,11 +2418,10 @@
         "master"
       ],
       "field": "game",
-      "vinyl": [
-        "242 202 176",
-        "183 128 105",
-        "145 70 96"
-      ]
+      "origin": "kr",
+      "titles": {
+        "jp": "運命"
+      }
     },
     {
       "slug": "run-into-galaxy",
@@ -2806,13 +2446,11 @@
       "translations": {
         "en": {
           "artist": "GXG Game Music Competition",
-          "title": "Run into Galaxy",
           "type": "1st GXG Game Music Competition · Gold Prize",
           "description": ""
         },
         "jp": {
           "artist": "GXG ゲーム音楽コンペティション",
-          "title": "Run into Galaxy",
           "type": "第1回 GXG ゲーム音楽コンペティション 金賞",
           "description": ""
         }
@@ -2825,11 +2463,7 @@
         "mix"
       ],
       "field": "original",
-      "vinyl": [
-        "225 193 193",
-        "243 168 238",
-        "129 209 235"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "we-are-sia",
@@ -2854,13 +2488,11 @@
       "translations": {
         "en": {
           "artist": "Seoul Institute of the Arts",
-          "title": "WE ARE SIA!",
           "type": "Seoul Institute of the Arts, Applied Music · Promotional film",
           "description": ""
         },
         "jp": {
           "artist": "ソウル芸術大学",
-          "title": "WE ARE SIA!",
           "type": "ソウル芸術大学 実用音楽科 プロモーション映像",
           "description": ""
         }
@@ -2874,11 +2506,7 @@
         "master"
       ],
       "field": "original",
-      "vinyl": [
-        "223 12 20",
-        "227 212 192",
-        "210 169 162"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "sejong-arts-anthem",
@@ -2903,13 +2531,11 @@
       "translations": {
         "en": {
           "artist": "Sejong Arts High School",
-          "title": "세종예술고등학교 교가",
           "type": "School anthem",
           "description": ""
         },
         "jp": {
           "artist": "世宗芸術高等学校",
-          "title": "세종예술고등학교 교가",
           "type": "校歌",
           "description": ""
         }
@@ -2924,11 +2550,7 @@
         "master"
       ],
       "field": "original",
-      "vinyl": [
-        "225 214 193",
-        "145 178 202",
-        "212 225 193"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "growing",
@@ -2953,13 +2575,11 @@
       "translations": {
         "en": {
           "artist": "N4ML",
-          "title": "Growing!",
           "type": "N4ML Original",
           "description": ""
         },
         "jp": {
           "artist": "N4ML",
-          "title": "Growing!",
           "type": "N4ML Original",
           "description": ""
         }
@@ -2973,11 +2593,7 @@
         "master"
       ],
       "field": "original",
-      "vinyl": [
-        "169 194 249",
-        "183 175 243",
-        "149 142 200"
-      ]
+      "origin": "kr"
     },
     {
       "slug": "tomorrow",
@@ -3002,13 +2618,11 @@
       "translations": {
         "en": {
           "artist": "N4ML",
-          "title": "TOMORROW!",
           "type": "N4ML Original",
           "description": ""
         },
         "jp": {
           "artist": "N4ML",
-          "title": "TOMORROW!",
           "type": "N4ML Original",
           "description": ""
         }
@@ -3022,11 +2636,7 @@
         "master"
       ],
       "field": "original",
-      "vinyl": [
-        "68 168 245",
-        "168 244 250",
-        "225 193 193"
-      ]
+      "origin": "kr"
     }
   ],
   "clientLogos": [

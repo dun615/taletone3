@@ -1,7 +1,7 @@
 // The data the journey shows, ready for the page: each work, the copy, and the other work (Sound Engineering, ETC),
 // localized for one language. scripts/journey-page.mjs draws the HTML from it; journeyData() is the window.TT_JOURNEY
 // script that src/journey/js/ reads. Where a work's media are found is decided in scripts/works-model.mjs.
-import { mediaOf, ytId } from './works-model.mjs';
+import { mediaOf, titleIn, ytId } from './works-model.mjs';
 
 export const plain = (value) => String(value ?? '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 export const merge = (base, lang) => {
@@ -14,16 +14,17 @@ export const merge = (base, lang) => {
 
 export function journeyWorks(worksData, lang) {
   const local = (item) => (lang === 'kr' ? item : merge(item, lang));
-  const unit = (item) => {
+  // (a work's or a track's title by the works model's rule: official titles only, never a translation)
+  const unit = (item, origin) => {
     const u = local(item);
-    return { title: plain(u.title || item.title), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), ...mediaOf(item), youtube: item.youtube || '', date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
+    return { title: plain(titleIn(item, origin, lang)), artist: plain(u.artist || item.artist), type: plain(u.type || item.type), description: plain(u.description || item.description), credits: String(u.credits || item.credits || ''), ...mediaOf(item), youtube: item.youtube || '', date: item.date || '', roles: item.roles || [], fit: item.fit || 'cover', pos: `${item.posX || '50%'} ${item.posY || '50%'}` };
   };
   const gains = (worksData.loudness && worksData.loudness.files) || {};
   const gainOf = (src) => (src && gains[src] && typeof gains[src].gain === 'number' ? gains[src].gain : 0);
   return worksData.works.map((w) => {
-    const u = unit(w);
+    const u = unit(w, w.origin);
     const versions = (w.versions || []).map((v) => ({ language: v.language || '', audio: v.audio || '', gain: gainOf(v.audio) })).filter((v) => v.audio);
-    const tracks = (w.tracks || []).map((t) => { const tu = unit(t); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb, credits: tu.credits, yt: tu.yt }; });
+    const tracks = (w.tracks || []).map((t) => { const tu = unit(t, w.origin); return { title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb, credits: tu.credits, yt: tu.yt }; });
     const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
     return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers };

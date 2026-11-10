@@ -30,11 +30,11 @@ builds them; locally, `npm run build`.
 
 | Path | What it is |
 |---|---|
-| `assets/data/works-data.json` | Every work and album track: titles, credits, cover, small cover, audio, video (and `vinyl` colours, which the page no longer uses: kept until decided). |
+| `assets/data/works-data.json` | Every work and album track: its official title, where it was made (`origin`) and its other official titles (`titles`), credits, cover, small cover, audio, video. |
 | `assets/data/site-content.json` | The words. `journey` holds the story's own copy with `translations.en` / `.jp`; the story also reads `members` (the profile), `projects` (the case and the steps), `contact` (the form), `membersMeta`, `footerMeta`, `partners`, `home`, `worksMeta`, `mixWorks` and `bgmWorks` (Sound Engineering, ETC), `videoDates`. |
 | `assets/data/seo-content.json` | The five chapter routes, their titles and descriptions, the site name, analytics. |
 | `assets/data/links.json` | The business card's link page: the name, the role and its buttons (`label`, `url`, `icon`, `primary` for the one in paper colour), in order. Add a button here. |
-| `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
+| `scripts/works-model.mjs` | The model of a work: allowed fields, `mediaOf()` (where a cover, small cover, sound and video come from), `titleIn()` (which official title each language shows), `checkWorks()` (the rules), `orphans()`. Everything that reads works goes through it. |
 | `scripts/journey-data.mjs` | Data → what the page shows, per language. |
 | `scripts/journey-page.mjs` | That data → the HTML document. |
 | `scripts/link-page.mjs` | `links.json` → `/link/` (its own dark page, apart from the journey; `noindex`, not in the sitemap). |
