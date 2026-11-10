@@ -81,7 +81,6 @@
 .jy-play{flex:none;width:58px;height:58px;border:0;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);display:grid;place-items:center;cursor:pointer;transition:transform .16s var(--tt-ease-out)}
 .jy-prog{flex:1;min-width:0;height:12px}
 
-@keyframes jy-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
 @keyframes jy-spin{to{transform:rotate(360deg)}}
 @keyframes jy-eq{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 

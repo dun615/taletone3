@@ -1,6 +1,10 @@
 // The link page a business card's QR code opens (/link/): the logo in the brand's light, the name, the role and a
 // column of buttons, on its own dark page, apart from the journey. Its content is assets/data/links.json (add a
 // button there: { "label", "url", "icon" (one of ICONS), "primary": true for the one to stand out }).
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+// a file's address with its content in it, so a browser drops its old copy when the file changes
+const hashed = (file) => `/${file}?v=${createHash('sha256').update(readFileSync(new URL(`../${file}`, import.meta.url))).digest('hex').slice(0, 12)}`;
 const esc = (t) => String(t).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 
 // line icons, drawn in the button's own colour (24 x 24)
@@ -28,8 +32,8 @@ export function renderLinkPage({ name, role, links }) {
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0e0e12">
 <title>${esc(name)}</title>
-<link rel="icon" href="/assets/icons/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="icon" href="${hashed('assets/icons/favicon-32.png')}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="${hashed('assets/icons/apple-touch-icon.png')}">
 <link rel="preload" href="/assets/fonts/line-seed-kr-700.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:"LINE Seed KR";font-weight:400;font-display:swap;src:url(/assets/fonts/line-seed-kr-400.woff2) format("woff2")}

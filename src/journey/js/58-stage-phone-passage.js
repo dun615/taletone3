@@ -58,8 +58,8 @@ function phoneIn(p, an, dark, A, inside, lineAt, zE) {
   // it comes in along the line and comes to rest square in the middle
   const k = ease((p - 0.16) / (PH_HOLD - 0.16)), cx = lerp(an[0], W / 2, k), cy = lerp(an[1], H * 0.5, k);
   const roll = (1 - ease(p / PH_HOLD)) * 0.42 * (dark ? -1 : 1), yaw = (1 - ease(p / (PH_HOLD - 0.04))) * 1.05 * (dark ? 1 : -1);
-  // its screen's light (0 to 1), and how far the visitor has gone into it (0 to 1)
-  const wake = ease((p - PH_HOLD + 0.03) / (PH_WAKE - PH_HOLD)), pull = phonePull(p);
+  // how far the visitor has gone into it (0 to 1)
+  const pull = phonePull(p);
   // a 9:16 phone
   const w = 1.1 * s3, h = 1.9556 * s3, m = 0.06 * s3;
   // the phone's own plane (u across, v down), turned by yaw about its upright axis and seen in perspective, so a
@@ -74,14 +74,12 @@ function phoneIn(p, an, dark, A, inside, lineAt, zE) {
   };
   ctx.save();
   ctx.globalAlpha = show;
-  // the screen's light falls around it
-  const glowA = (dark ? 0.32 : 0.5) * A * Math.max(dark ? 0.6 * show : 0, wake);
-  if (glowA > 0) { const gl = ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.3, cx, cy, Math.max(w, h) * 1.1); gl.addColorStop(0, dark ? `rgba(200,206,255,${glowA})` : `rgba(255,255,255,${glowA})`); gl.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = gl; ctx.fillRect(cx - h * 1.2, cy - h * 1.2, h * 2.4, h * 2.4); }
-  // the body, a side button, a rim catching the light
-  ctx.fillStyle = `rgba(${INK},${A})`; rr(-w / 2, -h / 2, w, h, 0.16 * s3); ctx.fill();
-  ctx.strokeStyle = dark ? `rgba(196,200,214,${0.8 * A})` : `rgba(255,255,255,${(0.28 + 0.4 * wake) * A})`; ctx.lineWidth = Math.max(1, 0.012 * s3); ctx.stroke();
-  ctx.fillStyle = `rgba(${INK},${A})`; rr(w / 2 - 0.004 * s3, -h * 0.22, 0.03 * s3, h * 0.12, 0.01 * s3); ctx.fill();
-  rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, 0.1 * s3); ctx.clip();
+  // the phone as the character designer drew it (the page's phone takes the same outline, 00-base.css): a frame of
+  // #3c4968 (10/984 of its width) round a pale body, a corner of 100/984 of its width; no light or shadow round it
+  const r0 = (100 / 984) * w, fl = (10 / 984) * w;
+  ctx.fillStyle = `rgba(60,73,104,${A})`; rr(-w / 2, -h / 2, w, h, r0); ctx.fill();
+  ctx.fillStyle = `rgba(233,240,254,${A})`; rr(-w / 2 + fl, -h / 2 + fl, w - 2 * fl, h - 2 * fl, r0 - fl); ctx.fill();
+  rr(-w / 2 + m, -h / 2 + m, w - 2 * m, h - 2 * m, Math.max(0, r0 - m)); ctx.clip();
   // the next world, through the glass from the first (its own line comes in as the visitor is pulled in; until then the
   // line from outside is the one that reaches its tip)
   ctx.fillStyle = `rgba(251,251,250,${A})`; ctx.fillRect(0, 0, W, H);

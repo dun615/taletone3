@@ -15,21 +15,21 @@ const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
 const markInk = '/assets/logo/logo-ink.svg';
 const markPaper = '/assets/logo/logo-paper.svg';
-// The mark's shape, once in the page (MARK_DEFS), drawn wherever it sits in the brand's light: in ink on the pale
-// light (the avatars, the chat room; its colour from CSS) or filled with the light (beside the name). No extra request.
-// the phone's back, addressed by its content, so a browser never pairs a new drawing with an old page or the reverse
-const CASE_BACK = `/assets/phone/case-back.svg?v=${createHash('sha256').update(readFileSync(new URL('../assets/phone/case-back.svg', import.meta.url))).digest('hex').slice(0, 12)}`;
+// the lockups (mark, TALETONE and MUSIC as one drawing; never set in type): one line for the top bar, the standard one
+// for the first screen
+const lockLine = { ink: '/assets/logo/lockup-line-ink.svg', paper: '/assets/logo/lockup-line-paper.svg' }, lockInk = '/assets/logo/lockup-ink.svg';
+// a file's address with its content in it, so a browser drops its old copy when the file changes
+const hashed = (file) => `/${file}?v=${createHash('sha256').update(readFileSync(new URL(`../${file}`, import.meta.url))).digest('hex').slice(0, 12)}`;
+// the phone's back: the character designer's drawing (assets/phone/phone-back.webp, cut to its outline), as it is
+const PHONE_BACK = hashed('assets/phone/phone-back.webp');
+// The mark's shape, once in the page (MARK_DEFS), drawn in ink on a circle of the CD light wherever TALETONE speaks (the
+// avatars, the chat room: the profile picture's form). No extra request.
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
 const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
-// the brand's light as five soft lights over a lilac ground (as on the app icons and the link previews)
-const LIGHTS = [[26, 22, '#9479ee', 55], [18, 70, '#4fb6d2', 50], [80, 28, '#eeac57', 46], [78, 78, '#e077b6', 52], [50, 96, '#7590ec', 46]];
-const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/>${LIGHTS.map(([x, y, c, r], i) => `<radialGradient id="tt-l${i}" cx="${x}%" cy="${y}%" r="${r * 1.414}%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('')}</defs></svg>`;
+const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/></defs></svg>`;
 const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
-const markLit = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="#a99fec"/>${LIGHTS.map((_, i) => `<use href="#tt-mark" fill="url(#tt-l${i})"/>`).join('')}</svg>`;
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
-const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
-const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="24" height="58" viewBox="0 0 24 58"><circle cx="12" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><circle cx="12" cy="44" r="9" fill="none" stroke="#797c85" stroke-width="2.4"/><circle cx="12" cy="44" r="9" fill="none" stroke="#e5e6e8" stroke-width=".8"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
 
 const lp = (work, cls = 'jy-lp') => `<span class="${cls}" aria-hidden="true"><img class="jy-vinyl" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-groove"></span><img class="jy-art" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-hole"></span></span>`;
 
@@ -75,8 +75,8 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
 ${head || '<meta name="robots" content="noindex, nofollow">'}
 <meta name="color-scheme" content="light only">
 <meta name="theme-color" content="#fefefe">
-<link rel="icon" href="/assets/icons/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="icon" href="${hashed('assets/icons/favicon-32.png')}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="${hashed('assets/icons/apple-touch-icon.png')}">
 <link rel="preload" href="/assets/fonts/line-seed-kr-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/line-seed-kr-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>
@@ -87,7 +87,7 @@ ${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com
 ${MARK_DEFS}
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
 <header class="jy-top">
-  <a class="jy-mark" href="${href('/')}" aria-label="TALETONE MUSIC · ${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"><span class="jy-wm" aria-hidden="true">TALETONE <b>MUSIC</b></span></a>
+  <a class="jy-mark" href="${href('/')}" aria-label="TALETONE MUSIC · ${esc(c.home)}"><img class="jy-mk" src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"><img class="jy-wm" src="${lockLine.ink}" alt="" data-paper="${lockLine.paper}" data-ink="${lockLine.ink}"></a>
   <button class="jy-mchap" type="button" id="jy-mchap" aria-controls="jy-menu" aria-label="${esc(c.chapters)}">${esc(c.rail.pro)}</button>
   <span class="jy-mprog" aria-hidden="true"><i id="jy-mprog"></i></span>
   <nav class="jy-langtog" aria-label="${esc(c.languages)}">${langLinks}</nav>
@@ -109,9 +109,9 @@ ${grain}
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
   <div class="jy-blackout" id="jy-blackout" aria-hidden="true"></div>
-  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${CASE_BACK}" alt="" decoding="async"><span class="jy-holo" aria-hidden="true"></span><span class="jy-sheen" aria-hidden="true"></span></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
+  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${PHONE_BACK}" alt="" decoding="async"></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b><em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span></button>
   <div class="jy-lead" id="jy-lead">
-    <p class="jy-brand">${markLit()}<span>TALETONE <b>MUSIC</b></span></p>
+    <p class="jy-brand"><img src="${lockInk}" alt="TALETONE MUSIC"></p>
     <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
     <p class="jy-service">${esc(c.service)}</p>
     <button class="jy-taphint" id="jy-taphint" type="button"><i aria-hidden="true"></i><span>${esc(c.tapHint)}</span></button>
@@ -226,7 +226,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
   </div>
 </section>
 
-<div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core">${signal}</span></div></div>${charm('jy-charm-cd')}</div>
+<div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core"></span></div></div></div>
 <div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span><input type="range" class="jy-vol" id="jy-vol" min="0" max="100" value="100" aria-label="${esc(c.volume)}"></div>
 <div class="jy-scrim" id="jy-scrim" hidden></div>
 <div class="jy-goon" id="jy-goon" aria-hidden="true"><p>${esc(c.goOnAsk)}</p><button type="button" id="jy-goon-b" tabindex="-1"><span id="jy-goon-t"></span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button></div>

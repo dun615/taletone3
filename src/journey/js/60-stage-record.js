@@ -4,7 +4,7 @@ function buildRecordWash() {
   const held = WORKS.filter(lit).map((w) => colorOf[w.slug]).filter(Boolean).slice(0, 6).map((c) => ({ c }));
   const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [163, 168, 181] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
   const stops = cols.length === 1 ? [cols[0], cols[0]] : cols, g = `conic-gradient(${[...stops, stops[0]].join(',')})`;
-  $('#jy-rwash').style.background = g; $('#jy-charm-cd').style.background = g;
+  $('#jy-rwash').style.background = g;
 }
 
 /* ---- the record of every story: its groove opens into a staff swirling into the screen ----

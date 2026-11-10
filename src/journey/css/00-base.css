@@ -26,6 +26,10 @@
   --tt-ease-out:cubic-bezier(.23,1,.32,1);
   --tt-ease-drawer:cubic-bezier(.32,.72,0,1);
   --tt-r-screen:6px; --tt-r-device:28px;
+  /* the phone, from the character designer's drawing of its back (assets/phone/phone-back.webp, 984 x 1747 at its
+     outline): a 100px corner and a 10px frame of #3c4968, so at the page's 234px wide a 24px corner and a 2.4px frame;
+     its front, its sides and the phones drawn on the canvas take the same outline */
+  --tt-phone-frame:#3c4968; --tt-phone-body:#e9f0fe; --tt-phone-r:24px; --tt-phone-line:2.4px;
   /* the brand's light, pale: the invitation's icon (.jy-ni) and TALETONE's face in a conversation */
   --tt-light-pale:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);
   color-scheme:light;
@@ -51,9 +55,6 @@ img{max-width:100%}
 /* TALETONE's face in a conversation: the ink mark on the pale light, as the invitation's icon */
 .jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-light-pale);color:var(--tt-ink);display:grid;place-items:center}
 .jy-av svg{width:50%;height:auto;display:block}
-.jy-signal{display:inline-flex;gap:4px}
-.jy-signal i{display:block;width:3px;height:16px;border-radius:999px;background:var(--tt-magenta)}
-.jy-signal i+i{background:var(--tt-cyan)}
 .jy-say{display:flex;align-items:flex-end;gap:12px;margin:0;max-width:min(540px,100%);font-size:clamp(18px,1.55vw,22px);line-height:1.5}
 .jy-bub{display:grid;margin:0;background:var(--tt-case);color:var(--tt-ink);border-radius:22px 22px 22px 6px;padding:14px 20px;box-shadow:inset 0 0 0 1px rgba(159,161,166,.7)}
 .jy-bub>*{grid-area:1/1}
@@ -74,11 +75,12 @@ img{max-width:100%}
 /* header */
 .jy-top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none}
 .jy-top>*{pointer-events:auto}
-.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
-.jy-mark img{width:24px;display:block}
-/* the name beside the mark */
-.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap;transition:opacity .4s}
-.jy-wm b{font-weight:700;opacity:.55}
+.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
+.jy-mark img{display:block;flex:none}
+.jy-mk{width:24px;height:auto}
+/* the name beside the mark: the one-line lockup laid over the mark (its own mark, its first 10.5%, falls exactly on
+   the mark's and is left out), so the name comes and goes while the mark stays */
+.jy-wm{height:26.33px;width:auto;margin-left:-24px;clip-path:inset(0 0 0 11%);transition:opacity .4s}
 .jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s .2s}
 .jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s}
 .jy-menu ul{list-style:none;margin:0;padding:0}

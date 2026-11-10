@@ -1,7 +1,7 @@
 // What the stage shares across its parts: its elements, the screen size, the chapter it is in.
-const phone = $('#jy-phone'), phoneCharm = $('#jy-phone .jy-charm'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
+const phone = $('#jy-phone'), card = $('#jy-card'), screen = $('#jy-screen'), lead = $('#jy-lead'), lock = $('#jy-lock');
 const frame = $('#jy-frame'), frameScr = $('.jy-scr', frame);
-const markImg = $('.jy-mark img');
+const markImgs = $$('.jy-mark img');
 // what the frame loop shows and hides (looked up once, not every frame)
 const tabsEl = $('#jy-tabs'), foundEl = $('#jy-found'), hintEl = $('#jy-hint'), letterEl = $('#jy-letter'), emptyEl = $('#jy-empty');
 const formProject = $('#jy-f-project'), clockEl = $('#jy-clock'), dateEl = $('#jy-date');

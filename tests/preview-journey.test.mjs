@@ -7,7 +7,8 @@ test('every page says whose site it is: the name in the top bar and on the first
   assert.equal(site.home.tagline, '우리의 이야기가 음악이 되는 곳');
   for (const prefix of ['', 'en/', 'ja/']) {
     const html = await readFile(prefix + 'index.html', 'utf8');
-    assert.ok(/class="jy-wm"[^>]*>TALETONE <b>MUSIC<\/b>/.test(html), `${prefix}: the top bar names TALETONE MUSIC`);
+    assert.ok(/<img class="jy-wm" src="\/assets\/logo\/lockup-line-ink\.svg"/.test(html), `${prefix}: the top bar names TALETONE MUSIC (its one-line lockup)`);
+    assert.ok(/class="jy-brand"><img src="\/assets\/logo\/lockup-ink\.svg" alt="TALETONE MUSIC">/.test(html), `${prefix}: the first screen names TALETONE MUSIC (its lockup)`);
     assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('<h1>'), `${prefix}: the name comes before the first words`);
     assert.ok(html.includes('content="index, follow"'));
   }

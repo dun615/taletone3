@@ -20,11 +20,7 @@ function frameLoop(now) {
   // the phone grows with the screen: a tablet held upright shows it large, a big monitor too
   const ps = NARROW ? Math.min(1.45, (H * 0.47) / 416, (W - 40) / 234) : clamp((H * 0.5) / 416, 0.85, 1.3);
   phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
-  // (glowing as the land lights up in it)
-  { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
-  { const turn = 180 * ease(ip / 0.28), tl = phoneTilt(ip); card.style.transform = `rotateY(${(turn + tl.y).toFixed(2)}deg) rotateX(${tl.x.toFixed(2)}deg)`;
-    // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
-    if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
+  { const turn = 180 * ease(ip / 0.28), tl = phoneTilt(ip); card.style.transform = `rotateY(${(turn + tl.y).toFixed(2)}deg) rotateX(${tl.x.toFixed(2)}deg)`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
   // (it rings until it has been turned over)
   { const ringing = ip < 0.02; if (ringing !== html.classList.contains('jy-ringing')) html.classList.toggle('jy-ringing', ringing); }
@@ -60,7 +56,7 @@ function frameLoop(now) {
   // Done: out of the current, the phone is seen from outside, the record in it
   const ink = le > 0 || spaceDark > 0.5;
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
-  { const src = ink ? markImg.dataset.paper : markImg.dataset.ink; if (markImg.dataset.on !== src) { markImg.dataset.on = src; markImg.src = src; } }
+  for (const im of markImgs) { const src = ink ? im.dataset.paper : im.dataset.ink; if (im.dataset.on !== src) { im.dataset.on = src; im.src = src; } }
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
   const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
@@ -119,7 +115,7 @@ phone.addEventListener('click', (e) => {
 let sampledAll = false;
 addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU : U()) > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
 
-function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
+function reset() { recBuilt = false; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
 // each chapter opens where its first words are
 const target = { pro: 0, tale: CH.tale[0] + READ0, tone: CH.tone[0] + READ0, record: recordU(0), epi: CH.epi[0] + 0.55 };
