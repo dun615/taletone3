@@ -60,7 +60,7 @@ function openStory(slug, from) {
   if (!w) return;
   storyWork = w; storyReturn = from || document.activeElement;
   story.dataset.slug = w.slug;
-  ['jy-s-bg', 'jy-s-v'].forEach((id) => { $('#' + id).src = ASSET + w.thumb; });
+  $('#jy-s-v').src = ASSET + (w.image || w.thumb);
   const art = $('#jy-s-a'); art.src = ASSET + (w.image || w.thumb); art.alt = w.title; art.style.objectFit = w.fit || 'cover'; art.style.objectPosition = w.pos || '50% 50%';
   $('#jy-s-video').hidden = true; $('#jy-s-video').textContent = '';
   { const film = $('#jy-s-film'), f = $('.jy-embed', film); if (f) unEmbed(f); film.dataset.yt = '-'; }

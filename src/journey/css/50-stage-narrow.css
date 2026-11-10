@@ -15,13 +15,15 @@
 /* the record's card stays compact, so the swirl keeps the screen: words on top, every button on one row */
 
 .jy-narrow.jy-stage-mode .jy-readout>p,.jy-narrow.jy-stage-mode .jy-readout>h2,.jy-narrow.jy-stage-mode .jy-readout>h3{flex:1 0 100%}
+/* (the featured badge keeps its own width: a pill, not a bar) */
+.jy-narrow.jy-stage-mode .jy-readout>.jy-ro-pin{flex:0 0 auto}
 .jy-narrow.jy-stage-mode .jy-ro-t{margin-top:4px;font-size:19px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .jy-narrow.jy-stage-mode .jy-ro-a{margin-top:2px;font-size:14px}
 .jy-narrow.jy-stage-mode .jy-ro-m{display:none}
-.jy-narrow.jy-stage-mode .jy-ro-r{margin-top:6px;font-size:12px}
+.jy-narrow.jy-stage-mode .jy-ro-r{margin-top:6px;font-size:12px;letter-spacing:var(--tt-track-small)}
 .jy-narrow.jy-stage-mode .jy-ro-btns{margin-top:10px;gap:6px;flex-wrap:nowrap}
 .jy-narrow.jy-stage-mode .jy-ro-nav{margin-top:10px;gap:6px;flex-wrap:nowrap;margin-left:auto}
-.jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:36px;padding:0 12px;font-size:13px}
+.jy-narrow.jy-stage-mode .jy-readout .jy-btn{height:36px;padding:0 12px;font-size:13px;letter-spacing:var(--tt-track-small)}
 .jy-narrow.jy-stage-mode .jy-readout .jy-round{width:36px;height:36px}
 .jy-narrow.jy-stage-mode .jy-ro-nav .jy-btn{margin-left:0}
 .jy-narrow.jy-stage-mode .jy-fcap{flex:none;white-space:nowrap}
@@ -33,7 +35,7 @@ html.jy-held,html.jy-held body{overflow:hidden!important;overscroll-behavior:non
 html.jy-held .jy-top{visibility:hidden}
 .jy-narrow.jy-stage-mode .jy-rail{display:none}
 .jy-narrow .jy-menu{left:max(16px,env(safe-area-inset-left,0px));right:auto}
-.jy-narrow.jy-stage-mode .jy-mchap{display:inline-flex;align-items:center;height:32px;margin:0 auto 0 6px;padding:0 14px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:13px;font-weight:700;color:var(--tt-ink);cursor:pointer}
+.jy-narrow.jy-stage-mode .jy-mchap{display:inline-flex;align-items:center;height:32px;margin:0 auto 0 6px;padding:0 14px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:rgba(254,254,254,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:13px;font-weight:700;color:var(--tt-ink);cursor:pointer;letter-spacing:var(--tt-track-small)}
 .jy-narrow.jy-ink .jy-mchap{background:rgba(20,28,48,.6);border-color:rgba(255,255,255,.14);color:var(--tt-on-ink)}
 .jy-narrow.jy-stage-mode .jy-mprog{display:block;position:fixed;left:0;right:0;top:0;height:3px;background:rgba(159,161,166,.22);pointer-events:none}
 .jy-mprog i{display:block;height:100%;background:var(--tt-ink);transform-origin:0 50%;transform:scaleX(0)}
@@ -41,7 +43,7 @@ html.jy-held .jy-top{visibility:hidden}
 /* the record: one filter button, its choices in a sheet from the bottom */
 
 .jy-narrow.jy-stage-mode .jy-fbtn.on{opacity:1;transform:none;pointer-events:auto}
-.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:22px 22px 0 0;border:0;background:var(--tt-canvas);box-shadow:0 -10px 40px rgba(20,28,48,.16);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-ease-drawer)}
+.jy-narrow.jy-stage-mode .jy-filters,.jy-narrow.jy-stage-mode .jy-filters.on{position:fixed;left:0;right:0;top:auto;bottom:0;z-index:1400;width:auto;max-width:none;padding:14px 16px calc(22px + env(safe-area-inset-bottom,0px));border-radius:0;border:0;background:var(--tt-canvas);border-top:1px solid var(--tt-ink);opacity:1;transform:translateY(110%);pointer-events:none;transition:transform .4s var(--tt-ease-drawer)}
 .jy-narrow.jy-stage-mode .jy-filters.open{transform:none;pointer-events:auto}
 .jy-narrow.jy-stage-mode .jy-fhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 4px;font-size:16px}
 .jy-narrow.jy-stage-mode .jy-fhead .jy-x{position:static}
@@ -50,8 +52,8 @@ html.jy-held .jy-top{visibility:hidden}
 /* the card: an album's tracks as chips you can swipe through */
 .jy-narrow.jy-stage-mode .jy-ro-trk:not([hidden]){display:flex;flex:1 0 100%;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
 .jy-ro-trk::-webkit-scrollbar{display:none}
-.jy-rtk{flex:none;display:inline-flex;align-items:center;gap:6px;max-width:210px;height:36px;padding:0 12px 0 5px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-size:13px;cursor:pointer}
-.jy-rtk i{padding:5px 6px;border-radius:999px;background:var(--tt-case);font:700 11px/1 var(--tt-display);font-style:normal}
+.jy-rtk{flex:none;display:inline-flex;align-items:center;gap:6px;max-width:210px;height:36px;padding:0 12px 0 5px;border:1px solid var(--tt-canvas-shade);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-size:13px;cursor:pointer;letter-spacing:var(--tt-track-small)}
+.jy-rtk i{padding:5px 6px;border-radius:999px;background:var(--tt-canvas-shade);font:700 11px/1 var(--tt-display);font-style:normal;letter-spacing:var(--tt-track-label)}
 .jy-rtk span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .jy-rtk[aria-pressed="true"]{background:var(--tt-ink);border-color:var(--tt-ink);color:var(--tt-on-ink)}
 .jy-rtk[aria-pressed="true"] i{background:rgba(255,255,255,.18)}
@@ -60,21 +62,30 @@ html.jy-held .jy-top{visibility:hidden}
 .jy-narrow.jy-stage-mode .jy-record.list .jy-spiral{position:fixed;left:0;top:0;width:100%;height:100%;padding:calc(64px + env(safe-area-inset-top,0px)) 12px 260px;background:var(--tt-canvas);grid-template-columns:1fr;z-index:1150;overscroll-behavior:contain}
 /* the inquiry: a button, and the form in a full sheet that holds the page still while typing */
 .jy-narrow.jy-stage-mode .jy-contact{left:20px;width:min(520px,calc(100% - 40px))}
-.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-on-ink);color:var(--tt-ink);border-color:var(--tt-on-ink)}
+.jy-narrow.jy-stage-mode .jy-fopen{display:inline-flex;margin-top:18px;background:var(--tt-ink);color:var(--tt-canvas);border-color:var(--tt-ink)}
 .jy-narrow.jy-stage-mode .jy-contact:not(.open) .jy-form>:not(.jy-mail){display:none}
-.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-ink);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
+.jy-narrow.jy-stage-mode .jy-contact.open{position:fixed;inset:0;z-index:1500;width:auto;max-height:none;transform:none;padding:calc(64px + env(safe-area-inset-top,0px)) 20px calc(32px + env(safe-area-inset-bottom,0px));background:var(--tt-canvas);overflow:auto;overscroll-behavior:contain;opacity:1;pointer-events:auto}
 .jy-narrow.jy-stage-mode .jy-contact.open .jy-fopen{display:none}
-.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-on-ink)}
-.jy-narrow.jy-stage-mode .jy-banner{z-index:1600}
+.jy-narrow.jy-stage-mode .jy-contact.open .jy-cclose{display:grid;position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;color:var(--tt-ink)}
 #discography:has(.jy-record.list) .jy-fbtn{display:none}
 .jy-narrow.jy-stage-mode .jy-readout{left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:520px;margin:0 auto;transform:translateY(10px);flex-flow:row wrap;align-items:center;column-gap:6px;padding:12px 14px;background:var(--tt-canvas)}
 
 /* after a scene has played: a small cue that the next part is the visitor's to scroll */
 .jy-cue{display:none}
-.jy-stage-mode .jy-cue{display:grid;place-items:center;position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:34px;height:34px;margin-left:-17px;border-radius:50%;color:var(--tt-ink);background:rgba(254,254,254,.7);box-shadow:0 0 0 1px rgba(159,161,166,.3);opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
+.jy-stage-mode .jy-cue{display:grid;place-items:center;position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:34px;height:34px;margin-left:-17px;border-radius:50%;color:var(--tt-ink);background:rgba(254,254,254,.7);outline:1px solid var(--tt-canvas-shade);opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
 .jy-stage-mode .jy-cue.on{opacity:1;transform:none;animation:jy-cue 1.6s ease-in-out .4s infinite}
-.jy-ink .jy-cue{color:var(--tt-on-ink);background:rgba(20,28,48,.5);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.jy-ink .jy-cue{color:var(--tt-on-ink);background:rgba(20,28,48,.5);outline-color:rgba(254,254,254,.16)}
 @keyframes jy-cue{50%{transform:translateY(5px)}}
 /* (on a narrow screen the words fill the lower part: the cue keeps to the bottom right corner, clear of them) */
 .jy-narrow.jy-stage-mode .jy-cue{left:auto;right:max(12px,env(safe-area-inset-right,0px));margin:0;top:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 @media (prefers-reduced-motion:reduce){.jy-stage-mode .jy-cue.on{animation:none}}
+
+/* a phone of any size or shape shows the same layout: its controls and words are laid out for a 390px phone and
+   scaled to its width (--pz, set with html.jy-phone by 62-stage-loop): the top bar, the tabs and the filter, the
+   work's card, the player, the way to the works, the first screen's words, the inquiry */
+html.jy-phone.jy-stage-mode .jy-top,html.jy-phone.jy-stage-mode .jy-tabs,html.jy-phone.jy-stage-mode .jy-fbtn,html.jy-phone.jy-stage-mode .jy-readout,html.jy-phone.jy-stage-mode .jy-np,html.jy-phone.jy-stage-mode .jy-towork,html.jy-phone.jy-stage-mode .jy-lead,html.jy-phone.jy-stage-mode .jy-contact{zoom:var(--pz,1)}
+/* (sizes that followed the screen's width are the 390px phone's, so the scale is not taken twice) */
+html.jy-phone.jy-stage-mode .jy-lead h1{font-size:27px}
+html.jy-phone.jy-stage-mode .jy-lead{bottom:28px}
+/* (the words of a chapter wrap as on the 390px phone; 54-stage-conversation scales them to the phone's width) */
+html.jy-phone.jy-stage-mode [data-anchor]{max-width:334px!important}

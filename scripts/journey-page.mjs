@@ -15,23 +15,30 @@ const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
 const markInk = '/assets/logo/logo-ink.svg';
 const markPaper = '/assets/logo/logo-paper.svg';
-// The mark's shape, once in the page (MARK_DEFS), drawn wherever it sits in the brand's light: in ink on the pale
-// light (the avatars, the chat room; its colour from CSS) or filled with the light (beside the name). No extra request.
-// the phone's back, addressed by its content, so a browser never pairs a new drawing with an old page or the reverse
-const CASE_BACK = `/assets/phone/case-back.svg?v=${createHash('sha256').update(readFileSync(new URL('../assets/phone/case-back.svg', import.meta.url))).digest('hex').slice(0, 12)}`;
+// the lockups (mark, TALETONE and MUSIC as one drawing; never set in type): one line for the top bar, the standard one
+// for the first screen
+const lockLine = { ink: '/assets/logo/lockup-line-ink.svg', paper: '/assets/logo/lockup-line-paper.svg' }, lockInk = '/assets/logo/lockup-ink.svg';
+// a file's address with its content in it, so a browser drops its old copy when the file changes
+const hashed = (file) => `/${file}?v=${createHash('sha256').update(readFileSync(new URL(`../${file}`, import.meta.url))).digest('hex').slice(0, 12)}`;
+// the phone's back: the character designer's drawing (assets/phone/phone-back.webp, cut to its outline), as it is
+const PHONE_BACK = hashed('assets/phone/phone-back.webp');
+// The mark's shape, once in the page (MARK_DEFS), drawn in ink on a circle of the CD light wherever TALETONE speaks (the
+// avatars, the chat room: the profile picture's form). No extra request.
+// The faces each language reads first, loaded early; the Japanese pages also declare M PLUS Rounded 1c here (the other
+// pages never ask for it). Its Medium (500) answers for bold: it has no 700 (00-base.css).
+const font = (f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`;
+const MPLUS = [['100 300', 300], ['400', 400], ['500 900', 500]].map(([range, w]) => `@font-face{font-family:"M PLUS Rounded 1c";font-style:normal;font-weight:${range};font-display:swap;src:url(/assets/fonts/mplus-rounded-${w}.woff2) format("woff2")}`).join('');
+const fontHead = (key) => ({
+  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('manjari-700')].join('\n'),
+  en: [font('manjari-400'), font('manjari-700')].join('\n'),
+  jp: [font('mplus-rounded-400'), font('mplus-rounded-500'), font('manjari-700'), `<style>${MPLUS}</style>`].join('\n'),
+})[key] + '\n';
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
 const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
-// the brand's light as five soft lights over a lilac ground (as on the app icons and the link previews)
-const LIGHTS = [[26, 22, '#9479ee', 55], [18, 70, '#4fb6d2', 50], [80, 28, '#eeac57', 46], [78, 78, '#e077b6', 52], [50, 96, '#7590ec', 46]];
-const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/>${LIGHTS.map(([x, y, c, r], i) => `<radialGradient id="tt-l${i}" cx="${x}%" cy="${y}%" r="${r * 1.414}%" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('')}</defs></svg>`;
+const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/></defs></svg>`;
 const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
-const markLit = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="#a99fec"/>${LIGHTS.map((_, i) => `<use href="#tt-mark" fill="url(#tt-l${i})"/>`).join('')}</svg>`;
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
-const signal = '<span class="jy-signal" aria-hidden="true"><i></i><i></i></span>';
-const charm = (id = '') => `<span class="jy-charm" aria-hidden="true"><svg width="24" height="58" viewBox="0 0 24 58"><circle cx="12" cy="5" r="4" fill="none" stroke="#9fa1a6" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="20" rx="2.6" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><ellipse cx="12" cy="28" rx="3.4" ry="5" fill="none" stroke="#9fa1a6" stroke-width="1.5"/><circle cx="12" cy="44" r="9" fill="none" stroke="#797c85" stroke-width="2.4"/><circle cx="12" cy="44" r="9" fill="none" stroke="#e5e6e8" stroke-width=".8"/></svg><span class="jy-dia"><span class="jy-cd"${id ? ` id="${id}"` : ''}></span></span></span>`;
-
-const lp = (work, cls = 'jy-lp') => `<span class="${cls}" aria-hidden="true"><img class="jy-vinyl" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-groove"></span><img class="jy-art" src="/${esc(work.thumb)}" alt="" loading="lazy" decoding="async"><span class="jy-hole"></span></span>`;
 
 const grain = `<svg class="jy-grain" aria-hidden="true" focusable="false"><filter id="jy-grainf" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" stitchTiles="stitch" result="a"/><feColorMatrix in="a" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.32 0 0 0 -0.13" result="A"/><feTurbulence type="fractalNoise" baseFrequency="0.035 0.22" numOctaves="2" seed="3" result="b"/><feColorMatrix in="b" type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.11  0 0 0 0 0.19  0.18 0 0 0 -0.08" result="B"/><feMerge><feMergeNode in="B"/><feMergeNode in="A"/></feMerge></filter><rect width="100%" height="100%" filter="url(#jy-grainf)"/></svg>`;
 
@@ -52,7 +59,8 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const field = (f) => (c.fields && c.fields[f]) || f;
   const year = (w) => (w.date || '').slice(0, 4);
   const formOpts = (c.form.songOptions || []).map((o) => `<label class="jy-chip"><input type="checkbox" name="song" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('');
-  const field2 = (id, label, input) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}</div>`;
+  // (a required field says right under it what to fix, when it needs fixing)
+  const field2 = (id, label, input, required) => `<div class="jy-field"><label for="${id}">${esc(label)}</label>${input}${required ? `<p class="jy-ferr" id="${id}-err" hidden></p>` : ''}</div>`;
   // the history, as the live sheet reads it: '| 2026' opens a year, '* work — roles' an entry, an indented '* track'
   // belongs to the entry above, '[text](url)' links it, '#tags' lines are dropped
   const creditLines = String(member.creditsText || '').split('\n').filter((line) => line.trim() && !/^\s*#/.test(line)).map((line) => {
@@ -75,19 +83,16 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
 ${head || '<meta name="robots" content="noindex, nofollow">'}
 <meta name="color-scheme" content="light only">
 <meta name="theme-color" content="#fefefe">
-<link rel="icon" href="/assets/icons/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/line-seed-kr-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/line-seed-kr-700.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/quicksand-latin-normal-v37.woff2" as="font" type="font/woff2" crossorigin>
-${lang.key === 'jp' ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${assets.lineSeedJp}">\n` : ''}<link rel="stylesheet" href="${assets.css}">
+<link rel="icon" href="${hashed('assets/icons/favicon-32.png')}" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="${hashed('assets/icons/apple-touch-icon.png')}">
+${fontHead(lang.key)}<link rel="stylesheet" href="${assets.css}">
 <script>(function(h,w,v){h.classList.add('jy-js','jy-stage-mode');if(w<761||v>w*1.05)h.classList.add('jy-narrow')})(document.documentElement,innerWidth,innerHeight)</script>
 </head>
 <body data-route="${esc(route)}" data-lang="${lang.key}" data-base="${esc(prefix)}" data-assets="/">
 ${MARK_DEFS}
 <a class="jy-skip" href="#journey">${esc(c.skip)}</a>
 <header class="jy-top">
-  <a class="jy-mark" href="${href('/')}" aria-label="TALETONE MUSIC · ${esc(c.home)}"><img src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"><span class="jy-wm" aria-hidden="true">TALETONE <b>MUSIC</b></span></a>
+  <a class="jy-mark" href="${href('/')}" aria-label="TALETONE MUSIC · ${esc(c.home)}"><img class="jy-mk" src="${markInk}" alt="" data-paper="${markPaper}" data-ink="${markInk}"><img class="jy-wm" src="${lockLine.ink}" alt="" data-paper="${lockLine.paper}" data-ink="${lockLine.ink}"></a>
   <button class="jy-mchap" type="button" id="jy-mchap" aria-controls="jy-menu" aria-label="${esc(c.chapters)}">${esc(c.rail.pro)}</button>
   <span class="jy-mprog" aria-hidden="true"><i id="jy-mprog"></i></span>
   <nav class="jy-langtog" aria-label="${esc(c.languages)}">${langLinks}</nav>
@@ -109,9 +114,9 @@ ${grain}
 <section class="jy-ch" data-ch="pro" aria-labelledby="jy-h-pro">
   <h2 class="jy-chl" id="jy-h-pro">${esc(labels[0])}</h2>
   <div class="jy-blackout" id="jy-blackout" aria-hidden="true"></div>
-  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${CASE_BACK}" alt="" decoding="async"><span class="jy-holo" aria-hidden="true"></span><span class="jy-sheen" aria-hidden="true"></span></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="#f2a6c4" stroke="#141c30" stroke-width=".7" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b>${signal}<em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span>${charm()}</button>
+  <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${PHONE_BACK}" alt="" decoding="async"></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="none" stroke="#141c30" stroke-width=".9" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b><em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span></button>
   <div class="jy-lead" id="jy-lead">
-    <p class="jy-brand">${markLit()}<span>TALETONE <b>MUSIC</b></span></p>
+    <p class="jy-brand"><img src="${lockInk}" alt="TALETONE MUSIC"></p>
     <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
     <p class="jy-service">${esc(c.service)}</p>
     <button class="jy-taphint" id="jy-taphint" type="button"><i aria-hidden="true"></i><span>${esc(c.tapHint)}</span></button>
@@ -172,7 +177,7 @@ ${c.caseStudy ? (() => {
   <div class="jy-record" id="jy-record">
     <div class="jy-tracks" id="jy-tracks"></div>
     <ol class="jy-spiral" id="jy-spiral" aria-label="${esc(c.discography)}">
-${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}"${w.vinyl.length ? ` style="--v1:${w.vinyl[0]};--v2:${w.vinyl[1]};--v3:${w.vinyl[2]}"` : ''} data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
+${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
     </ol>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">
@@ -209,8 +214,8 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
     <p class="jy-form-note">${esc(c.form.mailNote)}</p>
     <button type="button" class="jy-btn jy-fopen" id="jy-fopen" aria-controls="jy-form" aria-expanded="false">${esc(c.writeUs)}</button>
     <form class="jy-form" id="jy-form" novalidate>
-      ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}">`)}
-      ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email">`)}
+      ${field2('jy-f-project', c.form.projectLabel, `<input id="jy-f-project" name="project" required="required" maxlength="60" autocomplete="off" placeholder="${esc(c.form.projectPlaceholder)}" aria-describedby="jy-f-project-err">`, true)}
+      ${field2('jy-f-reply', c.form.contactLabel, `<input id="jy-f-reply" name="reply" type="email" required="required" autocomplete="email" inputmode="email" aria-describedby="jy-f-reply-err">`, true)}
       <details class="jy-more"><summary>${esc(c.more)}</summary>
         ${field2('jy-f-name', c.form.nameLabel, '<input id="jy-f-name" name="name" autocomplete="organization">')}
         <fieldset class="jy-field"><legend>${esc(c.form.songLabel)}</legend><div class="jy-chips">${formOpts}</div></fieldset>
@@ -226,13 +231,12 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
   </div>
 </section>
 
-<div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-rwash" id="jy-rwash"></span><span class="jy-groove"></span><span class="jy-rec-label" id="jy-rec-label"></span><span class="jy-core">${signal}</span></div></div>${charm('jy-charm-cd')}</div>
+<div class="jy-frame" id="jy-frame" aria-hidden="true"><div class="jy-scr"><div class="jy-rec" id="jy-rec"><span class="jy-core"></span><span class="jy-rec-label" id="jy-rec-label"></span></div></div></div>
 <div class="jy-np" id="jy-np" role="region" aria-label="${esc(c.playerLabel)}" hidden><button type="button" class="jy-np-play" id="jy-np-play" aria-label="${esc(c.listen)}"><span class="jy-npd" id="jy-npd"></span><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-np-i" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><button type="button" class="jy-npt" id="jy-np-open"><b id="jy-npt"></b><span id="jy-npa"></span></button><span class="jy-eq" aria-hidden="true"><i></i><i></i></span><input type="range" class="jy-vol" id="jy-vol" min="0" max="100" value="100" aria-label="${esc(c.volume)}"></div>
 <div class="jy-scrim" id="jy-scrim" hidden></div>
 <div class="jy-goon" id="jy-goon" aria-hidden="true"><p>${esc(c.goOnAsk)}</p><button type="button" id="jy-goon-b" tabindex="-1"><span id="jy-goon-t"></span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button></div>
 <button class="jy-towork" id="jy-towork" type="button" aria-hidden="true" tabindex="-1"><span>${esc(c.skipToWorks)}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button>
 <div class="jy-cue" id="jy-cue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></div>
-<div class="jy-banner" id="jy-banner" role="status">${avatar(34)}<div><b>${esc(c.notifyFrom)}</b><p>${esc(c.received)}</p></div></div>
 </div>
 </main>
 
@@ -254,7 +258,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
   <div class="jy-box" role="dialog" aria-modal="true" aria-labelledby="jy-s-title">
     <button class="jy-x" id="jy-s-close" type="button" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
     <div class="jy-in">
-      <div class="jy-artside"><img class="jy-s-bg" id="jy-s-bg" alt=""><figure class="jy-s-cover"><span class="jy-lp jy-s-lp" id="jy-s-lp"><img class="jy-vinyl" id="jy-s-v" alt=""><span class="jy-groove"></span><span class="jy-hole"></span></span><img class="jy-art" id="jy-s-a" alt=""></figure><div class="jy-s-video" id="jy-s-video" hidden></div><div class="jy-s-film" id="jy-s-film" hidden><button type="button" class="jy-s-filmb" id="jy-s-filmb"><img id="jy-s-filmi" alt="" decoding="async"><span class="jy-s-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 20 20"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg></span><span class="jy-s-filml">${esc(c.video)}</span></button></div></div>
+      <div class="jy-artside"><figure class="jy-s-cover"><span class="jy-vy jy-s-lp" id="jy-s-lp"><img id="jy-s-v" alt=""></span><img class="jy-art" id="jy-s-a" alt=""></figure><div class="jy-s-video" id="jy-s-video" hidden></div><div class="jy-s-film" id="jy-s-film" hidden><button type="button" class="jy-s-filmb" id="jy-s-filmb"><img id="jy-s-filmi" alt="" decoding="async"><span class="jy-s-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 20 20"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg></span><span class="jy-s-filml">${esc(c.video)}</span></button></div></div>
       <div class="jy-info">
         <p class="jy-s-fmt" id="jy-s-fmt"></p><h3 id="jy-s-title"></h3><p class="jy-s-meta" id="jy-s-meta"></p><p class="jy-s-desc" id="jy-s-desc"></p><p class="jy-s-roles" id="jy-s-roles"></p>
         <dl class="jy-s-facts" id="jy-s-facts" data-date="${esc(wm.yearLabel || '')}" data-format="${esc(wm.typeLabel || '')}" data-type="${esc(wm.releaseLabel || '')}"></dl>

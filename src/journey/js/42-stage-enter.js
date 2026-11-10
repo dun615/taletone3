@@ -1,5 +1,5 @@
 // ---- entering (see ENTER) ----
-const frontFace = $('#jy-phone .jy-front'), blackout = $('#jy-blackout'), pshot = $('#jy-pshot'), pcloud = $('#jy-pcloud'), pctx = pcloud.getContext('2d'), topBar = $('.jy-top'), railEl = $('.jy-rail');
+const blackout = $('#jy-blackout'), pshot = $('#jy-pshot'), pcloud = $('#jy-pcloud'), pctx = pcloud.getContext('2d'), topBar = $('.jy-top'), railEl = $('.jy-rail');
 let cloud = null;
 // The land as it will be met, drawn once into the world canvas exactly as the stage shows it when the visitor comes
 // through (the pen and the camera at the land's start), and cut to the screen's shape: a picture for the screen, and

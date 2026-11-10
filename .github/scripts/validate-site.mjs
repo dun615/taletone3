@@ -91,7 +91,7 @@ for (const w of model.warnings) console.warn(`warning: ${w}`);
 // every word of the story in every language (only the brand and the English chapter labels are the same in all)
 const SAME_IN_ALL = ['notifyFrom', 'chapterLabels'];
 for (const lang of ['en', 'jp']) for (const key of Object.keys(site.journey)) if (key !== 'translations' && !SAME_IN_ALL.includes(key)) assert(site.journey.translations[lang][key] !== undefined, `journey.${key} has no ${lang} translation`);
-for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', 'assets/fonts/line-seed-kr-400.woff2', 'assets/fonts/line-seed-kr-700.woff2', 'assets/social/og-image.jpg', 'assets/social/og-image-en.jpg', 'assets/social/og-image-ja.jpg', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
+for (const f of ['assets/video/lockscreen.mp4', 'assets/video/lockscreen.jpg', ...['manjari-100', 'manjari-400', 'manjari-700', 'nanum-square-round-300', 'nanum-square-round-400', 'nanum-square-round-700', 'mplus-rounded-300', 'mplus-rounded-400', 'mplus-rounded-500'].map((f) => `assets/fonts/${f}.woff2`), 'assets/social/og-image.jpg', 'assets/social/og-image-en.jpg', 'assets/social/og-image-ja.jpg', 'CNAME', '404.html']) assert(await exists(f), `${f} missing`);
 
 if (errors.length) {
   console.error(`Site validation failed:\n- ${errors.join('\n- ')}`);

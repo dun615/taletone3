@@ -20,11 +20,7 @@ function frameLoop(now) {
   // the phone grows with the screen: a tablet held upright shows it large, a big monitor too
   const ps = NARROW ? Math.min(1.45, (H * 0.47) / 416, (W - 40) / 234) : clamp((H * 0.5) / 416, 0.85, 1.3);
   phone.style.transform = `translateX(${NARROW ? 0 : -W * 0.14 * (1 - ease(ip / 0.35))}px) scale(${ps * (1 + 0.1 * ease((ip - 0.45) / 0.25)) * Math.pow(cover / (ps * 1.1), ease((ip - 0.7) / 0.3))})`;
-  // (glowing as the land lights up in it)
-  { const glow = ease((ip - 0.66) / 0.12) * (1 - ease((ip - 0.9) / 0.1)); frontFace.style.boxShadow = glow > 0.01 ? `inset 0 0 0 1.5px var(--tt-silver),inset 0 0 0 3px var(--tt-canvas),0 0 ${(60 * glow).toFixed(0)}px ${(12 * glow).toFixed(0)}px rgba(236,230,255,${(0.85 * glow).toFixed(2)})` : ''; }
-  { const turn = 180 * ease(ip / 0.28), tl = phoneTilt(ip); card.style.transform = `rotateY(${(turn + tl.y).toFixed(2)}deg) rotateX(${tl.x.toFixed(2)}deg)`;
-    // (its hole is 111px right of the middle on the back; turned about the upright axis it comes round to the left)
-    if (phoneCharm) phoneCharm.style.translate = `${(Math.cos((turn * Math.PI) / 180) - 1) * 111}px 0`; }
+  { const turn = 180 * ease(ip / 0.28), tl = phoneTilt(ip); card.style.transform = `rotateY(${(turn + tl.y).toFixed(2)}deg) rotateX(${tl.x.toFixed(2)}deg)`; }
   phone.style.visibility = ip >= 1 ? 'hidden' : 'visible';
   // (it rings until it has been turned over)
   { const ringing = ip < 0.02; if (ringing !== html.classList.contains('jy-ringing')) html.classList.toggle('jy-ringing', ringing); }
@@ -58,26 +54,26 @@ function frameLoop(now) {
   if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
   else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
   // Done: out of the current, the phone is seen from outside, the record in it
-  const ink = le > 0 || spaceDark > 0.5;
+  // (the dark worlds; the inquiry is on Paper)
+  const ink = spaceDark > 0.5;
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
-  { const src = ink ? markImg.dataset.paper : markImg.dataset.ink; if (markImg.dataset.on !== src) { markImg.dataset.on = src; markImg.src = src; } }
+  for (const im of markImgs) { const src = ink ? im.dataset.paper : im.dataset.ink; if (im.dataset.on !== src) { im.dataset.on = src; im.src = src; } }
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry
   const both = le > 0.05 && le < 0.3;
   on(letterEl, (ld > 0.1 && le <= 0) || (le > 0 && le < 0.3)); on(emptyEl, both);
   letterEl.classList.toggle('up', both); if (both) letterEl.style.setProperty('--up', `${-(emptyEl.offsetHeight + 10)}px`);
-  if (lr > 0.8 && !recBuilt) buildRecordWash();
   // the phone (416px with its charm below) keeps inside short screens
   // (on a phone smaller and higher, so the letter and the empty seat fit under it)
   const RR = Math.min(W, H) * 0.34, FS = NARROW ? Math.min(1, (H * 0.48) / 486) : Math.min(1, (H - 110) / 486);
   if (ld > 0 && le <= 0) {
     const s0 = (2 * RR) / 192, s = lerp(s0, FS, ease(ld / 0.7));
     frame.style.opacity = String(ease(ld / 0.25)); frame.style.transform = `scale(${s})`; frame.style.left = '50%'; frame.style.top = NARROW ? lerp(50, 40, ease(ld / 0.7)) + '%' : '50%';
-    const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.boxShadow = chrome ? '' : 'none'; frameScr.style.background = chrome ? '' : 'transparent';
+    const chrome = ld >= 0.35; frame.style.background = chrome ? '' : 'transparent'; frame.style.borderColor = chrome ? '' : 'transparent'; frameScr.style.background = chrome ? '' : 'transparent';
   } else if (le > 0) {
     frame.style.opacity = NARROW ? String(1 - ease((le - 0.22) / 0.12)) : '1'; // (beside the inquiry, in the middle of the room it leaves, and no bigger than that room: a 4:3 screen has little)
     const cR = Math.max(180, W * 0.13) + Math.min(460, W - 48), fit = Math.min(1.25, (H - 70) / 486, (W - cR - 48) / 250);
     frame.style.transform = `scale(${NARROW ? FS : lerp(Math.min(FS, fit), fit, ease(le / 0.3))})`; frame.style.left = NARROW ? '50%' : `${Math.max(W * 0.72, (cR + W) / 2).toFixed(0)}px`; frame.style.top = NARROW ? '40%' : '50%';
-    frame.style.background = ''; frame.style.boxShadow = ''; frameScr.style.background = '';
+    frame.style.background = ''; frame.style.borderColor = ''; frameScr.style.background = '';
   } else frame.style.opacity = '0';
   // Epilogue
   on(contactEl, le > 0.32);
@@ -102,6 +98,8 @@ function frameLoop(now) {
 function resize() {
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
   html.classList.toggle('jy-narrow', NARROW);
+  PHONE = NARROW && W < 700; PZ = PHONE ? clamp(W / 390, 0.8, 1.1) : 1;
+  html.classList.toggle('jy-phone', PHONE); html.style.setProperty('--pz', PZ.toFixed(3));
   DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
   cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1; cloud = null;
@@ -115,11 +113,6 @@ phone.addEventListener('click', (e) => {
   if (e.target.closest('.jy-na-row') || e.detail === 0) { entered = true; playScene(ENTER, u); } else nudgeEnter();
 });
 
-// sample every cover once the record is near, so its wash can mix them
-let sampledAll = false;
-addEventListener('scroll', () => { if (!sampledAll && (sceneU != null ? sceneU : U()) > CH.music[0]) { sampledAll = true; paintRecord(); } }, { passive: true });
-
-function reset() { recBuilt = false; $('#jy-charm-cd').style.background = ''; }
 const at = (c, f) => CH[c][0] + (CH[c][1] - CH[c][0]) * f;
 // each chapter opens where its first words are
 const target = { pro: 0, tale: CH.tale[0] + READ0, tone: CH.tone[0] + READ0, record: recordU(0), epi: CH.epi[0] + 0.55 };
@@ -141,4 +134,4 @@ function pick(slug) {
 }
 
 // what the rest of the page may ask of the stage
-const stage = { paintRecord, reset, syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };
+const stage = { syncInert, go: goStage, recordU, goU, items, hold: holdStory, pick };

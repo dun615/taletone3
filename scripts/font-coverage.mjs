@@ -1,5 +1,5 @@
-// The Japanese characters the site can show, for the Google Fonts `text=` request that serves LINE Seed JP on the
-// Japanese pages as one small file per weight instead of dozens of slices.
+// The characters the site can show, by script: what the font subsets (scripts/subset-fonts.py, its record in
+// scripts/font-subsets.json) must hold. tests/fonts.test.mjs checks them.
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -18,6 +18,19 @@ export async function japaneseCharacters(root, sources) {
   for (const file of sources || [...SOURCES, ...await scriptParts(root)]) {
     for (const ch of await readFile(path.join(root, file), 'utf8')) {
       if (japanese(ch.codePointAt(0))) chars.add(ch);
+    }
+  }
+  return [...chars].sort((a, b) => a.codePointAt(0) - b.codePointAt(0)).join('');
+}
+
+// Hangul syllables (U+AC00 to U+D7A3).
+const hangul = (cp) => cp >= 0xac00 && cp <= 0xd7a3;
+
+export async function hangulCharacters(root, sources) {
+  const chars = new Set();
+  for (const file of sources || [...SOURCES, ...await scriptParts(root)]) {
+    for (const ch of await readFile(path.join(root, file), 'utf8')) {
+      if (hangul(ch.codePointAt(0))) chars.add(ch);
     }
   }
   return [...chars].sort((a, b) => a.codePointAt(0) - b.codePointAt(0)).join('');

@@ -1,8 +1,6 @@
 /* ---- one world in depth. The pen draws a single line forward through it and the camera follows the pen,
    a few steps behind. Hills, poles, the wire, grass and clouds stand along the way. At the end the same line
    coils around the view, and in the next chapter it splits into the five lines of the staff. ---- */
-const pinned = WORKS.filter((w) => w.pinned).sort((a, b) => a.pinned - b.pinned);
-Promise.all(pinned.map(sample)).then(() => { palette = pinned.map((w, i) => ({ slug: w.slug, c: colorOf[w.slug], s: 1 - i * 0.1 })).filter((p) => p.c); });
 // three worlds along one line, a gate (a phone's screen) between them: the land of the intro (mountains,
 // grass, poles and the wire), the sea of the philosophy (the line dives in like a fishing line) and the space
 // of the real project (the line joins star to star). Everything starts pale and colourless; what the pen has

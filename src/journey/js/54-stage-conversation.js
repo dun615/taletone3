@@ -14,7 +14,8 @@ ANCHORS.sort((a, b) => a.z - b.z);
 // They give way as the way on begins.
 const groupOf = (z) => (z < PEN.tone[0] ? 0 : z < PEN.case[0] ? 1 : z < PEN.music[0] ? 2 : 3);
 // how much larger than their own size the words are shown (less where the reading spot is small)
-const wordScale = () => (NARROW && W < 700 ? 1 : 1.15);
+// (on a phone the words wrap as on a 390px phone, 00-base's layout width, and are scaled to the phone's width)
+const wordScale = () => (PHONE ? PZ : 1.15);
 const roomEl = $('#jy-room'), roomT = $('#jy-room-t'), roomS = $('#jy-room-s'), ROOMS = ['tale', 'tone', 'case'];
 let roomOf = -1;
 function roomBox() {
@@ -73,7 +74,7 @@ function drawCoord(u, rgb, A0) {
   const x = tip[0] - 16, y = tip[1], pct = `${Math.round((clamp(u / TOTAL)) * 100)}%`;
   // (in the line's own colour, edged in its opposite so it reads on every world: the land, the blue sea, the night)
   const lum = rgb.split(',').reduce((t, v, i) => t + Number(v) * [0.3, 0.59, 0.11][i], 0), halo = lum < 140 ? '254,254,254' : '20,28,48';
-  ctx.font = '700 11px Quicksand, "LINE Seed KR", sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.font = '700 11px Manjari, NanumSquareRound, sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
   ctx.strokeStyle = `rgba(${rgb},${(0.85 * A).toFixed(3)})`; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(tip[0] - 6, y); ctx.lineTo(x + 3, y); ctx.stroke();
   ctx.strokeStyle = `rgba(${halo},${(0.7 * A).toFixed(3)})`; ctx.lineWidth = 3.5; ctx.strokeText(pct, x, y + 0.5);

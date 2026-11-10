@@ -1,18 +1,11 @@
 // The record of every story: the staff swirling into the screen with every work on it, its card, the groove.
-function buildRecordWash() {
-  recBuilt = true;
-  const held = WORKS.filter(lit).map((w) => colorOf[w.slug]).filter(Boolean).slice(0, 6).map((c) => ({ c }));
-  const cols = (palette.length ? [...palette].sort((a, b) => b.s - a.s) : held.length ? held : [{ c: [163, 168, 181] }]).slice(0, 6).map((p) => `rgb(${p.c})`);
-  const stops = cols.length === 1 ? [cols[0], cols[0]] : cols, g = `conic-gradient(${[...stops, stops[0]].join(',')})`;
-  $('#jy-rwash').style.background = g; $('#jy-charm-cd').style.background = g;
-}
 
 /* ---- the record of every story: its groove opens into a staff swirling into the screen ----
    World: five helices around the view axis (a staff); work i is a note on it at depth i*DZ, angle i*TURN and a
    pitch from a gentle melody. The camera flies down the axis; the view rolls so the note in focus always sits
    at the same place, so the swirl turns around the visitor.
    The staff is the pen line itself: it arrives as one line and splits in five. An album in focus lets its tracks out on an earphone cord. */
-const DZ = 0.6, TURN = 0.5, VIEW = 1.5, FOCUS = 0.5, NEAR = 0.25, FAR = 11, GAP = 0.066, HEAD = -1.6;
+const DZ = 0.6, TURN = 0.5, VIEW = 1.5, NEAR = 0.25, FAR = 11, GAP = 0.066, HEAD = -1.6;
 // past the last song the camera rises back out of the staff to CEND, where the whole of it, its five lines joined
 // into one again, is seen face on: one spiral from the first song at the rim to the last at the label, the groove
 // of a record (the same as at the start, when the dive went into that groove)
@@ -28,15 +21,35 @@ let cur = null, recK = 0, recShown = -1, flow = [], trackEls = {}, albumOpen = -
 // (where the record sits across a wide screen: further left where the screen is not so wide, as a tablet held on its
 // side, so the card on the right does not cover the record in front)
 const recX = () => (W < 1360 ? 0.3 : 0.36);
+// a CD's hub and hole read from 160px across (the design system's CD); on a large phone it grows with the layout
+const CD_READ = 165, cdRead = () => CD_READ * Math.max(1, PZ);
+// where on the swirl the work in focus sits (an angle, 0 to the right, clockwise): on the right on a wide screen or
+// a tablet; at the bottom on a phone, in the middle just above its card, where its CD has room to read
+const focusAngle = () => (PHONE ? Math.PI / 2 : 0.5);
+// the swirl above the CD in focus, once settled, rises about this many times its radius (measured)
+const RISE = 1.2;
+// (the top of the work's card on a phone, read again only when the card's words change or the screen does)
+let cardTop = null;
+const cardTopNow = () => (cardTop == null ? (cardTop = readout.getBoundingClientRect().top || H - 212) : cardTop);
 function buildCurrent() {
   // (a tablet held upright gets a record as big as its width allows, above its card)
   const TAB = NARROW && W >= 700;
-  const Rf = TAB ? Math.min(W * 0.4, H * 0.26) : NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * (W < 1360 ? 0.22 : 0.26), H * 0.37), size = TAB ? clamp(W * 0.17, 90, 150) : NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
+  let Rf = TAB ? Math.min(W * 0.4, H * 0.26) : NARROW ? Math.min(W * 0.34, H * 0.2) : Math.min(W * (W < 1360 ? 0.22 : 0.26), H * 0.37), size = TAB ? clamp(W * 0.17, 90, 150) : NARROW ? clamp(W * 0.2, 60, 88) : clamp(H * 0.14, 92, 128);
   const cy0 = TAB ? H * 0.34 : NARROW ? H * 0.31 : H * 0.5;
-  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1 };
+  cardTop = null;
+  // (on a phone the swirl fills the room between the tabs and the work's card, the same on every phone: its radius
+  // from that room, the whole of it in the middle of it, the CD in focus at its bottom; see placeCurrent)
+  let phoneFit = null;
+  if (PHONE) {
+    const top = Math.max(tabsEl.getBoundingClientRect().bottom || 0, fbtn.getBoundingClientRect().bottom || 0, 70 * PZ) + 10 * PZ;
+    const room = cardTopNow() - 18 * PZ - cdRead() - top, r = clamp(room / RISE, W * 0.2, W * 0.42);
+    phoneFit = { r, lift: 18 * PZ + Math.max(0, room - r * RISE) / 2 };
+  }
+  if (phoneFit) Rf = phoneFit.r;
+  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1, focus: focusAngle(), lift: phoneFit ? phoneFit.lift : 26, cd: cdRead() };
   // where the staff begins on screen when the record opens: the world's line comes in there along the way the
   // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
-  { const c0 = -VIEW - 2.2, r0 = FOCUS - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
+  { const c0 = -VIEW - 2.2, r0 = cur.focus - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
     cur.off = 0; cur.off = -0.8 - ((HEAD / DZ) * TURN + r0);
     cur.off = Math.atan2(Math.sin(cur.off), Math.cos(cur.off));
     const T = at(HEAD), T2 = at(HEAD + 0.12), n = Math.hypot(T2[0] - T[0], T2[1] - T[1]) || 1;
@@ -57,12 +70,11 @@ items.forEach((li, i) => {
     b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
     // (the art loads when the album opens, not with the page)
     b.querySelector('img').dataset.src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
-    // (each track on its own vinyl, from its own art)
-    if (t.vinyl && t.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => b.style.setProperty(k, t.vinyl[n])); b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
+    // (each track on its own CD, from its own art)
+    b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
     b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
     box.appendChild(b);
   });
-  if (w.vinyl && w.vinyl.length) ['--v1', '--v2', '--v3'].forEach((k, n) => box.style.setProperty(k, w.vinyl[n]));
   trackLayer.appendChild(box); trackEls[i] = box;
 });
 listeners.add(() => Object.entries(trackEls).forEach(([i, box]) => { const w = bySlug[items[i].dataset.slug]; $$('.jy-trk', box).forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j)))); }));
@@ -86,8 +98,15 @@ function placeCurrent(lr) {
   cur.cx = lerp(lerp(W / 2, NARROW ? W / 2 : W * recX(), dive), W / 2, out); cur.cy = lerp(cur.cy0, H * 0.5, out);
   // (seen whole, it is as big as the record it becomes)
   cur.Rf = lerp(cur.Rf0, (Math.min(W, H) * 0.34) / shrink(HEAD - CEND), out); cur.merge = out; cur.far = lerp(FAR, 40, out); cur.fade = 1 - ease(out / 0.5);
-  const roll = FOCUS - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);
+  const roll = cur.focus - ((camZ + VIEW) / DZ) * TURN + (cur.off || 0) * (1 - dive);
   cur.camZ = camZ; cur.roll = roll;
+  // (on a phone the swirl is held so that the CD in focus, at its bottom, rests just above the card: where that CD
+  // falls is found as it is drawn, between the two works the focus is between, so the swirl moves smoothly)
+  if (PHONE && !recordEl.classList.contains('list')) {
+    const below = (i) => { const q = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i))); return q ? q[1] - cur.cy : 0; };
+    const i0 = clamp(Math.floor(k), 0, N - 1), i1 = Math.min(N - 1, i0 + 1), fall = lerp(below(i0), below(i1), k - i0);
+    cur.cy = lerp(clamp(cardTopNow() - cur.lift - cur.cd / 2 - fall, H * 0.15, H * 0.62), H * 0.5, out);
+  }
   // the pen draws the staff forward from its head; works appear once their part of the staff is drawn
   cur.zMax = HEAD + (camIn + FAR - HEAD) * ease(lr / 0.15);
   const list = recordEl.classList.contains('list');
@@ -96,9 +115,14 @@ function placeCurrent(lr) {
     const p = proj(i * TURN, i * DZ, camZ, roll, radiusOf(pitchOf(i)));
     if (!p || p[2] > cur.far) { li.style.visibility = 'hidden'; return; }
     // a note fades as soon as it has passed the focus, so it never covers the words on the right
-    const sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1), a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
+    let sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1);
+    // (the work in focus grows to a CD of 165px or more, where its hub and hole read)
+    sc2 = Math.max(sc2, lerp(sc2, cur.cd / cur.size, clamp(1 - Math.abs(i - k))));
+    const a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
     li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
     li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
+    // (a featured work's badge keeps its own size however large its CD is drawn)
+    if (li.classList.contains('pin')) li.style.setProperty('--k', sc2.toFixed(3));
     li.style.opacity = String(a); li.style.zIndex = String(Math.round(1000 - p[2] * 40));
   });
   const i = Math.round(k);
@@ -132,9 +156,6 @@ function drawCurrent(lr, lineA = 1) {
   if (!cur || cur.camZ == null) return;
   const { camZ, roll, zMax } = cur, FAR = cur.far, alpha = cur.fade;
   if (lineA <= 0) return;
-  // the colour of the note in focus, faint, around the swirl
-  const w = recShown >= 0 && bySlug[items[recShown].dataset.slug], c = w && colorOf[w.slug];
-  if (c) { const g = ctx.createRadialGradient(cur.cx, cur.cy, 0, cur.cx, cur.cy, Math.max(W, H) * 0.6); g.addColorStop(0, `rgba(${c},${0.16 * alpha * ease(lr / 0.12)})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
   // the staff: five ink lines swirling in, thick close by, a hair far away
   const z0 = Math.max(HEAD, camZ + NEAR + 0.02), z1 = Math.min((N - 1) * DZ + 2.5, camZ + FAR, zMax);
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -189,7 +210,7 @@ function drawGroove(ld, sc, cx, cy) {
   if (!cur) return;
   cur.cx = cx; cur.cy = cy; cur.Rf = ((Math.min(W, H) * 0.34) / shrink(HEAD - CEND)) * sc;
   cur.camZ = CEND; cur.merge = 1; cur.far = 40; cur.fade = 0; cur.zMax = 1e9;
-  cur.roll = FOCUS - ((CEND + VIEW) / DZ) * TURN + grooveSpin;
+  cur.roll = cur.focus - ((CEND + VIEW) / DZ) * TURN + grooveSpin;
   drawCurrent(1, 1 - ease((ld - 0.06) / 0.22));
 }
 // Epilogue: the line comes back out from under the record in the phone and runs to the inquiry, lies along the
@@ -220,7 +241,7 @@ function drawTrail(le, A) {
   ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   let tip = pts[0];
   const run = (i0, i1, a) => {
-    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(244,244,252,${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
+    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${INK},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
     for (let i = i0 + 1; i <= i1; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
     ctx.stroke();
   };
@@ -229,9 +250,10 @@ function drawTrail(le, A) {
   // the pen tip; once there, it blinks like a caret, until the visitor starts writing
   const writing = form.contains(document.activeElement);
   const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
-  if (al > 0) { ctx.fillStyle = `rgba(244,244,252,${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (al > 0) { ctx.fillStyle = `rgba(${INK},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
 }
 function showReadout(i) {
+  cardTop = null;
   const w = bySlug[items[i].dataset.slug];
   items.forEach((li, j) => li.classList.toggle('cur', j === i));
   $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
@@ -252,7 +274,6 @@ function showReadout(i) {
       tr.appendChild(b);
     });
   }
-  sample(w);
   syncReadout();
 }
 // the card's facts: the work, or the album track that has been picked (its title, the album and its number, its roles)
@@ -289,4 +310,3 @@ $('#jy-view').addEventListener('click', (e) => {
 });
 // keyboard: focusing a work flies the current to it
 items.forEach((li, i) => $('.jy-sw-btn', li).addEventListener('focus', () => { if (!recordEl.classList.contains('list') && chapter === 'record') goU(recordU(i)); }));
-function paintRecord() { tintVinyls(); }

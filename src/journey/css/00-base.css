@@ -4,33 +4,55 @@
    - default: a readable column (no script, search engines): chapters stacked, every message shown;
    - html.jy-stage-mode (set in the head before the first paint): a fixed stage played by scroll; html.jy-narrow
      adds the layout for phones and upright screens.
-   Colours: the world is ink on paper until a work brings its own colour. The signal pair (magenta and cyan)
-   only ever sits on ink, always together. */
+   The design system (TALETONE's): the face is the phone; Paper is the ground and ink the words; the CD light is the one
+   borrowed accent; a work's colours live only inside the phone's screen and on its CD. No shadows: faces are told apart
+   by the canvas's steps and ink lines. Corners: square for photos, covers and cards, pills for tags, chips and buttons,
+   circles for CDs and the profile. */
 
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:100;font-display:swap;src:url(/assets/fonts/line-seed-kr-100.woff2) format("woff2")}
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/line-seed-kr-400.woff2) format("woff2")}
-@font-face{font-family:"LINE Seed KR";font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/line-seed-kr-700.woff2) format("woff2")}
-@font-face{font-family:Quicksand;font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/quicksand-latin-normal-v37.woff2) format("woff2")}
+/* The three rounded faces (subsets by scripts/subset-fonts.py): Manjari for English, NanumSquareRound for Korean, M PLUS
+   Rounded 1c for Japanese (declared on the Japanese pages only, scripts/journey-page.mjs). Three weights only, matched
+   by stroke: thin (100: Manjari Thin, NanumSquareRound Light 300, M PLUS Light 300), regular (400) and bold (700:
+   Manjari Bold, NanumSquareRound Bold, M PLUS Medium 500). Each file is declared for the range of weights it stands
+   for, so the styles ask for 100, 400 or 700 and every face answers with its own step, never a made-up bold. */
+@font-face{font-family:Manjari;font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/manjari-100.woff2) format("woff2")}
+@font-face{font-family:Manjari;font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/manjari-400.woff2) format("woff2")}
+@font-face{font-family:Manjari;font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/manjari-700.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/nanum-square-round-300.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/nanum-square-round-400.woff2) format("woff2")}
+@font-face{font-family:NanumSquareRound;font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/nanum-square-round-700.woff2) format("woff2")}
 
 :root{
-  --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-case:#dfe2f4;
-  --tt-silver:#9fa1a6; --tt-silver-dark:#797c85; --tt-silver-light:#b0b2b8;
-  --tt-ink:#141c30; --tt-ink-line:#1d2435; --tt-ink-muted:#5b606c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
-  --tt-magenta:#ff97fe; --tt-cyan:#c9ffff;
-  --tt-error:#9a3540; --tt-error-on-ink:#f0a3aa;
-  --tt-sans:"LINE Seed KR","LINE Seed JP",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
-  --tt-display:Quicksand,"LINE Seed KR","LINE Seed JP",system-ui,sans-serif;
+  /* the design system's colours. Paper: the ground (canvas, a step down for a section, two for a divider or a face that
+     cannot be used), ink for every word and every line that means something, ink-muted for what is said second;
+     hair-shadow (2.6:1) for decoration only. Ink (on-ink, the Ink theme's ink): the dark screen just before and
+     after going in, and the dark worlds. The function colours only where something is typed in (the inquiry). */
+  --tt-canvas:#fefefe; --tt-canvas-hair:#fafafa; --tt-canvas-shade:#e5e6e8; --tt-hair-shadow:#9fa1a6;
+  --tt-ink:#141c30; --tt-ink-muted:#5b606c; --tt-on-ink:#fefefe; --tt-on-ink-muted:#a3a8b5;
+  --tt-status-error:#a12d5b; --tt-status-error-on-ink:#ffa9c8; --tt-status-success:#3b4fb8; --tt-status-success-on-ink:#b3c0ff;
+  --tt-focus:#141c30; --tt-focus-on-ink:#fefefe;
+  /* the CD light: TALETONE's one accent, borrowed from the light on a CD's back. Always this whole gradient, this way
+     round, and only inside a clear shape (a circle, the mark, a small icon); what sits on it is ink. Never a word's
+     colour, a button, a link, a selection, a page's ground or a shadow. */
+  --tt-holo:linear-gradient(135deg,#fffbee 0%,#fef5f6 8%,#fceaff 15%,#ede3ff 25%,#d9dbff 35%,#cddcff 45%,#cde7ff 55%,#d7eaff 65%,#e4e2ff 75%,#f2dbff 85%,#d0c7ff 92%,#c7c5fc 100%);
+  --tt-display:Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;
+  --tt-sans:NanumSquareRound,"M PLUS Rounded 1c",Manjari,sans-serif;
+  /* letter-spacing by language (the design system's tokens.json): headings, titles (a work's name), running text, and
+     text of 13px or less; Latin labels in capitals take --tt-track-label whatever the page's language */
+  --tt-track-head:-.02em; --tt-track-title:-.02em; --tt-track:-.01em; --tt-track-small:0; --tt-track-label:.16em;
   /* motion: the brand's spring (the story's own pieces arriving: messages, cards, the record), and two crisp curves
      for the controls (a press, a hover, a menu) and for sheets sliding in, which should answer at once, not bounce */
   --tt-spring:cubic-bezier(.34,1.4,.5,1);
   --tt-ease-out:cubic-bezier(.23,1,.32,1);
   --tt-ease-drawer:cubic-bezier(.32,.72,0,1);
-  --tt-r-screen:6px; --tt-r-device:28px;
-  /* the brand's light, pale: the invitation's icon (.jy-ni) and TALETONE's face in a conversation */
-  --tt-light-pale:conic-gradient(from 30deg,#ece6ff,#d9f4f7,#f8e6f4,#e6ecff,#fff7e8,#ece6ff);
+  /* the phone, from the character designer's drawing of its back (assets/phone/phone-back.webp, 984 x 1747 at its
+     outline): a 100px corner and a 10px frame of #3c4968, so at the page's 234px wide a 24px corner and a 2.4px frame;
+     its front, its sides and the phones drawn on the canvas take the same outline */
+  --tt-phone-frame:#3c4968; --tt-phone-body:#e9f0fe; --tt-phone-r:24px; --tt-phone-line:2.4px;
   color-scheme:light;
 }
-:lang(ja){--tt-sans:"LINE Seed JP","LINE Seed KR",system-ui,-apple-system,"Hiragino Sans",sans-serif}
+/* English pages read in Manjari; Japanese pages in M PLUS Rounded 1c, which has no 700 (its 500 answers for it) */
+:lang(en){--tt-sans:Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-track-head:.01em;--tt-track-title:.01em;--tt-track:.01em;--tt-track-small:.01em}
+:lang(ja){--tt-sans:"M PLUS Rounded 1c",NanumSquareRound,Manjari,sans-serif;--tt-track-head:0;--tt-track-title:.02em;--tt-track:.04em;--tt-track-small:.04em}
 /* Japanese has no spaces: keep-all would hold whole sentences together and break them anywhere once they overflow.
    Break at phrases where the browser can, never before 、 or 。 */
 html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:break-word}
@@ -38,60 +60,54 @@ html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;ov
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html{background:var(--tt-canvas)}
-body{margin:0;background:var(--tt-canvas);color:var(--tt-ink);font-family:var(--tt-sans);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+body{margin:0;background:var(--tt-canvas);color:var(--tt-ink);font-family:var(--tt-sans);font-size:16px;line-height:1.8;letter-spacing:var(--tt-track);font-synthesis-weight:none;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+b,strong,h1,h2,h3{font-weight:700}
 button{font:inherit;color:inherit}
 a{color:inherit}
 img{max-width:100%}
-:focus-visible{outline:2px solid var(--tt-ink);outline-offset:3px}
+:focus-visible{outline:2px solid var(--tt-focus);outline-offset:3px}
 .jy-chl{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .jy-skip{position:fixed;left:16px;top:16px;z-index:90;padding:10px 16px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);text-decoration:none;transform:translateY(-80px);transition:transform .25s var(--tt-ease-out)}
 .jy-skip:focus{transform:none}
 
 /* ---------- shared pieces ---------- */
 /* TALETONE's face in a conversation: the ink mark on the pale light, as the invitation's icon */
-.jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-light-pale);color:var(--tt-ink);display:grid;place-items:center}
+.jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-holo);color:var(--tt-ink);display:grid;place-items:center}
 .jy-av svg{width:50%;height:auto;display:block}
-.jy-signal{display:inline-flex;gap:4px}
-.jy-signal i{display:block;width:3px;height:16px;border-radius:999px;background:var(--tt-magenta)}
-.jy-signal i+i{background:var(--tt-cyan)}
 .jy-say{display:flex;align-items:flex-end;gap:12px;margin:0;max-width:min(540px,100%);font-size:clamp(18px,1.55vw,22px);line-height:1.5}
-.jy-bub{display:grid;margin:0;background:var(--tt-case);color:var(--tt-ink);border-radius:22px 22px 22px 6px;padding:14px 20px;box-shadow:inset 0 0 0 1px rgba(159,161,166,.7)}
+.jy-bub{display:grid;margin:0;background:var(--tt-canvas);color:var(--tt-ink);border-radius:0;padding:14px 20px;outline:1px solid var(--tt-canvas-shade);outline-offset:-1px}
 .jy-bub>*{grid-area:1/1}
 .jy-tx b{display:block;font-size:18px}
 .jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
-.jy-lp{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(20,28,48,.08)}
-.jy-vinyl{position:absolute;inset:-15%;width:130%!important;max-width:none;height:130%;object-fit:cover;filter:blur(10px) saturate(1.6);opacity:.9}
-.jy-groove{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,rgba(20,28,48,0) 0 5px,rgba(20,28,48,.07) 5px 6px)}
-.jy-art{position:absolute;inset:19%;width:62%;height:62%;object-fit:cover;border-radius:50%}
-.jy-hole{position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--tt-canvas)}
-.jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink-line);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .16s var(--tt-ease-out),background .2s,color .2s}
+.jy-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--tt-ink);border-radius:999px;background:var(--tt-canvas);color:var(--tt-ink);font-weight:700;font-size:15px;cursor:pointer;transition:transform .16s var(--tt-ease-out),background .2s,color .2s}
 .jy-btn-ink{background:var(--tt-ink);color:var(--tt-on-ink);border-color:var(--tt-ink)}
 .jy-btn-quiet{border-color:var(--tt-canvas-shade)}
-.jy-round{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--tt-ink-line);border-radius:50%;background:var(--tt-canvas);cursor:pointer;transition:transform .16s var(--tt-ease-out)}
+.jy-round{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--tt-ink);border-radius:50%;background:var(--tt-canvas);cursor:pointer;transition:transform .16s var(--tt-ease-out)}
 .jy-x{position:absolute;right:18px;top:18px;z-index:2;width:44px;height:44px;border:0;border-radius:999px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--tt-ink)}
 .jy-x:hover{background:var(--tt-canvas-shade)}
 
 /* header */
 .jy-top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none}
 .jy-top>*{pointer-events:auto}
-.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
-.jy-mark img{width:24px;display:block}
-/* the name beside the mark */
-.jy-wm{font-family:var(--tt-display);font-weight:700;font-size:13px;letter-spacing:.22em;white-space:nowrap;transition:opacity .4s}
-.jy-wm b{font-weight:700;opacity:.55}
-.jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink-line);border-radius:var(--tt-r-device);background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s .2s}
+.jy-mark{min-width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border-radius:999px;text-decoration:none;color:inherit}
+.jy-mark img{display:block;flex:none}
+.jy-mk{width:24px;height:auto}
+/* the name beside the mark: the one-line lockup laid over the mark (its own mark, its first 10.5%, falls exactly on
+   the mark's and is left out), so the name comes and goes while the mark stays */
+.jy-wm{height:26.33px;width:auto;margin-left:-24px;clip-path:inset(0 0 0 11%);transition:opacity .4s}
+.jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink);border-radius:0;background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s .2s}
 .jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s}
 .jy-menu ul{list-style:none;margin:0;padding:0}
 /* the languages, in the header */
-.jy-langtog{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(254,254,254,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(159,161,166,.28)}
-.jy-langtog a{display:grid;place-items:center;min-width:44px;height:36px;padding:0 10px;border-radius:999px;text-decoration:none;font-family:var(--tt-display);font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--tt-ink-muted);transition:background .25s,color .25s}
+.jy-langtog{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(254,254,254,.8);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);outline:1px solid var(--tt-canvas-shade)}
+.jy-langtog a{display:grid;place-items:center;min-width:44px;height:36px;padding:0 10px;border-radius:999px;text-decoration:none;font-family:var(--tt-display);font-weight:700;font-size:12px;letter-spacing:var(--tt-track-label);color:var(--tt-ink-muted);transition:background .25s,color .25s}
 .jy-langtog a:hover{color:var(--tt-ink)}
 .jy-langtog a[aria-current]{background:var(--tt-ink);color:var(--tt-on-ink)}
-.jy-ink .jy-langtog{background:rgba(20,28,48,.58);box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.jy-ink .jy-langtog{background:rgba(20,28,48,.58);outline-color:rgba(254,254,254,.16)}
 .jy-ink .jy-langtog a{color:var(--tt-on-ink-muted)}
 .jy-ink .jy-langtog a:hover{color:var(--tt-on-ink)}
 .jy-ink .jy-langtog a[aria-current]{background:var(--tt-on-ink);color:var(--tt-ink)}
-.jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:14px;text-decoration:none;font-weight:700;color:var(--tt-ink)} /* (its own ink: the page's colour turns light in the dark worlds, the menu stays paper) */
+.jy-menu li a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:0;text-decoration:none;font-weight:700;color:var(--tt-ink)} /* (its own ink: the page's colour turns light in the dark worlds, the menu stays paper) */
 .jy-menu li a:hover{background:var(--tt-canvas-hair)}
 
 /* the controls: they lift or grow under a real pointer only (on a touch screen a tap leaves a hover stuck), and every
