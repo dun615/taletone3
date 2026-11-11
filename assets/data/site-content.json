@@ -521,6 +521,7 @@
     "items": [
       {
         "title": "평행우주론",
+        "origin": "kr",
         "artist": "ANOEY (Feat. 시유)",
         "roles": "Edit · Mix · Master",
         "youtube": "JISgyK5qe6w",
@@ -528,6 +529,7 @@
       },
       {
         "title": "...사랑했잖아...",
+        "origin": "kr",
         "artist": "정승환",
         "cover": true,
         "roles": "Inst Mix",
@@ -536,6 +538,7 @@
       },
       {
         "title": "좋은 밤 좋은 꿈",
+        "origin": "kr",
         "artist": "정승환",
         "cover": true,
         "roles": "Inst Mix",
@@ -544,8 +547,7 @@
       },
       {
         "title": "SHINE",
-        "titleEn": "SHINE",
-        "titleJp": "SHINE",
+        "origin": "kr",
         "artist": "비쥬 (라테일 OST)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -554,6 +556,7 @@
       },
       {
         "title": "out of the things i loved, i hate you most.",
+        "origin": "kr",
         "artist": "언제 (unjae)",
         "cover": false,
         "roles": "Rec · Edit · Mix",
@@ -562,6 +565,7 @@
       },
       {
         "title": "SNAKE EYES",
+        "origin": "kr",
         "artist": "HEXIA_EDEN",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -570,6 +574,7 @@
       },
       {
         "title": "계절범죄",
+        "origin": "kr",
         "artist": "Eryn",
         "cover": true,
         "roles": "Rec · Edit · Mix · Master",
@@ -578,7 +583,10 @@
       },
       {
         "title": "그대 위로가 필요하다 느낄 때",
-        "titleEn": "When You Need Comfort",
+        "origin": "kr",
+        "titles": {
+          "en": "When You Need Comfort"
+        },
         "artist": "준성 (JUNSUNG)",
         "cover": false,
         "roles": "Edit · Mix · Master",
@@ -587,6 +595,7 @@
       },
       {
         "title": "기다릴게",
+        "origin": "kr",
         "artist": "아리사",
         "cover": false,
         "roles": "Edit · Mix",
@@ -595,6 +604,7 @@
       },
       {
         "title": "첫사랑의 시작 소리",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -603,6 +613,7 @@
       },
       {
         "title": "Love this memory",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -611,6 +622,7 @@
       },
       {
         "title": "Dream Star",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -619,6 +631,7 @@
       },
       {
         "title": "허둥지둥 오리라도 사랑이 하고싶어~!",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -627,6 +640,7 @@
       },
       {
         "title": "죄인과 세계의 마침표",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -635,6 +649,7 @@
       },
       {
         "title": "Disallowed",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -643,6 +658,7 @@
       },
       {
         "title": "사무치는 누군가의 위로",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -651,6 +667,7 @@
       },
       {
         "title": "I Love Me",
+        "origin": "kr",
         "artist": "POCOTONE × Sixtar Gate",
         "cover": false,
         "roles": "Edit · Mix",
@@ -659,6 +676,7 @@
       },
       {
         "title": "IDOL",
+        "origin": "kr",
         "artist": "히요코",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -667,6 +685,7 @@
       },
       {
         "title": "강풍 올백",
+        "origin": "kr",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -675,6 +694,7 @@
       },
       {
         "title": "QUEEN",
+        "origin": "kr",
         "artist": "얌",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -683,6 +703,7 @@
       },
       {
         "title": "새삥",
+        "origin": "kr",
         "artist": "레볼루션 하트",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -691,6 +712,7 @@
       },
       {
         "title": "나의 X에게",
+        "origin": "kr",
         "artist": "히요코",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -699,6 +721,7 @@
       },
       {
         "title": "KING",
+        "origin": "kr",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -707,6 +730,7 @@
       },
       {
         "title": "Rain Drop",
+        "origin": "kr",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -715,6 +739,7 @@
       },
       {
         "title": "방해쟁이",
+        "origin": "kr",
         "artist": "오리꿍",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -723,6 +748,7 @@
       },
       {
         "title": "귀여워서 미안해",
+        "origin": "kr",
         "artist": "히요코",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -731,6 +757,7 @@
       },
       {
         "title": "Eight",
+        "origin": "kr",
         "artist": "얌",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -739,6 +766,7 @@
       },
       {
         "title": "흰 눈이 내려와",
+        "origin": "kr",
         "artist": "REVOLUTION HEART",
         "cover": false,
         "roles": "Edit · Mix · Master",
@@ -747,6 +775,7 @@
       },
       {
         "title": "Panda Hero",
+        "origin": "kr",
         "artist": "레볼루션 하트",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -755,6 +784,7 @@
       },
       {
         "title": "Pretty STAR (Pretty for you)",
+        "origin": "kr",
         "artist": "승리의 여신: 니케 OST",
         "roles": "Edit",
         "youtube": "Gzoftos25Uo",
@@ -762,7 +792,10 @@
       },
       {
         "title": "ソーダバブル (feat. めぐ)",
-        "titleEn": "Soda Bubble (feat. Megu)",
+        "origin": "jp",
+        "titles": {
+          "en": "Soda Bubble (feat. Megu)"
+        },
         "artist": "parfi",
         "roles": "Edit",
         "youtube": "x3We0ETTCvk",
@@ -770,8 +803,10 @@
       },
       {
         "title": "리와인드 (RE:WIND)",
-        "titleEn": "RE:WIND",
-        "titleJp": "RE:WIND",
+        "origin": "kr",
+        "titles": {
+          "en": "RE:WIND"
+        },
         "artist": "투미츠 외 5인",
         "cover": true,
         "roles": "Edit",
@@ -780,6 +815,7 @@
       },
       {
         "title": "사랑하긴 했었나요 스쳐가는 인연이었나요 짧지않은 우리 함께 했던 시간들이 자꾸 내 마음을 가둬두네",
+        "origin": "kr",
         "artist": "얌",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -788,6 +824,7 @@
       },
       {
         "title": "취기",
+        "origin": "kr",
         "artist": "달체솜",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -796,6 +833,7 @@
       },
       {
         "title": "Stellar Stellar",
+        "origin": "kr",
         "artist": "얌",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -803,8 +841,11 @@
         "date": "2023-02-17"
       },
       {
-        "title": "변하지 않는 것",
-        "titleJp": "変わらないもの",
+        "title": "変わらないもの",
+        "origin": "jp",
+        "titles": {
+          "kr": "변하지 않는 것"
+        },
         "artist": "얌",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -812,8 +853,11 @@
         "date": "2022-12-29"
       },
       {
-        "title": "YOU (쓰르라미 울 적에)",
-        "titleJp": "YOU (ひぐらしのなく頃に)",
+        "title": "YOU (ひぐらしのなく頃に)",
+        "origin": "jp",
+        "titles": {
+          "kr": "YOU (쓰르라미 울 적에)"
+        },
         "artist": "아리사",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -821,9 +865,12 @@
         "date": "2024-11-24"
       },
       {
-        "title": "逆光 (역광)",
-        "titleEn": "Gyakkou",
-        "titleJp": "逆光",
+        "title": "逆光",
+        "origin": "jp",
+        "titles": {
+          "kr": "逆光 (역광)",
+          "en": "Gyakkou"
+        },
         "artist": "에리스 × 카린",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -831,9 +878,12 @@
         "date": "2023-08-19"
       },
       {
-        "title": "踊 (춤)",
-        "titleEn": "Odo",
-        "titleJp": "踊",
+        "title": "踊",
+        "origin": "jp",
+        "titles": {
+          "kr": "踊 (춤)",
+          "en": "Odo"
+        },
         "artist": "에리스",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -842,6 +892,7 @@
       },
       {
         "title": "CONNECTING",
+        "origin": "kr",
         "artist": "프로젝트 커넥트 시즌1",
         "youtube": "ruNPYseNV3Q",
         "cover": true,
@@ -849,8 +900,11 @@
         "date": "2023-04-13"
       },
       {
-        "title": "Magnet",
-        "titleJp": "magnet",
+        "title": "magnet",
+        "origin": "jp",
+        "titles": {
+          "kr": "Magnet"
+        },
         "artist": "고유사 × 도롱챠",
         "youtube": "ihKaaUpcDb4",
         "cover": true,
@@ -858,9 +912,12 @@
         "date": "2023-04-04"
       },
       {
-        "title": "춤춰라 오케스트라",
-        "titleEn": "Odore Orchestra",
-        "titleJp": "踊れオーケストラ",
+        "title": "踊れオーケストラ",
+        "origin": "jp",
+        "titles": {
+          "kr": "춤춰라 오케스트라",
+          "en": "Odore Orchestra"
+        },
         "artist": "달체솜 × 오리꿍",
         "youtube": "xE594Q-8BJk",
         "cover": true,
@@ -869,7 +926,10 @@
       },
       {
         "title": "피아노맨",
-        "titleEn": "Piano Man",
+        "origin": "kr",
+        "titles": {
+          "en": "Piano Man"
+        },
         "artist": "밍턴 × 얌",
         "youtube": "OqvTxQd5oTc",
         "cover": true,
@@ -878,6 +938,7 @@
       },
       {
         "title": "그게 나의 전부란 걸",
+        "origin": "kr",
         "artist": "박영준 × 황문경 (뮤지컬 번지점프를 하다)",
         "cover": true,
         "roles": "Rec · Edit · Mix · Master",
@@ -886,6 +947,7 @@
       },
       {
         "title": "길에서",
+        "origin": "kr",
         "artist": "황문경 (원곡 유성은)",
         "cover": true,
         "roles": "Rec · Edit · Mix · Master",
@@ -894,6 +956,7 @@
       },
       {
         "title": "Love wins all",
+        "origin": "kr",
         "artist": "황문경 (원곡 아이유)",
         "cover": true,
         "roles": "Rec · Edit · Mix · Master",
@@ -902,6 +965,7 @@
       },
       {
         "title": "ANIMAL",
+        "origin": "kr",
         "artist": "이주인 (V-LUP)",
         "cover": true,
         "roles": "Edit",
@@ -910,6 +974,7 @@
       },
       {
         "title": "Twinkle Star (별나라 요정 코미 ED)",
+        "origin": "kr",
         "artist": "이정은",
         "cover": true,
         "roles": "Mix",
@@ -917,8 +982,11 @@
         "date": "2020-11-29"
       },
       {
-        "title": "완전 귀여워",
-        "titleJp": "超絶かわいい",
+        "title": "超絶かわいい",
+        "origin": "jp",
+        "titles": {
+          "kr": "완전 귀여워"
+        },
         "artist": "얌 (POCOTONE)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -927,6 +995,7 @@
       },
       {
         "title": "Love letter",
+        "origin": "en",
         "artist": "Dear my heroes (원곡 Anthony Lazaro)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -935,6 +1004,7 @@
       },
       {
         "title": "Soft spot (Acoustic ver.)",
+        "origin": "en",
         "artist": "Dear my heroes (원곡 Keshi)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -943,6 +1013,7 @@
       },
       {
         "title": "I'm Hungry (Suhr Demo)",
+        "origin": "kr",
         "artist": "김재중 (Music Force)",
         "roles": "Mix",
         "youtube": "iD747DDj4o4",
@@ -950,6 +1021,7 @@
       },
       {
         "title": "네모네모",
+        "origin": "kr",
         "artist": "Eryn (HEXIA)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -958,6 +1030,7 @@
       },
       {
         "title": "운명의 태피스트리 (feat. 힐리아)",
+        "origin": "kr",
         "artist": "백색설화",
         "roles": "Edit",
         "youtube": "bhfjlLcaHoY",
@@ -965,6 +1038,7 @@
       },
       {
         "title": "ライラック",
+        "origin": "jp",
         "artist": "삿땅 (HEXIA_EDEN, 원곡 Mrs. GREEN APPLE)",
         "cover": true,
         "roles": "Rec (Eryn)",
@@ -973,6 +1047,7 @@
       },
       {
         "title": "가을아침",
+        "origin": "kr",
         "artist": "도롱챠 (원곡 아이유)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -981,6 +1056,7 @@
       },
       {
         "title": "김고양이 + Walkin' the walk",
+        "origin": "kr",
         "artist": "서울예대 21 장독대",
         "roles": "Edit",
         "youtube": "902lcqTc9OM",
@@ -988,6 +1064,7 @@
       },
       {
         "title": "크러쉬 메들리",
+        "origin": "kr",
         "artist": "와이키키 참다랑어 (서울예대 장독대)",
         "cover": true,
         "roles": "Edit",
@@ -996,6 +1073,7 @@
       },
       {
         "title": "We Are The Champions",
+        "origin": "en",
         "artist": "프레디 철큐리 (서울예대 21 장독대)",
         "cover": true,
         "roles": "Edit",
@@ -1004,6 +1082,7 @@
       },
       {
         "title": "서울예대 베이스 입시곡",
+        "origin": "kr",
         "artist": "이주영",
         "roles": "Edit · Mix · Master",
         "youtube": "pqjFCdl9CVY",
@@ -1011,6 +1090,7 @@
       },
       {
         "title": "Disco Yes",
+        "origin": "en",
         "artist": "루이스 Louis (원곡 Tom Misch)",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -1019,6 +1099,7 @@
       },
       {
         "title": "나를 아는 사람",
+        "origin": "kr",
         "artist": "서울예대 21학번 보컬 (원곡 MSG워너비)",
         "cover": true,
         "roles": "Mix · Master",
@@ -1027,6 +1108,7 @@
       },
       {
         "title": "クインティプル☆すまいる",
+        "origin": "jp",
         "artist": "시애 외 7인",
         "cover": true,
         "roles": "Edit · Mix · Master",
@@ -1035,6 +1117,7 @@
       },
       {
         "title": "And July",
+        "origin": "kr",
         "artist": "이하린 & 천용주 (세종예술고 예술제 2020)",
         "cover": true,
         "roles": "Mix · Master",
@@ -1061,9 +1144,12 @@
     },
     "items": [
       {
-        "title": "千鳥 (물떼새)",
-        "titleEn": "Chidori",
-        "titleJp": "千鳥",
+        "title": "千鳥",
+        "origin": "jp",
+        "titles": {
+          "kr": "千鳥 (물떼새)",
+          "en": "Chidori"
+        },
         "artist": "Beru (원곡 ヨルシカ)",
         "cover": true,
         "roles": "Arr · Edit · Mix · Master",
@@ -1072,6 +1158,7 @@
       },
       {
         "title": "BLUE",
+        "origin": "kr",
         "artist": "수니문",
         "cover": true,
         "roles": "Arr",
@@ -1080,6 +1167,7 @@
       },
       {
         "title": "Gravity",
+        "origin": "kr",
         "artist": "수니문",
         "cover": true,
         "roles": "Arr · Mix · Master",
@@ -1088,6 +1176,7 @@
       },
       {
         "title": "I'm Not A Cat!",
+        "origin": "kr",
         "artist": "티그리스 카닌 (V-llage)",
         "cover": false,
         "roles": "BGM",
@@ -1096,6 +1185,7 @@
       },
       {
         "title": "Remember",
+        "origin": "kr",
         "artist": "휴복",
         "cover": true,
         "roles": "Arr",
@@ -1104,6 +1194,7 @@
       },
       {
         "title": "点描の唄",
+        "origin": "jp",
         "artist": "휴복 × 연하리",
         "cover": true,
         "roles": "Arr",
@@ -1112,6 +1203,7 @@
       },
       {
         "title": "アイネクライネ",
+        "origin": "jp",
         "artist": "휴복",
         "cover": true,
         "roles": "Arr",
@@ -1119,9 +1211,11 @@
         "date": "2019-10-12"
       },
       {
-        "title": "고음주역테스트",
-        "titleEn": "高音厨音域テスト",
-        "titleJp": "高音厨音域テスト",
+        "title": "高音厨音域テスト",
+        "origin": "jp",
+        "titles": {
+          "kr": "고음주역테스트"
+        },
         "artist": "비쥬",
         "cover": true,
         "roles": "Arr",
@@ -1130,8 +1224,11 @@
       },
       {
         "title": "메이 트랙",
-        "titleEn": "May Track",
-        "titleJp": "メイ・トラック",
+        "origin": "kr",
+        "titles": {
+          "en": "May Track",
+          "jp": "メイ・トラック"
+        },
         "artist": "라스트오리진 (제2회 미스 오르카)",
         "roles": "Piano",
         "youtube": "x__gIBqOU28",
@@ -1139,6 +1236,7 @@
       },
       {
         "title": "중장비 레이스",
+        "origin": "kr",
         "artist": "꼬마버스 타요",
         "roles": "Arr",
         "youtube": "PL5tC1gLJIY",
@@ -1146,6 +1244,7 @@
       },
       {
         "title": "뽀로로와 패티의 알록달록 공놀이",
+        "origin": "kr",
         "artist": "뽀로로",
         "roles": "Arr",
         "youtube": "gtGrJOXDjpA",
@@ -1153,6 +1252,7 @@
       },
       {
         "title": "솔직하게 말해요",
+        "origin": "kr",
         "artist": "뽀로로",
         "roles": "Arr",
         "youtube": "X7u7HlxV5Z8",
@@ -1160,6 +1260,7 @@
       },
       {
         "title": "2020 크리스마스",
+        "origin": "kr",
         "artist": "아토프렌즈",
         "roles": "Arr",
         "youtube": "vGOTcmJMYMM",
@@ -1167,6 +1268,7 @@
       },
       {
         "title": "새해소망기원 댄스",
+        "origin": "kr",
         "artist": "아토프렌즈",
         "roles": "Arr",
         "youtube": "d1UpPjcXOLQ",
@@ -1174,6 +1276,7 @@
       },
       {
         "title": "공룡멸종송",
+        "origin": "kr",
         "artist": "깨비키즈",
         "roles": "Arr",
         "youtube": "3AFuzIPukZ0",
@@ -1181,6 +1284,7 @@
       },
       {
         "title": "웰리랑 학교가는 날",
+        "origin": "kr",
         "artist": "2020 아인세 창작음악제 대상",
         "roles": "Arr",
         "youtube": "3Iw70uJv67U",
@@ -1188,6 +1292,7 @@
       },
       {
         "title": "좋은 댓글 나의 얼굴",
+        "origin": "kr",
         "artist": "2020 아인세 창작음악제 최우수상",
         "roles": "Arr",
         "youtube": "tV746-XhuR0",
@@ -1195,6 +1300,7 @@
       },
       {
         "title": "따뜻한 인터넷 세상",
+        "origin": "kr",
         "artist": "2020 아인세 창작음악제 최우수상",
         "roles": "Arr",
         "youtube": "8NzXU-U85Fo",
@@ -1202,7 +1308,10 @@
       },
       {
         "title": "ピコットタウン CM",
-        "titleEn": "Picot Town CM",
+        "origin": "jp",
+        "titles": {
+          "en": "Picot Town CM"
+        },
         "artist": "Arumgames (판타지 타운 일본판)",
         "roles": "BGM · Mix · Master",
         "youtube": "5caghJlhBvA",
@@ -1210,6 +1319,7 @@
       },
       {
         "title": "방정리",
+        "origin": "kr",
         "artist": "HAEBIN",
         "roles": "Piano Arr",
         "youtube": "q89CylU49kE",
@@ -1217,6 +1327,7 @@
       },
       {
         "title": "마음악보 (밴드 편곡)",
+        "origin": "kr",
         "artist": "WASABI BUSTERS",
         "cover": true,
         "roles": "Arr",

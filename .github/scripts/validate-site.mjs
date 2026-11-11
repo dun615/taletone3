@@ -4,7 +4,7 @@ import { access, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { checkWorks } from '../../scripts/works-model.mjs';
+import { checkTitledItems, checkWorks } from '../../scripts/works-model.mjs';
 import path from 'node:path';
 
 const root = process.cwd();
@@ -86,6 +86,8 @@ for (const line of robots.split('\n')) if (/^Disallow:\s*\/(?:en|ja|about|approa
 // ---- data ----
 // every work by the rules in scripts/works-model.mjs (the same rules the page and `npm run audit` use)
 const model = checkWorks(works, (p) => existsSync(path.join(root, p)));
+// the other work's items (Sound Engineering, ETC): where each was made and its titles, by the works' rules
+for (const key of ['mixWorks', 'bgmWorks']) for (const e of checkTitledItems((site[key] || {}).items || [], key)) errors.push(e);
 for (const e of model.errors) assert(false, e);
 for (const w of model.warnings) console.warn(`warning: ${w}`);
 // every word of the story in every language (only the brand and the English chapter labels are the same in all)

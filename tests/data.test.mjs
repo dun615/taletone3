@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkWorks, mediaOf, orphans, titleIn } from '../scripts/works-model.mjs';
+import { checkTitledItems, checkWorks, mediaOf, orphans, titleIn } from '../scripts/works-model.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { works } = JSON.parse(readFileSync(path.join(root, 'assets/data/works-data.json'), 'utf8'));
@@ -59,4 +59,16 @@ test('each language shows an official title, never a translated one', () => {
   assert.ok(problems(album({ origin: undefined })).some((e) => e.includes('origin')));
   assert.ok(problems(album({ translations: { en: { title: 'X' } } })).some((e) => e.includes('a title is not translated')));
   assert.ok(problems(album({ titles: { en: 'An album' } })).some((e) => e.includes('same as its title')));
+});
+
+test('a work made elsewhere keeps the name a language commonly calls it by (逆光 is 逆光 (역광) on Korean pages)', () => {
+  const it = { title: '逆光', origin: 'jp', titles: { kr: '逆光 (역광)', en: 'Gyakkou' } };
+  assert.equal(titleIn(it, 'jp', 'kr'), '逆光 (역광)');
+  assert.equal(titleIn(it, 'jp', 'en'), 'Gyakkou');
+  assert.equal(titleIn(it, 'jp', 'jp'), '逆光');
+  assert.equal(titleIn({ title: '変わらないもの', titles: { kr: '변하지 않는 것' } }, 'jp', 'en'), '変わらないもの', 'with no English name, the title where it was made');
+  assert.deepEqual(checkTitledItems([it], 'mixWorks'), []);
+  assert.ok(checkTitledItems([{ title: 'X', titleEn: 'Y' }], 'mixWorks').some((e) => e.includes('origin')));
+  assert.ok(checkTitledItems([{ title: 'X', origin: 'kr', titleEn: 'Y' }], 'mixWorks').some((e) => e.includes('titleEn is retired')));
+  assert.ok(checkTitledItems([{ title: 'X', origin: 'kr', titles: { kr: 'Y' } }], 'mixWorks').some((e) => e.includes('titles.kr')));
 });
