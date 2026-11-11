@@ -11,9 +11,11 @@
 //                        has no audio of its own (it plays its title track, titleTrackIndex)
 //
 // A work's titles: `title` is its official title where it was made, `origin` is where that is ('kr', 'en' or 'jp',
-// the content keys), and `titles` holds its other official titles only ({ en, jp }); a title is never translated
-// for the site, and `translations` carries no title. A track has `title` and `titles` and comes from its album's
-// origin. titleIn() says which one each language shows.
+// the content keys), and `titles` holds its titles in the other languages ({ kr, en, jp } but its own): an official
+// one, or where a language has none, the name it is commonly called by there; never one made up for the site, and
+// `translations` carries no title. A track has `title` and `titles` and comes from its album's origin. titleIn()
+// says which one each language shows. The other work (Sound Engineering, ETC, in site-content.json) keeps the same
+// fields and rules (checkTitledItems).
 
 export const WORK_KEYS = ['slug', 'artist', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio',
   'fit', 'posX', 'posY', 'versions', 'tracks', 'kind', 'titleTrackIndex', 'youtube', 'format',
@@ -28,6 +30,7 @@ export const LANGS = ['kr', 'en', 'jp'];
 // else the title as it was made; Korean pages the official Korean title, else the title as it was made.
 export function titleIn(item, origin, lang) {
   const t = item.titles || {}, own = (l) => (l === origin ? item.title : t[l]);
+  if (lang === 'kr') return own('kr') || item.title;
   if (lang === 'jp') return own('jp') || own('en') || item.title;
   return own(lang) || item.title;
 }
@@ -63,14 +66,14 @@ export function mediaPaths(work) {
   return out;
 }
 
-// the titles' rules, for a work or a track
-function checkTitles(item, name, err) {
+// the titles' rules, for a work, a track or an item of the other work (origin: where it was made)
+function checkTitles(item, name, err, origin) {
   if (!item.title) err(`${name}: needs its title (the official one where it was made)`);
-  const t = item.titles;
+  const t = item.titles, others = LANGS.filter((l) => l !== origin);
   if (t !== undefined) {
-    if (!t || typeof t !== 'object' || Array.isArray(t)) err(`${name}: titles must be { en, jp }`);
+    if (!t || typeof t !== 'object' || Array.isArray(t)) err(`${name}: titles must be { ${others.join(', ')} }`);
     else for (const [k, v] of Object.entries(t)) {
-      if (!['en', 'jp'].includes(k)) err(`${name}: titles.${k} is not a language the site shows other than its own (en, jp)`);
+      if (!others.includes(k)) err(`${name}: titles.${k} is not a language the site shows other than its own (${others.join(', ')})`);
       if (!v || typeof v !== 'string') err(`${name}: titles.${k} must be a title`);
       if (v === item.title) err(`${name}: titles.${k} is the same as its title (keep only official titles that differ)`);
     }
@@ -92,7 +95,7 @@ export function checkWorks(works, exists) {
     if (!/^\d{4}\.\d{2}\.\d{2}$/.test(w.date || '')) err(`${name}: date must be YYYY.MM.DD`);
     if (!w.image || !w.thumb) err(`${name}: needs image and thumb (the small cover, *-w320.webp)`);
     if (!LANGS.includes(w.origin)) err(`${name}: origin must be where it was made (${LANGS.join(', ')})`);
-    checkTitles(w, name, err);
+    checkTitles(w, name, err, w.origin);
     for (const [where, p] of mediaPaths(w)) if (!exists(p)) err(`${where}: file ${p} does not exist`);
     const tracks = w.tracks || [];
     if (w.kind === 'album') {
@@ -106,7 +109,7 @@ export function checkWorks(works, exists) {
         if (!t.image) err(`${tn}: needs its own image`);
         if (!t.thumb) err(`${tn}: needs its own thumb (*-w320.webp)`);
         if (!t.audio && !ytId(t.youtube)) err(`${tn}: needs audio or a YouTube video`);
-        checkTitles(t, tn, err);
+        checkTitles(t, tn, err, w.origin);
       });
     } else {
       if (tracks.length) err(`${name}: only an album has tracks (kind is ${w.kind})`);
@@ -118,6 +121,19 @@ export function checkWorks(works, exists) {
   const pinned = works.filter((w) => w.pinned).map((w) => w.pinned).sort();
   if (pinned.join() !== '1,2,3') err(`the featured works must be pinned 1, 2, 3 (found ${pinned.join() || 'none'})`);
   return { errors, warnings };
+}
+
+// The other work's items (site-content.json: mixWorks, bgmWorks): where each was made and its titles, by the same
+// rules as a work's. Returns the errors.
+export function checkTitledItems(items, where) {
+  const errors = [], err = (m) => errors.push(m);
+  items.forEach((it, i) => {
+    const name = `${where}[${i}] ${it.title || '?'}`;
+    if (!LANGS.includes(it.origin)) err(`${name}: origin must be where it was made (${LANGS.join(', ')})`);
+    for (const k of ['titleEn', 'titleJp']) if (k in it) err(`${name}: ${k} is retired; its title goes in titles`);
+    checkTitles(it, name, err, it.origin);
+  });
+  return errors;
 }
 
 // Files under assets/works that nothing refers to: either forgotten on a work, or safe to delete.

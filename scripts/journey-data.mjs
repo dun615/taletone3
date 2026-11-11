@@ -50,14 +50,13 @@ export function journeyCopy(site, lang) {
 const POST = { rec: 'Rec', edit: 'Edit', mix: 'Mix', master: 'Master' };
 export function journeyExtras(site, worksData, lang) {
   const c = journeyCopy(site, lang), cardRoles = c.cardRoles || {}, dates = site.videoDates || {};
-  const titleKey = { en: 'titleEn', jp: 'titleJp' }[lang];
   const keysOf = (roles) => String(roles || '').split(/\s*·\s*/).map((w) => w.replace(/\s*\(.*\)$/, '')).filter(Boolean);
   const roleText = (roles) => String(roles || '').split(/\s*·\s*/).filter(Boolean).map((word) => { const m = word.match(/^(.*?)(\s*\(.*\))?$/); return (cardRoles[m[1]] || m[1]) + (m[2] || ''); }).join(' · ');
   const dateText = (d) => { const m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})$/); if (!m) return String(d); return lang === 'en' ? `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][+m[2] - 1]} ${+m[3]}, ${m[1]}` : `${m[1]}.${m[2]}.${m[3]}`; };
   const gains = (worksData.loudness && worksData.loudness.files) || {};
   const card = (it, extra = {}) => {
     const yt = ytId(it.youtube), shown = String((yt && dates[yt]) || it.date || '');
-    return { title: (titleKey && it[titleKey]) || it.title, artist: it.artist || '', roles: roleText(it.roles), keys: keysOf(it.roles), yt, audio: yt ? '' : (it.audio || ''), gain: (it.audio && gains[it.audio] && gains[it.audio].gain) || 0, date: shown, dateText: dateText(shown), cover: !!it.cover, ...extra };
+    return { title: plain(titleIn(it, it.origin, lang)), artist: it.artist || '', roles: roleText(it.roles), keys: keysOf(it.roles), yt, audio: yt ? '' : (it.audio || ''), gain: (it.audio && gains[it.audio] && gains[it.audio].gain) || 0, date: shown, dateText: dateText(shown), cover: !!it.cover, ...extra };
   };
   const own = [];
   for (const w of worksData.works) {
@@ -67,8 +66,7 @@ export function journeyExtras(site, worksData, lang) {
       const post = Object.keys(POST).filter((r) => (u.roles || []).includes(r));
       const yt = ytId(u.youtube || (u === w ? w.youtube : ''));
       if (!post.length || !(yt || u.audio)) continue;
-      const lu = lang === 'kr' ? u : merge(u, lang);
-      own.push({ title: plain(lu.title || u.title), artist: plain(album.artist || w.artist), roles: post.map((r) => POST[r]).join(' · '), youtube: yt, audio: yt ? '' : u.audio, date: String(u.date || w.date || '').replace(/\./g, '-'), own: true });
+      own.push({ title: plain(titleIn(u, w.origin, lang)), artist: plain(album.artist || w.artist), roles: post.map((r) => POST[r]).join(' · '), youtube: yt, audio: yt ? '' : u.audio, date: String(u.date || w.date || '').replace(/\./g, '-'), own: true });
     }
   }
   const etcPost = ((site.bgmWorks || {}).items || []).filter((it) => keysOf(it.roles).some((k) => Object.values(POST).includes(k)));
