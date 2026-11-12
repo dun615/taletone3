@@ -4,10 +4,10 @@
    - default: a readable column (no script, search engines): chapters stacked, every message shown;
    - html.jy-stage-mode (set in the head before the first paint): a fixed stage played by scroll; html.jy-narrow
      adds the layout for phones and upright screens.
-   The design system (TALETONE's): the face is the phone; Paper is the ground and ink the words; the CD light is the one
-   borrowed accent; a work's colours live only inside the phone's screen and on its CD. No shadows: faces are told apart
-   by the canvas's steps and ink lines. Corners: square for photos, covers and cards, pills for tags, chips and buttons,
-   circles for CDs and the profile; the conversation's messages stay rounded bubbles (the owner's choice). */
+   The design system (TALETONE's): the face is the phone; Paper is the ground and ink the words (Ink for going in, the
+   dark worlds and the inquiry); the CD light is the one borrowed accent; a work's colours live only inside the phone's
+   screen and on its CD. No shadows: faces are told apart by the canvas's steps and ink lines. Corners: square for photos, covers and cards, pills for tags, chips and buttons,
+   rounded bubbles for messages, circles for CDs and the profile. */
 
 /* The three rounded faces (subsets by scripts/subset-fonts.py): Manjari for English, NanumSquareRound for Korean, M PLUS
    Rounded 1c for Japanese (declared on the Japanese pages only, scripts/journey-page.mjs). Three weights only, matched

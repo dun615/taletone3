@@ -34,8 +34,9 @@ const fontHead = (key) => ({
   jp: [font('mplus-rounded-400'), font('mplus-rounded-500'), font('manjari-700'), `<style>${MPLUS}</style>`].join('\n'),
 })[key] + '\n';
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
-const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_D = MARK_SVG.match(/ d="([^"]+)"/)[1];
-const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="tt-mark" d="${MARK_D}"/></defs></svg>`;
+// (every shape the designer's file draws: the mark is more than one path)
+const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_DS = [...MARK_SVG.matchAll(/ d="([^"]+)"/g)].map((m) => m[1]);
+const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="tt-mark">${MARK_DS.map((d) => `<path d="${d}"/>`).join('')}</g></defs></svg>`;
 const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
