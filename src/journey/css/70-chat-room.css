@@ -1,6 +1,6 @@
 /* ---- the chat room around the words of the about, the philosophy and the case ---- */
 .jy-room{display:none}
-.jy-stage-mode .jy-room{display:block;position:absolute;left:0;top:0;width:0;height:0;border-radius:0;background:transparent;outline:1px solid rgba(159,161,166,.32);outline-offset:-1px;opacity:0;pointer-events:none;transition:opacity .45s,height .5s var(--tt-spring),transform .5s var(--tt-spring)}
+.jy-stage-mode .jy-room{display:block;position:absolute;left:0;top:0;width:0;height:0;border-radius:28px;background:transparent;outline:1px solid rgba(159,161,166,.32);outline-offset:-1px;opacity:0;pointer-events:none;transition:opacity .45s,height .5s var(--tt-spring),transform .5s var(--tt-spring)}
 .jy-stage-mode .jy-room.on{opacity:1}
 .jy-room-h{position:absolute;left:8px;right:8px;top:8px;display:flex;align-items:center;gap:10px;height:50px;padding:0 14px 0 8px;border-radius:999px;background:rgba(254,254,254,.7);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .jy-room-av{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--tt-holo);color:var(--tt-ink);flex:none}

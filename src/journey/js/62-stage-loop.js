@@ -54,8 +54,8 @@ function frameLoop(now) {
   if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }
   else if (spiral.style.opacity !== '0') { spiral.style.opacity = '0'; Object.values(trackEls).forEach((box) => box.classList.remove('on')); albumOpen = -1; }
   // Done: out of the current, the phone is seen from outside, the record in it
-  // (the dark worlds; the inquiry is on Paper)
-  const ink = spaceDark > 0.5;
+  // (the dark worlds, and the inquiry from the way out of the record on)
+  const ink = le > 0 || spaceDark > 0.5;
   stageEl.classList.toggle('ink', ink); html.classList.toggle('jy-ink', ink);
   for (const im of markImgs) { const src = ink ? im.dataset.paper : im.dataset.ink; if (im.dataset.on !== src) { im.dataset.on = src; im.src = src; } }
   // the letter stays while the empty seat is said under it, as one thread; both give way to the inquiry

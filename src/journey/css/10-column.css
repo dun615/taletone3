@@ -74,6 +74,9 @@
 /* the Epilogue is the only dark place */
 /* the inquiry: on Paper, as every page is (the form is the one place with the function colours) */
 .jy-ch[data-ch="epi"]{max-width:none;padding-inline:max(16px,calc((100vw - 720px)/2))}
+/* the inquiry is on Ink: the same form, its tokens turned to the Ink theme's (the column here, the stage's in 30-stage) */
+html:not(.jy-stage-mode) .jy-ch[data-ch="epi"],.jy-stage-mode.jy-ink .jy-contact{--tt-ink:var(--tt-on-ink);--tt-ink-muted:var(--tt-on-ink-muted);--tt-canvas:#141c30;--tt-canvas-shade:#2c3550;--tt-status-error:var(--tt-status-error-on-ink);--tt-status-success:var(--tt-status-success-on-ink);--tt-focus:var(--tt-focus-on-ink);color:var(--tt-ink)}
+html:not(.jy-stage-mode) .jy-ch[data-ch="epi"]{background:var(--tt-canvas)}
 .jy-form{display:flex;flex-direction:column;gap:16px}
 .jy-field{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;border:0;min-width:0}
 .jy-field label,.jy-field legend{font-size:13px;color:var(--tt-ink-muted);padding:0;letter-spacing:var(--tt-track-small)}

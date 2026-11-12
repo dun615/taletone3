@@ -234,6 +234,8 @@ function drawGroove(ld, sc, cx, cy) {
 function drawTrail(le, A) {
   // (on a phone the phone leaves before the form shows, so the line sets out sooner, while it is still there)
   const pr = ease((le - (NARROW ? 0.16 : 0.33)) / 0.2); if (pr <= 0) return;
+  // (in the paper's ink, light on the inquiry's Ink)
+  const C = html.classList.contains('jy-ink') ? '244,244,252' : INK;
   const tg = [formProject, fopen].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
   const fr = frame.getBoundingClientRect(), r = tg.getBoundingClientRect(), field = tg.id === 'jy-f-project';
   const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + 22, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
@@ -257,7 +259,7 @@ function drawTrail(le, A) {
   ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   let tip = pts[0];
   const run = (i0, i1, a) => {
-    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${INK},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
+    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${C},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
     for (let i = i0 + 1; i <= i1; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
     ctx.stroke();
   };
@@ -266,7 +268,7 @@ function drawTrail(le, A) {
   // the pen tip; once there, it blinks like a caret, until the visitor starts writing
   const writing = form.contains(document.activeElement);
   const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
-  if (al > 0) { ctx.fillStyle = `rgba(${INK},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (al > 0) { ctx.fillStyle = `rgba(${C},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
 }
 function showReadout(i) {
   cardTop = null;

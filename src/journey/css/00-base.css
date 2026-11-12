@@ -7,7 +7,7 @@
    The design system (TALETONE's): the face is the phone; Paper is the ground and ink the words; the CD light is the one
    borrowed accent; a work's colours live only inside the phone's screen and on its CD. No shadows: faces are told apart
    by the canvas's steps and ink lines. Corners: square for photos, covers and cards, pills for tags, chips and buttons,
-   circles for CDs and the profile. */
+   circles for CDs and the profile; the conversation's messages stay rounded bubbles (the owner's choice). */
 
 /* The three rounded faces (subsets by scripts/subset-fonts.py): Manjari for English, NanumSquareRound for Korean, M PLUS
    Rounded 1c for Japanese (declared on the Japanese pages only, scripts/journey-page.mjs). Three weights only, matched
@@ -75,7 +75,7 @@ img{max-width:100%}
 .jy-av{flex:none;width:var(--av,40px);height:var(--av,40px);border-radius:50%;background:var(--tt-holo);color:var(--tt-ink);display:grid;place-items:center}
 .jy-av svg{width:50%;height:auto;display:block}
 .jy-say{display:flex;align-items:flex-end;gap:12px;margin:0;max-width:min(540px,100%);font-size:clamp(18px,1.55vw,22px);line-height:1.5}
-.jy-bub{display:grid;margin:0;background:var(--tt-canvas);color:var(--tt-ink);border-radius:0;padding:14px 20px;outline:1px solid var(--tt-canvas-shade);outline-offset:-1px}
+.jy-bub{display:grid;margin:0;background:var(--tt-canvas);color:var(--tt-ink);border-radius:22px 22px 22px 6px;padding:14px 20px;outline:1px solid var(--tt-canvas-shade);outline-offset:-1px}
 .jy-bub>*{grid-area:1/1}
 .jy-tx b{display:block;font-size:18px}
 .jy-tx small{display:block;margin-top:4px;font-size:15px;line-height:1.6;color:var(--tt-ink-muted)}
