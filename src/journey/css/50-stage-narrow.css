@@ -89,3 +89,7 @@ html.jy-phone.jy-stage-mode .jy-lead h1{font-size:27px}
 html.jy-phone.jy-stage-mode .jy-lead{bottom:28px}
 /* (the words of a chapter wrap as on the 390px phone; 54-stage-conversation scales them to the phone's width) */
 html.jy-phone.jy-stage-mode [data-anchor]{max-width:334px!important}
+/* (on a phone only the CD in focus wears its badge: a neighbour's would sit under it, and its card says it anyway) */
+html.jy-phone.jy-stage-mode .jy-record:not(.list) .jy-sw.pin:not(.cur) .jy-pin{opacity:0}
+/* (the line lockup on a phone's home, the same drawing a little smaller, so it keeps clear of the language switch) */
+html.jy-phone.jy-stage-mode .jy-wm{height:22px;margin-left:-20px}

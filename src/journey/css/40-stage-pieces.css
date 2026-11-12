@@ -39,7 +39,7 @@
 .jy-towork:active{transform:scale(.97)}
 .jy-towork:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .jy-ink .jy-towork{background:rgba(20,28,48,.6);border-color:rgba(255,255,255,.18);color:var(--tt-on-ink)}
-.jy-narrow.jy-stage-mode .jy-towork{left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));translate:-50% 0;height:36px}
+.jy-narrow.jy-stage-mode .jy-towork{left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));translate:-50% 0;height:36px;white-space:nowrap} /* (set from the middle, it would otherwise wrap at half the screen) */
 /* the lock screen's enter, asked for again when someone tries to scroll past it */
 .jy-nudge .jy-na{animation:jy-nudge .6s var(--tt-spring)}
 @keyframes jy-nudge{30%{transform:scale(1.18)}60%{transform:scale(.96)}}
@@ -65,7 +65,7 @@
 /* the player: fixed beside the mark on wide screens, at the bottom on phones */
 .jy-np{position:fixed;z-index:58;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 7px;border-radius:999px;background:var(--tt-ink);color:var(--tt-on-ink);line-height:1.3;max-width:calc(100vw - 32px)}
 .jy-stage-mode.jy-np-on .jy-wm{visibility:hidden}
-.jy-stage-mode .jy-np{left:calc(max(16px,env(safe-area-inset-left,0px)) + 56px);top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;transform:none;animation:jy-arrive .6s var(--tt-spring)}
+.jy-stage-mode .jy-np{left:calc(max(16px,env(safe-area-inset-left,0px)) + 56px);top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;transform:none;animation:jy-arrive .6s var(--tt-spring);z-index:1100}
 .jy-np-play{position:relative;flex:none;display:flex;align-items:center;gap:8px;height:38px;padding:0 4px 0 0;border:0;border-radius:999px;background:none;color:var(--tt-on-ink);cursor:pointer}
 .jy-np-play svg{flex:none}
 /* (what is playing: its cover, square as a cover is) */

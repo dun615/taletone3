@@ -80,7 +80,7 @@ function frameLoop(now) {
 
   // ---- canvas ----
   ctx.clearRect(0, 0, W, H);
-  if (inRecord) drawCurrent(lr);
+  if (inRecord) { drawCurrent(lr); veilCurrent(lr); }
   else if (ld > 0 && ld < 0.4) { const fr = frame.getBoundingClientRect(); drawGroove(ld, fr.width / 234 / ((2 * RR) / 192), fr.left + fr.width / 2, fr.top + fr.height / 2); }
   grooveSpin = ld > 0 && ld < 1 ? grooveSpin + dt * 0.9 : 0;
   if (le > 0.15) drawTrail(le, 1);
@@ -92,7 +92,8 @@ function frameLoop(now) {
     drawWorld(worldA * (pf.z2 != null ? 1 - (pf.f || 0) : 1));
   }
   // (the line's place in the whole page, while it is drawing a world and no phone is passing)
-  if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
+  // (not on a phone, where the pen's tip is under the head of the reading spot and the number would sit on it)
+  if (worldA > 0 && u >= CH.tale[0] && u < CH.record[0] && !passing && !PHONE && !html.classList.contains('jy-held')) drawCoord(u, lineRGB, worldA);
   placeToWork(u);
 }
 function resize() {
