@@ -99,10 +99,11 @@ Joined in order, so a later part wins where two overlap: `00-base` (the faces, t
 `60-record-tabs` (shelf, history, detail credits), `70-chat-room`, `80-tablet` (an upright tablet, shown to a room).
 
 The design system (TALETONE's, its source the design system artifact) in short: the face is the phone (its back is
-the designer's drawing); Paper is the ground, ink the words; Ink only for the moment of going in and the dark worlds;
-the CD light (`--tt-holo`) is the one accent, only inside a clear shape; a work's colours stay inside the phone's
-screen and on its CD; the CD only in the discography; no shadows; square cards, pill controls, round CDs; three
-faces in three weights.
+the designer's drawing); Paper is the ground, ink the words; Ink for the moment of going in, the dark worlds and the
+inquiry (its form in the Ink theme's colours); the CD light (`--tt-holo`) is the one accent, only inside a clear shape;
+a work's colours stay inside the phone's screen and on its CD; the CD only in the discography; no shadows; square
+cards, rounded message bubbles, pill controls, round CDs (the case's request shows its sender's face); three faces in
+three weights.
 
 ## Common changes
 

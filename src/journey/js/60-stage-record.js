@@ -31,6 +31,8 @@ const RISE = 1.2;
 // (the top of the work's card on a phone, read again only when the card's words change or the screen does)
 let cardTop = null;
 const cardTopNow = () => (cardTop == null ? (cardTop = readout.getBoundingClientRect().top || H - 212) : cardTop);
+// (and again whenever the card changes height: its Play becoming Pause can take another row)
+if (window.ResizeObserver) new ResizeObserver(() => { cardTop = null; }).observe(readout);
 function buildCurrent() {
   // (a tablet held upright gets a record as big as its width allows, above its card)
   const TAB = NARROW && W >= 700;
@@ -41,12 +43,13 @@ function buildCurrent() {
   // from that room, the whole of it in the middle of it, the CD in focus at its bottom; see placeCurrent)
   let phoneFit = null;
   if (PHONE) {
-    const top = Math.max(tabsEl.getBoundingClientRect().bottom || 0, fbtn.getBoundingClientRect().bottom || 0, 70 * PZ) + 10 * PZ;
+    // (under the tabs, the row the player and the filter take: 106px down, 52px high, on the 390px layout)
+    const top = Math.max(tabsEl.getBoundingClientRect().bottom || 0, fbtn.getBoundingClientRect().bottom || 0, (106 + 52) * PZ) + 12 * PZ;
     const room = cardTopNow() - 18 * PZ - cdRead() - top, r = clamp(room / RISE, W * 0.2, W * 0.42);
-    phoneFit = { r, lift: 18 * PZ + Math.max(0, room - r * RISE) / 2 };
+    phoneFit = { r, lift: 18 * PZ + Math.max(0, room - r * RISE) / 2, veil: top };
   }
   if (phoneFit) Rf = phoneFit.r;
-  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1, focus: focusAngle(), lift: phoneFit ? phoneFit.lift : 26, cd: cdRead() };
+  cur = { cx: NARROW ? W / 2 : W * recX(), cy: cy0, cy0, F: Rf * VIEW, size, Rf, Rf0: Rf, merge: 0, far: FAR, fade: 1, focus: focusAngle(), lift: phoneFit ? phoneFit.lift : 26, cd: cdRead(), veil: phoneFit ? phoneFit.veil : null };
   // where the staff begins on screen when the record opens: the world's line comes in there along the way the
   // staff leaves it. The staff is turned so its head sits upper right, and turns back as the camera dives in.
   { const c0 = -VIEW - 2.2, r0 = cur.focus - ((c0 + VIEW) / DZ) * TURN, at = (z) => { const a = (z / DZ) * TURN + r0 + cur.off, r = Rf * shrink(z - c0); return [W / 2 + Math.cos(a) * r, cur.cy0 + Math.sin(a) * r]; };
@@ -118,7 +121,10 @@ function placeCurrent(lr) {
     let sc2 = Math.pow(VIEW / p[2], 0.8) * (li.classList.contains('pin') ? 1.3 : 1);
     // (the work in focus grows to a CD of 165px or more, where its hub and hole read)
     sc2 = Math.max(sc2, lerp(sc2, cur.cd / cur.size, clamp(1 - Math.abs(i - k))));
-    const a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
+    let a = clamp((p[2] - VIEW * 0.72) / (VIEW * 0.22)) * clamp((FAR - p[2]) / 5) * clamp((cur.zMax - i * DZ) / 0.5);
+    // (on a phone, a work whose CD would reach up into the row of the tabs, the player and the filter fades out
+    // before it gets there; the one in focus never does)
+    if (cur.veil != null) a *= Math.max(clamp((p[1] - (cur.size / 2) * sc2 - cur.veil) / (28 * PZ) + out * 40), clamp(1 - Math.abs(i - k)));
     li.style.visibility = a > 0.02 ? 'visible' : 'hidden';
     li.style.transform = `translate(${p[0]}px,${p[1]}px) scale(${sc2})`;
     // (a featured work's badge keeps its own size however large its CD is drawn)
@@ -203,6 +209,16 @@ function drawCurrent(lr, lineA = 1) {
     }
   }
 }
+// (on a phone the staff, like the works on it, fades out under the row of the tabs, the player and the filter; the
+// canvas holds only the record when this runs, so only the record is wiped; as the record is left it lets go)
+function veilCurrent(lr) {
+  if (!cur || cur.veil == null || recordEl.classList.contains('list')) return;
+  const y = cur.veil - ease((lr - 0.91) / 0.09) * H, f = 28 * PZ; if (y <= 0) return;
+  const g = ctx.createLinearGradient(0, y, 0, y + f); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.save(); ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, y); ctx.fillStyle = g; ctx.fillRect(0, y, W, f);
+  ctx.restore();
+}
 // Done: the groove, now where the record is, gives way to the record itself as it goes into the phone (sc: how
 // much the record has shrunk, cx/cy: its centre)
 let grooveSpin = 0;
@@ -218,6 +234,8 @@ function drawGroove(ld, sc, cx, cy) {
 function drawTrail(le, A) {
   // (on a phone the phone leaves before the form shows, so the line sets out sooner, while it is still there)
   const pr = ease((le - (NARROW ? 0.16 : 0.33)) / 0.2); if (pr <= 0) return;
+  // (in the paper's ink, light on the inquiry's Ink)
+  const C = html.classList.contains('jy-ink') ? '244,244,252' : INK;
   const tg = [formProject, fopen].find((e) => e && e.offsetParent !== null && e.getBoundingClientRect().width > 0); if (!tg) return;
   const fr = frame.getBoundingClientRect(), r = tg.getBoundingClientRect(), field = tg.id === 'jy-f-project';
   const P0 = [fr.left + fr.width / 2, fr.top + fr.height / 2], P2 = field ? [r.right, r.bottom - 0.5] : [r.left + 22, r.top - 5], P3 = field ? [r.left, r.bottom - 0.5] : P2;
@@ -241,7 +259,7 @@ function drawTrail(le, A) {
   ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   let tip = pts[0];
   const run = (i0, i1, a) => {
-    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${INK},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
+    if (a <= 0 || i1 <= i0 || end <= L[i0]) return; ctx.strokeStyle = `rgba(${C},${0.9 * a * A})`; ctx.beginPath(); ctx.moveTo(pts[i0][0], pts[i0][1]);
     for (let i = i0 + 1; i <= i1; i++) { if (L[i] <= end) { ctx.lineTo(pts[i][0], pts[i][1]); continue; } const f = (end - L[i - 1]) / (L[i] - L[i - 1] || 1); ctx.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); break; }
     ctx.stroke();
   };
@@ -250,7 +268,7 @@ function drawTrail(le, A) {
   // the pen tip; once there, it blinks like a caret, until the visitor starts writing
   const writing = form.contains(document.activeElement);
   const al = pr < 1 ? 1 : writing ? 0 : reduce ? 1 : 0.35 + 0.65 * (0.5 + 0.5 * Math.cos(T * 4));
-  if (al > 0) { ctx.fillStyle = `rgba(${INK},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (al > 0) { ctx.fillStyle = `rgba(${C},${al * A})`; ctx.beginPath(); ctx.arc(tip[0], tip[1], 3.5, 0, Math.PI * 2); ctx.fill(); }
 }
 function showReadout(i) {
   cardTop = null;
@@ -284,7 +302,7 @@ function readoutFacts(w) {
   $('#jy-ro-r').textContent = makingLine((t && t.roles && t.roles.length ? t.roles : w.roles));
 }
 function syncReadout() {
-  if (recShown < 0) return;
+  if (recShown < 0 || !items[recShown]) return;
   const w = bySlug[items[recShown].dataset.slug], p = isPlaying(w.slug);
   readoutFacts(w);
   $('#jy-ro-play').textContent = p ? COPY.pause : COPY.listen;
@@ -292,8 +310,10 @@ function syncReadout() {
   $$('#jy-ro-trk .jy-rtk').forEach((b, j) => b.setAttribute('aria-pressed', String(isPlaying(w.slug, j))));
 }
 listeners.add(syncReadout);
-$('#jy-ro-play').addEventListener('click', () => { const w = bySlug[items[recShown].dataset.slug]; if (isPlaying(w.slug)) pause(); else play(w); });
-$('#jy-ro-open').addEventListener('click', (e) => openStory(items[recShown].dataset.slug, e.currentTarget));
+// (the work the card shows, if it shows one yet)
+const cardWork = () => (recShown >= 0 && items[recShown] ? bySlug[items[recShown].dataset.slug] : null);
+$('#jy-ro-play').addEventListener('click', () => { const w = cardWork(); if (!w) return; if (isPlaying(w.slug)) pause(); else play(w); });
+$('#jy-ro-open').addEventListener('click', (e) => { const w = cardWork(); if (w) openStory(w.slug, e.currentTarget); });
 const step = (dir) => {
   let i = recShown;
   for (let n = 0; n < N; n++) { i = clamp(i + dir, 0, N - 1); if (lit(bySlug[items[i].dataset.slug]) || i === 0 || i === N - 1) break; }
