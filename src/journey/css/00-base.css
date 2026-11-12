@@ -95,6 +95,8 @@ img{max-width:100%}
 /* the name beside the mark: the one-line lockup laid over the mark (its own mark, its first 10.5%, falls exactly on
    the mark's and is left out), so the name comes and goes while the mark stays */
 .jy-wm{height:26.33px;width:auto;margin-left:-24px;clip-path:inset(0 0 0 11%);transition:opacity .4s}
+/* (on a phone's width the same drawing a little smaller, so it keeps clear of the language switch, with or without the script) */
+@media (max-width:480px){.jy-wm{height:22px;margin-left:-20px}}
 .jy-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(68px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 32px));padding:10px;border:1.5px solid var(--tt-ink);border-radius:0;background:var(--tt-canvas);opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top right;pointer-events:none;visibility:hidden;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s .2s}
 .jy-menu.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .15s,transform .2s var(--tt-ease-out),visibility 0s}
 .jy-menu ul{list-style:none;margin:0;padding:0}
