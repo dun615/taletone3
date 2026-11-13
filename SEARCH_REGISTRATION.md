@@ -22,7 +22,7 @@
 | --- | --- |
 | Home | https://taletone.net/ |
 | About | https://taletone.net/about/ |
-| Approach | https://taletone.net/approach/ |
+| Philosophy | https://taletone.net/approach/ |
 | Discography | https://taletone.net/discography/ |
 | Contact | https://taletone.net/contact/ |
 

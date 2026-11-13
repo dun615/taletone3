@@ -8,7 +8,7 @@ test("only the current five chapters are indexed", async () => {
   const seo = JSON.parse(await read("assets/data/seo-content.json"));
   assert.deepEqual(
     seo.pages.map((p) => p.label),
-    ["Home", "About", "Approach", "Discography", "Contact"],
+    ["Home", "About", "Philosophy", "Discography", "Contact"],
   );
   const sitemap = await read("sitemap.xml");
   assert.ok(!sitemap.includes("/news/"));
@@ -19,7 +19,7 @@ test("only the current five chapters are indexed", async () => {
 });
 
 test("all language metadata exposes exactly five navigation entries and 15 chapter-only sitemap URLs", async () => {
-  const labels = ["Home", "About", "Approach", "Discography", "Contact"];
+  const labels = ["Home", "About", "Philosophy", "Discography", "Contact"];
   for (const prefix of ["", "en/", "ja/"]) {
     const html = await read(prefix + "index.html");
     const data = JSON.parse(
