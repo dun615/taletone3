@@ -50,7 +50,7 @@ test('each chapter has its own h1, its own structured data, and the sitemap date
     const h1s = [];
     for (const route of ['', 'about/', 'approach/', 'discography/', 'contact/']) {
       const html = await readFile(`${prefix}${route}index.html`, 'utf8');
-      const h1 = [...html.matchAll(/<h1[^>]*>([^<]*)<\/h1>/g)].map((m) => m[1]);
+      const h1 = [...html.matchAll(/<h1[^>]*>(.*?)<\/h1>/gs)].map((m) => m[1].replace(/<[^>]+>/g, ' ').trim());
       assert.equal(h1.length, 1, `${prefix}${route}: one h1`); h1s.push(h1[0]);
       const ld = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
       if (route === 'discography/') {

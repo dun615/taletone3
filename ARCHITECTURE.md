@@ -62,11 +62,11 @@ the same name (the build's syntax check fails). Numbers leave room to insert a p
 | Part | What it does |
 |---|---|
 | `00-base` | The data, the timeline (`CH`, `TOTAL`), the things in each world (`OBJ`, `SET`), the pen's path (`PEN`), helpers. |
-| `10-audio` | One sound at a time; versions by language; volume. |
+| `10-audio` | One sound at a time; volume. A multilingual single plays all its language versions at once (decoded, started together to the sample) with only the chosen one heard, so switching language never breaks the song; `audio` is the one face the rest of the page reads. |
 | `14-dialogs` | Focus stays inside a dialog; Esc closes; focus returns. |
 | `20-detail` | A work opened: video or cover, facts, credits, versions, tracks, covers. |
 | `22-player` | The player that follows what is playing. |
-| `24-profile`, `26-chapter-menu`, `28-filters` | The profile sheet, the chapter list, the discography's filters. |
+| `24-profile`, `26-chapter-menu`, `28-filters` | The profile sheet, the chapter list (and the language switch, which keeps the chapter, the open work or profile and the place in the story; 90-start takes it up), the discography's filters. |
 | `30-inquiry` | The form (the design system's FormField): checks with the error under its field, sending (Web3Forms), the result in one sentence. |
 | `32-shelf-and-go` | Sound Engineering and ETC cards; `go()`, moving to a chapter from any link. |
 | `40-stage-setup` … `46-stage-phone-ui` | The stage's canvas and scroll track, the entry (`ENTER`: glitch, dark, points, drawn in), shared state, phone sheets. |

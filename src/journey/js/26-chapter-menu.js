@@ -11,3 +11,15 @@ $$('[data-go]').forEach((a) => a.addEventListener('click', (e) => {
 $('.jy-mark').addEventListener('click', (e) => { e.preventDefault(); try { history.replaceState(null, '', BASE + '/'); } catch (_) {} go('pro'); });
 
 $$('[data-profile]').forEach((b) => b.addEventListener('click', () => openProfile(b)));
+// Another language keeps the visitor where they are: the same chapter's address in that language, the work or the
+// profile that is open (its ?work= or ?profile), and the very place in the story (handed over for the next page to
+// take up: 90-start)
+const ROUTE_OF = { pro: '/', tale: '/about/', tone: '/approach/', record: '/discography/', epi: '/contact/' };
+$$('.jy-langtog a').forEach((a) => a.addEventListener('click', (e) => {
+  if (a.hasAttribute('aria-current')) { e.preventDefault(); return; }
+  const pre = (a.getAttribute('href').match(/^\/(en|ja)(?=\/)/) || [''])[0];
+  const u = U(), ch = railOf[chapterOf(u)] || 'pro', q = new URLSearchParams(location.search);
+  const keep = q.has('work') ? `?work=${encodeURIComponent(q.get('work'))}` : q.has('profile') ? '?profile' : '';
+  try { sessionStorage.setItem('tt_at', JSON.stringify({ u, t: Date.now() })); } catch (_) {}
+  e.preventDefault(); location.href = pre + ROUTE_OF[ch] + keep;
+}));

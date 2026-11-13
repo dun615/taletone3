@@ -52,7 +52,8 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const prefix = `${base}${lang.prefix}`; // e.g. /preview or /preview/en
   const href = (p) => `${prefix}${p}`;
   const member = merge((site.members || [])[0] || {}, lang.key);
-  // (a chapter's heading is the page's h1 on that chapter's own address, an h2 elsewhere)
+  // (a chapter's heading is the page's h1 on that chapter's own address, an h2 elsewhere; the inquiry's h1 is its own
+  // words on screen, contactTitle)
   const hx = (path, id, text) => { const h = route === path ? 'h1' : 'h2'; return `<${h} class="jy-chl" id="${id}">${esc(text)}</${h}>`; };
   const partners = (site.partners || []).map((p) => merge(p, lang.key));
   const logos = worksData.clientLogos || [];
@@ -209,11 +210,11 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 </section>
 
 <section class="jy-ch" data-ch="epi" id="contact" aria-labelledby="jy-h-epi">
-  ${hx('/contact/', 'jy-h-epi', route === '/contact/' ? c.rail.epi : labels[5])}
+  <h2 class="jy-chl" id="jy-h-epi">${esc(route === '/contact/' ? c.rail.epi : labels[5])}</h2>
   <div class="jy-voice" aria-live="polite">${bubble('jy-empty', lines(c.empty))}</div>
   <div class="jy-contact" id="jy-contact">
     <button class="jy-x jy-cclose" type="button" id="jy-cclose" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
-    <h3 class="jy-ct">${lines(c.contactTitle)}</h3>
+    ${route === '/contact/' ? `<h1 class="jy-ct">${lines(c.contactTitle)}</h1>` : `<h3 class="jy-ct">${lines(c.contactTitle)}</h3>`}
     <p class="jy-form-note">${esc(c.form.mailNote)}</p>
     <button type="button" class="jy-btn jy-fopen" id="jy-fopen" aria-controls="jy-form" aria-expanded="false">${esc(c.writeUs)}</button>
     <form class="jy-form" id="jy-form" novalidate>
