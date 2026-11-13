@@ -316,13 +316,19 @@ listeners.add(syncReadout);
 const cardWork = () => (recShown >= 0 && items[recShown] ? bySlug[items[recShown].dataset.slug] : null);
 $('#jy-ro-play').addEventListener('click', () => { const w = cardWork(); if (!w) return; if (isPlaying(w.slug)) pause(); else play(w); });
 $('#jy-ro-open').addEventListener('click', (e) => { const w = cardWork(); if (w) openStory(w.slug, e.currentTarget); });
+// (where the last step is headed: pressed again while the record still glides there, the next step goes on from it,
+// not from the work the card still shows on the way)
+let stepAim = -1;
 const step = (dir) => {
-  let i = recShown;
+  const from = stepAim >= 0 && performance.now() < navUntil ? stepAim : recShown;
+  let i = from;
   for (let n = 0; n < N; n++) { i = clamp(i + dir, 0, N - 1); if (lit(bySlug[items[i].dataset.slug]) || i === 0 || i === N - 1) break; }
-  goU(recordU(i));
-  // (while a song plays, the work stepped to plays: previous, next, and the arrow keys)
+  if (i === from) return;
+  stepAim = i; goU(recordU(i));
+  // (while a song plays, or is about to (a multilingual single still being fetched), the work stepped to plays:
+  // previous, next, and the arrow keys)
   const w = bySlug[items[i].dataset.slug];
-  if (i !== recShown && nowSlug && !audio.paused && sourceOf(w)) play(w);
+  if (nowSlug && isPlaying(nowSlug) && sourceOf(w)) play(w);
 };
 // a song that ends hands over to the next: an album's next track, then the next work on the staff the filter lights.
 // The record turns to it when the visitor is at the work that ended; anywhere else only the sound goes on.
