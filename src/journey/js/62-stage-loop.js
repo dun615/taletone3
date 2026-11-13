@@ -9,9 +9,11 @@ function syncInert() {
 }
 function frameLoop(now) {
   requestAnimationFrame(frameLoop);
+  if (!sized()) resize();
   sceneU = null; autoStep(now);
   const dt = Math.min(0.05, (now - last) / 1000 || 0); last = now; if (!reduce) T += dt;
   const u = sceneU != null ? sceneU : U();
+  if (frozenU == null) steadyU = u;
   const ch = chapterOf(u);
   mprog.style.transform = `scaleX(${clamp(u / TOTAL)})`;
   if (ch !== chapter) { chapter = ch; html.classList.toggle('jy-at-pro', ch === 'pro'); syncInert(); mchap.textContent = COPY.rail[railOf[ch]] || ''; if (ch !== 'record' && sheet === 'filters') setSheet(null); rail.forEach((a) => { if (a.dataset.go === railOf[ch]) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); }); }
@@ -97,6 +99,7 @@ function frameLoop(now) {
   placeToWork(u);
 }
 function resize() {
+  const keep = steadyU, first = !W;
   W = innerWidth; H = innerHeight; NARROW = W < 761 || H > W * 1.05; HZ = NARROW ? 0.38 : 0.46;
   html.classList.toggle('jy-narrow', NARROW);
   PHONE = NARROW && W < 700; PZ = PHONE ? clamp(W / 390, 0.8, 1.1) : 1;
@@ -104,7 +107,13 @@ function resize() {
   DPR = Math.min(NARROW ? 1.75 : 2, devicePixelRatio || 1);
   cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   buildWorld(); buildCurrent(); ANCHORS.forEach((a) => { a.w = 0; }); recShown = -1; cloud = null;
+  // (the page is as long as the screen is tall, so the same place is another scroll: go back to it, unless a scene
+  // drives the scroll or the story is held, which keep their own place)
+  scrollMax = -1;
+  if (!first && !auto && frozenU == null) { scrollTo({ top: topFor(keep), behavior: 'instant' }); lastU = keep; }
 }
+// (a screen of another pixel density, the same size: its canvas is drawn again)
+{ let mq = null; const watch = () => { if (mq) mq.removeEventListener('change', onDpr); mq = matchMedia(`(resolution: ${devicePixelRatio}dppx)`); mq.addEventListener('change', onDpr); }; function onDpr() { resize(); watch(); } watch(); }
 addEventListener('resize', resize);
 // the phone (its 접속) plays the entering scene from wherever the visitor is in the prologue (turning it over first)
 $('#jy-taphint').addEventListener('click', () => { if (U() < FLIP[1] - 0.02) playScene(FLIP, Math.max(U(), FLIP[0] + 0.001)); });
