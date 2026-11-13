@@ -16,7 +16,8 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderJourney } from './journey-page.mjs';
-import { journeyData } from './journey-data.mjs';
+import { execFileSync } from 'node:child_process';
+import { journeyData, journeyWorks, merge, plain } from './journey-data.mjs';
 import { renderLinkPage } from './link-page.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -89,16 +90,39 @@ function jsonLd(page, lang) {
     about: { '@id': `${rootUrl}#organization` },
   };
   const navigation = seo.pages.map((entry,index)=>({'@type':'SiteNavigationElement',position:index+1,name:entry.label,url:urlFor(lang,entry.path)}));
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [organization, website, webPage, ...navigation] }).replace(/</g, '\\u003c');
+  // the chapter's own subject: the discography lists the works (each opens at its own ?work= link), the about names
+  // the person (only what the page itself shows)
+  const own = [];
+  if (page.path === '/discography/') {
+    const abs = (p) => (/^https?:/.test(p) ? p : `${rootUrl}${String(p).replace(/^\//, '')}`);
+    own.push({ '@type': 'ItemList', '@id': `${urlFor(lang, page.path)}#works`, name: copy.title, itemListElement: journeyWorks(works, lang.key).map((w, i) => ({
+      '@type': 'ListItem', position: i + 1,
+      item: Object.fromEntries(Object.entries({
+        '@type': w.kind === 'album' ? 'MusicAlbum' : 'MusicRecording', name: w.title, url: `${urlFor(lang, page.path)}?work=${w.slug}`,
+        byArtist: w.artist ? { '@type': 'MusicGroup', name: w.artist } : null, datePublished: /^\d{4}\.\d{2}\.\d{2}$/.test(w.date) ? w.date.replace(/\./g, '-') : null,
+        image: w.image ? abs(w.image) : null, producer: { '@id': `${rootUrl}#organization` },
+      }).filter(([, v]) => v)),
+    })) });
+    webPage.mainEntity = { '@id': `${urlFor(lang, page.path)}#works` };
+  }
+  if (page.path === '/about/' && (site.members || [])[0]) {
+    const m = merge(site.members[0], lang.key);
+    own.push(Object.fromEntries(Object.entries({ '@type': 'Person', '@id': `${rootUrl}#producer`, name: plain(m.name), alternateName: m.aka ? plain(m.aka).replace(/^aka\s+/i, '') : null, jobTitle: plain(m.role || ''), worksFor: { '@id': `${rootUrl}#organization` }, url: `${urlFor(lang, page.path)}?profile`, sameAs: m.iglink ? [m.iglink] : null }).filter(([, v]) => v)));
+    webPage.mainEntity = { '@id': `${rootUrl}#producer` };
+  }
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': [organization, website, webPage, ...own, ...navigation] }).replace(/</g, '\\u003c');
 }
 
 const missingSlug = works.works.find((item) => !/^[a-z0-9-]+$/.test(item.slug || ''));
 if (missingSlug) throw new Error(`Every work needs a lowercase "slug": ${missingSlug.id || missingSlug.slotId}`);
 
+// (the date of the commit being built: every chapter is one page of one build, so they change together)
+const lastmod = (() => { try { return execFileSync('git', ['log', '-1', '--format=%cs'], { cwd: root, encoding: 'utf8' }).trim(); } catch (_) { return ''; } })();
 function sitemap() {
   const entry = (pathFor) => languages.map((lang) => [
     '  <url>',
     `    <loc>${baseUrl}${pathFor(lang)}</loc>`,
+    ...(lastmod ? [`    <lastmod>${lastmod}</lastmod>`] : []),
     ...languages.map((l) => `    <xhtml:link rel="alternate" hreflang="${l.html}" href="${baseUrl}${pathFor(l)}"/>`),
     `    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${pathFor(languages[0])}"/>`,
     '  </url>',

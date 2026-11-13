@@ -1,7 +1,7 @@
 /* A tablet held upright (html.jy-narrow, 700px and wider), often shown to a room: the first screen's words, the
    conversation, the record's card and the inquiry at sizes a room can read, at a reading width in the middle. */
 @media (min-width:700px){
-  .jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(32px,4.6vw,44px)}
+  .jy-narrow.jy-stage-mode .jy-lead .jy-tagline{font-size:clamp(32px,4.6vw,44px)}
   .jy-narrow.jy-stage-mode .jy-service{font-size:18px}
   .jy-narrow.jy-stage-mode .jy-taphint{height:54px;padding:0 26px 0 22px;font-size:17px}
   .jy-narrow.jy-stage-mode .jy-brand{display:flex;justify-content:center}

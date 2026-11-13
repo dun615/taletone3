@@ -26,11 +26,12 @@
 | Discography | https://taletone.net/discography/ |
 | Contact | https://taletone.net/contact/ |
 
-영어는 /en/, 일본어는 /ja/ 접두사를 씁니다. 사이트맵에는 다섯 챕터의 세 언어 주소만 들어갑니다(총 15개).
+영어는 /en/, 일본어는 /ja/ 접두사를 씁니다. 사이트맵에는 다섯 챕터의 세 언어 주소만 들어갑니다(총 15개). 각 주소에는 빌드한 커밋의 날짜가 `lastmod`로 들어갑니다. 각 챕터 페이지의 h1은 그 챕터 이름이고, 디스코그래피는 작품 목록(ItemList), 소개는 인물(Person)을 구조화 데이터로 가집니다.
 
 ## 종료하거나 옮긴 주소
 - /members/ → /about/, /story-types/와 /projects/ → /approach/, /works/ → /discography/, /preview/… → 같은 챕터: canonical과 즉시 이동(meta refresh와 JavaScript)으로 옮깁니다. GitHub Pages는 서버 301을 설정할 수 없으므로 301이라고 표기하지 않습니다.
-- 작품별 상세 페이지(/discography/<곡>/, /works/<곡>/), News, RSS: 종료했고 404로 응답합니다. 작품은 /discography/?work=<곡> 으로 열 수 있지만 색인 대상은 아닙니다.
+- 작품별 상세 페이지(/discography/<곡>/, /works/<곡>/), News, RSS: 종료했고 404로 응답합니다. 404 페이지가 방문자를 옮겨 줍니다: 옛 작품 주소는 /discography/?work=<곡>으로, 옛 소식 주소는 해당 작품이나 소개로 갑니다. 응답 코드는 404 그대로라서 검색엔진은 옛 주소를 색인에서 내립니다. 작품은 /discography/?work=<곡> 으로 열 수 있지만 색인 대상은 아닙니다.
+- Search Console의 「찾을 수 없음(404)」은 위 옛 주소들이라 정상입니다. 「NOINDEX 태그로 제외」는 옮긴 주소(/members/ 등)와 /preview/ 주소, 「적절한 표준 태그가 포함된 대체 페이지」는 ?work= 주소라 역시 정상입니다.
 - robots.txt는 아무것도 막지 않습니다. 크롤러가 옮긴 주소와 종료된 주소를 직접 확인할 수 있게 하기 위해서입니다.
 
 공식 안내:

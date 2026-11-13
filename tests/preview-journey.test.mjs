@@ -9,7 +9,7 @@ test('every page says whose site it is: the name in the top bar and on the first
     const html = await readFile(prefix + 'index.html', 'utf8');
     assert.ok(/<img class="jy-wm" src="\/assets\/logo\/lockup-line-ink\.svg"/.test(html), `${prefix}: the top bar names TALETONE MUSIC (its one-line lockup)`);
     assert.ok(/class="jy-brand"><img src="\/assets\/logo\/lockup-ink\.svg" alt="TALETONE MUSIC">/.test(html), `${prefix}: the first screen names TALETONE MUSIC (its lockup)`);
-    assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('<h1>'), `${prefix}: the name comes before the first words`);
+    assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('class="jy-tagline"'), `${prefix}: the name comes before the first words`);
     assert.ok(html.includes('content="index, follow"'));
   }
 });
@@ -40,4 +40,26 @@ test('the site is the journey: indexed, every chapter and every work in the docu
   const js = await readFile('assets/journey/journey.js', 'utf8');
   assert.ok(js.includes('api.web3forms.com/submit'), 'the inquiry is really sent');
   assert.ok(js.includes("matchMedia('(prefers-reduced-motion: reduce)')"));
+});
+
+test('each chapter has its own h1, its own structured data, and the sitemap dates them', async () => {
+  const sm = await readFile('sitemap.xml', 'utf8');
+  assert.equal((sm.match(/<url>/g) || []).length, 15);
+  assert.equal((sm.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g) || []).length, 15, 'every address in the sitemap has its date');
+  for (const prefix of ['', 'en/', 'ja/']) {
+    const h1s = [];
+    for (const route of ['', 'about/', 'approach/', 'discography/', 'contact/']) {
+      const html = await readFile(`${prefix}${route}index.html`, 'utf8');
+      const h1 = [...html.matchAll(/<h1[^>]*>([^<]*)<\/h1>/g)].map((m) => m[1]);
+      assert.equal(h1.length, 1, `${prefix}${route}: one h1`); h1s.push(h1[0]);
+      const ld = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
+      if (route === 'discography/') {
+        const list = ld.find((x) => x['@type'] === 'ItemList');
+        assert.ok(list && list.itemListElement.length > 30, `${prefix}${route}: the works in the structured data`);
+        assert.ok(list.itemListElement.every((e) => e.item.name && e.item.url.includes('?work=')), 'each work named, at its own link');
+      }
+      if (route === 'about/') assert.ok(ld.some((x) => x['@type'] === 'Person'), `${prefix}${route}: the person in the structured data`);
+    }
+    assert.equal(new Set(h1s).size, 5, `${prefix}: the five chapters' h1 differ`);
+  }
 });
