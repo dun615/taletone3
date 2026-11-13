@@ -8,7 +8,7 @@ GitHub Pages static site: https://taletone.net
 | --- | --- | --- |
 | Home | / | /en/, /ja/ |
 | About | /about/ | /en/about/, /ja/about/ |
-| Philosophy | /approach/ | /en/approach/, /ja/approach/ |
+| Approach | /approach/ | /en/approach/, /ja/approach/ |
 | Discography | /discography/ | /en/discography/, /ja/discography/ |
 | Contact | /contact/ | /en/contact/, /ja/contact/ |
 
