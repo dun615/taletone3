@@ -1,7 +1,7 @@
 /* ---- the stage on a phone or an upright screen (html.jy-narrow, set by the script) ----
    The scene keeps to the upper part, the words to the bottom; the record sits in the middle above its card. */
 .jy-narrow.jy-stage-mode .jy-lead{left:50%;top:auto;bottom:max(28px,5vh);transform:translateX(-50%);width:calc(100% - 40px);text-align:center;align-items:center}
-.jy-narrow.jy-stage-mode .jy-lead h1{font-size:clamp(24px,7vw,32px)}
+.jy-narrow.jy-stage-mode .jy-lead .jy-tagline{font-size:clamp(24px,7vw,32px)}
 .jy-narrow.jy-stage-mode .jy-phone{top:34%}
 .jy-narrow.jy-stage-mode [data-anchor]{max-width:min(520px,calc(100vw - 56px))!important;font-size:16px}
 .jy-narrow.jy-stage-mode .jy-say{left:16px;right:auto;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:min(520px,calc(100vw - 32px));z-index:30}
@@ -85,7 +85,7 @@ html.jy-held .jy-top{visibility:hidden}
    work's card, the player, the way to the works, the first screen's words, the inquiry */
 html.jy-phone.jy-stage-mode .jy-top,html.jy-phone.jy-stage-mode .jy-tabs,html.jy-phone.jy-stage-mode .jy-fbtn,html.jy-phone.jy-stage-mode .jy-readout,html.jy-phone.jy-stage-mode .jy-np,html.jy-phone.jy-stage-mode .jy-towork,html.jy-phone.jy-stage-mode .jy-lead,html.jy-phone.jy-stage-mode .jy-contact{zoom:var(--pz,1)}
 /* (sizes that followed the screen's width are the 390px phone's, so the scale is not taken twice) */
-html.jy-phone.jy-stage-mode .jy-lead h1{font-size:27px}
+html.jy-phone.jy-stage-mode .jy-lead .jy-tagline{font-size:27px}
 html.jy-phone.jy-stage-mode .jy-lead{bottom:28px}
 /* (the words of a chapter wrap as on the 390px phone; 54-stage-conversation scales them to the phone's width) */
 html.jy-phone.jy-stage-mode [data-anchor]{max-width:334px!important}

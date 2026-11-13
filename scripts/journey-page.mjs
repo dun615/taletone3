@@ -52,6 +52,8 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   const prefix = `${base}${lang.prefix}`; // e.g. /preview or /preview/en
   const href = (p) => `${prefix}${p}`;
   const member = merge((site.members || [])[0] || {}, lang.key);
+  // (a chapter's heading is the page's h1 on that chapter's own address, an h2 elsewhere)
+  const hx = (path, id, text) => { const h = route === path ? 'h1' : 'h2'; return `<${h} class="jy-chl" id="${id}">${esc(text)}</${h}>`; };
   const partners = (site.partners || []).map((p) => merge(p, lang.key));
   const logos = worksData.clientLogos || [];
   const pageTitle = plain(seoPage.title);
@@ -118,7 +120,7 @@ ${grain}
   <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${PHONE_BACK}" alt="" decoding="async"></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="none" stroke="#141c30" stroke-width=".9" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b><em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span></button>
   <div class="jy-lead" id="jy-lead">
     <p class="jy-brand"><img src="${lockInk}" alt="TALETONE MUSIC"></p>
-    <h1>${esc(merge(site.home, lang.key).tagline)}</h1>
+    ${route === '/' ? '<h1 class="jy-tagline">' : '<p class="jy-tagline">'}${esc(merge(site.home, lang.key).tagline)}${route === '/' ? '</h1>' : '</p>'}
     <p class="jy-service">${esc(c.service)}</p>
     <button class="jy-taphint" id="jy-taphint" type="button"><i aria-hidden="true"></i><span>${esc(c.tapHint)}</span></button>
     <p class="jy-cta"><a class="jy-cta-link" href="${href('/discography/')}" data-go="record">${esc(c.listenNow)}</a><a class="jy-cta-link" href="${href('/contact/')}" data-go="epi">${esc(merge(site.home, lang.key).contactCtaLabel)}</a></p>
@@ -126,7 +128,7 @@ ${grain}
 </section>
 
 <section class="jy-ch" data-ch="tale" id="intro" aria-labelledby="jy-h-tale">
-  <h2 class="jy-chl" id="jy-h-tale">${esc(c.rail.tale)}</h2>
+  ${hx('/about/', 'jy-h-tale', c.rail.tale)}
   <div class="jy-chat jy-voice" aria-live="polite">
     ${bubble('jy-hello', lines(c.intro.hello))}
     <div class="jy-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
@@ -136,7 +138,7 @@ ${grain}
 </section>
 
 <section class="jy-ch" data-ch="tone" id="approach" aria-labelledby="jy-h-tone">
-  <h2 class="jy-chl" id="jy-h-tone">${esc(c.rail.tone)}</h2>
+  ${hx('/approach/', 'jy-h-tone', c.rail.tone)}
   <div class="jy-chat jy-trail jy-voice" aria-live="polite">
     ${bubble('jy-creed', lines(c.intro.creed))}
 ${c.steps.map((s, i) => `    ${bubble(`jy-step-${i}`, `<span class="jy-step-l">${esc(s.label)}</span><b>${esc(s.title)}</b><small>${esc(s.text)}</small>`, ' jy-step')}`).join('\n')}
@@ -166,7 +168,7 @@ ${c.caseStudy ? (() => {
 </section>
 
 <section class="jy-ch" data-ch="record" id="discography" aria-labelledby="jy-h-record">
-  <h2 class="jy-chl" id="jy-h-record">${esc(labels[4])}</h2>
+  ${hx('/discography/', 'jy-h-record', route === '/discography/' ? c.rail.record : labels[4])}
   <div class="jy-voice" aria-live="polite">${bubble('jy-found', lines(c.found))}</div>
   <p class="jy-hint" id="jy-hint">${esc(c.turnHint)}</p>
   <button type="button" class="jy-fbtn" id="jy-fbtn" aria-expanded="false" aria-controls="jy-filters">${esc(c.filter)}</button>
@@ -207,7 +209,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 </section>
 
 <section class="jy-ch" data-ch="epi" id="contact" aria-labelledby="jy-h-epi">
-  <h2 class="jy-chl" id="jy-h-epi">${esc(labels[5])}</h2>
+  ${hx('/contact/', 'jy-h-epi', route === '/contact/' ? c.rail.epi : labels[5])}
   <div class="jy-voice" aria-live="polite">${bubble('jy-empty', lines(c.empty))}</div>
   <div class="jy-contact" id="jy-contact">
     <button class="jy-x jy-cclose" type="button" id="jy-cclose" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>

@@ -1,6 +1,6 @@
 /* first screen: what we do and the two ways in, beside the phone */
 .jy-lead{margin:72px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
-.jy-lead h1{margin:0;font-weight:700;font-size:clamp(26px,3vw,42px);line-height:1.3;text-wrap:balance;letter-spacing:var(--tt-track-head)}
+.jy-lead .jy-tagline{margin:0;font-weight:700;font-size:clamp(26px,3vw,42px);line-height:1.3;text-wrap:balance;letter-spacing:var(--tt-track-head)}
 .jy-service{margin:0;font-size:16px;color:var(--tt-ink-muted)}
 /* (the phone is the one thing to do on the first screen; listening and the inquiry are quiet links under it) */
 .jy-cta{display:flex;flex-wrap:wrap;gap:6px 20px;margin:4px 0 0}
