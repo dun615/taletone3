@@ -3,10 +3,10 @@ const mchap = $('#jy-mchap'), mprog = $('#jy-mprog'), fbtn = $('#jy-fbtn'), filt
 const contactEl = $('#jy-contact'), fopen = $('#jy-fopen');
 mchap.setAttribute('aria-expanded', 'false');
 mchap.addEventListener('click', (e) => { e.stopPropagation(); setMenu(!menu.classList.contains('open')); });
-let sheet = null, heldY = 0, holds = 0;
+let sheet = null, heldU = 0, holds = 0;
 function holdStory(on) {
-  if (on) { if (holds++ === 0) { heldY = scrollY; frozenU = U(); html.classList.add('jy-held'); } return; }
-  if (holds > 0 && --holds === 0) { html.classList.remove('jy-held'); frozenU = null; scrollTo(0, heldY); }
+  if (on) { if (holds++ === 0) { frozenU = U(); heldU = frozenU; html.classList.add('jy-held'); } return; }
+  if (holds > 0 && --holds === 0) { html.classList.remove('jy-held'); frozenU = null; scrollMax = -1; scrollTo({ top: topFor(heldU), behavior: 'instant' }); lastU = heldU; }
 }
 // one sheet at a time: the filters, or the inquiry (which also holds the page still, so typing never scrolls the story)
 function setSheet(which, opener) {
@@ -37,6 +37,9 @@ if (window.ResizeObserver) new ResizeObserver(() => { scrollMax = -1; }).observe
 addEventListener('resize', () => { scrollMax = -1; });
 const U = () => { if (frozenU != null) return frozenU; const m = rangeNow(); return m > 0 ? (scrollY / m) * TOTAL : 0; };
 const topFor = (u) => (u / TOTAL) * rangeNow();
+// (the place in the story as last drawn: a window changing size, moved to another screen, goes back to it, 62-stage-loop)
+let steadyU = 0;
+const sized = () => innerWidth === W && innerHeight === H;
 // a jump (rail, menu, the record's arrows) passes through scene changes without playing them
 let navUntil = 0;
 const goU = (u, smooth = true) => { navUntil = performance.now() + 4000; auto = null; hold = null; if (u >= 1) entered = true; scrollTo({ top: topFor(u), behavior: smooth && !reduce ? 'smooth' : 'auto' }); };

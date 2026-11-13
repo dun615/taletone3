@@ -19,9 +19,9 @@
 
 export const WORK_KEYS = ['slug', 'artist', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio',
   'fit', 'posX', 'posY', 'versions', 'tracks', 'kind', 'titleTrackIndex', 'youtube', 'format',
-  'translations', 'roles', 'field', 'pinned', 'officialCovers', 'origin', 'titles'];
+  'translations', 'roles', 'field', 'pinned', 'officialCovers', 'origin', 'titles', 'cdZoom'];
 export const TRACK_KEYS = ['title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio', 'fit', 'posX',
-  'posY', 'versions', 'youtube', 'translations', 'roles', 'titles'];
+  'posY', 'versions', 'youtube', 'translations', 'roles', 'titles', 'cdZoom'];
 export const KINDS = ['single', 'multilingual', 'album'];
 export const LANGS = ['kr', 'en', 'jp'];
 
@@ -95,6 +95,8 @@ export function checkWorks(works, exists) {
     if (!/^\d{4}\.\d{2}\.\d{2}$/.test(w.date || '')) err(`${name}: date must be YYYY.MM.DD`);
     if (!w.image || !w.thumb) err(`${name}: needs image and thumb (the small cover, *-w320.webp)`);
     if (!LANGS.includes(w.origin)) err(`${name}: origin must be where it was made (${LANGS.join(', ')})`);
+    // (cdZoom: how much larger the cover is drawn on its CD, for a cover with a frame or a plain border at its edge)
+    for (const it of [w, ...(w.tracks || [])]) if (it.cdZoom != null && !(typeof it.cdZoom === 'number' && it.cdZoom >= 1 && it.cdZoom <= 1.5)) err(`${name}: cdZoom must be a number from 1 to 1.5`);
     checkTitles(w, name, err, w.origin);
     for (const [where, p] of mediaPaths(w)) if (!exists(p)) err(`${where}: file ${p} does not exist`);
     const tracks = w.tracks || [];

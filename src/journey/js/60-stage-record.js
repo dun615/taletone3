@@ -73,6 +73,7 @@ items.forEach((li, i) => {
     b.innerHTML = '<span class="jy-vy"><img alt="" loading="lazy" decoding="async"></span><i></i><span class="jy-trk-t"></span>';
     // (the art loads when the album opens, not with the page)
     b.querySelector('img').dataset.src = /^https?:/.test(t.thumb || '') ? t.thumb : ASSET + (t.thumb || w.thumb);
+    if (t.cdZoom > 1) b.querySelector('.jy-vy').style.setProperty('--z', t.cdZoom);
     // (each track on its own CD, from its own art)
     b.querySelector('i').textContent = String(j + 1).padStart(2, '0'); b.querySelector('.jy-trk-t').textContent = t.title;
     b.addEventListener('click', () => (isPlaying(w.slug, j) ? pause() : play(w, j)));
@@ -273,6 +274,7 @@ function drawTrail(le, A) {
 function showReadout(i) {
   cardTop = null;
   const w = bySlug[items[i].dataset.slug];
+  if (multi(w)) stemFetch(w);
   items.forEach((li, j) => li.classList.toggle('cur', j === i));
   $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
   $('#jy-ro-c').textContent = w.tracks && w.tracks.length > 1 ? ` · ${w.tracks.length}${LANG === 'en' ? ' ' : ''}${COPY.songs}` : '';
@@ -318,6 +320,9 @@ const step = (dir) => {
   let i = recShown;
   for (let n = 0; n < N; n++) { i = clamp(i + dir, 0, N - 1); if (lit(bySlug[items[i].dataset.slug]) || i === 0 || i === N - 1) break; }
   goU(recordU(i));
+  // (while a song plays, the work stepped to plays: previous, next, and the arrow keys)
+  const w = bySlug[items[i].dataset.slug];
+  if (i !== recShown && nowSlug && !audio.paused && sourceOf(w)) play(w);
 };
 // a song that ends hands over to the next: an album's next track, then the next work on the staff the filter lights.
 // The record turns to it when the visitor is at the work that ended; anywhere else only the sound goes on.

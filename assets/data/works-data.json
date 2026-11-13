@@ -342,6 +342,7 @@
       "fit": "cover",
       "posX": "50%",
       "posY": "50%",
+      "cdZoom": 1.12,
       "versions": [],
       "tracks": [],
       "kind": "single",
@@ -1939,7 +1940,7 @@
         }
       ],
       "kind": "album",
-      "titleTrackIndex": 0,
+      "titleTrackIndex": 3,
       "youtube": "https://www.youtube.com/watch?v=zkbG0DDjncY",
       "format": "Album",
       "translations": {
@@ -2431,8 +2432,8 @@
       "type": "1st GXG 게임음악 경연대회 금상",
       "description": "",
       "credits": "총괄 프로듀싱 : N4ML\n작곡 : N4ML\n편곡 : N4ML\n믹싱 : N4ML",
-      "image": "assets/works/images/run-into-galaxy-art-1024.webp",
-      "thumb": "assets/works/images/run-into-galaxy-art-1024-w320.webp",
+      "image": "assets/works/images/run-into-galaxy-band-1024.webp",
+      "thumb": "assets/works/images/run-into-galaxy-band-1024-w320.webp",
       "audio": "assets/works/audio/run-into-galaxy.mp3",
       "fit": "cover",
       "posX": "50%",

@@ -96,7 +96,7 @@ addEventListener('keydown', (e) => {
 addEventListener('keydown', (e) => { if ((auto || hold) && [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key) && !e.target.closest('input,textarea,select')) e.preventDefault(); });
 addEventListener('scrollend', () => { if (navUntil && !auto) { navUntil = 0; lastU = U(); } });
 addEventListener('scroll', () => {
-  if (auto) return;
+  if (auto || !sized()) return;
   const u = U();
   if (hold) { if (Math.abs(u - hold.u) > 0.002) scrollTo({ top: topFor(hold.u), behavior: 'instant' }); return; }
   if (performance.now() < navUntil || frozenU != null) { lastU = u; if (u >= ENTER[1] - 0.01) entered = true; return; }

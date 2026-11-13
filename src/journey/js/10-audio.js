@@ -67,12 +67,19 @@ function stemStart(w, at) {
   stem.playing = true; stemLevels(w); tell('play');
   clearInterval(stem.tick); stem.tick = setInterval(() => tell('timeupdate'), 250);
 }
-// fetch and decode every version of a work (once; the last two works are kept)
-const stemCache = new Map();
+// every version of a work: fetched as soon as its card shows (stemFetch), decoded when it first plays (once; the last
+// two works are kept of each)
+const stemFiles = new Map(), stemCache = new Map();
+const keepTwo = (m) => { if (m.size > 2) m.delete(m.keys().next().value); };
+function stemFetch(w) {
+  if (!stemFiles.has(w.slug)) { stemFiles.set(w.slug, Promise.all((w.versions || []).map((x) => fetch(ASSET + x.audio).then((r) => r.arrayBuffer()).then((b) => [x.language, b]))).catch((e) => { stemFiles.delete(w.slug); throw e; })); keepTwo(stemFiles); }
+  return stemFiles.get(w.slug);
+}
 function stemLoad(w) {
   if (!stemCache.has(w.slug)) {
-    stemCache.set(w.slug, Promise.all((w.versions || []).map((x) => fetch(ASSET + x.audio).then((r) => r.arrayBuffer()).then((b) => new Promise((ok, no) => actx.decodeAudioData(b, ok, no))).then((buf) => [x.language, buf]))).then(Object.fromEntries));
-    if (stemCache.size > 2) stemCache.delete(stemCache.keys().next().value);
+    // (decoding takes the bytes it is given, so it is given a copy and the fetched ones stay for later)
+    stemCache.set(w.slug, stemFetch(w).then((files) => Promise.all(files.map(([lang, b]) => new Promise((ok, no) => actx.decodeAudioData(b.slice(0), ok, no)).then((buf) => [lang, buf])))).then(Object.fromEntries).catch((e) => { stemCache.delete(w.slug); throw e; }));
+    keepTwo(stemCache);
   }
   return stemCache.get(w.slug);
 }
