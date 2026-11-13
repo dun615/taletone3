@@ -45,7 +45,7 @@ const html = document.documentElement, body = document.body;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // with script, every screen gets the stage; narrow and upright screens get its narrow layout (NARROW, 44-stage-state)
 const LANG = body.dataset.lang || 'kr';
-const BASE = body.dataset.base || '/preview';
+const BASE = body.dataset.base || '';
 const ASSET = body.dataset.assets || '/';
 const bySlug = Object.fromEntries(WORKS.map((w) => [w.slug, w]));
 const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));

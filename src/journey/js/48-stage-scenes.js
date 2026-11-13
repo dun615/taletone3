@@ -54,7 +54,14 @@ function runPath(pts) { // pts: [[ms from the start, u], ...], the first [0, whe
     return (w1 + w2) / (w1 / a + w2 / b);
   });
   auto = { pts, h, m, t0: performance.now(), end: reduce ? 0 : pts[n][0] }; cue(false);
+  skipOn(auto.end >= 4000);
 }
+// a long scene (going in, the way to the record, the way to the inquiry) can be skipped: it runs to its end at once
+const skipBtn = $('#jy-skipscene');
+function skipOn(v) { html.classList.toggle('jy-skipping', v); skipBtn.classList.toggle('on', v); skipBtn.tabIndex = v ? 0 : -1; skipBtn.setAttribute('aria-hidden', String(!v)); }
+function skipScene() { if (!auto || auto.end < 600) return; const to = auto.pts[auto.pts.length - 1][1]; runPath([[0, sceneU == null ? U() : sceneU], [320, to]]); }
+skipBtn.addEventListener('click', skipScene);
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && auto && auto.end >= 4000) { e.preventDefault(); skipScene(); } });
 function sceneAt(a, t) {
   if (t >= a.end) return a.pts[a.pts.length - 1][1];
   let k = 0; while (k < a.h.length - 1 && t > a.pts[k + 1][0]) k++;
@@ -74,7 +81,7 @@ function autoStep(now) {
   if (auto) {
     const t = now - auto.t0;
     sceneU = sceneAt(auto, t); scrollTo({ top: topFor(sceneU), behavior: 'instant' });
-    if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; }
+    if (t >= auto.end) { const u = auto.pts[auto.pts.length - 1][1]; hold = { u, t0: now }; lastU = u; auto = null; skipOn(false); }
   } else if (hold && ((now - hold.t0 > 450 && now - inputAt > 220) || now - hold.t0 > 1800)) { cue(hold.u >= CH.music[0]); hold = null; } // (at the lock screen the enter asks instead, under a chapter's words its button)
 }
 const swallow = (e) => { if (!auto && !hold) return; inputAt = performance.now(); if (e.cancelable) e.preventDefault(); };

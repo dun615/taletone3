@@ -237,6 +237,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 <div class="jy-scrim" id="jy-scrim" hidden></div>
 <div class="jy-goon" id="jy-goon" aria-hidden="true"><p>${esc(c.goOnAsk)}</p><button type="button" id="jy-goon-b" tabindex="-1"><span id="jy-goon-t"></span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button></div>
 <button class="jy-towork" id="jy-towork" type="button" aria-hidden="true" tabindex="-1"><span>${esc(c.skipToWorks)}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5"/></svg></button>
+<button class="jy-towork jy-skipscene" id="jy-skipscene" type="button" aria-hidden="true" tabindex="-1"><span>${esc(c.skipScene)}</span><kbd aria-hidden="true">Esc</kbd></button>
 <div class="jy-cue" id="jy-cue" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l5 5 5-5"/></svg></div>
 </div>
 </main>
@@ -251,6 +252,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
     <h3>${esc(c.clients)}</h3><ul class="jy-logos">${logos.map((l) => `<li><img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy"></li>`).join('')}</ul>
     ${member.education ? `<h3>${esc(c.education)}</h3><p class="jy-p-edu">${lines(member.education)}</p>` : ''}
     ${member.iglink ? `<p class="jy-p-sns"><a href="${esc(member.iglink)}" target="_blank" rel="noopener">${esc(c.sns)} ↗</a></p>` : ''}
+    <p class="jy-acts"><a class="jy-btn jy-btn-ink" id="jy-p-ask" href="${href('/contact/')}">${esc(c.inquire)}</a><button type="button" class="jy-btn jy-btn-quiet jy-share" id="jy-p-share">${esc(c.copyLink)}</button></p>
     <details class="jy-p-all"><summary>${esc(c.allCredits)}</summary><ul class="jy-p-credits">${creditLines}</ul></details>
   </div>
 </section>
@@ -262,6 +264,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
       <div class="jy-artside"><figure class="jy-s-cover"><span class="jy-vy jy-s-lp" id="jy-s-lp"><img id="jy-s-v" alt=""></span><img class="jy-art" id="jy-s-a" alt=""></figure><div class="jy-s-video" id="jy-s-video" hidden></div><div class="jy-s-film" id="jy-s-film" hidden><button type="button" class="jy-s-filmb" id="jy-s-filmb"><img id="jy-s-filmi" alt="" decoding="async"><span class="jy-s-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 20 20"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg></span><span class="jy-s-filml">${esc(c.video)}</span></button></div></div>
       <div class="jy-info">
         <p class="jy-s-fmt" id="jy-s-fmt"></p><h3 id="jy-s-title"></h3><p class="jy-s-meta" id="jy-s-meta"></p><p class="jy-s-desc" id="jy-s-desc"></p><p class="jy-s-roles" id="jy-s-roles"></p>
+        <p class="jy-acts"><button type="button" class="jy-btn jy-btn-quiet jy-share" id="jy-s-share">${esc(c.copyLink)}</button><a class="jy-btn jy-btn-quiet" id="jy-s-ask" href="${href('/contact/')}">${esc(c.inquire)}</a></p>
         <dl class="jy-s-facts" id="jy-s-facts" data-date="${esc(wm.yearLabel || '')}" data-format="${esc(wm.typeLabel || '')}" data-type="${esc(wm.releaseLabel || '')}"></dl>
         <div class="jy-s-vers" id="jy-s-vers" role="group" aria-label="${esc(c.versionLabel)}" hidden></div>
         <ol class="jy-s-tracks" id="jy-s-tracks" aria-label="${esc(c.tracks)}"></ol>

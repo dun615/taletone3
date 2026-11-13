@@ -55,10 +55,14 @@ function storyTrackView(w) {
   }
   const yt = $('#jy-s-yt'); yt.href = vid ? ytWatch(vid) : (w.youtube || '#'); yt.parentNode.hidden = !(vid || w.youtube);
 }
+let storyUrl = null;
+const workUrl = (w) => `${BASE}/discography/?work=${encodeURIComponent(w.slug)}`;
 function openStory(slug, from) {
   const w = bySlug[slug];
   if (!w) return;
   storyWork = w; storyReturn = from || document.activeElement;
+  if (story.hidden) storyUrl = new URLSearchParams(location.search).has('work') ? BASE + '/discography/' : location.pathname;
+  setUrl(workUrl(w)); document.title = `${w.title} · TALETONE MUSIC`;
   story.dataset.slug = w.slug;
   $('#jy-s-v').src = ASSET + (w.image || w.thumb);
   const art = $('#jy-s-a'); art.src = ASSET + (w.image || w.thumb); art.alt = w.title; art.style.objectFit = w.fit || 'cover'; art.style.objectPosition = w.pos || '50% 50%';
@@ -114,7 +118,11 @@ function closeStory() {
   if (untrapStory) untrapStory();
   if (storyReturn && storyReturn.focus) storyReturn.focus({ preventScroll: true });
   storyWork = null;
+  if (storyUrl != null) { setUrl(storyUrl); storyUrl = null; } document.title = TITLE0;
 }
+copyButton($('#jy-s-share'), () => workUrl(storyWork));
+// (from a work to the inquiry: the page closes and the story goes there)
+$('#jy-s-ask').addEventListener('click', (e) => { e.preventDefault(); storyUrl = null; closeStory(); setUrl(BASE + '/contact/'); go('epi'); });
 function syncStory() {
   if (!storyWork) return;
   const p = isPlaying(storyWork.slug);

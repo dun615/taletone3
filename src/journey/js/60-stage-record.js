@@ -319,6 +319,24 @@ const step = (dir) => {
   for (let n = 0; n < N; n++) { i = clamp(i + dir, 0, N - 1); if (lit(bySlug[items[i].dataset.slug]) || i === 0 || i === N - 1) break; }
   goU(recordU(i));
 };
+// a song that ends hands over to the next: an album's next track, then the next work on the staff the filter lights.
+// The record turns to it when the visitor is at the work that ended; anywhere else only the sound goes on.
+audio.addEventListener('ended', () => {
+  const w = bySlug[nowSlug]; if (!w) return;
+  if (nowTrack != null && w.tracks) for (let j = nowTrack + 1; j < w.tracks.length; j++) if (w.tracks[j].audio) { play(w, j); return; }
+  const i0 = items.findIndex((li) => li.dataset.slug === w.slug); let i = i0 + 1;
+  while (i < N && !(lit(bySlug[items[i].dataset.slug]) && sourceOf(bySlug[items[i].dataset.slug]))) i++;
+  if (i0 < 0 || i >= N) return;
+  const x = bySlug[items[i].dataset.slug];
+  if (recordEl.classList.contains('on') && recShown === i0 && story.hidden && !recordEl.classList.contains('list')) goU(recordU(i));
+  play(x);
+});
+// (presenting or browsing by keyboard: left and right step through the works)
+addEventListener('keydown', (e) => {
+  if ((e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey || !recordEl.classList.contains('on') || recordEl.classList.contains('list')) return;
+  if (!story.hidden || !shelf.hidden || profile.classList.contains('open') || html.classList.contains('jy-held') || e.target.closest('input,textarea,select,[role="tablist"],[role="group"]')) return;
+  e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1);
+});
 $('#jy-ro-prev').addEventListener('click', () => step(-1));
 $('#jy-ro-next').addEventListener('click', () => step(1));
 $('#jy-view').addEventListener('click', (e) => {

@@ -92,3 +92,8 @@
 /* a tablet held upright: the video gets more of the detail; the close button stays visible over it */
 @media (min-width:761px) and (max-width:1100px) and (orientation:portrait){.jy-in{grid-template-rows:44% 1fr}.jy-s-film{width:min(86%,640px)}}
 .jy-story .jy-x{z-index:5;background:var(--tt-canvas);border:1px solid var(--tt-ink)}
+
+/* what a visitor does next from a work's page or the profile: copy its link, go to the inquiry */
+.jy-acts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.jy-acts .jy-btn{height:40px;padding:0 16px;font-size:14px;text-decoration:none}
+.jy-share.done{border-color:var(--tt-ink)}

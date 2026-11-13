@@ -105,6 +105,12 @@ a work's colours stay inside the phone's screen and on its CD; the CD only in th
 cards, rounded message bubbles, pill controls, round CDs (the case's request shows its sender's face); three faces in
 three weights.
 
+Four visitors the page is kept fit for: one looking for someone to commission (the inquiry is one press away from a
+work's page and the profile), one passing the site on (a work's page and the profile have their own address,
+`/discography/?work=slug` and `/about/?profile`, set while they are open, and a button that copies it), a listener
+(a song that ends hands over to the next work the filter lights), and one presenting on a shared screen (keys 1 to 5
+go to the chapters, left and right step through the works, a long scene shows a skip button and ends on Escape).
+
 ## Common changes
 
 | To | Edit | Then |

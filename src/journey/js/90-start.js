@@ -10,4 +10,6 @@ requestAnimationFrame(() => {
     const i = stage.items.findIndex((li) => li.dataset.slug === want); if (i >= 0) stage.goU(stage.recordU(i), false);
     setTimeout(() => openStory(want), 300);
   }
+  // (…/about/?profile opens the profile)
+  if (params.has('profile')) setTimeout(() => openProfile(), 300);
 });
