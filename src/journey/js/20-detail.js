@@ -64,7 +64,7 @@ function openStory(slug, from) {
   if (story.hidden) storyUrl = new URLSearchParams(location.search).has('work') ? BASE + '/discography/' : location.pathname;
   setUrl(workUrl(w)); document.title = `${w.title} · TALETONE MUSIC`;
   story.dataset.slug = w.slug;
-  $('#jy-s-v').src = ASSET + (w.image || w.thumb);
+  $('#jy-s-v').src = ASSET + (w.image || w.thumb); $('#jy-s-lp').style.setProperty('--z', w.cdZoom || 1);
   const art = $('#jy-s-a'); art.src = ASSET + (w.image || w.thumb); art.alt = w.title; art.style.objectFit = w.fit || 'cover'; art.style.objectPosition = w.pos || '50% 50%';
   $('#jy-s-video').hidden = true; $('#jy-s-video').textContent = '';
   { const film = $('#jy-s-film'), f = $('.jy-embed', film); if (f) unEmbed(f); film.dataset.yt = '-'; }

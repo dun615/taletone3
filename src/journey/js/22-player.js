@@ -7,7 +7,7 @@ function syncPlayer() {
   np.hidden = !w; html.classList.toggle('jy-np-on', !!w); // (the bar takes the name's place beside the mark)
   if (!w) return;
   const p = !audio.paused && nowSlug === w.slug;
-  $('#jy-npd').style.backgroundImage = `url(${ASSET}${w.thumb})`;
+  { const t = nowSlug === w.slug && nowTrack != null && w.tracks[nowTrack] ? w.tracks[nowTrack] : null, d = $('#jy-npd'); d.style.backgroundImage = `url(${ASSET}${(t && t.thumb) || w.thumb})`; d.style.setProperty('--z', (t && t.cdZoom) || w.cdZoom || 1); }
   $('#jy-npt').textContent = nowSlug === w.slug && nowTrack != null && w.tracks[nowTrack] ? w.tracks[nowTrack].title : w.title;
   $('#jy-npa').textContent = w.artist;
   np.classList.toggle('is-playing', p);

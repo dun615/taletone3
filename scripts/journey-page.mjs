@@ -181,7 +181,7 @@ ${c.caseStudy ? (() => {
   <div class="jy-record" id="jy-record">
     <div class="jy-tracks" id="jy-tracks"></div>
     <ol class="jy-spiral" id="jy-spiral" aria-label="${esc(c.discography)}">
-${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
+${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"${w.cdZoom > 1 ? ` style="--z:${w.cdZoom}"` : ''}><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
     </ol>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">

@@ -127,11 +127,11 @@ function goStage(where, smooth = true) {
 resize();
 requestAnimationFrame(frameLoop);
 // pick a record: bring it to the front of the staff (a glide when near, at once when far), show its card and play it
-// (a record already playing keeps playing)
+// (one press: a record already playing keeps playing, one paused goes on)
 function pick(slug) {
   const i = items.findIndex((li) => li.dataset.slug === slug); if (i < 0) return;
   goU(recordU(i), !recordEl.classList.contains('list') && Math.abs(i - recK) < 6);
-  const w = bySlug[slug]; if (sourceOf(w) && nowSlug !== w.slug) play(w);
+  const w = bySlug[slug]; if (sourceOf(w) && !isPlaying(w.slug)) play(w, undefined, nowSlug === w.slug);
 }
 
 // what the rest of the page may ask of the stage

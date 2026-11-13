@@ -58,7 +58,7 @@
    at 14%); the edge an ink line at 10%. No light, groove or shadow on it, and none of its colour past its edge. The
    hub and the hole read from 160px across. */
 .jy-vy{position:relative;flex:none;display:block;width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--tt-canvas-hair);-webkit-mask:radial-gradient(circle closest-side,transparent 12.5%,#000 calc(12.5% + .5px));mask:radial-gradient(circle closest-side,transparent 12.5%,#000 calc(12.5% + .5px))}
-.jy-vy img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jy-vy img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;scale:var(--z,1)} /* (--z: a cover with a frame at its edge, drawn larger: cdZoom) */
 .jy-vy::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle closest-side,transparent 12.5%,rgb(254 254 254/.55) 12.5%,rgb(254 254 254/.55) calc(19% - 1px),rgb(20 28 48/.14) calc(19% - 1px),rgb(20 28 48/.14) 19%,transparent 19%,transparent calc(100% - 1px),rgb(20 28 48/.1) calc(100% - 1px))}
 .jy-sw-t b{display:block;font-size:15px}
 .jy-sw-t span{display:block;font-size:13px;color:var(--tt-ink-muted);letter-spacing:var(--tt-track-small)}
