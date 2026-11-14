@@ -55,13 +55,12 @@
 .jy-brand{display:flex;margin:0 0 4px}
 .jy-brand img{display:block;height:clamp(36px,3.2vw,46px);width:auto} /* the standard lockup */
 /* on a phone the top bar is narrow: the name stays there on the first screen; after it, the chapter takes its place;
-   on a wide screen the first screen shows the name itself, so the top bar's comes in after it */
+   on a wide screen the top bar names the site on every screen, the first one too */
 .jy-narrow.jy-stage-mode .jy-wm{display:none}
 .jy-narrow.jy-stage-mode.jy-at-pro .jy-wm{display:block}
 .jy-narrow.jy-stage-mode.jy-at-pro .jy-mchap{display:none}
 .jy-narrow.jy-stage-mode.jy-at-pro .jy-mark{margin-right:auto}
 .jy-narrow.jy-stage-mode .jy-brand{display:none}
-.jy-stage-mode.jy-at-pro:not(.jy-narrow) .jy-wm{opacity:0}
 .jy-stage-mode .jy-phone{position:absolute;left:50%;top:44%;width:234px;height:416px;margin:-208px 0 0 -117px;transform-origin:50% 50%;cursor:pointer;perspective:1400px;margin-top:-208px}
 /* the phone in 2.5D (47-stage-phone-tilt.js): its back is the drawing as it is; thin layers in the frame's colour
    between the two faces give it depth as it tilts and turns, each with the faces' corner, so none shows past it */
