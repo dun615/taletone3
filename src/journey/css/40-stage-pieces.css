@@ -1,6 +1,8 @@
 /* first screen: what we do and the two ways in, beside the phone */
 .jy-lead{margin:72px 0 0;font-weight:400;font-size:clamp(20px,2.2vw,28px);line-height:1.4;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
 .jy-lead .jy-tagline{margin:0;font-weight:700;font-size:clamp(26px,3vw,42px);line-height:1.3;text-wrap:balance;letter-spacing:var(--tt-track-head)}
+/* (in Korean the largest heading of the screen is extra bold, its spacing a step tighter: display-ko) */
+:lang(ko) .jy-lead .jy-tagline{font-weight:800;letter-spacing:-.03em}
 .jy-service{margin:0;font-size:16px;color:var(--tt-ink-muted)}
 /* (the phone is the one thing to do on the first screen; listening and the inquiry are quiet links under it) */
 .jy-cta{display:flex;flex-wrap:wrap;gap:6px 20px;margin:4px 0 0}
@@ -53,7 +55,7 @@
 .jy-stage-mode .jy-taphint{display:flex}
 /* the name on the first screen, over the words: whose site this is, at a glance */
 .jy-brand{display:flex;margin:0 0 4px}
-.jy-brand img{display:block;height:clamp(36px,3.2vw,46px);width:auto} /* the standard lockup */
+.jy-brand img{display:block;height:clamp(28px,2.6vw,38px);width:auto} /* the lockup: one line, the only one (the stacked one is retired) */
 /* on a phone the top bar is narrow: the name stays there on the first screen; after it, the chapter takes its place;
    on a wide screen the top bar names the site on every screen, the first one too */
 .jy-narrow.jy-stage-mode .jy-wm{display:none}

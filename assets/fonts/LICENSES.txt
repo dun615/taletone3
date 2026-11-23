@@ -1,4 +1,9 @@
-The site's three rounded faces, subset for the site by scripts/subset-fonts.py.
+The site's rounded faces, subset for the site by scripts/subset-fonts.py.
+
+TALETONE Latin (taletone-latin-*.woff2, Latin letters and digits)
+A derivative of Manjari, enlarged to NanumSquareRound's size (106%, Bold 104%) with NanumSquareRound's line metrics,
+renamed as the font licence requires. Copyright 2018 The Manjari Project Authors (https://gitlab.com/smc/fonts/manjari).
+Licensed under the SIL Open Font License, Version 1.1 (below); the font may not be sold on its own.
 
 Manjari (manjari-*.woff2, English)
 Copyright 2018 The Manjari Project Authors (https://gitlab.com/smc/fonts/manjari)

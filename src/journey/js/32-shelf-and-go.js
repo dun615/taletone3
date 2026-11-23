@@ -11,12 +11,12 @@ function cardEl(it, g) {
   const box = document.createElement('div'); box.className = 'jy-wc-m';
   if (it.yt) {
     const a = document.createElement('a'); a.href = ytWatch(it.yt); a.target = '_blank'; a.rel = 'noopener'; a.className = 'jy-wc-v';
-    a.setAttribute('aria-label', `${it.title} — ${it.artist} · ${COPY.video}`);
+    a.setAttribute('aria-label', `${it.title} · ${it.artist} · ${COPY.video}`);
     const img = document.createElement('img'); img.src = `https://i.ytimg.com/vi/${it.yt}/hqdefault.jpg`; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; thumb(img, box);
     const pl = document.createElement('span'); pl.className = 'jy-wc-play'; pl.setAttribute('aria-hidden', 'true');
     const fb = document.createElement('span'); fb.className = 'jy-wc-fb'; fb.textContent = it.title;
     a.append(img, fb, pl); box.appendChild(a);
-    a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); embed(box, it.yt, `${it.title} — ${it.artist}`); });
+    a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); embed(box, it.yt, `${it.title} · ${it.artist}`); });
   } else {
     box.classList.add('jy-wc-au');
     const tag = document.createElement('span'); tag.className = 'jy-wc-tag'; tag.textContent = it.roles;

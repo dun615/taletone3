@@ -94,7 +94,7 @@ function openStory(slug, from) {
     a.href = ytWatch(c.yt); a.target = '_blank'; a.rel = 'noopener'; a.className = 'jy-cov';
     img.src = `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`; img.alt = ''; img.loading = 'lazy'; thumb(img, a);
     name.textContent = c.artist; a.append(img, name);
-    a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); const st = $('#jy-s-video'); st.hidden = false; st.textContent = ''; embed(st, c.yt, `${w.title} — ${c.artist}`); });
+    a.addEventListener('click', (e) => { if (!EMBED) return; e.preventDefault(); const st = $('#jy-s-video'); st.hidden = false; st.textContent = ''; embed(st, c.yt, `${w.title} · ${c.artist}`); });
     li.appendChild(a); cov.appendChild(li);
   });
   $('#jy-s-covers').hidden = !cov.children.length;

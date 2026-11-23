@@ -8,7 +8,7 @@ test('every page says whose site it is: the name in the top bar and on the first
   for (const prefix of ['', 'en/', 'ja/']) {
     const html = await readFile(prefix + 'index.html', 'utf8');
     assert.ok(/<img class="jy-wm" src="\/assets\/logo\/lockup-line-ink\.svg"/.test(html), `${prefix}: the top bar names TALETONE MUSIC (its one-line lockup)`);
-    assert.ok(/class="jy-brand"><img src="\/assets\/logo\/lockup-ink\.svg" alt="TALETONE MUSIC">/.test(html), `${prefix}: the first screen names TALETONE MUSIC (its lockup)`);
+    assert.ok(/class="jy-brand"><img src="\/assets\/logo\/lockup-line-ink\.svg" alt="TALETONE MUSIC">/.test(html), `${prefix}: the first screen names TALETONE MUSIC (its lockup)`);
     assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('class="jy-tagline"'), `${prefix}: the name comes before the first words`);
     assert.ok(html.includes('content="index, follow"'));
   }
@@ -61,5 +61,15 @@ test('each chapter has its own h1, its own structured data, and the sitemap date
       if (route === 'about/') assert.ok(ld.some((x) => x['@type'] === 'Person'), `${prefix}${route}: the person in the structured data`);
     }
     assert.equal(new Set(h1s).size, 5, `${prefix}: the five chapters' h1 differ`);
+  }
+});
+
+// The brand book's writing (the design system): no characters a keyboard does not type in the Korean pages' words
+test('the Korean pages write without 「」, curly quotes, the em dash, ✦ or ↗', async () => {
+  for (const route of ['', 'about/', 'approach/', 'discography/', 'contact/']) {
+    const html = await readFile(`${route}index.html`, 'utf8');
+    const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, '').replace(/<[^>]+>/g, ' ');
+    const found = [...new Set(text.match(/[「」“”—✦↗]/g) || [])];
+    assert.deepEqual(found, [], `${route || '/'}: ${found.join(' ')}`);
   }
 });

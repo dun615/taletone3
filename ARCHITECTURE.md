@@ -47,8 +47,8 @@ builds them; locally, `npm run build`.
 | `src/journey/css/` | The page's styles, in parts (below). |
 | `assets/works/` | Covers (`*-1024.webp`, small `*-w320.webp`) and sounds (`*.mp3`). |
 | `assets/phone/phone-back.webp` | The back of the phone, TALETONE's face: the character designer's drawing, cut to its outline (984 × 1747 at full size: a 100px corner, a 10px `#3c4968` frame), shown as it is. The page's phone (its front, its sides, the phones on the canvas) takes the same outline (`--tt-phone-*` in `00-base.css`). |
-| `assets/logo/` | The designer's mark (`logo-ink`, `logo-paper`; `logo-holo-on-dark` for a dark ground) and the lockups: `lockup-*` (MUSIC under TALETONE, the first screen) and `lockup-line-*` (one line, the top bar), `-ink` on Paper and `-paper` on Ink. The name is never set in type. In a conversation (the avatars, the chat room) the mark is ink on a circle of the CD light, the profile picture's form. |
-| `assets/fonts/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (Manjari, NanumSquareRound, M PLUS Rounded 1c: subsets, `LICENSES.txt`), app icons, link previews, the lock screen's film. |
+| `assets/logo/` | The designer's mark (`logo-ink`, `logo-paper`; `logo-holo-on-dark` for a dark ground) and the lockup `lockup-line-*` (TALETONE MUSIC in one line, the only one: the top bar and the first screen), `-ink` on Paper and `-paper` on Ink. The name is never set in type. In a conversation (the avatars, the chat room) the mark is ink on a circle of the CD light, the profile picture's form. |
+| `assets/fonts/`, `assets/icons/`, `assets/social/`, `assets/video/` | Fonts (TALETONE Latin, Manjari, NanumSquareRound, M PLUS Rounded 1c: subsets, `LICENSES.txt`), app icons, link previews, the lock screen's film. |
 | `.github/scripts/validate-site.mjs` | Static checks of the built site (every page's tags, links, files, redirects, the works' rules). |
 | `.github/scripts/validate-runtime-performance.mjs` | Headless Chrome: every route × language × three screens, the whole story scrolled, a record played, the inquiry; load budgets. |
 | `.github/workflows/` | `site-validation.yml` on every push; `deploy.yml` on `main`: build, check, publish. |
@@ -102,8 +102,10 @@ The design system (TALETONE's, its source the design system artifact) in short: 
 the designer's drawing); Paper is the ground, ink the words; Ink for the moment of going in, the dark worlds and the
 inquiry (its form in the Ink theme's colours); the CD light (`--tt-holo`) is the one accent, only inside a clear shape;
 a work's colours stay inside the phone's screen and on its CD; the CD only in the discography; no shadows; square
-cards, rounded message bubbles, pill controls, round CDs (the case's request shows its sender's face); three faces in
-three weights.
+cards, rounded message bubbles, pill controls, round CDs (the case's request shows its sender's face); TALETONE Latin
+for Latin letters and digits with the three rounded faces, in weights matched by stroke; one lockup (one line).
+Writing follows its brand book: a work's name in single quotes in Korean, no characters a keyboard does not type
+(「」, curly quotes, the em dash, ✦, ↗), the people who work with TALETONE called partners.
 
 Four visitors the page is kept fit for: one looking for someone to commission (the inquiry is one press away from a
 work's page and the profile), one passing the site on (a work's page and the profile have their own address,
