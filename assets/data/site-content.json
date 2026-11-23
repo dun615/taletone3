@@ -73,6 +73,21 @@
           "role": "Creative Director"
         }
       }
+    },
+    {
+      "name": "WASABI BUSTERS",
+      "role": "Ultimate Brass Band",
+      "image": "assets/members/wasabi-busters.webp",
+      "translations": {
+        "en": {
+          "name": "WASABI BUSTERS",
+          "role": "Ultimate Brass Band"
+        },
+        "jp": {
+          "name": "WASABI BUSTERS",
+          "role": "Ultimate Brass Band"
+        }
+      }
     }
   ],
   "home": {
