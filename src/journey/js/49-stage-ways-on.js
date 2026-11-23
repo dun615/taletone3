@@ -19,6 +19,7 @@ function placeGoOn(k, x, y, visible) {
 let goOnH = 0;
 const goOnHeight = () => goOnH || (goOnH = goOnEl.offsetHeight || 46);
 addEventListener('resize', () => { goOnH = 0; });
+if (document.fonts) document.fonts.addEventListener('loadingdone', () => { goOnH = 0; });
 // (the way past: on screen for the whole story)
 const toWork = $('#jy-towork');
 let toWorkOn = false;

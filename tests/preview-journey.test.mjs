@@ -2,14 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-test('every page says whose site it is: the name in the top bar and on the first screen', async () => {
+test('every page says whose site it is: the name in the top bar, once', async () => {
   const site = JSON.parse(await readFile('assets/data/site-content.json', 'utf8'));
   assert.equal(site.home.tagline, '우리의 이야기가 음악이 되는 곳');
   for (const prefix of ['', 'en/', 'ja/']) {
     const html = await readFile(prefix + 'index.html', 'utf8');
     assert.ok(/<img class="jy-wm" src="\/assets\/logo\/lockup-line-ink\.svg"/.test(html), `${prefix}: the top bar names TALETONE MUSIC (its one-line lockup)`);
-    assert.ok(/class="jy-brand"><img src="\/assets\/logo\/lockup-line-ink\.svg" alt="TALETONE MUSIC">/.test(html), `${prefix}: the first screen names TALETONE MUSIC (its lockup)`);
-    assert.ok(html.indexOf('class="jy-brand"') > -1 && html.indexOf('class="jy-brand"') < html.indexOf('class="jy-tagline"'), `${prefix}: the name comes before the first words`);
+    assert.equal(html.split('lockup-line-ink.svg').length - 1, 2, `${prefix}: the lockup is the top bar's alone (its src and its data-ink), not again on the first screen`);
     assert.ok(html.includes('content="index, follow"'));
   }
 });

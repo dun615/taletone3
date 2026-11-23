@@ -6,6 +6,10 @@ const ANCHORS = [
   ['#jy-case-req', SET.space[0], 1], ['#jy-case-m0', SET.space[1], 0.5], ['#jy-case-m1', SET.space[2], -0.5], ['#jy-case-ans', SET.space[3], -1],
 ].map(([sel, z, side]) => ({ el: $(sel), z, side, w: 0, h: 0 })).filter((a) => a.el);
 ANCHORS.forEach((a) => a.el.setAttribute('data-anchor', ''));
+// (a message's size is read once and kept, then read again whenever it changes: the site's faces arriving after a
+// fallback, or a wider face, can wrap a line differently, and a size kept from before would set the next message over it)
+if (window.ResizeObserver) { const ro = new ResizeObserver((es) => es.forEach((e) => { const a = ANCHORS.find((x) => x.el === e.target); if (a) a.w = 0; })); ANCHORS.forEach((a) => ro.observe(a.el)); }
+if (document.fonts) document.fonts.addEventListener('loadingdone', () => ANCHORS.forEach((a) => { a.w = 0; }));
 const swellZ = ANCHORS.filter((a) => a.side === 0 || Math.abs(a.side) === 0.5).map((a) => a.z);
 ANCHORS.sort((a, b) => a.z - b.z);
 // A chapter's words are all on screen at once, one under the other in the reading spot under the chapter's name (the
