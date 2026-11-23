@@ -20,6 +20,10 @@
 @font-face{font-family:"TALETONE Latin";font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/taletone-latin-100.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
 @font-face{font-family:"TALETONE Latin";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/taletone-latin-400.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
 @font-face{font-family:"TALETONE Latin";font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/taletone-latin-700.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
+/* (the same, with its own spacing for Korean lines, which track tighter: scripts/subset-fonts.py) */
+@font-face{font-family:"TALETONE Latin Ko";font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/taletone-latin-ko-100.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
+@font-face{font-family:"TALETONE Latin Ko";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/taletone-latin-ko-400.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
+@font-face{font-family:"TALETONE Latin Ko";font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/taletone-latin-ko-700.woff2) format("woff2");unicode-range:U+30-39,U+41-5A,U+61-7A,U+C0-24F}
 @font-face{font-family:Manjari;font-style:normal;font-weight:100 300;font-display:swap;src:url(/assets/fonts/manjari-100.woff2) format("woff2")}
 @font-face{font-family:Manjari;font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/manjari-400.woff2) format("woff2")}
 @font-face{font-family:Manjari;font-style:normal;font-weight:500 900;font-display:swap;src:url(/assets/fonts/manjari-700.woff2) format("woff2")}
@@ -41,11 +45,12 @@
      round, and only inside a clear shape (a circle, the mark, a small icon); what sits on it is ink. Never a word's
      colour, a button, a link, a selection, a page's ground or a shadow. */
   --tt-holo:linear-gradient(135deg,#fffbee 0%,#fef5f6 8%,#fceaff 15%,#ede3ff 25%,#d9dbff 35%,#cddcff 45%,#cde7ff 55%,#d7eaff 65%,#e4e2ff 75%,#f2dbff 85%,#d0c7ff 92%,#c7c5fc 100%);
-  --tt-display:"TALETONE Latin",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;
-  --tt-sans:"TALETONE Latin",NanumSquareRound,"M PLUS Rounded 1c",Manjari,sans-serif;
+  --tt-display:"TALETONE Latin Ko",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;
+  --tt-sans:"TALETONE Latin Ko",NanumSquareRound,"M PLUS Rounded 1c",Manjari,sans-serif;
   /* letter-spacing by language (the design system's tokens.json): headings, titles (a work's name), running text, and
      text of 13px or less; Latin labels in capitals take --tt-track-label whatever the page's language */
-  --tt-track-head:-.02em; --tt-track-title:-.02em; --tt-track:-.01em; --tt-track-small:0; --tt-track-label:.16em;
+  --tt-track-head:-.02em; --tt-track-title:-.02em; --tt-track:-.01em; --tt-track-small:0; --tt-track-label:.11em; /* (.16em with the +.05em
+     the Korean pages' Latin carries in its capitals) */
   /* motion: the brand's spring (the story's own pieces arriving: messages, cards, the record), and two crisp curves
      for the controls (a press, a hover, a menu) and for sheets sliding in, which should answer at once, not bounce */
   --tt-spring:cubic-bezier(.34,1.4,.5,1);
@@ -59,8 +64,9 @@
 }
 /* English pages read in TALETONE Latin with Manjari's punctuation; Japanese pages in M PLUS Rounded 1c, which has no 700
    (its 500 answers for it) */
-:lang(en){--tt-sans:"TALETONE Latin",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-track-head:.01em;--tt-track-title:.01em;--tt-track:.01em;--tt-track-small:.01em}
-:lang(ja){--tt-sans:"M PLUS Rounded 1c",NanumSquareRound,Manjari,sans-serif;--tt-track-head:0;--tt-track-title:.02em;--tt-track:.04em;--tt-track-small:.04em}
+:lang(en),:lang(ja){--tt-track-label:.16em}
+:lang(en){--tt-display:"TALETONE Latin",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-sans:"TALETONE Latin",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-track-head:.01em;--tt-track-title:.01em;--tt-track:.01em;--tt-track-small:.01em}
+:lang(ja){--tt-display:"TALETONE Latin",Manjari,NanumSquareRound,"M PLUS Rounded 1c",sans-serif;--tt-sans:"M PLUS Rounded 1c",NanumSquareRound,Manjari,sans-serif;--tt-track-head:0;--tt-track-title:.02em;--tt-track:.04em;--tt-track-small:.04em}
 /* Japanese has no spaces: keep-all would hold whole sentences together and break them anywhere once they overflow.
    Break at phrases where the browser can, never before 、 or 。 */
 html:lang(ja) body{word-break:normal;word-break:auto-phrase;line-break:strict;overflow-wrap:break-word}

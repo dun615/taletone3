@@ -69,6 +69,24 @@ for family, weights in files.items():
         # (what every weight of the family holds)
         covered[key] = (set(covered[key]) if key in covered else sets[family]) & cmap
         print(out, os.path.getsize(out), 'bytes', len(cmap), 'characters')
+# TALETONE Latin for Korean lines (taletone-latin-ko-*): the Korean pages track their lines tighter (body -0.01em,
+# titles -0.02em, the largest heading -0.03em) and CSS cannot track the Latin of a line apart from its Hangul, so this
+# copy carries its own spacing in its advances: capitals +0.05em, small letters +0.025em, digits +0.015em. In those
+# lines that comes to the design system's spacing for Latin among Korean: a word in capitals about +0.04em, a word in
+# mixed case about +0.01em, digits about 0. (English pages use TALETONE Latin as it is.)
+import unicodedata
+from fontTools.ttLib import TTFont
+KO_TRACK = {'Lu': 0.05, 'Ll': 0.025, 'Nd': 0.015}
+for weight in files['taletone-latin']:
+    f = TTFont(os.path.join(root, 'assets', 'fonts', f'taletone-latin-{weight}.woff2'))
+    upm = f['head'].unitsPerEm; hmtx = f['hmtx'].metrics; done = set()
+    for cp, gname in f.getBestCmap().items():
+        add = KO_TRACK.get(unicodedata.category(chr(cp)), 0)
+        if add and gname not in done:
+            adv, lsb = hmtx[gname]; hmtx[gname] = (adv + round(add * upm), lsb); done.add(gname)
+    f['hhea'].advanceWidthMax = max(a for a, _ in hmtx.values())
+    out = os.path.join(root, 'assets', 'fonts', f'taletone-latin-ko-{weight}.woff2'); f.flavor = 'woff2'; f.save(out)
+    print(out, os.path.getsize(out), 'bytes,', len(done), 'glyphs tracked')
 with open(os.path.join(root, 'scripts', 'font-subsets.json'), 'w', encoding='utf-8') as fh:
     json.dump({k: ''.join(sorted(v)) for k, v in covered.items()}, fh, ensure_ascii=False, indent=0)
     fh.write('\n')
