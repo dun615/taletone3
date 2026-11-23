@@ -26,7 +26,7 @@ form.addEventListener('submit', (e) => {
     [f.nameLabel, value('name')], [f.contactLabel, value('reply')], [f.projectLabel, value('project')],
     [f.songLabel, songs], [f.budgetLabel, value('budget')], [f.scheduleLabel, value('schedule')], [f.messageLabel, value('message')],
   ].filter((r) => r[0]).map((r) => r[0] + ': ' + (r[1] || '-'));
-  const subject = (contact.mailSubject || 'TALETONE MUSIC') + ' — ' + value('project');
+  const subject = (contact.mailSubject || 'TALETONE MUSIC') + ' · ' + value('project');
   const mailto = () => { location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n')); };
   const done = () => { rec.classList.add('lit'); say(COPY.received, 'ok'); $('#jy-rewind').hidden = false; };
   if (!contact.formKey) { mailto(); return; }

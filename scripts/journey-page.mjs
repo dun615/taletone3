@@ -15,9 +15,9 @@ const lines = (value) => esc(value).replace(/\n/g, '<br>');
 
 const markInk = '/assets/logo/logo-ink.svg';
 const markPaper = '/assets/logo/logo-paper.svg';
-// the lockups (mark, TALETONE and MUSIC as one drawing; never set in type): one line for the top bar, the standard one
-// for the first screen
-const lockLine = { ink: '/assets/logo/lockup-line-ink.svg', paper: '/assets/logo/lockup-line-paper.svg' }, lockInk = '/assets/logo/lockup-ink.svg';
+// the lockup (mark, TALETONE and MUSIC in one line, as one drawing; never set in type): the top bar and the first
+// screen; -ink on Paper, -paper on Ink (the design system has no other lockup since the stacked one was retired)
+const lockLine = { ink: '/assets/logo/lockup-line-ink.svg', paper: '/assets/logo/lockup-line-paper.svg' };
 // a file's address with its content in it, so a browser drops its old copy when the file changes
 const hashed = (file) => `/${file}?v=${createHash('sha256').update(readFileSync(new URL(`../${file}`, import.meta.url))).digest('hex').slice(0, 12)}`;
 // the phone's back: the character designer's drawing (assets/phone/phone-back.webp, cut to its outline), as it is
@@ -29,8 +29,8 @@ const PHONE_BACK = hashed('assets/phone/phone-back.webp');
 const font = (f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`;
 const MPLUS = [['100 300', 300], ['400', 400], ['500 900', 500]].map(([range, w]) => `@font-face{font-family:"M PLUS Rounded 1c";font-style:normal;font-weight:${range};font-display:swap;src:url(/assets/fonts/mplus-rounded-${w}.woff2) format("woff2")}`).join('');
 const fontHead = (key) => ({
-  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('manjari-700')].join('\n'),
-  en: [font('manjari-400'), font('manjari-700')].join('\n'),
+  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('taletone-latin-400')].join('\n'),
+  en: [font('taletone-latin-400'), font('taletone-latin-700'), font('manjari-400')].join('\n'),
   jp: [font('mplus-rounded-400'), font('mplus-rounded-500'), font('manjari-700'), `<style>${MPLUS}</style>`].join('\n'),
 })[key] + '\n';
 const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta.url), 'utf8');
@@ -38,6 +38,7 @@ const MARK_SVG = readFileSync(new URL('../assets/logo/logo-ink.svg', import.meta
 const MARK_VIEW = MARK_SVG.match(/viewBox="([^"]+)"/)[1], MARK_DS = [...MARK_SVG.matchAll(/ d="([^"]+)"/g)].map((m) => m[1]);
 const MARK_DEFS = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="tt-mark">${MARK_DS.map((d) => `<path d="${d}"/>`).join('')}</g></defs></svg>`;
 const markInkSvg = () => `<svg viewBox="${MARK_VIEW}" aria-hidden="true" focusable="false"><use href="#tt-mark" fill="currentColor"/></svg>`;
+const outIcon = '<svg class="jy-out" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 1.5h5.5V7M8.5 1.5L1.5 8.5"/></svg>';
 const avatar = (size = 40) => `<span class="jy-av" style="--av:${size}px">${markInkSvg()}</span>`;
 const bubble = (id, html, extra = '') => `<div class="jy-say${extra}" id="${id}">${avatar()}<p class="jy-bub"><span class="jy-tx">${html}</span></p></div>`;
 
@@ -69,7 +70,7 @@ export function renderJourney({ lang, route, seoPage, site, worksData, assets, b
   // belongs to the entry above, '[text](url)' links it, '#tags' lines are dropped
   const creditLines = String(member.creditsText || '').split('\n').filter((line) => line.trim() && !/^\s*#/.test(line)).map((line) => {
     const t = line.trim(), link = t.match(/^\[(.+)\]\((https?:[^)]+)\)$/);
-    if (link) return `<li><a href="${esc(link[2])}" target="_blank" rel="noopener">${esc(link[1])} ↗</a></li>`;
+    if (link) return `<li><a href="${esc(link[2])}" target="_blank" rel="noopener">${esc(link[1])} ${outIcon}</a></li>`;
     if (t.startsWith('|')) return `<li class="jy-cr-year">${esc(t.replace(/^\|\s*/, ''))}</li>`;
     const [work, roles] = t.replace(/^\*\s*/, '').split(/\s+—\s+/);
     return `<li${/^\s/.test(line) ? ' class="jy-cr-sub"' : ''}><b>${esc(work)}</b>${roles ? `<span>${esc(roles)}</span>` : ''}</li>`;
@@ -120,7 +121,7 @@ ${grain}
   <div class="jy-blackout" id="jy-blackout" aria-hidden="true"></div>
   <button class="jy-phone" id="jy-phone" type="button" aria-label="${esc(c.enterLabel)}"><span class="jy-card" id="jy-card">${[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((z) => `<span class="jy-edge" style="--z:${z}px" aria-hidden="true"></span>`).join('')}<span class="jy-face jy-back"><img class="jy-caseback" src="${PHONE_BACK}" alt="" decoding="async"></span><span class="jy-face jy-front"><span class="jy-screen" id="jy-screen"><video class="jy-lockvid" id="jy-lockvid" muted playsinline loop preload="none" poster="/assets/video/lockscreen.jpg" data-src="/assets/video/lockscreen.mp4" aria-hidden="true" tabindex="-1"></video><span class="jy-lockshade" aria-hidden="true"></span><canvas class="jy-pshot" id="jy-pshot" aria-hidden="true"></canvas><canvas class="jy-pcloud" id="jy-pcloud" aria-hidden="true"></canvas><span class="jy-lock" id="jy-lock"><span class="jy-clock" id="jy-clock">9:41</span><span class="jy-date" id="jy-date"></span><span class="jy-noti"><span class="jy-ni" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="11" rx="2" stroke="#141c30" stroke-width="1.4"/><path d="M3 5.5l7 5.2 7-5.2" stroke="#141c30" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8.6l.7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z" fill="none" stroke="#141c30" stroke-width=".9" stroke-linejoin="round"/></svg></span><span class="jy-nt"><span class="jy-nh"><b>${esc(c.notifyFrom)}</b><em>${esc(c.notifyNow)}</em></span><span class="jy-nb"><strong>${esc(c.notifyTitle)}</strong>${esc(c.notify)}</span></span><span class="jy-na-row" aria-hidden="true"><span class="jy-na">${esc(c.enterAction)}</span></span></span></span></span></span></span></button>
   <div class="jy-lead" id="jy-lead">
-    <p class="jy-brand"><img src="${lockInk}" alt="TALETONE MUSIC"></p>
+    <p class="jy-brand"><img src="${lockLine.ink}" alt="TALETONE MUSIC"></p>
     ${route === '/' ? '<h1 class="jy-tagline">' : '<p class="jy-tagline">'}${esc(merge(site.home, lang.key).tagline)}${route === '/' ? '</h1>' : '</p>'}
     <p class="jy-service">${esc(c.service)}</p>
     <button class="jy-taphint" id="jy-taphint" type="button"><i aria-hidden="true"></i><span>${esc(c.tapHint)}</span></button>
@@ -181,7 +182,7 @@ ${c.caseStudy ? (() => {
   <div class="jy-record" id="jy-record">
     <div class="jy-tracks" id="jy-tracks"></div>
     <ol class="jy-spiral" id="jy-spiral" aria-label="${esc(c.discography)}">
-${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-vy" aria-hidden="true"${w.cdZoom > 1 ? ` style="--z:${w.cdZoom}"` : ''}><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">✦ ${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
+${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="${i}" data-slug="${esc(w.slug)}" data-field="${esc(w.field)}" data-roles="${esc(w.roles.join(' '))}"${w.tracks.length > 1 ? ' data-album=""' : ''}><button type="button" class="jy-sw-btn" data-open="${esc(w.slug)}"><span class="jy-glow" aria-hidden="true" style="--g:url(/${esc(w.thumb)})"></span><span class="jy-vy" aria-hidden="true"${w.cdZoom > 1 ? ` style="--z:${w.cdZoom}"` : ''}><img src="/${esc(w.thumb)}" alt="" loading="lazy" decoding="async"></span><span class="jy-sw-t"><b>${esc(w.title)}</b><span>${esc(w.artist)} · ${esc(year(w))}</span></span>${w.pinned ? `<span class="jy-pin">${esc(c.featuredLabel)} ${String(w.pinned).padStart(2, '0')}</span>` : ''}</button></li>`).join('\n')}
     </ol>
   </div>
   <div class="jy-readout" id="jy-readout" aria-live="polite">
@@ -201,7 +202,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
     <button class="jy-x" type="button" id="jy-shelf-x" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
     <div class="jy-shelf-in"><p class="jy-shelf-k" id="jy-shelf-k"></p><h3 id="jy-shelf-h"></h3><p class="jy-shelf-n" id="jy-shelf-n"></p><div class="jy-shelf-roles" id="jy-shelf-roles" role="group"></div><ul class="jy-cards" id="jy-cards"></ul><button type="button" class="jy-btn jy-more-btn" id="jy-more" hidden></button></div>
   </section>
-  <div class="jy-extra">${extras.map((g) => `<details><summary>${esc(g.label)} · ${g.items.length}</summary><p>${esc(g.note)}</p><ul>${g.items.map((it) => `<li><b>${esc(it.title)}</b> — ${esc(it.artist)}${it.cover ? ` · ${esc(g.coverTag)}` : ''}${it.own ? ` · ${esc(c.ownSong)}` : ''} · ${esc(it.roles)}${it.dateText ? ` · <time datetime="${esc(it.date)}">${esc(it.dateText)}</time>` : ''}${it.yt ? ` <a href="https://www.youtube.com/watch?v=${esc(it.yt)}" target="_blank" rel="noopener">YouTube ↗</a>` : ''}</li>`).join('')}</ul></details>`).join('')}</div>
+  <div class="jy-extra">${extras.map((g) => `<details><summary>${esc(g.label)} · ${g.items.length}</summary><p>${esc(g.note)}</p><ul>${g.items.map((it) => `<li><b>${esc(it.title)}</b> · ${esc(it.artist)}${it.cover ? ` · ${esc(g.coverTag)}` : ''}${it.own ? ` · ${esc(c.ownSong)}` : ''} · ${esc(it.roles)}${it.dateText ? ` · <time datetime="${esc(it.date)}">${esc(it.dateText)}</time>` : ''}${it.yt ? ` <a href="https://www.youtube.com/watch?v=${esc(it.yt)}" target="_blank" rel="noopener">YouTube ${outIcon}</a>` : ''}</li>`).join('')}</ul></details>`).join('')}</div>
 </section>
 
 <section class="jy-ch" data-ch="done" aria-labelledby="jy-h-done">
@@ -254,7 +255,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
     <h3>${esc(c.people)}</h3><ul class="jy-people">${partners.map((p) => `<li><img src="/${esc(p.image)}" alt="" loading="lazy"><span><b>${esc(p.name)}</b><span>${esc(p.role)}</span></span></li>`).join('')}</ul>
     <h3>${esc(c.clients)}</h3><ul class="jy-logos">${logos.map((l) => `<li><img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy"></li>`).join('')}</ul>
     ${member.education ? `<h3>${esc(c.education)}</h3><p class="jy-p-edu">${lines(member.education)}</p>` : ''}
-    ${member.iglink ? `<p class="jy-p-sns"><a href="${esc(member.iglink)}" target="_blank" rel="noopener">${esc(c.sns)} ↗</a></p>` : ''}
+    ${member.iglink ? `<p class="jy-p-sns"><a href="${esc(member.iglink)}" target="_blank" rel="noopener">${esc(c.sns)} ${outIcon}</a></p>` : ''}
     <p class="jy-acts"><a class="jy-btn jy-btn-ink" id="jy-p-ask" href="${href('/contact/')}">${esc(c.inquire)}</a><button type="button" class="jy-btn jy-btn-quiet jy-share" id="jy-p-share">${esc(c.copyLink)}</button></p>
     <details class="jy-p-all"><summary>${esc(c.allCredits)}</summary><ul class="jy-p-credits">${creditLines}</ul></details>
   </div>
@@ -273,7 +274,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
         <ol class="jy-s-tracks" id="jy-s-tracks" aria-label="${esc(c.tracks)}"></ol>
         <section class="jy-s-cr" id="jy-s-cr" hidden><p class="jy-s-crh" id="jy-s-crh"></p><div class="jy-s-crl" id="jy-s-credits" tabindex="0"></div></section>
         <section class="jy-s-covers" id="jy-s-covers" hidden><p class="jy-s-crh">${esc(c.covers)}</p><ul id="jy-s-covl"></ul></section>
-        <p class="jy-s-yt"><a id="jy-s-yt" target="_blank" rel="noopener">${esc(c.youtube)} ↗</a></p>
+        <p class="jy-s-yt"><a id="jy-s-yt" target="_blank" rel="noopener">${esc(c.youtube)} ${outIcon}</a></p>
         <div class="jy-player"><button class="jy-play" id="jy-play" type="button" aria-pressed="false" aria-label="${esc(c.listen)}"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path id="jy-pi" d="M6 4l10 6-10 6z" fill="currentColor"/></svg></button><svg class="jy-prog" viewBox="0 0 360 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 60 6, 120 2, 180 6 S 300 10, 358 6" fill="none" stroke="#e5e6e8" stroke-width="1.5" stroke-linecap="round"/><path id="jy-pg" d="M2 6 C 60 6, 120 2, 180 6 S 300 10, 358 6" fill="none" stroke="#141c30" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg></div>
       </div>
     </div>

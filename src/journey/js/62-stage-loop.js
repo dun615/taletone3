@@ -7,6 +7,8 @@ function syncInert() {
   if (profile.classList.contains('open')) return;
   sections.forEach((s) => { s.inert = s.dataset.ch !== chapter; });
 }
+// (once near the record, its CDs are drawn and their covers fetched; 30-stage)
+let nearRecord = false;
 function frameLoop(now) {
   requestAnimationFrame(frameLoop);
   if (!sized()) resize();
@@ -51,6 +53,7 @@ function frameLoop(now) {
   // Record: the dive into the current
   const lr = local(u, 'record'), ld = local(u, 'done'), le = local(u, 'epi');
   const inRecord = lr > 0 && lr < 1;
+  if (!nearRecord && u >= CH.music[0] - 0.5) { nearRecord = true; html.classList.add('jy-near-record'); }
   on(recordEl, inRecord); on(filtersEl, lr > 0.1 && lr < 0.93); on(fbtn, lr > 0.1 && lr < 0.93); on(tabsEl, lr > 0.1 && lr < 0.93); on(readout, lr > (NARROW ? 0.06 : 0.004) && lr < 0.93); // (on a phone it shares the bottom with the words on arriving, so it waits for them)
   on(foundEl, (lm > 0.88 && lm < 1.1 && lr <= 0) || (lr > 0 && lr < 0.06)); on(hintEl, lr > 0.05 && lr < 0.18);
   if (inRecord) { recK = clamp((lr - 0.1) / 0.82) * (N - 1); placeCurrent(lr); }

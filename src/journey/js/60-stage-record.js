@@ -278,7 +278,7 @@ function showReadout(i) {
   items.forEach((li, j) => li.classList.toggle('cur', j === i));
   $('#jy-ro-i').textContent = String(i + 1).padStart(2, '0');
   $('#jy-ro-c').textContent = w.tracks && w.tracks.length > 1 ? ` · ${w.tracks.length}${LANG === 'en' ? ' ' : ''}${COPY.songs}` : '';
-  { const pin = $('#jy-ro-pin'); pin.hidden = !w.pinned; if (w.pinned) pin.textContent = `✦ ${COPY.featuredLabel} ${String(w.pinned).padStart(2, '0')}`; }
+  { const pin = $('#jy-ro-pin'); pin.hidden = !w.pinned; if (w.pinned) pin.textContent = `${COPY.featuredLabel} ${String(w.pinned).padStart(2, '0')}`; }
   readoutFacts(w);
   $('#jy-ro-play').hidden = !sourceOf(w);
   const rv = $('#jy-ro-vers'); rv.dataset.slug = w.slug; versionChips(rv, w);

@@ -97,3 +97,5 @@
 .jy-acts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
 .jy-acts .jy-btn{height:40px;padding:0 16px;font-size:14px;text-decoration:none}
 .jy-share.done{border-color:var(--tt-ink)}
+/* an outgoing link's arrow, drawn (no arrow characters in the words) */
+.jy-out{display:inline-block;vertical-align:.05em;margin-left:2px}

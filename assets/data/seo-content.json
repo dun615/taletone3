@@ -14,15 +14,15 @@
       "key": "home",
       "label": "Home",
       "path": "/",
-      "title": "TALETONE MUSIC (테일톤 뮤직) — 스토리 기반 IP 음악 프로듀서",
-      "description": "TALETONE MUSIC(테일톤 뮤직)은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송을 기획·제작하는 스토리 기반 음악 프로듀서입니다.",
+      "title": "TALETONE MUSIC (테일톤뮤직) · 스토리 기반 IP 음악 프로듀서",
+      "description": "TALETONE MUSIC(테일톤뮤직)은 서브컬처 게임, 버튜버, 애니메이션 등 세계관이 있는 IP의 오리지널송, OST, 캐릭터송을 기획·제작하는 스토리 기반 음악 프로듀서입니다.",
       "translations": {
         "en": {
-          "title": "TALETONE MUSIC — Story-Based IP Music Producer",
+          "title": "TALETONE MUSIC · Story-Based IP Music Producer",
           "description": "TALETONE MUSIC is a story-based music producer who plans and produces original songs, OSTs, and character songs for IPs with living worlds: subculture games, VTubers, and animation."
         },
         "jp": {
-          "title": "TALETONE MUSIC（テイルトーン ミュージック）— ストーリーベースIP音楽プロデューサー",
+          "title": "TALETONE MUSIC（テイルトーン ミュージック） · ストーリーベースIP音楽プロデューサー",
           "description": "TALETONE MUSICは、サブカルチャーゲーム、VTuber、アニメーションなど世界観のあるIPのオリジナルソング、OST、キャラクターソングを企画・制作するストーリーベースの音楽プロデューサーです。"
         }
       }
@@ -31,15 +31,15 @@
       "key": "members",
       "label": "About",
       "path": "/about/",
-      "title": "About | TALETONE MUSIC — 소개",
-      "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤 뮤직)과 함께하는 파트너를 소개합니다.",
+      "title": "About | TALETONE MUSIC · 소개",
+      "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤뮤직)과 함께하는 파트너를 소개합니다.",
       "translations": {
         "en": {
           "title": "About | TALETONE MUSIC",
           "description": "TALETONE MUSIC is a subculture music producer who reads the story first, then writes the song. Meet the partners who work alongside."
         },
         "jp": {
-          "title": "About | TALETONE MUSIC — 紹介",
+          "title": "About | TALETONE MUSIC · 紹介",
           "description": "物語を先に読んでから歌をつくるサブカルチャー音楽プロデューサー TALETONE MUSICと、ともに制作するパートナーを紹介します。"
         }
       }
@@ -48,15 +48,15 @@
       "key": "projects",
       "label": "Approach",
       "path": "/approach/",
-      "title": "Approach | TALETONE MUSIC — 이야기에서 출발하는 제작 방식",
-      "description": "이야기(TALE)에서 톤(TONE)을 찾고 음악(MUSIC)으로 완성하는 TALETONE MUSIC의 제작 방식입니다. 해봄 「Love Dopamine」 사례와 함께 곡의 기획 의도와 제작 과정을 소개합니다.",
+      "title": "Approach | TALETONE MUSIC · 이야기에서 출발하는 제작 방식",
+      "description": "이야기(TALE)에서 톤(TONE)을 찾고 음악(MUSIC)으로 완성하는 TALETONE MUSIC의 제작 방식입니다. 해봄 'Love Dopamine' 사례와 함께 곡의 기획 의도와 제작 과정을 소개합니다.",
       "translations": {
         "en": {
-          "title": "Approach | TALETONE MUSIC — Starting from the Story",
+          "title": "Approach | TALETONE MUSIC · Starting from the Story",
           "description": "From TALE to TONE to MUSIC: how TALETONE MUSIC turns a story into a song. Explore the creative process through HAEBOM’s Love Dopamine and selected work."
         },
         "jp": {
-          "title": "Approach | TALETONE MUSIC — 物語から始まる制作",
+          "title": "Approach | TALETONE MUSIC · 物語から始まる制作",
           "description": "物語（TALE）からトーン（TONE）を見つけ、音楽（MUSIC）に仕上げるTALETONE MUSICの制作方法。HAEBOM「Love Dopamine」の事例とともに企画意図と制作過程を紹介します。"
         }
       }
@@ -65,15 +65,15 @@
       "key": "works",
       "label": "Discography",
       "path": "/discography/",
-      "title": "Discography | TALETONE MUSIC — 디스코그래피",
-      "description": "TALETONE MUSIC(테일톤 뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
+      "title": "Discography | TALETONE MUSIC · 디스코그래피",
+      "description": "TALETONE MUSIC(테일톤뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
       "translations": {
         "en": {
           "title": "Discography | TALETONE MUSIC",
           "description": "The discography of TALETONE MUSIC: original songs, OSTs, and character songs, including Heart Score, Drawing Summer, and Bubble Sweet, plus sound engineering work."
         },
         "jp": {
-          "title": "Discography | TALETONE MUSIC — ディスコグラフィー",
+          "title": "Discography | TALETONE MUSIC · ディスコグラフィー",
           "description": "TALETONE MUSICのディスコグラフィーです。Heart Score、Drawing Summer、Bubble Sweetなど、オリジナルソング、OST、キャラクターソングの制作記録とサウンドエンジニアリング作品を紹介します。"
         }
       }
@@ -82,15 +82,15 @@
       "key": "contact",
       "label": "Contact",
       "path": "/contact/",
-      "title": "Contact | TALETONE MUSIC — 프로젝트 문의",
-      "description": "TALETONE MUSIC(테일톤 뮤직) 프로젝트 문의. 아직 정리되지 않은 이야기라도 첫 질문부터 함께 설계합니다. contact@taletone.net",
+      "title": "Contact | TALETONE MUSIC · 프로젝트 문의",
+      "description": "TALETONE MUSIC(테일톤뮤직) 프로젝트 문의. 아직 정리되지 않은 이야기라도 첫 질문부터 함께 설계합니다. contact@taletone.net",
       "translations": {
         "en": {
-          "title": "Contact | TALETONE MUSIC — Project Inquiry",
+          "title": "Contact | TALETONE MUSIC · Project Inquiry",
           "description": "Start a project with TALETONE MUSIC. Even if your story is not fully formed yet, we will shape it together from the very first question. contact@taletone.net"
         },
         "jp": {
-          "title": "Contact | TALETONE MUSIC — プロジェクトのご相談",
+          "title": "Contact | TALETONE MUSIC · プロジェクトのご相談",
           "description": "TALETONE MUSICへのプロジェクトのご相談はこちら。まだ整理されていない物語でも、最初の問いから一緒に設計します。contact@taletone.net"
         }
       }

@@ -15,10 +15,11 @@ test('the font subsets hold every Korean and Japanese character the site uses', 
   assert.equal(ja, '', `M PLUS Rounded 1c lacks ${ja}: run python3 scripts/subset-fonts.py <the source fonts>`);
 });
 
-// Three weights, matched by stroke (00-base.css): the styles only ever ask for 100, 400 or 700.
-test('the styles use only the three weights', async () => {
+// Weights matched by stroke (00-base.css): the styles only ever ask for 100, 400 or 700, and 800 (Korean extra bold) for
+// the one largest heading of a screen.
+test('the styles use only the matched weights', async () => {
   const css = (await Promise.all(['00-base', '10-column', '20-panels', '30-stage', '40-stage-pieces', '50-stage-narrow', '60-record-tabs', '70-chat-room', '80-tablet'].map((f) => readFile(`src/journey/css/${f}.css`, 'utf8')))).join('\n');
   const rules = css.replace(/@font-face\{[^}]*\}/g, '');
   const weights = new Set([...rules.matchAll(/font-weight:(\w+)/g), ...rules.matchAll(/font:(\d+) /g)].map((m) => m[1]));
-  assert.deepEqual([...weights].filter((w) => !['100', '400', '700', 'inherit', 'normal'].includes(w)), []);
+  assert.deepEqual([...weights].filter((w) => !['100', '400', '700', '800', 'inherit', 'normal'].includes(w)), []);
 });

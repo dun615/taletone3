@@ -1,12 +1,15 @@
-# Subsets the site's three rounded faces for self-hosting. Run by hand when the source fonts change or when
+# Subsets the site's rounded faces for self-hosting. Run by hand when the source fonts change or when
 # `npm test` says the site uses a character a subset lacks; CI never runs it.
 #
 #   pip install fonttools brotli
-#   python3 scripts/subset-fonts.py <dir with Manjari-{Thin,Regular,Bold}.woff2, NanumSquareRound{L,R,B}.woff2,
-#                                    MPLUSRounded1c-{Light,Regular,Medium}.woff2>
+#   python3 scripts/subset-fonts.py <dir with TaletoneLatin-{Thin,Regular,Bold}.woff2, Manjari-{Thin,Regular,Bold}.woff2,
+#                                    NanumSquareRound{L,R,B,EB}.woff2, MPLUSRounded1c-{Light,Regular,Medium}.woff2>
+#   (the design system's fonts/ folder holds them all)
 #
+#   TALETONE Latin (SIL OFL)                 -> assets/fonts/taletone-latin-{100,400,700}.woff2: Manjari drawn at the size of
+#                                               NanumSquareRound (106%, Bold 104%), for every Latin letter and digit
 #   Manjari (English, SIL OFL)               -> assets/fonts/manjari-{100,400,700}.woff2: Latin and punctuation
-#   NanumSquareRound (Korean, Naver licence) -> assets/fonts/nanum-square-round-{300,400,700}.woff2: Latin, punctuation,
+#   NanumSquareRound (Korean, Naver licence) -> assets/fonts/nanum-square-round-{300,400,700,800}.woff2: Latin, punctuation,
 #                                               the 2,350 Hangul syllables of KS X 1001 and every other character
 #                                               the site's data and sources use (not Japanese)
 #   M PLUS Rounded 1c (Japanese, SIL OFL)    -> assets/fonts/mplus-rounded-{300,400,500}.woff2: Latin, punctuation,
@@ -35,13 +38,15 @@ for c in range(0xac00, 0xd7a4):
     except UnicodeEncodeError:
         pass
 sets = {
+    'taletone-latin': latin,
     'manjari': latin,
     'nanum-square-round': latin | cjk_marks | ksx | set(ch for ch in used if ord(ch) >= 0x80 and not japanese(ord(ch))),
     'mplus-rounded': latin | cjk_marks | rng(0x3040, 0x3100) | rng(0x31f0, 0x3200) | set(ch for ch in used if japanese(ord(ch))),
 }
 files = {
+    'taletone-latin': {'100': 'TaletoneLatin-Thin', '400': 'TaletoneLatin-Regular', '700': 'TaletoneLatin-Bold'},
     'manjari': {'100': 'Manjari-Thin', '400': 'Manjari-Regular', '700': 'Manjari-Bold'},
-    'nanum-square-round': {'300': 'NanumSquareRoundL', '400': 'NanumSquareRoundR', '700': 'NanumSquareRoundB'},
+    'nanum-square-round': {'300': 'NanumSquareRoundL', '400': 'NanumSquareRoundR', '700': 'NanumSquareRoundB', '800': 'NanumSquareRoundEB'},
     'mplus-rounded': {'300': 'MPLUSRounded1c-Light', '400': 'MPLUSRounded1c-Regular', '500': 'MPLUSRounded1c-Medium'},
 }
 covered = {}
@@ -56,10 +61,13 @@ for family, weights in files.items():
         absent = sets[family] - set(chr(c) for c in font.getBestCmap())
         sub = subset.Subsetter(opts); sub.populate(text=text); sub.subset(font)
         cmap = set(chr(c) for c in font.getBestCmap())
-        covered[family + ' (not in the face)'] = (set(covered.get(family + ' (not in the face)', '')) | absent) & used
+        # (NanumSquareRound ExtraBold (800) is only for the one largest heading of a screen: it is kept apart, so the
+        # characters it lacks do not take away from what the family's other weights hold for the running text)
+        key = family + (' 800' if weight == '800' else '')
+        covered[key + ' (not in the face)'] = (set(covered.get(key + ' (not in the face)', '')) | absent) & used
         subset.save_font(font, out, opts)
         # (what every weight of the family holds)
-        covered[family] = (set(covered[family]) if family in covered else sets[family]) & cmap
+        covered[key] = (set(covered[key]) if key in covered else sets[family]) & cmap
         print(out, os.path.getsize(out), 'bytes', len(cmap), 'characters')
 with open(os.path.join(root, 'scripts', 'font-subsets.json'), 'w', encoding='utf-8') as fh:
     json.dump({k: ''.join(sorted(v)) for k, v in covered.items()}, fh, ensure_ascii=False, indent=0)
