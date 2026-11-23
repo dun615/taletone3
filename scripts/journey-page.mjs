@@ -29,7 +29,7 @@ const PHONE_BACK = hashed('assets/phone/phone-back.webp');
 const font = (f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`;
 const MPLUS = [['100 300', 300], ['400', 400], ['500 900', 500]].map(([range, w]) => `@font-face{font-family:"M PLUS Rounded 1c";font-style:normal;font-weight:${range};font-display:swap;src:url(/assets/fonts/mplus-rounded-${w}.woff2) format("woff2")}`).join('');
 const fontHead = (key) => ({
-  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('taletone-latin-400')].join('\n'),
+  kr: [font('nanum-square-round-400'), font('nanum-square-round-700'), font('taletone-latin-ko-400')].join('\n'),
   en: [font('taletone-latin-400'), font('taletone-latin-700'), font('manjari-400')].join('\n'),
   jp: [font('mplus-rounded-400'), font('mplus-rounded-500'), font('manjari-700'), `<style>${MPLUS}</style>`].join('\n'),
 })[key] + '\n';
