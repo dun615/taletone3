@@ -32,15 +32,15 @@
       "label": "About",
       "path": "/about/",
       "title": "About | TALETONE MUSIC · 소개",
-      "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤뮤직)과 함께하는 파트너를 소개합니다.",
+      "description": "이야기를 먼저 읽고 노래를 짓는 서브컬처 음악 프로듀서 TALETONE MUSIC(테일톤뮤직)의 대표 N4ML과 함께하는 파트너를 소개합니다.",
       "translations": {
         "en": {
           "title": "About | TALETONE MUSIC",
-          "description": "TALETONE MUSIC is a subculture music producer who reads the story first, then writes the song. Meet the partners who work alongside."
+          "description": "TALETONE MUSIC is a subculture music producer who reads the story first, then writes the song. Meet its founder N4ML and the partners who work alongside."
         },
         "jp": {
           "title": "About | TALETONE MUSIC · 紹介",
-          "description": "物語を先に読んでから歌をつくるサブカルチャー音楽プロデューサー TALETONE MUSICと、ともに制作するパートナーを紹介します。"
+          "description": "物語を先に読んでから歌をつくるサブカルチャー音楽プロデューサー TALETONE MUSICの代表 N4MLと、ともに制作するパートナーを紹介します。"
         }
       }
     },
@@ -66,15 +66,15 @@
       "label": "Discography",
       "path": "/discography/",
       "title": "Discography | TALETONE MUSIC · 디스코그래피",
-      "description": "TALETONE MUSIC(테일톤뮤직)의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
+      "description": "TALETONE MUSIC(테일톤뮤직)과 대표 N4ML의 디스코그래피입니다. 마음악보, 여름을 그리다, Bubble Sweet 등 오리지널송, OST, 캐릭터송 제작 기록과 사운드 엔지니어링 작업을 소개합니다.",
       "translations": {
         "en": {
           "title": "Discography | TALETONE MUSIC",
-          "description": "The discography of TALETONE MUSIC: original songs, OSTs, and character songs, including Heart Score, Drawing Summer, and Bubble Sweet, plus sound engineering work."
+          "description": "The discography of TALETONE MUSIC and its founder N4ML: original songs, OSTs, and character songs, including Heart Score, Drawing Summer, and Bubble Sweet, plus sound engineering work."
         },
         "jp": {
           "title": "Discography | TALETONE MUSIC · ディスコグラフィー",
-          "description": "TALETONE MUSICのディスコグラフィーです。Heart Score、Drawing Summer、Bubble Sweetなど、オリジナルソング、OST、キャラクターソングの制作記録とサウンドエンジニアリング作品を紹介します。"
+          "description": "TALETONE MUSICと代表 N4MLのディスコグラフィーです。Heart Score、Drawing Summer、Bubble Sweetなど、オリジナルソング、OST、キャラクターソングの制作記録とサウンドエンジニアリング作品を紹介します。"
         }
       }
     },

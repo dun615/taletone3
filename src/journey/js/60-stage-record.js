@@ -301,7 +301,7 @@ function readoutFacts(w) {
   const j = nowSlug === w.slug && nowTrack != null && w.tracks.length > 1 ? nowTrack : null, t = j != null ? w.tracks[j] : null;
   $('#jy-ro-t').textContent = t ? t.title : w.title; $('#jy-ro-a').textContent = w.artist;
   $('#jy-ro-m').textContent = (t ? [`${w.title} · ${String(j + 1).padStart(2, '0')}`, w.date] : [w.type, w.date]).filter(Boolean).join(' · ');
-  $('#jy-ro-r').textContent = makingLine((t && t.roles && t.roles.length ? t.roles : w.roles));
+  $('#jy-ro-r').textContent = makingLine((t && t.roles && t.roles.length ? t.roles : w.roles), w.byline);
 }
 function syncReadout() {
   if (recShown < 0 || !items[recShown]) return;

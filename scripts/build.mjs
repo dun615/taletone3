@@ -19,6 +19,7 @@ import { renderJourney } from './journey-page.mjs';
 import { execFileSync } from 'node:child_process';
 import { journeyData, journeyWorks, merge, plain } from './journey-data.mjs';
 import { renderLinkPage } from './link-page.mjs';
+import { FOUNDED } from './works-model.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const check = process.argv.includes('--check');
@@ -69,7 +70,12 @@ function jsonLd(page, lang) {
     logo: `${rootUrl}assets/icons/icon-512.png`,
     email: site.contact.email,
     description: home.description,
+    foundingDate: FOUNDED.replace(/\./g, '-'),
+    founder: { '@id': `${rootUrl}#producer` },
   };
+  // the person: N4ML (the producer's own name), who founded the company; works before it are his own
+  const m0 = site.members[0] ? merge(site.members[0], lang.key) : null;
+  const person = m0 && Object.fromEntries(Object.entries({ '@type': 'Person', '@id': `${rootUrl}#producer`, name: plain(m0.name), alternateName: m0.realName || null, jobTitle: plain(m0.role || ''), worksFor: { '@id': `${rootUrl}#organization` }, url: `${urlFor(lang, '/about/')}?profile`, sameAs: m0.iglink ? [m0.iglink] : null }).filter(([, v]) => v));
   const website = {
     '@type': 'WebSite',
     '@id': `${rootUrl}#website`,
@@ -100,16 +106,13 @@ function jsonLd(page, lang) {
       item: Object.fromEntries(Object.entries({
         '@type': w.kind === 'album' ? 'MusicAlbum' : 'MusicRecording', name: w.title, url: `${urlFor(lang, page.path)}?work=${w.slug}`,
         byArtist: w.artist ? { '@type': 'MusicGroup', name: w.artist } : null, datePublished: /^\d{4}\.\d{2}\.\d{2}$/.test(w.date) ? w.date.replace(/\./g, '-') : null,
-        image: w.image ? abs(w.image) : null, producer: { '@id': `${rootUrl}#organization` },
+        image: w.image ? abs(w.image) : null, producer: w.byline === 'founder' ? { '@id': `${rootUrl}#producer` } : [{ '@id': `${rootUrl}#producer` }, { '@id': `${rootUrl}#organization` }],
       }).filter(([, v]) => v)),
     })) });
     webPage.mainEntity = { '@id': `${urlFor(lang, page.path)}#works` };
   }
-  if (page.path === '/about/' && (site.members || [])[0]) {
-    const m = merge(site.members[0], lang.key);
-    own.push(Object.fromEntries(Object.entries({ '@type': 'Person', '@id': `${rootUrl}#producer`, name: plain(m.name), alternateName: m.aka ? plain(m.aka).replace(/^aka\s+/i, '') : null, jobTitle: plain(m.role || ''), worksFor: { '@id': `${rootUrl}#organization` }, url: `${urlFor(lang, page.path)}?profile`, sameAs: m.iglink ? [m.iglink] : null }).filter(([, v]) => v)));
-    webPage.mainEntity = { '@id': `${rootUrl}#producer` };
-  }
+  if (person) own.push(person);
+  if (page.path === '/about/' && person) webPage.mainEntity = { '@id': `${rootUrl}#producer` };
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': [organization, website, webPage, ...own, ...navigation] }).replace(/</g, '\\u003c');
 }
 
