@@ -16,14 +16,21 @@
 // `translations` carries no title. A track has `title` and `titles` and comes from its album's origin. titleIn()
 // says which one each language shows. The other work (Sound Engineering, ETC, in site-content.json) keeps the same
 // fields and rules (checkTitledItems).
+//
+// Who made it (byline): the producer's own name is N4ML; TALETONE MUSIC (the company) was founded on FOUNDED. A work
+// released before it is 'founder' (shown as the founder N4ML's own work, never as the company's), one after it
+// 'company' (N4ML (TALETONE MUSIC)). A work released near the date can go either way: its byline says which, not
+// the date. The words for each are site-content.json's journey.bylines, the only two the site shows.
 
 export const WORK_KEYS = ['slug', 'artist', 'title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio',
   'fit', 'posX', 'posY', 'versions', 'tracks', 'kind', 'titleTrackIndex', 'youtube', 'format',
-  'translations', 'roles', 'field', 'pinned', 'officialCovers', 'origin', 'titles', 'cdZoom'];
+  'translations', 'roles', 'field', 'pinned', 'officialCovers', 'origin', 'titles', 'cdZoom', 'byline'];
 export const TRACK_KEYS = ['title', 'date', 'type', 'description', 'credits', 'image', 'thumb', 'audio', 'fit', 'posX',
   'posY', 'versions', 'youtube', 'translations', 'roles', 'titles', 'cdZoom'];
 export const KINDS = ['single', 'multilingual', 'album'];
 export const LANGS = ['kr', 'en', 'jp'];
+export const BYLINES = ['founder', 'company'];
+export const FOUNDED = '2024.11.16';
 
 // The title a page in lang shows for a work or a track (origin: the work's): Japanese pages the official Japanese
 // title, else the official English one, else the title as it was made; English pages the official English title,
@@ -95,6 +102,7 @@ export function checkWorks(works, exists) {
     if (!/^\d{4}\.\d{2}\.\d{2}$/.test(w.date || '')) err(`${name}: date must be YYYY.MM.DD`);
     if (!w.image || !w.thumb) err(`${name}: needs image and thumb (the small cover, *-w320.webp)`);
     if (!LANGS.includes(w.origin)) err(`${name}: origin must be where it was made (${LANGS.join(', ')})`);
+    if (!BYLINES.includes(w.byline)) err(`${name}: byline must say who made it: 'founder' (released before ${FOUNDED}) or 'company' (after)`);
     // (cdZoom: how much larger the cover is drawn on its CD, for a cover with a frame or a plain border at its edge)
     for (const it of [w, ...(w.tracks || [])]) if (it.cdZoom != null && !(typeof it.cdZoom === 'number' && it.cdZoom >= 1 && it.cdZoom <= 1.5)) err(`${name}: cdZoom must be a number from 1 to 1.5`);
     checkTitles(w, name, err, w.origin);

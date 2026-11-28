@@ -22,7 +22,7 @@ const arrow = '<svg class="go" viewBox="0 0 16 16" fill="none" stroke="currentCo
 export function renderLinkPage({ name, role, links }) {
   if (!name || !Array.isArray(links) || !links.length) throw new Error('links.json needs a name and at least one link');
   for (const link of links) if (!link.label || !/^https:\/\//.test(link.url || '')) throw new Error(`links.json: a link needs a label and an https url (${JSON.stringify(link)})`);
-  // "노사무엘 (TALETONE)": the person's name large, the studio's as the wordmark under it
+  // "노사무엘 (N4ML)": the person's name large, his producer name as the wordmark under it
   const m = /^(.*?)\s*\((.+)\)\s*$/.exec(name), person = m ? m[1] : name, studio = m ? m[2] : '';
   return `<!DOCTYPE html>
 <html lang="ko">

@@ -27,7 +27,7 @@ export function journeyWorks(worksData, lang) {
     const tracks = (w.tracks || []).map((t) => { const tu = unit(t, w.origin); return { cdZoom: t.cdZoom || tu.cdZoom, title: tu.title, description: tu.description, audio: tu.audio, gain: gainOf(tu.audio), roles: tu.roles, thumb: tu.thumb, credits: tu.credits, yt: tu.yt }; });
     const covers = (w.officialCovers || []).map((c) => ({ artist: (lang === 'en' && c.artistEn) || (lang === 'jp' && c.artistJp) || c.artist || '', yt: ytId(c.youtube) })).filter((c) => c.yt);
     const roles = [...new Set([...(w.roles || []), ...(w.tracks || []).flatMap((t) => t.roles || [])])];
-    return { slug: w.slug, ...u, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers };
+    return { slug: w.slug, ...u, byline: w.byline, roles, gain: gainOf(w.audio), field: w.field || 'original', kind: w.kind || 'single', format: w.format || '', versions, tracks, titleTrack: w.titleTrackIndex || 0, pinned: w.pinned || 0, covers };
     // the featured works (pinned 1, 2, 3) open the record in their order; the rest follow, newest first
   }).sort((a, b) => (a.pinned || 1e3) - (b.pinned || 1e3) || b.date.localeCompare(a.date));
 }

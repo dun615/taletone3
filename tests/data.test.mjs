@@ -12,13 +12,25 @@ const { works } = JSON.parse(readFileSync(path.join(root, 'assets/data/works-dat
 const exists = (p) => existsSync(path.join(root, p));
 const always = () => true;
 const track = (n, extra = {}) => ({ title: `T${n}`, image: `i${n}.webp`, thumb: `i${n}-w320.webp`, audio: `a${n}.mp3`, ...extra });
-const album = (extra = {}) => ({ slug: 'an-album', kind: 'album', date: '2026.01.01', image: 'c.webp', thumb: 'c-w320.webp', audio: '', titleTrackIndex: 0, origin: 'kr', title: 'An album', tracks: [track(1), track(2)], ...extra });
-const pinned = [1, 2, 3].map((n) => ({ slug: `p${n}`, kind: 'single', date: '2026.01.01', image: 'x.webp', thumb: 'x-w320.webp', audio: 'x.mp3', origin: 'kr', title: `P${n}`, pinned: n }));
+const album = (extra = {}) => ({ slug: 'an-album', kind: 'album', date: '2026.01.01', byline: 'company', image: 'c.webp', thumb: 'c-w320.webp', audio: '', titleTrackIndex: 0, origin: 'kr', title: 'An album', tracks: [track(1), track(2)], ...extra });
+const pinned = [1, 2, 3].map((n) => ({ slug: `p${n}`, kind: 'single', date: '2026.01.01', byline: 'company', image: 'x.webp', thumb: 'x-w320.webp', audio: 'x.mp3', origin: 'kr', title: `P${n}`, pinned: n }));
 const problems = (w) => checkWorks([...pinned, w], always).errors;
 
 test('the live works keep every rule, and every file they name exists', () => {
   const { errors } = checkWorks(works, exists);
   assert.deepEqual(errors, [], `run \`npm run audit\` for details:\n- ${errors.join('\n- ')}`);
+});
+
+test('every work says who made it, and the page has only the two bylines (the founder N4ML before the company, N4ML (TALETONE MUSIC) after)', () => {
+  const site = JSON.parse(readFileSync(path.join(root, 'assets/data/site-content.json'), 'utf8'));
+  for (const w of works) assert.ok(['founder', 'company'].includes(w.byline), `${w.slug}: byline`);
+  const byLang = { kr: site.journey.bylines, en: site.journey.translations.en.bylines, jp: site.journey.translations.jp.bylines };
+  for (const [l, b] of Object.entries(byLang)) {
+    assert.deepEqual(Object.keys(b).sort(), ['company', 'founder'], `${l}: bylines`);
+    assert.equal(b.company, 'N4ML (TALETONE MUSIC)', `${l}: the company's byline`);
+    assert.ok(b.founder.includes('N4ML') && !b.founder.includes('TALETONE'), `${l}: the founder's own work is never the company's`);
+  }
+  assert.ok(problems({ ...pinned[0], slug: 'no-byline', pinned: undefined, byline: undefined }).some((e) => e.includes('byline')));
 });
 
 test('a track with only an image still shows it (tracks once read only thumb and looked empty)', () => {

@@ -2,11 +2,12 @@
 /* ---------------- story panel ---------------- */
 const story = $('#jy-story'), storyBox = $('.jy-box', story), playBtn = $('#jy-play'), prog = $('#jy-pg'), sLp = $('#jy-s-lp');
 let storyWork = null, storyReturn = null, untrapStory = null;
-function roleLine(roles) { const t = (roles || []).map((r) => COPY.roles[r]).filter(Boolean).join(' · '); return t ? 'TALETONE · ' + t : ''; }
+// who made it (the work's byline: the founder N4ML's own work, or N4ML (TALETONE MUSIC)), then its roles
+function roleLine(roles, byline) { const who = (COPY.bylines || {})[byline] || ''; return [who, ...(roles || []).map((r) => COPY.roles[r])].filter(Boolean).join(' · '); }
 // the making of the song (what the record's card says at a glance); mixing, mastering, recording and editing are in
 // the detail and on the Sound Engineering shelf
 const MAKING = ['produce', 'compose', 'arrange', 'lyrics'];
-const makingLine = (roles) => roleLine((roles || []).filter((r) => MAKING.includes(r)));
+const makingLine = (roles, byline) => roleLine((roles || []).filter((r) => MAKING.includes(r)), byline);
 // ---- videos: a YouTube card or stage turns into the player in place (or opens YouTube where embedding is not allowed) ----
 // (a preview that cannot frame YouTube, such as the claude.ai artifact, sets window.TT_NO_EMBED: videos open in a tab)
 const EMBED = !window.TT_NO_EMBED;
@@ -72,7 +73,7 @@ function openStory(slug, from) {
   $('#jy-s-title').textContent = w.title;
   $('#jy-s-meta').textContent = w.artist || '';
   $('#jy-s-desc').textContent = w.description || '';
-  $('#jy-s-roles').textContent = roleLine(w.roles);
+  $('#jy-s-roles').textContent = roleLine(w.roles, w.byline);
   const facts = $('#jy-s-facts'); facts.textContent = '';
   [['date', w.date], ['format', w.format], ['type', w.type]].forEach(([k, v]) => { if (!v || !facts.dataset[k]) return; const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = facts.dataset[k]; dd.textContent = v; facts.append(dt, dd); });
   versionChips($('#jy-s-vers'), w);

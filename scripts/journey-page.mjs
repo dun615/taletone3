@@ -132,7 +132,7 @@ ${grain}
   ${hx('/about/', 'jy-h-tale', c.rail.tale)}
   <div class="jy-chat jy-voice" aria-live="polite">
     ${bubble('jy-hello', lines(c.intro.hello))}
-    <div class="jy-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.aka ? ` · ${esc(member.aka)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
+    <div class="jy-say" id="jy-pcard">${avatar()}<div class="jy-bub jy-pcard"><span class="jy-tx"><span class="jy-pc-head">${avatar(52)}<span><b>${esc(member.name)}</b><small>${esc(member.role)}${member.realName ? ` · ${esc(member.realName)}` : ''}</small></span></span><span class="jy-pc-tag">${esc(member.tagline || '')}</span><button type="button" class="jy-btn jy-btn-ink jy-pc-btn" data-profile="">${esc(c.profileOpen)}</button></span></div></div>
     ${bubble('jy-types', `<b>${esc(c.intro.typesLabel)}</b><small>${c.intro.types.map(esc).join('<br>')}</small>`)}
     ${logos.length ? bubble('jy-clients', `<b>${esc(c.clients)}</b><span class="jy-logo-row">${logos.map((l) => `<img src="/${esc(l.src)}" alt="${esc(l.alt)}" width="${l.width}" height="${l.height}" loading="lazy">`).join('')}</span>`) : ''}
   </div>
@@ -248,7 +248,7 @@ ${works.map((w, i) => `      <li class="jy-sw${w.pinned ? ' pin' : ''}" data-i="
 <section class="jy-profile" id="about" aria-labelledby="jy-p-name" tabindex="-1">
   <div class="jy-sheet">
     <button class="jy-x" type="button" id="jy-p-close" aria-label="${esc(c.close)}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
-    <header class="jy-p-head">${avatar(72)}<div><h2 id="jy-p-name">${esc(member.name)}</h2><p class="jy-p-role">${esc(member.role)}${member.aka ? ` · ${esc(merge(member, lang.key).aka || member.aka)}` : ''}</p></div></header>
+    <header class="jy-p-head">${avatar(72)}<div><h2 id="jy-p-name">${esc(member.name)}</h2><p class="jy-p-role">${esc(member.role)}${member.realName ? ` · ${esc(member.realName)}` : ''}</p></div></header>
     ${member.tagline ? `<p class="jy-p-tag">${esc(member.tagline)}</p>` : ''}
     <h3>${esc(c.featured)}</h3><ul class="jy-p-list">${(member.featuredCredits || []).map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
     <h3>${esc(c.people)}</h3><ul class="jy-people">${partners.map((p) => `<li><img src="/${esc(p.image)}" alt="" loading="lazy"><span><b>${esc(p.name)}</b><span>${esc(p.role)}</span></span></li>`).join('')}</ul>
