@@ -1811,7 +1811,7 @@
         "notifyTitle": "招待状",
         "enterAction": "アクセス",
         "bylines": {
-          "founder": "代表 N4ML",
+          "founder": "Worked by N4ML",
           "company": "N4ML (TALETONE MUSIC)"
         }
       }
@@ -1853,7 +1853,7 @@
     "notifyTitle": "초대장",
     "enterAction": "접속",
     "bylines": {
-      "founder": "대표 N4ML의 작업",
+      "founder": "Worked by N4ML",
       "company": "N4ML (TALETONE MUSIC)"
     }
   }
