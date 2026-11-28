@@ -1682,7 +1682,7 @@
         "notifyTitle": "Invitation",
         "enterAction": "Enter",
         "bylines": {
-          "founder": "Work by our founder, N4ML",
+          "founder": "Founder N4ML",
           "company": "N4ML (TALETONE MUSIC)"
         }
       },
@@ -1811,7 +1811,7 @@
         "notifyTitle": "招待状",
         "enterAction": "アクセス",
         "bylines": {
-          "founder": "代表 N4MLの作品",
+          "founder": "代表 N4ML",
           "company": "N4ML (TALETONE MUSIC)"
         }
       }
